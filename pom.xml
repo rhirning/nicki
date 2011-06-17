@@ -74,7 +74,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
-					<tagBase>https://svn.hirning.de/svn/repos/nicki/${project.artifactId}/tags</tagBase>
+					<tagBase>https://svn.hirning.de/svn/repos/nicki/nicki/tags/${project.artifactId}</tagBase>
 					<autoversionsubmodules>true</autoversionsubmodules>
 				</configuration>
 			</plugin>
@@ -94,9 +94,9 @@
 		</extensions>
 	</build>
 	<scm>
-		<connection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki-parent/trunk</connection>
-		<developerConnection>scm:svn:https://svn.hirning.de/svn/repos/nickinicki-parent/trunk</developerConnection>
-		<url>https://svn.hirning.de/svn/repos/nicki/nicki-parent/trunk</url>
+		<connection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki/trunk/${project.artifactId}</connection>
+		<developerConnection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki/trunk/${project.artifactId}</developerConnection>
+		<url>https://svn.hirning.de/svn/repos/nicki/nicki/trunk/${project.artifactId}</url>
 	</scm>
 	<distributionManagement>
 		<repository>
