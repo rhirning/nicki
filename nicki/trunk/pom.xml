@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mgnl.nicki</groupId>
 	<artifactId>nicki-parent</artifactId>
-	<version>1.5-SNAPSHOT</version>
+	<version>1.5</version>
 	<name>nicki-parent</name>
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
@@ -25,27 +25,27 @@
 		<nicki-template.version>1.1</nicki-template.version>
 		<nicki-vaadin-base.version>1.2</nicki-vaadin-base.version>
 	</properties>
-  <modules>
-    <module>nicki-config-rhi</module>
-    <module>nicki-core</module>
-    <module>nicki-db</module>
-    <module>nicki-dynamic-objects</module>
-    <module>nicki-dynamic-objects-ad</module>
-    <module>nicki-editor-mailtemplates</module>
-    <module>nicki-editor-projects</module>
-    <module>nicki-editor-scripts</module>
-    <module>nicki-editor-shops</module>
-    <module>nicki-editor-templates</module>
-    <module>nicki-ldap</module>
-    <module>nicki-mailtemplate</module>
-    <module>nicki-novell-userapp</module>
-    <module>nicki-orderpage</module>
-    <module>nicki-shop</module>
-    <module>nicki-template</module>
-    <module>nicki-test</module>
-    <module>nicki-vaadin-base</module>
-    <module>nicki-war</module>
-  </modules>
+	<modules>
+		<module>nicki-config-rhi</module>
+		<module>nicki-core</module>
+		<module>nicki-db</module>
+		<module>nicki-dynamic-objects</module>
+		<module>nicki-dynamic-objects-ad</module>
+		<module>nicki-editor-mailtemplates</module>
+		<module>nicki-editor-projects</module>
+		<module>nicki-editor-scripts</module>
+		<module>nicki-editor-shops</module>
+		<module>nicki-editor-templates</module>
+		<module>nicki-ldap</module>
+		<module>nicki-mailtemplate</module>
+		<module>nicki-novell-userapp</module>
+		<module>nicki-orderpage</module>
+		<module>nicki-shop</module>
+		<module>nicki-template</module>
+		<module>nicki-test</module>
+		<module>nicki-vaadin-base</module>
+		<module>nicki-war</module>
+	</modules>
 	<dependencies>
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -71,9 +71,11 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
 					<tagBase>https://svn.hirning.de/svn/repos/nicki/${project.artifactId}/tags</tagBase>
+					<autoversionsubmodules>true</autoversionsubmodules>
 				</configuration>
 			</plugin>
 		</plugins>
@@ -92,9 +94,9 @@
 		</extensions>
 	</build>
 	<scm>
-		<connection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki-parent/trunk</connection>
-		<developerConnection>scm:svn:https://svn.hirning.de/svn/repos/nickinicki-parent/trunk</developerConnection>
-		<url>https://svn.hirning.de/svn/repos/nicki/nicki-parent/trunk</url>
+		<connection>scm:svn:https://svn.hirning.de/svn/repos/nicki//nicki-parent/tags/nicki-parent-1.5</connection>
+		<developerConnection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki-parent/tags/nicki-parent-1.5</developerConnection>
+		<url>https://svn.hirning.de/svn/repos/nicki//nicki-parent/tags/nicki-parent-1.5</url>
 	</scm>
 	<distributionManagement>
 		<repository>
