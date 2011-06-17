@@ -6,57 +6,58 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>1.3</version>
+		<version>1.5-SNAPSHOT</version>
 	</parent>
 	<artifactId>nicki.war</artifactId>
-	<version>1.0-SNAPSHOT</version>
 	<name>nicki.war</name>
 	<packaging>war</packaging>
 	<dependencies>
 		<dependency>
 			<artifactId>nicki-config-rhi</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>${nicki-config-rhi.version}</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<artifactId>nicki-editor-scripts</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>${nicki-editor-scripts.version}</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
+		<!--
 		<dependency>
 			<artifactId>nicki-editor-bu</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>${nicki-editor-bu.version}</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
+		 -->
 		<dependency>
 			<artifactId>nicki-editor-mailtemplates</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>${nicki-editor-mailtemplates.version}</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<artifactId>nicki-editor-projects</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>${nicki-editor-projects.version}</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<artifactId>nicki-editor-shops</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>${nicki-editor-shops.version}</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<artifactId>nicki-editor-templates</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>${nicki-editor-templates.version}</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<artifactId>nicki-novell-userapp</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>${nicki-novell-userapp.version}</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<artifactId>nicki-vaadin-base</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>${nicki-vaadin-base.version}</version>
+			<version>1.5-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
