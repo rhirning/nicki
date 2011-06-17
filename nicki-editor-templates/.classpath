@@ -19,7 +19,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nicki-ldap"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nicki-template"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nicki-vaadin-base"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/efg-dynamic-objects"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nicki-dynamic-objects-ad"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
