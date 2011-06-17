@@ -6,6 +6,6 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>1.6-SNAPSHOT</version>
+		<version>1.6</version>
 	</parent>
 </project>
