@@ -16,5 +16,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/nicki-dynamic-objects"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nicki-dynamic-objects-ad"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
