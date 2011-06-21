@@ -17,6 +17,10 @@ public class Role extends DynamicStructObject {
 		addAttribute(dynAttribute);
 		dynAttribute = new DynamicReference("resourceAssociations", "o=system", "nrfRole", String.class);
 		addAttribute(dynAttribute);
+		dynAttribute = new DynamicReference("member", "o=utopia", "nrfAssignedRoles", String.class);
+		dynAttribute.setMultiple();
+		dynAttribute.setForeignKey();
+		addAttribute(dynAttribute);
 	};
 	
 	public Date getStartTime() {

@@ -14,8 +14,8 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 public class TemplateTest {
-	public static final String PROPERTY_BASE_DN = "nicki.mailtemplates.basedn";
-	public static final String DEFAULT_BASE_DN = "ou=mailtemplates,o=utopia";
+	public static final String PROPERTY_BASE_DN = "nicki.templates.basedn";
+	public static final String DEFAULT_BASE_DN = "ou=templates,o=utopia";
 
 	/**
 	 * @param args
@@ -25,7 +25,7 @@ public class TemplateTest {
 	 */
 	public static void main(String[] args) throws IOException, TemplateException, InvalidPrincipalException {
 		Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(Config.getProperty(PROPERTY_BASE_DN, DEFAULT_BASE_DN));
-		Template temp = cfg.getTemplate("/template1.ftl");
+		Template temp = cfg.getTemplate("/CoCo/Rollen.ftl");
 		
 
 		Writer out = new OutputStreamWriter(System.out);
