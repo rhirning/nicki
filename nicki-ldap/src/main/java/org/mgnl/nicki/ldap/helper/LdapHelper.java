@@ -15,8 +15,8 @@ public class LdapHelper {
 		try {
 			ContextAttribute attr = rs.getAttributes().get(attributeName);
 			if (attr != null) {
-				for (Enumeration<String> vals 
-						= (Enumeration<String>) attr.getAll(); vals.hasMoreElements();) {
+				for (Enumeration<Object> vals 
+						= (Enumeration<Object>) attr.getAll(); vals.hasMoreElements();) {
 					attributeList.add(vals.nextElement());
 				}
 			}

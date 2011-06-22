@@ -44,9 +44,9 @@ public class LdapSearchHandler extends BasicLdapHandler implements QueryHandler 
 				String attributeName = iterator.next();
 				ContextAttribute attr = attrs.get(attributeName);
 				if (attr != null) {
-					Enumeration<String> vals = (Enumeration<String>) attr.getAll();
+					Enumeration<Object> vals = (Enumeration<Object>) attr.getAll();
 					if (vals.hasMoreElements()) {
-						String value = vals.nextElement();
+						Object value = vals.nextElement();
 						entry.addValue(query.getResultAttributes().get(attributeName), value);
 					}
 				}

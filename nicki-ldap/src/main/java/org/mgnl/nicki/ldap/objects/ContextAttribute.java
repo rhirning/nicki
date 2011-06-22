@@ -4,7 +4,7 @@ import java.util.Enumeration;
 
 public interface ContextAttribute {
 
-	Enumeration<String> getAll() throws DynamicObjectException;
+	Enumeration<Object> getAll() throws DynamicObjectException;
 
 	Object get() throws DynamicObjectException;
 

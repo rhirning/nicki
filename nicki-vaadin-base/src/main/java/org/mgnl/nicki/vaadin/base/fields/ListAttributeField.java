@@ -20,7 +20,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-public class ListAttributeField implements Serializable {
+public class ListAttributeField implements DynamicAttributeField, Serializable {
 
 	private ComponentContainer container;
 	public ListAttributeField(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
@@ -49,7 +49,9 @@ public class ListAttributeField implements Serializable {
 		container.addComponent(dataLayout);
 	}
 
-	public ComponentContainer getContainer() {
+	@Override
+	public ComponentContainer getComponent(boolean readOnly) {
+		container.setReadOnly(readOnly);
 		return container;
 	}
 }

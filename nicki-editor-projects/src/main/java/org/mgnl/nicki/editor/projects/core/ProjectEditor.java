@@ -32,10 +32,10 @@ public class ProjectEditor extends NickiApplication {
 	public Component getEditor() {
 		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.projects.basedn"), new ProjectFilter());
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), treeDataProvider, getI18nBase());
-		editor.configureClass(Org.class, null, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Project.class);
-		editor.configureClass(Project.class, Icon.DOCUMENT, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Member.class, Directory.class);
-		editor.configureClass(Member.class, Icon.USER, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.DENY);
-		editor.configureClass(Directory.class, Icon.FOLDER, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY);
+		editor.configureClass(Org.class, null, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Project.class);
+		editor.configureClass(Project.class, Icon.DOCUMENT, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Member.class, Directory.class);
+		editor.configureClass(Member.class, Icon.USER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.DENY);
+		editor.configureClass(Directory.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY);
 		editor.setClassEditor(Project.class, new ProjectViewer());
 		editor.setClassEditor(Member.class, new MemberEditor());
 		editor.setClassEditor(Directory.class, new DirectoryEditor());
