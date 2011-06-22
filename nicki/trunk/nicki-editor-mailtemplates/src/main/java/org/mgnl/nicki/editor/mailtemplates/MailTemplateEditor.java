@@ -19,8 +19,8 @@ public class MailTemplateEditor extends NickiApplication {
 	public Component getEditor() {
 		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.mailtemplates.basedn"), new MailTemplateFilter());
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), treeDataProvider, getI18nBase());
-		editor.configureClass(Org.class, Icon.FOLDER, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, Org.class, Template.class );
-		editor.configureClass(Template.class, Icon.DOCUMENT, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
+		editor.configureClass(Org.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, Org.class, Template.class );
+		editor.configureClass(Template.class, Icon.DOCUMENT, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
 		editor.setClassEditor(Template.class, new I18nMailTemplateViewer(getI18nBase()));
 		editor.addAction(new PreviewMail(getNickiContext(), Template.class, "Test de", "de"));
 		editor.addAction(new PreviewMail(getNickiContext(), Template.class, "Test fr", "fr"));

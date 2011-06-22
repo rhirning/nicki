@@ -17,15 +17,15 @@ public class JndiContextAttribute implements ContextAttribute {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Enumeration<String> getAll() throws DynamicObjectException {
+	public Enumeration<Object> getAll() throws DynamicObjectException {
 		try {
 			if (this.attribute != null) {
-				return (Enumeration<String>) this.attribute.getAll();
+				return (Enumeration<Object>) this.attribute.getAll();
 			}
 		} catch (NamingException e) {
 			throw new DynamicObjectException(e);
 		}
-		return new Enumeration<String>() {
+		return new Enumeration<Object>() {
 			
 			@Override
 			public String nextElement() {

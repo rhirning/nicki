@@ -15,12 +15,13 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.Select;
 import com.vaadin.ui.TextField;
 
 @SuppressWarnings("serial")
-public class AttributeSelectField implements Serializable {
+public class AttributeSelectField implements DynamicAttributeField, Serializable {
 
 	private Field field;
 	private DataContainer property;
@@ -55,11 +56,7 @@ public class AttributeSelectField implements Serializable {
 		return container;
 	}
 
-	public Field getField() {
-		return field;
-	}
-
-	public Field getField(boolean readOnly) {
+	public Component getComponent(boolean readOnly) {
 		field.setReadOnly(readOnly);
 		return field;
 	}

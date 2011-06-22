@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class SearchResultEntry implements Serializable {
 	private static final long serialVersionUID = -6784848780254677616L;
-	private Map<String, String> values = new HashMap<String, String>();
+	private Map<String, Object> values = new HashMap<String, Object>();
 	private String dn;
 	
 	public String getDn() {
@@ -17,15 +17,15 @@ public class SearchResultEntry implements Serializable {
 		this.dn = dn;
 	}
 
-	public void addValue(String key, String value) {
+	public void addValue(String key, Object value) {
 		this.values.put(key, value);
 	}
 	
-	public String getValue(String key) {
+	public Object getValue(String key) {
 		return this.values.get(key);
 	}
 
-	public Map<String, String> getValues() {
+	public Map<String, Object> getValues() {
 		return values;
 	}
 	

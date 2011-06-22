@@ -58,6 +58,8 @@ public abstract class BasicContext implements NickiContext {
 		env.put(Context.SECURITY_AUTHENTICATION, target.getProperty("securityAuthentication"));
 		env.put(Context.SECURITY_PRINCIPAL, name);
 		env.put(Context.SECURITY_CREDENTIALS, password);
+		env.put("java.naming.ldap.attributes.binary","objectGUID");
+
 		// Enable connection pooling
 		env.put("com.sun.jndi.ldap.connect.pool", "true");
 

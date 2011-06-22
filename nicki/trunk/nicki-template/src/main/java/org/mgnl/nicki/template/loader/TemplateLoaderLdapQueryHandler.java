@@ -65,8 +65,8 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 		}
 		ContextAttribute attr = attrs.get(ATTRIBUTE_PART);
 		if (attr != null) {
-			for ( Enumeration<String> vals = (Enumeration<String>) attr.getAll(); vals.hasMoreElements();) {
-				String partString = vals.nextElement();
+			for ( Enumeration<Object> vals = (Enumeration<Object>) attr.getAll(); vals.hasMoreElements();) {
+				String partString = (String) vals.nextElement();
 				String partName = StringUtils.substringBefore(partString, PART_SEPARATOR);
 				String partValue = StringUtils.substringAfter(partString, PART_SEPARATOR);
 				template.putPart(partName, partValue);

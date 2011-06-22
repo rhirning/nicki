@@ -32,10 +32,10 @@ public class ShopEditor extends NickiApplication {
 	public Component getEditor() {
 		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.shops.basedn"), new ShowAllFilter());
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), treeDataProvider, getI18nBase());
-		editor.configureClass(Org.class, null, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Shop.class);
-		editor.configureClass(Shop.class, Icon.FOLDER, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, ShopShelf.class);
-		editor.configureClass(ShopShelf.class, Icon.FOLDER, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, ShopShelf.class, ShopArticle.class);
-		editor.configureClass(ShopArticle.class, Icon.DOCUMENT, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
+		editor.configureClass(Org.class, null, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Shop.class);
+		editor.configureClass(Shop.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, ShopShelf.class);
+		editor.configureClass(ShopShelf.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, ShopShelf.class, ShopArticle.class);
+		editor.configureClass(ShopArticle.class, Icon.DOCUMENT, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
 		editor.addAction(new PreviewShop(Shop.class, I18n.getText(getI18nBase() +  ".action.preview")));
 		editor.initActions();
 		return editor;

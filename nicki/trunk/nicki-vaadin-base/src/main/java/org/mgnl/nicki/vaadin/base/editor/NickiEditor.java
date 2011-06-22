@@ -59,6 +59,7 @@ public class NickiEditor extends AbsoluteLayout {
 	private Map<Action, Class<?>> renameActions = new HashMap<Action, Class<?>>();
 	private Action refreshAction;
 	
+	private List<Class<?>> allowCreate = new ArrayList<Class<?>>();
 	private List<Class<?>> allowDelete = new ArrayList<Class<?>>();
 	private List<Class<?>> allowRename = new ArrayList<Class<?>>();
 	private Map<Class<?>, List<TreeAction>> treeActions = new HashMap<Class<?>, List<TreeAction>>();
@@ -223,9 +224,12 @@ public class NickiEditor extends AbsoluteLayout {
 		this.treeContainer.setClassIcon(classDefinition, icon);
 	}
 
-	public void configureClass(Class<?> parentClass, Icon icon, DELETE allowDelete, RENAME allowRename, Class<?> ... childClass) {
+	public void configureClass(Class<?> parentClass, Icon icon, CREATE allowCreate, DELETE allowDelete, RENAME allowRename, Class<?> ... childClass) {
 		if (icon != null) {
 			setClassIcon(parentClass, icon);
+		}
+		if (allowCreate == CREATE.ALLOW) {
+			this.allowCreate.add(parentClass);
 		}
 		if (allowDelete == DELETE.ALLOW) {
 			this.allowDelete.add(parentClass);
@@ -355,12 +359,13 @@ public class NickiEditor extends AbsoluteLayout {
 			List<Class<?>> children = this.children.get(classDefinition);
 			for (Iterator<Class<?>> iterator2 = children.iterator(); iterator2.hasNext();) {
 				Class<?> childClass = iterator2.next();
-				Action childAction = new Action(
-						I18n.getText(this.messageKeyBase + ".action." + getClassName(childClass) + ".new"));
-				classActions.add(childAction);
-				rootClassActions.add(childAction);
-				map.put(childAction, childClass);
-				
+				if (this.allowCreate.contains(childClass)) {
+					Action childAction = new Action(
+							I18n.getText(this.messageKeyBase + ".action." + getClassName(childClass) + ".new"));
+					classActions.add(childAction);
+					rootClassActions.add(childAction);
+					map.put(childAction, childClass);
+				}				
 			}
 			// delete
 			if (this.allowDelete.contains(classDefinition)) {

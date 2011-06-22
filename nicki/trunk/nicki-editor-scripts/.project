@@ -9,6 +9,7 @@
 		<project>nicki-vaadin-base</project>
 		<project>nicki-config-rhi</project>
 		<project>nicki-novell-userapp</project>
+		<project>nicki-dynamic-objects-ad</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

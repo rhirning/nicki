@@ -9,6 +9,7 @@ import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.fields.AttributeSelectField;
 import org.mgnl.nicki.vaadin.base.fields.AttributeTextField;
+import org.mgnl.nicki.vaadin.base.fields.DynamicAttributeField;
 import org.mgnl.nicki.vaadin.base.fields.ListAttributeField;
 
 import com.vaadin.ui.Component;
@@ -26,17 +27,19 @@ class DynamicObjectFieldFactory implements Serializable {
 
 	public Component createField(DynamicObject dynamicObject, String attributeName, boolean create) {
 		DynamicAttribute dynAttribute = dynamicObject.getDynamicAttribute(attributeName);
+		DynamicAttributeField field = null;
 		if (dynAttribute.isMultiple()) {
-			return new ListAttributeField(attributeName, dynamicObject, objectListener).getContainer();
+			field = new ListAttributeField(attributeName, dynamicObject, objectListener);
 		} else if (dynAttribute.isForeignKey()) {
-			return new AttributeSelectField(context, attributeName, dynamicObject, objectListener).getField();
+			field = new AttributeSelectField(context, attributeName, dynamicObject, objectListener);
 		} else {
-			boolean readOnly = false;
-			if (!create && dynAttribute.isNaming()) {
-				readOnly = true;
-			}
-			return new AttributeTextField(attributeName, dynamicObject, objectListener).getField(readOnly);
+			field = new AttributeTextField(attributeName, dynamicObject, objectListener);
 		}
+		boolean readOnly = false;
+		if (!create && dynAttribute.isNaming()) {
+			readOnly = true;
+		}
+		return field.getComponent(readOnly);
 	}
 	
 	

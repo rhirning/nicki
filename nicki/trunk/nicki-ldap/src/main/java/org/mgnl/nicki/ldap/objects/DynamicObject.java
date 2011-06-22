@@ -100,9 +100,9 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 			String value) {
 		try {
 			ContextAttribute attr = rs.getAttributes().get(attribute);
-			for (Enumeration<String> vals 
-					= (Enumeration<String>) attr.getAll(); vals.hasMoreElements();) {
-				if (StringUtils.equalsIgnoreCase(value, vals.nextElement())) {
+			for (Enumeration<Object> vals 
+					= (Enumeration<Object>) attr.getAll(); vals.hasMoreElements();) {
+				if (StringUtils.equalsIgnoreCase(value, (String) vals.nextElement())) {
 					return true;
 				}
 		}

@@ -28,8 +28,8 @@ public class TemplateEditor extends NickiApplication {
 
 		DataProvider dataProvider = new DynamicObjectRoot(Config.getProperty("nicki.templates.basedn"), new ShowAllFilter());
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), dataProvider, getI18nBase());
-		editor.configureClass(Org.class, Icon.FOLDER, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, Org.class, Template.class );
-		editor.configureClass(Template.class, Icon.DOCUMENT, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
+		editor.configureClass(Org.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, Org.class, Template.class );
+		editor.configureClass(Template.class, Icon.DOCUMENT, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
 		editor.setClassEditor(Template.class, templateViewer);
 		editor.addAction(new PreviewTemplate(getNickiContext(), Template.class, I18n.getText(getI18nBase() + ".action.preview"), getI18nBase()));
 		editor.initActions();

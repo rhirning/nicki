@@ -1,5 +1,6 @@
 package org.mgnl.nicki.dynamic.objects.ad;
 
+import org.mgnl.nicki.ldap.data.jndi.OctetString;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 
@@ -17,6 +18,9 @@ public class Group extends DynamicObject {
 		dynAttribute = new DynamicAttribute("member", "member", String.class);
 		dynAttribute.setMultiple();
 		dynAttribute.setForeignKey();
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("guid", "objectGUID", OctetString.class);
 		addAttribute(dynAttribute);
 
 	};

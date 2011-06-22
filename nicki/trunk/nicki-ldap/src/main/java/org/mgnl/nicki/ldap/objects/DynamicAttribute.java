@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.ldap.context.NickiContext;
+import org.mgnl.nicki.ldap.data.jndi.OctetString;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.methods.ForeignKeyMethod;
 import org.mgnl.nicki.ldap.methods.ListForeignKeyMethod;
@@ -47,7 +48,11 @@ public class DynamicAttribute implements Serializable {
 		if (!isMandatory() && !isMultiple() && !isForeignKey()) {
 			Object attribute = LdapHelper.getAttribute(rs, getLdapName());
 			if (attribute != null) {
-				dynamicObject.put(name, attribute);
+				if (attributeClass == OctetString.class) {
+					dynamicObject.put(name, new OctetString(((byte[])attribute)));
+				} else {
+					dynamicObject.put(name, attribute);
+				}
 			}
 		}
 		// optional list
