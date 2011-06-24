@@ -7,7 +7,7 @@ import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.objects.DataModel;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
-import org.mgnl.nicki.vaadin.base.fields.AttributeSelectField;
+import org.mgnl.nicki.vaadin.base.fields.AttributeSelectObjectField;
 import org.mgnl.nicki.vaadin.base.fields.AttributeTextField;
 import org.mgnl.nicki.vaadin.base.fields.DynamicAttributeField;
 import org.mgnl.nicki.vaadin.base.fields.ListAttributeField;
@@ -31,7 +31,7 @@ class DynamicObjectFieldFactory implements Serializable {
 		if (dynAttribute.isMultiple()) {
 			field = new ListAttributeField(attributeName, dynamicObject, objectListener);
 		} else if (dynAttribute.isForeignKey()) {
-			field = new AttributeSelectField(context, attributeName, dynamicObject, objectListener);
+			field = new AttributeSelectObjectField(attributeName, dynamicObject, objectListener);
 		} else {
 			field = new AttributeTextField(attributeName, dynamicObject, objectListener);
 		}

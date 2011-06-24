@@ -60,7 +60,7 @@ public class AppContext {
 	public static NickiContext getNamedUserContext(String targetName, String user, String password) throws InvalidPrincipalException {
 		Target target = TargetFactory.getTarget(targetName);
 		if (target != null) {
-			return new NamedUserContext(target, user, password, NickiContext.READONLY.TRUE);
+			return new NamedUserContext(target, user, password, NickiContext.READONLY.FALSE);
 		}
 		return null;
 	}

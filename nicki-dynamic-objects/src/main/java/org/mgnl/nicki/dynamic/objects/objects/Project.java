@@ -18,6 +18,18 @@ public class Project extends DynamicObject implements Serializable {
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
+		dynAttribute = new DynamicAttribute("projectdirectory", "nickiProjectDirectory", String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("email", "nickiProjectEmail", String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("emailDomain", "nickiProjectEmailDomain", String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("emailVisible", "nickiProjectEmailVisible", String.class);
+		addAttribute(dynAttribute);
+
 		dynAttribute = new DynamicAttribute("description", "nickiDescription", String.class);
 		addAttribute(dynAttribute);
 
