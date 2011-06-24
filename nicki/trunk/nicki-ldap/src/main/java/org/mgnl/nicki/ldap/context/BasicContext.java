@@ -58,8 +58,10 @@ public abstract class BasicContext implements NickiContext {
 		env.put(Context.SECURITY_AUTHENTICATION, target.getProperty("securityAuthentication"));
 		env.put(Context.SECURITY_PRINCIPAL, name);
 		env.put(Context.SECURITY_CREDENTIALS, password);
-		env.put("java.naming.ldap.attributes.binary","objectGUID");
-
+		String binaries = target.getProperty("attributes.binary");
+		if (StringUtils.isNotEmpty(binaries)) {
+			env.put("java.naming.ldap.attributes.binary", binaries);
+		}
 		// Enable connection pooling
 		env.put("com.sun.jndi.ldap.connect.pool", "true");
 
@@ -274,8 +276,12 @@ public abstract class BasicContext implements NickiContext {
 				ctx = getDirContext();
 				results = ctx.search(queryHandler.getBaseDN(), queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
 				List<ContextSearchResult> list = new ArrayList<ContextSearchResult>();
-				while (results != null && results.hasMore()) {
-					list.add(new JndiSearchResult(results.next()));
+				try {
+					while (results != null && results.hasMore()) {
+						list.add(new JndiSearchResult(results.next()));
+					}
+				} catch (NamingException e) {
+					e.printStackTrace();
 				}
 				queryHandler.handle(list);
 			} catch (NamingException e) {

@@ -22,6 +22,7 @@ public class ProjectViewer extends CustomComponent implements ClassEditor {
 	private Project project;
 
 	private ClassEditor dataView = new ProjectDataView();
+	private ClassEditor mailView = new ProjectMailView();
 
 	/**
 	 * The constructor should first build the main layout, set the
@@ -35,6 +36,7 @@ public class ProjectViewer extends CustomComponent implements ClassEditor {
 		setCompositionRoot(mainLayout);
 		// Project main data
 		tabSheet.addTab(dataView, I18n.getText("nicki.editor.projects.tab.data.title"), Icon.USERS.getResource());
+		tabSheet.addTab(mailView, I18n.getText("nicki.editor.projects.tab.mail.title"), Icon.EMAIL.getResource());
 	}
 	
 	@Override
@@ -42,6 +44,7 @@ public class ProjectViewer extends CustomComponent implements ClassEditor {
 			DynamicObject dynamicObject) {
 		this.project = (Project) dynamicObject;
 		dataView.setDynamicObject(nickiEditor, dynamicObject);
+		mailView.setDynamicObject(nickiEditor, dynamicObject);
 	}
 
 
