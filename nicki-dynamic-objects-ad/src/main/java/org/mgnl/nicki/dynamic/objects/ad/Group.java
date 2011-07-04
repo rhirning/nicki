@@ -23,6 +23,14 @@ public class Group extends DynamicObject {
 		dynAttribute = new DynamicAttribute("guid", "objectGUID", OctetString.class);
 		addAttribute(dynAttribute);
 
+		dynAttribute = new DynamicAttribute("groupType", "groupType", String.class);
+		dynAttribute.setMandatory();
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("objectCategory", "objectCategory", String.class);
+		dynAttribute.setForeignKey();
+		dynAttribute.setMandatory();
+		addAttribute(dynAttribute);
 	};
 
 }
