@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.dynamic.objects.objects.Directory;
 import org.mgnl.nicki.dynamic.objects.objects.Member;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
@@ -15,6 +16,7 @@ import org.mgnl.nicki.editor.projects.members.MemberEditor;
 import org.mgnl.nicki.ldap.context.Target;
 import org.mgnl.nicki.ldap.context.TargetFactory;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectValueChangeListener;
@@ -28,9 +30,16 @@ import com.vaadin.ui.Component;
 @SuppressWarnings("serial")
 public class ProjectEditor extends NickiApplication {
 
+	public ProjectEditor() {
+		super();
+		setUseSystemContext(true);
+		setUseWelcomeDialog(DataHelper.booleanOf(Config.getProperty("nicki.projects.usewelcomedialog", "false")));
+	}
+
 	@Override
-	public Component getEditor() {
-		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.projects.basedn"), new ProjectFilter());
+	public Component getEditor() throws DynamicObjectException {
+		ProjectFilter projectFilter = new ProjectFilter(getNickiContext().getUser().getName());
+		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.projects.basedn"), projectFilter);
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), treeDataProvider, getI18nBase());
 		editor.configureClass(Org.class, null, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Project.class);
 		editor.configureClass(Project.class, Icon.DOCUMENT, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Member.class, Directory.class);

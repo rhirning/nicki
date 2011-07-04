@@ -95,14 +95,12 @@ public class NickiEditor extends AbsoluteLayout {
 //		selector.setDragMode(TreeDragMode.NODE);
 //		selector.setDropHandler(new TreeDropHandler(this));
 
-		try {
-			addComponent(new WelcomeDialog(this.application, this.context.getPrincipal()), "top:0.0px;left:0.0px;");
-		} catch (DynamicObjectException e1) {
-			e1.printStackTrace();
+		if (application.isUseWelcomeDialog()) {
+			addComponent(new WelcomeDialog(this.application), "top:0.0px;left:0.0px;");
+			addComponent(hsplit, "top:20.0px;left:0.0px;");
+		} else {
+			addComponent(hsplit, "top:0.0px;left:0.0px;");
 		}
-		
-		addComponent(hsplit, "top:20.0px;left:0.0px;");
-
 		
 		
 		selectorLayout = new VerticalLayout();

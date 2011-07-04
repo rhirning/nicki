@@ -12,6 +12,7 @@ import org.mgnl.nicki.ldap.context.AppContext;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.context.Target;
 import org.mgnl.nicki.ldap.context.NickiContext.READONLY;
+import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.auth.LoginDialog;
 
 import com.vaadin.Application;
@@ -26,7 +27,9 @@ public abstract class NickiApplication extends Application  implements HttpServl
 	public static final String JAAS_ENTRY = "Nicki";
 	public static final String ATTR_NICKI_CONTEXT = "NICKI_CONTEXT";
 
-	private NickiContext context = null;
+	private NickiContext nickiContext = null;
+	private boolean useSystemContext = false;
+	private boolean useWelcomeDialog = false;
 
 
 	@Override
@@ -39,20 +42,25 @@ public abstract class NickiApplication extends Application  implements HttpServl
 
 		// try getting context from session
 		try {
-			this.context = (NickiContext) getRequest().getSession(false).getAttribute(ATTR_NICKI_CONTEXT);
+			this.nickiContext = (NickiContext) getRequest().getSession(false).getAttribute(ATTR_NICKI_CONTEXT);
 		} catch (Exception e) {
 		}
 		
-		if (context == null) {
+		if (nickiContext == null) {
 			// try SSO
 			setNickiContext(loginSSO());
 		}
-		if (context == null) {
-			Component loginDialog = new LoginDialog(this);
-			getMainWindow().addComponent(loginDialog);
-		} else {
-			start();
+		if (nickiContext != null) {
+			try {
+				start();
+				return;
+			} catch (DynamicObjectException e) {
+				e.printStackTrace();
+			}
 		}
+
+		Component loginDialog = new LoginDialog(this);
+		getMainWindow().addComponent(loginDialog);
 	}
 	
 	public void logout() {
@@ -95,7 +103,12 @@ public abstract class NickiApplication extends Application  implements HttpServl
 				SSOAdapter adapter = (SSOAdapter) Class.forName(ssoLoginClass).newInstance();
 				NickiPrincipal principal = new NickiPrincipal(adapter.getName(getRequest()), new String(adapter.getPassword(getRequest())));
 				if (principal != null && getTarget().login(principal) != null) {
-					return getTarget().getNamedUserContext(principal, READONLY.FALSE);
+					if (isUseSystemContext()) {
+						NickiContext ctx = AppContext.getSystemContext(getTarget().getName(), principal);
+						return ctx;
+					} else {
+						return getTarget().getNamedUserContext(principal, READONLY.FALSE);
+					}
 				}
 			}
 		} catch (Exception e) {
@@ -117,31 +130,35 @@ public abstract class NickiApplication extends Application  implements HttpServl
 			if (principal != null) {
 				principal = getTarget().login(principal);
 				if (principal != null) {
-					setNickiContext(getTarget().getNamedUserContext(principal, READONLY.FALSE));
+					if (isUseSystemContext()) {
+						setNickiContext(AppContext.getSystemContext(getTarget(), principal, READONLY.FALSE));
+					} else {
+						setNickiContext(getTarget().getNamedUserContext(principal, READONLY.FALSE));
+					}
 					return true;
 				}
 			}
 		} catch (Exception e) {
 			System.out.println("Login falied, user=" + name);
 		}
-		this.context = getTarget().getGuestContext();
+		this.nickiContext = getTarget().getGuestContext();
 		return false;
 	}
 
-	public void start() {
+	public void start() throws DynamicObjectException {
 		getMainWindow().removeAllComponents();
 		getMainWindow().addComponent(getEditor());
 	}
 	
 
 
-	public abstract Component getEditor();
+	public abstract Component getEditor() throws DynamicObjectException;
 
 	public void setNickiContext(NickiContext context) {
-		this.context = context;
+		this.nickiContext = context;
 		if (getRequest() != null) {
 			try {
-				getRequest().getSession(true).setAttribute(ATTR_NICKI_CONTEXT, this.context);
+				getRequest().getSession(true).setAttribute(ATTR_NICKI_CONTEXT, this.nickiContext);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -149,11 +166,27 @@ public abstract class NickiApplication extends Application  implements HttpServl
 	}
 
 	public NickiContext getNickiContext() {
-		return context;
+		return nickiContext;
 	}
 
 	public abstract Target getTarget();
 	
 	public abstract String getI18nBase();
+
+	public void setUseSystemContext(boolean useSystemContext) {
+		this.useSystemContext = useSystemContext;
+	}
+
+	public boolean isUseSystemContext() {
+		return useSystemContext;
+	}
+
+	public void setUseWelcomeDialog(boolean useWelcomeDialog) {
+		this.useWelcomeDialog = useWelcomeDialog;
+	}
+
+	public boolean isUseWelcomeDialog() {
+		return useWelcomeDialog;
+	}
 
 }

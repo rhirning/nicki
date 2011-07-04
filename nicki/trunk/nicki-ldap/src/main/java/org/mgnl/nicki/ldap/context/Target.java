@@ -53,7 +53,7 @@ public class Target implements Serializable {
 
 	public NickiPrincipal login(NickiPrincipal principal) {
 		try {
-			return new SystemContext(this, READONLY.TRUE).login(principal.getName(), principal.getPassword());
+			return new SystemContext(this, principal, READONLY.TRUE).login(principal.getName(), principal.getPassword());
 		} catch (InvalidPrincipalException e) {
 			return null;
 		}

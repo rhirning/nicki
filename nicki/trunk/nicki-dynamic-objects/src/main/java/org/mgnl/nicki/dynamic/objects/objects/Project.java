@@ -3,6 +3,7 @@ package org.mgnl.nicki.dynamic.objects.objects;
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.dynamic.objects.reference.ChildReferenceDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
@@ -65,8 +66,26 @@ public class Project extends DynamicObject implements Serializable {
 		this.put("manager", projectLeader.getPath());
 	}
 
+	public boolean isProjectLeader(String name) {
+		try {
+			return StringUtils.equalsIgnoreCase(name, getProjectLeader().getPath());
+		} catch (Exception e) {
+		}
+		return false;
+
+	}
+
 	public Member getDeputyProjectLeader() {
 		return (Member) getForeignKeyObject("deputy");
+	}
+	
+	public boolean isProjectDeputyLeader(String name) {
+		try {
+			return StringUtils.equalsIgnoreCase(name, getDeputyProjectLeader().getForeignKeyObject("member").getPath());
+		} catch (Exception e) {
+		}
+		return false;
+
 	}
 
 	public void setDeputyProjectLeader(Member deputyProjectLeader) {
