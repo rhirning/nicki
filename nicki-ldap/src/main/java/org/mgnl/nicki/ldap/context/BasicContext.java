@@ -35,6 +35,7 @@ public abstract class BasicContext implements NickiContext {
 	public static final String TARGET_DEFAULT = "edir";
 	private Target target = null;
 	private NickiPrincipal principal;
+	private NickiPrincipal user;
 	private READONLY readonly;
 	private DynamicObject person;
 
@@ -324,6 +325,16 @@ public abstract class BasicContext implements NickiContext {
 
 	public DynamicObject getPerson() {
 		return person;
+	}
+
+	@Override
+	public NickiPrincipal getUser() {
+		return user;
+	}
+
+	@Override
+	public void setUser(NickiPrincipal user) {
+		this.user = user;
 	}
 	
 }

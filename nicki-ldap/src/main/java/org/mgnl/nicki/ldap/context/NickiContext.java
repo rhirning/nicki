@@ -29,5 +29,7 @@ public interface NickiContext extends Serializable {
 	NickiPrincipal getPrincipal() throws DynamicObjectException;
 	NickiPrincipal login(String user, String password);
 	DynamicObject getPerson();
+	NickiPrincipal getUser();
+	void setUser(NickiPrincipal user);
 
 }

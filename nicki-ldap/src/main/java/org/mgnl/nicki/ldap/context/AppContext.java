@@ -5,6 +5,7 @@ import java.util.Locale;
 import org.mgnl.nicki.core.context.Context;
 import org.mgnl.nicki.core.context.ThreadContext;
 import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
+import org.mgnl.nicki.ldap.auth.NickiPrincipal;
 import org.mgnl.nicki.ldap.context.NickiContext.READONLY;
 
 public class AppContext {
@@ -39,20 +40,20 @@ public class AppContext {
 		getInstance().setLocale(locale);
 	}
 	public static NickiContext getSystemContext() throws InvalidPrincipalException {
-		return getSystemContext(TargetFactory.getDefaultTarget(), READONLY.TRUE);
+		return getSystemContext(TargetFactory.getDefaultTarget(), null, READONLY.TRUE);
 	}
 
 	protected static NickiContext getSystemContext(READONLY readonly) throws InvalidPrincipalException {
-		return getSystemContext(TargetFactory.getDefaultTarget(), readonly);
+		return getSystemContext(TargetFactory.getDefaultTarget(), null, readonly);
 	}
 
-	public static NickiContext getSystemContext(String targetName) throws InvalidPrincipalException {
-		return getSystemContext(TargetFactory.getTarget(targetName), READONLY.TRUE);
+	public static NickiContext getSystemContext(String targetName, NickiPrincipal principal) throws InvalidPrincipalException {
+		return getSystemContext(TargetFactory.getTarget(targetName), principal, READONLY.TRUE);
 	}
 
-	protected static NickiContext getSystemContext(Target target, READONLY readonly) throws InvalidPrincipalException {
+	public static NickiContext getSystemContext(Target target, NickiPrincipal principal, READONLY readonly) throws InvalidPrincipalException {
 		if (target != null) {
-			return new SystemContext(target, readonly);
+			return new SystemContext(target, principal, readonly);
 		}
 		return null;
 	}
