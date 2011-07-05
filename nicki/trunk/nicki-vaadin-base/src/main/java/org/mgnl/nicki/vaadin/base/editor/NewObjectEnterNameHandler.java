@@ -20,12 +20,10 @@ public class NewObjectEnterNameHandler extends EnterNameHandler implements Seria
 		this.classDefinition = classDefinition;
 	}
 
-	public boolean setName(String name) {
+	public void setName(String name) throws Exception {
 		if (editor.create(parent, classDefinition, name)) {
 			editor.refresh(parent);
-			return true;
 		}
-		return false;
 	}
 
 }

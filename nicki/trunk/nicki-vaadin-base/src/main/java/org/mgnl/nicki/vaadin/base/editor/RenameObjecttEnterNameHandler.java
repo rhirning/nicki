@@ -21,16 +21,10 @@ public class RenameObjecttEnterNameHandler extends EnterNameHandler implements S
 		editor.getWindow().removeWindow(getDialog().getWindow());
 	}
 
-	public boolean setName(String name) {
-		try {
-			DynamicObject parent = editor.getParent(dynamicObject);
-			dynamicObject.rename(name);
-			editor.reloadChildren(parent);
-			return true;
-		} catch (DynamicObjectException e) {
-			e.printStackTrace();
-			return false;
-		}
+	public void setName(String name) throws DynamicObjectException {
+		DynamicObject parent = editor.getParent(dynamicObject);
+		dynamicObject.rename(name);
+		editor.reloadChildren(parent);
 	}
 
 }
