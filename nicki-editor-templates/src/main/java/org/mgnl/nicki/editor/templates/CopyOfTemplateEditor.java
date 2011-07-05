@@ -162,19 +162,13 @@ public class CopyOfTemplateEditor extends NickiApplication implements TemplateVi
 	}
 	
 	public class NewTemplateHandler extends EnterNameHandler {
-		public boolean setName(String name) {
-			
+		public void setName(String name) throws DynamicObjectException, InstantiateDynamicObjectException {
 			Template newTemplate = null;
-			try {
-				newTemplate = createTemplate(Config.getProperty("nicki.template.basedn"), name);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			newTemplate = createTemplate(Config.getProperty("nicki.template.basedn"), name);
+
 			if (newTemplate != null) {
 				templateSelector.addItem(newTemplate);
-				return true;
 			}
-			return false;
 		}
 
 		public void closeEnterNameDialog() {

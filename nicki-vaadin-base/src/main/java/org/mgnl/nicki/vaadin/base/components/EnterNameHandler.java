@@ -4,7 +4,7 @@ public abstract class EnterNameHandler {
 	
 	private EnterNameDialog dialog;
 	
-	public abstract boolean setName(String name);
+	public abstract void setName(String name) throws Exception;
 	
 	
 	public void setDialog(EnterNameDialog enterNameDialog) {

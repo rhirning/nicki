@@ -188,5 +188,4 @@ public abstract class NickiApplication extends Application  implements HttpServl
 	public boolean isUseWelcomeDialog() {
 		return useWelcomeDialog;
 	}
-
 }

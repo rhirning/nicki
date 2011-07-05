@@ -154,6 +154,7 @@ public class NickiEditor extends AbsoluteLayout {
 							DynamicObject parent = getParent((DynamicObject) target);
 							deleteItem((DynamicObject) target);
 							selector.removeItem(target);
+							getWindow().showNotification(I18n.getText("nicki.editor.delete.info"));
 							if (parent != null) {
 								refresh(parent);
 							}
@@ -275,12 +276,11 @@ public class NickiEditor extends AbsoluteLayout {
 		treeContainer.loadChildren(parent);
 		try {
 			addDynamicObject(parent, classDefinition);
-		} catch (InstantiateDynamicObjectException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (DynamicObjectException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			getWindow().showNotification(
+					I18n.getText("nicki.editor.create.error", parent.getName(), 
+							classDefinition.getSimpleName()),
+					e.getMessage(), Window.Notification.TYPE_ERROR_MESSAGE);
 		}
 	}
 
@@ -315,14 +315,10 @@ public class NickiEditor extends AbsoluteLayout {
 	}
 
 
-	protected boolean create(DynamicObject parent, Class<?> classDefinition, String name) {
+	protected boolean create(DynamicObject parent, Class<?> classDefinition, String name) throws InstantiateDynamicObjectException, DynamicObjectException {
 		DynamicObject dynamicObject = null;
-		try {
-			dynamicObject = context.createDynamicObject(
+		dynamicObject = context.createDynamicObject(
 					classDefinition, parent.getPath(), name);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		if (dynamicObject != null) {
 			treeContainer.addItem(dynamicObject, parent, dynamicObject.getModel().childrenAllowed());
 			return true;

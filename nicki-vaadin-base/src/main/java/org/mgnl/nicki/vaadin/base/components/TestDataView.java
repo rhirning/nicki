@@ -90,9 +90,8 @@ public class TestDataView extends CustomComponent {
 	
 	public class NewFieldHandler extends EnterNameHandler implements Serializable {
 
-		public boolean setName(String name) {
+		public void setName(String name) {
 			addField(name, "");
-			return true;
 		}
 
 		public void closeEnterNameDialog() {
