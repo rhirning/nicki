@@ -32,7 +32,7 @@ class DynamicObjectFieldFactory implements Serializable {
 		} else {
 			field = new AttributeTextField(attributeName, dynamicObject, objectListener);
 		}
-		boolean readOnly = false;
+		boolean readOnly = dynAttribute.isReadonly();
 		if (!create && dynAttribute.isNaming()) {
 			readOnly = true;
 		}

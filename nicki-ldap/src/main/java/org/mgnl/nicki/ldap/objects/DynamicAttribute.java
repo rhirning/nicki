@@ -22,6 +22,8 @@ public class DynamicAttribute implements Serializable {
 	private boolean multiple = false;
 	private boolean foreignKey = false;
 	private boolean virtual = false;
+	private boolean readonly = false;
+	private boolean staticAttribute = false;
 
 	public String getLdapName() {
 		return ldapName;
@@ -134,5 +136,21 @@ public class DynamicAttribute implements Serializable {
 	
 	public List<DynamicObject> getOptions(DynamicObject dynamicObject) {
 		return new ArrayList<DynamicObject>();
+	}
+
+	public void setReadonly() {
+		this.readonly = true;
+	}
+
+	public boolean isReadonly() {
+		return readonly;
+	}
+
+	public void setStatic() {
+		staticAttribute = true;
+	}
+
+	public boolean isStatic() {
+		return staticAttribute;
 	}
 }

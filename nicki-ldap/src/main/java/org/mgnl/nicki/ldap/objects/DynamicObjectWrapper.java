@@ -20,7 +20,12 @@ public class DynamicObjectWrapper extends JNDIWrapper {
 		for (Iterator<DynamicAttribute> iterator = dynamicObject.getModel().getMandatoryAttributes().iterator(); iterator.hasNext();) {
 			DynamicAttribute dynAttribute =  iterator.next();
 			if (dynAttribute.isMandatory() && !dynAttribute.isVirtual()) {
-				addAttribute(dynAttribute.getLdapName(), dynamicObject.getAttribute(dynAttribute.getName()));
+				if (dynAttribute.isStatic()) {
+					StaticAttribute staticAttribute = (StaticAttribute) dynAttribute;
+					addAttribute(dynAttribute.getLdapName(), staticAttribute.getValue());
+				} else {
+					addAttribute(dynAttribute.getLdapName(), dynamicObject.getAttribute(dynAttribute.getName()));
+				}
 			}			
 		}
 	}

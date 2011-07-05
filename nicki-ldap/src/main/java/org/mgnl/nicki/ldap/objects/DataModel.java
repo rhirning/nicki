@@ -128,7 +128,7 @@ public class DataModel implements Serializable {
 		// single attributes (except namingAttribute)
 		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
 			DynamicAttribute dynAttribute = iterator.next();
-			if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple()) {
+			if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
 				String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
 				Attribute attribute = new BasicAttribute(dynAttribute.getLdapName(), value);
 				myAttrs.put(attribute);
@@ -138,7 +138,7 @@ public class DataModel implements Serializable {
 		// multi attributes
 		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
 			DynamicAttribute dynAttribute = iterator.next();
-			if (dynAttribute.isMultiple()) {
+			if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
 				Attribute attribute = new BasicAttribute(dynAttribute.getLdapName());
 				@SuppressWarnings("unchecked")
 				List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
@@ -192,7 +192,12 @@ public class DataModel implements Serializable {
 		// check mandatory attributes
 		for (Iterator<DynamicAttribute> iterator = getMandatoryAttributes().iterator(); iterator.hasNext();) {
 			DynamicAttribute dynAttribute = iterator.next();
-			complete &= dynamicObject.attributeIsNotEmpty(dynAttribute.getName());
+			if (dynAttribute.isStatic()) {
+				StaticAttribute staticAttribute = (StaticAttribute) dynAttribute;
+				complete &= StringUtils.isNotEmpty(staticAttribute.getValue());
+			} else {
+				complete &= dynamicObject.attributeIsNotEmpty(dynAttribute.getName());
+			}
 		}
 		
 		/**

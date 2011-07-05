@@ -1,8 +1,10 @@
 package org.mgnl.nicki.dynamic.objects.ad;
 
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.ldap.data.jndi.OctetString;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.StaticAttribute;
 
 
 public class Group extends DynamicObject {
@@ -21,8 +23,8 @@ public class Group extends DynamicObject {
 			this.value = val;
 		}
 
-		int getValue() {
-			return value;
+		String getValue() {
+			return Integer.toString(value);
 		}
 	};
 
@@ -39,20 +41,33 @@ public class Group extends DynamicObject {
 		addAttribute(dynAttribute);
 
 		dynAttribute = new DynamicAttribute("guid", "objectGUID", OctetString.class);
+		dynAttribute.setReadonly();
 		addAttribute(dynAttribute);
 
 		dynAttribute = new DynamicAttribute("groupType", "groupType", String.class);
 		dynAttribute.setMandatory();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("objectCategory", "objectCategory", String.class);
+		dynAttribute = new DynamicAttribute("instanceType", "instanceType", String.class);
+		dynAttribute.setMandatory();
+		dynAttribute.setReadonly();
+		addAttribute(dynAttribute);
+
+		dynAttribute = new StaticAttribute("objectCategory", "objectCategory", String.class,
+						Config.getProperty("nicki.target.ad.static.group.objectCategory"));
 		dynAttribute.setForeignKey();
 		dynAttribute.setMandatory();
+		dynAttribute.setStatic();
+		dynAttribute.setReadonly();
 		addAttribute(dynAttribute);
 	};
 
 	public void setGroupType(TYPE type) {
 		put("groupType", type.getValue());
+	}
+
+	public void setInstanceType(int type) {
+		put("instanceType", Integer.toString(type));
 	}
 
 }
