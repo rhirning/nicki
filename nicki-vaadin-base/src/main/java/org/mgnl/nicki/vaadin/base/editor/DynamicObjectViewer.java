@@ -83,7 +83,7 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 	
 	protected Layout getLayout() {
 		VerticalLayout layout = new VerticalLayout();
-		DynamicObjectFieldFactory factory = new DynamicObjectFieldFactory(dynamicObject.getContext(), listener);
+		DynamicObjectFieldFactory factory = new DynamicObjectFieldFactory(listener);
 		factory.addFields(layout, dynamicObject, create);
 		return layout;
 	}

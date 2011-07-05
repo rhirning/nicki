@@ -3,7 +3,6 @@ package org.mgnl.nicki.vaadin.base.editor;
 import java.io.Serializable;
 import java.util.Iterator;
 
-import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.objects.DataModel;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
@@ -18,10 +17,8 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("serial")
 class DynamicObjectFieldFactory implements Serializable {
 	private DynamicObjectValueChangeListener objectListener = null;
-	private NickiContext context;
 	
-	public DynamicObjectFieldFactory(NickiContext context, DynamicObjectValueChangeListener objectListener) {
-		this.context = context;
+	public DynamicObjectFieldFactory(DynamicObjectValueChangeListener objectListener) {
 		this.objectListener = objectListener;
 	}
 

@@ -43,8 +43,8 @@ public class ProjectViewer extends CustomComponent implements ClassEditor {
 	public void setDynamicObject(NickiEditor nickiEditor,
 			DynamicObject dynamicObject) {
 		this.project = (Project) dynamicObject;
-		dataView.setDynamicObject(nickiEditor, dynamicObject);
-		mailView.setDynamicObject(nickiEditor, dynamicObject);
+		dataView.setDynamicObject(nickiEditor, this.project);
+		mailView.setDynamicObject(nickiEditor, this.project);
 	}
 
 
