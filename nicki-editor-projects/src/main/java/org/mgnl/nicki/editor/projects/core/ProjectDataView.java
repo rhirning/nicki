@@ -18,6 +18,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Select;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
@@ -112,8 +113,10 @@ public class ProjectDataView extends CustomComponent implements ClassEditor {
 			public void buttonClick(ClickEvent event) {
 				try {
 					project.update();
+					getWindow().showNotification(I18n.getText("nicki.editor.save.info"));
 				} catch (DynamicObjectException e) {
-					e.printStackTrace();
+					getWindow().showNotification(I18n.getText("nicki.editor.save.error"), 
+							e.getMessage(), Window.Notification.TYPE_ERROR_MESSAGE);
 				}
 			}
 		});

@@ -203,6 +203,10 @@ public class NickiEditor extends AbsoluteLayout {
 			selector.unselect(selectedObject);
 			setSelectedObject(null);
 		}
+		hsplit.removeAllComponents();
+		hsplit.setFirstComponent(selectorLayout);
+		viewer = null;
+
 		collapse(object);
 		reloadChildren(object);
 		selector.expandItem(object);

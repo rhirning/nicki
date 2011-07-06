@@ -16,6 +16,7 @@ public class DeleteCommand implements Command {
 
 	@Override
 	public void execute() throws CommandException {
+		DynamicObject parent = this.nickiEditor.getParent(this.target);
 		try {
 			this.target.delete();
 		} catch (DynamicObjectException e) {
@@ -23,7 +24,6 @@ public class DeleteCommand implements Command {
 		}
 		nickiEditor.getSelector().removeItem(target);
 		this.nickiEditor.getWindow().showNotification(I18n.getText("nicki.editor.delete.info"));
-		DynamicObject parent = this.nickiEditor.getParent(this.target);
 		if (parent != null) {
 			this.nickiEditor.refresh(parent);
 		}
