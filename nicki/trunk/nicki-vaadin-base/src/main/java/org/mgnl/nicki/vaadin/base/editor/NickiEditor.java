@@ -13,6 +13,7 @@ import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
+import org.mgnl.nicki.vaadin.base.command.DeleteCommand;
 import org.mgnl.nicki.vaadin.base.components.EnterNameDialog;
 import org.mgnl.nicki.vaadin.base.components.EnterNameHandler;
 import org.mgnl.nicki.vaadin.base.components.NewClassEditor;
@@ -71,8 +72,10 @@ public class NickiEditor extends AbsoluteLayout {
 	private NickiContext context;
 	private NickiApplication application;
 	private HorizontalSplitPanel hsplit;
+	private NickiEditor nickiEditor;
 
 	public NickiEditor(NickiApplication application, NickiContext ctx) {
+		this.nickiEditor = this;
 		this.application = application;
 		this.context = ctx;
 	}
@@ -150,17 +153,7 @@ public class NickiEditor extends AbsoluteLayout {
 				}
 				if (deleteActions.containsKey(action)) {
 					if (target.getClass() == deleteActions.get(action)) {
-						try {
-							DynamicObject parent = getParent((DynamicObject) target);
-							deleteItem((DynamicObject) target);
-							selector.removeItem(target);
-							getWindow().showNotification(I18n.getText("nicki.editor.delete.info"));
-							if (parent != null) {
-								refresh(parent);
-							}
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+						getNickiApplication().confirm(new DeleteCommand(nickiEditor, (DynamicObject) target));
 					}
 				} else if (renameActions.containsKey(action)) {
 					if (target.getClass() == renameActions.get(action)) {
@@ -389,10 +382,6 @@ public class NickiEditor extends AbsoluteLayout {
 		return actionsList.get(object.getClass());
 	}
 	
-	private void deleteItem(DynamicObject dynamicObject) throws DynamicObjectException {
-		dynamicObject.delete();
-	}
-
 	public DynamicObject getSelectedObject() {
 		return selectedObject;
 	}
@@ -457,5 +446,9 @@ public class NickiEditor extends AbsoluteLayout {
 
 	public NickiContext getNickiContext() {
 		return context;
+	}
+
+	public NickiSelect getSelector() {
+		return selector;
 	}
 }
