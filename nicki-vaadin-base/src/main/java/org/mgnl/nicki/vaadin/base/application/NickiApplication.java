@@ -14,11 +14,14 @@ import org.mgnl.nicki.ldap.context.Target;
 import org.mgnl.nicki.ldap.context.NickiContext.READONLY;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.auth.LoginDialog;
+import org.mgnl.nicki.vaadin.base.command.Command;
+import org.mgnl.nicki.vaadin.base.components.ConfirmDialog;
 
 import com.vaadin.Application;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 
 @SuppressWarnings("serial")
@@ -187,5 +190,19 @@ public abstract class NickiApplication extends Application  implements HttpServl
 
 	public boolean isUseWelcomeDialog() {
 		return useWelcomeDialog;
+	}
+
+	public void confirm(Command command) {
+		Window confirmWindow = new Window("Confirm");
+		confirmWindow.setModal(true);
+	       // Configure the windws layout; by default a VerticalLayout
+        VerticalLayout layout = (VerticalLayout) confirmWindow.getContent();
+        layout.setMargin(true);
+        layout.setSpacing(true);
+        // make it undefined for auto-sizing window
+        layout.setSizeUndefined();
+
+		confirmWindow.addComponent(new ConfirmDialog(command));
+		getMainWindow().addWindow(confirmWindow);
 	}
 }
