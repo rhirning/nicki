@@ -16,14 +16,13 @@ public class ProjectFilter implements EntryFilter, Serializable {
 	}
 
 	public boolean accepts(DynamicObject object) {
-		try {
+		if (object instanceof Project) {
 			Project project = (Project) object;
-			if (project.isProjectLeader(user) || project.isProjectDeputyLeader(user)) {
-				return true;
+			if (!project.isProjectLeader(user) && !project.isProjectDeputyLeader(user)) {
+				return false;
 			}
-		} catch (Exception e) {
 		}
-		return false;
+		return true;
 	}
 
 }

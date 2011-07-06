@@ -3,6 +3,7 @@ package org.mgnl.nicki.editor.projects.members;
 import java.util.Iterator;
 
 
+import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Directory;
 import org.mgnl.nicki.dynamic.objects.objects.Member;
 import org.mgnl.nicki.dynamic.objects.objects.Project;
@@ -20,6 +21,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 
 @SuppressWarnings("serial")
 public class MemberEditor extends CustomComponent implements ClassEditor {
@@ -82,9 +84,11 @@ public class MemberEditor extends CustomComponent implements ClassEditor {
 		}
 		try {
 			member.update();
+			getWindow().showNotification(I18n.getText("nicki.editor.save.info"));
 			nickiEditor.refresh(getProject());
 		} catch (Exception e) {
-			e.printStackTrace();
+			getWindow().showNotification(I18n.getText("nicki.editor.save.error"), 
+					e.getMessage(), Window.Notification.TYPE_ERROR_MESSAGE);
 		}
 	}
 
