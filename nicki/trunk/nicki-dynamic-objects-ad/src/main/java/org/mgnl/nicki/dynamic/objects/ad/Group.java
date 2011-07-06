@@ -34,6 +34,9 @@ public class Group extends DynamicObject {
 		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("sAMAccountName", "sAMAccountName", String.class);
+		addAttribute(dynAttribute);
 		
 		dynAttribute = new DynamicAttribute("member", "member", String.class);
 		dynAttribute.setMultiple();
