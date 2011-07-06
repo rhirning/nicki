@@ -49,7 +49,6 @@ public class Group extends DynamicObject {
 		addAttribute(dynAttribute);
 
 		dynAttribute = new DynamicAttribute("instanceType", "instanceType", String.class);
-		dynAttribute.setMandatory();
 		dynAttribute.setReadonly();
 		addAttribute(dynAttribute);
 
