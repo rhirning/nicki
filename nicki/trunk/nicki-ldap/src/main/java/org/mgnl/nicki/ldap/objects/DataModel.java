@@ -156,6 +156,38 @@ public class DataModel implements Serializable {
 		
 		return myAttrs;
 	}
+
+	public Map<DynamicAttribute, Object> getNonMandatoryAttributes(DynamicObject dynamicObject) {
+		Map<DynamicAttribute, Object> map = new HashMap<DynamicAttribute, Object>();
+		// single attributes (except namingAttribute)
+		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
+			DynamicAttribute dynAttribute = iterator.next();
+			if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple()
+					&& !dynAttribute.isReadonly() && !dynAttribute.isMandatory()) {
+				String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
+				if (value != null) {
+					map.put(dynAttribute, value);
+				}
+			}
+		}
+		
+		// multi attributes
+		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
+			DynamicAttribute dynAttribute = iterator.next();
+			if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()
+					&& !dynAttribute.isMandatory()) {
+				@SuppressWarnings("unchecked")
+				List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
+				if (list != null && list.size() > 0) {
+					map.put(dynAttribute, list);
+				}
+			}
+		}
+		
+		return map;
+	}
+
+	
 	public String getNamingLdapAttribute() {
 		return getAttributes().get(getNamingAttribute()).getLdapName();
 	}

@@ -63,7 +63,7 @@ public class TreeContainer implements Serializable {
 	public Item addItem(DynamicObject object) {
 		if (this.entryFilter.accepts(object)) {
 			Item item = container.addItem(object);
-			item.getItemProperty(PROPERTY_NAME).setValue(object.getName());
+			item.getItemProperty(PROPERTY_NAME).setValue(object.getDisplayName());
 			item.getItemProperty(PROPERTY_LOADED).setValue(false);
 			if (this.classIcons.keySet().contains(object.getClass())) {
 	            item.getItemProperty(PROPERTY_ICON).setValue(
@@ -118,7 +118,7 @@ public class TreeContainer implements Serializable {
 		if (this.entryFilter.accepts(object)) {
 			Item item = container.addItem(object);
 			if (item != null) {
-				item.getItemProperty(PROPERTY_NAME).setValue(object.getName());
+				item.getItemProperty(PROPERTY_NAME).setValue(object.getDisplayName());
 				item.getItemProperty(PROPERTY_LOADED).setValue(false);
 				if (this.classIcons.keySet().contains(object.getClass())) {
 		            item.getItemProperty(PROPERTY_ICON).setValue(

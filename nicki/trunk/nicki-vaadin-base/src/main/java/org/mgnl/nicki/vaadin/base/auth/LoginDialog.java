@@ -101,14 +101,14 @@ public class LoginDialog extends CustomComponent {
 		// username
 		username = new TextField();
 		username.setWidth("500px");
-		username.setHeight("-1px");
+		username.setHeight("24px");
 		username.setImmediate(false);
 		mainLayout.addComponent(username, "top:20.0px;left:120.0px;");
 		
 		// password
 		password = new PasswordField();
 		password.setWidth("500px");
-		password.setHeight("-1px");
+		password.setHeight("24px");
 		password.setImmediate(false);
 		mainLayout.addComponent(password, "top:60.0px;left:120.0px;");
 		

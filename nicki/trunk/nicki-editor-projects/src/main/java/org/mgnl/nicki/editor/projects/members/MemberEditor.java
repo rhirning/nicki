@@ -58,7 +58,7 @@ public class MemberEditor extends CustomComponent implements ClassEditor {
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 
-		name.setValue(this.member.getName());
+		name.setValue(this.member.getDisplayName());
 		for (Iterator<DynamicObject> iterator = project.getDirectories().iterator(); iterator.hasNext();) {
 			Directory dir = (Directory) iterator.next();
 			DirectoryComponent comp = new DirectoryComponent(member, dir);
@@ -101,7 +101,7 @@ public class MemberEditor extends CustomComponent implements ClassEditor {
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 
-		name.setValue(this.member.getName());
+		name.setValue(this.member.getDisplayName());
 		for (Iterator<DynamicObject> iterator = getProject().getDirectories().iterator(); iterator.hasNext();) {
 			Directory dir = (Directory) iterator.next();
 			DirectoryComponent comp = new DirectoryComponent(member, dir);
@@ -141,7 +141,7 @@ public class MemberEditor extends CustomComponent implements ClassEditor {
 	private VerticalLayout buildVerticalLayout_2() {
 		// common part: create layout
 		verticalLayout_2 = new VerticalLayout();
-		verticalLayout_2.setWidth("460px");
+		verticalLayout_2.setWidth("-1px");
 		verticalLayout_2.setHeight("-1px");
 		verticalLayout_2.setImmediate(false);
 		verticalLayout_2.setMargin(false);
@@ -196,7 +196,7 @@ public class MemberEditor extends CustomComponent implements ClassEditor {
 	private Panel buildDirectories() {
 		// common part: create layout
 		directories = new Panel();
-		directories.setWidth("400px");
+		directories.setWidth("600px");
 		directories.setHeight("-1px");
 		directories.setCaption("Verzeichnisse");
 		directories.setImmediate(false);

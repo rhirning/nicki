@@ -12,6 +12,7 @@ import org.mgnl.nicki.ldap.objects.DynamicObject;
 
 @SuppressWarnings("serial")
 public class Member extends DynamicObject implements Serializable{
+	public enum RIGHT {NONE, READ, WRITE};
 
 	@Override
 	public void initDataModel() {
@@ -37,7 +38,12 @@ public class Member extends DynamicObject implements Serializable{
 		addAttribute(dynAttribute);
 
 	}
-	
+
+	@Override
+	public String getDisplayName() {
+		return getForeignKeyObject("member").getDisplayName();
+	}
+
 	@SuppressWarnings("unchecked")
 	public List<String> getReadRights() {
 		return get("directoryRead") != null?(List<String>) get("directoryRead"): new ArrayList<String>();
@@ -60,22 +66,30 @@ public class Member extends DynamicObject implements Serializable{
 	public void init(NickiContext context, ContextSearchResult rs) {
 		super.init(context, rs);
 	}
-
-
-	public void setReadRight(Directory directory, boolean right) {
-		if (right == true) {
+	
+	public void setRight(Directory directory, RIGHT right) {
+		if (right == RIGHT.READ) {
 			addReadRight(directory);
+		} else if (right == RIGHT.WRITE) {
+				addWriteRight(directory);
 		} else {
-			removeReadRight(directory);
+			removeRights(directory);
 		}
 	}
 	
-	public void setWriteRight(Directory directory, boolean right) {
-		if (right == true) {
-			addWriteRight(directory);
-		} else {
-			removeWriteRight(directory);
-		}
+	public void setReadRight(Directory directory) {
+		addReadRight(directory);
+		removeWriteRight(directory);
+	}
+
+	public void removeRights(Directory directory) {
+		removeReadRight(directory);
+		removeWriteRight(directory);
+	}
+
+	public void setWriteRight(Directory directory) {
+		addWriteRight(directory);
+		removeReadRight(directory);
 	}
 	
 	public boolean hasReadRight(Directory directory) {
@@ -117,5 +131,6 @@ public class Member extends DynamicObject implements Serializable{
 			setWriteRights(list);
 		}
 	}
+
 	
 }

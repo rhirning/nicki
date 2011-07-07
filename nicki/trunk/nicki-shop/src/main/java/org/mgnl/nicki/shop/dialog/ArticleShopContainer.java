@@ -59,7 +59,7 @@ public class ArticleShopContainer implements ShopContainer{
 					ShopArticle article = (ShopArticle) p;
 					article.setShop(shop);
 					Item item = container.addItem(article);
-					item.getItemProperty(PROPERTY_NAME).setValue(article.getName());
+					item.getItemProperty(PROPERTY_NAME).setValue(article.getDisplayName());
 					item.getItemProperty(PROPERTY_PATH).setValue(article.getCatalogPath());
 					item.getItemProperty(PROPERTY_CATEGORY).setValue(article.get(PROPERTY_CATEGORY).toString());
 					if (getPerson().hasArticle(article)) {
