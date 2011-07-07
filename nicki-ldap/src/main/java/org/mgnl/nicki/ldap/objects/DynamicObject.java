@@ -170,9 +170,12 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		return this.map.get(key);
 	}
 	public void put(String key, Object value) {
-		this.map.put(key, value);
+		listen(key, value, this.map.put(key, value));
 	}
 	
+	public void listen(String key, Object value, Object oldValue) {
+	}
+
 	public void remove(String key) {
 		if (this.map.containsKey(key)) {
 			this.map.remove(key);
