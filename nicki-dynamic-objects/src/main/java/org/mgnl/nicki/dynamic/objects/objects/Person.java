@@ -54,7 +54,13 @@ public class Person extends DynamicTemplateObject {
 		addAttribute(dynAttribute);
 
 	}
-	
+
+	@Override
+	public String getDisplayName() {
+		return getAttribute("fullname") + " (" + getName() + ")";
+	}
+
+
 	// TODO
 	public boolean hasArticle(ShopArticle article) {
 		try {

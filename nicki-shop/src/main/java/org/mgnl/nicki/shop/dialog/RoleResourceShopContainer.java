@@ -73,9 +73,9 @@ public class RoleResourceShopContainer implements ShopContainer{
 				DynamicObject p = iterator.next();
 				if (p instanceof Role) {
 					Role role = (Role) p;
-					if (StringUtils.isNotEmpty(role.getName())) {
+					if (StringUtils.isNotEmpty(role.getDisplayName())) {
 						Item item = container.addItem(role);
-						item.getItemProperty(PROPERTY_NAME).setValue(role.getName());
+						item.getItemProperty(PROPERTY_NAME).setValue(role.getDisplayName());
 						item.getItemProperty(PROPERTY_PATH).setValue(role.getSlashPath(rolesBasedn));
 						item.getItemProperty(PROPERTY_CATEGORY).setValue("role");
 						if (getPerson().hasRole(role)) {
@@ -98,9 +98,9 @@ public class RoleResourceShopContainer implements ShopContainer{
 				DynamicObject p = iterator.next();
 				if (p instanceof Resource) {
 					Resource resource = (Resource) p;
-					if (StringUtils.isNotEmpty(resource.getName())) {
+					if (StringUtils.isNotEmpty(resource.getDisplayName())) {
 						Item item = container.addItem(resource);
-						item.getItemProperty(PROPERTY_NAME).setValue(resource.getName());
+						item.getItemProperty(PROPERTY_NAME).setValue(resource.getDisplayName());
 						item.getItemProperty(PROPERTY_PATH).setValue(resource.getSlashPath(resourcesBasedn));
 						item.getItemProperty(PROPERTY_CATEGORY).setValue("resource");
 						if (getPerson().hasResource(resource)) {

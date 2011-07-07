@@ -303,7 +303,18 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 
 	public Map<String, Object> getMap() {
 		return map;
+	}
+
+	public void merge(Map<DynamicAttribute, Object> changeAttributes) {
+		for (Iterator<DynamicAttribute> iterator = changeAttributes.keySet().iterator(); iterator.hasNext();) {
+			DynamicAttribute dynamicAttribute = iterator.next();
+			put(dynamicAttribute.getName(), changeAttributes.get(dynamicAttribute));
+		}
 	};
+	
+	public String getDisplayName() {
+		return getAttribute("name");
+	}
 
 
 }

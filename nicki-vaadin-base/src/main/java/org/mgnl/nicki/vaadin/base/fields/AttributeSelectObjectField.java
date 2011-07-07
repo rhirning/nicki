@@ -50,7 +50,7 @@ public class AttributeSelectObjectField implements DynamicAttributeField, Serial
 			DynamicObject option = iterator.next();
 			Item item = container.addItem(option.getPath());
 			item.getItemProperty("dynamicObject").setValue(option);
-			item.getItemProperty("name").setValue(option.getName());
+			item.getItemProperty("name").setValue(option.getDisplayName());
 		}
 		return container;
 	}

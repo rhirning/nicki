@@ -3,6 +3,7 @@ package org.mgnl.nicki.ldap.context;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -23,6 +24,7 @@ import org.mgnl.nicki.ldap.data.ObjectsLoaderLdapQueryHandler;
 import org.mgnl.nicki.ldap.data.SubObjectsLoaderLdapQueryHandler;
 import org.mgnl.nicki.ldap.data.jndi.JndiSearchResult;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
+import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.objects.DynamicObjectWrapper;
@@ -184,7 +186,7 @@ public abstract class BasicContext implements NickiContext {
 	}
 
 	@Override
-	public void createObject(DynamicObject dynamicObject)
+	public DynamicObject createObject(DynamicObject dynamicObject)
 			throws DynamicObjectException {
 		if (this.readonly == READONLY.TRUE) {
 			throw new DynamicObjectException("READONLY: could not create object: " + dynamicObject.getPath());
@@ -193,7 +195,15 @@ public abstract class BasicContext implements NickiContext {
 		try {
 			ctx = getDirContext();
 			ctx.bind(dynamicObject.getPath(), new DynamicObjectWrapper(dynamicObject));
-			updateObject(dynamicObject);
+			// load new object
+			DynamicObject newObject = loadObject(dynamicObject.getPath());
+			// generate merge attributes Map from original object
+			Map<DynamicAttribute, Object> changeAttributes = dynamicObject.getModel().getNonMandatoryAttributes(dynamicObject);
+			// merge to new object
+			newObject.merge(changeAttributes);
+			// update new
+			updateObject(newObject);
+			return newObject;
 		} catch (NamingException e) {
 			throw new DynamicObjectException(e);
 		} finally {
