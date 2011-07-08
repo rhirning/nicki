@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mgnl.nicki</groupId>
 	<artifactId>nicki-parent</artifactId>
-	<version>1.7</version>
+	<version>1.8-SNAPSHOT</version>
 	<name>nicki-parent</name>
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
@@ -94,9 +94,9 @@
 		</extensions>
 	</build>
 	<scm>
-		<connection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki/tags/nicki-parent/nicki-parent-1.7</connection>
-		<developerConnection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki/tags/nicki-parent/nicki-parent-1.7</developerConnection>
-		<url>https://svn.hirning.de/svn/repos/nicki/nicki/tags/nicki-parent/nicki-parent-1.7</url>
+		<connection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki/trunk/nicki-parent</connection>
+		<developerConnection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki/trunk/nicki-parent</developerConnection>
+		<url>https://svn.hirning.de/svn/repos/nicki/nicki/trunk/nicki-parent</url>
 	</scm>
 	<repositories>
 		<repository>
