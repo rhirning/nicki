@@ -9,6 +9,17 @@ import org.mgnl.nicki.ldap.objects.ContextAttribute;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 
 public class LdapHelper {
+	public enum LOGIC {
+		AND ("&"),
+		OR ("|");
+		private String sign;
+		LOGIC(String sign) {
+			this.sign = sign;
+		};
+		public String getSign() {
+			return this.sign;
+		}
+	}
 	public static List<Object> getAttributes(ContextSearchResult rs, String attributeName) {
 		List<Object> attributeList = new ArrayList<Object>();
 
@@ -52,5 +63,20 @@ public class LdapHelper {
 	public static String getParentPath(String path) {
 		return StringUtils.strip(StringUtils.substringAfter(path, ","));
 	}
+	
+	public static void addQuery(StringBuffer sb, String query, LOGIC andOr) {
+		if (sb.length() == 0) {
+			sb.append("(");
+			sb.append(query);
+			sb.append(")");
+		} else {
+			sb.insert(0, andOr.getSign());
+			sb.insert(0, "(");
+			sb.append("(");
+			sb.append(query);
+			sb.append("))");
+		}
+	}
+
 
 }
