@@ -1,5 +1,8 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,6 +18,8 @@ import freemarker.template.TemplateModelException;
 
 @SuppressWarnings("serial")
 public class Person extends DynamicTemplateObject {
+	public final static String DATE_FORMAT = "yyyyMMdd";
+	public static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
 	public void initDataModel()
 	{
@@ -31,6 +36,9 @@ public class Person extends DynamicTemplateObject {
 		addAttribute(dynAttribute);
 
 		dynAttribute = new DynamicAttribute("fullname", "fullName", String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("lastWorkingDay", "nickiLastWorkingDay", String.class);
 		addAttribute(dynAttribute);
 
 		dynAttribute = new ReferenceDynamicAttribute("manager", "manager", String.class,
@@ -141,5 +149,19 @@ public class Person extends DynamicTemplateObject {
 	
 	public String getFullname() {
 		return getAttribute("fullname");
+	}
+
+	// TODO
+	public static String getActiveFilter() {
+		return "nickiInActive!=1";
+	}
+
+	// TODO
+	public static String getInActiveFilter() {
+		return "nickiInActive=1";
+	}
+
+	public void setExitDate(Date date) {
+		put("lastWorkingDay", dateFormat.format(date));
 	}
 }
