@@ -3,8 +3,6 @@ package org.mgnl.nicki.ldap.helper;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.ldap.objects.ContextAttribute;
@@ -24,41 +22,11 @@ public class LdapHelper {
 	}
 
 	public static boolean isPathEqual(String refPath, String comparePath) {
-		if (StringUtils.equals(getUpcasePath(refPath), getUpcasePath(comparePath))) {
+		if (StringUtils.equalsIgnoreCase(refPath, comparePath)) {
 			return true;
 		}
 
 		return false;
-	}
-
-	//
-	@Deprecated
-	public static String getUpcasePath(String path) {
-		String[] pathElements = StringUtils.split(path, ",");
-		StringBuffer resultBuffer = new StringBuffer();
-
-		Pattern pat = Pattern.compile("(..)(=.*)");
-		Matcher m = null;
-
-		if (pathElements != null) {
-			for (int i = 0; i < pathElements.length; i++) {
-
-				if(i > 0 ) {
-					resultBuffer.append(",");
-				}
-
-				String pe = pathElements[i];
-				m = pat.matcher(pe);
-
-				if(m.matches()) {
-					resultBuffer.append(StringUtils.upperCase(m.group(1)));
-					resultBuffer.append(m.group(2));
-				}
-			}
-		}
-		
-
-		return resultBuffer.toString();
 	}
 
 	public static List<Object> getAttributes(ContextSearchResult rs, String attributeName) {
@@ -97,7 +65,7 @@ public class LdapHelper {
 		sb.append("=");
 		sb.append(namingValue);
 		sb.append(",");
-		sb.append(getUpcasePath(parentPath));
+		sb.append(parentPath);
 
 		return sb.toString();
 	}
