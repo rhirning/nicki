@@ -188,6 +188,10 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		model.addObjectClasses(objectClass);
 	}
 	
+	public void addAdditionalObjectClass(String objectClass) {
+		model.addAdditionalObjectClasses(objectClass);
+	}
+	
 	public void setOriginal(DynamicObject original) {
 		this.original = original;
 	}
