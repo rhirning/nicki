@@ -107,7 +107,7 @@ public abstract class NickiApplication extends Application  implements HttpServl
 				NickiPrincipal principal = new NickiPrincipal(adapter.getName(getRequest()), new String(adapter.getPassword(getRequest())));
 				if (principal != null && getTarget().login(principal) != null) {
 					if (isUseSystemContext()) {
-						NickiContext ctx = AppContext.getSystemContext(getTarget().getName(), principal);
+						NickiContext ctx = AppContext.getSystemContext(getTarget(), principal, READONLY.FALSE);
 						return ctx;
 					} else {
 						return getTarget().getNamedUserContext(principal, READONLY.FALSE);
