@@ -89,6 +89,7 @@ public class Person extends DynamicTemplateObject {
 	public void initDataModel()
 	{
 		addObjectClass("Person");
+		addAdditionalObjectClass("nickiUserAux");
 		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
@@ -233,7 +234,9 @@ public class Person extends DynamicTemplateObject {
 	}
 
 	public void setExitDate(Date date) {
-		put("lastWorkingDay", dateFormat.format(date));
+		if (date != null) {
+			put("lastWorkingDay", dateFormat.format(date));
+		}
 	}
 
 	public void setStatus(STATUS status) {
@@ -251,6 +254,51 @@ public class Person extends DynamicTemplateObject {
 
 	public PERSONTYPE getType() {
 		return PERSONTYPE.fromValue(getAttribute("type"));
+	}
+
+	public void setCostCenter(String value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void setName(String value) {
+		put("surname", value);
+	}
+
+	public void setGivenName(String value) {
+		put("givenname", value);
+	}
+
+	public void setGender(GENDER value) {
+		put("gender", value.toString());
+	}
+
+	public void setLanguage(String value) {
+		put("language", value);		
+	}
+
+	public void setBirthDate(Date value) {
+		if (value != null) {
+			put("birthDate", dateFormat.format(value));
+		}
+	}
+
+	public void setEntryDate(Date value) {
+		if (value != null) {
+			put("entryDate", dateFormat.format(value));
+		}
+	}
+
+	public void setOwner(Person value) {
+		put("owner", value.getPath());		
+	}
+
+	public void setCompany(String value) {
+		put("company", value);		
+	}
+
+	public void setTask(String value) {
+		put("task", value);		
 	}
 
 

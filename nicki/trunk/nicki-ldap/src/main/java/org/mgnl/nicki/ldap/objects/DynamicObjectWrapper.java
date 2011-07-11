@@ -16,6 +16,10 @@ public class DynamicObjectWrapper extends JNDIWrapper {
 			String objectClass = iterator.next();
 			oc.add(objectClass);
 		}
+		for (Iterator<String> iterator = dynamicObject.getModel().getAdditionalObjectClasses().iterator(); iterator.hasNext();) {
+			String objectClass = iterator.next();
+			oc.add(objectClass);
+		}
 		addAttribute(oc);
 		for (Iterator<DynamicAttribute> iterator = dynamicObject.getModel().getMandatoryAttributes().iterator(); iterator.hasNext();) {
 			DynamicAttribute dynAttribute =  iterator.next();

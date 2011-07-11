@@ -9,6 +9,7 @@
 		<project>nicki-ldap</project>
 		<project>nicki-config-rhi</project>
 		<project>nicki-dynamic-objects-ad</project>
+		<project>efg-dynamic-objects</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

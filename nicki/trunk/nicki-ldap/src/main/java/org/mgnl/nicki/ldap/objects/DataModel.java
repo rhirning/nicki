@@ -20,6 +20,7 @@ public class DataModel implements Serializable {
 
 	private Map<String, DynamicAttribute> attributes = new HashMap<String, DynamicAttribute>();
 	private List<String> objectClasses = new ArrayList<String>();
+	private List<String> additionalObjectClasses = new ArrayList<String>();
 	private String namingAttribute = null;
 	private Map<String, String> acceptors = new HashMap<String, String>();
 
@@ -120,7 +121,9 @@ public class DataModel implements Serializable {
 	}
 	public void addObjectClasses(String objectClass) {
 		objectClasses.add(objectClass);
-		
+	}
+	public void addAdditionalObjectClasses(String objectClass) {
+		additionalObjectClasses.add(objectClass);
 	}
 	
 	public Attributes getLdapAttributes(DynamicObject dynamicObject) {
@@ -251,6 +254,9 @@ public class DataModel implements Serializable {
 	}
 	public Map<String, DynamicAttribute> getAttributes() {
 		return attributes;
+	}
+	public List<String> getAdditionalObjectClasses() {
+		return additionalObjectClasses;
 	}
 
 }
