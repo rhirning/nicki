@@ -20,6 +20,7 @@ import freemarker.template.TemplateModelException;
 public class Person extends DynamicTemplateObject {
 	public final static String DATE_FORMAT = "yyyyMMdd";
 	public static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
+	public enum PERSONTYPE {INTERNAL_USER, EXTERNAL_USER, TECHNICAL_USER};
 
 	public void initDataModel()
 	{
