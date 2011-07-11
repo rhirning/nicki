@@ -31,6 +31,8 @@ public class LdapHelper {
 		return false;
 	}
 
+	//
+	@Deprecated
 	public static String getUpcasePath(String path) {
 		String[] pathElements = StringUtils.split(path, ",");
 		StringBuffer resultBuffer = new StringBuffer();
