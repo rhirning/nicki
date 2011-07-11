@@ -49,7 +49,7 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 
 	public void init(NickiContext context, ContextSearchResult rs) {
 		this.context = context;
-		this.path = rs.getNameInNamespace();
+		this.path = LdapHelper.getUpcasePath(rs.getNameInNamespace());
 		this.getModel().init(context, this, rs);
 		this.original = (DynamicObject) this.clone();
 
@@ -224,7 +224,7 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		if (!isComplete()) {
 			throw new DynamicObjectException("Object incomplete: " + getPath());
 		}
-		if (!StringUtils.equals(getPath(), getOriginal().getPath())) {
+		if (!StringUtils.equalsIgnoreCase(getPath(), getOriginal().getPath())) {
 			throw new DynamicObjectException("Path has changed: " + getOriginal().getPath() + "->" + getPath());
 		}
 		context.updateObject(this);
