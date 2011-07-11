@@ -21,7 +21,70 @@ public class Person extends DynamicTemplateObject {
 	public final static String DATE_FORMAT = "yyyyMMdd";
 	public static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 	public enum GENDER {MALE, FEMALE};
-	public enum PERSONTYPE {INTERNAL_USER, EXTERNAL_USER, TECHNICAL_USER};
+
+	public enum PERSONTYPE {
+		INTERNAL_USER("INTERNAL"),
+		EXTERNAL_USER("EXTERNAL"),
+		TECHNICAL_USER("TECHNICAL"),
+		NOT_SET("");
+
+		private final String type;
+
+		private PERSONTYPE(String type) {
+			this.type = type;
+		}
+
+		public static PERSONTYPE fromValue(String type) {
+			if (INTERNAL_USER.getValue().equals(type)) {
+				return INTERNAL_USER;
+			} else if (EXTERNAL_USER.getValue().equals(type))  {
+				return EXTERNAL_USER;
+			} else if (TECHNICAL_USER.getValue().equals(type)) {
+				return TECHNICAL_USER;
+			}
+
+			return NOT_SET;
+
+		}
+
+		public String getValue() {
+			return type;
+		}
+	};
+
+	public enum STATUS {
+
+		INACTIVE("inaktiv-vor-eintritt"), 
+		ACTIVE("aktiv"), 
+		DEACTIVATED("deaktiviert"), 
+		RESIGNED("ausgetreten"),
+		NOT_SET("");
+		
+		private final String status;
+		
+		private STATUS(String status) {
+			this.status = status;
+		}
+		
+		public static STATUS fromValue(String status) {
+			if (INACTIVE.getValue().equals(status)) {
+				return INACTIVE;
+			} else if (ACTIVE.getValue().equals(status))  {
+				return ACTIVE;
+			} else if (DEACTIVATED.getValue().equals(status)) {
+				return DEACTIVATED;
+			} else if (RESIGNED.getValue().equals(status)) {
+				return RESIGNED;
+			}
+			
+			return NOT_SET;
+			
+		}
+
+		public String getValue() {
+			return status;
+		}
+	}
 
 	public void initDataModel()
 	{
@@ -61,6 +124,12 @@ public class Person extends DynamicTemplateObject {
 		dynAttribute =  new StructuredDynamicAttribute("resource", "nrfAssignedResources", String.class);
 		dynAttribute.setMultiple();
 		dynAttribute.setForeignKey();
+		addAttribute(dynAttribute);
+
+		dynAttribute =  new DynamicAttribute("status", "nickiStatus", String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute =  new DynamicAttribute("type", "employeeType", String.class);
 		addAttribute(dynAttribute);
 
 	}
@@ -153,17 +222,36 @@ public class Person extends DynamicTemplateObject {
 		return getAttribute("fullname");
 	}
 
-	// TODO
+	// TODO - edit cna
 	public static String getActiveFilter() {
-		return "nickiInActive!=1";
+		return "nickiStatus=" + STATUS.ACTIVE.getValue();
 	}
 
-	// TODO
+	// TODO - edit cna
 	public static String getInActiveFilter() {
-		return "nickiInActive=1";
+		return "nickiStatus!=" + STATUS.ACTIVE.getValue();
 	}
 
 	public void setExitDate(Date date) {
 		put("lastWorkingDay", dateFormat.format(date));
 	}
+
+	public void setStatus(STATUS status) {
+		put("nickiStatus", status.getValue());
+	}
+
+	public STATUS getStatus() {
+		return STATUS.fromValue(getAttribute("status"));
+	}
+
+
+	public void setType(PERSONTYPE type) {
+		put("type", type.getValue());
+	}
+
+	public PERSONTYPE getType() {
+		return PERSONTYPE.fromValue(getAttribute("type"));
+	}
+
+
 }
