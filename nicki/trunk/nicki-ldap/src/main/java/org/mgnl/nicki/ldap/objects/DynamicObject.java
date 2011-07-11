@@ -49,7 +49,7 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 
 	public void init(NickiContext context, ContextSearchResult rs) {
 		this.context = context;
-		this.path = LdapHelper.getUpcasePath(rs.getNameInNamespace());
+		this.path = rs.getNameInNamespace();
 		this.getModel().init(context, this, rs);
 		this.original = (DynamicObject) this.clone();
 
