@@ -9,6 +9,7 @@ import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 
 @SuppressWarnings("serial")
 public class Member extends DynamicObject implements Serializable{
@@ -131,6 +132,17 @@ public class Member extends DynamicObject implements Serializable{
 			setWriteRights(list);
 		}
 	}
+	
+	@Override
+	public void delete() throws DynamicObjectException {
+		setReadRights(null);
+		setWriteRights(null);
+
+		update();
+
+		super.delete();
+	}
+
 
 	
 }
