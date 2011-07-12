@@ -197,12 +197,14 @@ public abstract class BasicContext implements NickiContext {
 			ctx.bind(dynamicObject.getPath(), new DynamicObjectWrapper(dynamicObject));
 			// load new object
 			DynamicObject newObject = loadObject(dynamicObject.getPath());
+			/*
 			// generate merge attributes Map from original object
 			Map<DynamicAttribute, Object> changeAttributes = dynamicObject.getModel().getNonMandatoryAttributes(dynamicObject);
 			// merge to new object
 			newObject.merge(changeAttributes);
 			// update new
 			updateObject(newObject);
+			*/
 			return newObject;
 		} catch (NamingException e) {
 			throw new DynamicObjectException(e);

@@ -126,15 +126,50 @@ public class DataModel implements Serializable {
 		additionalObjectClasses.add(objectClass);
 	}
 	
+	public Attributes getLdapAttributesForCreate(DynamicObject dynamicObject) {
+		Attributes myAttrs = new BasicAttributes(true);
+		addBasicLdapAttributes(myAttrs, dynamicObject);
+		addLdapAttributes(myAttrs, dynamicObject, false);
+		return myAttrs;
+	}
+	
+	// objectClass + naming
+	public void addBasicLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject) {
+		Attribute oc = new BasicAttribute("objectClass");
+		for (Iterator<String> iterator = dynamicObject.getModel().getObjectClasses().iterator(); iterator.hasNext();) {
+			String objectClass = iterator.next();
+			oc.add(objectClass);
+		}
+		for (Iterator<String> iterator = dynamicObject.getModel().getAdditionalObjectClasses().iterator(); iterator.hasNext();) {
+			String objectClass = iterator.next();
+			oc.add(objectClass);
+		}
+		myAttrs.put(oc);
+		for (Iterator<DynamicAttribute> iterator = dynamicObject.getModel().getMandatoryAttributes().iterator(); iterator.hasNext();) {
+			DynamicAttribute dynAttribute =  iterator.next();
+			if (dynAttribute.isNaming()) {
+				myAttrs.put(dynAttribute.getLdapName(), dynamicObject.getAttribute(dynAttribute.getName()));
+			}			
+		}
+	}
+
 	public Attributes getLdapAttributes(DynamicObject dynamicObject) {
 		Attributes myAttrs = new BasicAttributes(true);
+		addLdapAttributes(myAttrs, dynamicObject, true);
+		return myAttrs;
+	}
+	
+	public void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject, boolean nullable) {
+
 		// single attributes (except namingAttribute)
 		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
 			DynamicAttribute dynAttribute = iterator.next();
 			if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
 				String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
-				Attribute attribute = new BasicAttribute(dynAttribute.getLdapName(), value);
-				myAttrs.put(attribute);
+				if (nullable || value != null) {
+					Attribute attribute = new BasicAttribute(dynAttribute.getLdapName(), value);
+					myAttrs.put(attribute);
+				}
 			}
 		}
 		
@@ -153,11 +188,12 @@ public class DataModel implements Serializable {
 						}
 					}
 				}
-				myAttrs.put(attribute);
+				if (nullable || attribute.size() > 0) {
+					myAttrs.put(attribute);
+				}
 			}
 		}
 		
-		return myAttrs;
 	}
 
 	public Map<DynamicAttribute, Object> getNonMandatoryAttributes(DynamicObject dynamicObject) {
