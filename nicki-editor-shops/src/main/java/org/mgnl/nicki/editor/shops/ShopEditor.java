@@ -53,7 +53,7 @@ public class ShopEditor extends NickiApplication {
 
 		public void execute(Window parentWindow, DynamicObject dynamicObject) {
 			 previewWindow = new Window(I18n.getText(getI18nBase() + ".preview.window.title"),
-					new ShopWindow(this, getNickiContext().getPerson(), (Shop)dynamicObject, getI18nBase()));
+					new ShopWindow(this, getNickiContext().getUser(), (Shop)dynamicObject, getI18nBase()));
 			 previewWindow.setModal(true);
 			 previewWindow.setWidth(1024, Sizeable.UNITS_PIXELS);
 			 previewWindow.setHeight(520, Sizeable.UNITS_PIXELS);

@@ -38,7 +38,7 @@ public class ProjectEditor extends NickiApplication {
 
 	@Override
 	public Component getEditor() throws DynamicObjectException {
-		ProjectFilter projectFilter = new ProjectFilter(getNickiContext().getUser().getName());
+		ProjectFilter projectFilter = new ProjectFilter(getNickiContext().getUser());
 		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.projects.basedn"), projectFilter);
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), treeDataProvider, getI18nBase());
 		editor.configureClass(Org.class, null, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Project.class);

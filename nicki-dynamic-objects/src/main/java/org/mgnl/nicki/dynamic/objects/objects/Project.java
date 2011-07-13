@@ -66,9 +66,9 @@ public class Project extends DynamicObject implements Serializable {
 		this.put("manager", projectLeader.getPath());
 	}
 
-	public boolean isProjectLeader(String name) {
+	public boolean isProjectLeader(DynamicObject user) {
 		try {
-			return StringUtils.equalsIgnoreCase(name, getProjectLeader().getPath());
+			return StringUtils.equalsIgnoreCase(user.getPath(), getProjectLeader().getPath());
 		} catch (Exception e) {
 		}
 		return false;
@@ -79,9 +79,10 @@ public class Project extends DynamicObject implements Serializable {
 		return (Member) getForeignKeyObject("deputy");
 	}
 	
-	public boolean isProjectDeputyLeader(String name) {
+	public boolean isProjectDeputyLeader(DynamicObject user) {
 		try {
-			return StringUtils.equalsIgnoreCase(name, getDeputyProjectLeader().getForeignKeyObject("member").getPath());
+			return StringUtils.equalsIgnoreCase(user.getPath(),
+					getDeputyProjectLeader().getForeignKeyObject("member").getPath());
 		} catch (Exception e) {
 		}
 		return false;

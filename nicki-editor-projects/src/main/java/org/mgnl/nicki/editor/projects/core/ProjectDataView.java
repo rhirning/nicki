@@ -5,7 +5,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Project;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
-import org.mgnl.nicki.vaadin.base.editor.NickiEditor;
+import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 import org.mgnl.nicki.vaadin.base.fields.AttributeSelectObjectField;
 import org.mgnl.nicki.vaadin.base.fields.AttributeTextAreaField;
 import org.mgnl.nicki.vaadin.base.fields.AttributeTextField;
@@ -54,7 +54,7 @@ public class ProjectDataView extends CustomComponent implements ClassEditor {
 	}
 
 	@Override
-	public void setDynamicObject(NickiEditor nickiEditor,
+	public void setDynamicObject(NickiTreeEditor nickiEditor,
 			DynamicObject dynamicObject) {
 		this.project = (Project) dynamicObject;
 		this.projectNameField = new AttributeTextField("name", project, null);
@@ -66,7 +66,7 @@ public class ProjectDataView extends CustomComponent implements ClassEditor {
 		setCompositionRoot(mainLayout);
 		setWidth("100%");
 		setHeight(400, UNITS_PIXELS);
-		if (project.isProjectDeputyLeader(nickiEditor.getNickiContext().getUser().getName())) {
+		if (project.isProjectDeputyLeader(nickiEditor.getNickiContext().getUser())) {
 			this.projectDeputy.setReadOnly(true);
 		}
 	}

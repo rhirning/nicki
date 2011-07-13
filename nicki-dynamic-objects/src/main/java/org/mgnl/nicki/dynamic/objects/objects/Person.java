@@ -137,7 +137,16 @@ public class Person extends DynamicTemplateObject {
 
 	@Override
 	public String getDisplayName() {
-		return getAttribute("fullname") + " (" + getName() + ")";
+		StringBuffer sb = new StringBuffer();
+		sb.append(StringUtils.trimToEmpty(getAttribute("givenname")));
+		if (sb.length() > 0) {
+			sb.append(" ");
+		}
+		sb.append(StringUtils.trimToEmpty(getAttribute("surname")));
+		sb.append(" (");
+		sb.append(getName());
+		sb.append(")");
+		return sb.toString();
 	}
 
 

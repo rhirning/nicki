@@ -7,7 +7,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Project;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
-import org.mgnl.nicki.vaadin.base.editor.NickiEditor;
+import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 import org.mgnl.nicki.vaadin.base.fields.AttributeCheckbox;
 import org.mgnl.nicki.vaadin.base.fields.AttributeSelectField;
 import org.mgnl.nicki.vaadin.base.fields.AttributeTextField;
@@ -54,7 +54,7 @@ public class ProjectMailView extends CustomComponent implements ClassEditor {
 	}
 
 	@Override
-	public void setDynamicObject(NickiEditor nickiEditor,
+	public void setDynamicObject(NickiTreeEditor nickiEditor,
 			DynamicObject dynamicObject) {
 		this.project = (Project) dynamicObject;
 		this.projectEmailField = new AttributeTextField("email", project, null);

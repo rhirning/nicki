@@ -27,9 +27,8 @@ public interface NickiContext extends Serializable {
 	void search(QueryHandler queryHandler) throws DynamicObjectException;
 	ObjectFactory getObjectFactory();
 	NickiPrincipal getPrincipal() throws DynamicObjectException;
-	NickiPrincipal login(String user, String password);
-	DynamicObject getPerson();
-	NickiPrincipal getUser();
-	void setUser(NickiPrincipal user);
+	DynamicObject login(String user, String password);
+	DynamicObject getUser();
+	void setUser(DynamicObject user);
 
 }

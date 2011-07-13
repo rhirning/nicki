@@ -3,6 +3,9 @@
 	<name>nicki-mailtemplate</name>
 	<comment></comment>
 	<projects>
+		<project>efg-dynamic-objects</project>
+		<project>nicki-dynamic-objects-ad</project>
+		<project>nicki-dynamic-objects</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

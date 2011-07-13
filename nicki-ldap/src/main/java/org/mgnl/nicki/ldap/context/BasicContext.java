@@ -3,7 +3,6 @@ package org.mgnl.nicki.ldap.context;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
@@ -24,7 +23,6 @@ import org.mgnl.nicki.ldap.data.ObjectsLoaderLdapQueryHandler;
 import org.mgnl.nicki.ldap.data.SubObjectsLoaderLdapQueryHandler;
 import org.mgnl.nicki.ldap.data.jndi.JndiSearchResult;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
-import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.objects.DynamicObjectWrapper;
@@ -37,9 +35,8 @@ public abstract class BasicContext implements NickiContext {
 	public static final String TARGET_DEFAULT = "edir";
 	private Target target = null;
 	private NickiPrincipal principal;
-	private NickiPrincipal user;
+	private DynamicObject user;
 	private READONLY readonly;
-	private DynamicObject person;
 
 	protected BasicContext(Target target, READONLY readonly) {
 		this.target = target;
@@ -72,25 +69,22 @@ public abstract class BasicContext implements NickiContext {
 	}
 	
 	@Override
-	public NickiPrincipal login(String username, String password) {
-		if (null == loadObject(username)) {
+	public DynamicObject login(String username, String password) {
+		DynamicObject user = loadObject(username);
+		if (user == null) {
 			List<DynamicObject> list = loadObjects(Config.getProperty("nicki.users.basedn"), "cn=" + username);
 			if (list != null && list.size() == 1) {
-				String name = list.get(0).getPath();
-				try {
-					getDirContext(name, password);
-					return new NickiPrincipal(name, password);
-				} catch (Exception e) {
-					return null;
-				}
+				user = list.get(0);
 			}
 		}
-		try {
-			getDirContext(username, password);
-			return new NickiPrincipal(username, password);
-		} catch (Exception e) {
-			return null;
+		if (user != null) {
+			try {
+				getDirContext(user.getPath(), password);
+				return user;
+			} catch (Exception e) {
+			}
 		}
+		return null;
 	}
 
 
@@ -332,20 +326,15 @@ public abstract class BasicContext implements NickiContext {
 
 	protected void setPrincipal(NickiPrincipal principal) {
 		this.principal = principal;
-		this.person = loadObject(principal.getName());
-	}
-
-	public DynamicObject getPerson() {
-		return person;
 	}
 
 	@Override
-	public NickiPrincipal getUser() {
+	public DynamicObject getUser() {
 		return user;
 	}
 
 	@Override
-	public void setUser(NickiPrincipal user) {
+	public void setUser(DynamicObject user) {
 		this.user = user;
 	}
 	

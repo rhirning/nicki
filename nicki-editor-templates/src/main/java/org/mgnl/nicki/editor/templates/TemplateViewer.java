@@ -12,7 +12,7 @@ import org.mgnl.nicki.vaadin.base.components.TestDataView;
 import org.mgnl.nicki.vaadin.base.data.AttributeDataContainer;
 import org.mgnl.nicki.vaadin.base.data.ListPartDataContainer;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
-import org.mgnl.nicki.vaadin.base.editor.NickiEditor;
+import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
@@ -31,7 +31,7 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 	private Template template;
 	private Button saveButton;
 	private Button previewButton;
-	private NickiEditor editor;
+	private NickiTreeEditor editor;
 	
 	/**
 	 * The constructor should first build the main layout, set the
@@ -43,7 +43,7 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 	public TemplateViewer() {
 	}
 	
-	public void setDynamicObject(NickiEditor nickiEditor, DynamicObject dynamicObject) {
+	public void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject) {
 		this.editor = nickiEditor;
 		this.template = (Template) dynamicObject;
 		buildEditor();

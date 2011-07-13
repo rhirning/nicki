@@ -28,7 +28,7 @@ public class TestData {
 	
 	public static Map<String, String> getObjects() {
 		Map<String, String> objects = new HashMap<String, String>();
-		objects.put("person", "cn=ablake,ou=users,o=utopia");
+		objects.put("person", "cn=ablake,ou=users,o=data");
 		return objects;
 	}
 	
