@@ -12,6 +12,7 @@ import org.mgnl.nicki.ldap.objects.DynamicObject;
  *
  * @author cna
  */
+@SuppressWarnings("serial")
 public class BasicAction extends DynamicObject {
 
 	@Override
