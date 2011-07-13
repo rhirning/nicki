@@ -41,7 +41,7 @@ public abstract class NickiApplication extends Application  implements HttpServl
 	public void init() {
 		setTheme(Config.getProperty("nicki.application.theme", "reindeer"));
 		Window mainWindow = new Window(I18n.getText(getI18nBase() + ".main.title"));
-		mainWindow.setHeight(800, Sizeable.UNITS_PIXELS);
+//		mainWindow.setHeight(800, Sizeable.UNITS_PIXELS);
 		mainWindow.setWidth("100%");
 		setMainWindow(mainWindow);
 
@@ -158,7 +158,7 @@ public abstract class NickiApplication extends Application  implements HttpServl
 		getMainWindow().removeAllComponents();
 		if (isUseWelcomeDialog()) {
 			AbsoluteLayout layout = new AbsoluteLayout();
-			layout.setHeight("640px");
+			layout.setHeight("800px");
 			layout.addComponent(new WelcomeDialog(this), "top:0.0px;left:20.0px;");
 			layout.addComponent(getEditor(), "top:20.0px;left:20.0px;");
 			getMainWindow().addComponent(layout);
