@@ -242,7 +242,11 @@ public class Person extends DynamicTemplateObject {
 
 	// TODO - edit cna
 	public static String getInActiveFilter() {
-		return "!(nickiStatus=" + STATUS.ACTIVE.getValue() + ")";
+		return "!(|(nickiStatus=" + STATUS.ACTIVE.getValue() + ")(nickiStatus=" + STATUS.REQUESTED.getValue()+ "))";
+	}
+
+	public static String getAllFilter() {
+		return "!(nickiStatus=" + STATUS.REQUESTED.getValue() + ")";
 	}
 
 	public void setExitDate(Date date) {
@@ -252,7 +256,7 @@ public class Person extends DynamicTemplateObject {
 	}
 
 	public void setStatus(STATUS status) {
-		put("nickiStatus", status.getValue());
+		put("status", status.getValue());
 	}
 
 	public STATUS getStatus() {
