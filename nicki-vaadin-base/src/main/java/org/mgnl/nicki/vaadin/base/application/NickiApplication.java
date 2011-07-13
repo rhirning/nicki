@@ -142,7 +142,7 @@ public abstract class NickiApplication extends Application  implements HttpServl
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Login falied, user=" + name);
+			System.out.println("Login failed, user=" + name);
 		}
 		this.nickiContext = getTarget().getGuestContext();
 		return false;
