@@ -15,6 +15,7 @@ import org.mgnl.nicki.ldap.objects.DynamicObject;
 @SuppressWarnings("serial")
 public class BasicAction extends DynamicObject {
 
+
 	@Override
 	public void initDataModel() {
 		addObjectClass("nickiAction");
@@ -64,6 +65,14 @@ public class BasicAction extends DynamicObject {
 
 	public boolean getNoExec() {
 		return Boolean.valueOf((String) get("noexec"));
+	}
+
+	public void setActionName(String name) {
+		put("action", name);
+	}
+
+	public String getActionName() {
+		return (String) get("action");
 	}
 
 }
