@@ -13,6 +13,7 @@ import org.mgnl.nicki.ldap.objects.DynamicObject;
  *
  * @author cna
  */
+@SuppressWarnings("serial")
 public class LdapSearchGroup extends DynamicObject {
 
 	public enum SEARCHSCOPE {
