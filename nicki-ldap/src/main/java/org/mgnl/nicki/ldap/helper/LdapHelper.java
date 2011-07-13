@@ -9,13 +9,19 @@ import org.mgnl.nicki.ldap.objects.ContextAttribute;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 
 public class LdapHelper {
+
 	public enum LOGIC {
-		AND ("&"),
-		OR ("|");
+
+		AND("&"),
+		OR("|");
 		private String sign;
+
 		LOGIC(String sign) {
 			this.sign = sign;
-		};
+		}
+
+		;
+
 		public String getSign() {
 			return this.sign;
 		}
@@ -35,8 +41,7 @@ public class LdapHelper {
 		try {
 			ContextAttribute attr = rs.getAttributes().get(attributeName);
 			if (attr != null) {
-				for (Enumeration<Object> vals 
-						= (Enumeration<Object>) attr.getAll(); vals.hasMoreElements();) {
+				for (Enumeration<Object> vals = (Enumeration<Object>) attr.getAll(); vals.hasMoreElements();) {
 					attributeList.add(vals.nextElement());
 				}
 			}
@@ -58,7 +63,7 @@ public class LdapHelper {
 		}
 		return null;
 	}
-	
+
 	public static String getPath(String parentPath, String namingLdapAttribute, String namingValue) {
 		StringBuffer sb = new StringBuffer();
 		sb.append(StringUtils.upperCase(namingLdapAttribute));
@@ -73,7 +78,15 @@ public class LdapHelper {
 	public static String getParentPath(String path) {
 		return StringUtils.strip(StringUtils.substringAfter(path, ","));
 	}
-	
+
+	public static void negateQuery(StringBuffer sb) {
+		if (sb.length() > 0) {
+			sb.insert(0, "!");
+			sb.insert(0, "(");
+			sb.append(")");
+		}
+	}
+
 	public static void addQuery(StringBuffer sb, String query, LOGIC andOr) {
 		if (sb.length() == 0) {
 			sb.append("(");
@@ -87,6 +100,4 @@ public class LdapHelper {
 			sb.append("))");
 		}
 	}
-
-
 }
