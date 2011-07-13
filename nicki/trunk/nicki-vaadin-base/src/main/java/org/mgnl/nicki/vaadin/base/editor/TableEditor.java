@@ -6,7 +6,7 @@ import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import com.vaadin.ui.Table;
 
 @SuppressWarnings("serial")
-public class TableEditor extends NickiEditor {
+public class TableEditor extends NickiTreeEditor {
 	private TableSelector tableSelector = new TableSelector();
 
 	Table component = new Table();

@@ -36,7 +36,7 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 	}
 
 	@Override
-	public void setDynamicObject(NickiEditor nickiEditor, DynamicObject dynamicObject) {
+	public void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject) {
 		this.dynamicObject = dynamicObject;
 		this.create = false;
 		buildMainLayout();

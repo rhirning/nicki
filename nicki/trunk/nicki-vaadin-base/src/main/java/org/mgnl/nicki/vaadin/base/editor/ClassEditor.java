@@ -5,6 +5,6 @@ import org.mgnl.nicki.ldap.objects.DynamicObject;
 import com.vaadin.ui.Component;
 
 public interface ClassEditor extends Component {
-	public void setDynamicObject(NickiEditor nickiEditor, DynamicObject dynamicObject);
+	public void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject);
 
 }

@@ -5,7 +5,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.mailtemplate.engine.MailTemplateEngine;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
-import org.mgnl.nicki.vaadin.base.editor.NickiEditor;
+import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.CustomComponent;
@@ -33,7 +33,7 @@ public class I18nMailTemplateViewer extends CustomComponent implements ClassEdit
 		this.messageKeyBase = messageKeyBase;
 	}
 	
-	public void setDynamicObject(NickiEditor nickiEditor, DynamicObject dynamicObject) {
+	public void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject) {
 		this.template = (Template) dynamicObject;
 		buildEditor();
 		setCompositionRoot(mainLayout);

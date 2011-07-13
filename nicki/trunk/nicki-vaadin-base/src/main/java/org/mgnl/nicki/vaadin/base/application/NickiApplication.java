@@ -11,15 +11,17 @@ import org.mgnl.nicki.ldap.auth.SSOAdapter;
 import org.mgnl.nicki.ldap.context.AppContext;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.context.Target;
-import org.mgnl.nicki.ldap.context.NickiContext.READONLY;
+import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.auth.LoginDialog;
 import org.mgnl.nicki.vaadin.base.command.Command;
 import org.mgnl.nicki.vaadin.base.components.ConfirmDialog;
+import org.mgnl.nicki.vaadin.base.components.WelcomeDialog;
 
 import com.vaadin.Application;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
+import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -105,12 +107,15 @@ public abstract class NickiApplication extends Application  implements HttpServl
 			if (StringUtils.isNotEmpty(ssoLoginClass)) {
 				SSOAdapter adapter = (SSOAdapter) Class.forName(ssoLoginClass).newInstance();
 				NickiPrincipal principal = new NickiPrincipal(adapter.getName(getRequest()), new String(adapter.getPassword(getRequest())));
-				if (principal != null && getTarget().login(principal) != null) {
-					if (isUseSystemContext()) {
-						NickiContext ctx = AppContext.getSystemContext(getTarget(), principal, READONLY.FALSE);
-						return ctx;
-					} else {
-						return getTarget().getNamedUserContext(principal, READONLY.FALSE);
+				if (principal != null) {
+					DynamicObject user = getTarget().login(principal);
+					if (user != null) {
+						if (isUseSystemContext()) {
+							NickiContext ctx = AppContext.getSystemContext(getTarget(), user.getPath(), principal.getPassword());
+							return ctx;
+						} else {
+							return getTarget().getNamedUserContext(user, principal.getPassword());
+						}
 					}
 				}
 			}
@@ -131,12 +136,13 @@ public abstract class NickiApplication extends Application  implements HttpServl
 		try {
 			NickiPrincipal principal = new NickiPrincipal(name, password);
 			if (principal != null) {
-				principal = getTarget().login(principal);
+				DynamicObject user = getTarget().login(principal);
 				if (principal != null) {
 					if (isUseSystemContext()) {
-						setNickiContext(AppContext.getSystemContext(getTarget(), principal, READONLY.FALSE));
+						setNickiContext(AppContext.getSystemContext(getTarget(),
+								user.getPath(), password));
 					} else {
-						setNickiContext(getTarget().getNamedUserContext(principal, READONLY.FALSE));
+						setNickiContext(getTarget().getNamedUserContext(user, password));
 					}
 					return true;
 				}
@@ -150,7 +156,15 @@ public abstract class NickiApplication extends Application  implements HttpServl
 
 	public void start() throws DynamicObjectException {
 		getMainWindow().removeAllComponents();
-		getMainWindow().addComponent(getEditor());
+		if (isUseWelcomeDialog()) {
+			AbsoluteLayout layout = new AbsoluteLayout();
+			layout.setHeight("640px");
+			layout.addComponent(new WelcomeDialog(this), "top:0.0px;left:20.0px;");
+			layout.addComponent(getEditor(), "top:20.0px;left:20.0px;");
+			getMainWindow().addComponent(layout);
+		} else {
+			getMainWindow().addComponent(getEditor());
+		}
 	}
 	
 

@@ -2,14 +2,14 @@ package org.mgnl.nicki.vaadin.base.components;
 
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.editor.NewObjectEnterNameHandler;
-import org.mgnl.nicki.vaadin.base.editor.NickiEditor;
+import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
 
 @SuppressWarnings("serial")
 public class SimpleNewClassEditor extends EnterNameDialog implements NewClassEditor {
-	private NickiEditor treeEditor;
+	private NickiTreeEditor treeEditor;
 
-	public SimpleNewClassEditor(NickiEditor nickiEditor, String messageBase) {
+	public SimpleNewClassEditor(NickiTreeEditor nickiEditor, String messageBase) {
 		super(messageBase);
 		this.treeEditor = nickiEditor;
 	}

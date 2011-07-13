@@ -18,4 +18,8 @@ public class MailWrapper extends HashMap<String, MailContainer>{
 		}
 		return "";
 	}
+	
+	public String toXml() {
+		return null;
+	}
 }

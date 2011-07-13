@@ -7,6 +7,7 @@ import org.mgnl.nicki.core.context.ThreadContext;
 import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
 import org.mgnl.nicki.ldap.auth.NickiPrincipal;
 import org.mgnl.nicki.ldap.context.NickiContext.READONLY;
+import org.mgnl.nicki.ldap.objects.DynamicObject;
 
 public class AppContext {
     /**
@@ -39,29 +40,40 @@ public class AppContext {
 	public static void setLocale(Locale locale) {
 		getInstance().setLocale(locale);
 	}
+	public static NickiContext getSystemContext(Target target, String username, String password) throws InvalidPrincipalException {
+		DynamicObject user = target.login(new NickiPrincipal(username, password));
+		return getSystemContext(target, user, READONLY.FALSE);
+	}
+
+	public static NickiContext getSystemContext(String username, String password) throws InvalidPrincipalException {
+		DynamicObject user = TargetFactory.getDefaultTarget().login(new NickiPrincipal(username, password));
+		return getSystemContext(TargetFactory.getDefaultTarget(), user, READONLY.FALSE);
+	}
+
 	public static NickiContext getSystemContext() throws InvalidPrincipalException {
-		return getSystemContext(TargetFactory.getDefaultTarget(), null, READONLY.TRUE);
+		return getSystemContext(TargetFactory.getDefaultTarget().getName());
 	}
 
-	protected static NickiContext getSystemContext(READONLY readonly) throws InvalidPrincipalException {
-		return getSystemContext(TargetFactory.getDefaultTarget(), null, readonly);
+	public static NickiContext getSystemContext(String targetName) throws InvalidPrincipalException {
+		Target target = TargetFactory.getTarget(targetName);
+		new NickiPrincipal(target.getProperty("securityPrincipal"),
+				target.getProperty("securityCredentials"));
+		DynamicObject user = target.login(new NickiPrincipal(target.getProperty("securityPrincipal"),
+				target.getProperty("securityCredentials")));
+		return getSystemContext(target, user, READONLY.TRUE);
 	}
 
-	public static NickiContext getSystemContext(String targetName, NickiPrincipal principal) throws InvalidPrincipalException {
-		return getSystemContext(TargetFactory.getTarget(targetName), principal, READONLY.TRUE);
-	}
-
-	public static NickiContext getSystemContext(Target target, NickiPrincipal principal, READONLY readonly) throws InvalidPrincipalException {
-		if (target != null) {
-			return new SystemContext(target, principal, readonly);
+	private static NickiContext getSystemContext(Target target, DynamicObject user, READONLY readonly) throws InvalidPrincipalException {
+		if (target != null && user != null) {
+			return new SystemContext(target, user, readonly);
 		}
 		return null;
 	}
 
-	public static NickiContext getNamedUserContext(String targetName, String user, String password) throws InvalidPrincipalException {
+	public static NickiContext getNamedUserContext(String targetName, DynamicObject user, String password) throws InvalidPrincipalException {
 		Target target = TargetFactory.getTarget(targetName);
 		if (target != null) {
-			return new NamedUserContext(target, user, password, NickiContext.READONLY.FALSE);
+			return new NamedUserContext(target, user, password);
 		}
 		return null;
 	}

@@ -16,7 +16,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Script;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
-import org.mgnl.nicki.vaadin.base.editor.NickiEditor;
+import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
 import bsh.EvalError;
 import bsh.Interpreter;
@@ -62,7 +62,7 @@ public class ScriptViewer extends CustomComponent implements ClassEditor {
 	public ScriptViewer() {
 	}
 
-	public void setDynamicObject(NickiEditor nickiEditor,
+	public void setDynamicObject(NickiTreeEditor nickiEditor,
 			DynamicObject dynamicObject) {
 		this.script = (Script) dynamicObject;
 		buildMainLayout();

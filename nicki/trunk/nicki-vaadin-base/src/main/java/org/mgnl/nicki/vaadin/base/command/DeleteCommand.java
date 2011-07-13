@@ -3,13 +3,13 @@ package org.mgnl.nicki.vaadin.base.command;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
-import org.mgnl.nicki.vaadin.base.editor.NickiEditor;
+import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
 public class DeleteCommand implements Command {
 	private DynamicObject target;
-	private NickiEditor nickiEditor;
+	private NickiTreeEditor nickiEditor;
 
-	public DeleteCommand(NickiEditor nickiEditor, DynamicObject target) {
+	public DeleteCommand(NickiTreeEditor nickiEditor, DynamicObject target) {
 		this.nickiEditor = nickiEditor;
 		this.target = target;
 	}

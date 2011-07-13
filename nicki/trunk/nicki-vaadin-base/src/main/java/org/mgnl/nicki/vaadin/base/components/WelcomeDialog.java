@@ -39,7 +39,7 @@ public class WelcomeDialog extends CustomComponent {
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 		
-		hello.setValue(I18n.getText("nicki.application.greeting", application.getNickiContext().getUser().getName()));
+		hello.setValue(I18n.getText("nicki.application.greeting", application.getNickiContext().getUser().getDisplayName()));
 		logout.setCaption(I18n.getText("nicki.application.logout"));
 		logout.addListener(new Button.ClickListener() {
 			

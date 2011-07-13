@@ -8,10 +8,10 @@ import org.mgnl.nicki.vaadin.base.components.EnterNameHandler;
 
 @SuppressWarnings("serial")
 public class RenameObjecttEnterNameHandler extends EnterNameHandler implements Serializable {
-	private NickiEditor editor;
+	private NickiTreeEditor editor;
 	private DynamicObject dynamicObject;
 
-	public RenameObjecttEnterNameHandler(NickiEditor nickiEditor, DynamicObject dynamicObject) {
+	public RenameObjecttEnterNameHandler(NickiTreeEditor nickiEditor, DynamicObject dynamicObject) {
 		super();
 		this.editor = nickiEditor;
 		this.dynamicObject = dynamicObject;

@@ -9,5 +9,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/nicki-template"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nicki-dynamic-objects"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/nicki-config-rhi"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/efg-editor-bu"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nicki-dynamic-objects-ad"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

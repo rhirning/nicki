@@ -8,9 +8,9 @@ import org.mgnl.nicki.vaadin.base.editor.EntryFilter;
 
 @SuppressWarnings("serial")
 public class ProjectFilter implements EntryFilter, Serializable {
-	private String user;
+	private DynamicObject user;
 
-	public ProjectFilter(String user) {
+	public ProjectFilter(DynamicObject user) {
 		super();
 		this.user = user;
 	}

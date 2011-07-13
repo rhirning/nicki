@@ -51,16 +51,16 @@ public class Target implements Serializable {
 		return sb.toString();
 	}
 
-	public NickiPrincipal login(NickiPrincipal principal) {
+	public DynamicObject login(NickiPrincipal principal) {
 		try {
-			return new SystemContext(this, principal, READONLY.TRUE).login(principal.getName(), principal.getPassword());
+			return new SystemContext(this, null, READONLY.TRUE).login(principal.getName(), principal.getPassword());
 		} catch (InvalidPrincipalException e) {
 			return null;
 		}
 	}
 
-	public NickiContext getNamedUserContext(NickiPrincipal principal, READONLY readonly) throws InvalidPrincipalException {
-		return new NamedUserContext(this, principal.getName(), principal.getPassword(), readonly);
+	public NickiContext getNamedUserContext(DynamicObject user, String password) throws InvalidPrincipalException {
+		return new NamedUserContext(this, user, password);
 	}
 
 	public NickiContext getGuestContext() {

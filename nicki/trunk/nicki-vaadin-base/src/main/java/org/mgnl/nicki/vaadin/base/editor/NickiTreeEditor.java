@@ -18,7 +18,6 @@ import org.mgnl.nicki.vaadin.base.components.EnterNameDialog;
 import org.mgnl.nicki.vaadin.base.components.EnterNameHandler;
 import org.mgnl.nicki.vaadin.base.components.NewClassEditor;
 import org.mgnl.nicki.vaadin.base.components.SimpleNewClassEditor;
-import org.mgnl.nicki.vaadin.base.components.WelcomeDialog;
 import org.mgnl.nicki.vaadin.base.data.TreeContainer;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectViewer;
 
@@ -35,7 +34,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Tree.ExpandEvent;
 
 @SuppressWarnings("serial")
-public class NickiEditor extends AbsoluteLayout {
+public class NickiTreeEditor extends AbsoluteLayout {
 	
 	public enum CREATE {ALLOW, DENY};
 	public enum DELETE {ALLOW, DENY};
@@ -72,9 +71,9 @@ public class NickiEditor extends AbsoluteLayout {
 	private NickiContext context;
 	private NickiApplication application;
 	private HorizontalSplitPanel hsplit;
-	private NickiEditor nickiEditor;
+	private NickiTreeEditor nickiEditor;
 
-	public NickiEditor(NickiApplication application, NickiContext ctx) {
+	public NickiTreeEditor(NickiApplication application, NickiContext ctx) {
 		this.nickiEditor = this;
 		this.application = application;
 		this.context = ctx;
@@ -98,13 +97,7 @@ public class NickiEditor extends AbsoluteLayout {
 //		selector.setDragMode(TreeDragMode.NODE);
 //		selector.setDropHandler(new TreeDropHandler(this));
 
-		if (application.isUseWelcomeDialog()) {
-			addComponent(new WelcomeDialog(this.application), "top:0.0px;left:0.0px;");
-			addComponent(hsplit, "top:20.0px;left:0.0px;");
-		} else {
-			addComponent(hsplit, "top:0.0px;left:0.0px;");
-		}
-		
+		addComponent(hsplit, "top:0.0px;left:0.0px;");
 		
 		selectorLayout = new VerticalLayout();
 		selectorLayout.setHeight("100%");
@@ -194,7 +187,7 @@ public class NickiEditor extends AbsoluteLayout {
 		});
 	}
 
-	protected NickiEditor getEditor() {
+	protected NickiTreeEditor getEditor() {
 		return this;
 	}
 
