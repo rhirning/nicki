@@ -1,0 +1,119 @@
+package org.mgnl.nicki.ldap.core;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.ldap.objects.DynamicReference;
+
+public class LdapQuery {
+	Map<String, List<String>> searchValues = new HashMap<String, List<String>>();
+	List<String> filters = new ArrayList<String>();
+	private String baseDN;
+	private Map<String,String> resultAttributes = new HashMap<String, String>();
+
+	public LdapQuery(String baseDN) {
+		super();
+		this.baseDN = baseDN;
+	}
+
+	public LdapQuery(String path, DynamicReference reference) {
+		super();
+		this.baseDN = reference.getBaseDn();
+		addSearchValue(reference.getAttributeName(), path);
+	}
+
+	public void addFilter(String filter) {
+		if (StringUtils.isNotEmpty(filter)) {
+			this.filters.add(filter);
+		}
+	}
+	
+	public void addSearchValue(String key, String value) {
+		if (StringUtils.isNotEmpty(key) && StringUtils.isNotEmpty(value)) {
+			if (!searchValues.containsKey(key)) {
+				this.searchValues.put(key, new ArrayList<String>());
+			}
+			this.searchValues.get(key).add(value);
+		}
+	}
+	
+	public List<String> getSearchValue(String key) {
+		return this.searchValues.get(key);
+	}
+
+	public Map<String, List<String>> getSearchValues() {
+		return searchValues;
+	}
+	
+	public String getFilter() {
+		StringBuffer outerSb = new StringBuffer();
+
+		for (Iterator<String> iterator = filters.iterator(); iterator.hasNext();) {
+			boolean append = false;
+			String filter =  iterator.next();
+			append = false;
+			if (outerSb.length() > 0) {
+				append = true;
+				outerSb.append("(&");
+			}
+			outerSb.append(filter);
+			if (append) {
+				outerSb.append(")");
+			}
+		}
+
+		for (Iterator<String> iterator = searchValues.keySet().iterator(); iterator.hasNext();) {
+			StringBuffer sb = new StringBuffer();
+			boolean append = false;
+			String key =  iterator.next();
+			List<String> list = searchValues.get(key);
+			for (Iterator<String> iterator2 = list.iterator(); iterator2.hasNext();) {
+				append = false;
+				if (sb.length() > 0) {
+					append = true;
+					sb.insert(0, "(|");
+				}
+				String value = iterator2.next();
+				sb.append("(").append(key).append("=").append(value).append(")");
+				if (append) {
+					sb.append(")");
+				}
+			}
+			append = false;
+			if (sb.length() > 0) {
+				append = true;
+				outerSb.insert(0, "(&");
+			}
+			outerSb.append(sb);
+			if (append) {
+				outerSb.append(")");
+			}
+
+		}
+		return outerSb.toString();			
+			
+	}
+
+	public String getBaseDN() {
+		return baseDN;
+	}
+
+	public Map<String, String> getResultAttributes() {
+		return resultAttributes;
+	}
+
+	public void setResultAttributes(Map<String, String> resultAttributes) {
+		this.resultAttributes = resultAttributes;
+	}
+	
+	public void addResultAttribute(String ldapName, String displayName) {
+		resultAttributes.put(ldapName, displayName);
+	}
+
+
+
+}
