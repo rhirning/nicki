@@ -54,6 +54,7 @@ public class Person extends DynamicTemplateObject {
 
 	public enum STATUS {
 
+		REQUESTED("beantragt"),
 		INACTIVE("inaktiv-vor-eintritt"), 
 		ACTIVE("aktiv"), 
 		DEACTIVATED("deaktiviert"), 
@@ -75,6 +76,8 @@ public class Person extends DynamicTemplateObject {
 				return DEACTIVATED;
 			} else if (RESIGNED.getValue().equals(status)) {
 				return RESIGNED;
+			} else if (REQUESTED.getValue().equals(status)) {
+				return REQUESTED;
 			}
 			
 			return NOT_SET;
