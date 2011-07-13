@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>1.8</version>
+		<version>1.9-SNAPSHOT</version>
 	</parent>
 	<artifactId>nicki.war</artifactId>
 	<name>nicki.war</name>
@@ -13,12 +13,12 @@
 		<dependency>
 			<artifactId>nicki-config-rhi</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>1.8</version>
+			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<artifactId>nicki-editor-scripts</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>1.8</version>
+			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<!--
 		<dependency>
@@ -30,32 +30,32 @@
 		<dependency>
 			<artifactId>nicki-editor-mailtemplates</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>1.8</version>
+			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<artifactId>nicki-editor-projects</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>1.8</version>
+			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<artifactId>nicki-editor-shops</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>1.8</version>
+			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<artifactId>nicki-editor-templates</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>1.8</version>
+			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<artifactId>nicki-novell-userapp</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>1.8</version>
+			<version>1.9-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<artifactId>nicki-vaadin-base</artifactId>
 			<groupId>org.mgnl.nicki</groupId>
-			<version>1.8</version>
+			<version>1.9-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 	<build>
