@@ -4,6 +4,8 @@
  */
 package org.mgnl.nicki.dynamic.objects.wrapper;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -11,9 +13,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.BasicAction;
 import org.mgnl.nicki.ldap.context.BasicContext;
+import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
@@ -22,9 +27,9 @@ import org.w3c.dom.ls.LSSerializer;
  *
  * @author cna
  */
-public abstract class BasicActionHandler {
+public class BasicActionHandler {
 
-	private BasicContext ctx;
+	private NickiContext ctx;
 	private Document doc;
 	private String target;
 	private String actionname;
@@ -45,7 +50,7 @@ public abstract class BasicActionHandler {
 		}
 	}
 
-	public BasicActionHandler(BasicContext ctx, String actionname, String target, boolean noexec) {
+	public BasicActionHandler(NickiContext ctx, String actionname, String target, boolean noexec) {
 		this.ctx = ctx;
 		this.actionname = actionname;
 		this.target = target;
@@ -55,20 +60,21 @@ public abstract class BasicActionHandler {
 	}
 
 	public void setStringParam(String name, String value) {
-		Node elem = doc.createElement("param");
+		Element elem = doc.createElement("param");
 
-		elem.appendChild(createAttr("name", name));
+
+		elem.setAttribute("name", name);
 		elem.appendChild(doc.createTextNode(value));
 
 		doc.getFirstChild().appendChild(elem);
 	}
 
 	public void setDnParam(String name, DN_FORMAT format, String value) {
-		Node elem = doc.createElement("param");
+		Element elem = doc.createElement("param");
 
-		elem.appendChild(createAttr("name", name));
-		elem.appendChild(createAttr("type", "dn"));
-		elem.appendChild(createAttr("format", format.getValue()));
+		elem.setAttribute("name", name);
+		elem.setAttribute("type", "dn");
+		elem.setAttribute("format", format.getValue());
 
 		elem.appendChild(doc.createTextNode(value));
 
@@ -76,10 +82,10 @@ public abstract class BasicActionHandler {
 	}
 
 	public void setListParam(String name, List<String> values) {
-		Node list = doc.createElement("paramlist");
+		Element list = doc.createElement("paramlist");
 		Node node;
 
-		list.appendChild(createAttr("name", name));
+		list.setAttribute("name", name);
 
 		for (String string : values) {
 			node = doc.createElement("param");
@@ -92,12 +98,12 @@ public abstract class BasicActionHandler {
 	}
 
 	public void setDnListParam(String name, DN_FORMAT format, List<String> values) {
-		Node list = doc.createElement("paramlist");
-		Node node;
+		Element list = doc.createElement("paramlist");
+		Element node;
 
-		list.appendChild(createAttr("name", name));
-		list.appendChild(createAttr("type", "dn"));
-		list.appendChild(createAttr("format", format.getValue()));
+		list.setAttribute("name", name);
+		list.setAttribute("type", "dn");
+		list.setAttribute("format", format.getValue());
 
 		for (String string : values) {
 			node = doc.createElement("param");
@@ -109,17 +115,23 @@ public abstract class BasicActionHandler {
 		doc.getFirstChild().appendChild(list);
 	}
 
-	public BasicAction create() throws InstantiateDynamicObjectException {
+	public BasicAction create() throws InstantiateDynamicObjectException, DynamicObjectException {
 		BasicAction action = (BasicAction) ctx.getObjectFactory().getDynamicObject(BasicAction.class, Config.getProperty("nicki.actions.basedn"), getName());
 		action.setParameter(getXml());
 		action.setNoExec(noexec);
 		action.setTarget(target);
 		action.setActionName(actionname);
 
+		System.out.println("Going to create " + action.getActionName() + " in " + Config.getProperty("nicki.actions.basedn"));
+		action.create();
+
 		return action;
 	}
 
-	protected abstract String getName();
+	protected String getName() {
+		SimpleDateFormat sdf = new SimpleDateFormat("-yyyyMMdd-HH-mm-ss-SSS");
+		return actionname + sdf.format(new Date());
+	}
 
 	protected void initDocument() {
 		DocumentBuilderFactory domfactory = DocumentBuilderFactory.newInstance();
@@ -132,7 +144,7 @@ public abstract class BasicActionHandler {
 		}
 		doc = builder.newDocument();
 
-		Node root = doc.createElement("parameterset");
+		Element root = doc.createElement("parameterset");
 		doc.appendChild(root);
 	}
 
@@ -140,11 +152,5 @@ public abstract class BasicActionHandler {
 		DOMImplementationLS impl = (DOMImplementationLS) doc.getImplementation();
 		LSSerializer serializer = impl.createLSSerializer();
 		return serializer.writeToString(doc);
-	}
-
-	private Attr createAttr(String name, String value) {
-		Attr attribute = doc.createAttribute(name);
-		attribute.setValue(value);
-		return attribute;
 	}
 }
