@@ -74,7 +74,7 @@ public class CartActionHandler extends BasicActionHandler {
 
 	private void putAttributes(ACTION_TYPE type, String item, Map<String, String> attributes) {
 		for (String key : attributes.keySet()) {
-			setStringParam(type.getValue() + "." + item + "." + key, attributes.get(key));
+			setStringParam(type.getValue() + "|" + item + "|" + key, attributes.get(key));
 		}
 	}
 }
