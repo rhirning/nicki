@@ -37,7 +37,7 @@ public class PreviewTemplate extends BaseTreeAction {
 	 * visual editor.
 	 * @param localeString 
 	 */
-	public PreviewTemplate(NickiContext context, Class<?> classDefinition,
+	public PreviewTemplate(NickiContext context, Class<? extends DynamicObject> classDefinition,
 			String name, String i18nBase) {
 		super(classDefinition, name);
 		this.context = context;

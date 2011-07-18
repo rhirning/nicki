@@ -14,7 +14,6 @@ import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 
 public class ObjectsLoaderLdapQueryHandler extends ObjectLoaderLdapQueryHandler {
 
-	private String filter;
 	private List<DynamicObject> list = new ArrayList<DynamicObject>();
 	
 	public List<DynamicObject> getList() {
@@ -23,26 +22,29 @@ public class ObjectsLoaderLdapQueryHandler extends ObjectLoaderLdapQueryHandler 
 
 	public ObjectsLoaderLdapQueryHandler(NickiContext context, String dn, String filter) {
 		super(context, dn);
-		this.filter = filter;
+		setFilter(filter);
 	}
 
 	public ObjectsLoaderLdapQueryHandler(NickiContext context, LdapQuery query) {
 		super(context, query.getBaseDN());
-		this.filter = query.getFilter();
-	}
-
-	@Override
-	public String getFilter() {
-		return this.filter;
+		setFilter(query.getFilter());
 	}
 
 	@Override
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
 		for (Iterator<ContextSearchResult> iterator = results.iterator(); iterator.hasNext();) {
-			try {
-				list.add(getContext().getObjectFactory().getObject(iterator.next()));
-			} catch (InstantiateDynamicObjectException e) {
-				throw new DynamicObjectException(e);
+			if (getClassDefinition() != null) {
+				try {
+					list.add(getContext().getObjectFactory().getObject(iterator.next(), getClassDefinition()));
+				} catch (InstantiateDynamicObjectException e) {
+					System.out.println(e.getMessage());
+				}
+			} else {
+				try {
+					list.add(getContext().getObjectFactory().getObject(iterator.next()));
+				} catch (InstantiateDynamicObjectException e) {
+					throw new DynamicObjectException(e);
+				}
 			}
 		}
 	}

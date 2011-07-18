@@ -15,6 +15,7 @@ import com.vaadin.ui.Component;
 
 @SuppressWarnings("serial")
 public class MailTemplateEditor extends NickiApplication {
+	@SuppressWarnings("unchecked")
 	@Override
 	public Component getEditor() {
 		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.mailtemplates.basedn"), new MailTemplateFilter());

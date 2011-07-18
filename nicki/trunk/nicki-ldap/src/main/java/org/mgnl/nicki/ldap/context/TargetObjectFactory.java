@@ -45,12 +45,44 @@ public class TargetObjectFactory implements ObjectFactory {
 		throw new InstantiateDynamicObjectException("Could not getObject " + dn);
 	}
 
+	public <T extends DynamicObject> T getObject(ContextSearchResult rs, Class<T> classDefinition) throws InstantiateDynamicObjectException {
+		T object =  _getObject(rs, classDefinition);
+		object.setContext(context);
+		return object;
+	}
+
+	
+	
+	private synchronized <T extends DynamicObject> T _getObject(ContextSearchResult rs, Class<T> classDefinition) throws InstantiateDynamicObjectException {
+		String dn = rs.getNameInNamespace();
+		for (@SuppressWarnings("unchecked")
+		Iterator<T> iterator = (Iterator<T>) target.getDynamicObjects().iterator(); iterator.hasNext();) {
+			T dynamicObject = iterator.next();
+			if (classDefinition == null || dynamicObject.getClass() == classDefinition) {
+				if (dynamicObject.accept(rs)) {
+					T result = getDynamicObject(dynamicObject, rs);
+					if (result != null) {
+						return result;
+					}
+				}
+			}
+		}
+		throw new InstantiateDynamicObjectException("Could not getObject " + dn);
+	}
+
+	public <T extends DynamicObject> String getObjectClassFilter(Class<T> classDefinition) throws InstantiateDynamicObjectException {
+		T dynamicObject = findDynamicObject(classDefinition);
+		return dynamicObject.getModel().getObjectClassFilter();
+	}
+
+	
 	// TODO
-	private DynamicObject findDynamicObject(Class<?> classDefinition) throws InstantiateDynamicObjectException {
+	@SuppressWarnings("unchecked")
+	private <T extends DynamicObject> T findDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		for (Iterator<DynamicObject> iterator = target.getDynamicObjects().iterator(); iterator.hasNext();) {
 			DynamicObject dynamicObject = iterator.next();
 			if (dynamicObject.getClass() == classDefinition) {
-				return dynamicObject;
+				return (T) dynamicObject;
 			}
 		}
 		throw new InstantiateDynamicObjectException("Could not getObject " + classDefinition);
@@ -68,9 +100,9 @@ public class TargetObjectFactory implements ObjectFactory {
 	}
 	
 
-	public DynamicObject getDynamicObject(Class<?> classDefinition) throws InstantiateDynamicObjectException {
-		DynamicObject storedDynamicObject = findDynamicObject(classDefinition);
-		DynamicObject dynamicObject = null;
+	public <T extends DynamicObject> T getDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException {
+		T storedDynamicObject = findDynamicObject(classDefinition);
+		T dynamicObject = null;
 		try {
 			dynamicObject = getDynamicObject(storedDynamicObject);
 			dynamicObject.setContext(context);
@@ -92,9 +124,9 @@ public class TargetObjectFactory implements ObjectFactory {
 		return dynamicObject;
 	}
 	
-	private DynamicObject getDynamicObject(DynamicObject pattern, ContextSearchResult rs) throws InstantiateDynamicObjectException {
+	private <T extends DynamicObject> T getDynamicObject(T pattern, ContextSearchResult rs) throws InstantiateDynamicObjectException {
 		try {
-			DynamicObject object = (DynamicObject ) getDynamicObject(pattern);
+			T object = getDynamicObject(pattern);
 			object.init(context, rs);
 			return object;
 		} catch (Exception e) {
@@ -102,9 +134,10 @@ public class TargetObjectFactory implements ObjectFactory {
 		}
 	}
 
-	private DynamicObject getDynamicObject(DynamicObject pattern) throws InstantiateDynamicObjectException {
+	private <T extends DynamicObject> T getDynamicObject(T pattern) throws InstantiateDynamicObjectException {
 		try {
-			DynamicObject object = (DynamicObject ) pattern.getClass().newInstance();
+			@SuppressWarnings("unchecked")
+			T object = (T) pattern.getClass().newInstance();
 			object.setModel(pattern.getModel());
 			return object;
 		} catch (Exception e) {
@@ -113,10 +146,10 @@ public class TargetObjectFactory implements ObjectFactory {
 	}
 
 	@Override
-	public DynamicObject getDynamicObject(Class<?> classDefinition, 
+	public <T extends DynamicObject> T getDynamicObject(Class<T> classDefinition, 
 			String parentPath, String namingValue) throws InstantiateDynamicObjectException {
 		try {
-			DynamicObject object = getDynamicObject(classDefinition);
+			T object = getDynamicObject(classDefinition);
 			object.setContext(context);
 			object.init(parentPath, namingValue);
 			return object;
@@ -125,14 +158,14 @@ public class TargetObjectFactory implements ObjectFactory {
 		}
 	}
 	
-	public  DynamicObject createNewDynamicObject(Class<?> classDefinition, 
+	public  <T extends DynamicObject> T createNewDynamicObject(Class<T> classDefinition, 
 			String parentPath, String namingValue) throws InstantiateDynamicObjectException {
 		try {
 			DynamicObject object = getDynamicObject(classDefinition, parentPath, namingValue);
 			object.setContext(context);
 			if (!context.isExist(object.getPath())) {
 				object.create();
-				return context.loadObject(object.getPath());
+				return context.loadObject(classDefinition, object.getPath());
 			}
 			return null;
 		} catch (Exception e) {

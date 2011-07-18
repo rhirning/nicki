@@ -15,7 +15,7 @@ public class ResourceAssociation extends DynamicTemplateObject {
 		addAttribute(dynAttribute);
 
 		dynAttribute = new ReferenceDynamicAttribute("resource", "nrfResource", String.class,
-				"nicki.resources.basedn", "(objectClass=nrfResource)");
+				"nicki.resources.basedn", "objectClass=nrfResource");
 		dynAttribute.setForeignKey();
 		addAttribute(dynAttribute);
 	}

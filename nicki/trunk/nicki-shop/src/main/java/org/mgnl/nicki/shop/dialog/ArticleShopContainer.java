@@ -50,21 +50,18 @@ public class ArticleShopContainer implements ShopContainer{
 		container.addContainerProperty(PROPERTY_CATEGORY, String.class, null);
 
 		container.addContainerProperty(PROPERTY_PATH, String.class, null);
-		List<DynamicObject> loadedArticles = shop.getContext().loadObjects(shop.getPath(), "(objectClass=nickiShopArticle)");
+		List<ShopArticle> loadedArticles = shop.getContext().loadObjects(ShopArticle.class, shop.getPath(), "objectClass=nickiShopArticle");
 
 	    if (loadedArticles != null) {
-		    for (Iterator<DynamicObject> iterator = loadedArticles.iterator(); iterator.hasNext();) {
-				DynamicObject p = iterator.next();
-				if (p instanceof ShopArticle) {
-					ShopArticle article = (ShopArticle) p;
-					article.setShop(shop);
-					Item item = container.addItem(article);
-					item.getItemProperty(PROPERTY_NAME).setValue(article.getDisplayName());
-					item.getItemProperty(PROPERTY_PATH).setValue(article.getCatalogPath());
-					item.getItemProperty(PROPERTY_CATEGORY).setValue(article.get(PROPERTY_CATEGORY).toString());
-					if (getPerson().hasArticle(article)) {
-						item.getItemProperty(PROPERTY_STATUS).setValue(STATUS_PROVISIONED);
-					}
+		    for (Iterator<ShopArticle> iterator = loadedArticles.iterator(); iterator.hasNext();) {
+				ShopArticle article = iterator.next();
+				article.setShop(shop);
+				Item item = container.addItem(article);
+				item.getItemProperty(PROPERTY_NAME).setValue(article.getDisplayName());
+				item.getItemProperty(PROPERTY_PATH).setValue(article.getCatalogPath());
+				item.getItemProperty(PROPERTY_CATEGORY).setValue(article.get(PROPERTY_CATEGORY).toString());
+				if (getPerson().hasArticle(article)) {
+					item.getItemProperty(PROPERTY_STATUS).setValue(STATUS_PROVISIONED);
 				}
 			}
 	    }

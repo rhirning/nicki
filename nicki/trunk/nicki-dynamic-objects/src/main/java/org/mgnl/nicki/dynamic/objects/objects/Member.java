@@ -23,7 +23,7 @@ public class Member extends DynamicObject implements Serializable{
 		addAttribute(dynAttribute);
 
 		dynAttribute = new ReferenceDynamicAttribute("member", "nickiProjectPerson", String.class,
-				"nicki.users.basedn", "(objectClass=Person)");
+				"nicki.users.basedn", "objectClass=Person");
 		dynAttribute.setForeignKey();
 		dynAttribute.setMandatory();
 		addAttribute(dynAttribute);

@@ -12,7 +12,6 @@ import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.ldap.context.Target;
 import org.mgnl.nicki.ldap.context.TargetFactory;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import org.mgnl.nicki.vaadin.base.components.EnterNameDialog;
@@ -121,25 +120,13 @@ public class CopyOfTemplateEditor extends NickiApplication implements TemplateVi
 	    BeanItemContainer<Template> beans =
 	        new BeanItemContainer<Template>(Template.class);
 	    
-	    List<DynamicObject> loadedTemplates = 
-	    	getNickiContext().loadObjects(Config.getProperty("nicki.templates.basedn"), "(objectClass=nickiTemplate)");
+	    List<Template> loadedTemplates = 
+	    	getNickiContext().loadObjects(Template.class, Config.getProperty("nicki.templates.basedn"), "objectClass=nickiTemplate");
 	    if (loadedTemplates != null) {
-		    for (Iterator<DynamicObject> iterator = loadedTemplates.iterator(); iterator.hasNext();) {
-				DynamicObject p = iterator.next();
-				if (p instanceof Template) {
-					beans.addBean((Template) p);
-				}
+		    for (Iterator<Template> iterator = loadedTemplates.iterator(); iterator.hasNext();) {
+				beans.addBean(iterator.next());
 			}
 	    }
-
-	    /*
-	    // Add some additional beans to it
-	    beans.addBean(new Project("1","Erstes Projekt"));
-	    beans.addBean(new Project("2", "Zweites Projekt"));
-	    beans.addBean(new Project("3", "Drittes Projekt"));
-	    beans.addBean(new Project("4", "Viertes Projekt"));
-	    */
-	    
 		return beans;
 	}
 

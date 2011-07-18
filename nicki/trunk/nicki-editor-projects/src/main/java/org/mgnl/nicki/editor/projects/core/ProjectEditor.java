@@ -36,6 +36,7 @@ public class ProjectEditor extends NickiApplication {
 		setUseWelcomeDialog(DataHelper.booleanOf(Config.getProperty("nicki.projects.useWelcomeDialog", "false")));
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Component getEditor() throws DynamicObjectException {
 		ProjectFilter projectFilter = new ProjectFilter(getNickiContext().getUser());
@@ -68,7 +69,7 @@ public class ProjectEditor extends NickiApplication {
 			if (StringUtils.equals(attributeName, "member")) {
 				String namingValue = "";
 				if (StringUtils.isNotEmpty(value)) {
-					Person member = (Person) getNickiContext().loadObject(value);
+					Person member = getNickiContext().loadObject(Person.class, value);
 					if (member != null) {
 						namingValue = member.getNamingValue();
 					}

@@ -14,6 +14,8 @@ import javax.naming.directory.BasicAttributes;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.ldap.context.NickiContext;
+import org.mgnl.nicki.ldap.helper.LdapHelper;
+import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 
 @SuppressWarnings("serial")
 public class DataModel implements Serializable {
@@ -36,7 +38,6 @@ public class DataModel implements Serializable {
 
 	public enum ATTRIBUTE_TYPE {MANDATORY, OPTIONAL, OPTIONAL_LIST, FOREIGN_KEY, FOREIGN_KEY_LIST, STRUCTURED, UNDEFINED};
 	
-	// TODO Hier fang ich an
 	public List<String> getObjectClasses() {
 		return objectClasses;
 	}
@@ -293,6 +294,15 @@ public class DataModel implements Serializable {
 	}
 	public List<String> getAdditionalObjectClasses() {
 		return additionalObjectClasses;
+	}
+	public String getObjectClassFilter() {
+		StringBuffer sb = new StringBuffer();
+		for (Iterator<String> iterator = getObjectClasses().iterator(); iterator.hasNext();) {
+			String objectClass = iterator.next();
+			LdapHelper.addQuery(sb, "objectClass=" + objectClass, LOGIC.AND);
+		}
+
+		return sb.toString();
 	}
 
 }

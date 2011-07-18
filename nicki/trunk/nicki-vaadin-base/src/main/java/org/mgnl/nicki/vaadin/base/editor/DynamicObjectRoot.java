@@ -19,7 +19,7 @@ public class DynamicObjectRoot implements DataProvider, Serializable {
 
 	@Override
 	public List<DynamicObject> getChildren(NickiContext context) {
-		return context.loadChildObjects(baseDn, "(objectClass=*)");
+		return context.loadChildObjects(baseDn, "objectClass=*");
 	}
 
 	@Override

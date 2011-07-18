@@ -16,13 +16,13 @@ public class Function extends DynamicTemplateObject {
 	{
 		
 		addMethod("allRoles", new LoadObjectsMethod(this, 
-				Config.getProperty("nicki.system.basedn", "o=system"), "(objectClass=nrfRole)"));
+				Config.getProperty("nicki.system.basedn", "o=system"), "objectClass=nrfRole"));
 
 		addMethod("allResources", new LoadObjectsMethod(this, 
-				Config.getProperty("nicki.system.basedn", "o=system"), "(objectClass=nrfResource)"));
+				Config.getProperty("nicki.system.basedn", "o=system"), "objectClass=nrfResource"));
 
 		addMethod("allShops", new LoadObjectsMethod(this, 
-				Config.getProperty("nicki.basedn", "o=utopia"), "(objectClass=nickiShop)"));
+				Config.getProperty("nicki.basedn", "o=utopia"), "objectClass=nickiShop"));
 
 		addMethod("objects", new DynamicLoadObjectsMethod(getContext()));
 

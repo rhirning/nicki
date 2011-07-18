@@ -33,8 +33,8 @@ public class TreeDropHandler implements DropHandler {
 			DynamicObject targetItemId = (DynamicObject) dropData.getItemIdOver();
 			dropData.getDropLocation(); // TODO
 			
-			Class<?> sourceClass = sourceItemId.getClass();
-			Class<?> targetClass = targetItemId.getClass();
+			Class<? extends DynamicObject> sourceClass = sourceItemId.getClass();
+			Class<? extends DynamicObject> targetClass = targetItemId.getClass();
 			if (!editor.getAllowedChildren(targetClass).contains(sourceClass)
 					|| !(dropData.getDropLocation()== VerticalDropLocation.MIDDLE)
 					|| editor.isParent(sourceItemId, targetItemId)

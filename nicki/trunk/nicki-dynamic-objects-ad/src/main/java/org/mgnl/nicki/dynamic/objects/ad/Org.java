@@ -16,7 +16,7 @@ public class Org extends DynamicObject implements Serializable {
 		addAttribute(dynAttribute);
 
 		// TODO
-		addChild("child", "(objectClass=*)");
+		addChild("child", "objectClass=*");
 	}
 
 }

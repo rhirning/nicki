@@ -29,6 +29,7 @@ import com.vaadin.ui.Window;
 @SuppressWarnings("serial")
 public class Orderpage extends NickiApplication {
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Component getEditor() {
 		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.shops.basedn"), new ShowAllFilter());
@@ -44,10 +45,10 @@ public class Orderpage extends NickiApplication {
 
 	public class PreviewShop implements TreeAction, Serializable {
 
-		private Class<?> targetClass;
+		private Class<? extends DynamicObject> targetClass;
 		private String name;
 		private Window previewWindow;
-		public PreviewShop(Class<?> classDefinition, String name) {
+		public PreviewShop(Class<? extends DynamicObject> classDefinition, String name) {
 			this.targetClass = classDefinition;
 			this.name = name;
 		}
@@ -69,7 +70,7 @@ public class Orderpage extends NickiApplication {
 			getMainWindow().removeWindow(previewWindow);
 		}
 
-		public Class<?> getTargetClass() {
+		public Class<? extends DynamicObject> getTargetClass() {
 			return targetClass;
 		}
 		

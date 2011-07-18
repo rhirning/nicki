@@ -15,8 +15,14 @@ public interface NickiContext extends Serializable {
 	List<DynamicObject> loadObjects(String baseDn, String filter);
 	List<DynamicObject> loadChildObjects(String parent,	String filter);
 	List<DynamicObject> loadReferenceObjects(String path, DynamicReference reference);
+	
+	<T extends DynamicObject> T loadObject(Class<T> classDefinition, String path);
+	<T extends DynamicObject> List<T> loadObjects(Class<T> classDefinition, String baseDn, String filter);
+	<T extends DynamicObject> List<T> loadChildObjects(Class<T> classDefinition, String parent,	String filter);
+	<T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, String path, DynamicReference reference);
+
 	boolean isExist(String dn);
-	DynamicObject createDynamicObject(Class<?> classDefinition, String parentPath, String namingValue)
+	<T extends DynamicObject> T createDynamicObject(Class<T> classDefinition, String parentPath, String namingValue)
 			throws  InstantiateDynamicObjectException, DynamicObjectException;
 	Target getTarget();
 	void updateObject(DynamicObject dynamicObject) throws DynamicObjectException;
@@ -30,5 +36,6 @@ public interface NickiContext extends Serializable {
 	DynamicObject login(String user, String password);
 	DynamicObject getUser();
 	void setUser(DynamicObject user);
+	String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException;
 
 }

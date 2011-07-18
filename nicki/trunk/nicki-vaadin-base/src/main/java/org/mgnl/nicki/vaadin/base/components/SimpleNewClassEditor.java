@@ -15,7 +15,7 @@ public class SimpleNewClassEditor extends EnterNameDialog implements NewClassEdi
 	}
 
 	@Override
-	public void init(DynamicObject parent, Class<?> classDefinition) {
+	public void init(DynamicObject parent, Class<? extends DynamicObject> classDefinition) {
 		setHandler( new NewObjectEnterNameHandler(treeEditor, parent, classDefinition));
 	}
 }
