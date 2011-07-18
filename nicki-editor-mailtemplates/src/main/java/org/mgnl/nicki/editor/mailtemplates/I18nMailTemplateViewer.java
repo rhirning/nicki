@@ -52,7 +52,7 @@ public class I18nMailTemplateViewer extends CustomComponent implements ClassEdit
 			String localeName = MailTemplateEngine.LOCALE_NAMES[i];
 			String dn = template.getModel().getNamingLdapAttribute() + "=" + template.getNamingValue() + "_" + localeName
 					+ "," + template.getParentPath();
-			editor = new MailTemplateViewer(template.getContext(), template.getClass(), dn, localeName, this.messageKeyBase);
+			editor = new MailTemplateViewer(template.getContext(), dn, localeName, this.messageKeyBase);
 			tab.addTab(editor, localeName, null);
 		}
 	}

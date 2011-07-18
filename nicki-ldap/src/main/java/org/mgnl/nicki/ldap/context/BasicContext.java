@@ -132,6 +132,55 @@ public abstract class BasicContext implements NickiContext {
 		return null;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public 	<T extends DynamicObject> T loadObject(Class<T> classDefinition, String path) {
+		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler(this, path);
+		handler.setClassDefinition(classDefinition);
+		try {
+			search(handler);
+			return (T) handler.getDynamicObject(); 
+		} catch (DynamicObjectException e) {
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends DynamicObject> List<T> loadObjects(Class<T> classDefinition, String baseDn, String filter) {
+		try {
+			ObjectsLoaderLdapQueryHandler handler = new ObjectsLoaderLdapQueryHandler(this, baseDn, filter);
+			handler.setClassDefinition(classDefinition);
+			search(handler);
+			return (List<T>) handler.getList();
+		} catch (DynamicObjectException e) {
+		} 
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends DynamicObject> List<T> loadChildObjects(Class<T> classDefinition, String parent,	String filter) {
+		try {
+			SubObjectsLoaderLdapQueryHandler handler = new SubObjectsLoaderLdapQueryHandler(this, parent, filter);
+			handler.setClassDefinition(classDefinition);
+			search(handler);
+			return (List<T>) handler.getList();
+		} catch (DynamicObjectException e) {
+		} 
+		return null;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, String path, DynamicReference reference) {
+		try {
+			LdapQuery query = new LdapQuery(path, reference);
+			ObjectsLoaderLdapQueryHandler handler = new ObjectsLoaderLdapQueryHandler(this, query);
+			handler.setClassDefinition(classDefinition);
+			search(handler);
+			return (List<T>) handler.getList();
+		} catch (DynamicObjectException e) {
+		} 
+		return null;
+	}
+	
 	public boolean isExist(String dn) {
 		if (StringUtils.isEmpty(dn)) {
 			return false;
@@ -145,7 +194,7 @@ public abstract class BasicContext implements NickiContext {
 		return false;
 	}
 	
-	public DynamicObject createDynamicObject(Class<?> classDefinition, String parentPath, String namingValue)
+	public <T extends DynamicObject> T createDynamicObject(Class<T> classDefinition, String parentPath, String namingValue)
 			throws  InstantiateDynamicObjectException, DynamicObjectException {
 		if (this.readonly == READONLY.TRUE) {
 			throw new DynamicObjectException("READONLY: could not create object: " + namingValue);
@@ -313,6 +362,10 @@ public abstract class BasicContext implements NickiContext {
 			}
 		}
 	}
+	public String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
+		return getObjectFactory().getObjectClassFilter(classDefinition);
+	}
+
 
 	@Override
 	public ObjectFactory getObjectFactory() {

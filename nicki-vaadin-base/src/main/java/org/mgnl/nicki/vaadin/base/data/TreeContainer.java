@@ -29,7 +29,7 @@ public class TreeContainer implements Serializable {
 	private String name;
 	private DynamicObject root;
 	private DataProvider treeDataProvider;
-	private Map<Class<?>, Icon> classIcons= new HashMap<Class<?>, Icon>();
+	private Map<Class<? extends DynamicObject>, Icon> classIcons= new HashMap<Class<? extends DynamicObject>, Icon>();
 	private EntryFilter entryFilter;
 	private NickiContext context;
 	
@@ -56,7 +56,7 @@ public class TreeContainer implements Serializable {
 	    return container;
 	}
 	
-	public void setClassIcon(Class<?> classDefinition, Icon icon) {
+	public void setClassIcon(Class<? extends DynamicObject> classDefinition, Icon icon) {
 		this.classIcons.put(classDefinition, icon);
 	}
 

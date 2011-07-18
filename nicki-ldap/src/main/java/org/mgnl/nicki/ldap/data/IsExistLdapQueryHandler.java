@@ -28,11 +28,6 @@ public class IsExistLdapQueryHandler extends BasicLdapHandler implements QueryHa
 	}
 
 	@Override
-	public String getFilter() {
-		return "(objectClass=*)";
-	}
-
-	@Override
 	public void handle(List<ContextSearchResult> results) {
 		try {
 			if (results != null && results.size() > 0) {

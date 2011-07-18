@@ -16,8 +16,8 @@ public class ShopShelf extends DynamicTemplateObject {
 		addAttribute(dynAttribute);
 
 		// TODO
-		addChild("shelf", "(objectClass=nickiShopShelf)");
-		addChild("article", "(objectClass=nickiShopArticle)");
+		addChild("shelf", "objectClass=nickiShopShelf");
+		addChild("article", "objectClass=nickiShopArticle");
 
 	};
 

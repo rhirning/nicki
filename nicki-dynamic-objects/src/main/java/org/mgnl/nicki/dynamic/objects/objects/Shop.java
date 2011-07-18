@@ -17,9 +17,9 @@ public class Shop extends DynamicTemplateObject {
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		
-		addChild("shelf", "(objectClass=nickiShopShelf)");
+		addChild("shelf", "objectClass=nickiShopShelf");
 		
-		addMethod("allArticles", new LoadObjectsMethod(getContext(), this, "(objectClass=nickiShopArticle)"));
+		addMethod("allArticles", new LoadObjectsMethod(getContext(), this, "objectClass=nickiShopArticle"));
 
 	}
 

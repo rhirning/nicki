@@ -25,10 +25,12 @@ public class LdapSearchHandler extends BasicLdapHandler implements QueryHandler 
 	public LdapSearchHandler(NickiContext context, LdapQuery query) {
 		super(context);
 		this.query = query;
+		this.setFilter(query.getFilter());
 	}
 
 	public LdapSearchHandler(NickiContext context, LdapQuery query, int scope) {
 		this(context, query);
+		this.setFilter(query.getFilter());
 		this.scope = scope;
 	}
 
@@ -58,10 +60,6 @@ public class LdapSearchHandler extends BasicLdapHandler implements QueryHandler 
 
 	public String getBaseDN() {
 		return query.getBaseDN();
-	}
-
-	public String getFilter() {
-		return query.getFilter();
 	}
 
 	public List<SearchResultEntry> getResult() {

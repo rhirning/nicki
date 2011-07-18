@@ -29,17 +29,13 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 		super(context);
 		this.name = name;
 		this.dn = dn;
+		this.setFilter("objectClass=nickiTemplate");
 	}
 
 
 	@Override
 	public String getBaseDN() {
 		return this.dn;
-	}
-
-	@Override
-	public String getFilter() {
-		return "(objectClass=nickiTemplate)";
 	}
 
 	@Override

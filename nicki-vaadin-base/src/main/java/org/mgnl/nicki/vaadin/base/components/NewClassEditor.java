@@ -8,6 +8,6 @@ import com.vaadin.ui.ComponentContainer;
 
 public interface NewClassEditor extends ComponentContainer{
 
-	void init(DynamicObject parent, Class<?> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException;
+	void init(DynamicObject parent, Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException;
 
 }

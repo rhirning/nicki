@@ -57,7 +57,7 @@ public class PreviewMail extends BaseTreeAction {
 	 * visual editor.
 	 * @param localeString 
 	 */
-	public PreviewMail(NickiContext context, Class<?> classDefinition,
+	public PreviewMail(NickiContext context, Class<? extends DynamicObject> classDefinition,
 			String name, String localeString) {
 		super(classDefinition, name);
 		this.context = context;

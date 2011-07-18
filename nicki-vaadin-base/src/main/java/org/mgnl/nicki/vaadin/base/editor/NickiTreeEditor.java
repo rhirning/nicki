@@ -50,24 +50,26 @@ public class NickiTreeEditor extends AbsoluteLayout {
 	private DataProvider treeDataProvider;
 	private String treeTitle;
 	
-	private Map<Class<?>, List<Class<?>>> children = new HashMap<Class<?>, List<Class<?>>>();
+	private Map<Class<? extends DynamicObject>, List<Class<? extends DynamicObject>>> children
+		= new HashMap<Class<? extends DynamicObject>, List<Class<? extends DynamicObject>>>();
 	
-	private Map<Class<?>, Map<Action, Class<?>>> actions = new HashMap<Class<?>, Map<Action,Class<?>>>();
-	private Map<Class<?>, Action[]> actionsList = new HashMap<Class<?>, Action[]>();
-	private Map<Class<?>, Action[]> rootActionsList = new HashMap<Class<?>, Action[]>();
-	private Map<Action, Class<?>> deleteActions = new HashMap<Action, Class<?>>();
-	private Map<Action, Class<?>> renameActions = new HashMap<Action, Class<?>>();
+	private Map<Class<? extends DynamicObject>, Map<Action, Class<? extends DynamicObject>>> actions
+		= new HashMap<Class<? extends DynamicObject>, Map<Action,Class<? extends DynamicObject>>>();
+	private Map<Class<? extends DynamicObject>, Action[]> actionsList = new HashMap<Class<? extends DynamicObject>, Action[]>();
+	private Map<Class<? extends DynamicObject>, Action[]> rootActionsList = new HashMap<Class<? extends DynamicObject>, Action[]>();
+	private Map<Action, Class<? extends DynamicObject>> deleteActions = new HashMap<Action, Class<? extends DynamicObject>>();
+	private Map<Action, Class<? extends DynamicObject>> renameActions = new HashMap<Action, Class<? extends DynamicObject>>();
 	private Action refreshAction;
 	
-	private List<Class<?>> allowCreate = new ArrayList<Class<?>>();
-	private List<Class<?>> allowDelete = new ArrayList<Class<?>>();
-	private List<Class<?>> allowRename = new ArrayList<Class<?>>();
-	private Map<Class<?>, List<TreeAction>> treeActions = new HashMap<Class<?>, List<TreeAction>>();
+	private List<Class<? extends DynamicObject>> allowCreate = new ArrayList<Class<? extends DynamicObject>>();
+	private List<Class<? extends DynamicObject>> allowDelete = new ArrayList<Class<? extends DynamicObject>>();
+	private List<Class<? extends DynamicObject>> allowRename = new ArrayList<Class<? extends DynamicObject>>();
+	private Map<Class<? extends DynamicObject>, List<TreeAction>> treeActions = new HashMap<Class<? extends DynamicObject>, List<TreeAction>>();
 	
 	private Map<Action, TreeAction> treeActionMap = new HashMap<Action, TreeAction>();
 	
-	private Map<Class<?>, ClassEditor> classEditors = new HashMap<Class<?>, ClassEditor>();
-	private Map<Class<?>, NewClassEditor> newClassEditors = new HashMap<Class<?>, NewClassEditor>();
+	private Map<Class<? extends DynamicObject>, ClassEditor> classEditors = new HashMap<Class<? extends DynamicObject>, ClassEditor>();
+	private Map<Class<? extends DynamicObject>, NewClassEditor> newClassEditors = new HashMap<Class<? extends DynamicObject>, NewClassEditor>();
 	private NickiContext context;
 	private NickiApplication application;
 	private HorizontalSplitPanel hsplit;
@@ -161,7 +163,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 				} else if (treeActionMap.containsKey(action)) {
 					treeActionMap.get(action).execute(getWindow(), (DynamicObject) target);
 				} else if (actions.containsKey(target.getClass())) {
-					Map<Action, Class<?>> map = actions.get(target.getClass());
+					Map<Action, Class<? extends DynamicObject>> map = actions.get(target.getClass());
 					if (map.containsKey(action)) {
 						create((DynamicObject) target, map.get(action));
 					}
@@ -209,11 +211,11 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		return (dynamicObject == this.treeContainer.getRoot());
 	}
 
-	public void setClassIcon(Class<?> classDefinition, Icon icon) {
+	public void setClassIcon(Class<? extends DynamicObject> classDefinition, Icon icon) {
 		this.treeContainer.setClassIcon(classDefinition, icon);
 	}
 
-	public void configureClass(Class<?> parentClass, Icon icon, CREATE allowCreate, DELETE allowDelete, RENAME allowRename, Class<?> ... childClass) {
+	public void configureClass(Class<? extends DynamicObject> parentClass, Icon icon, CREATE allowCreate, DELETE allowDelete, RENAME allowRename, Class<? extends DynamicObject> ... childClass) {
 		if (icon != null) {
 			setClassIcon(parentClass, icon);
 		}
@@ -226,9 +228,9 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		if (allowRename == RENAME.ALLOW) {
 			this.allowRename.add(parentClass);
 		}
-		List<Class<?>> list = children.get(parentClass);
+		List<Class<? extends DynamicObject>> list = children.get(parentClass);
 		if (list == null) {
-			list = new ArrayList<Class<?>>();
+			list = new ArrayList<Class<? extends DynamicObject>>();
 			children.put(parentClass, list);
 		}
 		for (int i = 0; i < childClass.length; i++) {
@@ -245,7 +247,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		actions.add(treeAction);
 	}
 	
-	public void setClassEditor(Class<?> classdefinition, ClassEditor classEditor) {
+	public void setClassEditor(Class<? extends DynamicObject> classdefinition, ClassEditor classEditor) {
 		this.classEditors.put(classdefinition, classEditor);
 	}
 
@@ -262,7 +264,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 	}
 
 
-	protected void create(DynamicObject parent, Class<?> classDefinition) {
+	protected void create(DynamicObject parent, Class<? extends DynamicObject> classDefinition) {
 		treeContainer.loadChildren(parent);
 		try {
 			addDynamicObject(parent, classDefinition);
@@ -281,7 +283,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		selector.setItemIconPropertyId(TreeContainer.PROPERTY_ICON);
 	}
 
-	private void addDynamicObject(DynamicObject parent, Class<?> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException {
+	private void addDynamicObject(DynamicObject parent, Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException {
 		NewClassEditor editor;
 		if (this.newClassEditors .get(classDefinition) != null) {
 			editor = this.newClassEditors.get(classDefinition);
@@ -300,13 +302,13 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		this.getWindow().addWindow(newWindow);
 	}
 	
-	public void setNewClassEditor(Class<?> classDefinition, NewClassEditor newClassEditor) {
+	public void setNewClassEditor(Class<? extends DynamicObject> classDefinition, NewClassEditor newClassEditor) {
 		this.newClassEditors.put(classDefinition, newClassEditor);
 	}
 
 
-	protected boolean create(DynamicObject parent, Class<?> classDefinition, String name) throws InstantiateDynamicObjectException, DynamicObjectException {
-		DynamicObject dynamicObject = null;
+	protected <T extends DynamicObject> boolean create(DynamicObject parent, Class<T> classDefinition, String name) throws InstantiateDynamicObjectException, DynamicObjectException {
+		T dynamicObject = null;
 		dynamicObject = context.createDynamicObject(
 					classDefinition, parent.getPath(), name);
 		if (dynamicObject != null) {
@@ -324,11 +326,11 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		refreshAction = new Action(
 				I18n.getText(this.messageKeyBase + ".action.refresh"));
 
-		for (Iterator<Class<?>> iterator = this.children.keySet().iterator(); iterator.hasNext();) {
-			Class<?> classDefinition = iterator.next();
+		for (Iterator<Class<? extends DynamicObject>> iterator = this.children.keySet().iterator(); iterator.hasNext();) {
+			Class<? extends DynamicObject> classDefinition = iterator.next();
 			List<Action> classActions = new ArrayList<Action>();
 			List<Action> rootClassActions = new ArrayList<Action>();
-			Map<Action, Class<?>> map = new HashMap<Action, Class<?>>();
+			Map<Action, Class<? extends DynamicObject>> map = new HashMap<Action, Class<? extends DynamicObject>>();
 			// treeActions
 			if (this.treeActions.containsKey(classDefinition)) {
 				for (Iterator<TreeAction> iterator2 = this.treeActions.get(classDefinition).iterator(); iterator2
@@ -340,9 +342,9 @@ public class NickiTreeEditor extends AbsoluteLayout {
 					treeActionMap.put(action, treeAction);
 				}
 			}			
-			List<Class<?>> children = this.children.get(classDefinition);
-			for (Iterator<Class<?>> iterator2 = children.iterator(); iterator2.hasNext();) {
-				Class<?> childClass = iterator2.next();
+			List<Class<? extends DynamicObject>> children = this.children.get(classDefinition);
+			for (Iterator<Class<? extends DynamicObject>> iterator2 = children.iterator(); iterator2.hasNext();) {
+				Class<? extends DynamicObject> childClass = iterator2.next();
 				if (this.allowCreate.contains(childClass)) {
 					Action childAction = new Action(
 							I18n.getText(this.messageKeyBase + ".action." + getClassName(childClass) + ".new"));
@@ -405,7 +407,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		this.treeContainer.loadChildren(parent);
 	}
 	
-	public List<Class<?>> getAllowedChildren(Class<?> classDefinition) {
+	public List<Class<? extends DynamicObject>> getAllowedChildren(Class<? extends DynamicObject> classDefinition) {
 		return this.children.get(classDefinition);
 	}
 
@@ -419,7 +421,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		this.treeContainer.setParent(object, target);
 	}
 
-	public String getClassName(Class<?> classDefinition) {
+	public String getClassName(Class<? extends DynamicObject> classDefinition) {
 		return StringUtils.substringAfterLast(classDefinition.getName(), ".");
 	}
 	

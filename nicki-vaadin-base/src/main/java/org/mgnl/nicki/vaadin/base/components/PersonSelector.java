@@ -107,7 +107,7 @@ public class PersonSelector extends CustomComponent {
 	    
 	    for (Iterator<SearchResultEntry> iterator = resultSet.iterator(); iterator.hasNext();) {
 	    	SearchResultEntry entry = iterator.next();
-	    	Person person = (Person) context.loadObject(entry.getDn());
+	    	Person person = context.loadObject(Person.class, entry.getDn());
 			persons.addBean(person);
 		}
 		return persons;

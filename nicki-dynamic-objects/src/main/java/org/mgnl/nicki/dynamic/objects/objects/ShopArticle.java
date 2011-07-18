@@ -28,12 +28,12 @@ public class ShopArticle extends DynamicTemplateObject {
 		addAttribute(dynAttribute);
 		
 		dynAttribute = new ReferenceDynamicAttribute("role", "nickiRoleRef", String.class,
-				"nicki.roles.basedn", "(objectClass=nrfRole)");
+				"nicki.roles.basedn", "objectClass=nrfRole");
 		dynAttribute.setForeignKey();
 		addAttribute(dynAttribute);
 		
 		dynAttribute = new ReferenceDynamicAttribute("resource", "nickiResourceRef", String.class,
-				"nicki.resources.basedn", "(objectClass=nrfResource)");
+				"nicki.resources.basedn", "objectClass=nrfResource");
 		dynAttribute.setForeignKey();
 		addAttribute(dynAttribute);
 	};

@@ -111,7 +111,7 @@ public class Person extends DynamicTemplateObject {
 		addAttribute(dynAttribute);
 
 		dynAttribute = new ReferenceDynamicAttribute("manager", "manager", String.class,
-				"nicki.users.basedn", "(objectClass=Person)");
+				"nicki.users.basedn", "objectClass=Person");
 		dynAttribute.setForeignKey();
 		addAttribute(dynAttribute);
 		

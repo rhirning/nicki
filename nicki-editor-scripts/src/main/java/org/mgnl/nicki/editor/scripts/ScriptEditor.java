@@ -18,6 +18,7 @@ import com.vaadin.ui.Component;
 @SuppressWarnings("serial")
 public class ScriptEditor extends NickiApplication {
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public Component getEditor() {
 		ScriptViewer scriptViewer = new ScriptViewer();

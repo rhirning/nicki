@@ -37,15 +37,14 @@ public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements Qu
 	}
 
 	@Override
-	public String getFilter() {
-		return "(objectClass=*)";
-	}
-
-	@Override
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
 		try {
 			if (results != null && results.size() > 0) {
-				this.dynamicObject = getContext().getObjectFactory().getObject(results.get(0));
+				if (getClassDefinition() != null) {
+					this.dynamicObject = (DynamicObject) getContext().getObjectFactory().getObject(results.get(0), getClassDefinition());
+				} else {
+					this.dynamicObject = getContext().getObjectFactory().getObject(results.get(0));
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

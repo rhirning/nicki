@@ -11,5 +11,5 @@ public interface TreeAction {
 
 	public void close();
 	
-	public Class<?> getTargetClass();
+	public Class<? extends DynamicObject> getTargetClass();
 }

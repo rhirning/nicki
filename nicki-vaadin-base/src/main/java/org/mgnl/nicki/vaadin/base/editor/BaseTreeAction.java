@@ -10,10 +10,10 @@ import com.vaadin.ui.Window;
 	@SuppressWarnings("serial")
 	public abstract class BaseTreeAction extends CustomComponent implements TreeAction, Serializable {
 
-		private Class<?> targetClass;
+		private Class<? extends DynamicObject> targetClass;
 		private String name;
 		
-		public BaseTreeAction(Class<?> classDefinition, String name) {
+		public BaseTreeAction(Class<? extends DynamicObject> classDefinition, String name) {
 			this.targetClass = classDefinition;
 			this.name = name;
 		}
@@ -25,7 +25,7 @@ import com.vaadin.ui.Window;
 			return this.name;
 		}
 
-		public Class<?> getTargetClass() {
+		public Class<? extends DynamicObject> getTargetClass() {
 			return targetClass;
 		}
 

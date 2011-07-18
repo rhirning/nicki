@@ -89,9 +89,11 @@ public class LdapHelper {
 
 	public static void addQuery(StringBuffer sb, String query, LOGIC andOr) {
 		if (sb.length() == 0) {
-			sb.append("(");
 			sb.append(query);
-			sb.append(")");
+			if (!StringUtils.startsWith(query, "(")) {
+				sb.insert(0,"(");
+				sb.append(")");
+			}
 		} else {
 			sb.insert(0, andOr.getSign());
 			sb.insert(0, "(");
