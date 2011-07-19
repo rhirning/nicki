@@ -12,11 +12,9 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.BasicAction;
-import org.mgnl.nicki.ldap.context.BasicContext;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -50,6 +48,7 @@ public class BasicActionHandler {
 		}
 	}
 
+	@SuppressWarnings("OverridableMethodCallInConstructor")
 	public BasicActionHandler(NickiContext ctx, String actionname, String target, boolean noexec) {
 		this.ctx = ctx;
 		this.actionname = actionname;
@@ -133,6 +132,7 @@ public class BasicActionHandler {
 		return actionname + sdf.format(new Date());
 	}
 
+	@SuppressWarnings("CallToThreadDumpStack")
 	protected void initDocument() {
 		DocumentBuilderFactory domfactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = null;
@@ -140,6 +140,7 @@ public class BasicActionHandler {
 			builder = domfactory.newDocumentBuilder();
 		} catch (ParserConfigurationException ex) {
 //			Should never happen
+			ex.printStackTrace();
 			assert 0 == 1;
 		}
 		doc = builder.newDocument();
