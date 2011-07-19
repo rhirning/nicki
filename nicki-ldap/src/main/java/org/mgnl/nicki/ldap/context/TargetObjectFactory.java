@@ -70,8 +70,8 @@ public class TargetObjectFactory implements ObjectFactory {
 		throw new InstantiateDynamicObjectException("Could not getObject " + dn);
 	}
 
-	public <T extends DynamicObject> String getObjectClassFilter(Class<T> classDefinition) throws InstantiateDynamicObjectException {
-		T dynamicObject = findDynamicObject(classDefinition);
+	public String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
+		DynamicObject dynamicObject = findDynamicObject(classDefinition);
 		return dynamicObject.getModel().getObjectClassFilter();
 	}
 

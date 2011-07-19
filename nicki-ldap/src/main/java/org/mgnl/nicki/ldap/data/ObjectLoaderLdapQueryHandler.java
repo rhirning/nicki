@@ -41,7 +41,7 @@ public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements Qu
 		try {
 			if (results != null && results.size() > 0) {
 				if (getClassDefinition() != null) {
-					this.dynamicObject = (DynamicObject) getContext().getObjectFactory().getObject(results.get(0), getClassDefinition());
+					this.dynamicObject = getContext().getObjectFactory().getObject(results.get(0), getClassDefinition());
 				} else {
 					this.dynamicObject = getContext().getObjectFactory().getObject(results.get(0));
 				}
