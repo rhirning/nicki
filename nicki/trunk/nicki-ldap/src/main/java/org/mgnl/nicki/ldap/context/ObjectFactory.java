@@ -17,6 +17,6 @@ public interface ObjectFactory {
 
 	<T extends DynamicObject> T getObject(ContextSearchResult contextSearchResult, Class<T> classDefinition) throws InstantiateDynamicObjectException;
 
-	<T extends DynamicObject> String getObjectClassFilter(Class<T> classDefinition) throws InstantiateDynamicObjectException;
+	String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException;
 
 }

@@ -69,15 +69,16 @@ public class Importer {
 		return result;
 	}
 
-	private void createArticle(String parentPath, String name) {
+	private ShopArticle createArticle(String parentPath, String name) {
 		String path = "cn=" + name + "," + parentPath;
 		if (!context.isExist(path)) {
 			try {
-				context.getObjectFactory().createNewDynamicObject(ShopArticle.class, parentPath, name);
+				return context.getObjectFactory().createNewDynamicObject(ShopArticle.class, parentPath, name);
 			} catch (InstantiateDynamicObjectException e) {
 				e.printStackTrace();
 			}
 		}
+		return null;
 	}
 
 	private void checkObject(String parentPath, String name) {
