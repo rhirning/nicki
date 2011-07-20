@@ -1,5 +1,6 @@
 package org.mgnl.nicki.core.helper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -11,6 +12,12 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 
 public class DataHelper {
+
+	public final static String DATE_FORMAT = "yyyyMMdd";
+	// 20091030115321Z
+	public final static String TIMESTAMP_FORMAT = "yyyyMMddHHmmss";
+	public static SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
+	public static SimpleDateFormat timestampFormat = new SimpleDateFormat(TIMESTAMP_FORMAT);
 
 	public static int getInteger(String stringValue, int defaultValue) {
 		stringValue = StringUtils.strip(stringValue);
