@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.dynamic.objects.objects.ShopArticle.TYPE;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
@@ -18,8 +19,6 @@ import freemarker.template.TemplateModelException;
 
 @SuppressWarnings("serial")
 public class Person extends DynamicTemplateObject {
-	public final static String DATE_FORMAT = "yyyyMMdd";
-	public static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 	public enum GENDER {MALE, FEMALE};
 
 	public enum PERSONTYPE {
@@ -251,7 +250,7 @@ public class Person extends DynamicTemplateObject {
 
 	public void setExitDate(Date date) {
 		if (date != null) {
-			put("lastWorkingDay", dateFormat.format(date));
+			put("lastWorkingDay", DataHelper.format.format(date));
 		}
 	}
 
@@ -295,13 +294,13 @@ public class Person extends DynamicTemplateObject {
 
 	public void setBirthDate(Date value) {
 		if (value != null) {
-			put("birthDate", dateFormat.format(value));
+			put("birthDate", DataHelper.format.format(value));
 		}
 	}
 
 	public void setEntryDate(Date value) {
 		if (value != null) {
-			put("entryDate", dateFormat.format(value));
+			put("entryDate", DataHelper.format.format(value));
 		}
 	}
 
