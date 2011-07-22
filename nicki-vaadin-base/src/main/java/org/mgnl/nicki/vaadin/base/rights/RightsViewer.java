@@ -13,27 +13,35 @@ import org.mgnl.nicki.rights.core.RightAttribute;
 import org.mgnl.nicki.rights.core.RightData;
 import org.mgnl.nicki.rights.core.RightsGroup;
 import org.mgnl.nicki.rights.core.RightsSet;
+import org.mgnl.nicki.vaadin.base.command.SelectPersonCommand;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
+
 
 @SuppressWarnings("serial")
 public class RightsViewer extends CustomComponent {
 
 	private AbsoluteLayout mainLayout;
+	private Person user;
 	private Person person;
 	private RightsSet rightsSet;
 	private Button saveButton;
 	private DynamicObject parent = null;
+	private PersonSelector personSelector;
 	
 	private static Map<String, AttributeComponent> attributeComponents = new HashMap<String, AttributeComponent>();
 	static {
@@ -45,14 +53,12 @@ public class RightsViewer extends CustomComponent {
 	}
 
 
-	public RightsViewer(Person person, RightsSet rightsSet) {
-		this.person = person;
+	public RightsViewer(Person user, RightsSet rightsSet, PersonSelector personSelector) {
+		this.user = user;
 		this.rightsSet = rightsSet;
+		this.personSelector = personSelector;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
-		
-		
-
 	}
 
 
@@ -63,9 +69,55 @@ public class RightsViewer extends CustomComponent {
 		// top-level component properties
 		setWidth("100.0%");
 		setHeight("100.0%");
-		VerticalLayout layout = new VerticalLayout();
-		mainLayout.addComponent(layout, "top:0.0px;left:0.0px;");
+		Button selectPerson = new Button(I18n.getText("nicki.editor.generic.button.selectPerson"));
+		selectPerson.addListener(new Button.ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				personSelector.init(user.getContext(), new SelectPersonCommand() {
+					
+					@Override
+					public void setSelectedPerson(Person selectedPerson) {
+						person = selectedPerson;
+						mainLayout.removeAllComponents();
+						showTabs();
+					}
 
+				});
+				Window window = new Window(I18n.getText("nicki.editor.bu.ouchange.window.person.title"), personSelector);
+				window.setWidth(640, Sizeable.UNITS_PIXELS);
+				window.setHeight(640, Sizeable.UNITS_PIXELS);
+				window.setModal(true);
+
+				getWindow().addWindow(window);
+			}
+		});
+		
+		mainLayout.addComponent(selectPerson, "top:20.0px;left:20.0px;");
+		return mainLayout;
+		
+	}
+	
+	private void showTabs() {
+		AbsoluteLayout personLayout = new AbsoluteLayout();
+		personLayout.setHeight("30px");
+		personLayout.setWidth("100%");
+		Label personLabel = new Label(person.getDisplayName());
+		personLabel.setWidth("200px");
+		personLayout.addComponent(personLabel, "top:0.0px;left:20.0px;");
+
+		Button selectPerson = new Button();
+		selectPerson.setWidth("-1px");
+		selectPerson.setHeight("-1px");
+		selectPerson.setCaption("Auswählen");
+		selectPerson.setImmediate(false);
+		personLayout.addComponent(selectPerson, "top:0.0px;left:240.0px;");
+
+		mainLayout.addComponent(personLayout, "top:0.0px;left:0.0px;");
+		
+		VerticalLayout layout = new VerticalLayout();
+		mainLayout.addComponent(layout, "top:30.0px;left:0.0px;");
+		
 		TabSheet tabSheet = new TabSheet();
 		tabSheet.setHeight(480, UNITS_PIXELS);
 
@@ -73,8 +125,6 @@ public class RightsViewer extends CustomComponent {
 		
 		addTabs(tabSheet);
 
-//		layout.addComponent(getLayout());
-		
 		saveButton = new Button(I18n.getText("nicki.editor.generic.button.save"));
 		saveButton.addListener(new Button.ClickListener() {
 			
@@ -84,7 +134,6 @@ public class RightsViewer extends CustomComponent {
 		});
 
 		layout.addComponent(saveButton);
-		return mainLayout;
 	}
 	
 	private void addTabs(TabSheet tabSheet) {
@@ -225,15 +274,4 @@ public class RightsViewer extends CustomComponent {
 
 		return layout;
 	}
-
-
-	protected Layout getLayout() {
-		VerticalLayout layout = new VerticalLayout();
-		/*
-		DynamicObjectFieldFactory factory = new DynamicObjectFieldFactory(listener);
-		factory.addFields(layout, dynamicObject, create);
-		*/
-		return layout;
-	}
-
 }

@@ -5,11 +5,11 @@ import java.io.Serializable;
 
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.dynamic.objects.objects.Catalog;
+import org.mgnl.nicki.dynamic.objects.objects.CatalogArticle;
+import org.mgnl.nicki.dynamic.objects.objects.CatalogPage;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.dynamic.objects.objects.Shop;
-import org.mgnl.nicki.dynamic.objects.objects.ShopArticle;
-import org.mgnl.nicki.dynamic.objects.objects.ShopShelf;
 import org.mgnl.nicki.ldap.context.Target;
 import org.mgnl.nicki.ldap.context.TargetFactory;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
@@ -34,11 +34,11 @@ public class Orderpage extends NickiApplication {
 	public Component getEditor() {
 		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.shops.basedn"), new ShowAllFilter());
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), treeDataProvider, getI18nBase());
-		editor.configureClass(Org.class, null, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Shop.class);
-		editor.configureClass(Shop.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, ShopShelf.class);
-		editor.configureClass(ShopShelf.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, ShopShelf.class, ShopArticle.class);
-		editor.configureClass(ShopArticle.class, Icon.DOCUMENT, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
-		editor.addAction(new PreviewShop(Shop.class, I18n.getText(getI18nBase() +  ".action.preview")));
+		editor.configureClass(Org.class, null, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Catalog.class);
+		editor.configureClass(Catalog.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, CatalogPage.class);
+		editor.configureClass(CatalogPage.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, CatalogPage.class, CatalogArticle.class);
+		editor.configureClass(CatalogArticle.class, Icon.DOCUMENT, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
+		editor.addAction(new PreviewShop(Catalog.class, I18n.getText(getI18nBase() +  ".action.preview")));
 		editor.initActions();
 		return editor;
 	}
@@ -55,7 +55,7 @@ public class Orderpage extends NickiApplication {
 
 		public void execute(Window parentWindow, DynamicObject dynamicObject) {
 			 previewWindow = new Window(I18n.getText(getI18nBase() + ".preview.window.title"),
-					new ShopWindow(this, new Person(), (Shop)dynamicObject, getI18nBase()));
+					new ShopWindow(this, new Person(), (Catalog)dynamicObject, getI18nBase()));
 			 previewWindow.setModal(true);
 			 previewWindow.setWidth(1024, Sizeable.UNITS_PIXELS);
 			 previewWindow.setHeight(520, Sizeable.UNITS_PIXELS);

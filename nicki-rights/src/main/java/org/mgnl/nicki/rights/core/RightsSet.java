@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -13,7 +14,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
-public class RightsSet {
+@SuppressWarnings("serial")
+public class RightsSet implements Serializable {
 	private List<Right> rightsList = new ArrayList<Right>();
 	private List<RightData> rightsDataList = new ArrayList<RightData>();
 	private List<RightsGroup> rightsGroupsList = new ArrayList<RightsGroup>();

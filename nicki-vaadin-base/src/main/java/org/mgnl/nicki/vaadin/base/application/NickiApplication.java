@@ -19,7 +19,6 @@ import org.mgnl.nicki.vaadin.base.components.ConfirmDialog;
 import org.mgnl.nicki.vaadin.base.components.WelcomeDialog;
 
 import com.vaadin.Application;
-import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Component;

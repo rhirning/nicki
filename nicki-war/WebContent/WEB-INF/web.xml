@@ -48,7 +48,7 @@
 		</init-param>
 	</servlet>
 	<servlet>
-		<servlet-name>Shop Editor</servlet-name>
+		<servlet-name>Catalog Editor</servlet-name>
 		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
 		<init-param>
 			<description>
@@ -88,8 +88,8 @@
 		<url-pattern>/projects/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>Shop Editor</servlet-name>
-		<url-pattern>/shops/*</url-pattern>
+		<servlet-name>Catalog Editor</servlet-name>
+		<url-pattern>/catalogs/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Template Editor</servlet-name>
