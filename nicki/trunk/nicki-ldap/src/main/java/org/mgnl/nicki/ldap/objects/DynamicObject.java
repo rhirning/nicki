@@ -296,6 +296,14 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		return parent;
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T extends DynamicObject> T getParent(Class<T> classDefinition) {
+		if (parent == null) {
+			parent = context.loadObject(getParentPath());
+		}
+		return (T) parent;
+	}
+
 	public void addAttribute(DynamicAttribute dynAttribute) {
 		this.model.addAttribute(dynAttribute);
 	}
