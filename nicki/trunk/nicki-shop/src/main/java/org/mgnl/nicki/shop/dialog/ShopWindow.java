@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.dynamic.objects.objects.Shop;
+import org.mgnl.nicki.dynamic.objects.objects.Catalog;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.editor.TreeAction;
@@ -49,7 +49,7 @@ public class ShopWindow extends CustomComponent {
 
 	
 	private DynamicObject person;
-	private Shop shop;
+	private Catalog catalog;
 	private ShopContainer shopContainer;
 	private TreeAction treeAction;
 	List<String> categories;
@@ -65,11 +65,11 @@ public class ShopWindow extends CustomComponent {
 	 * @param i18nBase 
 	 * @param treeAction 
 	 */
-	public ShopWindow(TreeAction _treeAction, DynamicObject dynamicObject, Shop shop, String i18nBase) {
+	public ShopWindow(TreeAction _treeAction, DynamicObject dynamicObject, Catalog catalog, String i18nBase) {
 		this.i18nBase = i18nBase;
 		this.treeAction = _treeAction;
 		this.person = dynamicObject;
-		this.shop = shop;
+		this.catalog = catalog;
 		shopContainer = new RoleResourceShopContainer(this.person, i18nBase);
 //		shopContainer = new ArticleShopContainer(this.shop, this.person, i18nBase);
 		buildMainLayout();
@@ -124,7 +124,7 @@ public class ShopWindow extends CustomComponent {
 	@SuppressWarnings("unchecked")
 	private void loadCategories() {
 
-		categories = (List<String>) shop.get("category");
+		categories = (List<String>) catalog.get("category");
 		if (categories != null && categories.size() > 0) {
 			CategoryChangeListener listener = new CategoryChangeListener(this, categoryContainer); 
 			for (Iterator<String> iterator = categories.iterator(); iterator.hasNext();) {

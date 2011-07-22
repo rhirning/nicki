@@ -107,7 +107,7 @@
 		<portlet-class>com.vaadin.terminal.gwt.server.ApplicationPortlet</portlet-class>
 		<init-param>
 			<name>application</name>
-			<value>shops</value>
+			<value>catalogs</value>
 		</init-param>
 		<expiration-cache>0</expiration-cache>
 		<supports>

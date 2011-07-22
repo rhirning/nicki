@@ -1,18 +1,22 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
 @SuppressWarnings("serial")
-public class ShopArticle extends DynamicTemplateObject {
+public class CatalogArticle extends DynamicTemplateObject {
 	
-	private Shop shop = null;
+	private Catalog catalog = null;
 	
 	public static enum TYPE {ROLE, RESOURCE, ARTICLE};
 	
 	public void initDataModel() {
-		addObjectClass("nickiShopArticle");
+		addObjectClass("nickiCatalogArticle");
 		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
@@ -24,6 +28,10 @@ public class ShopArticle extends DynamicTemplateObject {
 		addAttribute(dynAttribute);
 		
 		dynAttribute = new DynamicAttribute("category", "nickiCategory", String.class);
+		dynAttribute.setMultiple();
+		addAttribute(dynAttribute);
+		
+		dynAttribute = new DynamicAttribute("attribute", "nickiAttribute", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		
@@ -49,14 +57,50 @@ public class ShopArticle extends DynamicTemplateObject {
 	}
 	
 	public String getCatalogPath() {
-		return getSlashPath(shop);
+		return getSlashPath(catalog);
 	}
 
-	public void setShop(Shop shop) {
-		this.shop = shop;
+	public void setCatalog(Catalog catalog) {
+		this.catalog = catalog;
 	}
 
-	public Shop getShop() {
-		return shop;
+	public Catalog getCatalog() {
+		return catalog;
 	}
+	
+	public void setAttributes(List<CatalogArticleAttribute> attributes) {
+		put("attribute", attributes);
+	}
+	
+	public List<CatalogArticleAttribute> getAttributes() {
+		List<CatalogArticleAttribute> list = new ArrayList<CatalogArticleAttribute>();
+		@SuppressWarnings("unchecked")
+		List<String> attributes = (List<String>) get("attribute");
+		if (attributes != null && attributes.size() > 0) {
+			for (Iterator<String> iterator = attributes.iterator(); iterator.hasNext();) {
+				try {
+					list.add(new CatalogArticleAttribute(iterator.next()));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return list;
+	}
+	
+	public List<CatalogArticleAttribute> getInheritedAttributes() {
+		try {
+			return getParent(CatalogPage.class).getAllAttributes();
+		} catch (Exception e) {
+			return new ArrayList<CatalogArticleAttribute>();
+		}
+	}
+	
+	public List<CatalogArticleAttribute> getAllAttributes() {
+		List<CatalogArticleAttribute> list = getAttributes();
+		list.addAll(getInheritedAttributes());
+		return list;
+	}
+
+
 }

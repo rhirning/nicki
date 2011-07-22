@@ -4,11 +4,11 @@ import org.mgnl.nicki.ldap.methods.LoadObjectsMethod;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
 @SuppressWarnings("serial")
-public class Shop extends DynamicTemplateObject {
+public class Catalog extends DynamicTemplateObject {
 
 	public void initDataModel() {
 		// objectClass
-		addObjectClass("nickiShop");
+		addObjectClass("nickiCatalog");
 		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
@@ -17,9 +17,9 @@ public class Shop extends DynamicTemplateObject {
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		
-		addChild("shelf", "objectClass=nickiShopShelf");
+		addChild("page", "objectClass=nickiCatalogPage");
 		
-		addMethod("allArticles", new LoadObjectsMethod(getContext(), this, "objectClass=nickiShopArticle"));
+		addMethod("allArticles", new LoadObjectsMethod(getContext(), this, "objectClass=nickiCatalogArticle"));
 
 	}
 

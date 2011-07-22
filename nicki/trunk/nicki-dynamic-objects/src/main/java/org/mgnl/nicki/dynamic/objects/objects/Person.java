@@ -1,14 +1,11 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.dynamic.objects.objects.ShopArticle.TYPE;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
@@ -153,11 +150,11 @@ public class Person extends DynamicTemplateObject {
 
 
 	// TODO
-	public boolean hasArticle(ShopArticle article) {
+	public boolean hasArticle(CatalogArticle article) {
 		try {
-			if (article.getArticleType() == TYPE.ARTICLE) {
+			if (article.getArticleType() == CatalogArticle.TYPE.ARTICLE) {
 				
-			} else if (article.getArticleType() == TYPE.RESOURCE) {
+			} else if (article.getArticleType() == CatalogArticle.TYPE.RESOURCE) {
 				TemplateMethodModel method = (TemplateMethodModel) get("getResources");
 				if (method != null) {
 					@SuppressWarnings("unchecked")
@@ -170,7 +167,7 @@ public class Person extends DynamicTemplateObject {
 						}
 					}
 				}
-			} else if (article.getArticleType() == TYPE.ROLE) {
+			} else if (article.getArticleType() == CatalogArticle.TYPE.ROLE) {
 				TemplateMethodModel method = (TemplateMethodModel) get("getRoles");
 				if (method != null) {
 					@SuppressWarnings("unchecked")

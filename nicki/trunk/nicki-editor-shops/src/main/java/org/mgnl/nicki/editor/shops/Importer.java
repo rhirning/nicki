@@ -6,8 +6,8 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.dynamic.objects.objects.ShopArticle;
-import org.mgnl.nicki.dynamic.objects.objects.ShopShelf;
+import org.mgnl.nicki.dynamic.objects.objects.CatalogArticle;
+import org.mgnl.nicki.dynamic.objects.objects.CatalogPage;
 import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
 import org.mgnl.nicki.ldap.context.AppContext;
 import org.mgnl.nicki.ldap.context.NickiContext;
@@ -69,11 +69,11 @@ public class Importer {
 		return result;
 	}
 
-	private ShopArticle createArticle(String parentPath, String name) {
+	private CatalogArticle createArticle(String parentPath, String name) {
 		String path = "cn=" + name + "," + parentPath;
 		if (!context.isExist(path)) {
 			try {
-				return context.getObjectFactory().createNewDynamicObject(ShopArticle.class, parentPath, name);
+				return context.getObjectFactory().createNewDynamicObject(CatalogArticle.class, parentPath, name);
 			} catch (InstantiateDynamicObjectException e) {
 				e.printStackTrace();
 			}
@@ -85,7 +85,7 @@ public class Importer {
 		String path = "cn=" + name + "," + parentPath;
 		if (!context.isExist(path)) {
 			try {
-				context.createDynamicObject(ShopShelf.class, parentPath, name);
+				context.createDynamicObject(CatalogPage.class, parentPath, name);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

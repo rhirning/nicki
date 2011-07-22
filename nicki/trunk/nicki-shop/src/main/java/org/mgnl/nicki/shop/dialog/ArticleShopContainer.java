@@ -6,9 +6,9 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.dynamic.objects.objects.Catalog;
+import org.mgnl.nicki.dynamic.objects.objects.CatalogArticle;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.dynamic.objects.objects.Shop;
-import org.mgnl.nicki.dynamic.objects.objects.ShopArticle;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 
@@ -30,11 +30,11 @@ public class ArticleShopContainer implements ShopContainer{
 	
 	private IndexedContainer container = new IndexedContainer();
 	private DynamicObject person;
-	private Shop shop;
+	private Catalog catalog;
 
-	public ArticleShopContainer(Shop shop, DynamicObject person, String i18nBase) {
+	public ArticleShopContainer(Catalog catalog, DynamicObject person, String i18nBase) {
 		super();
-		this.shop = shop;
+		this.catalog = catalog;
 		this.person = person;
 		STATUS_ORDERED = I18n.getText(i18nBase + ".status.ordered");
 		STATUS_CANCELED = I18n.getText(i18nBase + ".status.canceled");
@@ -50,12 +50,12 @@ public class ArticleShopContainer implements ShopContainer{
 		container.addContainerProperty(PROPERTY_CATEGORY, String.class, null);
 
 		container.addContainerProperty(PROPERTY_PATH, String.class, null);
-		List<ShopArticle> loadedArticles = shop.getContext().loadObjects(ShopArticle.class, shop.getPath(), "objectClass=nickiShopArticle");
+		List<CatalogArticle> loadedArticles = catalog.getContext().loadObjects(CatalogArticle.class, catalog.getPath(), "objectClass=nickiShopArticle");
 
 	    if (loadedArticles != null) {
-		    for (Iterator<ShopArticle> iterator = loadedArticles.iterator(); iterator.hasNext();) {
-				ShopArticle article = iterator.next();
-				article.setShop(shop);
+		    for (Iterator<CatalogArticle> iterator = loadedArticles.iterator(); iterator.hasNext();) {
+		    	CatalogArticle article = iterator.next();
+				article.setCatalog(catalog);
 				Item item = container.addItem(article);
 				item.getItemProperty(PROPERTY_NAME).setValue(article.getDisplayName());
 				item.getItemProperty(PROPERTY_PATH).setValue(article.getCatalogPath());
