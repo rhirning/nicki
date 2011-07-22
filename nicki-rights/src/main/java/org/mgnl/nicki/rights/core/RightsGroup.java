@@ -7,6 +7,7 @@ import java.util.List;
 import org.jdom.Element;
 import org.mgnl.nicki.rights.provider.Provider;
 
+@SuppressWarnings("serial")
 public class RightsGroup extends Right {
 
 	private List<Right> rightsList = new ArrayList<Right>();

@@ -1,5 +1,6 @@
 package org.mgnl.nicki.rights.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -7,7 +8,8 @@ import java.util.List;
 import org.jdom.Element;
 import org.mgnl.nicki.core.i18n.I18n;
 
-public class Right {
+@SuppressWarnings("serial")
+public class Right implements Serializable {
 	private String name;
 	private String label;
 	private List<RightAttribute> attributeList = new ArrayList<RightAttribute>();

@@ -29,6 +29,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/nicki-editor-shops/build/classes"/>
-        <property name="context-root" value="shops"/>
+        <property name="context-root" value="catalogs"/>
     </wb-module>
 </project-modules>

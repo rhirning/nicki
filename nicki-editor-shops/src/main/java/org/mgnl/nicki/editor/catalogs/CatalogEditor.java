@@ -1,4 +1,4 @@
-package org.mgnl.nicki.editor.shops;
+package org.mgnl.nicki.editor.catalogs;
 
 
 import java.io.Serializable;
@@ -26,7 +26,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Window;
 
 @SuppressWarnings("serial")
-public class ShopEditor extends NickiApplication {
+public class CatalogEditor extends NickiApplication {
 
 	@SuppressWarnings("unchecked")
 	@Override

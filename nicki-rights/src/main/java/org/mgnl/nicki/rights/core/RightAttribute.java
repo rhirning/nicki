@@ -1,9 +1,12 @@
 package org.mgnl.nicki.rights.core;
 
+import java.io.Serializable;
+
 import org.jdom.Element;
 import org.mgnl.nicki.core.i18n.I18n;
 
-public class RightAttribute {
+@SuppressWarnings("serial")
+public class RightAttribute implements Serializable{
 	private String name;
 	private String label;
 	private String type;

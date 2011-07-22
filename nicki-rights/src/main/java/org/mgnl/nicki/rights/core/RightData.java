@@ -1,8 +1,11 @@
 package org.mgnl.nicki.rights.core;
 
+import java.io.Serializable;
+
 import org.jdom.Element;
 
-public class RightData extends Right {
+@SuppressWarnings("serial")
+public class RightData extends Right implements Serializable{
 
 	public RightData(Element dataElement) throws ClassNotFoundException {
 		super(dataElement);

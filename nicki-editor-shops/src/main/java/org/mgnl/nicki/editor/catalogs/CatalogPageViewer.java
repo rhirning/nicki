@@ -1,4 +1,4 @@
-package org.mgnl.nicki.editor.shops;
+package org.mgnl.nicki.editor.catalogs;
 
 import java.util.Iterator;
 
