@@ -32,6 +32,7 @@ public class BasicActionHandler {
 	private String target;
 	private String actionname;
 	private boolean noexec;
+        protected static final SimpleDateFormat STANDARD_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
 
 	public enum DN_FORMAT {
 
