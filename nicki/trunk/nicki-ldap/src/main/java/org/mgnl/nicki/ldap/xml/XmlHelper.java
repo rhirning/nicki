@@ -4,26 +4,20 @@
  */
 package org.mgnl.nicki.ldap.xml;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpression;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
 import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.ls.DOMImplementationLS;
-import org.w3c.dom.ls.LSSerializer;
-import org.xml.sax.SAXException;
+import org.jdom.Content;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.Parent;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.Format;
+import org.jdom.output.XMLOutputter;
+import org.jdom.xpath.XPath;
 
 /**
  *
@@ -34,19 +28,12 @@ public class XmlHelper {
     private static XmlHelper instance = null;
     private Document doc;
     private XPath navigator = null;
-    private DocumentBuilder db = null;
+    private SAXBuilder sb = null;
 
     private XmlHelper() {
-        navigator = XPathFactory.newInstance().newXPath();
+        //navigator = XPathFactory.newInstance().newXPath();
 
-        DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-
-        try {
-            db = dbf.newDocumentBuilder();
-        } catch (ParserConfigurationException ex) {
-            throw new RuntimeException(ex);
-        }
-
+        sb = new SAXBuilder();
     }
 
     public static XmlHelper getInstance() {
@@ -58,51 +45,50 @@ public class XmlHelper {
     }
 
     public Document getNewDocument() {
-        return db.newDocument();
+        return new Document();
     }
-    
+
     public Document getDocument() {
-        if(doc == null) {
+        if (doc == null) {
             doc = getNewDocument();
         }
-        
+
         return doc;
     }
-    
+
     public void setDocument(Document doc) {
         this.doc = doc;
     }
 
-    public <T extends Node> List<T> selectNodes(Class<T> clazz, Node ctx, String xpath) {
-        //TODO XPATH parsen und $ELEM_* && $ATTR_* ersetzen durch Konstanten
-        NodeList nodes;
+    public <T extends Content> List<T> selectNodes(Class<T> clazz, Parent ctx, String xpath) {
         List<T> list = new ArrayList<T>();
+        List<Object> nodes;
 
         try {
-            XPathExpression expr = navigator.compile(xpath);
-            nodes = (NodeList) expr.evaluate(ctx, XPathConstants.NODESET);
-        } catch (XPathExpressionException ex) {
+            nodes = XPath.selectNodes(ctx, xpath);
+        } catch (JDOMException ex) {
             System.err.println("corrupted xpath expression: " + xpath + " - " + ex.getMessage());
-            return null;
+            return list;
         }
 
-        for (int i = 0; i < nodes.getLength(); i++) {
-            if (clazz.isInstance(nodes.item(i))) {
-                list.add((T) nodes.item(i));
+        for (Object node : nodes) {
+            if (clazz.isInstance(node)) {
+                list.add((T) node);
             }
         }
 
         return list;
+
     }
 
-    public <T extends Node> T selectNode(Class<T> clazz, Node ctx, String xpath) {
+    public <T extends Content> T selectNode(Class<T> clazz, Parent ctx, String xpath) {
         Object node = null;
 
-        try {
-            XPathExpression expr = navigator.compile(xpath);
-            node = expr.evaluate(ctx, XPathConstants.NODE);
-        } catch (XPathExpressionException ex) {
+         try {
+            node = XPath.selectSingleNode(ctx, xpath);
+        } catch (JDOMException ex) {
             System.err.println("corrupted xpath expression: " + xpath + " - " + ex.getMessage());
+            return null;
         }
 
         if (clazz.isInstance(node)) {
@@ -112,19 +98,17 @@ public class XmlHelper {
         }
     }
 
-    public Document getDocumentFromXml(String xml) throws SAXException {
+    public Document getDocumentFromXml(String xml) throws JDOMException {
         if (null == xml) {
             xml = "";
         }
 
-        InputStream is = new ByteArrayInputStream(xml.getBytes());
+        StringReader sr = new StringReader(xml);
 
         Document document;
         try {
-            document = db.parse(is);
-        } catch (IOException ioe) {
-            return null;
-        } catch (IllegalArgumentException iae) {
+            document = sb.build(sr);
+        } catch (IOException ex) {
             return null;
         }
 
@@ -132,18 +116,21 @@ public class XmlHelper {
 
     }
 
-    private String getXml(Document doc, Node node) {
-        DOMImplementationLS impl = (DOMImplementationLS) doc.getImplementation();
-        LSSerializer serializer = impl.createLSSerializer();
-        String xml = serializer.writeToString(node);
-        return StringUtils.substringAfter(xml, "\n");
-    }
-
-    public String getXml(Node node) {
-        return getXml(node.getOwnerDocument(), node);
-    }
-
     public String getXml(Document doc) {
-        return getXml(doc, doc);
+        XMLOutputter printer = new XMLOutputter();
+        Format format = printer.getFormat();
+        format.setIndent("\t");
+        printer.setFormat(format);
+        
+        return StringUtils.substringAfter(printer.outputString(doc), format.getLineSeparator());
+    }
+
+    public String getXml(Element elem) {
+        XMLOutputter printer = new XMLOutputter();
+        Format format = printer.getFormat();
+        format.setIndent("\t");
+        printer.setFormat(format);
+        
+        return StringUtils.substringAfter(printer.outputString(doc), format.getLineSeparator());
     }
 }
