@@ -5,6 +5,7 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
 import java.text.ParseException;
+import org.jdom.JDOMException;
 import org.mgnl.nicki.dynamic.objects.components.ProcessResult;
 import org.mgnl.nicki.dynamic.objects.components.CartEntry;
 import java.util.Date;
@@ -12,16 +13,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.NotImplementedException;
+import org.jdom.Document;
+import org.jdom.Element;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.ldap.context.NickiContext;
+import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.xml.XmlHelper;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
+
 
 /**
  *
@@ -93,17 +95,21 @@ public class Cart extends DynamicObject {
 
         try {
             fromXml((String) get("data"));
-        } catch (SAXException ex) {
-            System.err.println("xml parse exception - " + ex.getMessage());
+        } catch (Exception ex) {
+            System.err.println("xml invalid - " + ex.getMessage());
+            throw new IllegalArgumentException(ex);
         }
     }
 
-    public void fromXml(String xml) throws SAXException {
+    public void fromXml(String xml) throws JDOMException {
 
         Document doc = helper.getDocumentFromXml(xml);
 
         Element cart = helper.selectNode(Element.class, doc, ELEM_CART);
-        catalog = getContext().loadObject(Catalog.class, cart.getAttribute(ATTR_CATALOG));
+        catalog = getContext().loadObject(Catalog.class, cart.getAttributeValue(ATTR_CATALOG));
+        if(catalog == null) {
+            System.err.println("could not load catalog object - id is invalid: \"" + cart.getAttributeValue(ATTR_CATALOG) + "\"");
+        }
 
         List<Element> entries = helper.selectNodes(Element.class, cart, ELEM_CARTENTRY);
         CartEntry entry;
@@ -123,12 +129,13 @@ public class Cart extends DynamicObject {
         Document doc = helper.getNewDocument();
         helper.setDocument(doc);
         
-        Element cart = (Element) doc.appendChild(doc.createElement(ELEM_CART));
-
+        doc.setRootElement(new Element(ELEM_CART));
+        Element cart = doc.getRootElement();
+        
         cart.setAttribute(ATTR_CATALOG, catalog.getPath());
 
         for (String key : cartentries.keySet()) {
-            cart.appendChild(getCartEntryNode(cartentries.get(key)));
+            cart.addContent(getCartEntryNode(cartentries.get(key)));
         }
 
         return helper.getXml(doc);
@@ -226,18 +233,18 @@ public class Cart extends DynamicObject {
         }
 
         CartEntry entry = new CartEntry(
-                node.getAttribute(ATTR_ID),
-                CartEntry.ACTION.valueOf(node.getAttribute(ATTR_ACTION).toUpperCase()));
+                node.getAttributeValue(ATTR_ID),
+                CartEntry.ACTION.valueOf(node.getAttributeValue(ATTR_ACTION).toUpperCase()));
 
         for (Element element : helper.selectNodes(Element.class, node, ELEM_ATTRIBUTE)) {
-            entry.addAttribute(element.getAttribute(ATTR_NAME), element.getTextContent());
+            entry.addAttribute(element.getAttributeValue(ATTR_NAME), element.getText());
         }
 
         return entry;
     }
 
     private Element getCartEntryNode(CartEntry entry) {
-        Element cartentry = helper.getDocument().createElement(ELEM_CARTENTRY);
+        Element cartentry = new Element(ELEM_CARTENTRY);
 
         cartentry.setAttribute(ATTR_ID, entry.getId());
         cartentry.setAttribute(ATTR_ACTION, entry.getAction().toString().toLowerCase());
@@ -246,11 +253,11 @@ public class Cart extends DynamicObject {
         Element attr;
 
         for (String key : attributes.keySet()) {
-            attr = helper.getDocument().createElement(ELEM_ATTRIBUTE);
+            attr = new Element(ELEM_ATTRIBUTE);
             attr.setAttribute(ATTR_NAME, key);
-            attr.setTextContent(attributes.get(key));
+            attr.setText(attributes.get(key));
 
-            cartentry.appendChild(attr);
+            cartentry.addContent(attr);
         }
 
         return cartentry;
