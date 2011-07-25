@@ -93,9 +93,9 @@
 		</extensions>
 	</build>
 	<scm>
-		<connection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki/tags/nicki-parent/nicki-parent-1.8</connection>
-		<developerConnection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki/tags/nicki-parent/nicki-parent-1.8</developerConnection>
-		<url>https://svn.hirning.de/svn/repos/nicki/nicki/tags/nicki-parent/nicki-parent-1.8</url>
+		<connection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki/trunk</connection>
+		<developerConnection>scm:svn:https://svn.hirning.de/svn/repos/nicki/nicki/trunk</developerConnection>
+		<url>https://svn.hirning.de/svn/repos/nicki/nicki/tags/nicki-parent</url>
 	</scm>
 	<repositories>
 		<repository>
