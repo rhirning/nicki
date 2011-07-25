@@ -23,4 +23,12 @@ public class Catalog extends DynamicTemplateObject {
 
 	}
 
+	public CatalogArticle getArticle(String catalogArticleId) {
+		CatalogArticle article = getContext().loadObject(CatalogArticle.class, catalogArticleId + "," + getPath());
+		if (article != null) {
+			article.setCatalog(this);
+		}
+		return article;
+	}
+
 }

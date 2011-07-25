@@ -85,10 +85,10 @@ public class CatalogPageViewer extends CustomComponent implements ClassEditor {
 	}
 	protected void addEntry(Table table) {
 		EnterNameHandler handler = new NewEntryEnterNameHandler(table);
-		EnterNameDialog dialog = new EnterNameDialog("nicki.editor.shops.entry.new");
+		EnterNameDialog dialog = new EnterNameDialog("nicki.editor.catalogs.entry.new");
 		dialog.setHandler(handler);
 		Window newWindow = new Window(
-				I18n.getText("nicki.editor.shops.entry.new.window.title"), dialog);
+				I18n.getText("nicki.editor.catalogs.entry.new.window.title"), dialog);
 		newWindow.setWidth(440, Sizeable.UNITS_PIXELS);
 		newWindow.setHeight(500, Sizeable.UNITS_PIXELS);
 		newWindow.setModal(true);
