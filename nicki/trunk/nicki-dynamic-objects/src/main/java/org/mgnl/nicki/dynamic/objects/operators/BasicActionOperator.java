@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.mgnl.nicki.dynamic.objects.wrapper;
+package org.mgnl.nicki.dynamic.objects.operators;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,7 +25,7 @@ import org.w3c.dom.ls.LSSerializer;
  *
  * @author cna
  */
-public class BasicActionHandler {
+public class BasicActionOperator {
 
 	private NickiContext ctx;
 	private Document doc;
@@ -50,7 +50,7 @@ public class BasicActionHandler {
 	}
 
 	@SuppressWarnings("OverridableMethodCallInConstructor")
-	public BasicActionHandler(NickiContext ctx, String actionname, String target, boolean noexec) {
+	public BasicActionOperator(NickiContext ctx, String actionname, String target, boolean noexec) {
 		this.ctx = ctx;
 		this.actionname = actionname;
 		this.target = target;
