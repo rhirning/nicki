@@ -1,6 +1,7 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
 import org.apache.commons.lang.StringUtils;
+import org.jdom.Element;
 import org.mgnl.nicki.core.i18n.I18n;
 
 public class CatalogArticleAttribute {
@@ -21,6 +22,11 @@ public class CatalogArticleAttribute {
 		this.name = parts[0];
 		this.key = parts[0];
 		this.type = parts[0];
+	}
+	public CatalogArticleAttribute(Element attributeElement) {
+		this.name = attributeElement.getAttributeValue("name");
+		this.key = attributeElement.getAttributeValue("label");
+		this.type = attributeElement.getAttributeValue("type");
 	}
 	public String getName() {
 		return name;

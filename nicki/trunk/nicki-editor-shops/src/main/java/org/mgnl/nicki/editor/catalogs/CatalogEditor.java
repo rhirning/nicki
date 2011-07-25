@@ -12,7 +12,6 @@ import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.ldap.context.Target;
 import org.mgnl.nicki.ldap.context.TargetFactory;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
-import org.mgnl.nicki.shop.dialog.ShopWindow;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
@@ -20,6 +19,7 @@ import org.mgnl.nicki.vaadin.base.editor.ShowAllFilter;
 import org.mgnl.nicki.vaadin.base.editor.TreeAction;
 import org.mgnl.nicki.vaadin.base.editor.DataProvider;
 import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
+import org.mgnl.nicki.vaadin.base.shop.ShopWindow;
 
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.Component;
@@ -31,14 +31,14 @@ public class CatalogEditor extends NickiApplication {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Component getEditor() {
-		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.shops.basedn"), new ShowAllFilter());
+		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.catalogs.basedn"), new ShowAllFilter());
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), treeDataProvider, getI18nBase());
 		editor.configureClass(Org.class, null, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Catalog.class);
 		editor.configureClass(Catalog.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, CatalogPage.class);
 		editor.configureClass(CatalogPage.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, CatalogPage.class, CatalogArticle.class);
 		editor.configureClass(CatalogArticle.class, Icon.DOCUMENT, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
 		editor.addAction(new PreviewShop(Catalog.class, I18n.getText(getI18nBase() +  ".action.preview")));
-		editor.setClassEditor(CatalogPage.class, new CatalogPageViewer());
+//		editor.setClassEditor(CatalogPage.class, new CatalogPageViewer());
 		editor.initActions();
 		return editor;
 	}
@@ -83,6 +83,6 @@ public class CatalogEditor extends NickiApplication {
 
 	@Override
 	public String getI18nBase() {
-		return "nicki.editor.shops";
+		return "nicki.editor.catalogs";
 	}
 }

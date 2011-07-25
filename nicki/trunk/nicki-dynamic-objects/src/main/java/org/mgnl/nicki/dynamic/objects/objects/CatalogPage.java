@@ -1,9 +1,16 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.mgnl.nicki.core.helper.XMLHelper;
+import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
 @SuppressWarnings("serial")
@@ -19,8 +26,7 @@ public class CatalogPage extends DynamicTemplateObject {
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("attribute", "nickiAttribute", String.class);
-		dynAttribute.setMultiple();
+		dynAttribute = new DynamicAttribute("attributes", "nickiAttributes", TextArea.class);
 		addAttribute(dynAttribute);
 		
 		// TODO
@@ -31,15 +37,24 @@ public class CatalogPage extends DynamicTemplateObject {
 	
 	public List<CatalogArticleAttribute> getAttributes() {
 		List<CatalogArticleAttribute> list = new ArrayList<CatalogArticleAttribute>();
-		@SuppressWarnings("unchecked")
-		List<String> attributes = (List<String>) get("attribute");
-		if (attributes != null && attributes.size() > 0) {
-			for (Iterator<String> iterator = attributes.iterator(); iterator.hasNext();) {
-				try {
-					list.add(new CatalogArticleAttribute(iterator.next()));
-				} catch (Exception e) {
-					e.printStackTrace();
+		String attributes = getAttribute("attributes");
+		if (StringUtils.isNotEmpty(attributes)) {
+			try {
+				Document document = XMLHelper.documentFromString(attributes);
+				@SuppressWarnings("unchecked")
+				List<Element> attrs = document.getRootElement().getChildren("attribute");
+				if (attrs != null) {
+					for (Iterator<Element> iterator = attrs.iterator(); iterator.hasNext();) {
+						Element attributeElement = iterator.next();
+						list.add(new CatalogArticleAttribute(attributeElement));
+					}
 				}
+			} catch (JDOMException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 		return list;
