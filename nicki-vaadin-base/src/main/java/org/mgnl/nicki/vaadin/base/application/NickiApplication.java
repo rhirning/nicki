@@ -206,7 +206,7 @@ public abstract class NickiApplication extends Application  implements HttpServl
 	}
 
 	public void confirm(Command command) {
-		Window confirmWindow = new Window("Confirm");
+		Window confirmWindow = new Window(command.getTitle());
 		confirmWindow.setModal(true);
 	       // Configure the windws layout; by default a VerticalLayout
         VerticalLayout layout = (VerticalLayout) confirmWindow.getContent();

@@ -50,7 +50,7 @@ public class ConfirmDialog extends CustomComponent {
 				try {
 					command.execute();
 				} catch (Exception e) {
-					getWindow().showNotification(command.getErrorText(),
+					getWindow().getParent().showNotification(command.getErrorText(),
 							e.getMessage(), Window.Notification.TYPE_ERROR_MESSAGE);
 				}
 				getWindow().getParent().removeWindow(getWindow());
