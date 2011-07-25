@@ -3,8 +3,10 @@ package org.mgnl.nicki.vaadin.base.command;
 public interface Command {
 
 	public void execute() throws CommandException;
+	
+	public String getTitle();
 
-	public Object getHeadline();
+	public String getHeadline();
 
 	public String getCancelCaption();
 

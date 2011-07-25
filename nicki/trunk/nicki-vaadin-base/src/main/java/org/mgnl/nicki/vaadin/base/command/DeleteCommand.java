@@ -30,7 +30,12 @@ public class DeleteCommand implements Command {
 	}
 
 	@Override
-	public Object getHeadline() {
+	public String getTitle() {
+		return I18n.getText("nicki.editor.delete.title");
+	}
+
+	@Override
+	public String getHeadline() {
 		return I18n.getText("nicki.editor.delete.headline", target.getDisplayName());
 	}
 
