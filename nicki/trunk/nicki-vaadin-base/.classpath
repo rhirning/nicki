@@ -22,5 +22,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/nicki-rights"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nicki-shop"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
