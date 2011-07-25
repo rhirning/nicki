@@ -7,7 +7,6 @@ package org.mgnl.nicki.ldap.xml;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
@@ -19,9 +18,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.apache.commons.lang.StringUtils;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.ls.DOMImplementationLS;
@@ -34,13 +31,14 @@ import org.xml.sax.SAXException;
  */
 public class XmlHelper {
 
+    private static XmlHelper instance = null;
     private Document doc;
     private XPath navigator = null;
     private DocumentBuilder db = null;
 
-    public XmlHelper() {
+    private XmlHelper() {
         navigator = XPathFactory.newInstance().newXPath();
-        
+
         DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 
         try {
@@ -48,52 +46,33 @@ public class XmlHelper {
         } catch (ParserConfigurationException ex) {
             throw new RuntimeException(ex);
         }
-        
-        doc = db.newDocument();
 
+    }
+
+    public static XmlHelper getInstance() {
+        if (instance == null) {
+            instance = new XmlHelper();
+        }
+
+        return instance;
+    }
+
+    public Document getNewDocument() {
+        return db.newDocument();
     }
     
     public Document getDocument() {
-        return doc;
-    }
-    
-    public void query(XpathQueryHandler handler) {
-        
-        Node ctx;
-        if (handler.getContextNode() == null) {
-            ctx = doc;
-        } else {
-            ctx = handler.getContextNode();
+        if(doc == null) {
+            doc = getNewDocument();
         }
         
-        handler.handle(selectNodes(handler.getResultType(), ctx, handler.getXpath()));
-    }
-
-    public Document useXml(String xml) throws SAXException {
-        Document temp = getDocumentFromXml(xml);
-
-        doc = temp;
-        
         return doc;
     }
+    
+    public void setDocument(Document doc) {
+        this.doc = doc;
+    }
 
-    public void setAttribute(String xpath, String attrname, String attrvalue) {
-        selectNode(Element.class, doc, xpath).setAttribute(attrname, attrvalue);
-    }
-    
-    public String getAttribute(String xpath) {
-        return selectNode(Attr.class, doc, xpath).getValue();
-    }
-    
-    
-    public <T extends Node> T selectNode(Class<T> clazz, String xpath) {
-        return selectNode(clazz, doc, xpath);
-    }
-    
-    public <T extends Node> List<T> selectNodes(Class<T> clazz, String xpath) {
-        return selectNodes(clazz, doc, xpath);
-    }
-    
     public <T extends Node> List<T> selectNodes(Class<T> clazz, Node ctx, String xpath) {
         //TODO XPATH parsen und $ELEM_* && $ATTR_* ersetzen durch Konstanten
         NodeList nodes;
@@ -117,27 +96,29 @@ public class XmlHelper {
     }
 
     public <T extends Node> T selectNode(Class<T> clazz, Node ctx, String xpath) {
-        //TODO XPATH parsen und $ELEM_* && $ATTR_* ersetzen durch Konstanten
+        Object node = null;
+
         try {
             XPathExpression expr = navigator.compile(xpath);
-            Object node = expr.evaluate(ctx, XPathConstants.NODE);
-            if (clazz.isInstance(node)) {
-                return (T) node;
-            }
-            return null;
+            node = expr.evaluate(ctx, XPathConstants.NODE);
         } catch (XPathExpressionException ex) {
             System.err.println("corrupted xpath expression: " + xpath + " - " + ex.getMessage());
+        }
+
+        if (clazz.isInstance(node)) {
+            return (T) node;
+        } else {
             return null;
         }
     }
 
-    protected Document getDocumentFromXml(String xml) throws SAXException {
+    public Document getDocumentFromXml(String xml) throws SAXException {
         if (null == xml) {
             xml = "";
         }
 
         InputStream is = new ByteArrayInputStream(xml.getBytes());
-        
+
         Document document;
         try {
             document = db.parse(is);
@@ -151,14 +132,18 @@ public class XmlHelper {
 
     }
 
-    public String getXml() {
-        return getXmlFromNode(doc);
-    }
-    
-    public String getXmlFromNode(Node node) {
+    private String getXml(Document doc, Node node) {
         DOMImplementationLS impl = (DOMImplementationLS) doc.getImplementation();
         LSSerializer serializer = impl.createLSSerializer();
         String xml = serializer.writeToString(node);
         return StringUtils.substringAfter(xml, "\n");
+    }
+
+    public String getXml(Node node) {
+        return getXml(node.getOwnerDocument(), node);
+    }
+
+    public String getXml(Document doc) {
+        return getXml(doc, doc);
     }
 }
