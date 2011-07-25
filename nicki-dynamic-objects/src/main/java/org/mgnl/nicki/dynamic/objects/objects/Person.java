@@ -247,7 +247,7 @@ public class Person extends DynamicTemplateObject {
 
 	public void setExitDate(Date date) {
 		if (date != null) {
-			put("lastWorkingDay", DataHelper.format.format(date));
+			put("lastWorkingDay", DataHelper.formatDay.format(date));
 		}
 	}
 
@@ -291,13 +291,13 @@ public class Person extends DynamicTemplateObject {
 
 	public void setBirthDate(Date value) {
 		if (value != null) {
-			put("birthDate", DataHelper.format.format(value));
+			put("birthDate", DataHelper.formatDay.format(value));
 		}
 	}
 
 	public void setEntryDate(Date value) {
 		if (value != null) {
-			put("entryDate", DataHelper.format.format(value));
+			put("entryDate", DataHelper.formatDay.format(value));
 		}
 	}
 

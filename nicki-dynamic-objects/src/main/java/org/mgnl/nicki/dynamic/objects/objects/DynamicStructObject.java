@@ -39,7 +39,7 @@ public abstract class DynamicStructObject extends DynamicTemplateObject {
 	public Date getDateInfo(String infoPath) {
 		try {
 			String info = StringUtils.chomp(getInfo(infoPath), "Z");
-			return DataHelper.timestampFormat.parse(info);
+			return DataHelper.formatTime.parse(info);
 		} catch (ParseException e) {
 			return null;
 		}
