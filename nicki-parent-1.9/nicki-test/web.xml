@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" version="2.4">
+  <description>Nicki Editor Test</description>
+  <display-name>nicki-editor-test</display-name>
+ <servlet>
+   <servlet-name>nickiEditorTest</servlet-name>
+   <servlet-class>org.mgnl.nicki.editor.test.Servlet</servlet-class>
+ </servlet>
+ <servlet-mapping>
+   <servlet-name>nickiEditorTest</servlet-name>
+   <url-pattern>/nickiEditorTest</url-pattern>
+ </servlet-mapping>
+</web-app>
