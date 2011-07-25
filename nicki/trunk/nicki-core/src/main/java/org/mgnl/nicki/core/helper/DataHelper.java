@@ -13,11 +13,14 @@ import org.apache.commons.lang.StringUtils;
 
 public class DataHelper {
 
-	public final static String DATE_FORMAT = "yyyyMMdd";
-	// 20091030115321Z
-	public final static String TIMESTAMP_FORMAT = "yyyyMMddHHmmss";
-	public static SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
-	public static SimpleDateFormat timestampFormat = new SimpleDateFormat(TIMESTAMP_FORMAT);
+	public final static String FORMAT_DAY = "yyyyMMdd";
+	// 20091030115321
+	public final static String FORMAT_TIME = "yyyyMMddHHmmss";
+	public final static String FORMAT_MILLI = "yyyyMMddHHmmssSSS";
+        
+	public static SimpleDateFormat formatDay = new SimpleDateFormat(FORMAT_DAY);
+	public static SimpleDateFormat formatTime = new SimpleDateFormat(FORMAT_TIME);
+	public static SimpleDateFormat formatMilli = new SimpleDateFormat(FORMAT_MILLI);
 
 	public static int getInteger(String stringValue, int defaultValue) {
 		stringValue = StringUtils.strip(stringValue);
