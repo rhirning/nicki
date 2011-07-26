@@ -9,7 +9,6 @@ import org.mgnl.nicki.vaadin.base.editor.DynamicObjectValueChangeListener;
 import org.mgnl.nicki.vaadin.base.listener.AttributeInputListener;
 
 import com.vaadin.ui.AbsoluteLayout;
-import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.TextArea;
@@ -19,7 +18,7 @@ public class AttributeTextAreaField implements DynamicAttributeField, Serializab
 
 	private AbsoluteLayout mainLayout;
 
-	private AbstractField field;
+	private TextArea field;
 	private DataContainer property;
 	public AttributeTextAreaField(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
 		// common part: create layout

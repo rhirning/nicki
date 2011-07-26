@@ -101,7 +101,20 @@ public class CatalogPage extends DynamicTemplateObject {
 	public List<CatalogArticle> getAllArticles() {
 		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
 		try {
-			TemplateMethodModel method = (TemplateMethodModel) get("getPages");
+			TemplateMethodModel method = (TemplateMethodModel) get("getArticle");
+			if (method != null) {
+				@SuppressWarnings("unchecked")
+				List<Object> arts = (List<Object>) method.exec(null);
+				for (Iterator<Object> iterator = arts.iterator(); iterator
+						.hasNext();) {
+					articles.add((CatalogArticle) iterator.next()); 
+				}
+			}
+		} catch (TemplateModelException e) {
+			e.printStackTrace();
+		}
+		try {
+			TemplateMethodModel method = (TemplateMethodModel) get("getPage");
 			if (method != null) {
 				@SuppressWarnings("unchecked")
 				List<Object> pages = (List<Object>) method.exec(null);
