@@ -4,6 +4,7 @@ package org.mgnl.nicki.editor.catalogs;
 import java.io.Serializable;
 
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Catalog;
 import org.mgnl.nicki.dynamic.objects.objects.CatalogArticle;
@@ -27,6 +28,11 @@ import com.vaadin.ui.Window;
 
 @SuppressWarnings("serial")
 public class CatalogEditor extends NickiApplication {
+
+	public CatalogEditor() {
+		super();
+		setUseWelcomeDialog(DataHelper.booleanOf(Config.getProperty("nicki.projects.useWelcomeDialog", "false")));
+	}
 
 	@SuppressWarnings("unchecked")
 	@Override
