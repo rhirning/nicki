@@ -14,6 +14,7 @@ import org.mgnl.nicki.ldap.objects.DynamicObject;
  *
  * @author cna
  */
+@SuppressWarnings("serial")
 public class Costcenter extends DynamicObject {
 
     @Override
@@ -24,11 +25,11 @@ public class Costcenter extends DynamicObject {
         addAttribute(dynAttribute);
 
         dynAttribute = new DynamicAttribute("owner", "nickiOwner", String.class);
-        dynAttribute.setForeignKey();
+        dynAttribute.setForeignKey(Person.class);
         addAttribute(dynAttribute);
 
         dynAttribute = new DynamicAttribute("value", "costCenter", String.class);
-        dynAttribute.setForeignKey();
+        dynAttribute.setForeignKey(Costcenter.class);
         addAttribute(dynAttribute);
     }
 

@@ -16,13 +16,13 @@ public class Role extends DynamicStructObject {
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-                dynAttribute = new DynamicReference("resourceAssociations", "o=system", "nrfRole", String.class);
+		dynAttribute = new DynamicReference("resourceAssociations", "o=system", "nrfRole", String.class);
 		addAttribute(dynAttribute);
 
                 // TODO - o=utopia kann wohl nicht stimmen
 		dynAttribute = new DynamicReference("member", "o=utopia", "nrfAssignedRoles", String.class);
 		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
 
 		dynAttribute = new DynamicAttribute("approver", "nrfApprovers", String.class);

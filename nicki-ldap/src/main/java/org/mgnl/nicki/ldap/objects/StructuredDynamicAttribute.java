@@ -20,13 +20,15 @@ public class StructuredDynamicAttribute extends DynamicAttribute implements Seri
 		if (isMultiple()) {
 			List<Object> values = LdapHelper.getAttributes(rs, getLdapName());
 			dynamicObject.put(getName(), values);
-			dynamicObject.put(getMultipleGetter(getName()), new ListStructuredForeignKeyMethod(context, rs, getLdapName()));
+			dynamicObject.put(getMultipleGetter(getName()),
+					new ListStructuredForeignKeyMethod(context, rs, getLdapName(), getForeignKeyClass()));
 
 		} else {
 			String value = (String) LdapHelper.getAttribute(rs, getLdapName());
 			if (StringUtils.isNotEmpty(value)) {
 				dynamicObject.put(getName(), value);
-				dynamicObject.put(getGetter(getName()), new StructuredForeignKeyMethod(context, rs, getLdapName()));
+				dynamicObject.put(getGetter(getName()),
+						new StructuredForeignKeyMethod(context, rs, getLdapName(), getForeignKeyClass()));
 			}
 		}
 	}

@@ -35,7 +35,7 @@ public class BasicAction extends DynamicObject {
 		addAttribute(dynAttribute);
 
 		dynAttribute = new DynamicAttribute("target", "nickiTarget", String.class);
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(DynamicObject.class);
 		addAttribute(dynAttribute);
 	}
 

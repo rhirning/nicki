@@ -37,11 +37,11 @@ public class Project extends DynamicObject implements Serializable {
 		dynAttribute = new ReferenceDynamicAttribute("manager", "nickiOwner", String.class,
 				"nicki.users.basedn", "objectClass=Person");
 		dynAttribute.setMandatory();
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
 
 		dynAttribute = new ChildReferenceDynamicAttribute("deputy", "nickiDeputy", String.class, "objectClass=nickiProjectMember");
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Member.class);
 		addAttribute(dynAttribute);
 
 		// TODO

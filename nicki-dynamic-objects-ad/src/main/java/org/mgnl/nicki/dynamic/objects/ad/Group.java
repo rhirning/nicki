@@ -40,7 +40,7 @@ public class Group extends DynamicObject {
 		
 		dynAttribute = new DynamicAttribute("member", "member", String.class);
 		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
 
 		dynAttribute = new DynamicAttribute("guid", "objectGUID", OctetString.class);
@@ -57,7 +57,7 @@ public class Group extends DynamicObject {
 
 		dynAttribute = new StaticAttribute("objectCategory", "objectCategory", String.class,
 						Config.getProperty("nicki.target.ad.static.group.objectCategory"));
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(DynamicObject.class);
 		dynAttribute.setMandatory();
 		dynAttribute.setStatic();
 		dynAttribute.setReadonly();

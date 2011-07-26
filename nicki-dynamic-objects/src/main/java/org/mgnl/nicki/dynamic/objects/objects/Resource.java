@@ -20,13 +20,8 @@ public class Resource extends DynamicStructObject {
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute =  new ReferenceDynamicAttribute("resource", "nrfResource", String.class,
-				"nicki.resources.basedn", "objectClass=nrfResource");
-		dynAttribute.setForeignKey();
-		addAttribute(dynAttribute);
-
 		dynAttribute =  new StructuredDynamicAttribute("entitlement", "nrfEntitlementRef", String.class);
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Entitlement.class);
 		addAttribute(dynAttribute);
 	}
 	

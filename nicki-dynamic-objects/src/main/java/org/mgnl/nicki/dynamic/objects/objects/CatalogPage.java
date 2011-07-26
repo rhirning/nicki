@@ -13,6 +13,9 @@ import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
+import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateModelException;
+
 @SuppressWarnings("serial")
 public class CatalogPage extends DynamicTemplateObject {
 
@@ -95,5 +98,23 @@ public class CatalogPage extends DynamicTemplateObject {
 		put("category", categories);
 	}
 
+	public List<CatalogArticle> getAllArticles() {
+		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
+		try {
+			TemplateMethodModel method = (TemplateMethodModel) get("getPages");
+			if (method != null) {
+				@SuppressWarnings("unchecked")
+				List<Object> pages = (List<Object>) method.exec(null);
+				for (Iterator<Object> iterator = pages.iterator(); iterator
+						.hasNext();) {
+					CatalogPage page= (CatalogPage) iterator.next();
+					articles.addAll(page.getAllArticles()); 
+				}
+			}
+		} catch (TemplateModelException e) {
+			e.printStackTrace();
+		}
+		return articles;
+	}
 
 }

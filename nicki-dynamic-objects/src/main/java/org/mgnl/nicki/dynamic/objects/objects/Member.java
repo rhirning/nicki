@@ -24,18 +24,18 @@ public class Member extends DynamicObject implements Serializable{
 
 		dynAttribute = new ReferenceDynamicAttribute("member", "nickiProjectPerson", String.class,
 				"nicki.users.basedn", "objectClass=Person");
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Person.class);
 		dynAttribute.setMandatory();
 		addAttribute(dynAttribute);
 
 		dynAttribute = new DynamicAttribute("directoryRead", "nickiProjectDirectoryRead", String.class);
 		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Directory.class);
 		addAttribute(dynAttribute);
 
 		dynAttribute = new DynamicAttribute("directoryWrite", "nickiProjectDirectoryWrite", String.class);
 		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Directory.class);
 		addAttribute(dynAttribute);
 
 	}

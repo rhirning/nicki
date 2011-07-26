@@ -42,12 +42,12 @@ public class CatalogArticle extends DynamicTemplateObject {
 		
 		dynAttribute = new ReferenceDynamicAttribute("role", "nickiRoleRef", String.class,
 				"nicki.roles.basedn", "objectClass=nrfRole");
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Role.class);
 		addAttribute(dynAttribute);
 		
 		dynAttribute = new ReferenceDynamicAttribute("resource", "nickiResourceRef", String.class,
 				"nicki.resources.basedn", "objectClass=nrfResource");
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Resource.class);
 		addAttribute(dynAttribute);
 	};
 

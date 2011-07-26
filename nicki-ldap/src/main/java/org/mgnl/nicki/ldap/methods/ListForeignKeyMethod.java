@@ -19,10 +19,14 @@ public class ListForeignKeyMethod implements TemplateMethodModel, Serializable {
 	private List<DynamicObject> objects = null;
 	private List<Object> foreignKeys = new ArrayList<Object>();
 	private NickiContext context;
+	private Class<? extends DynamicObject> classDefinition;
+
 	
-	public ListForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName) {
+	public ListForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName,
+			Class<? extends DynamicObject> classDefinition) {
 		this.context = context;
 		this.foreignKeys = LdapHelper.getAttributes(rs, ldapName);
+		this.classDefinition = classDefinition;
 	}
 
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
@@ -30,9 +34,9 @@ public class ListForeignKeyMethod implements TemplateMethodModel, Serializable {
 			objects = new ArrayList<DynamicObject>();
 			for (Iterator<Object> iterator = this.foreignKeys.iterator(); iterator.hasNext();) {
 				String path = (String) iterator.next();
-				DynamicObject object = context.loadObject(path);
+				DynamicObject object = context.loadObject(classDefinition, path);
 				if (object != null) {
-					objects.add(context.loadObject(path));
+					objects.add(context.loadObject(classDefinition, path));
 				} else {
 					System.out.println("Could not build object: " + path);
 				}
