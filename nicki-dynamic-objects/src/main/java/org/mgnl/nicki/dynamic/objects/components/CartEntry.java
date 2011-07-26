@@ -55,4 +55,17 @@ public class CartEntry {
     public Map<String, String> getAttributes() {
         return attributes;
     }
+    
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[CARTENTRY id=");
+        sb.append(id);
+        sb.append(", action=");
+        sb.append(action.toString());
+        sb.append(", attributes=");
+        sb.append(attributes);
+        sb.append("]");
+        
+        return sb.toString();
+    }
 }
