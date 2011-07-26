@@ -2,6 +2,7 @@ package org.mgnl.nicki.editor.scripts;
 
 
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.dynamic.objects.objects.Script;
 import org.mgnl.nicki.ldap.context.Target;
@@ -18,6 +19,11 @@ import com.vaadin.ui.Component;
 @SuppressWarnings("serial")
 public class ScriptEditor extends NickiApplication {
 	
+	public ScriptEditor() {
+		super();
+		setUseWelcomeDialog(DataHelper.booleanOf(Config.getProperty("nicki.projects.useWelcomeDialog", "false")));
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Component getEditor() {
