@@ -121,4 +121,18 @@ public class CatalogArticle extends DynamicTemplateObject {
 	}
 
 
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("[catalogArticle name='").append(getName());
+		sb.append("' displayName='").append(getAttribute("displayName"));
+		sb.append("']\n");
+		if (hasAttributes()) {
+			for (Iterator<CatalogArticleAttribute> iterator = getAllAttributes().iterator(); iterator.hasNext();) {
+				sb.append(iterator.next().toString());
+			}
+		}
+		return sb.toString();
+	}
+
+
 }
