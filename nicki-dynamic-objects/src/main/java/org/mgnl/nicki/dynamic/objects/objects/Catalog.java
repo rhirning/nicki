@@ -41,7 +41,7 @@ public class Catalog extends DynamicTemplateObject {
 	public List<CatalogArticle> getAllArticles() {
 		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
 		try {
-			TemplateMethodModel method = (TemplateMethodModel) get("getPages");
+			TemplateMethodModel method = (TemplateMethodModel) get("getPage");
 			if (method != null) {
 				@SuppressWarnings("unchecked")
 				List<Object> pages = (List<Object>) method.exec(null);
