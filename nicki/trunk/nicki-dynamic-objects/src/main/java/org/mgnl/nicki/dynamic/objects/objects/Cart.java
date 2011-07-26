@@ -18,13 +18,11 @@ import org.jdom.Element;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.ldap.context.NickiContext;
-import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.xml.XmlHelper;
-
 
 /**
  *
@@ -47,7 +45,6 @@ public class Cart extends DynamicObject {
             return STATUS.valueOf(str.toUpperCase());
         }
     }
-    
     private Catalog catalog = null;
     private HashMap<String, CartEntry> cartentries = new HashMap<String, CartEntry>();
     private XmlHelper helper = XmlHelper.getInstance();
@@ -108,7 +105,7 @@ public class Cart extends DynamicObject {
 
         Element cart = helper.selectNode(Element.class, doc, ELEM_CART);
         catalog = getContext().loadObject(Catalog.class, cart.getAttributeValue(ATTR_CATALOG));
-        if(catalog == null) {
+        if (catalog == null) {
             System.err.println("could not load catalog object - id is invalid: \"" + cart.getAttributeValue(ATTR_CATALOG) + "\"");
         }
 
@@ -126,13 +123,13 @@ public class Cart extends DynamicObject {
         if (catalog == null) {
             throw new DynamicObjectException("catalog undefined");
         }
-        
+
         Document doc = helper.getNewDocument();
         helper.setDocument(doc);
-        
+
         doc.setRootElement(new Element(ELEM_CART));
         Element cart = doc.getRootElement();
-        
+
         cart.setAttribute(ATTR_CATALOG, catalog.getPath());
 
         for (String key : cartentries.keySet()) {
@@ -263,7 +260,7 @@ public class Cart extends DynamicObject {
 
         return cartentry;
     }
-    
+
     public static List<Cart> getAllCarts(NickiContext ctx) {
         return ctx.loadChildObjects(Cart.class, Config.getProperty("nicki.carts.basedn"), null);
     }
@@ -278,10 +275,8 @@ public class Cart extends DynamicObject {
         sb.append(" cartentries.length=");
         sb.append(cartentries.size());
         sb.append("]");
-        
-        
+
+
         return sb.toString();
     }
-    
-    
 }
