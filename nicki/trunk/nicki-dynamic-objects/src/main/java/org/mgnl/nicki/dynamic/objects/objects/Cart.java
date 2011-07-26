@@ -15,6 +15,7 @@ import java.util.Map;
 import org.apache.commons.lang.NotImplementedException;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
@@ -262,4 +263,25 @@ public class Cart extends DynamicObject {
 
         return cartentry;
     }
+    
+    public static List<Cart> getAllCarts(NickiContext ctx) {
+        return ctx.loadChildObjects(Cart.class, Config.getProperty("nicki.carts.basedn"), null);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[CART name=");
+        sb.append(getName());
+        sb.append(" catalog=");
+        sb.append((catalog == null) ? "" : catalog.getPath());
+        sb.append(" cartentries.length=");
+        sb.append(cartentries.size());
+        sb.append("]");
+        
+        
+        return sb.toString();
+    }
+    
+    
 }

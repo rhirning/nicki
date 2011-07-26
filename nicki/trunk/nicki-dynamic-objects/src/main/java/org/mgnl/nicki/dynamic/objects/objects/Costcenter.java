@@ -4,6 +4,9 @@
  */
 package org.mgnl.nicki.dynamic.objects.objects;
 
+import java.util.List;
+import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 
@@ -35,6 +38,31 @@ public class Costcenter extends DynamicObject{
     
     public void setValue(String value) {
         put("value", value);
+    }
+    
+    public void setOwner(Person owner) {
+        put("owner", owner.getPath());
+    }
+    
+    public Person getOwner() {
+        return getContext().loadObject(Person.class, (String) get("owner"));
+    }
+    
+    public static List<Costcenter> getAllCostcenters(NickiContext ctx) {
+        return ctx.loadChildObjects(Costcenter.class, Config.getProperty("nicki.costcenters.basedn"), null);
+    }
+    
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[COSTCENTER name=");
+        sb.append(getName());
+        sb.append(" value=");
+        sb.append(getValue());
+        sb.append(" owner=");
+        sb.append(get("owner"));
+        sb.append("]");
+        
+        return sb.toString();
     }
     
 }
