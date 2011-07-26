@@ -21,6 +21,7 @@ public class DynamicAttribute implements Serializable {
 	private boolean mandatory = false;
 	private boolean multiple = false;
 	private boolean foreignKey = false;
+	private Class<? extends DynamicObject> foreignKeyClass;
 	private boolean virtual = false;
 	private boolean readonly = false;
 	private boolean staticAttribute = false;
@@ -67,14 +68,16 @@ public class DynamicAttribute implements Serializable {
 			String value = (String) LdapHelper.getAttribute(rs, ldapName);
 			if (StringUtils.isNotEmpty(value)) {
 				dynamicObject.put(name, value);
-				dynamicObject.put(getGetter(name), new ForeignKeyMethod(context, rs, ldapName));
+				dynamicObject.put(getGetter(name),
+						new ForeignKeyMethod(context, rs, ldapName, getForeignKeyClass()));
 			}
 		}
 		// list foreign key
 		if (!isMandatory() && isMultiple() && isForeignKey()) {
 			List<Object> values = LdapHelper.getAttributes(rs, ldapName);
 			dynamicObject.put(name, values);
-			dynamicObject.put(getMultipleGetter(name), new ListForeignKeyMethod(context, rs, ldapName));
+			dynamicObject.put(getMultipleGetter(name),
+					new ListForeignKeyMethod(context, rs, ldapName, getForeignKeyClass()));
 		}
 
 	}
@@ -120,8 +123,9 @@ public class DynamicAttribute implements Serializable {
 		return foreignKey;
 	}
 
-	public void setForeignKey() {
+	public void setForeignKey(Class<? extends DynamicObject> classDefinition) {
 		this.foreignKey = true;
+		this.foreignKeyClass = classDefinition;
 	}
 	public String getName() {
 		return name;
@@ -152,5 +156,9 @@ public class DynamicAttribute implements Serializable {
 
 	public boolean isStatic() {
 		return staticAttribute;
+	}
+
+	public Class<? extends DynamicObject> getForeignKeyClass() {
+		return foreignKeyClass;
 	}
 }

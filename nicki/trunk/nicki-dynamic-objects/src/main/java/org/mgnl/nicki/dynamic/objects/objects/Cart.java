@@ -28,6 +28,7 @@ import org.mgnl.nicki.ldap.xml.XmlHelper;
  *
  * @author cna
  */
+@SuppressWarnings("serial")
 public class Cart extends DynamicObject {
 
     public enum STATUS {
@@ -67,7 +68,7 @@ public class Cart extends DynamicObject {
         addAttribute(dynAttribute);
 
         dynAttribute = new DynamicAttribute("initiator", "nickiInitiator", String.class);
-        dynAttribute.setForeignKey();
+        dynAttribute.setForeignKey(Person.class);
         addAttribute(dynAttribute);
 
         dynAttribute = new DynamicAttribute("processdate", "nickiProcessDate", String.class);
@@ -77,7 +78,7 @@ public class Cart extends DynamicObject {
         addAttribute(dynAttribute);
 
         dynAttribute = new DynamicAttribute("recipient", "nickiRecipient", String.class);
-        dynAttribute.setForeignKey();
+        dynAttribute.setForeignKey(Person.class);
         addAttribute(dynAttribute);
 
         dynAttribute = new DynamicAttribute("requestdate", "nickiRequestDate", String.class);
@@ -205,7 +206,8 @@ public class Cart extends DynamicObject {
         return cartentries.get(id);
     }
 
-    public Map<String, CartEntry> getCartEntries() {
+    @SuppressWarnings("unchecked")
+	public Map<String, CartEntry> getCartEntries() {
         return (Map<String, CartEntry>) cartentries.clone();
     }
 

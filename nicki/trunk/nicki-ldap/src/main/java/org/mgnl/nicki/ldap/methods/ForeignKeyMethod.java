@@ -17,16 +17,19 @@ public class ForeignKeyMethod implements Serializable,TemplateMethodModel {
 	private DynamicObject object = null;
 	private String foreignKey = null;
 	private NickiContext context;
+	private Class<? extends DynamicObject> classDefinition;
 	
-	public ForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName) {
+	public ForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName,
+			Class<? extends DynamicObject> classDefinition) {
 		this.context = context;
 		this.foreignKey = (String) LdapHelper.getAttribute(rs, ldapName);
+		this.classDefinition = classDefinition;
 	}
 
 	@Override
 	public DynamicObject exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (object == null) {
-			object = context.loadObject(this.foreignKey);
+			object = context.loadObject(this.classDefinition, this.foreignKey);
 		}
 		return object;
 	}
@@ -45,6 +48,10 @@ public class ForeignKeyMethod implements Serializable,TemplateMethodModel {
 
 	protected NickiContext getContext() {
 		return context;
+	}
+
+	public Class<? extends DynamicObject> getClassDefinition() {
+		return classDefinition;
 	}
 
 }

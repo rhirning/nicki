@@ -24,7 +24,7 @@ public class Person extends DynamicObject {
 
 		dynAttribute = new DynamicAttribute("group", "memberOf", String.class);
 		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Group.class);
 		addAttribute(dynAttribute);
 
 	}

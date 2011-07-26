@@ -19,8 +19,9 @@ public class StructuredForeignKeyMethod extends ForeignKeyMethod implements Seri
 	private String xml;
 	
 	
-	public StructuredForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName) {
-		super(context, rs, ldapName);
+	public StructuredForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName,
+			Class<? extends DynamicObject> classDefinition) {
+		super(context, rs, ldapName,classDefinition);
 		this.path = StringUtils.substringBefore(getForeignKey(), "#");
 		String rest = StringUtils.substringAfter(getForeignKey(), "#");
 		this.flag = StringUtils.substringBefore(rest, "#");
@@ -31,7 +32,7 @@ public class StructuredForeignKeyMethod extends ForeignKeyMethod implements Seri
 	@Override
 	public DynamicObject exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (getObject() == null) {
-			setObject(getContext().loadObject(this.path));
+			setObject(getContext().loadObject(getClassDefinition(), this.path));
 			getObject().put("struct:flag" , flag);
 			getObject().put("struct:xml" , xml);
 			getObject().put("struct" , new StructuredData(xml));

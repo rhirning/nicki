@@ -1,5 +1,6 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -108,22 +109,22 @@ public class Person extends DynamicTemplateObject {
 
 		dynAttribute = new ReferenceDynamicAttribute("manager", "manager", String.class,
 				"nicki.users.basedn", "objectClass=Person");
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
 		
 		dynAttribute =  new StructuredDynamicAttribute("entitlement", "DirXML-EntitlementRef", String.class);
 		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Entitlement.class);
 		addAttribute(dynAttribute);
 
 		dynAttribute =  new StructuredDynamicAttribute("role", "nrfAssignedRoles", String.class);
 		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Role.class);
 		addAttribute(dynAttribute);
 
 		dynAttribute =  new StructuredDynamicAttribute("resource", "nrfAssignedResources", String.class);
 		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Resource.class);
 		addAttribute(dynAttribute);
 
 		dynAttribute =  new DynamicAttribute("status", "nickiStatus", String.class);
@@ -146,6 +147,17 @@ public class Person extends DynamicTemplateObject {
 		sb.append(getName());
 		sb.append(")");
 		return sb.toString();
+	}
+	
+	public List<CatalogArticle> getAllArticles(Catalog catalog) {
+		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
+		for (Iterator<CatalogArticle> iterator = catalog.getAllArticles().iterator(); iterator.hasNext();) {
+			CatalogArticle catalogArticle = iterator.next();
+			if (hasArticle(catalogArticle)) {
+				articles.add(catalogArticle);
+			}
+		}
+		return articles;
 	}
 
 

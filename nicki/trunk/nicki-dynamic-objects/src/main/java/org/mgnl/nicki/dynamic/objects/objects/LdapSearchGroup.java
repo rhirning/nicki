@@ -58,7 +58,7 @@ public class LdapSearchGroup extends DynamicObject {
 
 		dynAttribute = new DynamicAttribute("member", "member", String.class);
 		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey();
+		dynAttribute.setForeignKey(Person.class);
 		dynAttribute.setReadonly();
 		addAttribute(dynAttribute);
 

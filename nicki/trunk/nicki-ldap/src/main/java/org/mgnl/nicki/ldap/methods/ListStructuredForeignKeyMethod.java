@@ -13,8 +13,9 @@ import org.mgnl.nicki.ldap.objects.DynamicObject;
 public class ListStructuredForeignKeyMethod extends ListForeignKeyMethod {
 
 	public ListStructuredForeignKeyMethod(NickiContext context,
-			ContextSearchResult rs, String ldapName) {
-		super(context, rs, ldapName);
+			ContextSearchResult rs, String ldapName,
+			Class<? extends DynamicObject> classDefinition) {
+		super(context, rs, ldapName, classDefinition);
 	}
 
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
