@@ -14,7 +14,7 @@ import org.mgnl.nicki.ldap.objects.DynamicObject;
  *
  * @author cna
  */
-public class Costcenter extends DynamicObject{
+public class Costcenter extends DynamicObject {
 
     @Override
     public void initDataModel() {
@@ -22,36 +22,37 @@ public class Costcenter extends DynamicObject{
         DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
         dynAttribute.setNaming();
         addAttribute(dynAttribute);
-        
+
         dynAttribute = new DynamicAttribute("owner", "nickiOwner", String.class);
         dynAttribute.setForeignKey();
         addAttribute(dynAttribute);
-        
+
         dynAttribute = new DynamicAttribute("value", "costCenter", String.class);
         dynAttribute.setForeignKey();
         addAttribute(dynAttribute);
     }
-    
+
     public String getValue() {
         return (String) get("value");
     }
-    
+
     public void setValue(String value) {
         put("value", value);
     }
-    
+
     public void setOwner(Person owner) {
         put("owner", owner.getPath());
     }
-    
+
     public Person getOwner() {
         return getContext().loadObject(Person.class, (String) get("owner"));
     }
-    
+
     public static List<Costcenter> getAllCostcenters(NickiContext ctx) {
         return ctx.loadChildObjects(Costcenter.class, Config.getProperty("nicki.costcenters.basedn"), null);
     }
-    
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[COSTCENTER name=");
@@ -61,8 +62,7 @@ public class Costcenter extends DynamicObject{
         sb.append(" owner=");
         sb.append(get("owner"));
         sb.append("]");
-        
+
         return sb.toString();
     }
-    
 }
