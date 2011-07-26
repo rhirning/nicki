@@ -1,5 +1,6 @@
-package org.mgnl.nicki.shop.core;
+package org.mgnl.nicki.vaadin.base.shop;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,7 +11,8 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.CatalogArticle;
 import org.mgnl.nicki.dynamic.objects.objects.CatalogArticleAttribute;
 
-public class ShopPage {
+@SuppressWarnings("serial")
+public class ShopPage implements ShopViewerComponent, Serializable{
 	private Shop shop;
 	private TYPE type;
 	private String name;
@@ -136,8 +138,68 @@ public class ShopPage {
 		return this.articleList != null && this.articleList.size() > 0;
 	}
 
+	public boolean hasPages() {
+		return this.pageList != null && this.pageList.size() > 0;
+	}
+
 	public List<CatalogArticle> getArticleList() {
 		return articleList;
 	};
+	
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("[page name='").append(getName());
+		sb.append("' label='").append(getLabel());
+		sb.append("' renderer='").append(getRenderer());
+		sb.append("']\n");
+		if (hasPages()) {
+			for (Iterator<ShopPage> iterator = pageList.iterator(); iterator.hasNext();) {
+				ShopPage page = iterator.next();
+				sb.append(page.toString()).append("\n");
+			}
+		}
+		if (hasArticles()) {
+			for (Iterator<CatalogArticle> iterator = articleList.iterator(); iterator.hasNext();) {
+				CatalogArticle article = iterator.next();
+				sb.append(article.toString()).append("\n");
+			}
+		}
+		if (hasAttributes()) {
+			for (Iterator<CatalogArticleAttribute> iterator = attributeList.iterator(); iterator.hasNext();) {
+				CatalogArticleAttribute attribute = iterator.next();
+				sb.append(attribute.toString()).append("\n");
+			}
+		}
+		return sb.toString();
+	}
+
+	public List<CatalogArticle> getAllArticles() {
+		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
+		if (hasArticles()) {
+			articles.addAll(articleList);
+		}
+		if (hasPages()) {
+			for (Iterator<ShopPage> iterator = pageList.iterator(); iterator.hasNext();) {
+				ShopPage page = iterator.next();
+				articles.addAll(page.getArticles());
+			}
+		}
+		return articles;
+	}
+
+	@Override
+	public ShopViewerComponent getShopViewerComponent() {
+		return this;
+	}
+
+	@Override
+	public List<ShopPage> getPageList() {
+		return pageList;
+	}
+
+	@Override
+	public List<CatalogArticle> getArticles() {
+		return articleList;
+	}
 
 }

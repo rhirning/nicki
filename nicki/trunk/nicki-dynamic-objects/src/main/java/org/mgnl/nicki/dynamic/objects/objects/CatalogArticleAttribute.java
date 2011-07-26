@@ -55,5 +55,16 @@ public class CatalogArticleAttribute {
 	public String getKey() {
 		return key;
 	}
+	
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("[catalogArticleAttribute name='").append(getName());
+		sb.append("' label='").append(getLabel());
+		sb.append("' key='").append(getKey());
+		sb.append("' type='").append(getType());
+		sb.append("']\n");
+		return sb.toString();
+	}
+
 
 }
