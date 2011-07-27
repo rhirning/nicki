@@ -14,6 +14,7 @@ import org.mgnl.nicki.vaadin.base.shop.CheckboxComponent;
 import org.mgnl.nicki.vaadin.base.shop.CostCenterComponent;
 import org.mgnl.nicki.vaadin.base.shop.DateComponent;
 import org.mgnl.nicki.vaadin.base.shop.LabelComponent;
+import org.mgnl.nicki.vaadin.base.shop.ShopPage;
 import org.mgnl.nicki.vaadin.base.shop.ShopViewerComponent;
 import org.mgnl.nicki.vaadin.base.shop.TextComponent;
 
@@ -24,6 +25,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextArea;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
 public class BaseShopRenderer {
@@ -111,6 +113,44 @@ public class BaseShopRenderer {
 
 		return layout;
 	}
+
+	protected Component getHorizontalArticleAttributes(CatalogArticle article) {
+		HorizontalLayout layout = new HorizontalLayout();
+		layout.setSpacing(true);
+		layout.setHeight("40px");
+		if (article.hasAttributes()) {
+			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
+				CatalogArticleAttribute attribute = iterator.next();
+				layout.addComponent(getAttributeComponent(attribute));
+			}
+		}
+		return layout;
+	}
+
+	protected Component getVerticalArticleAttributes(CatalogArticle article) {
+		VerticalLayout attrLayout = new VerticalLayout();
+		
+		if (article.hasAttributes()) {
+			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
+				CatalogArticleAttribute pageAttribute = iterator.next();
+				attrLayout.addComponent(getAttributeComponent(pageAttribute));
+			}
+		}
+		return attrLayout;
+	}
+	
+	protected Component getPageAttributes(ShopPage page) {
+		VerticalLayout attrLayout = new VerticalLayout();
+		
+		if (page.hasAttributes()) {
+			for (Iterator<CatalogArticleAttribute> iterator = page.getAttributeList().iterator(); iterator.hasNext();) {
+				CatalogArticleAttribute pageAttribute = iterator.next();
+				attrLayout.addComponent(getAttributeComponent(pageAttribute));
+			}
+		}
+		return attrLayout;
+	}
+
 
 
 

@@ -87,8 +87,10 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 			public void buttonClick(ClickEvent event) {
 				  boolean enabled = event.getButton().booleanValue();
 				  AbsoluteLayout parent = (AbsoluteLayout) event.getButton().getParent();
+				  CatalogArticle article = (CatalogArticle) parent.getData(); 
 				  if (enabled) {
-					  showArticleAttributes(parent, "top:60.0px;left:20.0px;right:20.0px;");
+					  parent.addComponent(getVerticalArticleAttributes(article), "top:60.0px;left:20.0px;right:20.0px;");
+//					  showArticleAttributes(parent, "top:60.0px;left:20.0px;right:20.0px;");
 				  } else {
 					  removeExcept(parent, event.getButton());
 				  }
@@ -98,24 +100,11 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 		return layout;
 	}
 	
-	private void showArticleAttributes(AbsoluteLayout layout, String cssString) {
-		CatalogArticle article = (CatalogArticle) layout.getData(); 
-		VerticalLayout attrLayout = new VerticalLayout();
-		
-		if (article.hasAttributes()) {
-			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
-				CatalogArticleAttribute pageAttribute = iterator.next();
-				attrLayout.addComponent(getAttributeComponent(pageAttribute));
-			}
-			layout.addComponent(attrLayout, cssString);
-		}
-	}
-	
 	private Component getPersonDataComponent(ShopPage page) {
 		AbsoluteLayout layout = new AbsoluteLayout();
 		layout.setData(page);
 		layout.setHeight("420px");
-		showPageAttributes(layout, "top:20.0px;left:20.0px;right:20.0px;");
+		layout.addComponent(getPageAttributes(page), "top:20.0px;left:20.0px;right:20.0px;");
 		return layout;
 	}
 
@@ -132,5 +121,4 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 			layout.addComponent(attrLayout, cssString);
 		}
 	}
-
 }

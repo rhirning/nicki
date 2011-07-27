@@ -10,16 +10,13 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.dynamic.objects.objects.Catalog;
 import org.mgnl.nicki.dynamic.objects.objects.CatalogArticle;
 import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
-import org.mgnl.nicki.ldap.context.AppContext;
 
 @SuppressWarnings("serial")
 public class Shop implements ShopViewerComponent, Serializable {
-	private Catalog catalog;
 	private String renderer;
 	private List<ShopPage> pageList = new ArrayList<ShopPage>();
 	Document document = null;
@@ -31,13 +28,6 @@ public class Shop implements ShopViewerComponent, Serializable {
 	
 	private void load() {
 		Element root = document.getRootElement();
-		try {
-			String catalogName = root.getAttributeValue("catalog");		
-			this.catalog = AppContext.getSystemContext().loadObject(Catalog.class,
-					"cn=" + catalogName + "," + Config.getProperty("nicki.catalogs.basedn"));
-		} catch (InvalidPrincipalException e) {
-			e.printStackTrace();
-		}
 		
 		this.setRenderer(StringUtils.trimToNull(root.getAttributeValue("renderer")));
 		
@@ -66,7 +56,12 @@ public class Shop implements ShopViewerComponent, Serializable {
 	}
 
 	public CatalogArticle getArticle(String catalogArticleId) {
-		return catalog.getArticle(catalogArticleId);
+		try {
+			return Catalog.getCatalog().getArticle(catalogArticleId);
+		} catch (InvalidPrincipalException e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public List<ShopPage> getPageList() {

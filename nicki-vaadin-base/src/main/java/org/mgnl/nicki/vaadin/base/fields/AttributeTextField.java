@@ -22,6 +22,7 @@ public class AttributeTextField implements DynamicAttributeField, Serializable {
 		property = new AttributeDataContainer(dynamicObject, attributeName);
 		field = new TextField(attributeName);
 		field.setHeight(1.5f, Sizeable.UNITS_EM);
+		field.setWidth("400px");
 		field.setValue(property.getValue());
 		field.setImmediate(false);
 		field.addListener(new AttributeInputListener(property, objectListener));

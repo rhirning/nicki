@@ -2,8 +2,11 @@ package org.mgnl.nicki.dynamic.objects.objects;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
@@ -21,6 +24,16 @@ public class CatalogArticle extends DynamicTemplateObject {
 	
 	public static enum TYPE {ROLE, RESOURCE, ARTICLE};
 	
+	public static Map<String, CatalogArticleAttribute> fixedAttributes = new HashMap<String, CatalogArticleAttribute>();
+	static {
+		fixedAttributes.put("dateFrom", new CatalogArticleAttribute("dateFrom",
+				"nicki.rights.attribute.dateFrom.label",
+				"date"));
+		fixedAttributes.put("dateTo", new CatalogArticleAttribute("dateTo",
+				"nicki.rights.attribute.dateTo.label",
+				"date"));
+	}
+
 	public void initDataModel() {
 		addObjectClass("nickiCatalogArticle");
 		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
@@ -30,7 +43,7 @@ public class CatalogArticle extends DynamicTemplateObject {
 		dynAttribute = new DynamicAttribute("displayName", "displayName", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute("description", "nickiDescription", String.class);
+		dynAttribute = new DynamicAttribute("description", "nickiDescription", TextArea.class);
 		addAttribute(dynAttribute);
 		
 		dynAttribute = new DynamicAttribute("category", "nickiCategory", String.class);
@@ -76,7 +89,11 @@ public class CatalogArticle extends DynamicTemplateObject {
 	public void setAttributes(List<CatalogArticleAttribute> attributes) {
 		put("attribute", attributes);
 	}
-	
+
+	public static Collection<CatalogArticleAttribute> getFixedAttributes() {
+		return fixedAttributes.values();
+	}
+
 	public List<CatalogArticleAttribute> getAttributes() {
 		List<CatalogArticleAttribute> list = new ArrayList<CatalogArticleAttribute>();
 		String attributes = getAttribute("attributes");
@@ -134,5 +151,8 @@ public class CatalogArticle extends DynamicTemplateObject {
 		return sb.toString();
 	}
 
+	public static CatalogArticleAttribute getFixedAttribute(String name) {
+		return fixedAttributes.get(name);
+	}
 
 }

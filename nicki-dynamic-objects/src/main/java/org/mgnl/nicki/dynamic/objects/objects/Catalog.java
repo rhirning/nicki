@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
+import org.mgnl.nicki.ldap.context.AppContext;
 import org.mgnl.nicki.ldap.methods.LoadObjectsMethod;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
@@ -55,6 +58,10 @@ public class Catalog extends DynamicTemplateObject {
 			e.printStackTrace();
 		}
 		return articles;
+	}
+	
+	public static Catalog getCatalog() throws InvalidPrincipalException {
+		return AppContext.getSystemContext().loadObject(Catalog.class, Config.getProperty("nicki.catalog"));
 	}
 
 }

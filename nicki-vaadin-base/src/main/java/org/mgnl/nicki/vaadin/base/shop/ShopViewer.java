@@ -26,13 +26,24 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 
 	private AbsoluteLayout mainLayout;
 	private Person user;
-	private Person person;
+	private Person person = null;
 	private Shop shop;
 	private Button saveButton;
 	private PersonSelector personSelector;
 	private ShopRenderer renderer = null;
 	
 	public ShopViewer(Person user, Shop shop, PersonSelector personSelector) {
+		this.personSelector = personSelector;
+		init(user, shop);
+	}
+
+
+	public ShopViewer(Person user, Shop shop, Person person) {
+		this.person = person;
+		init(user, shop);
+	}
+
+	public void init(Person user, Shop shop) {
 		this.user = user;
 		this.shop = shop;
 		if (shop.getRenderer() != null) {
@@ -46,7 +57,6 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		if (this.renderer == null) {
 			this.renderer = new TabRenderer();
 		}
-		this.personSelector = personSelector;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 	}
@@ -59,31 +69,35 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		// top-level component properties
 		setWidth("100.0%");
 		setHeight("100.0%");
-		Button selectPerson = new Button(I18n.getText("nicki.editor.generic.button.selectPerson"));
-		selectPerson.addListener(new Button.ClickListener() {
+		if (person != null) {
+			showShop();
+		} else {
+			Button selectPerson = new Button(I18n.getText("nicki.editor.generic.button.selectPerson"));
+			selectPerson.addListener(new Button.ClickListener() {
+				
+				@Override
+				public void buttonClick(ClickEvent event) {
+					personSelector.init(user.getContext(), new SelectPersonCommand() {
+						
+						@Override
+						public void setSelectedPerson(Person selectedPerson) {
+							setPerson(selectedPerson);
+							mainLayout.removeAllComponents();
+							showShop();
+						}
+	
+					});
+					Window window = new Window(I18n.getText("nicki.editor.bu.ouchange.window.person.title"), personSelector);
+					window.setWidth(640, Sizeable.UNITS_PIXELS);
+					window.setHeight(640, Sizeable.UNITS_PIXELS);
+					window.setModal(true);
+	
+					getWindow().addWindow(window);
+				}
+			});
 			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				personSelector.init(user.getContext(), new SelectPersonCommand() {
-					
-					@Override
-					public void setSelectedPerson(Person selectedPerson) {
-						setPerson(selectedPerson);
-						mainLayout.removeAllComponents();
-						showShop();
-					}
-
-				});
-				Window window = new Window(I18n.getText("nicki.editor.bu.ouchange.window.person.title"), personSelector);
-				window.setWidth(640, Sizeable.UNITS_PIXELS);
-				window.setHeight(640, Sizeable.UNITS_PIXELS);
-				window.setModal(true);
-
-				getWindow().addWindow(window);
-			}
-		});
-		
-		mainLayout.addComponent(selectPerson, "top:20.0px;left:20.0px;");
+			mainLayout.addComponent(selectPerson, "top:20.0px;left:20.0px;");
+		}
 		return mainLayout;
 		
 	}
@@ -105,10 +119,10 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 
 		mainLayout.addComponent(personLayout, "top:0.0px;left:0.0px;");
 		
-		VerticalLayout layout = new VerticalLayout();
+		AbsoluteLayout layout = new AbsoluteLayout();
+		layout.setHeight("100%");
 		mainLayout.addComponent(layout, "top:30.0px;left:0.0px;");
 		
-		layout.addComponent(renderer.render(getShopViewerComponent()));
 
 		saveButton = new Button(I18n.getText("nicki.editor.generic.button.save"));
 		saveButton.addListener(new Button.ClickListener() {
@@ -118,7 +132,8 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 			}
 		});
 
-		layout.addComponent(saveButton);
+		layout.addComponent(saveButton, "bottom:0.0px;left:20.0px;");
+		layout.addComponent(renderer.render(getShopViewerComponent()), "bottom:30.0px;left:0.0px;");
 	}
 	
 
