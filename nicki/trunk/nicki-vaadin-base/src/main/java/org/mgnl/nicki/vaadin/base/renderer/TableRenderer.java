@@ -3,16 +3,17 @@ package org.mgnl.nicki.vaadin.base.renderer;
 import java.util.Iterator;
 import java.util.List;
 
+import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.CatalogArticle;
-import org.mgnl.nicki.dynamic.objects.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.vaadin.base.shop.ShopViewerComponent;
 
 import com.vaadin.data.Item;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Layout;
+import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.Table;
 
 public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
@@ -27,12 +28,23 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 		// create Table
 		table = new Table();
 		table.setWidth("100%");
+		table.setHeight("100%");
 		table.addContainerProperty("checkbox", CheckBox.class, "");
 		table.setColumnWidth("checkbox", 20);
 		table.setColumnHeader("checkbox", "");
 		table.addContainerProperty("title", String.class, "");
 		table.setColumnWidth("title", 200);
-		table.addContainerProperty("attributes", HorizontalLayout.class, "");
+		table.setColumnHeader("title", I18n.getText("nicki.rights.attribute.title.label"));
+		table.addContainerProperty("dateFrom", PopupDateField.class, "");
+		table.setColumnWidth("dateFrom", 100);
+		table.setColumnHeader("dateFrom", CatalogArticle.getFixedAttribute("dateFrom").getLabel());
+		table.addContainerProperty("dateTo", PopupDateField.class, "");
+		table.setColumnWidth("dateTo", 100);
+		table.setColumnHeader("dateTo", CatalogArticle.getFixedAttribute("dateTo").getLabel());
+		
+		table.addContainerProperty("attributes", Layout.class, "");
+		table.setColumnHeader("attributes", I18n.getText("nicki.rights.attributes.label"));
+
 		// add articles to table
 		for (Iterator<CatalogArticle> iterator = articles.iterator(); iterator.hasNext();) {
 			CatalogArticle article = (CatalogArticle) iterator.next();
@@ -48,9 +60,13 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 					  Item item = table.getItem(article);
 					  boolean enabled = event.getButton().booleanValue();
 					  if (enabled) {
-						  item.getItemProperty("attributes").setValue(getArticleAttributes(article));
+						  item.getItemProperty("dateFrom").setValue(getAttributeComponent(CatalogArticle.getFixedAttribute("dateFrom")));
+						  item.getItemProperty("dateTo").setValue(getAttributeComponent(CatalogArticle.getFixedAttribute("dateTo")));
+						  item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article));
 //						  showArticleAttributes(parent);
 					  } else {
+						  item.getItemProperty("dateFrom").setValue(null);
+						  item.getItemProperty("dateTo").setValue(null);
 						  item.getItemProperty("attributes").setValue(null);
 //						  removeExcept(parent, event.getButton());
 					  }
@@ -64,21 +80,4 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 		return table;
 	}
 	
-
-
-	protected Component getArticleAttributes(CatalogArticle article) {
-		HorizontalLayout layout = new HorizontalLayout();
-		layout.setSpacing(true);
-		layout.setHeight("40px");
-		if (article.hasAttributes()) {
-			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
-				CatalogArticleAttribute pageAttribute = iterator.next();
-				layout.addComponent(getAttributeComponent(pageAttribute));
-			}
-		}
-		return layout;
-	}
-	
-
-
 }

@@ -25,13 +25,13 @@ public class AttributeTextAreaField implements DynamicAttributeField, Serializab
 		mainLayout = new AbsoluteLayout();
 		
 		// top-level component properties
-		mainLayout.setWidth("700px");
-		mainLayout.setHeight("240px");
+		mainLayout.setWidth("500px");
+		mainLayout.setHeight("120px");
 
 		property = new AttributeDataContainer(dynamicObject, attributeName);
 		field = new TextArea(attributeName);
-		field.setWidth("600px");
-		field.setHeight("200px");
+		field.setWidth("400px");
+		field.setHeight("100px");
 		field.setValue(property.getValue());
 		field.setImmediate(false);
 		field.addListener(new AttributeInputListener(property, objectListener));

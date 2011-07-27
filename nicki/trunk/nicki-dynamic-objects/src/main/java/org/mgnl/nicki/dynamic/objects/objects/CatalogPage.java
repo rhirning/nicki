@@ -29,6 +29,9 @@ public class CatalogPage extends DynamicTemplateObject {
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
+		dynAttribute = new DynamicAttribute("provider", "nickiProvider", String.class);
+		addAttribute(dynAttribute);
+
 		dynAttribute = new DynamicAttribute("attributes", "nickiAttributes", TextArea.class);
 		addAttribute(dynAttribute);
 		
