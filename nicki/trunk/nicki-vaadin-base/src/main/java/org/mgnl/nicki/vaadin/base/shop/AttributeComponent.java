@@ -7,5 +7,7 @@ import com.vaadin.ui.Component;
 public interface AttributeComponent {
 
 	Component getInstance(CatalogArticleAttribute pageAttribute);
-
+	void setValue(Object value);
+	Object getvalue();
+	void setCaption(String caption);
 }

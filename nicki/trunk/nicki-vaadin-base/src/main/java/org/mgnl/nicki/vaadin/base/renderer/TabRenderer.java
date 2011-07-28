@@ -1,5 +1,6 @@
 package org.mgnl.nicki.vaadin.base.renderer;
 
+import java.util.Date;
 import java.util.Iterator;
 
 import org.mgnl.nicki.core.i18n.I18n;
@@ -10,11 +11,12 @@ import org.mgnl.nicki.vaadin.base.shop.ShopPage;
 import org.mgnl.nicki.vaadin.base.shop.ShopPage.TYPE;
 import org.mgnl.nicki.vaadin.base.shop.ShopViewerComponent;
 
-import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
@@ -26,7 +28,7 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 	public Component render(ShopViewerComponent shopViewerComponent) {
 		this.shopViewerComponent = shopViewerComponent;
 		TabSheet tabSheet = new TabSheet();
-		tabSheet.setHeight(480, Sizeable.UNITS_PIXELS);
+		tabSheet.setHeight("100%");
 		addTabs(tabSheet);
 		return tabSheet;
 	}
@@ -47,6 +49,14 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 			tabSheet.addTab(getPersonDataComponent(page), page.getLabel(), Icon.SETTINGS.getResource());
 		} else if (page.getType() == TYPE.TYPE_SHOP_ARTICLE_PAGE) {
 			tabSheet.addTab(getPageComponent(page), page.getLabel(), Icon.SETTINGS.getResource());
+		} else if (page.getType() == TYPE.TYPE_PAGE_REF_PAGE) {
+			ShopRenderer renderer = null;
+			try {
+				renderer = (ShopRenderer) Class.forName(page.getRenderer()).newInstance();
+			} catch (Exception e) {
+				renderer = new TabRenderer();
+			}
+			tabSheet.addTab(renderer.render(page), page.getLabel(), Icon.SETTINGS.getResource());
 		} else if (page.getType() == TYPE.TYPE_STRUCTURE_PAGE) {
 			ShopRenderer renderer = null;
 			try {
@@ -100,6 +110,7 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 		return layout;
 	}
 	
+	
 	private Component getPersonDataComponent(ShopPage page) {
 		AbsoluteLayout layout = new AbsoluteLayout();
 		layout.setData(page);
@@ -121,4 +132,26 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 			layout.addComponent(attrLayout, cssString);
 		}
 	}
+
+	@Override
+	protected AbstractOrderedLayout getHorizontalArticleAttributes(
+			CatalogArticle article) {
+		AbstractOrderedLayout layout = super.getHorizontalArticleAttributes(article);
+		layout.addComponentAsFirst(getAttributeComponent(CatalogArticle.getFixedAttribute("dateTo")));
+		layout.addComponentAsFirst(getAttributeComponent(CatalogArticle.getFixedAttribute("dateFrom"), new Date()));
+
+		return layout;
+	}
+
+	@Override
+	protected AbstractOrderedLayout getVerticalArticleAttributes(
+			CatalogArticle article) {
+		AbstractOrderedLayout layout =  super.getVerticalArticleAttributes(article);
+
+		layout.addComponentAsFirst(getAttributeComponent(CatalogArticle.getFixedAttribute("dateTo")));
+		layout.addComponentAsFirst(getAttributeComponent(CatalogArticle.getFixedAttribute("dateFrom"), new Date()));
+
+		return layout;
+	}
+
 }

@@ -55,7 +55,6 @@ public class ArticleShopContainer implements ShopContainer{
 	    if (loadedArticles != null) {
 		    for (Iterator<CatalogArticle> iterator = loadedArticles.iterator(); iterator.hasNext();) {
 		    	CatalogArticle article = iterator.next();
-				article.setCatalog(catalog);
 				Item item = container.addItem(article);
 				item.getItemProperty(PROPERTY_NAME).setValue(article.getDisplayName());
 				item.getItemProperty(PROPERTY_PATH).setValue(article.getCatalogPath());

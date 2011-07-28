@@ -5,13 +5,17 @@ import org.mgnl.nicki.dynamic.objects.objects.CatalogArticleAttribute;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 
-public class TextComponent implements AttributeComponent {
+public class TextComponent extends BasicAttributeComponent implements AttributeComponent {
 
+	public TextComponent() {
+		TextField field = new TextField();
+		field.setWidth("200px");
+		setField(field);
+	}
 	@Override
 	public Component getInstance(CatalogArticleAttribute attribute) {
-		TextField field = new TextField(attribute.getLabel());
-		field.setWidth("200px");
-		return field;
+		setCaption(attribute.getLabel());
+		return getField();
 	}
 
 }

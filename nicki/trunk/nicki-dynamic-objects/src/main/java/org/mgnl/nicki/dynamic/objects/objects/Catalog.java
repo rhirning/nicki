@@ -1,9 +1,11 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
 import org.mgnl.nicki.ldap.context.AppContext;
@@ -15,6 +17,7 @@ import freemarker.template.TemplateModelException;
 
 @SuppressWarnings("serial")
 public class Catalog extends DynamicTemplateObject {
+	public static final String PATH_SEPARATOR = "/";
 
 	public void initDataModel() {
 		// objectClass
@@ -33,12 +36,26 @@ public class Catalog extends DynamicTemplateObject {
 
 	}
 
+	/*
+	 * CatalogID: /separatedPathToArticle
+	 */
 	public CatalogArticle getArticle(String catalogArticleId) {
-		CatalogArticle article = getContext().loadObject(CatalogArticle.class, catalogArticleId + "," + getPath());
-		if (article != null) {
-			article.setCatalog(this);
+		String key = catalogArticleId;
+		if (StringUtils.startsWith(key, PATH_SEPARATOR)) {
+			key = StringUtils.substring(catalogArticleId, 1);
 		}
-		return article;
+		String pageKey = StringUtils.substringBefore(key, PATH_SEPARATOR);
+		String articleKey = StringUtils.substringAfter(key, PATH_SEPARATOR);
+		CatalogPage page = getPage(pageKey);
+		if (page != null) {
+			return page.getArticle(articleKey);
+		} else {
+			return null;
+		}
+	}
+	
+	public CatalogPage getPage(String key) {
+		return getContext().loadChildObject(CatalogPage.class, this, key);
 	}
 
 	public List<CatalogArticle> getAllArticles() {
@@ -60,8 +77,29 @@ public class Catalog extends DynamicTemplateObject {
 		return articles;
 	}
 	
-	public static Catalog getCatalog() throws InvalidPrincipalException {
-		return AppContext.getSystemContext().loadObject(Catalog.class, Config.getProperty("nicki.catalog"));
+	public static Catalog getCatalog() {
+		try {
+			return AppContext.getSystemContext().loadObject(Catalog.class, Config.getProperty("nicki.catalog"));
+		} catch (InvalidPrincipalException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public CatalogPage getReferencedPage(
+			String referencedPage) {
+		String key = referencedPage;
+		if (StringUtils.startsWith(key, PATH_SEPARATOR)) {
+			key = StringUtils.substring(referencedPage, 1);
+		}
+
+		if (StringUtils.contains(key, PATH_SEPARATOR)) {
+			String pageKey = StringUtils.substringBefore(key, PATH_SEPARATOR);
+			String subPageKey = StringUtils.substringAfter(key, PATH_SEPARATOR);
+			return getPage(pageKey).getPage(subPageKey);
+		} else {
+			return getPage(key);
+		}
 	}
 
 }

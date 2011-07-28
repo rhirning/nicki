@@ -75,6 +75,11 @@ public class TargetObjectFactory implements ObjectFactory {
 		return dynamicObject.getModel().getObjectClassFilter();
 	}
 
+	public String getNamingLdapAttribute(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
+		DynamicObject dynamicObject = findDynamicObject(classDefinition);
+		return dynamicObject.getModel().getNamingLdapAttribute();
+	}
+
 	
 	// TODO
 	@SuppressWarnings("unchecked")

@@ -56,12 +56,7 @@ public class Shop implements ShopViewerComponent, Serializable {
 	}
 
 	public CatalogArticle getArticle(String catalogArticleId) {
-		try {
-			return Catalog.getCatalog().getArticle(catalogArticleId);
-		} catch (InvalidPrincipalException e) {
-			e.printStackTrace();
-		}
-		return null;
+		return Catalog.getCatalog().getArticle(catalogArticleId);
 	}
 
 	public List<ShopPage> getPageList() {
