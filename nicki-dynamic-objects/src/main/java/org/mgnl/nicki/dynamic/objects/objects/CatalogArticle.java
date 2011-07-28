@@ -19,9 +19,7 @@ import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
 @SuppressWarnings("serial")
 public class CatalogArticle extends DynamicTemplateObject {
-	
-	private Catalog catalog = null;
-	
+
 	public static enum TYPE {ROLE, RESOURCE, ARTICLE};
 	
 	public static Map<String, CatalogArticleAttribute> fixedAttributes = new HashMap<String, CatalogArticleAttribute>();
@@ -75,17 +73,10 @@ public class CatalogArticle extends DynamicTemplateObject {
 	}
 	
 	public String getCatalogPath() {
-		return getSlashPath(catalog);
+		return getSlashPath(Catalog.getCatalog().getPath(), getParentPath()) 
+			+ Catalog.PATH_SEPARATOR + getName();
 	}
 
-	public void setCatalog(Catalog catalog) {
-		this.catalog = catalog;
-	}
-
-	public Catalog getCatalog() {
-		return catalog;
-	}
-	
 	public void setAttributes(List<CatalogArticleAttribute> attributes) {
 		put("attribute", attributes);
 	}

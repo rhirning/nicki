@@ -19,6 +19,7 @@ import org.mgnl.nicki.vaadin.base.shop.ShopViewerComponent;
 import org.mgnl.nicki.vaadin.base.shop.TextComponent;
 
 import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
@@ -30,20 +31,32 @@ import com.vaadin.ui.Button.ClickEvent;
 
 public class BaseShopRenderer {
 	
-	protected static Map<String, AttributeComponent> attributeComponents = new HashMap<String, AttributeComponent>();
+	protected static Map<String, Class<? extends AttributeComponent>> attributeComponents
+		= new HashMap<String, Class<? extends AttributeComponent>>();
 	static {
-		attributeComponents.put("date", new DateComponent());
-		attributeComponents.put("text", new TextComponent());
-		attributeComponents.put("checkbox", new CheckboxComponent());
-		attributeComponents.put("costCenter", new CostCenterComponent());
-		attributeComponents.put("default", new LabelComponent());
+		attributeComponents.put("date", DateComponent.class);
+		attributeComponents.put("text", TextComponent.class);
+		attributeComponents.put("checkbox", CheckboxComponent.class);
+		attributeComponents.put("costCenter", CostCenterComponent.class);
+		attributeComponents.put("default", LabelComponent.class);
 	}
 
 	protected Component getAttributeComponent(CatalogArticleAttribute pageAttribute) {
-		if (attributeComponents.containsKey(pageAttribute.getType())) {
-			return attributeComponents.get(pageAttribute.getType()).getInstance(pageAttribute);
-		} else {
-			return attributeComponents.get("default").getInstance(pageAttribute);
+		try {
+			return attributeComponents.get(pageAttribute.getType()).newInstance().getInstance(pageAttribute);
+		} catch (Exception e) {
+			return new LabelComponent().getInstance(pageAttribute);
+		}
+		
+	}
+
+	protected Component getAttributeComponent(CatalogArticleAttribute pageAttribute, Object value) {
+		try {
+			AttributeComponent attributeComponent = attributeComponents.get(pageAttribute.getType()).newInstance();
+			attributeComponent.setValue(value);
+			return attributeComponent.getInstance(pageAttribute);
+		} catch (Exception e) {
+			return new LabelComponent().getInstance(pageAttribute);
 		}
 	}
 
@@ -114,8 +127,8 @@ public class BaseShopRenderer {
 		return layout;
 	}
 
-	protected Component getHorizontalArticleAttributes(CatalogArticle article) {
-		HorizontalLayout layout = new HorizontalLayout();
+	protected AbstractOrderedLayout getHorizontalArticleAttributes(CatalogArticle article) {
+		AbstractOrderedLayout layout = new HorizontalLayout();
 		layout.setSpacing(true);
 		layout.setHeight("40px");
 		if (article.hasAttributes()) {
@@ -127,8 +140,8 @@ public class BaseShopRenderer {
 		return layout;
 	}
 
-	protected Component getVerticalArticleAttributes(CatalogArticle article) {
-		VerticalLayout attrLayout = new VerticalLayout();
+	protected AbstractOrderedLayout getVerticalArticleAttributes(CatalogArticle article) {
+		AbstractOrderedLayout attrLayout = new VerticalLayout();
 		
 		if (article.hasAttributes()) {
 			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {

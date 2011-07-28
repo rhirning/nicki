@@ -10,7 +10,10 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.mgnl.nicki.core.helper.XMLHelper;
+import org.mgnl.nicki.dynamic.objects.catalog.Provider;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
+import org.mgnl.nicki.ldap.context.NickiContext;
+import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
 import freemarker.template.TemplateMethodModel;
@@ -18,6 +21,8 @@ import freemarker.template.TemplateModelException;
 
 @SuppressWarnings("serial")
 public class CatalogPage extends DynamicTemplateObject {
+	
+	private Provider provider = null;
 
 	public void initDataModel() {
 		addObjectClass("nickiCatalogPage");
@@ -100,22 +105,18 @@ public class CatalogPage extends DynamicTemplateObject {
 	public void setCategories(List<String> categories) {
 		put("category", categories);
 	}
+	
+	public List<CatalogArticle> getArticles() {
+		if (this.provider != null) {
+			return provider.getArticles(this);
+		} else {
+			List<CatalogArticle> articles = getContext().loadChildObjects(CatalogArticle.class, getPath(), null);
+			return articles;
+		}
+	}
 
 	public List<CatalogArticle> getAllArticles() {
-		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
-		try {
-			TemplateMethodModel method = (TemplateMethodModel) get("getArticle");
-			if (method != null) {
-				@SuppressWarnings("unchecked")
-				List<Object> arts = (List<Object>) method.exec(null);
-				for (Iterator<Object> iterator = arts.iterator(); iterator
-						.hasNext();) {
-					articles.add((CatalogArticle) iterator.next()); 
-				}
-			}
-		} catch (TemplateModelException e) {
-			e.printStackTrace();
-		}
+		List<CatalogArticle> articles = getArticles();
 		try {
 			TemplateMethodModel method = (TemplateMethodModel) get("getPage");
 			if (method != null) {
@@ -132,5 +133,48 @@ public class CatalogPage extends DynamicTemplateObject {
 		}
 		return articles;
 	}
+
+	@Override
+	public void init(NickiContext context, ContextSearchResult rs) {
+		super.init(context, rs);
+		String providerClass = getAttribute("provider");
+		if (StringUtils.isNotEmpty(providerClass)) {
+			try {
+				this.provider = (Provider) Class.forName(providerClass).newInstance();
+				this.provider.init(this);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public CatalogArticle getArticle(String key) {
+		if (StringUtils.contains(key, Catalog.PATH_SEPARATOR)) {
+			String pageKey = StringUtils.substringBefore(key, Catalog.PATH_SEPARATOR);
+			String articleKey = StringUtils.substringAfter(key, Catalog.PATH_SEPARATOR);
+			CatalogPage page = getPage(pageKey);
+			if (page != null) {
+				return page.getArticle(articleKey);
+			} else {
+				return null;
+			}
+		} else {
+			if (this.provider != null){
+				return provider.getArticle(key);
+			} else {
+				return getPageArticle(key);
+			}
+		}
+	}
+	
+	public CatalogPage getPage(String key) {
+		return getContext().loadChildObject(CatalogPage.class, this, key);
+	}
+
+	public CatalogArticle getPageArticle(String key) {
+		return getContext().loadChildObject(CatalogArticle.class, this, key);
+	}
+
+
 
 }

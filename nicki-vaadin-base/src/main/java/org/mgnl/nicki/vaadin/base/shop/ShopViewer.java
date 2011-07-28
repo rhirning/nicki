@@ -16,7 +16,6 @@ import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 
@@ -103,25 +102,28 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	}
 	
 	private void showShop() {
-		AbsoluteLayout personLayout = new AbsoluteLayout();
-		personLayout.setHeight("30px");
-		personLayout.setWidth("100%");
-		Label personLabel = new Label(person.getDisplayName());
-		personLabel.setWidth("200px");
-		personLayout.addComponent(personLabel, "top:0.0px;left:20.0px;");
-
-		Button selectPerson = new Button();
-		selectPerson.setWidth("-1px");
-		selectPerson.setHeight("-1px");
-		selectPerson.setCaption("Auswählen");
-		selectPerson.setImmediate(false);
-		personLayout.addComponent(selectPerson, "top:0.0px;left:240.0px;");
-
-		mainLayout.addComponent(personLayout, "top:0.0px;left:0.0px;");
-		
+		String shopPosition = "top:0.0px;left:0.0px;";
+		if (personSelector != null) {
+			AbsoluteLayout personLayout = new AbsoluteLayout();
+			personLayout.setHeight("30px");
+			personLayout.setWidth("100%");
+			Label personLabel = new Label(person.getDisplayName());
+			personLabel.setWidth("200px");
+			personLayout.addComponent(personLabel, "top:0.0px;left:20.0px;");
+	
+			Button selectPerson = new Button();
+			selectPerson.setWidth("-1px");
+			selectPerson.setHeight("-1px");
+			selectPerson.setCaption("Auswählen");
+			selectPerson.setImmediate(false);
+			personLayout.addComponent(selectPerson, "top:0.0px;left:240.0px;");
+	
+			mainLayout.addComponent(personLayout, "top:0.0px;left:0.0px;");
+			shopPosition = "top:30.0px;left:0.0px;";
+		}		
 		AbsoluteLayout layout = new AbsoluteLayout();
 		layout.setHeight("100%");
-		mainLayout.addComponent(layout, "top:30.0px;left:0.0px;");
+		mainLayout.addComponent(layout, shopPosition);
 		
 
 		saveButton = new Button(I18n.getText("nicki.editor.generic.button.save"));
@@ -132,8 +134,8 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 			}
 		});
 
+		layout.addComponent(renderer.render(getShopViewerComponent()), "top:0.0px;bottom:30.0px;left:0.0px;");
 		layout.addComponent(saveButton, "bottom:0.0px;left:20.0px;");
-		layout.addComponent(renderer.render(getShopViewerComponent()), "bottom:30.0px;left:0.0px;");
 	}
 	
 

@@ -1,5 +1,6 @@
 package org.mgnl.nicki.vaadin.base.renderer;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -60,7 +61,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 					  Item item = table.getItem(article);
 					  boolean enabled = event.getButton().booleanValue();
 					  if (enabled) {
-						  item.getItemProperty("dateFrom").setValue(getAttributeComponent(CatalogArticle.getFixedAttribute("dateFrom")));
+						  item.getItemProperty("dateFrom").setValue(getAttributeComponent(CatalogArticle.getFixedAttribute("dateFrom"), new Date()));
 						  item.getItemProperty("dateTo").setValue(getAttributeComponent(CatalogArticle.getFixedAttribute("dateTo")));
 						  item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article));
 //						  showArticleAttributes(parent);

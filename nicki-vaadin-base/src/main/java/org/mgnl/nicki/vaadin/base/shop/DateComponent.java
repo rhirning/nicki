@@ -7,12 +7,18 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.PopupDateField;
 
 
-public class DateComponent implements AttributeComponent {
+public class DateComponent extends BasicAttributeComponent implements AttributeComponent {
+
 	@Override
 	public Component getInstance(CatalogArticleAttribute attribute) {
-		PopupDateField field = new PopupDateField(attribute.getLabel());
+		setCaption(attribute.getLabel());
+		return getField();
+	}
+
+	public DateComponent() {
+		PopupDateField field = new PopupDateField();
 		DateHelper.init(field);
-		return field;
+		setField(field);		
 	}
 
 }

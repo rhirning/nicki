@@ -5,13 +5,17 @@ import org.mgnl.nicki.dynamic.objects.objects.CatalogArticleAttribute;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.NativeSelect;
 
-public class CostCenterComponent implements AttributeComponent {
+public class CostCenterComponent extends BasicAttributeComponent implements AttributeComponent {
 
+	public CostCenterComponent() {
+		NativeSelect field = new NativeSelect();
+		field.addItem("12345");
+		setField(field);
+	}
 	@Override
 	public Component getInstance(CatalogArticleAttribute attribute) {
-		NativeSelect select = new NativeSelect(attribute.getLabel());
-		select.addItem("12345");
-		return select;
+		setCaption(attribute.getLabel());
+		return getField();
 	}
-
+	
 }
