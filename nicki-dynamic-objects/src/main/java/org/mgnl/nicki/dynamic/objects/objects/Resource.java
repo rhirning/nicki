@@ -2,7 +2,6 @@ package org.mgnl.nicki.dynamic.objects.objects;
 
 import java.util.Date;
 
-import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;

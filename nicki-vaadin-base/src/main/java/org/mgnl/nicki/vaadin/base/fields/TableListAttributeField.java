@@ -20,7 +20,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
-public class TableListAttributeField extends EnterNameHandler implements DynamicAttributeField, Serializable {
+public class TableListAttributeField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
 
 	private DynamicObject dynamicObject;
 	private String attributeName;
@@ -35,6 +35,7 @@ public class TableListAttributeField extends EnterNameHandler implements Dynamic
 		this.attributeName = attributeName;
 		
 		buildMainLayout();
+		entries.setCaption(getName(dynamicObject, attributeName));
 		entries.setSelectable(true);
 		entries.addContainerProperty(attributeName, String.class, null);
 
@@ -63,22 +64,11 @@ public class TableListAttributeField extends EnterNameHandler implements Dynamic
 		entries.addItem(new Object[] {value}, value);
 	}
 
-	@Override
-	public void setName(String name) throws Exception {
-		addItem(name);
-		List<String> values = (List<String>) dynamicObject.get(attributeName);
-		if (!values.contains(name)) {
-			values.add(name);
-			dynamicObject.put(attributeName, values);
-		}
-	}
-
-
-
 	protected void deleteEntry(Table table) {
 		if (table.getValue() != null) {
 			String valueToDelete = (String) table.getValue();
 			table.removeItem(valueToDelete);
+			@SuppressWarnings("unchecked")
 			List<String> values = (List<String>) dynamicObject.get(attributeName);
 			if (values.contains(valueToDelete)) {
 				values.remove(valueToDelete);
@@ -88,7 +78,7 @@ public class TableListAttributeField extends EnterNameHandler implements Dynamic
 	}
 	protected void addEntry(Table table) {
 		EnterNameDialog dialog = new EnterNameDialog("nicki.editor.catalogs.entry.new");
-		dialog.setHandler(this);
+		dialog.setHandler(new NameHandler());
 		Window newWindow = new Window(
 				I18n.getText("nicki.editor.catalogs.entry.new.window.title"), dialog);
 		newWindow.setWidth(440, Sizeable.UNITS_PIXELS);
@@ -97,6 +87,19 @@ public class TableListAttributeField extends EnterNameHandler implements Dynamic
 		mainLayout.getWindow().addWindow(newWindow);
 	}
 
+	private class NameHandler extends EnterNameHandler {
+		
+		@Override
+		public void setName(String name) throws Exception {
+			addItem(name);
+			@SuppressWarnings("unchecked")
+			List<String> values = (List<String>) dynamicObject.get(attributeName);
+			if (!values.contains(name)) {
+				values.add(name);
+				dynamicObject.put(attributeName, values);
+			}
+		}
+	}
 
 	
 	@Override

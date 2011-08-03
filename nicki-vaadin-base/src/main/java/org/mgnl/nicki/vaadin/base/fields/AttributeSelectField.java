@@ -16,12 +16,12 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.Select;
 
 @SuppressWarnings("serial")
-public class AttributeSelectField implements DynamicAttributeField, Serializable {
+public class AttributeSelectField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
 
 	private Field field;
 	private DataContainer property;
 	public AttributeSelectField(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
-		Select select = new ComboBox(attributeName);
+		Select select = new ComboBox(getName(dynamicObject, attributeName));
 //		select.setItemCaptionPropertyId("name");
 		select.setImmediate(true);
 		select.select(dynamicObject.getAttribute(attributeName));

@@ -138,7 +138,7 @@ public class DynamicAttribute implements Serializable {
 		return virtual;
 	}
 	
-	public List<DynamicObject> getOptions(DynamicObject dynamicObject) {
+	public List<? extends DynamicObject> getOptions(DynamicObject dynamicObject) {
 		return new ArrayList<DynamicObject>();
 	}
 

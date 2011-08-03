@@ -2,6 +2,7 @@ package org.mgnl.nicki.dynamic.objects.objects;
 
 import java.util.Date;
 
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicReference;
 
@@ -16,11 +17,10 @@ public class Role extends DynamicStructObject {
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicReference("resourceAssociations", "o=system", "nrfRole", String.class);
+		dynAttribute = new DynamicReference("resourceAssociations", Config.getProperty("nicki.roles.basedn"), "nrfRole", String.class);
 		addAttribute(dynAttribute);
 
-                // TODO - o=utopia kann wohl nicht stimmen
-		dynAttribute = new DynamicReference("member", "o=utopia", "nrfAssignedRoles", String.class);
+		dynAttribute = new DynamicReference("member", Config.getProperty("nicki.users.basedn"), "nrfAssignedRoles", String.class);
 		dynAttribute.setMultiple();
 		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);

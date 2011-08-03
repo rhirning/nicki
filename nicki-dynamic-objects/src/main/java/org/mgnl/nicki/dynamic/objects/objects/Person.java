@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
@@ -107,8 +108,8 @@ public class Person extends DynamicTemplateObject {
 		dynAttribute = new DynamicAttribute("lastWorkingDay", "nickiLastWorkingDay", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new ReferenceDynamicAttribute("manager", "manager", String.class,
-				"nicki.users.basedn", "objectClass=Person");
+		dynAttribute = new ReferenceDynamicAttribute(Person.class, "manager", "manager", String.class,
+				Config.getProperty("nicki.users.basedn"));
 		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
 		
@@ -133,6 +134,13 @@ public class Person extends DynamicTemplateObject {
 		dynAttribute =  new DynamicAttribute("type", "employeeType", String.class);
 		addAttribute(dynAttribute);
 
+		dynAttribute =  new DynamicAttribute("costCenter", "nickiCostCenter", String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute =  new DynamicAttribute("attributeValue", "nickiCatalogAttribute", String.class);
+		dynAttribute.setMultiple();
+		addAttribute(dynAttribute);
+
 	}
 
 	@Override
@@ -149,92 +157,24 @@ public class Person extends DynamicTemplateObject {
 		return sb.toString();
 	}
 	
-	public List<CatalogArticle> getAllArticles(Catalog catalog) {
-		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
-		for (Iterator<CatalogArticle> iterator = catalog.getAllArticles().iterator(); iterator.hasNext();) {
-			CatalogArticle catalogArticle = iterator.next();
-			if (hasArticle(catalogArticle)) {
-				articles.add(catalogArticle);
-			}
-		}
-		return articles;
-	}
-
-
-	// TODO
-	public boolean hasArticle(CatalogArticle article) {
-		try {
-			if (article.getArticleType() == CatalogArticle.TYPE.ARTICLE) {
-				
-			} else if (article.getArticleType() == CatalogArticle.TYPE.RESOURCE) {
-				TemplateMethodModel method = (TemplateMethodModel) get("getResources");
-				if (method != null) {
-					@SuppressWarnings("unchecked")
-					List<Object> resources = (List<Object>) method.exec(null);
-					for (Iterator<Object> iterator = resources.iterator(); iterator
-							.hasNext();) {
-						Resource resource = (Resource) iterator.next();
-						if (StringUtils.equals(resource.getPath(), article.getAttribute("resource"))) {
-							return true;
-						}
-					}
-				}
-			} else if (article.getArticleType() == CatalogArticle.TYPE.ROLE) {
-				TemplateMethodModel method = (TemplateMethodModel) get("getRoles");
-				if (method != null) {
-					@SuppressWarnings("unchecked")
-					List<Object> roles = (List<Object>) method.exec(null);
-					for (Iterator<Object> iterator = roles.iterator(); iterator
-							.hasNext();) {
-						Role role = (Role) iterator.next();
-						if (StringUtils.equals(role.getPath(), article.getAttribute("role"))) {
-							return true;
-						}
-					}
-				}
-			}
-		} catch (TemplateModelException e) {
-			e.printStackTrace();
-		}
-		return false;
-	}
-
 	public boolean hasRole(Role role2) {
-		try {
-			TemplateMethodModel method = (TemplateMethodModel) get("getRoles");
-			if (method != null) {
-				@SuppressWarnings("unchecked")
-				List<Object> roles = (List<Object>) method.exec(null);
-				for (Iterator<Object> iterator = roles.iterator(); iterator
-						.hasNext();) {
-					Role role = (Role) iterator.next();
-					if (StringUtils.equals(role.getPath(), role2.getPath())) {
-						return true;
-					}
-				}
+		for (Iterator<Role> iterator = getRoles().iterator(); iterator
+				.hasNext();) {
+			Role role = (Role) iterator.next();
+			if (StringUtils.equals(role.getPath(), role2.getPath())) {
+				return true;
 			}
-		} catch (TemplateModelException e) {
-			e.printStackTrace();
 		}
 		return false;
 	}
 
 	public boolean hasResource(Resource resource2) {
-		try {
-			TemplateMethodModel method = (TemplateMethodModel) get("getResources");
-			if (method != null) {
-				@SuppressWarnings("unchecked")
-				List<Object> resources = (List<Object>) method.exec(null);
-				for (Iterator<Object> iterator = resources.iterator(); iterator
-						.hasNext();) {
-					Resource resource = (Resource) iterator.next();
-					if (StringUtils.equals(resource.getPath(), resource2.getPath())) {
-						return true;
-					}
-				}
+		for (Iterator<Resource> iterator = getResources().iterator(); iterator
+				.hasNext();) {
+			Resource resource = iterator.next();
+			if (StringUtils.equals(resource.getPath(), resource2.getPath())) {
+				return true;
 			}
-		} catch (TemplateModelException e) {
-			e.printStackTrace();
 		}
 		return false;
 	}
@@ -323,6 +263,37 @@ public class Person extends DynamicTemplateObject {
 
 	public void setTask(String value) {
 		put("task", value);		
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Role> getRoles() {
+		TemplateMethodModel method = (TemplateMethodModel) get("getRoles");
+		if (method != null) {
+			try {
+				return (List<Role>) method.exec(null);
+			} catch (TemplateModelException e) {
+				e.printStackTrace();
+			}
+		}
+		return new ArrayList<Role>();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Resource> getResources() {
+		TemplateMethodModel method = (TemplateMethodModel) get("getResources");
+		if (method != null) {
+			try {
+				return (List<Resource>) method.exec(null);
+			} catch (TemplateModelException e) {
+				e.printStackTrace();
+			}
+		}
+		return new ArrayList<Resource>();
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getCatalogAttributeValues() {
+		return (List<String>) get("attributeValue");
 	}
 
 

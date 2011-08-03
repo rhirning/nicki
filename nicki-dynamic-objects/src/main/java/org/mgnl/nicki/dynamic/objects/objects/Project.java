@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.reference.ChildReferenceDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
@@ -34,8 +35,8 @@ public class Project extends DynamicObject implements Serializable {
 		dynAttribute = new DynamicAttribute("description", "nickiDescription", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new ReferenceDynamicAttribute("manager", "nickiOwner", String.class,
-				"nicki.users.basedn", "objectClass=Person");
+		dynAttribute = new ReferenceDynamicAttribute(Person.class, "manager", "nickiOwner", String.class,
+				Config.getProperty("nicki.users.basedn"));
 		dynAttribute.setMandatory();
 		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
