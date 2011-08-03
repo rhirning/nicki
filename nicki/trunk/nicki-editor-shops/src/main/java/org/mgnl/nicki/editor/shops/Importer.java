@@ -6,12 +6,12 @@ import java.io.FileReader;
 import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.dynamic.objects.objects.CatalogArticle;
-import org.mgnl.nicki.dynamic.objects.objects.CatalogPage;
 import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
 import org.mgnl.nicki.ldap.context.AppContext;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.shop.catalog.CatalogArticle;
+import org.mgnl.nicki.shop.catalog.CatalogPage;
 
 import freemarker.template.TemplateException;
 

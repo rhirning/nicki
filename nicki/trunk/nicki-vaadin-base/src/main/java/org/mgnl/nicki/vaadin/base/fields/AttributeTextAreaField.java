@@ -14,7 +14,7 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.TextArea;
 
 @SuppressWarnings("serial")
-public class AttributeTextAreaField implements DynamicAttributeField, Serializable {
+public class AttributeTextAreaField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
 
 	private AbsoluteLayout mainLayout;
 
@@ -29,7 +29,7 @@ public class AttributeTextAreaField implements DynamicAttributeField, Serializab
 		mainLayout.setHeight("120px");
 
 		property = new AttributeDataContainer(dynamicObject, attributeName);
-		field = new TextArea(attributeName);
+		field = new TextArea(getName(dynamicObject, attributeName));
 		field.setWidth("400px");
 		field.setHeight("100px");
 		field.setValue(property.getValue());

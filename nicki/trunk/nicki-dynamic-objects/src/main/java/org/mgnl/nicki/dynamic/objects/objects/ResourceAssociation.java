@@ -1,5 +1,6 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
@@ -14,8 +15,8 @@ public class ResourceAssociation extends DynamicTemplateObject {
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new ReferenceDynamicAttribute("resource", "nrfResource", String.class,
-				"nicki.resources.basedn", "objectClass=nrfResource");
+		dynAttribute = new ReferenceDynamicAttribute(Resource.class, "resource", "nrfResource", String.class,
+				Config.getProperty("nicki.resources.basedn"));
 		dynAttribute.setForeignKey(Resource.class);
 		addAttribute(dynAttribute);
 	}

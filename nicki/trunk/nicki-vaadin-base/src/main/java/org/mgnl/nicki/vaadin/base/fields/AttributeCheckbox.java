@@ -15,13 +15,13 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Field;
 
 @SuppressWarnings("serial")
-public class AttributeCheckbox implements DynamicAttributeField, Serializable {
+public class AttributeCheckbox extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
 
 	private AbstractField field;
 	private DataContainer property;
 	public AttributeCheckbox(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
 		property = new AttributeDataContainer(dynamicObject, attributeName);
-		field = new CheckBox(attributeName);
+		field = new CheckBox(getName(dynamicObject, attributeName));
 		field.setHeight(1.5f, Sizeable.UNITS_EM);
 		field.setValue(DataHelper.booleanOf((String) property.getValue()));
 		field.setImmediate(false);

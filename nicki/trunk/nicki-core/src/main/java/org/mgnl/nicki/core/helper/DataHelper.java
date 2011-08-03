@@ -3,6 +3,7 @@ package org.mgnl.nicki.core.helper;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -144,5 +145,9 @@ public class DataHelper {
 			}
 		}
 		return false;
+	}
+
+	public static String getDay(Date value) {
+		return formatDay.format(value);
 	}
 }

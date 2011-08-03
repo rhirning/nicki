@@ -1,12 +1,14 @@
 package org.mgnl.nicki.ldap.methods;
 
 import java.io.Reader;
+import java.io.Serializable;
 import java.io.StringReader;
 
 import org.jdom.Document;
 import org.jdom.input.SAXBuilder;
 
-public class StructuredData {
+@SuppressWarnings("serial")
+public class StructuredData implements Serializable {
 	Document document = null;
 
 	public StructuredData(String xml) {

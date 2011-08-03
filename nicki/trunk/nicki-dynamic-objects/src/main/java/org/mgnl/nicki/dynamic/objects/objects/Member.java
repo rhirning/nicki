@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
@@ -22,8 +23,8 @@ public class Member extends DynamicObject implements Serializable{
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new ReferenceDynamicAttribute("member", "nickiProjectPerson", String.class,
-				"nicki.users.basedn", "objectClass=Person");
+		dynAttribute = new ReferenceDynamicAttribute(Person.class, "member", "nickiProjectPerson", String.class,
+				Config.getProperty("nicki.users.basedn"));
 		dynAttribute.setForeignKey(Person.class);
 		dynAttribute.setMandatory();
 		addAttribute(dynAttribute);

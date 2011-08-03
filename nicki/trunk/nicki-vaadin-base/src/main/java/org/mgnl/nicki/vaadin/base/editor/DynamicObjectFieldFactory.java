@@ -11,14 +11,13 @@ import org.mgnl.nicki.vaadin.base.fields.AttributeSelectObjectField;
 import org.mgnl.nicki.vaadin.base.fields.AttributeTextAreaField;
 import org.mgnl.nicki.vaadin.base.fields.AttributeTextField;
 import org.mgnl.nicki.vaadin.base.fields.DynamicAttributeField;
-import org.mgnl.nicki.vaadin.base.fields.ListAttributeField;
 import org.mgnl.nicki.vaadin.base.fields.TableListAttributeField;
 
+import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-class DynamicObjectFieldFactory implements Serializable {
+public class DynamicObjectFieldFactory implements Serializable {
 	private DynamicObjectValueChangeListener objectListener = null;
 	
 	public DynamicObjectFieldFactory(DynamicObjectValueChangeListener objectListener) {
@@ -45,7 +44,7 @@ class DynamicObjectFieldFactory implements Serializable {
 	}
 	
 	
-	public void addFields(VerticalLayout layout, DynamicObject dynamicObject, boolean create) {
+	public void addFields(AbstractOrderedLayout layout, DynamicObject dynamicObject, boolean create) {
 		DataModel model = dynamicObject.getModel();
 		for (Iterator<DynamicAttribute> iterator = model.getAttributes().values().iterator(); iterator.hasNext();) {
 			DynamicAttribute dynAttribute = iterator.next();

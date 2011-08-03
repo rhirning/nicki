@@ -20,13 +20,13 @@ import com.vaadin.ui.Select;
 import com.vaadin.ui.TextField;
 
 @SuppressWarnings("serial")
-public class AttributeSelectObjectField implements DynamicAttributeField, Serializable {
+public class AttributeSelectObjectField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
 
 	private Field field;
 	private DataContainer property;
 	public AttributeSelectObjectField(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
 		if (dynamicObject.getModel().getDynamicAttribute(attributeName).isForeignKey()) {
-			Select select = new ComboBox(attributeName);
+			Select select = new ComboBox(getName(dynamicObject, attributeName));
 			select.setContainerDataSource(getOptions(dynamicObject, dynamicObject.getModel().getDynamicAttribute(attributeName)));
 			select.setItemCaptionPropertyId("name");
 			select.setImmediate(true);
@@ -46,7 +46,7 @@ public class AttributeSelectObjectField implements DynamicAttributeField, Serial
 		Container container = new IndexedContainer();
 		container.addContainerProperty("name", String.class, null);
 		container.addContainerProperty("dynamicObject", DynamicObject.class, null);
-		for (Iterator<DynamicObject> iterator = dynamicAttribute.getOptions(dynamicObject).iterator(); iterator.hasNext();) {
+		for (Iterator<? extends DynamicObject> iterator = dynamicAttribute.getOptions(dynamicObject).iterator(); iterator.hasNext();) {
 			DynamicObject option = iterator.next();
 			Item item = container.addItem(option.getPath());
 			item.getItemProperty("dynamicObject").setValue(option);

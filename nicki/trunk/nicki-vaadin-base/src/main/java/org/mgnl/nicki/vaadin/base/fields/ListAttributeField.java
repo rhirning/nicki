@@ -20,7 +20,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-public class ListAttributeField implements DynamicAttributeField, Serializable {
+public class ListAttributeField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
 
 	private ComponentContainer container;
 	public ListAttributeField(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
@@ -31,7 +31,7 @@ public class ListAttributeField implements DynamicAttributeField, Serializable {
 		DataContainer property = new ListAttributeDataContainer(dynamicObject, attributeName);
 		ListAttributeListener listener = new ListAttributeListener(dynamicObject, attributeName, property, dataLayout, objectListener);
 		HorizontalLayout hL= new HorizontalLayout();
-		Label label = new Label(attributeName);
+		Label label = new Label(getName(dynamicObject, attributeName));
 		hL.addComponent(label);
 		Button newButton =new Button(I18n.getText("nicki.editor.generic.button.add"));
 		newButton.addListener(new AddAttributeListener(dataLayout, listener));

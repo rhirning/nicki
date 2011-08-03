@@ -13,6 +13,7 @@ public interface NickiContext extends Serializable {
 	public static enum READONLY {TRUE, FALSE};
 	DynamicObject loadObject(String path);
 	List<DynamicObject> loadObjects(String baseDn, String filter);
+	<T extends DynamicObject> T loadChildObject(Class<T> class1, DynamicObject parent, String childKey);
 	List<DynamicObject> loadChildObjects(String parent,	String filter);
 	List<DynamicObject> loadReferenceObjects(String path, DynamicReference reference);
 	
@@ -37,6 +38,5 @@ public interface NickiContext extends Serializable {
 	DynamicObject getUser();
 	void setUser(DynamicObject user);
 	String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException;
-	<T extends DynamicObject> T loadChildObject(Class<T> class1, DynamicObject parent, String childKey);
 
 }
