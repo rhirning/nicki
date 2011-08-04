@@ -171,12 +171,15 @@ public class NickiTreeEditor extends AbsoluteLayout {
 			}
 
 			public Action[] getActions(Object target, Object sender) {
-				if (isRoot((DynamicObject) target)) {
-					return rootActionsList.get(target.getClass());
-					
-				} else {
-					return actionsList.get(target.getClass());
+				if (target != null) {
+					if (isRoot((DynamicObject) target)) {
+						return rootActionsList.get(target.getClass());
+						
+					} else {
+						return actionsList.get(target.getClass());
+					}
 				}
+				return null;
 			}
 		});
 

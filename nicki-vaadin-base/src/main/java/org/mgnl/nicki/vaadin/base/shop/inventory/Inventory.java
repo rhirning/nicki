@@ -11,6 +11,8 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.objects.Resource;
 import org.mgnl.nicki.dynamic.objects.objects.Role;
+import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.shop.catalog.Cart;
 import org.mgnl.nicki.shop.catalog.Catalog;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
 import org.mgnl.nicki.shop.catalog.CatalogArticleAttribute;
@@ -108,6 +110,11 @@ public class Inventory implements Serializable{
 			sb.append(articles.get(key).toString()).append("\n");
 		}
 		return sb.toString();
+	}
+	
+	public Cart save() throws InstantiateDynamicObjectException {
+		Cart cart = person.getContext().getObjectFactory().getDynamicObject(Cart.class);
+		return cart;
 	}
 
 }

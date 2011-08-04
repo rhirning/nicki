@@ -11,6 +11,8 @@ public interface ObjectFactory {
 	<T extends DynamicObject> T getDynamicObject(Class<T> classDefinition, String parentPath,
 			String namingValue) throws InstantiateDynamicObjectException;
 
+	<T extends DynamicObject> T getDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException;
+	
 	DynamicObject getDynamicObject(String className) throws InstantiateDynamicObjectException;
 
 	DynamicObject getObject(ContextSearchResult contextSearchResult) throws InstantiateDynamicObjectException;
