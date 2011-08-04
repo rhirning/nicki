@@ -7,7 +7,6 @@ package org.mgnl.nicki.shop.catalog;
 import java.text.ParseException;
 import org.jdom.JDOMException;
 import org.mgnl.nicki.dynamic.objects.components.ProcessResult;
-import org.mgnl.nicki.dynamic.objects.components.CartEntry;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 import java.util.Date;

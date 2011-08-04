@@ -8,9 +8,9 @@
 		<project>nicki-dynamic-objects</project>
 		<project>nicki-ldap</project>
 		<project>nicki-config-rhi</project>
-		<project>nicki-shop</project>
 		<project>nicki-dynamic-objects-ad</project>
 		<project>efg-dynamic-objects</project>
+		<project>nicki-shop</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
