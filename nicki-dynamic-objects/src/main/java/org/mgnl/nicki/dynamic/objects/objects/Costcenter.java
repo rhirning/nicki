@@ -4,6 +4,7 @@
  */
 package org.mgnl.nicki.dynamic.objects.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.ldap.context.NickiContext;
@@ -51,6 +52,16 @@ public class Costcenter extends DynamicObject {
 
     public static List<Costcenter> getAllCostcenters(NickiContext ctx) {
         return ctx.loadChildObjects(Costcenter.class, Config.getProperty("nicki.costcenters.basedn"), null);
+    }
+    
+	public static List<String> getAllCostcentersAsString(NickiContext ctx) {
+        List<Costcenter> list = ctx.loadChildObjects(Costcenter.class, Config.getProperty("nicki.costcenters.basedn"), null);
+		List<String> strings = new ArrayList<String>();
+		for (Costcenter costcenter : list) {
+			strings.add(costcenter.getValue());
+		}
+		
+		return strings;
     }
 
     @Override
