@@ -7,8 +7,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.dynamic.objects.objects.Resource;
 import org.mgnl.nicki.dynamic.objects.objects.Role;
+import org.mgnl.nicki.shop.catalog.CartEntry.ACTION;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
 import org.mgnl.nicki.shop.catalog.CatalogArticleAttribute;
 import org.mgnl.nicki.vaadin.base.shop.attributes.AttributeComponentFactory;
@@ -106,6 +108,36 @@ public class InventoryArticle implements Serializable{
 
 	public void setValue(CatalogArticleAttribute attribute, Object value) {
 		String stringValue = AttributeComponentFactory.getAttributeComponent(attribute.getType()).getStringValue(value);
+		InventoryAttribute iAttribute = attributes.get(attribute.getName());
+		if (getStatus() == STATUS.PROVISIONED && !StringUtils.equals(stringValue, iAttribute.getOldValue())) {
+			setStatus(STATUS.MODIFIED);
+		}
 		attributes.get(attribute.getName()).setValue(stringValue);
+	}
+
+	public boolean hasChanged() {
+		if (getStatus() == STATUS.NEW
+				|| getStatus() == STATUS.MODIFIED
+				|| getStatus() == STATUS.DELETED) {
+			return true;
+		}
+		return false;
+	}
+
+	public static ACTION getAction(STATUS status) {
+		if (status == STATUS.DELETED) {
+			return ACTION.DELETE;
+		}
+		else if (status == STATUS.MODIFIED) {
+			return ACTION.MODIFY;
+		}
+		else if (status == STATUS.NEW) {
+			return ACTION.ADD;
+		}
+		return null;
+	}
+
+	public Map<String, InventoryAttribute> getAttributes() {
+		return attributes;
 	}
 }

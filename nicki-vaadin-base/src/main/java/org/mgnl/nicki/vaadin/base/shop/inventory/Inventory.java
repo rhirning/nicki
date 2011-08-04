@@ -2,17 +2,21 @@ package org.mgnl.nicki.vaadin.base.shop.inventory;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.objects.Resource;
 import org.mgnl.nicki.dynamic.objects.objects.Role;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.shop.catalog.Cart;
+import org.mgnl.nicki.shop.catalog.CartEntry;
 import org.mgnl.nicki.shop.catalog.Catalog;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
 import org.mgnl.nicki.shop.catalog.CatalogArticleAttribute;
@@ -112,9 +116,36 @@ public class Inventory implements Serializable{
 		return sb.toString();
 	}
 	
-	public Cart save() throws InstantiateDynamicObjectException {
-		Cart cart = person.getContext().getObjectFactory().getDynamicObject(Cart.class);
-		return cart;
+	public Cart save() throws InstantiateDynamicObjectException, DynamicObjectException {
+		if (hasChanged()) {
+			Cart cart = person.getContext().getObjectFactory().getDynamicObject(Cart.class,
+					Config.getProperty("nicki.carts.basedn"), Long.toString(new Date().getTime()));
+			for (Iterator<InventoryArticle> iterator = articles.values().iterator(); iterator.hasNext();) {
+				InventoryArticle iArticle = iterator.next();
+				if (iArticle.hasChanged()) {
+					CartEntry entry = new CartEntry(iArticle.getArticle().getCatalogPath(),
+											InventoryArticle.getAction(iArticle.getStatus()));
+					for (Iterator<InventoryAttribute> iterator2 = iArticle.getAttributes().values().iterator();
+							iterator2.hasNext();) {
+						InventoryAttribute iAttribute = iterator2.next();
+						entry.addAttribute(iAttribute.getName(), iAttribute.getValue());
+					}
+					cart.addCartEntry(entry);
+				}
+			}
+			cart.update();
+			return cart;
+		}
+		return null;
+	}
+
+	private boolean hasChanged() {
+		for (Iterator<InventoryArticle> iterator = articles.values().iterator(); iterator.hasNext();) {
+			if (iterator.next().hasChanged()) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
