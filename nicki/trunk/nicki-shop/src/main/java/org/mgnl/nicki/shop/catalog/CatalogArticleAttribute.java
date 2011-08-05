@@ -11,6 +11,7 @@ public class CatalogArticleAttribute implements Serializable{
 	private String name;
 	private String key;
 	private String type;
+	private String contentClass;
 	public CatalogArticleAttribute(String name, String key, String type) {
 		this.name = name;
 		this.key = key;
@@ -21,6 +22,7 @@ public class CatalogArticleAttribute implements Serializable{
 		this.name = attributeElement.getAttributeValue("name");
 		this.key = attributeElement.getAttributeValue("label");
 		this.type = attributeElement.getAttributeValue("type");
+		this.contentClass = attributeElement.getAttributeValue("contentClass");
 	}
 	public String getName() {
 		return name;
@@ -60,4 +62,7 @@ public class CatalogArticleAttribute implements Serializable{
 		return sb.toString();
 	}
 
+	public String getContentClass() {
+		return contentClass;
+	}
 }

@@ -301,7 +301,11 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		if (parent == null) {
 			parent = context.loadObject(getParentPath());
 		}
-		return (T) parent;
+		try {
+			return (T) parent;
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	public void addAttribute(DynamicAttribute dynAttribute) {

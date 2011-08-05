@@ -13,7 +13,9 @@ public class AttributeComponentFactory {
 		attributeComponents.put("date", "org.mgnl.nicki.vaadin.base.shop.attributes.DateComponent");
 		attributeComponents.put("text", "org.mgnl.nicki.vaadin.base.shop.attributes.TextComponent");
 		attributeComponents.put("checkbox", "org.mgnl.nicki.vaadin.base.shop.attributes.CheckboxComponent");
-		attributeComponents.put("costCenter", "org.mgnl.nicki.vaadin.base.shop.attributes.CostCenterComponent");
+		attributeComponents.put("select", "org.mgnl.nicki.vaadin.base.shop.attributes.SelectComponent");
+		attributeComponents.put("freeselect", "org.mgnl.nicki.vaadin.base.shop.attributes.FreeSelectComponent");
+		attributeComponents.put("static", "org.mgnl.nicki.vaadin.base.shop.attributes.LabelComponent");
 		attributeComponents.put(DEFAULT, "org.mgnl.nicki.vaadin.base.shop.attributes.LabelComponent");
 	}
 	

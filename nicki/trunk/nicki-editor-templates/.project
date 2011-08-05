@@ -11,6 +11,7 @@
 		<project>nicki-config-rhi</project>
 		<project>efg-dynamic-objects</project>
 		<project>nicki-dynamic-objects-ad</project>
+		<project>nicki-shop</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

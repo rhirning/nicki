@@ -123,7 +123,8 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 			CatalogArticle article, boolean enabled) {
 		AbstractOrderedLayout layout = super.getHorizontalArticleAttributes(article, enabled);
 		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), enabled));
-		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, new Date()));
+		layout.addComponentAsFirst(getAttributeComponent(getInventory().getUser(), getInventory().getPerson(),
+				article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, new Date()));
 
 		return layout;
 	}
@@ -134,7 +135,8 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 		AbstractOrderedLayout layout =  super.getVerticalArticleAttributes(article, provisioned);
 		boolean enabled = true;
 		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), enabled));
-		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateFrom"), !provisioned, new Date()));
+		layout.addComponentAsFirst(getAttributeComponent(getInventory().getUser(), getInventory().getPerson(),
+				article, CatalogArticle.getFixedAttribute("dateFrom"), !provisioned, new Date()));
 
 		return layout;
 	}

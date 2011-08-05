@@ -102,6 +102,23 @@ public class CatalogPage extends DynamicTemplateObject {
 		return (List<String>) get("category");
 	}
 	
+	public List<String> getAllCategories() {
+		List<String> categories = new ArrayList<String>();
+		if (hasCategories()) {
+			categories.addAll(getCategories());
+		}
+		categories.addAll(getInheritedCategories());
+		return categories;
+	}
+	
+	public List<String> getInheritedCategories() {
+		try {
+			return getParent(CatalogPage.class).getAllCategories();
+		} catch (Exception e) {
+		}
+		return new ArrayList<String>();
+	}
+	
 	public void setCategories(List<String> categories) {
 		put("category", categories);
 	}

@@ -147,9 +147,9 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 
 
 
-	public void setPerson(Person person) {
+	private void setPerson(Person person) {
 		this.person = person;
-		this.inventory = new Inventory(person);
+		this.inventory = new Inventory(this.user, person);
 	}
 
 

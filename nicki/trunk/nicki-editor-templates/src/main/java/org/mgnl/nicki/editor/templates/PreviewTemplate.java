@@ -74,7 +74,7 @@ public class PreviewTemplate extends BaseTreeAction {
 		try {
 			TestData data = new TestData(dynamicObject);
 			NickiContext templateContext = context;
-			if (context.getTarget() != data.getTarget()) {
+			if (!StringUtils.equals(context.getTarget().getName(), data.getTarget().getName())) {
 				templateContext = AppContext.getSystemContext(data.getTarget().getName(), null);
 			}
 			String resultString = TemplateEngine.executeTemplate(templatePath, data.getDataModel(templateContext));

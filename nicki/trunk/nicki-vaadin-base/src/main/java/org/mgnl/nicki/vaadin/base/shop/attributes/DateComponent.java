@@ -3,6 +3,7 @@ package org.mgnl.nicki.vaadin.base.shop.attributes;
 import java.util.Date;
 
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.catalog.CatalogArticleAttribute;
 import org.mgnl.nicki.vaadin.base.data.DateHelper;
 import org.mgnl.nicki.vaadin.base.shop.inventory.InventoryArticle;
@@ -14,7 +15,7 @@ import com.vaadin.ui.PopupDateField;
 public class DateComponent extends BasicAttributeComponent implements AttributeComponent {
 
 	@Override
-	public Component getInstance(InventoryArticle article, CatalogArticleAttribute attribute) {
+	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
 		setAttribute(attribute);
 		setCaption(attribute.getLabel());

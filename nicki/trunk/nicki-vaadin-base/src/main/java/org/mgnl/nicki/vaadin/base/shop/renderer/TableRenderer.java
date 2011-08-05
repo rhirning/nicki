@@ -104,7 +104,8 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 			start = inventoryArticle.getStart();
 			enabled = false;
 		}
-		item.getItemProperty("dateFrom").setValue(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, start));
+		item.getItemProperty("dateFrom").setValue(getAttributeComponent(getInventory().getUser(), getInventory().getPerson(),
+				article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, start));
 		item.getItemProperty("dateTo").setValue(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), true));
 		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article, enabled));
 //		showArticleAttributes(parent);

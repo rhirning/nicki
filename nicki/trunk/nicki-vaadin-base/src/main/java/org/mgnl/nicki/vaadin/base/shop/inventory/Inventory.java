@@ -24,13 +24,15 @@ import org.mgnl.nicki.vaadin.base.shop.inventory.InventoryArticle.STATUS;
 
 @SuppressWarnings("serial")
 public class Inventory implements Serializable{
+	private Person user;
 	private Person person;
 	private List<String> attributeValues;
 
 	private Map<String, InventoryArticle> articles = new HashMap<String, InventoryArticle>();
 
-	public Inventory(Person person) {
+	public Inventory(Person user, Person person) {
 		super();
+		this.setUser(user);
 		this.person = person;
 		this.attributeValues = person.getCatalogAttributeValues();
 		init();
@@ -118,8 +120,8 @@ public class Inventory implements Serializable{
 	
 	public Cart save() throws InstantiateDynamicObjectException, DynamicObjectException {
 		if (hasChanged()) {
-			Cart cart = person.getContext().getObjectFactory().getDynamicObject(Cart.class,
-					Config.getProperty("nicki.carts.basedn"), Long.toString(new Date().getTime()));
+			Cart cart = person.getContext().getObjectFactory().getDynamicObject(Cart.class);
+			cart.init(Config.getProperty("nicki.carts.basedn"), Long.toString(new Date().getTime()));
 			for (Iterator<InventoryArticle> iterator = articles.values().iterator(); iterator.hasNext();) {
 				InventoryArticle iArticle = iterator.next();
 				if (iArticle.hasChanged()) {
@@ -133,7 +135,7 @@ public class Inventory implements Serializable{
 					cart.addCartEntry(entry);
 				}
 			}
-			cart.update();
+			cart.create();
 			return cart;
 		}
 		return null;
@@ -146,6 +148,18 @@ public class Inventory implements Serializable{
 			}
 		}
 		return false;
+	}
+
+	public void setUser(Person user) {
+		this.user = user;
+	}
+
+	public Person getUser() {
+		return user;
+	}
+
+	public Person getPerson() {
+		return person;
 	}
 
 }

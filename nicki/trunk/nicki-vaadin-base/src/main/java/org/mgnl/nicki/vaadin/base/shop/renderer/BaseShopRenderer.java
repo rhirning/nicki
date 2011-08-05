@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
 import org.mgnl.nicki.shop.catalog.CatalogArticleAttribute;
 import org.mgnl.nicki.vaadin.base.shop.attributes.AttributeComponent;
@@ -32,22 +33,26 @@ public class BaseShopRenderer {
 		try {
 			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
 			attributeComponent.setEnabled(enabled);
-			return attributeComponent.getInstance(getInventory().getArticle(article), articleAttribute);
+			return attributeComponent.getInstance(getInventory().getUser(), getInventory().getPerson(),
+					getInventory().getArticle(article), articleAttribute);
 		} catch (Exception e) {
-			return new LabelComponent().getInstance(getInventory().getArticle(article), articleAttribute);
+			return new LabelComponent().getInstance(getInventory().getUser(), getInventory().getPerson(),
+					getInventory().getArticle(article), articleAttribute);
 		}
 	}
 
-	protected Component getAttributeComponent(CatalogArticle article, CatalogArticleAttribute articleAttribute, boolean enabled, Object value) {
+	protected Component getAttributeComponent(Person user, Person person, CatalogArticle article, CatalogArticleAttribute articleAttribute, boolean enabled, Object value) {
 		try {
 			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
 			attributeComponent.setValue(value);
 			inventory.getArticle(article).setValue(articleAttribute, value);
 			attributeComponent.setEnabled(enabled);
-			return attributeComponent.getInstance(getInventory().getArticle(article), articleAttribute);
+			return attributeComponent.getInstance(getInventory().getUser(), getInventory().getPerson(),
+					getInventory().getArticle(article), articleAttribute);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new LabelComponent().getInstance(getInventory().getArticle(article), articleAttribute);
+			return new LabelComponent().getInstance(getInventory().getUser(), getInventory().getPerson(),
+					getInventory().getArticle(article), articleAttribute);
 		}
 	}
 
