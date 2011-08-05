@@ -170,5 +170,17 @@ public class CatalogArticle extends DynamicTemplateObject {
 			return getPath();
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> getCategories() {
+		List<String> categories = new ArrayList<String>();
+		if (null != get("category")) {
+			categories.addAll((Collection<? extends String>) get("category"));
+		}
+		if (getParent(CatalogPage.class).hasCategories()) {
+			categories.addAll(getParent(CatalogPage.class).getCategories());
+		}
+		return categories;
+	}
 
 }

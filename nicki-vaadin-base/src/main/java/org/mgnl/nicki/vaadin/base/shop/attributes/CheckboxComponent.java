@@ -1,6 +1,7 @@
 package org.mgnl.nicki.vaadin.base.shop.attributes;
 
 
+import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.catalog.CatalogArticleAttribute;
 import org.mgnl.nicki.vaadin.base.shop.inventory.InventoryArticle;
 
@@ -16,7 +17,7 @@ public class CheckboxComponent extends BasicAttributeComponent implements Attrib
 		setField(field);
 	}
 	@Override
-	public Component getInstance(InventoryArticle article, CatalogArticleAttribute attribute) {
+	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
 		setAttribute(attribute);
 		setCaption(attribute.getLabel());

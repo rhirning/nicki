@@ -115,7 +115,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 				DynamicObject selected = (DynamicObject) selector.getValue();
 				if (selected == null) {
 					if (viewer != null) {
-						removeComponent(viewer);
+						hsplit.removeComponent(viewer);
 						viewer = null;
 					return;
 					}
