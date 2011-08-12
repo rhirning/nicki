@@ -60,7 +60,7 @@ public class Project extends DynamicObject implements Serializable {
 	}
 
 	public Person getProjectLeader() {
-		return (Person) getForeignKeyObject("manager");
+		return getForeignKeyObject(Person.class, "manager");
 	}
 
 	public void setProjectLeader(Person projectLeader) {
@@ -77,13 +77,13 @@ public class Project extends DynamicObject implements Serializable {
 	}
 
 	public Member getDeputyProjectLeader() {
-		return (Member) getForeignKeyObject("deputy");
+		return getForeignKeyObject(Member.class, "deputy");
 	}
 	
 	public boolean isProjectDeputyLeader(DynamicObject user) {
 		try {
 			return StringUtils.equalsIgnoreCase(user.getPath(),
-					getDeputyProjectLeader().getForeignKeyObject("member").getPath());
+					getDeputyProjectLeader().getForeignKeyObject(Person.class, "member").getPath());
 		} catch (Exception e) {
 		}
 		return false;

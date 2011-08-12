@@ -11,13 +11,17 @@ import org.mgnl.nicki.vaadin.base.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.vaadin.base.shop.core.ShopPage.TYPE;
 import org.mgnl.nicki.vaadin.base.shop.inventory.Inventory;
 
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Layout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window.Notification;
 
 @SuppressWarnings("serial")
 public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
@@ -87,7 +91,12 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 		layout.setHeight("420px");
 		CheckBox checkBox = new CheckBox(I18n.getText("nicki.rights.checkbox.label"));
 		checkBox.setImmediate(true);
+		if (article.hasDescription()) {
+			checkBox.setIcon(Icon.HELP.getResource());
+			checkBox.setDescription(article.getDescription());
+		}
 		layout.addComponent(checkBox, "top:20.0px;left:20.0px;right:20.0px;");
+
 		checkBox.addListener(new Button.ClickListener() {
 			
 			@Override

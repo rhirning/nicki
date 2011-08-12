@@ -116,13 +116,29 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		model.addAcceptor(attribute, value);
 	}
 	
-	public DynamicObject getForeignKeyObject(String key) {
+	public <T extends DynamicObject> T getForeignKeyObject(Class<T> classDefinition, String key) {
 		String path = getAttribute(key);
 		if (StringUtils.isNotEmpty(path)) {
-			return context.loadObject(path);
+			return context.loadObject(classDefinition, path);
 		} else {
 			return null;
 		}
+	}
+
+	public <T extends DynamicObject> List<T> getForeignKeyObjects(Class<T> classDefinition, String key) {
+		List<T> objects = new ArrayList<T>();
+		@SuppressWarnings("unchecked")
+		List<String> foreignKeys = (List<String>) get("key");
+		for (Iterator<String> iterator = foreignKeys.iterator(); iterator.hasNext();) {
+			String path = (String) iterator.next();
+			DynamicObject object = context.loadObject(classDefinition, path);
+			if (object != null) {
+				objects.add(context.loadObject(classDefinition, path));
+			} else {
+				System.out.println("Could not build object: " + path);
+			}
+		}
+		return objects;
 	}
 
 	public void loadChildren() {

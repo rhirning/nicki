@@ -183,4 +183,12 @@ public class CatalogArticle extends DynamicTemplateObject {
 		return categories;
 	}
 
+	public boolean hasDescription() {
+		return StringUtils.isNotEmpty(getDescription());
+	}
+
+	public String getDescription() {
+		return getAttribute("description");
+	}
+
 }

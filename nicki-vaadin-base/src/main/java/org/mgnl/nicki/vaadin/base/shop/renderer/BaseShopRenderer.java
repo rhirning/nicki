@@ -56,7 +56,7 @@ public class BaseShopRenderer {
 		}
 	}
 
-	protected void removeExcept(Layout parent, Button button) {
+	protected void removeExcept(Layout parent, Component button) {
 		List<Component> toBeRemoved = new ArrayList<Component>();
 		for (Iterator<Component> iterator = parent.getComponentIterator(); iterator.hasNext();) {
 			Component component = iterator.next();

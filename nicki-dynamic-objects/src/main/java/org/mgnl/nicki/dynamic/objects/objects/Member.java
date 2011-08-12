@@ -43,7 +43,7 @@ public class Member extends DynamicObject implements Serializable{
 
 	@Override
 	public String getDisplayName() {
-		return getForeignKeyObject("member").getDisplayName();
+		return getForeignKeyObject(Person.class, "member").getDisplayName();
 	}
 
 	@SuppressWarnings("unchecked")
