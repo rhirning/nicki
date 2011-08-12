@@ -128,7 +128,7 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	public <T extends DynamicObject> List<T> getForeignKeyObjects(Class<T> classDefinition, String key) {
 		List<T> objects = new ArrayList<T>();
 		@SuppressWarnings("unchecked")
-		List<String> foreignKeys = (List<String>) get("key");
+		List<String> foreignKeys = (List<String>) get(key);
 		for (Iterator<String> iterator = foreignKeys.iterator(); iterator.hasNext();) {
 			String path = (String) iterator.next();
 			DynamicObject object = context.loadObject(classDefinition, path);
