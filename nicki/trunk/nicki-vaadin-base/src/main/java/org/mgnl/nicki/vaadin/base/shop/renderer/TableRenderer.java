@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
+import org.mgnl.nicki.vaadin.base.editor.Icon;
 import org.mgnl.nicki.vaadin.base.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.vaadin.base.shop.inventory.Inventory;
 import org.mgnl.nicki.vaadin.base.shop.inventory.InventoryArticle;
@@ -35,7 +36,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 		table.setWidth("100%");
 		table.setHeight("100%");
 		table.addContainerProperty("checkbox", CheckBox.class, "");
-		table.setColumnWidth("checkbox", 20);
+		table.setColumnWidth("checkbox", 36);
 		table.setColumnHeader("checkbox", "");
 		table.addContainerProperty("title", String.class, "");
 		table.setColumnWidth("title", 200);
@@ -57,6 +58,11 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 			checkBox.setData(article);
 			checkBox.setImmediate(true);
 			checkBox.setWidth("-1px");
+			if (article.hasDescription()) {
+				checkBox.setIcon(Icon.HELP.getResource());
+				checkBox.setDescription(article.getDescription());
+			}
+
 			checkBox.addListener(new Button.ClickListener() {
 				
 				@Override
