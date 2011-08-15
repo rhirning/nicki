@@ -192,8 +192,31 @@ public class CatalogPage extends DynamicTemplateObject {
 		return getContext().loadChildObject(CatalogArticle.class, this, key);
 	}
 
+	public List<CatalogArticle> getPageArticles() {
+		return getContext().loadChildObjects(CatalogArticle.class, this, "");
+	}
+
 	public String getCatalogPath() {
 		return getSlashPath(Catalog.getCatalog());
+	}
+
+	public List<CatalogArticle> getArticles(String key) {
+		if (StringUtils.contains(key, Catalog.PATH_SEPARATOR)) {
+			String pageKey = StringUtils.substringBefore(key, Catalog.PATH_SEPARATOR);
+			String articleKey = StringUtils.substringAfter(key, Catalog.PATH_SEPARATOR);
+			CatalogPage page = getPage(pageKey);
+			if (page != null) {
+				return page.getArticles(articleKey);
+			}
+		} else {
+			if ("*".equals(key)) {
+				return getArticles();
+			} else if ("**".equals(key)) {
+				return getAllArticles();
+			}
+		}
+		return null;
+
 	}
 
 
