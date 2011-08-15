@@ -168,18 +168,23 @@ public abstract class BasicContext implements NickiContext {
 		return null;
 	}
 	
-	public <T extends DynamicObject> T loadChildObject(Class<T> class1,	DynamicObject parent, String namingValue) {
-			try {
-				Target target = parent.getContext().getTarget();
-				String namingAttribute = 
-					target.getObjectFactory(parent.getContext()).getNamingLdapAttribute(class1);
-				String path = namingAttribute + "=" + namingValue + "," + parent.getPath();
-				return loadObject(class1, path);
-			} catch (InstantiateDynamicObjectException e) {
-				e.printStackTrace();
-			}
-			return null;
-	}
+	public <T extends DynamicObject> T loadChildObject(Class<T> class1, DynamicObject parent, String namingValue) {
+		try {
+			Target target = parent.getContext().getTarget();
+			String namingAttribute = 
+				target.getObjectFactory(parent.getContext()).getNamingLdapAttribute(class1);
+			String path = namingAttribute + "=" + namingValue + "," + parent.getPath();
+			return loadObject(class1, path);
+		} catch (InstantiateDynamicObjectException e) {
+			e.printStackTrace();
+		}
+		return null;
+}
+
+
+	public <T extends DynamicObject> List<T> loadChildObjects(Class<T> class1, DynamicObject parent, String filter) {
+		return loadChildObjects(class1, parent.getPath(), filter);
+}
 
 
 	@SuppressWarnings("unchecked")

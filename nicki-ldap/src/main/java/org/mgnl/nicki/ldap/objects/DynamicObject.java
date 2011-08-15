@@ -173,6 +173,10 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		return list;
 	}
 
+	public <T extends DynamicObject> List<T>  getChildren(Class<T> classDefinition) {
+		return getContext().loadChildObjects(classDefinition, this, "");
+	}
+
 	public void addChild(String attribute, String filter) {
 		model.addChild(attribute, filter);
 	}

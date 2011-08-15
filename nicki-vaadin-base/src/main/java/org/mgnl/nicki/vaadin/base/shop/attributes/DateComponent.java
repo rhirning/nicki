@@ -12,6 +12,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.PopupDateField;
 
 
+@SuppressWarnings("serial")
 public class DateComponent extends BasicAttributeComponent implements AttributeComponent {
 
 	@Override

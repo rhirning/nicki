@@ -11,17 +11,13 @@ import org.mgnl.nicki.vaadin.base.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.vaadin.base.shop.core.ShopPage.TYPE;
 import org.mgnl.nicki.vaadin.base.shop.inventory.Inventory;
 
-import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Window.Notification;
 
 @SuppressWarnings("serial")
 public class TabRenderer extends BaseShopRenderer implements ShopRenderer {

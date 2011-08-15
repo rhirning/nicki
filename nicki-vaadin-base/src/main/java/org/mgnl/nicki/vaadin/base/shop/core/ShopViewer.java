@@ -19,6 +19,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window.Notification;
 
 
 @SuppressWarnings("serial")
@@ -32,22 +33,27 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	private Button saveButton;
 	private PersonSelector personSelector;
 	private ShopRenderer renderer = null;
+	private ShopParent parent;
 	
-	public ShopViewer(Person user, Shop shop, PersonSelector personSelector) {
-		this.personSelector = personSelector;
-		init(user, shop);
-	}
-
-
-	public ShopViewer(Person user, Shop shop, Person person) {
-		setPerson(person);
-		
-		init(user, shop);
-	}
-
-	public void init(Person user, Shop shop) {
+	public ShopViewer(Person user, Shop shop, PersonSelector personSelector, ShopParent parent) {
 		this.user = user;
 		this.shop = shop;
+		this.personSelector = personSelector;
+		this.parent = parent;
+		init();
+	}
+
+
+	public ShopViewer(Person user, Shop shop, Person person, ShopParent parent) {
+		this.user = user;
+		this.shop = shop;
+		this.person = person;
+		this.parent = parent;
+		this.inventory = new Inventory(user, person);
+		init();
+	}
+	
+	public void init() {
 		if (shop.getRenderer() != null) {
 			try {
 				this.renderer = (ShopRenderer) Class.forName(shop.getRenderer()).newInstance();
@@ -83,13 +89,14 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 						
 						@Override
 						public void setSelectedPerson(Person selectedPerson) {
-							setPerson(selectedPerson);
+							person = selectedPerson;
+							inventory = new Inventory(user, person);
 							mainLayout.removeAllComponents();
 							showShop();
 						}
 	
 					});
-					Window window = new Window(I18n.getText("nicki.editor.bu.ouchange.window.person.title"), personSelector);
+					Window window = new Window(I18n.getText(parent.getI18nBase() + ".window.person.title"), personSelector);
 					window.setWidth(640, Sizeable.UNITS_PIXELS);
 					window.setHeight(640, Sizeable.UNITS_PIXELS);
 					window.setModal(true);
@@ -134,22 +141,29 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 			
 			public void buttonClick(ClickEvent event) {
 				if (getInventory() != null) {
-					System.out.println(getInventory().toString());
+					// System.out.println(getInventory().toString());
+					try {
+						if (!getInventory().hasChanged()) {
+							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".save.empty"),
+									Notification.TYPE_HUMANIZED_MESSAGE);
+						} else {
+							getInventory().save();
+							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".save.success"),
+									Notification.TYPE_HUMANIZED_MESSAGE);
+							parent.closeShop();
+						}
+					} catch (Exception e) {
+						getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".save.error"),
+								e.getMessage(),
+								Notification.TYPE_ERROR_MESSAGE);
+						e.printStackTrace();
+					}
 				}
-				// save();
 			}
 		});
 
 		layout.addComponent(renderer.render(getShopViewerComponent(), getInventory()), "top:0.0px;bottom:30.0px;left:0.0px;");
 		layout.addComponent(saveButton, "bottom:0.0px;left:20.0px;");
-	}
-	
-
-
-
-	private void setPerson(Person person) {
-		this.person = person;
-		this.inventory = new Inventory(this.user, person);
 	}
 
 

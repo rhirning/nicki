@@ -8,6 +8,7 @@ import org.mgnl.nicki.vaadin.base.shop.inventory.InventoryArticle;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 
+@SuppressWarnings("serial")
 public class CheckboxComponent extends BasicAttributeComponent implements AttributeComponent {
 
 	public CheckboxComponent() {

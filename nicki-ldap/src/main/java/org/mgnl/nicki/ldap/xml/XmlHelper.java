@@ -5,6 +5,7 @@
 package org.mgnl.nicki.ldap.xml;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +24,8 @@ import org.jdom.xpath.XPath;
  *
  * @author cna
  */
-public class XmlHelper {
+@SuppressWarnings("serial")
+public class XmlHelper implements Serializable{
 
     private static XmlHelper instance = null;
     private Document doc;
