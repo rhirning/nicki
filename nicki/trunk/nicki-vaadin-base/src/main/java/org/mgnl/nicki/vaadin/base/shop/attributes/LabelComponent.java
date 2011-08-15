@@ -8,6 +8,7 @@ import org.mgnl.nicki.vaadin.base.shop.inventory.InventoryArticle;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 
+@SuppressWarnings("serial")
 public class LabelComponent extends BasicAttributeComponent implements AttributeComponent {
 
 	private Label label;

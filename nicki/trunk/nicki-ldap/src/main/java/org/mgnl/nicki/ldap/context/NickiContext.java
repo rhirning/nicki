@@ -12,14 +12,17 @@ import org.mgnl.nicki.ldap.objects.DynamicReference;
 public interface NickiContext extends Serializable {
 	public static enum READONLY {TRUE, FALSE};
 	DynamicObject loadObject(String path);
-	List<DynamicObject> loadObjects(String baseDn, String filter);
-	<T extends DynamicObject> T loadChildObject(Class<T> class1, DynamicObject parent, String childKey);
-	List<DynamicObject> loadChildObjects(String parent,	String filter);
-	List<DynamicObject> loadReferenceObjects(String path, DynamicReference reference);
-	
 	<T extends DynamicObject> T loadObject(Class<T> classDefinition, String path);
+	
+	List<DynamicObject> loadObjects(String baseDn, String filter);
 	<T extends DynamicObject> List<T> loadObjects(Class<T> classDefinition, String baseDn, String filter);
+
+	List<DynamicObject> loadChildObjects(String parent,	String filter);
+	<T extends DynamicObject> T loadChildObject(Class<T> class1, DynamicObject parent, String childKey);
 	<T extends DynamicObject> List<T> loadChildObjects(Class<T> classDefinition, String parent,	String filter);
+	<T extends DynamicObject> List<T> loadChildObjects(Class<T> class1, DynamicObject parent, String filter);
+	
+	List<DynamicObject> loadReferenceObjects(String path, DynamicReference reference);
 	<T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, String path, DynamicReference reference);
 
 	boolean isExist(String dn);

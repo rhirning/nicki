@@ -122,6 +122,11 @@ public class Inventory implements Serializable{
 		if (hasChanged()) {
 			Cart cart = person.getContext().getObjectFactory().getDynamicObject(Cart.class);
 			cart.init(Config.getProperty("nicki.carts.basedn"), Long.toString(new Date().getTime()));
+			cart.setInitiator(user);
+			cart.setRecipient(person);
+			cart.setRequestDate(new Date());
+			cart.setStatus(Cart.STATUS.REQUESTED);
+			cart.setCatalog(Catalog.getCatalog());
 			for (Iterator<InventoryArticle> iterator = articles.values().iterator(); iterator.hasNext();) {
 				InventoryArticle iArticle = iterator.next();
 				if (iArticle.hasChanged()) {
@@ -141,7 +146,7 @@ public class Inventory implements Serializable{
 		return null;
 	}
 
-	private boolean hasChanged() {
+	public boolean hasChanged() {
 		for (Iterator<InventoryArticle> iterator = articles.values().iterator(); iterator.hasNext();) {
 			if (iterator.next().hasChanged()) {
 				return true;

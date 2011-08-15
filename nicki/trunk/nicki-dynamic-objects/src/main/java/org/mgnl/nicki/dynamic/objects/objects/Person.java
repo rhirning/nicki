@@ -15,83 +15,13 @@ import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
-
 @SuppressWarnings("serial")
 public class Person extends DynamicTemplateObject {
-	public enum GENDER {MALE, FEMALE};
-
-	public enum PERSONTYPE {
-		INTERNAL_USER("INTERNAL"),
-		EXTERNAL_USER("EXTERNAL"),
-		TECHNICAL_USER("TECHNICAL"),
-		NOT_SET("");
-
-		private final String type;
-
-		private PERSONTYPE(String type) {
-			this.type = type;
-		}
-
-		public static PERSONTYPE fromValue(String type) {
-			if (INTERNAL_USER.getValue().equals(type)) {
-				return INTERNAL_USER;
-			} else if (EXTERNAL_USER.getValue().equals(type))  {
-				return EXTERNAL_USER;
-			} else if (TECHNICAL_USER.getValue().equals(type)) {
-				return TECHNICAL_USER;
-			}
-
-			return NOT_SET;
-
-		}
-
-		public String getValue() {
-			return type;
-		}
-	};
-
-	public enum STATUS {
-
-		REQUESTED("beantragt"),
-		INACTIVE("inaktiv-vor-eintritt"), 
-		ACTIVE("aktiv"), 
-		DEACTIVATED("deaktiviert"), 
-		RESIGNED("ausgetreten"),
-		NOT_SET("");
-		
-		private final String status;
-		
-		private STATUS(String status) {
-			this.status = status;
-		}
-		
-		public static STATUS fromValue(String status) {
-			if (INACTIVE.getValue().equals(status)) {
-				return INACTIVE;
-			} else if (ACTIVE.getValue().equals(status))  {
-				return ACTIVE;
-			} else if (DEACTIVATED.getValue().equals(status)) {
-				return DEACTIVATED;
-			} else if (RESIGNED.getValue().equals(status)) {
-				return RESIGNED;
-			} else if (REQUESTED.getValue().equals(status)) {
-				return REQUESTED;
-			}
-			
-			return NOT_SET;
-			
-		}
-
-		public String getValue() {
-			return status;
-		}
-	}
-
-	public void initDataModel()
-	{
+	public void initDataModel() {
 		addObjectClass("Person");
 		addAdditionalObjectClass("nickiUserAux");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
+		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn",
+				String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
@@ -99,45 +29,83 @@ public class Person extends DynamicTemplateObject {
 		dynAttribute.setMandatory();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("givenname", "givenName", String.class);
+		dynAttribute = new DynamicAttribute("givenname", "givenName",
+				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("fullname", "fullName", String.class);
+		dynAttribute = new DynamicAttribute("fullname", "fullName",
+				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("lastWorkingDay", "nickiLastWorkingDay", String.class);
+		dynAttribute = new DynamicAttribute("lastWorkingDay",
+				"nickiLastWorkingDay", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new ReferenceDynamicAttribute(Person.class, "manager", "manager", String.class,
+		dynAttribute = new ReferenceDynamicAttribute(Person.class, "manager",
+				"manager", String.class,
 				Config.getProperty("nicki.users.basedn"));
 		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
-		
-		dynAttribute =  new StructuredDynamicAttribute("entitlement", "DirXML-EntitlementRef", String.class);
+
+		dynAttribute = new StructuredDynamicAttribute("entitlement",
+				"DirXML-EntitlementRef", String.class);
 		dynAttribute.setMultiple();
 		dynAttribute.setForeignKey(Entitlement.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute =  new StructuredDynamicAttribute("role", "nrfAssignedRoles", String.class);
+		dynAttribute = new StructuredDynamicAttribute("role",
+				"nrfAssignedRoles", String.class);
 		dynAttribute.setMultiple();
 		dynAttribute.setForeignKey(Role.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute =  new StructuredDynamicAttribute("resource", "nrfAssignedResources", String.class);
+		dynAttribute = new StructuredDynamicAttribute("resource",
+				"nrfAssignedResources", String.class);
 		dynAttribute.setMultiple();
 		dynAttribute.setForeignKey(Resource.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute =  new DynamicAttribute("status", "nickiStatus", String.class);
+		dynAttribute = new DynamicAttribute("status", "nickiStatus",
+				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute =  new DynamicAttribute("type", "employeeType", String.class);
+		dynAttribute = new DynamicAttribute("type", "employeeType",
+				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute =  new DynamicAttribute("costCenter", "nickiCostCenter", String.class);
+		dynAttribute = new DynamicAttribute("costCenter", "costCenter",
+				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute =  new DynamicAttribute("attributeValue", "nickiCatalogAttribute", String.class);
+		dynAttribute = new DynamicAttribute("gender", "nickiGender",
+				String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("language", "Language",
+				String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("birthDate", "nickiBirthDate",
+				String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("entryDate", "nickiEntryDate",
+				String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("owner", "nickiOwner", String.class);
+		dynAttribute.setForeignKey(Person.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("company", "company", String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("occupation", "nickiOccupation",
+				String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("attributeValue",
+				"nickiCatalogAttribute", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
@@ -156,7 +124,7 @@ public class Person extends DynamicTemplateObject {
 		sb.append(")");
 		return sb.toString();
 	}
-	
+
 	public boolean hasRole(Role role2) {
 		for (Iterator<Role> iterator = getRoles().iterator(); iterator
 				.hasNext();) {
@@ -178,7 +146,7 @@ public class Person extends DynamicTemplateObject {
 		}
 		return false;
 	}
-	
+
 	public String getFullname() {
 		return getAttribute("fullname");
 	}
@@ -190,7 +158,8 @@ public class Person extends DynamicTemplateObject {
 
 	// TODO - edit cna
 	public static String getInActiveFilter() {
-		return "!(|(nickiStatus=" + STATUS.ACTIVE.getValue() + ")(nickiStatus=" + STATUS.REQUESTED.getValue()+ "))";
+		return "!(|(nickiStatus=" + STATUS.ACTIVE.getValue() + ")(nickiStatus="
+				+ STATUS.REQUESTED.getValue() + "))";
 	}
 
 	public static String getAllFilter() {
@@ -211,7 +180,6 @@ public class Person extends DynamicTemplateObject {
 		return STATUS.fromValue(getAttribute("status"));
 	}
 
-
 	public void setType(PERSONTYPE type) {
 		put("type", type.getValue());
 	}
@@ -221,8 +189,7 @@ public class Person extends DynamicTemplateObject {
 	}
 
 	public void setCostCenter(String value) {
-		// TODO Auto-generated method stub
-		
+		put("costCenter", value);
 	}
 
 	public void setName(String value) {
@@ -238,7 +205,7 @@ public class Person extends DynamicTemplateObject {
 	}
 
 	public void setLanguage(String value) {
-		put("language", value);		
+		put("language", value);
 	}
 
 	public void setBirthDate(Date value) {
@@ -254,15 +221,15 @@ public class Person extends DynamicTemplateObject {
 	}
 
 	public void setOwner(Person value) {
-		put("owner", value.getPath());		
+		put("owner", value.getPath());
 	}
 
 	public void setCompany(String value) {
-		put("company", value);		
+		put("company", value);
 	}
 
-	public void setTask(String value) {
-		put("task", value);		
+	public void setOccupation(String value) {
+		put("occupation", value);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -296,5 +263,70 @@ public class Person extends DynamicTemplateObject {
 		return (List<String>) get("attributeValue");
 	}
 
+	public enum GENDER {
+		MALE, FEMALE
+	};
+
+	public enum PERSONTYPE {
+		INTERNAL_USER("INTERNAL"), EXTERNAL_USER("EXTERNAL"), TECHNICAL_USER(
+				"TECHNICAL"), NOT_SET("");
+
+		private final String type;
+
+		private PERSONTYPE(String type) {
+			this.type = type;
+		}
+
+		public static PERSONTYPE fromValue(String type) {
+			if (INTERNAL_USER.getValue().equals(type)) {
+				return INTERNAL_USER;
+			} else if (EXTERNAL_USER.getValue().equals(type)) {
+				return EXTERNAL_USER;
+			} else if (TECHNICAL_USER.getValue().equals(type)) {
+				return TECHNICAL_USER;
+			}
+
+			return NOT_SET;
+
+		}
+
+		public String getValue() {
+			return type;
+		}
+	};
+
+	public enum STATUS {
+
+		REQUESTED("beantragt"), INACTIVE("inaktiv-vor-eintritt"), ACTIVE(
+				"aktiv"), DEACTIVATED("deaktiviert"), RESIGNED("ausgetreten"), NOT_SET(
+				"");
+
+		private final String status;
+
+		private STATUS(String status) {
+			this.status = status;
+		}
+
+		public static STATUS fromValue(String status) {
+			if (INACTIVE.getValue().equals(status)) {
+				return INACTIVE;
+			} else if (ACTIVE.getValue().equals(status)) {
+				return ACTIVE;
+			} else if (DEACTIVATED.getValue().equals(status)) {
+				return DEACTIVATED;
+			} else if (RESIGNED.getValue().equals(status)) {
+				return RESIGNED;
+			} else if (REQUESTED.getValue().equals(status)) {
+				return REQUESTED;
+			}
+
+			return NOT_SET;
+
+		}
+
+		public String getValue() {
+			return status;
+		}
+	}
 
 }

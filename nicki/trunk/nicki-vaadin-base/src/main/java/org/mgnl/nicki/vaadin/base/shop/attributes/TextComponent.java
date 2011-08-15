@@ -7,6 +7,7 @@ import org.mgnl.nicki.vaadin.base.shop.inventory.InventoryArticle;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 
+@SuppressWarnings("serial")
 public class TextComponent extends BasicAttributeComponent implements AttributeComponent {
 
 	public TextComponent() {

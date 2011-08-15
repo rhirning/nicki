@@ -38,8 +38,7 @@ public class Cart extends DynamicObject {
         REQUESTED,
         FINISHED;
 
-        @Override
-        public String toString() {
+        public String getValue() {
             return this.toString().toLowerCase();
         }
 
@@ -191,7 +190,7 @@ public class Cart extends DynamicObject {
     }
 
     public void setStatus(STATUS status) {
-        put("status", status.toString());
+        put("status", status.getValue());
     }
 
     public STATUS getStatus() {
