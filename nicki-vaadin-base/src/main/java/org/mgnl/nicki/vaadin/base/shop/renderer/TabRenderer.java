@@ -45,17 +45,9 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 	}
 	
 	private void addPageTab(TabSheet tabSheet, ShopPage page) {
-		if (page.getType() == TYPE.TYPE_SHOP_ARTICLE_PAGE) {
+		if (page.getType() == TYPE.SHOP_ARTICLE_PAGE) {
 			tabSheet.addTab(getSingleArticlePageComponent(page), page.getLabel(), Icon.SETTINGS.getResource());
-		} else if (page.getType() == TYPE.TYPE_PAGE_REF_PAGE) {
-			ShopRenderer renderer = null;
-			try {
-				renderer = (ShopRenderer) Class.forName(page.getRenderer()).newInstance();
-			} catch (Exception e) {
-				renderer = new TabRenderer();
-			}
-			tabSheet.addTab(renderer.render(page, getInventory()), page.getLabel(), Icon.SETTINGS.getResource());
-		} else if (page.getType() == TYPE.TYPE_STRUCTURE_PAGE) {
+		} else {
 			ShopRenderer renderer = null;
 			try {
 				renderer = (ShopRenderer) Class.forName(page.getRenderer()).newInstance();

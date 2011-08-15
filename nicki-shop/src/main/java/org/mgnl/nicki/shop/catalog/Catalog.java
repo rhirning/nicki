@@ -178,4 +178,19 @@ public class Catalog extends DynamicTemplateObject {
 		return false;
 	}
 
+	public List<CatalogArticle> getArticles(String path) {
+		String key = path;
+		if (StringUtils.startsWith(key, PATH_SEPARATOR)) {
+			key = StringUtils.substring(path, 1);
+		}
+		String pageKey = StringUtils.substringBefore(key, PATH_SEPARATOR);
+		String articleKey = StringUtils.substringAfter(key, PATH_SEPARATOR);
+		CatalogPage page = getPage(pageKey);
+		if (page != null) {
+			return page.getArticles(articleKey);
+		} else {
+			return null;
+		}
+	}
+
 }

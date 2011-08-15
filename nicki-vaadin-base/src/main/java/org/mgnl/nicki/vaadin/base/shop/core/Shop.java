@@ -11,6 +11,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.mgnl.nicki.core.helper.XMLHelper;
+import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.catalog.Catalog;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
 
@@ -18,10 +19,14 @@ import org.mgnl.nicki.shop.catalog.CatalogArticle;
 public class Shop implements ShopViewerComponent, Serializable {
 	private String renderer;
 	private List<ShopPage> pageList = new ArrayList<ShopPage>();
-	Document document = null;
+	private Document document = null;
+	private Person shopper;
+	private Person recipient;
 
-	public Shop (String classLoaderPath) throws JDOMException, IOException {
+	public Shop (String classLoaderPath, Person shopper, Person recipient) throws JDOMException, IOException {
 		document = XMLHelper.documentFromClasspath(this.getClass(), classLoaderPath);
+		this.shopper = shopper;
+		this.recipient = recipient;
 		load();
 	}
 	
@@ -92,6 +97,23 @@ public class Shop implements ShopViewerComponent, Serializable {
 	@Override
 	public ShopViewerComponent getShopViewerComponent() {
 		return this;
+	}
+
+
+	public void setRecipient(Person recipient) {
+		this.recipient = recipient;
+	}
+
+	public Person getRecipient() {
+		return recipient;
+	}
+
+	public void setShopper(Person shopper) {
+		this.shopper = shopper;
+	}
+
+	public Person getShopper() {
+		return shopper;
 	}
 
 }

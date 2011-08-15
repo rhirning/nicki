@@ -11,6 +11,7 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.shop.catalog.Catalog;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
 import org.mgnl.nicki.shop.catalog.CatalogArticleAttribute;
+import org.mgnl.nicki.shop.catalog.CatalogArticleSelector;
 
 @SuppressWarnings("serial")
 public class ShopPage implements ShopViewerComponent, Serializable{
@@ -23,12 +24,13 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 	private List<CatalogArticle> articleList = new ArrayList<CatalogArticle>();
 	private List<CatalogArticleAttribute> attributeList = new ArrayList<CatalogArticleAttribute>();
 	private String renderer;
+	private String selectorClass;
 
 	public ShopPage(Shop shop, Element pageElement) {
 		this.shop = shop;
 		this.type = getPageType(pageElement);
 		
-		if (type == TYPE.TYPE_SHOP_ARTICLE_PAGE) {
+		if (type == TYPE.SHOP_ARTICLE_PAGE) {
 			String catalogArticleId = pageElement.getAttributeValue("article");
 			if (StringUtils.isNotEmpty(catalogArticleId)) {
 				CatalogArticle article = this.shop.getArticle(catalogArticleId);
@@ -36,7 +38,7 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 				this.label = article.getDisplayName();
 				this.articleList.add(article);
 			}
-		} else if (type == TYPE.TYPE_STRUCTURE_PAGE) {
+		} else if (type == TYPE.STRUCTURE_PAGE) {
 			this.renderer = pageElement.getAttributeValue("renderer");
 			this.name = pageElement.getAttributeValue("name");
 			this.label = I18n.getText(pageElement.getAttributeValue("label"));
@@ -60,7 +62,7 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 					}
 				}
 			}
-		} else if (type == TYPE.TYPE_PAGE_REF_PAGE) {
+		} else if (type == TYPE.PAGE_REF_PAGE) {
 			this.renderer = pageElement.getAttributeValue("renderer");
 			this.name = pageElement.getAttributeValue("name");
 			this.label = I18n.getText(pageElement.getAttributeValue("label"));
@@ -78,6 +80,22 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 					}
 				}
 			}
+		} else if (type == TYPE.ARTICLE_SELECT) {
+			this.renderer = pageElement.getAttributeValue("renderer");
+			this.name = pageElement.getAttributeValue("name");
+			this.label = I18n.getText(pageElement.getAttributeValue("label"));
+			this.selectorClass = pageElement.getAttributeValue("selector");
+			try {
+				CatalogArticleSelector selector = (CatalogArticleSelector) Class.forName(selectorClass).newInstance();
+				selector.setShopper(shop.getShopper());
+				selector.setRecipient(shop.getRecipient());
+				List<CatalogArticle> articles = selector.getArticles();
+				if (articles != null && articles.size() > 0) {
+					this.articleList.addAll(articles);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -88,16 +106,17 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 		}
 		String article = pageElement.getAttributeValue("article"); 
 		if (StringUtils.isNotEmpty(article)) {
-			return TYPE.TYPE_SHOP_ARTICLE_PAGE;
+			return TYPE.SHOP_ARTICLE_PAGE;
 		}
-		return TYPE.TYPE_STRUCTURE_PAGE;
+		return TYPE.STRUCTURE_PAGE;
 		
 	}
 
 	public enum TYPE {
-		TYPE_SHOP_ARTICLE_PAGE("shopArticlePage"),
-		TYPE_STRUCTURE_PAGE("structurePage"),
-		TYPE_PAGE_REF_PAGE("pageRef");
+		SHOP_ARTICLE_PAGE("shopArticlePage"),
+		STRUCTURE_PAGE("structurePage"),
+		PAGE_REF_PAGE("pageRef"),
+		ARTICLE_SELECT("select");
 
 		String name;
 		TYPE(String name) {
@@ -105,11 +124,13 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 		}
 		public static TYPE getType(String name) {
 			if ("shopArticlePage".equals(name)) {
-				return TYPE_SHOP_ARTICLE_PAGE;
+				return SHOP_ARTICLE_PAGE;
 			} else if ("structurePage".equals(name)) {
-				return TYPE_STRUCTURE_PAGE;
+				return STRUCTURE_PAGE;
 			} else if ("pageRef".equals(name)) {
-				return TYPE_PAGE_REF_PAGE;
+				return PAGE_REF_PAGE;
+			} else if ("select".equals(name)) {
+				return ARTICLE_SELECT;
 			} else {
 				return null;
 			}
