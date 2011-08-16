@@ -19,11 +19,11 @@ public abstract class BasicAttributeComponent implements AttributeComponent, Ser
 	private InventoryArticle article;
 	private CatalogArticleAttribute attribute;
 
-	protected <T extends Object> T getContent(Class<?> T, Person user, Person person) {
+	protected <T extends Object> T getContent(Class<T> classDefinition, Person user, Person person) {
 		if (StringUtils.isNotEmpty(attribute.getContentClass())) {
 			try {
 				AttributeContent contentProvider = (AttributeContent) Class.forName(attribute.getContentClass()).newInstance();
-				return contentProvider.getContent(T, user, person);
+				return contentProvider.getContent(classDefinition, user, person);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
