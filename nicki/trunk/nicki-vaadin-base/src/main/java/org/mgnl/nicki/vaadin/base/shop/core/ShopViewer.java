@@ -85,7 +85,8 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 				
 				@Override
 				public void buttonClick(ClickEvent event) {
-					personSelector.init(user.getContext(), new SelectPersonCommand() {
+					boolean useActiveInactive = true;
+					personSelector.init(user.getContext(), useActiveInactive, new SelectPersonCommand() {
 						
 						@Override
 						public void setSelectedPerson(Person selectedPerson) {
