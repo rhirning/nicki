@@ -12,7 +12,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Content;
 import org.jdom.Document;
-import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.Parent;
 import org.jdom.input.SAXBuilder;
@@ -28,14 +27,9 @@ import org.jdom.xpath.XPath;
 public class XmlHelper implements Serializable{
 
     private static XmlHelper instance = null;
-    private Document doc;
-    private XPath navigator = null;
-    private SAXBuilder sb = null;
 
     private XmlHelper() {
         //navigator = XPathFactory.newInstance().newXPath();
-
-        sb = new SAXBuilder();
     }
 
     public static XmlHelper getInstance() {
@@ -48,18 +42,6 @@ public class XmlHelper implements Serializable{
 
     public Document getNewDocument() {
         return new Document();
-    }
-
-    public Document getDocument() {
-        if (doc == null) {
-            doc = getNewDocument();
-        }
-
-        return doc;
-    }
-
-    public void setDocument(Document doc) {
-        this.doc = doc;
     }
 
     public <T extends Content> List<T> selectNodes(Class<T> clazz, Parent ctx, String xpath) {
@@ -109,7 +91,7 @@ public class XmlHelper implements Serializable{
 
         Document document;
         try {
-            document = sb.build(sr);
+            document = new SAXBuilder().build(sr);
         } catch (IOException ex) {
             return null;
         }
@@ -127,12 +109,4 @@ public class XmlHelper implements Serializable{
         return StringUtils.substringAfter(printer.outputString(doc), format.getLineSeparator());
     }
 
-    public String getXml(Element elem) {
-        XMLOutputter printer = new XMLOutputter();
-        Format format = printer.getFormat();
-        format.setIndent("\t");
-        printer.setFormat(format);
-        
-        return StringUtils.substringAfter(printer.outputString(doc), format.getLineSeparator());
-    }
 }
