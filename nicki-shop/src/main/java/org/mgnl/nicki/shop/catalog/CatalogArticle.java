@@ -1,6 +1,5 @@
 package org.mgnl.nicki.shop.catalog;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,7 +10,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
-import org.jdom.JDOMException;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.dynamic.objects.objects.DynamicTemplateObject;
@@ -50,6 +48,11 @@ public class CatalogArticle extends DynamicTemplateObject {
 		
 		dynAttribute = new DynamicAttribute("category", "nickiCategory", String.class);
 		dynAttribute.setMultiple();
+		addAttribute(dynAttribute);
+		
+		dynAttribute = new DynamicAttribute("rule", "nickiRule", String.class);
+		dynAttribute.setMultiple();
+		dynAttribute.setEditorClass("org.mgnl.nicki.vaadin.base.rules.RuleAttributeField");
 		addAttribute(dynAttribute);
 		
 		dynAttribute = new DynamicAttribute("attributes", "nickiAttributes", TextArea.class);
@@ -98,11 +101,7 @@ public class CatalogArticle extends DynamicTemplateObject {
 						list.add(new CatalogArticleAttribute(attributeElement));
 					}
 				}
-			} catch (JDOMException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
@@ -189,6 +188,15 @@ public class CatalogArticle extends DynamicTemplateObject {
 
 	public String getDescription() {
 		return getAttribute("description");
+	}
+
+	public boolean hasRules() {
+		return getRules() != null && getRules().size() > 0;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<String> getRules() {
+		return (List<String>) get("rule");
 	}
 
 }

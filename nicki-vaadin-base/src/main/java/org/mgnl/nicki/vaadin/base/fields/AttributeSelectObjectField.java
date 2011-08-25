@@ -24,7 +24,8 @@ public class AttributeSelectObjectField extends BaseDynamicAttributeField implem
 
 	private Field field;
 	private DataContainer property;
-	public AttributeSelectObjectField(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+
 		if (dynamicObject.getModel().getDynamicAttribute(attributeName).isForeignKey()) {
 			Select select = new ComboBox(getName(dynamicObject, attributeName));
 			select.setContainerDataSource(getOptions(dynamicObject, dynamicObject.getModel().getDynamicAttribute(attributeName)));

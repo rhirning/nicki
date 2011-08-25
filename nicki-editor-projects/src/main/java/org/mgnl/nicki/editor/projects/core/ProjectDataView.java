@@ -58,10 +58,14 @@ public class ProjectDataView extends CustomComponent implements ClassEditor {
 	public void setDynamicObject(NickiTreeEditor nickiEditor,
 			DynamicObject dynamicObject) {
 		this.project = (Project) dynamicObject;
-		this.projectNameField = new AttributeTextField("name", project, null);
-		this.projectDirectoryField = new AttributeTextField("projectdirectory", project, null);
-		this.projectDescriptionField = new AttributeTextAreaField("description", project, null);
-		this.deputyField = new AttributeSelectObjectField("deputy", project, null);
+		this.projectNameField = new AttributeTextField();
+		this.projectNameField.init("name", project, null);
+		this.projectDirectoryField = new AttributeTextField();
+		this.projectDirectoryField.init("projectdirectory", project, null);
+		this.projectDescriptionField = new AttributeTextAreaField();
+		this.projectDescriptionField.init("description", project, null);
+		this.deputyField = new AttributeSelectObjectField();
+		this.deputyField.init("deputy", project, null);
 		
 		buildMainLayout();
 		setCompositionRoot(mainLayout);

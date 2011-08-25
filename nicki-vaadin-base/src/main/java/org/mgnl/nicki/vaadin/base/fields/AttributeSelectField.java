@@ -20,7 +20,8 @@ public class AttributeSelectField extends BaseDynamicAttributeField implements D
 
 	private Field field;
 	private DataContainer property;
-	public AttributeSelectField(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+
 		Select select = new ComboBox(getName(dynamicObject, attributeName));
 //		select.setItemCaptionPropertyId("name");
 		select.setImmediate(true);

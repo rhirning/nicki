@@ -126,7 +126,6 @@ public class Cart extends DynamicObject {
         }
 
         Document doc = helper.getNewDocument();
-        helper.setDocument(doc);
 
         doc.setRootElement(new Element(ELEM_CART));
         Element cart = doc.getRootElement();

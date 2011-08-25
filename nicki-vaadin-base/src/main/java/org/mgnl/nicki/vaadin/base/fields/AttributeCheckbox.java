@@ -19,7 +19,8 @@ public class AttributeCheckbox extends BaseDynamicAttributeField implements Dyna
 
 	private AbstractField field;
 	private DataContainer property;
-	public AttributeCheckbox(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	public void init (String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+
 		property = new AttributeDataContainer(dynamicObject, attributeName);
 		field = new CheckBox(getName(dynamicObject, attributeName));
 		field.setHeight(1.5f, Sizeable.UNITS_EM);

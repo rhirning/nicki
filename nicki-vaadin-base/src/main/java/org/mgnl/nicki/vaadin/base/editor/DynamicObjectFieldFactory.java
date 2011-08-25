@@ -3,6 +3,7 @@ package org.mgnl.nicki.vaadin.base.editor;
 import java.io.Serializable;
 import java.util.Iterator;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.ldap.objects.DataModel;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
@@ -24,17 +25,29 @@ public class DynamicObjectFieldFactory implements Serializable {
 		this.objectListener = objectListener;
 	}
 
-	public Component createField(DynamicObject dynamicObject, String attributeName, boolean create) {
+	public Component createField(Component parent, DynamicObject dynamicObject, String attributeName, boolean create) {
 		DynamicAttribute dynAttribute = dynamicObject.getDynamicAttribute(attributeName);
 		DynamicAttributeField field = null;
-		if (dynAttribute.isMultiple()) {
-			field = new TableListAttributeField(attributeName, dynamicObject, objectListener);
-		} else if (dynAttribute.isForeignKey()) {
-			field = new AttributeSelectObjectField(attributeName, dynamicObject, objectListener);
-		} else if (dynAttribute.getAttributeClass() == TextArea.class) {
-			field = new AttributeTextAreaField(attributeName, dynamicObject, objectListener);
-		} else {
-			field = new AttributeTextField(attributeName, dynamicObject, objectListener);
+		if (StringUtils.isNotEmpty(dynAttribute.getEditorClass())) {
+			try {
+				field = (DynamicAttributeField) Class.forName(dynAttribute.getEditorClass()).newInstance();
+				field.init(attributeName, dynamicObject, objectListener);
+			} catch (Exception e) {
+				field = null;
+				e.printStackTrace();
+			}
+		}
+		if (field == null) {
+			if (dynAttribute.isMultiple()) {
+				field = new TableListAttributeField();
+			} else if (dynAttribute.isForeignKey()) {
+				field = new AttributeSelectObjectField();
+			} else if (dynAttribute.getAttributeClass() == TextArea.class) {
+				field = new AttributeTextAreaField();
+			} else {
+				field = new AttributeTextField();
+			}
+			field.init(attributeName, dynamicObject, objectListener);
 		}
 		boolean readOnly = dynAttribute.isReadonly();
 		if (!create && dynAttribute.isNaming()) {
@@ -50,7 +63,7 @@ public class DynamicObjectFieldFactory implements Serializable {
 			DynamicAttribute dynAttribute = iterator.next();
 			if (!dynAttribute.isNaming()) {
 				if (objectListener == null || objectListener.acceptAttribute(dynAttribute.getName())) {
-					layout.addComponent(createField(dynamicObject, dynAttribute.getName(), create));
+					layout.addComponent(createField(layout, dynamicObject, dynAttribute.getName(), create));
 				}
 			}
 		}
