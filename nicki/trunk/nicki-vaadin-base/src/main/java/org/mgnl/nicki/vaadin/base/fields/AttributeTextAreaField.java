@@ -20,7 +20,8 @@ public class AttributeTextAreaField extends BaseDynamicAttributeField implements
 
 	private TextArea field;
 	private DataContainer property;
-	public AttributeTextAreaField(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+
 		// common part: create layout
 		mainLayout = new AbsoluteLayout();
 		

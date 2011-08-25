@@ -4,6 +4,8 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 
+import com.vaadin.ui.Component;
+
 public class BaseDynamicAttributeField {
 
 	public String getName(DynamicObject dynamicObject, String attributeName) {

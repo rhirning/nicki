@@ -25,6 +25,7 @@ public class DynamicAttribute implements Serializable {
 	private boolean virtual = false;
 	private boolean readonly = false;
 	private boolean staticAttribute = false;
+	private String editorClass = null;
 
 	public String getLdapName() {
 		return ldapName;
@@ -160,5 +161,13 @@ public class DynamicAttribute implements Serializable {
 
 	public Class<? extends DynamicObject> getForeignKeyClass() {
 		return foreignKeyClass;
+	}
+
+	public void setEditorClass(String editorClass) {
+		this.editorClass = editorClass;
+	}
+	
+	public String getEditorClass() {
+		return editorClass;
 	}
 }

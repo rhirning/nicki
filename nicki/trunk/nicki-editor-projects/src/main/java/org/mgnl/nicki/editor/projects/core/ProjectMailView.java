@@ -57,11 +57,14 @@ public class ProjectMailView extends CustomComponent implements ClassEditor {
 	public void setDynamicObject(NickiTreeEditor nickiEditor,
 			DynamicObject dynamicObject) {
 		this.project = (Project) dynamicObject;
-		this.projectEmailField = new AttributeTextField("email", project, null);
-		this.projectEmailDomainField = new AttributeSelectField("emailDomain", project, null);
+		this.projectEmailField = new AttributeTextField();
+		this.projectEmailField.init("email", project, null);
+		this.projectEmailDomainField = new AttributeSelectField();
+		this.projectEmailDomainField.init("emailDomain", project, null);
 		this.projectEmailDomainField.setOptions(getEmailDomainOptions());
 		
-		this.projectEmailVisibleField = new AttributeCheckbox("emailVisible", project, null);
+		this.projectEmailVisibleField = new AttributeCheckbox();
+		this.projectEmailVisibleField.init("emailVisible", project, null);
 		
 		buildMainLayout();
 		setCompositionRoot(mainLayout);

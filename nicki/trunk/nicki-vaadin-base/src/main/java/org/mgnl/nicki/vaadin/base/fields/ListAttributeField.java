@@ -23,7 +23,8 @@ import com.vaadin.ui.VerticalLayout;
 public class ListAttributeField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
 
 	private ComponentContainer container;
-	public ListAttributeField(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+
 		@SuppressWarnings("unchecked")
 		List<Object> values = (List<Object>) dynamicObject.get(attributeName);
 		container = new VerticalLayout();

@@ -295,6 +295,9 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	public static String getSlashPath(String parentPath, String childPath) {
 		StringBuffer sb = new StringBuffer();
 		if (StringUtils.isNotEmpty(parentPath)) {
+			if (StringUtils.equals(parentPath, childPath)) {
+				return "/";
+			}
 			childPath = StringUtils.substringBeforeLast(childPath, "," + parentPath);
 		}
 		

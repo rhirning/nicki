@@ -97,9 +97,14 @@ public class LdapHelper {
 		} else {
 			sb.insert(0, andOr.getSign());
 			sb.insert(0, "(");
-			sb.append("(");
+			if (!StringUtils.startsWith(query, "(")) {
+				sb.append("(");
+			}
 			sb.append(query);
-			sb.append("))");
+			if (!StringUtils.startsWith(query, "(")) {
+				sb.append(")");
+			}
+			sb.append(")");
 		}
 	}
 }
