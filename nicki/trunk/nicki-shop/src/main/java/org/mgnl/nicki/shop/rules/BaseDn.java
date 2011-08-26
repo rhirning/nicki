@@ -18,5 +18,9 @@ public class BaseDn {
 	public TYPE getType() {
 		return type;
 	}
+	
+	public String toString() {
+		return type + ":" + path;
+	}
 }
 

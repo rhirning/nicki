@@ -1,6 +1,7 @@
 package org.mgnl.nicki.shop.rules;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,26 +24,29 @@ public class RuleManager {
 	
 	public static String getArticleQuery(Person person) {
 		StringBuffer sb = new StringBuffer();
-		LdapHelper.addQuery(sb, "rule=*", LOGIC.AND);
-		LdapHelper.negateQuery(sb);
+		LdapHelper.addQuery(sb, "nickiRule=*", LOGIC.AND);
 		List<Selector> selectors = person.getContext().loadChildObjects(Selector.class, 
 				Config.getProperty("nicki.selectors.basedn"), ""); 
 		for (Selector selector : selectors) {
 			Object value = person.get(selector.getName());
-			StringBuffer sb2 = new StringBuffer();
-			LdapHelper.addQuery(sb2, "rule=" + selector.getName() + "=*", LOGIC.OR);
-			LdapHelper.negateQuery(sb2);
-			if (value == null) {
-				LdapHelper.addQuery(sb, sb2.toString(), LOGIC.AND);
-			} else if (value instanceof String) {
-				String stringValue = (String) value;
-				LdapHelper.addQuery(sb2, "rule=" + selector.getName() + "=" + stringValue, LOGIC.OR);
-				LdapHelper.addQuery(sb, sb2.toString(), LOGIC.AND);
-			} else if (value instanceof List) {
-				@SuppressWarnings("unchecked")
-				List<String> values = (List<String>) value;
-				for (String stringValue : values) {
-					LdapHelper.addQuery(sb2, "rule=" + selector.getName() + "=" + stringValue, LOGIC.OR);
+			if (selector.hasValueProvider()) {
+				ValueProvider valueProvider = selector.getValueProvider();
+				LdapHelper.addQuery(sb, valueProvider.getArticleQuery(person, value), LOGIC.AND);
+			} else {
+				StringBuffer sb2 = new StringBuffer();
+				LdapHelper.addQuery(sb2, "nickiRule=" + selector.getName() + "=*", LOGIC.OR);
+				LdapHelper.negateQuery(sb2);
+				if (value == null) {
+					// nothing to add
+				} else if (value instanceof String) {
+					String stringValue = (String) value;
+					LdapHelper.addQuery(sb2, "nickiRule=" + selector.getName() + "=" + stringValue, LOGIC.OR);
+				} else if (value instanceof List) {
+					@SuppressWarnings("unchecked")
+					List<String> values = (List<String>) value;
+					for (String stringValue : values) {
+						LdapHelper.addQuery(sb2, "nickiRule=" + selector.getName() + "=" + stringValue, LOGIC.OR);
+					}
 				}
 				LdapHelper.addQuery(sb, sb2.toString(), LOGIC.AND);
 			}
@@ -50,24 +54,34 @@ public class RuleManager {
 		return sb.toString();
 	}
 
-	public static List<Person> getUsers(CatalogArticle article) {
-		List<Person> persons = new ArrayList<Person>();
+	public static Collection<Person> getUsers(CatalogArticle article) {
+		HashMap<String, Person> persons = new HashMap<String, Person>();
 		if (!article.hasRules()) {
-			return persons;
+			return persons.values();
 		}
 		
 		RuleQuery query = getRuleQuery(article);
 		if (!query.isNeedQuery()) {
-			return persons;
+			return persons.values();
 		}
 		for (BaseDn baseDn : query.getBaseDns()) {
 			if (baseDn.getType() == BaseDn.TYPE.ALL) {
-				persons.addAll(article.getContext().loadObjects(Person.class, baseDn.getPath(), query.getQuery()));
+				addAll(persons, article.getContext().loadObjects(Person.class, baseDn.getPath(), query.getQuery()));
 			} else {
-				persons.addAll(article.getContext().loadChildObjects(Person.class, baseDn.getPath(), query.getQuery()));
+				addAll(persons, article.getContext().loadChildObjects(Person.class, baseDn.getPath(), query.getQuery()));
 			}
 		}
-		return persons;
+		return persons.values();
+	}
+
+	private static void addAll(HashMap<String, Person> persons, List<Person> p2) {
+		if (p2 != null && p2.size() > 0) {
+			for (Person person : p2) {
+				if (!persons.containsKey(person.getPath())) {
+					persons.put(person.getPath(), person);
+				}
+			}
+		}
 	}
 
 	public static RuleQuery getRuleQuery(CatalogArticle article) {
@@ -90,7 +104,7 @@ public class RuleManager {
 						ruleQuery.addBaseDn(valueProvider.getBaseDn(value));
 					}
 				} else {
-					String query = getQuery(article, selectorName, value);
+					String query = getPersonQuery(article, selectorName, value);
 					LdapHelper.addQuery(sb2, query, LOGIC.OR);
 				}
 			}
@@ -110,12 +124,12 @@ public class RuleManager {
 		return article.getContext().loadObject(Selector.class, "cn=" + selectorName + "," + Config.getProperty("nicki.selectors.basedn"));
 	}
 
-	private static String getQuery(CatalogArticle article, String selectorName, String value) {
+	public static String getPersonQuery(CatalogArticle article, String selectorName, String value) {
 		Selector selector = getSelector(article, selectorName);
 		if (selector.hasValueProvider()) {
-			return selector.getValueProvider().getQuery(value);
+			return selector.getValueProvider().getPersonQuery(article, value);
 		} else {
-			return selectorName + "=" + value;
+			return BasicValueProvider.getLdapName(article, selectorName) + "=" + value;
 		}
 	}
 
