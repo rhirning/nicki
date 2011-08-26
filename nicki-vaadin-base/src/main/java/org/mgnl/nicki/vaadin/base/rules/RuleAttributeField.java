@@ -1,6 +1,7 @@
 package org.mgnl.nicki.vaadin.base.rules;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -74,14 +75,14 @@ public class RuleAttributeField extends BaseDynamicAttributeField implements Dyn
 	}
 	
 	protected void showTest() {
-		List<Person> list = RuleManager.getUsers(article);
+		Collection<Person> persons = RuleManager.getUsers(article);
 		Table table = new Table("Personen");
 		table.setWidth(440, Sizeable.UNITS_PIXELS);
 		table.setHeight(500, Sizeable.UNITS_PIXELS);
 		table.addContainerProperty("Person", String.class,  null);
 		table.setVisibleColumns(new String[] { "Person"});
 		table.setColumnHeaders(new String[] { "Person"});
-		for (Person person : list) {
+		for (Person person : persons) {
 			table.addItem(new String[] {person.getDisplayName()}, person.getDisplayName());
 		}
 

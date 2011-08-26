@@ -4,10 +4,14 @@ import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.ldap.helper.LdapHelper;
+import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
-import org.mgnl.nicki.shop.catalog.Selector;
+import org.mgnl.nicki.shop.catalog.CatalogArticle;
 import org.mgnl.nicki.shop.rules.BaseDn;
 import org.mgnl.nicki.shop.rules.BaseDn.TYPE;
+import org.mgnl.nicki.shop.rules.BasicValueProvider;
 import org.mgnl.nicki.vaadin.base.data.TreeContainer;
 import org.mgnl.nicki.vaadin.base.editor.DataProvider;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
@@ -21,12 +25,11 @@ import com.vaadin.ui.Tree;
 import com.vaadin.ui.Tree.ExpandEvent;
 
 @SuppressWarnings("serial")
-public class OrgValueProvider implements ValueProviderComponent, Serializable {
+public class OrgValueProvider extends BasicValueProvider implements ValueProviderComponent, Serializable {
 	
 	public static final String STOP = "|"; 
 	public static final String NO_STOP = ""; 
 
-	private Selector selector;
 	private TreeSelector treeSelector;
 	private TreeContainer treeContainer;
 	private OptionGroup optionGroup;
@@ -35,17 +38,13 @@ public class OrgValueProvider implements ValueProviderComponent, Serializable {
 	public OrgValueProvider() {
 	}
 
-	public void init (Selector selector) {
-		this.selector = selector;
-	}
-
 	@Override
 	public Component getValueList() {
 		layout = new HorizontalLayout();
 		layout.setSpacing(true);
 		treeSelector = new TreeSelector();
 		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.users.basedn"), new OrgOnlyFilter());
-		treeContainer = new TreeContainer(selector.getContext(), treeDataProvider, "Organsisation");
+		treeContainer = new TreeContainer(getSelector().getContext(), treeDataProvider, "Organsisation");
 		treeSelector.setContainerDataSource(treeContainer.getTree());
 		treeSelector.setItemCaptionPropertyId(TreeContainer.PROPERTY_NAME);
 		treeSelector.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
@@ -83,7 +82,7 @@ public class OrgValueProvider implements ValueProviderComponent, Serializable {
 	}
 	
 	@Override
-	public String getQuery(String value) {
+	public String getPersonQuery(CatalogArticle article, String value) {
 		return null;
 	}
 
@@ -111,6 +110,26 @@ public class OrgValueProvider implements ValueProviderComponent, Serializable {
 		}
 		return new BaseDn(base.toString(), type);
 	}
+
+	@Override
+	public String getArticleQuery(Person person, Object value) {
+		StringBuffer sb = new StringBuffer();
+		LdapHelper.addQuery(sb, "nickiRule=" + getSelector().getName() + "=*", LOGIC.OR);
+		LdapHelper.negateQuery(sb);
+		LdapHelper.addQuery(sb, "nickiRule=" + getSelector().getName() + "=/", LOGIC.OR);
+
+		String path = person.getSlashPath(Config.getProperty("nicki.users.basedn"));
+		// strip off username
+		path = StringUtils.substringBeforeLast(path, "/");
+		LdapHelper.addQuery(sb, "nickiRule=" + getSelector().getName() + "=" + path + "|", LOGIC.OR);
+
+		while(StringUtils.isNotEmpty(path)) {
+			LdapHelper.addQuery(sb, "nickiRule=" + getSelector().getName() + "=" + path, LOGIC.OR);
+			path = StringUtils.substringBeforeLast(path, "/");
+		}
+		return sb.toString();
+	}
+
 
 
 

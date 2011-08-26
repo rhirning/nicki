@@ -358,5 +358,17 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		return getAttribute("name");
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		try {
+			if (StringUtils.equalsIgnoreCase(path, ((DynamicObject)obj).getPath())) {
+				return true;
+			}
+		} catch (Exception e) {
+			return false;
+		}
+		return false;
+	}
+
 
 }

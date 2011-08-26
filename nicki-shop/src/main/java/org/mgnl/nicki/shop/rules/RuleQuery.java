@@ -29,4 +29,7 @@ public class RuleQuery {
 	public List<BaseDn> getBaseDns() {
 		return baseDns;
 	}
+	public String toString() {
+		return baseDns + query;
+	}
 }
