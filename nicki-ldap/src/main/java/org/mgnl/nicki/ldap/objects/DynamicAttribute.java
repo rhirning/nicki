@@ -135,7 +135,6 @@ public class DynamicAttribute implements Serializable {
 			this.foreignKeyClass = (Class<? extends DynamicObject>) Class.forName(className);
 		} catch (Exception e) {
 			this.foreignKey = false;
-			e.printStackTrace();
 		}
 	}
 	public String getName() {
