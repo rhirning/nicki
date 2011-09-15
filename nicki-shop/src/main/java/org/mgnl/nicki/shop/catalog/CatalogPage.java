@@ -12,9 +12,9 @@ import org.jdom.JDOMException;
 import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.dynamic.objects.objects.DynamicTemplateObject;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
-import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
@@ -152,8 +152,8 @@ public class CatalogPage extends DynamicTemplateObject {
 	}
 
 	@Override
-	public void init(NickiContext context, ContextSearchResult rs) {
-		super.init(context, rs);
+	public void init(ContextSearchResult rs) throws DynamicObjectException {
+		super.init(rs);
 		String providerClass = getAttribute("provider");
 		if (StringUtils.isNotEmpty(providerClass)) {
 			try {

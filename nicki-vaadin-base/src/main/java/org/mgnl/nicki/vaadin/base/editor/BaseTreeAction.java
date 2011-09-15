@@ -5,7 +5,6 @@ import java.io.Serializable;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Window;
 
 	@SuppressWarnings("serial")
 	public abstract class BaseTreeAction extends CustomComponent implements TreeAction, Serializable {
@@ -17,9 +16,6 @@ import com.vaadin.ui.Window;
 			this.targetClass = classDefinition;
 			this.name = name;
 		}
-
-		@Override
-		public abstract void execute(Window parentWindow, DynamicObject dynamicObject);
 
 		public String getName() {
 			return this.name;

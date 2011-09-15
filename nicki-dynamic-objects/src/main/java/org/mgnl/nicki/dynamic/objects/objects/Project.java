@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.reference.ChildReferenceDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
+import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 
@@ -106,9 +107,9 @@ public class Project extends DynamicObject implements Serializable {
 		this.getMembers().remove(target);
 	}
 
-	public void addDirectory(String name) {
-		Directory direcory = new Directory();
-		direcory.init(getPath(), name);
+	public void addDirectory(String name) throws InstantiateDynamicObjectException {
+		Directory direcory = getContext().getObjectFactory().getDynamicObject(Directory.class);
+		direcory.initNew(getPath(), name);
 		this.getDirectories().add(direcory);
 	}
 }

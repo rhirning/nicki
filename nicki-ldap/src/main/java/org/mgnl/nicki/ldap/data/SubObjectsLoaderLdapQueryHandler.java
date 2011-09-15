@@ -14,6 +14,9 @@ public class SubObjectsLoaderLdapQueryHandler extends ObjectsLoaderLdapQueryHand
 	public SearchControls getConstraints() {
 		SearchControls constraints = new SearchControls();
 		constraints.setSearchScope(SearchControls.ONELEVEL_SCOPE);
+		// Specify the ids of the attributes to return
+		String[] attrIDs = { "objectClass" };
+		constraints.setReturningAttributes(attrIDs);
 		return constraints;
 	}
 }

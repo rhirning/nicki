@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 public class RuleQuery {
 	private String query = null;
-	private List<BaseDn> baseDns = new ArrayList<BaseDn>();
+	private String baseDn = null;
 	private boolean needQuery = false;
 	
 	public void setQuery(String query) {
@@ -16,8 +16,8 @@ public class RuleQuery {
 			needQuery = true;
 		}
 	}
-	public void addBaseDn(BaseDn baseDn) {
-		this.baseDns.add(baseDn);
+	public void setBaseDn(String baseDn) {
+		this.baseDn = baseDn;
 		needQuery = true;
 	}
 	public boolean isNeedQuery() {
@@ -26,10 +26,10 @@ public class RuleQuery {
 	public String getQuery() {
 		return query;
 	}
-	public List<BaseDn> getBaseDns() {
-		return baseDns;
+	public String getBaseDn() {
+		return baseDn;
 	}
 	public String toString() {
-		return baseDns + query;
+		return baseDn + ":" + query;
 	}
 }

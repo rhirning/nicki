@@ -24,7 +24,6 @@ public class DataModel implements Serializable {
 	private List<String> objectClasses = new ArrayList<String>();
 	private List<String> additionalObjectClasses = new ArrayList<String>();
 	private String namingAttribute = null;
-	private Map<String, String> acceptors = new HashMap<String, String>();
 
 	private List<DynamicAttribute> mandatoryAttributes = null;
 	private List<DynamicAttribute> optionalAttributes = null;
@@ -111,12 +110,6 @@ public class DataModel implements Serializable {
 		return references;
 	}
 
-	public Map<String, String> getAcceptors() {
-		return acceptors;
-	}
-	public void addAcceptor(String attribute, String value) {
-		acceptors.put(attribute, value);		
-	}
 	public void addChild(String attribute, String filter) {
 		children.put(attribute, filter);		
 	}

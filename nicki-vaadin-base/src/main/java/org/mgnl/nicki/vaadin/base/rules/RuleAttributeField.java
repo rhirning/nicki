@@ -75,25 +75,26 @@ public class RuleAttributeField extends BaseDynamicAttributeField implements Dyn
 	}
 	
 	protected void showTest() {
-		Collection<Person> persons = RuleManager.getUsers(article);
-		Table table = new Table("Personen");
+		
+		Collection<Person> persons = RuleManager.getUsers(article, null);
+		Table table = new Table();
 		table.setWidth(440, Sizeable.UNITS_PIXELS);
 		table.setHeight(500, Sizeable.UNITS_PIXELS);
-		table.addContainerProperty("Person", String.class,  null);
-		table.setVisibleColumns(new String[] { "Person"});
-		table.setColumnHeaders(new String[] { "Person"});
+		table.addContainerProperty(I18n.getText("nicki.editor.catalogs.rule.test.column.title"), String.class,  null);
+		table.setVisibleColumns(new String[] { I18n.getText("nicki.editor.catalogs.rule.test.column.title") });
+		table.setColumnHeaders(new String[] { I18n.getText("nicki.editor.catalogs.rule.test.column.title") });
 		for (Person person : persons) {
 			table.addItem(new String[] {person.getDisplayName()}, person.getDisplayName());
 		}
 
-		Window newWindow = new Window("Personen");
+		Window newWindow = new Window(I18n.getText("nicki.editor.catalogs.rule.test.window.title"));
         VerticalLayout layout = (VerticalLayout) newWindow.getContent();
         layout.setMargin(true);
         layout.setSpacing(true);
 
 		newWindow.addComponent(table);
 		newWindow.setWidth(500, Sizeable.UNITS_PIXELS);
-		newWindow.setHeight(600, Sizeable.UNITS_PIXELS);
+		newWindow.setHeight(620, Sizeable.UNITS_PIXELS);
 		newWindow.setModal(true);
 		mainLayout.getWindow().addWindow(newWindow);
 	}

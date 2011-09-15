@@ -4,7 +4,9 @@ package org.mgnl.nicki.ldap.methods;
 import java.io.Serializable;
 import java.util.List;
 
-import org.mgnl.nicki.ldap.context.NickiContext;
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.ldap.helper.LdapHelper;
+import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 
 import freemarker.template.TemplateMethodModel;
@@ -12,30 +14,38 @@ import freemarker.template.TemplateMethodModel;
 public class LoadObjectsMethod implements TemplateMethodModel, Serializable {
 
 	private static final long serialVersionUID = -81535049844368520L;
-	List<DynamicObject> objects = null;
+	List<? extends DynamicObject> objects = null;
 	private String baseDn;
 	private String filter;
 	private DynamicObject reference = null;
-	private DynamicObject dynamicObject = null;
+	private Class<? extends DynamicObject> classDefinition;
 	
-	public LoadObjectsMethod(DynamicObject reference, String baseDn, String filter) {
+	public LoadObjectsMethod(Class<? extends DynamicObject> classDefinition, DynamicObject reference, String baseDn, String filter) {
+		this.classDefinition = classDefinition;
 		this.reference = reference;
 		this.baseDn = baseDn;
 		this.filter = filter;
 	}
 
-	public LoadObjectsMethod(NickiContext context, DynamicObject dynamicObject, String filter) {
-		this.reference = dynamicObject;
-		this.dynamicObject = dynamicObject;
+	public LoadObjectsMethod(Class<? extends DynamicObject> classDefinition, DynamicObject reference, String filter) {
+		this.classDefinition = classDefinition;
+		this.reference = reference;
 		this.filter = filter;
 	}
 
-	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
+	public List<? extends DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (objects == null) {
-			if (dynamicObject != null) {
-				this.baseDn = dynamicObject.getPath();
+			StringBuffer sb = new StringBuffer();
+			if (StringUtils.isNotEmpty(filter)) {
+				LdapHelper.addQuery(sb, filter, LOGIC.AND);
 			}
-			objects = reference.getContext().loadObjects(baseDn, filter);
+			if (arguments != null && arguments.size() > 0) {
+				LdapHelper.addQuery(sb, (String) arguments.get(0), LOGIC.AND);
+			}
+			if (baseDn == null) {
+				this.baseDn = reference.getPath();
+			}
+			objects = reference.getContext().loadObjects(classDefinition, baseDn, sb.toString());
 		}
 		return objects;
 	}

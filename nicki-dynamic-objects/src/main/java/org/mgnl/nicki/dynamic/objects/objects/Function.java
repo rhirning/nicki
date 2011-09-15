@@ -15,14 +15,14 @@ public class Function extends DynamicTemplateObject {
 	public void initDataModel()
 	{
 		
-		addMethod("allRoles", new LoadObjectsMethod(this, 
+		addMethod("allRoles", new LoadObjectsMethod(Role.class, this, 
 				Config.getProperty("nicki.system.basedn"), "objectClass=nrfRole"));
 
-		addMethod("allResources", new LoadObjectsMethod(this, 
+		addMethod("allResources", new LoadObjectsMethod(Resource.class, this, 
 				Config.getProperty("nicki.system.basedn"), "objectClass=nrfResource"));
 
-		addMethod("allCatalogs", new LoadObjectsMethod(this, 
-				Config.getProperty("nicki.catalogs.basedn"), "objectClass=nickiCatalog"));
+		addMethod("allUsers", new LoadObjectsMethod(Person.class, this, 
+				Config.getProperty("nicki.data.basedn"), "objectClass=Person"));
 
 		addMethod("objects", new DynamicLoadObjectsMethod(getContext()));
 

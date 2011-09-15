@@ -121,7 +121,7 @@ public class Inventory implements Serializable{
 	public Cart save() throws InstantiateDynamicObjectException, DynamicObjectException {
 		if (hasChanged()) {
 			Cart cart = person.getContext().getObjectFactory().getDynamicObject(Cart.class);
-			cart.init(Config.getProperty("nicki.carts.basedn"), Long.toString(new Date().getTime()));
+			cart.initNew(Config.getProperty("nicki.carts.basedn"), Long.toString(new Date().getTime()));
 			cart.setInitiator(user);
 			cart.setRecipient(person);
 			cart.setRequestDate(new Date());

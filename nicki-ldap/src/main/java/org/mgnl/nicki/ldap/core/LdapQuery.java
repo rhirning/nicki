@@ -7,7 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.ldap.helper.LdapHelper;
+import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 import org.mgnl.nicki.ldap.objects.DynamicReference;
+import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
 public class LdapQuery {
 	Map<String, List<String>> searchValues = new HashMap<String, List<String>>();
@@ -24,6 +27,12 @@ public class LdapQuery {
 		super();
 		this.baseDN = reference.getBaseDn();
 		addSearchValue(reference.getAttributeName(), path);
+	}
+
+	public LdapQuery(String path, StructuredDynamicReference reference) {
+		super();
+		this.baseDN = reference.getBaseDn();
+		addSearchValue(reference.getAttributeName(), path + "*");
 	}
 
 	public void addFilter(String filter) {
@@ -53,46 +62,19 @@ public class LdapQuery {
 		StringBuffer outerSb = new StringBuffer();
 
 		for (Iterator<String> iterator = filters.iterator(); iterator.hasNext();) {
-			boolean append = false;
 			String filter =  iterator.next();
-			append = false;
-			if (outerSb.length() > 0) {
-				append = true;
-				outerSb.append("(&");
-			}
-			outerSb.append(filter);
-			if (append) {
-				outerSb.append(")");
-			}
+			LdapHelper.addQuery(outerSb, filter, LOGIC.AND);
 		}
 
 		for (Iterator<String> iterator = searchValues.keySet().iterator(); iterator.hasNext();) {
 			StringBuffer sb = new StringBuffer();
-			boolean append = false;
 			String key =  iterator.next();
 			List<String> list = searchValues.get(key);
 			for (Iterator<String> iterator2 = list.iterator(); iterator2.hasNext();) {
-				append = false;
-				if (sb.length() > 0) {
-					append = true;
-					sb.insert(0, "(|");
-				}
 				String value = iterator2.next();
-				sb.append("(").append(key).append("=").append(value).append(")");
-				if (append) {
-					sb.append(")");
-				}
+				LdapHelper.addQuery(sb, key + "=" + value, LOGIC.OR);
 			}
-			append = false;
-			if (sb.length() > 0) {
-				append = true;
-				outerSb.insert(0, "(&");
-			}
-			outerSb.append(sb);
-			if (append) {
-				outerSb.append(")");
-			}
-
+			LdapHelper.addQuery(outerSb, sb.toString(), LOGIC.AND);
 		}
 		return outerSb.toString();			
 			
