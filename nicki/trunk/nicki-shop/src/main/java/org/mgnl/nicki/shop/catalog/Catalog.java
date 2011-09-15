@@ -37,7 +37,7 @@ public class Catalog extends DynamicTemplateObject {
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		
-		addMethod("allArticles", new LoadObjectsMethod(getContext(), this, "objectClass=nickiCatalogArticle"));
+		addMethod("allArticles", new LoadObjectsMethod(CatalogArticle.class, this, "objectClass=nickiCatalogArticle"));
 
 		addChild("page", "objectClass=nickiCatalogPage");
 	}

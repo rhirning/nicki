@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
-import org.mgnl.nicki.ldap.context.NickiContext;
-import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
@@ -62,11 +60,6 @@ public class Member extends DynamicObject implements Serializable{
 
 	public void setWriteRights(List<String> writeRights) {
 		put("directoryWrite", writeRights);
-	}
-
-
-	public void init(NickiContext context, ContextSearchResult rs) {
-		super.init(context, rs);
 	}
 	
 	public void setRight(Directory directory, RIGHT right) {

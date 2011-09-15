@@ -108,6 +108,12 @@ public class Person extends DynamicTemplateObject {
 				String.class);
 		addAttribute(dynAttribute);
 
+		dynAttribute = new DynamicAttribute("assignedRuleArticle", "nickiAssignedRuleArticle",
+				String.class);
+		dynAttribute.setMultiple();
+		dynAttribute.setForeignKey("org.mgnl.nicki.shop.catalog.CatalogArticle");
+		addAttribute(dynAttribute);
+
 		dynAttribute = new DynamicAttribute("attributeValue",
 				"nickiCatalogAttribute", String.class);
 		dynAttribute.setMultiple();

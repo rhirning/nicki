@@ -4,13 +4,12 @@ import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
-import org.mgnl.nicki.shop.rules.BaseDn;
-import org.mgnl.nicki.shop.rules.BaseDn.TYPE;
 import org.mgnl.nicki.shop.rules.BasicValueProvider;
 import org.mgnl.nicki.vaadin.base.data.TreeContainer;
 import org.mgnl.nicki.vaadin.base.editor.DataProvider;
@@ -34,7 +33,9 @@ public class OrgValueProvider extends BasicValueProvider implements ValueProvide
 	private TreeContainer treeContainer;
 	private OptionGroup optionGroup;
 	private HorizontalLayout layout;
-	
+	private String userBaseDn = Config.getProperty("nicki.users.basedn");
+	private String userBasePath = LdapHelper.getSlashPath(null, userBaseDn);
+
 	public OrgValueProvider() {
 	}
 
@@ -43,8 +44,8 @@ public class OrgValueProvider extends BasicValueProvider implements ValueProvide
 		layout = new HorizontalLayout();
 		layout.setSpacing(true);
 		treeSelector = new TreeSelector();
-		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.users.basedn"), new OrgOnlyFilter());
-		treeContainer = new TreeContainer(getSelector().getContext(), treeDataProvider, "Organsisation");
+		DataProvider treeDataProvider = new DynamicObjectRoot(userBaseDn, new OrgOnlyFilter());
+		treeContainer = new TreeContainer(getSelector().getContext(), treeDataProvider, I18n.getText(getI18nBase() + ".org.title"));
 		treeSelector.setContainerDataSource(treeContainer.getTree());
 		treeSelector.setItemCaptionPropertyId(TreeContainer.PROPERTY_NAME);
 		treeSelector.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
@@ -61,10 +62,10 @@ public class OrgValueProvider extends BasicValueProvider implements ValueProvide
 		
 		optionGroup = new OptionGroup();
 		optionGroup.addItem(STOP);
-		optionGroup.setItemCaption(STOP, "nur diese");
+		optionGroup.setItemCaption(STOP, I18n.getText(getI18nBase() + ".self.title"));
 
 		optionGroup.addItem(NO_STOP);
-		optionGroup.setItemCaption(NO_STOP, "mit Kindern");
+		optionGroup.setItemCaption(NO_STOP, I18n.getText(getI18nBase() + ".children.title"));
 
 		optionGroup.setValue("|");
 		optionGroup.setNullSelectionAllowed(false);
@@ -83,32 +84,31 @@ public class OrgValueProvider extends BasicValueProvider implements ValueProvide
 	
 	@Override
 	public String getPersonQuery(CatalogArticle article, String value) {
-		return null;
-	}
-
-	@Override
-	public boolean isHierarchical() {
-		return true;
-	}
-
-	@Override
-	public BaseDn getBaseDn(String value) {
-		StringBuffer base = new StringBuffer(Config.getProperty("nicki.users.basedn"));
-		TYPE type = TYPE.ALL;
-		if (StringUtils.equals(value, "/") || StringUtils.equals(value, "//")) {
-			return new BaseDn(base.toString(), type);
+		value = StringUtils.stripEnd(value, "/");
+		if (getType(value) == TYPE.ALL) {
+			StringBuffer sb = new StringBuffer();
+			LdapHelper.addQuery(sb, getSharpQuery(value), LOGIC.OR);
+			LdapHelper.addQuery(sb, getChildrenQuery(value), LOGIC.OR);
+			return sb.toString();
+		} else {
+			return getSharpQuery(value);
 		}
+	}
+	
+	private String getSharpQuery(String value) {
+		return "nickiDirectory" + "=" + userBasePath + StringUtils.stripEnd(value, STOP);
+	}
+
+	private String getChildrenQuery(String value) {
+		return "nickiDirectory" + "=" + userBasePath + value + "/*";
+	}
+
+	public TYPE getType(String value) {
 		if (StringUtils.endsWith(value, STOP)) {
-			type = TYPE.SELF;
-			value = StringUtils.substringBeforeLast(value, STOP);
+			return TYPE.SELF;
+		} else {
+			return TYPE.ALL;
 		}
-		String parts[] = StringUtils.split(value, "/");
-		for (int i = 0; i < parts.length; i++) {
-			base.insert(0, ",");
-			base.insert(0, parts[i]);
-			base.insert(0, "ou=");
-		}
-		return new BaseDn(base.toString(), type);
 	}
 
 	@Override
@@ -118,7 +118,7 @@ public class OrgValueProvider extends BasicValueProvider implements ValueProvide
 		LdapHelper.negateQuery(sb);
 		LdapHelper.addQuery(sb, "nickiRule=" + getSelector().getName() + "=/", LOGIC.OR);
 
-		String path = person.getSlashPath(Config.getProperty("nicki.users.basedn"));
+		String path = person.getSlashPath(userBaseDn);
 		// strip off username
 		path = StringUtils.substringBeforeLast(path, "/");
 		LdapHelper.addQuery(sb, "nickiRule=" + getSelector().getName() + "=" + path + "|", LOGIC.OR);

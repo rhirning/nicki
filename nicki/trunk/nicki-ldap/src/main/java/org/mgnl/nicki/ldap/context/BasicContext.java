@@ -26,7 +26,6 @@ import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.objects.DynamicObjectWrapper;
-import org.mgnl.nicki.ldap.objects.DynamicReference;
 
 
 @SuppressWarnings("serial")
@@ -87,6 +86,12 @@ public abstract class BasicContext implements NickiContext {
 		return null;
 	}
 
+	@Override
+	public void loadObject(DynamicObject dynamicObject) throws DynamicObjectException {
+		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler(dynamicObject);
+		search(handler);
+	}
+
 
 
 	public DynamicObject loadObject(String path) {
@@ -120,10 +125,8 @@ public abstract class BasicContext implements NickiContext {
 		return null;
 	}
 
-	public List<DynamicObject> loadReferenceObjects(String path,
-			DynamicReference reference) {
+	public List<DynamicObject> loadReferenceObjects(LdapQuery query) {
 		try {
-			LdapQuery query = new LdapQuery(path, reference);
 			ObjectsLoaderLdapQueryHandler handler = new ObjectsLoaderLdapQueryHandler(this, query);
 			search(handler);
 			return handler.getList();
@@ -188,9 +191,8 @@ public abstract class BasicContext implements NickiContext {
 
 
 	@SuppressWarnings("unchecked")
-	public <T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, String path, DynamicReference reference) {
+	public <T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, LdapQuery query) {
 		try {
-			LdapQuery query = new LdapQuery(path, reference);
 			ObjectsLoaderLdapQueryHandler handler = new ObjectsLoaderLdapQueryHandler(this, query);
 			handler.setClassDefinition(classDefinition);
 			search(handler);
@@ -347,21 +349,19 @@ public abstract class BasicContext implements NickiContext {
 		DirContext ctx = null;
 		NamingEnumeration<SearchResult> results = null;
 		try {
+			ctx = getDirContext();
+			results = ctx.search(queryHandler.getBaseDN(), queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
+			List<ContextSearchResult> list = new ArrayList<ContextSearchResult>();
 			try {
-				ctx = getDirContext();
-				results = ctx.search(queryHandler.getBaseDN(), queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
-				List<ContextSearchResult> list = new ArrayList<ContextSearchResult>();
-				try {
-					while (results != null && results.hasMore()) {
-						list.add(new JndiSearchResult(results.next()));
-					}
-				} catch (NamingException e) {
-					e.printStackTrace();
+				while (results != null && results.hasMore()) {
+					list.add(new JndiSearchResult(results.next()));
 				}
-				queryHandler.handle(list);
 			} catch (NamingException e) {
-				throw new DynamicObjectException(e);
+				e.printStackTrace();
 			}
+			queryHandler.handle(list);
+		} catch (Throwable e) {
+			throw new DynamicObjectException(e.getMessage());
 		} finally {
 			if (results != null) {
 				try {

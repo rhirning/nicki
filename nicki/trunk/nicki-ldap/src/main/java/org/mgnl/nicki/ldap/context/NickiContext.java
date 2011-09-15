@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.mgnl.nicki.ldap.auth.NickiPrincipal;
+import org.mgnl.nicki.ldap.core.LdapQuery;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
@@ -22,8 +23,8 @@ public interface NickiContext extends Serializable {
 	<T extends DynamicObject> List<T> loadChildObjects(Class<T> classDefinition, String parent,	String filter);
 	<T extends DynamicObject> List<T> loadChildObjects(Class<T> class1, DynamicObject parent, String filter);
 	
-	List<DynamicObject> loadReferenceObjects(String path, DynamicReference reference);
-	<T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, String path, DynamicReference reference);
+	List<DynamicObject> loadReferenceObjects(LdapQuery query);
+	<T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, LdapQuery query);
 
 	boolean isExist(String dn);
 	<T extends DynamicObject> T createDynamicObject(Class<T> classDefinition, String parentPath, String namingValue)
@@ -41,5 +42,6 @@ public interface NickiContext extends Serializable {
 	DynamicObject getUser();
 	void setUser(DynamicObject user);
 	String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException;
+	void loadObject(DynamicObject dynamicObject) throws DynamicObjectException;
 
 }

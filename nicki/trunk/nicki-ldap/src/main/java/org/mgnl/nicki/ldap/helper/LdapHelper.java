@@ -79,6 +79,10 @@ public class LdapHelper {
 		return StringUtils.strip(StringUtils.substringAfter(path, ","));
 	}
 
+	public static String getNamingValue(String path) {
+		return StringUtils.strip(StringUtils.substringAfter(StringUtils.substringBefore(path, ","), "="));
+	}
+
 	public static void negateQuery(StringBuffer sb) {
 		if (sb.length() > 0) {
 			sb.insert(0, "!");
@@ -107,4 +111,26 @@ public class LdapHelper {
 			sb.append(")");
 		}
 	}
+	
+	public static String getSlashPath(String parentPath, String childPath) {
+		StringBuffer sb = new StringBuffer();
+		if (StringUtils.isNotEmpty(parentPath)) {
+			if (StringUtils.equals(parentPath, childPath)) {
+				return "/";
+			}
+			childPath = StringUtils.substringBeforeLast(childPath, "," + parentPath);
+		}
+		
+		String parts[] = StringUtils.split(childPath, ",");
+		if (parts != null) {
+			for (int i = parts.length - 1; i >=0; i--) {
+				String part = StringUtils.substringAfter(parts[i], "=");
+				sb.append("/");
+				sb.append(part);
+			}
+		}
+		return sb.toString();
+	}
+
+
 }

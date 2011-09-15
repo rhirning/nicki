@@ -50,7 +50,7 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 	@Override
 	public void init(DynamicObject parent, Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException {
 		this.parent = parent;
-		this.dynamicObject = parent.getContext().getObjectFactory().getDynamicObject(classDefinition, parent.getPath(), "");
+		this.dynamicObject = parent.getContext().getObjectFactory().getNewDynamicObject(classDefinition, parent.getPath(), "");
 		this.create = true;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);

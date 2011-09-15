@@ -89,8 +89,8 @@ public class Cart extends DynamicObject {
     }
 
     @Override
-    public void init(NickiContext context, ContextSearchResult rs) {
-        super.init(context, rs);
+    public void init(ContextSearchResult rs) throws DynamicObjectException {
+        super.init(rs);
 
         try {
             fromXml((String) get("data"));

@@ -8,7 +8,7 @@ public interface ObjectFactory {
 
 	<T extends DynamicObject> T createNewDynamicObject(Class<T> classDefinition, String parentPath, String namingValue) throws InstantiateDynamicObjectException;
 
-	<T extends DynamicObject> T getDynamicObject(Class<T> classDefinition, String parentPath,
+	<T extends DynamicObject> T getNewDynamicObject(Class<T> classDefinition, String parentPath,
 			String namingValue) throws InstantiateDynamicObjectException;
 
 	<T extends DynamicObject> T getDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException;

@@ -74,7 +74,7 @@ public class ProjectEditor extends NickiApplication {
 						namingValue = member.getNamingValue();
 					}
 				}
-				dynamicObject.init(dynamicObject.getParentPath(), namingValue);
+				dynamicObject.initNew(dynamicObject.getParentPath(), namingValue);
 			}
 		}
 

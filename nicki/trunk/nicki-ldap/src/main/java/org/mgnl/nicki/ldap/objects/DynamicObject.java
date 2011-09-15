@@ -15,12 +15,19 @@ import org.mgnl.nicki.ldap.helper.LdapHelper;
 
 @SuppressWarnings("serial")
 public abstract class DynamicObject implements Serializable, Cloneable {
+	public enum STATUS {
+		NEW,	// does not exist in target
+		EXISTS,	// exists in target, but is not loaded  
+		LOADED	// exists in target and is loaded
+	}; 
 
 	// Schema
 	private DataModel model = new DataModel();
 	private String path = null;
 	private DynamicObject original = null;
 	private DynamicObject parent = null;
+	
+	private STATUS status;
 
 	// Map with the attribute values
 	private Map<String, Object> map = new HashMap<String, Object>();
@@ -34,9 +41,10 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		initDataModel();
 	}
 
-	public void init(String parentPath, String namingValue) {
-		put(model.getNamingAttribute(), namingValue);
+	public void initNew(String parentPath, String namingValue) {
+		this.status = STATUS.NEW;
 		this.path = LdapHelper.getPath(parentPath, model.getNamingLdapAttribute(), namingValue);
+		put(model.getNamingAttribute(), namingValue);
 	}
 	
 	public String getNamingValue() {
@@ -47,19 +55,39 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		return LdapHelper.getParentPath(path);
 	}
 
-	public void init(NickiContext context, ContextSearchResult rs) {
+	public void initExisting(NickiContext context, String path) {
+		this.status = STATUS.EXISTS;
 		this.context = context;
-		this.path = rs.getNameInNamespace();
+		this.path = path;
+		this.map.put(model.getNamingAttribute(), LdapHelper.getNamingValue(path));
+	}
+	
+	public void init(ContextSearchResult rs) throws DynamicObjectException {
+		if (status != STATUS.EXISTS) {
+			throw new DynamicObjectException("Invalid call");
+		}
+		this.status = STATUS.LOADED;
 		this.getModel().init(context, this, rs);
 		this.original = (DynamicObject) this.clone();
-
+	}
+	
+	private void init() {
+		if (status == STATUS.EXISTS) {
+			try {
+				this.context.loadObject(this);
+			} catch (DynamicObjectException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	public boolean isNew() {
-		return (this.original == null);
+		return (this.status == STATUS.NEW);
 	}
 	
 	public boolean isComplete() {
+		init();
 		return getModel().isComplete(this);
 	}
 
@@ -89,10 +117,6 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 			String objectClass = iterator.next();
 			accepted &= checkAttribute(rs,"objectClass", objectClass);
 		}
-		for (Iterator<String> iterator = model.getAcceptors().keySet().iterator(); iterator.hasNext();) {
-			String attribute = iterator.next();
-			accepted &= checkAttribute(rs,attribute, model.getAcceptors().get(attribute));
-		}
 		return accepted;
 	}
 
@@ -112,10 +136,6 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	}
 	public abstract void initDataModel();
 
-	public void addAcceptor(String attribute, String value) {
-		model.addAcceptor(attribute, value);
-	}
-	
 	public <T extends DynamicObject> T getForeignKeyObject(Class<T> classDefinition, String key) {
 		String path = getAttribute(key);
 		if (StringUtils.isNotEmpty(path)) {
@@ -142,6 +162,7 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	}
 
 	public void loadChildren() {
+		init();
 		if (childObjects == null) {
 			childObjects = new HashMap<String, List<DynamicObject>>();
 			for (Iterator<String> iterator = model.getChildren().keySet().iterator(); iterator.hasNext();) {
@@ -174,6 +195,7 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	}
 
 	public <T extends DynamicObject> List<T>  getChildren(Class<T> classDefinition) {
+		init();
 		return getContext().loadChildObjects(classDefinition, this, "");
 	}
 
@@ -183,13 +205,16 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	
 	// TODO
 	public String getAttribute(String attributeName) {
+		init();
 		return (String) get(attributeName);
 	}
 
 	public Object get(String key) {
+		init();
 		return this.map.get(key);
 	}
 	public void put(String key, Object value) {
+		init();
 		listen(key, value, this.map.put(key, value));
 	}
 	
@@ -197,6 +222,7 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	}
 
 	public void remove(String key) {
+		init();
 		if (this.map.containsKey(key)) {
 			this.map.remove(key);
 		}
@@ -223,13 +249,14 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	public void copyFrom(DynamicObject object) {
 		this.model = object.getModel();
 		this.map = object.map;
+		this.status = object.status;
 	}
 	
 	@Override
 	public DynamicObject clone() {
 		DynamicObject cloned = null;
 		try {
-			cloned = context.getObjectFactory().getDynamicObject(this.getClass(), getParentPath(), getNamingValue());
+			cloned = context.getObjectFactory().getNewDynamicObject(this.getClass(), getParentPath(), getNamingValue());
 			cloned.copyFrom(this);
 		} catch (InstantiateDynamicObjectException e) {
 			e.printStackTrace();
@@ -265,7 +292,9 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	}
 
 	public void delete() throws DynamicObjectException {
-		context.deleteObject(this);
+		if (!isNew()) {
+			context.deleteObject(this);
+		}
 	}
 
 	public DynamicObject rename(String newName) throws DynamicObjectException {
@@ -289,27 +318,7 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	}
 
 	public String getSlashPath(String parentPath) {
-		return getSlashPath(parentPath, getPath());
-	}
-
-	public static String getSlashPath(String parentPath, String childPath) {
-		StringBuffer sb = new StringBuffer();
-		if (StringUtils.isNotEmpty(parentPath)) {
-			if (StringUtils.equals(parentPath, childPath)) {
-				return "/";
-			}
-			childPath = StringUtils.substringBeforeLast(childPath, "," + parentPath);
-		}
-		
-		String parts[] = StringUtils.split(childPath, ",");
-		if (parts != null) {
-			for (int i = parts.length - 1; i >=0; i--) {
-				String part = StringUtils.substringAfter(parts[i], "=");
-				sb.append("/");
-				sb.append(part);
-			}
-		}
-		return sb.toString();
+		return LdapHelper.getSlashPath(parentPath, getPath());
 	}
 
 	public DynamicObject getParent() {
@@ -343,10 +352,6 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		return context;
 	}
 
-	public Map<String, Object> getMap() {
-		return map;
-	}
-
 	public void merge(Map<DynamicAttribute, Object> changeAttributes) {
 		for (Iterator<DynamicAttribute> iterator = changeAttributes.keySet().iterator(); iterator.hasNext();) {
 			DynamicAttribute dynamicAttribute = iterator.next();
@@ -368,6 +373,11 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 			return false;
 		}
 		return false;
+	}
+
+	@Override
+	public int hashCode() {
+		return getPath().hashCode();
 	}
 
 

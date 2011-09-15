@@ -105,7 +105,7 @@ public class XMLImporter {
 					} else {
 						dynamicObject.put(attributeName, value);
 						if (dynamicObject.getDynamicAttribute(attributeName).isNaming()) {
-							dynamicObject.init(parentPath, value);
+							dynamicObject.initNew(parentPath, value);
 						}
 					}
 				}

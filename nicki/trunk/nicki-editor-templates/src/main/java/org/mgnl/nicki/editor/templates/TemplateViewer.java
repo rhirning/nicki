@@ -18,6 +18,7 @@ import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Link;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
@@ -31,6 +32,9 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 	private Template template;
 	private Button saveButton;
 	private Button previewButton;
+	private Button htmlPreviewButton;
+	private Link csvLink;
+	private Link pdfLink;
 	private NickiTreeEditor editor;
 	
 	/**
@@ -71,11 +75,40 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 				}
 			}
 		});
+		
+		htmlPreviewButton.addListener(new Button.ClickListener() {
+			
+			public void buttonClick(ClickEvent event) {
+				try {
+					htmlPreview();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+		
+		pdfLink.setCaption("PDF");
+		pdfLink.setTargetName("_blank");
+		PdfStreamSource pdfStreamSource = new PdfStreamSource(template, template.getContext());
+		pdfLink.setResource(new LinkResource(pdfStreamSource, template.getName() + ".pdf",
+				nickiEditor.getApplication(), "application/pdf"));
+
+		csvLink.setCaption("CSV");
+		csvLink.setTargetName("_blank");
+		CsvStreamSource csvStreamSource = new CsvStreamSource(template, template.getContext());
+		csvLink.setResource(new LinkResource(csvStreamSource, template.getName() + ".csv",
+				nickiEditor.getApplication(), "text/comma-separated-values"));
 	}
 
 	protected void preview() throws DynamicObjectException, NamingException {
 		save();
 		PreviewTemplate preview = new PreviewTemplate(editor.getNickiContext(), editor.getMessageKeyBase());
+		preview.execute(getWindow(), template);
+	}
+
+	protected void htmlPreview() throws DynamicObjectException, NamingException {
+		save();
+		HtmlPreviewTemplate preview = new HtmlPreviewTemplate(editor.getNickiContext(), editor.getMessageKeyBase());
 		preview.execute(getWindow(), template);
 	}
 
@@ -99,11 +132,12 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 		
 		tab = new TabSheet();
 		tab.setWidth("640px");
-		tab.setHeight("100.0%");
+		tab.setHeight("640px");
 		tab.setImmediate(false);
 		verticalLayout.addComponent(tab);
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
+		horizontalLayout.setSpacing(true);
 		horizontalLayout.setHeight(40, UNITS_PIXELS);
 		verticalLayout.addComponent(horizontalLayout);
 		saveButton = new Button();
@@ -119,6 +153,19 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 		previewButton.setCaption("Vorschau");
 		previewButton.setImmediate(true);
 		horizontalLayout.addComponent(previewButton);
+		
+		htmlPreviewButton = new Button();
+		htmlPreviewButton.setWidth("-1px");
+		htmlPreviewButton.setHeight("-1px");
+		htmlPreviewButton.setCaption("HTML Vorschau");
+		htmlPreviewButton.setImmediate(true);
+		horizontalLayout.addComponent(htmlPreviewButton);
+		
+		pdfLink = new Link();
+		horizontalLayout.addComponent(pdfLink);
+		
+		csvLink = new Link();
+		horizontalLayout.addComponent(csvLink);
 		
 		return mainLayout;
 	}

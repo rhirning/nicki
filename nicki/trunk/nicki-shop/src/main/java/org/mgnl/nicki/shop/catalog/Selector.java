@@ -47,7 +47,6 @@ public class Selector extends DynamicTemplateObject {
 	public ValueProvider getValueProvider() {
 		try {
 			ValueProvider provider = (ValueProvider)Class.forName(getValueProviderClass()).newInstance();
-			provider.init(this);
 			return provider;
 		} catch (Exception e) {
 			e.printStackTrace();

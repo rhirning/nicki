@@ -116,7 +116,7 @@ public class BasicActionOperator {
 	}
 
 	public BasicAction create() throws InstantiateDynamicObjectException, DynamicObjectException {
-		BasicAction action = ctx.getObjectFactory().getDynamicObject(BasicAction.class, Config.getProperty("nicki.actions.basedn"), getName());
+		BasicAction action = ctx.getObjectFactory().getNewDynamicObject(BasicAction.class, Config.getProperty("nicki.actions.basedn"), getName());
 		action.setParameter(getXml());
 		action.setNoExec(noexec);
 		action.setTarget(target);

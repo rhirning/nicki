@@ -53,6 +53,10 @@ public class ObjectsLoaderLdapQueryHandler extends ObjectLoaderLdapQueryHandler 
 	public SearchControls getConstraints() {
 		SearchControls constraints = new SearchControls();
 		constraints.setSearchScope(SearchControls.SUBTREE_SCOPE);
+		// Specify the ids of the attributes to return
+		String[] attrIDs = { "objectClass" };
+		constraints.setReturningAttributes(attrIDs);
+
 		return constraints;
 	}
 }

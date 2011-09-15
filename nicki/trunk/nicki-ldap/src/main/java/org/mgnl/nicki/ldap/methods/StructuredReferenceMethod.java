@@ -9,21 +9,22 @@ import org.mgnl.nicki.ldap.core.LdapQuery;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicReference;
+import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
 import freemarker.template.TemplateMethodModel;
 
-public class ReferenceMethod implements TemplateMethodModel, Serializable {
+public class StructuredReferenceMethod implements TemplateMethodModel, Serializable {
 
 	private static final long serialVersionUID = -81535049844368520L;
 	List<DynamicObject> objects = null;
-	DynamicReference reference;
+	StructuredDynamicReference reference;
 	String path;
 	NickiContext context;
 	
-	public ReferenceMethod(NickiContext context, ContextSearchResult rs, DynamicReference reference) {
+	public StructuredReferenceMethod(NickiContext context, ContextSearchResult rs, StructuredDynamicReference structuredDynamicReference) {
 		this.context = context;
 		this.path = rs.getNameInNamespace();
-		this.reference = reference;
+		this.reference = structuredDynamicReference;
 	}
 
 	@Override

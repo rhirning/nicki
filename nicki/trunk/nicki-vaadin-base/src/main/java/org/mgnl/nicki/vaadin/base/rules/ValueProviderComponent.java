@@ -9,5 +9,5 @@ public interface ValueProviderComponent extends ValueProvider {
 	Component getValueList();
 
 	String getValue();
-
+	
 }

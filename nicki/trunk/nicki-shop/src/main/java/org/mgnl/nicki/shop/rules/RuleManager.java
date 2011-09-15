@@ -14,6 +14,9 @@ import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
 import org.mgnl.nicki.shop.catalog.Selector;
 
+/* 
+ * Attribute nickiDirectory: Pfad getrennt mit "/"
+ */
 public class RuleManager {
 	
 	public static List<CatalogArticle> getArticles(Person person) {
@@ -54,35 +57,99 @@ public class RuleManager {
 		return sb.toString();
 	}
 
-	public static Collection<Person> getUsers(CatalogArticle article) {
-		HashMap<String, Person> persons = new HashMap<String, Person>();
+	public static List<Person> getUsers(CatalogArticle article, String additionalQuery) {
 		if (!article.hasRules()) {
-			return persons.values();
+			if (StringUtils.isEmpty(additionalQuery)) {
+				return new ArrayList<Person>();
+			} else {
+				
+			}
 		}
 		
 		RuleQuery query = getRuleQuery(article);
 		if (!query.isNeedQuery()) {
-			return persons.values();
+			return new ArrayList<Person>();
 		}
-		for (BaseDn baseDn : query.getBaseDns()) {
-			if (baseDn.getType() == BaseDn.TYPE.ALL) {
-				addAll(persons, article.getContext().loadObjects(Person.class, baseDn.getPath(), query.getQuery()));
-			} else {
-				addAll(persons, article.getContext().loadChildObjects(Person.class, baseDn.getPath(), query.getQuery()));
-			}
+		StringBuffer filter = new StringBuffer();
+		if (StringUtils.isNotEmpty(query.getQuery())) {
+			LdapHelper.addQuery(filter, query.getQuery(), LOGIC.AND);
 		}
-		return persons.values();
+		if (StringUtils.isNotEmpty(additionalQuery)) {
+			LdapHelper.addQuery(filter, additionalQuery, LOGIC.AND);
+		}
+		return article.getContext().loadObjects(Person.class, query.getBaseDn(), filter.toString());
 	}
 
-	private static void addAll(HashMap<String, Person> persons, List<Person> p2) {
-		if (p2 != null && p2.size() > 0) {
-			for (Person person : p2) {
-				if (!persons.containsKey(person.getPath())) {
-					persons.put(person.getPath(), person);
-				}
+	public static String getAssignedRuleArticlesQuery(Person person) {
+		StringBuffer sb = new StringBuffer();
+		@SuppressWarnings("unchecked")
+		List<String> articles = (List<String>) person.get("assignedRuleArticle");
+		if (articles != null && articles.size() > 0) {
+			for (String article : articles) {
+				LdapHelper.addQuery(sb, "entryDn=" + article, LOGIC.OR);
 			}
 		}
+		return sb.toString();
 	}
+	
+	public static String getAssignedRulePersonsQuery(CatalogArticle article) {
+		return "(nickiAssignedRuleArticle=" + article.getPath() + ")";
+	}
+	
+	// missing = plan - assigned 	= (plannedArticles) && !(assignedArticles)
+	// surplus = assigned - planned = (assignedArticles) && !(plannedArticles)
+	public static ChangeSet getChangeSet(Person person) {
+		ChangeSet changeSet = new ChangeSet();
+		String planned = getArticleQuery(person);
+		String assigned = getAssignedRuleArticlesQuery(person);
+		
+		// missing
+		StringBuffer sb = new StringBuffer();
+		LdapHelper.addQuery(sb, assigned, LOGIC.AND);
+		LdapHelper.negateQuery(sb);
+		LdapHelper.addQuery(sb, planned, LOGIC.AND);
+		List<CatalogArticle> missingArticles = person.getContext().loadObjects(CatalogArticle.class,
+				Config.getProperty("nicki.catalogs.basedn"), sb.toString());
+		if (missingArticles != null && missingArticles.size() > 0) {
+			for (CatalogArticle article : missingArticles) {
+				changeSet.addToMissing(person, article);
+			}
+		}
+		
+		// surplus
+		sb.setLength(0);
+		LdapHelper.addQuery(sb, planned, LOGIC.AND);
+		LdapHelper.negateQuery(sb);
+		LdapHelper.addQuery(sb, assigned, LOGIC.AND);
+		List<CatalogArticle> surplusArticles = person.getContext().loadObjects(CatalogArticle.class,
+				Config.getProperty("nicki.catalogs.basedn"), sb.toString());
+		if (surplusArticles != null && surplusArticles.size() > 0) {
+			for (CatalogArticle article : surplusArticles) {
+				changeSet.addToSurplus(person, article);
+			}
+		}
+		return changeSet;
+	}
+	
+	// missing = plan - assigned 	= (plannedArticles) && !(assignedArticles)
+	// surplus = assigned - planned = (assignedArticles) && !(plannedArticles)
+	public static ChangeSet getChangeSet(CatalogArticle article) {
+		ChangeSet changeSet = new ChangeSet();
+		StringBuffer sb = new StringBuffer();
+		// missing
+		if (article.hasRules()) {
+			LdapHelper.addQuery(sb, getAssignedRulePersonsQuery(article), LOGIC.AND);
+			LdapHelper.negateQuery(sb);
+			Collection<Person> missing = getUsers(article, sb.toString());
+			for (Person person : missing) {
+				changeSet.addToMissing(person, article);
+			}
+		}
+		
+		return changeSet;
+	}
+	
+	
 
 	public static RuleQuery getRuleQuery(CatalogArticle article) {
 		RuleQuery ruleQuery = new RuleQuery();
@@ -100,9 +167,8 @@ public class RuleManager {
 				Selector selector = getSelector(article, selectorName);
 				if (selector.hasValueProvider()) {
 					ValueProvider valueProvider = selector.getValueProvider();
-					if (valueProvider.isHierarchical()) {
-						ruleQuery.addBaseDn(valueProvider.getBaseDn(value));
-					}
+					String query = valueProvider.getPersonQuery(article, value);
+					LdapHelper.addQuery(sb2, query, LOGIC.OR);
 				} else {
 					String query = getPersonQuery(article, selectorName, value);
 					LdapHelper.addQuery(sb2, query, LOGIC.OR);
@@ -113,9 +179,8 @@ public class RuleManager {
 			}
 		}
 		LdapHelper.addQuery(sb, Person.getActiveFilter(), LOGIC.AND);
-		if (ruleQuery.getBaseDns().isEmpty()) {
-			ruleQuery.addBaseDn(new BaseDn(Config.getProperty("nicki.users.basedn"), BaseDn.TYPE.ALL));
-		}
+
+		ruleQuery.setBaseDn(Config.getProperty("nicki.users.basedn"));
 		ruleQuery.setQuery(sb.toString());
 		return ruleQuery;
 	}

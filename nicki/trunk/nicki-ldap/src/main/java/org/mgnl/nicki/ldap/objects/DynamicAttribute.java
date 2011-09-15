@@ -128,6 +128,16 @@ public class DynamicAttribute implements Serializable {
 		this.foreignKey = true;
 		this.foreignKeyClass = classDefinition;
 	}
+	@SuppressWarnings("unchecked")
+	public void setForeignKey(String className) {
+		this.foreignKey = true;
+		try {
+			this.foreignKeyClass = (Class<? extends DynamicObject>) Class.forName(className);
+		} catch (Exception e) {
+			this.foreignKey = false;
+			e.printStackTrace();
+		}
+	}
 	public String getName() {
 		return name;
 	}

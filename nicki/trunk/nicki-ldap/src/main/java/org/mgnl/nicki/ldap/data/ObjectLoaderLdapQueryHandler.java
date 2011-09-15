@@ -13,20 +13,23 @@ import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 
 public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
 	
-	public static final String TEMPLATE_NAME = "ou";
-	public static final String ATTRIBUTE_DATA = "nickiTemplateData";
-	public static final String ATTRIBUTE_PART = "nickiTemplatePart";
-	public static final String PART_SEPARATOR = "=";
 	private String dn = null;
-	private DynamicObject dynamicObject = null;
+	protected DynamicObject dynamicObject;
 
 	public DynamicObject getDynamicObject() {
 		return dynamicObject;
 	}
 
+	public ObjectLoaderLdapQueryHandler(DynamicObject dynamicObject) {
+		super(dynamicObject.getContext());
+		this.dynamicObject = dynamicObject;
+		this.dn = dynamicObject.getPath();
+	}
+
 
 	public ObjectLoaderLdapQueryHandler(NickiContext context, String dn) {
 		super(context);
+		this.dynamicObject = null;
 		this.dn = dn;
 	}
 
@@ -40,11 +43,15 @@ public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements Qu
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
 		try {
 			if (results != null && results.size() > 0) {
-				if (getClassDefinition() != null) {
-					this.dynamicObject = getContext().getObjectFactory().getObject(results.get(0), getClassDefinition());
-				} else {
-					this.dynamicObject = getContext().getObjectFactory().getObject(results.get(0));
+				if (this.dynamicObject == null) {
+					try {
+						dynamicObject = getContext().getObjectFactory().getObject(results.get(0));
+						dynamicObject.initExisting(getContext(), dn);
+					} catch (InstantiateDynamicObjectException e) {
+						throw new DynamicObjectException(e);
+					}
 				}
+				this.dynamicObject.init(results.get(0));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
