@@ -6,7 +6,7 @@
  <xsl:output method="text" />
  
  <xsl:variable name="newline" select="string('&#xa;')" />
- <xsl:variable name="highcomma" >'</xsl:variable>
+ <xsl:variable name="highcomma" >"</xsl:variable>
  <xsl:variable name="separator" select="string(';')" />
  
  <xsl:template match="/" >
