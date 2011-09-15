@@ -39,6 +39,7 @@
 		<module>nicki-ldap</module>
 		<module>nicki-mailtemplate</module>
 		<module>nicki-novell-userapp</module>
+		<module>nicki-report</module>
 		<module>nicki-shop</module>
 		<module>nicki-template</module>
 		<module>nicki-test</module>
