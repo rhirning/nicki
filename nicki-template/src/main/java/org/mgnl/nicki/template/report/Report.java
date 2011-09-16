@@ -1,5 +1,6 @@
 package org.mgnl.nicki.template.report;
 
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.template.engine.TemplateEngine;
 
 
@@ -18,7 +19,7 @@ public class Report {
 		}
 
 		String userName = args[0];
-		String password = args[1];
+		String password = DataHelper.getPassword(args[1]);
 		String templateName = args[2];
 		String outputType = "txt";
 		if (args.length > 3) {
