@@ -112,7 +112,7 @@ public class Config {
 			Properties props = iterator.next();
 			String value = props.getProperty(key);
 			if (value != null) {
-				return value;
+				return DataHelper.getPassword(value);
 			}
 		}
 		return null;
