@@ -6,13 +6,13 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>1.17-SNAPSHOT</version>
+		<version>1.17</version>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-vaadin-base</artifactId>
-			<version>1.17-SNAPSHOT</version>
+			<version>1.17</version>
 		</dependency>
 	</dependencies>
 </project>
