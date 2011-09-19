@@ -64,6 +64,9 @@ public class Resource extends DynamicStructObject {
 		return getInfo("/assignment/cause/type");
 	}
 
+	public String getParameter() {
+		return getInfo(getInfo("/assignment/ent-ref"), "/ref/param");
+	}
 
 
 }
