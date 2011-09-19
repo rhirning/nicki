@@ -9,12 +9,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.jdom.Element;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
+import org.mgnl.nicki.ldap.methods.StructuredData;
 
 @SuppressWarnings("serial")
 public abstract class DynamicObject implements Serializable, Cloneable {
+	public static final String SEPARATOR = "/";
+
 	public enum STATUS {
 		NEW,	// does not exist in target
 		EXISTS,	// exists in target, but is not loaded  
@@ -378,6 +382,29 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	@Override
 	public int hashCode() {
 		return getPath().hashCode();
+	}
+
+	public String getInfo(String xml, String infoPath) {
+		String parts[] = StringUtils.split(infoPath, SEPARATOR);
+		if (parts.length < 2) {
+			return null;
+		}
+		// correct xml
+		StringUtils.replace(xml, "&lt;", "<");
+		StringUtils.replace(xml, "&gt;", ">");
+		StructuredData data  = new StructuredData(xml); 
+		try {
+			Element element = data.getDocument().getRootElement();
+			int i = 1;
+			while (i < parts.length - 1) {
+				element = element.getChild(parts[i]);
+				i++;
+			}
+			
+			return element.getChildTextTrim(parts[i]);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 

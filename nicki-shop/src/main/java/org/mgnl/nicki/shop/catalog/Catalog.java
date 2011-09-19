@@ -151,6 +151,15 @@ public class Catalog extends DynamicTemplateObject {
 		return articles;
 	}
 
+	public List<CatalogArticle> getAllArticles() {
+		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
+		for (Iterator<CatalogArticle> iterator = getArticles().iterator(); iterator.hasNext();) {
+			CatalogArticle catalogArticle = iterator.next();
+			articles.add(catalogArticle);
+		}
+		return articles;
+	}
+
 
 	// TODO
 	public boolean hasArticle(Person person, CatalogArticle article) {
