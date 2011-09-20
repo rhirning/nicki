@@ -6,6 +6,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
 
+import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
@@ -20,7 +21,7 @@ public class XMLHelper {
 	}
 
 	static public Document documentFromString(String xmlString) throws JDOMException, IOException  {
-		Reader in = new StringReader(xmlString);
+		Reader in = new StringReader(StringUtils.trimToEmpty(xmlString));
 		SAXBuilder builder = new SAXBuilder();
 		return builder.build(in);
 	}
