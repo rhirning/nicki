@@ -13,7 +13,7 @@ public class StructuredData implements Serializable {
 		try {
 			document = XMLHelper.documentFromString(xml);
 		} catch (Exception e) {
-			e.printStackTrace();
+			document = null;
 		}
 	}
 
