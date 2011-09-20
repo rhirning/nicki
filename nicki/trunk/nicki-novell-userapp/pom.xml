@@ -6,13 +6,13 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>1.22-SNAPSHOT</version>
+		<version>1.22</version>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-ldap</artifactId>
-			<version>1.22-SNAPSHOT</version>
+			<version>1.22</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.portlet</groupId>
