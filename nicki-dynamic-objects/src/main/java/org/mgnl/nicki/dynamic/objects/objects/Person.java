@@ -10,6 +10,7 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicReference;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 
 import freemarker.template.TemplateMethodModel;
@@ -118,6 +119,13 @@ public class Person extends DynamicTemplateObject {
 				"nickiCatalogAttribute", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
+		
+		dynAttribute = new DynamicReference(Group.class, "memberOf", Config.getProperty("nicki.data.basedn"), 
+				"member", String.class);
+		dynAttribute.setMultiple();
+		addAttribute(dynAttribute);
+		
+
 
 	}
 

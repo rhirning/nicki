@@ -12,6 +12,19 @@ public class Group extends DynamicTemplateObject {
 		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("description", "description", String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("member", "member", String.class);
+		dynAttribute.setForeignKey(Person.class);
+		dynAttribute.setMultiple();
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("owner", "owner", String.class);
+		dynAttribute.setForeignKey(Person.class);
+		addAttribute(dynAttribute);
+
 	};
 
 }

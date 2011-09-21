@@ -73,7 +73,7 @@ public class HtmlPreviewTemplate extends BaseTreeAction {
 		try {
 			StringStreamSource streamSource = new StringStreamSource(template, context);
 
-			this.result.setSource(new LinkResource(streamSource, template.getName() + ".html", parentWindow.getApplication(), "text/html"));
+			this.result.setSource(new LinkResource(streamSource, template.getName() + ".html?a=b", parentWindow.getApplication(), "text/html"));
 			if (null != this.getParent()) {
 				this.setParent(null);
 			}
