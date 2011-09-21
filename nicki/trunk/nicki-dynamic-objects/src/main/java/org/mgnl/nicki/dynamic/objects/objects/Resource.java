@@ -22,7 +22,23 @@ public class Resource extends DynamicStructObject {
 		dynAttribute =  new StructuredDynamicAttribute("entitlement", "nrfEntitlementRef", String.class);
 		dynAttribute.setForeignKey(Entitlement.class);
 		addAttribute(dynAttribute);
-	}
+		
+		dynAttribute =  new StructuredDynamicAttribute("approver", "nrfApprovers", String.class);
+		dynAttribute.setForeignKey(Person.class);
+		dynAttribute.setMultiple();
+		addAttribute(dynAttribute);
+		
+		dynAttribute =  new StructuredDynamicAttribute("revokeApprover", "nrfRevokeApprovers", String.class);
+		dynAttribute.setForeignKey(Person.class);
+		dynAttribute.setMultiple();
+		addAttribute(dynAttribute);
+		
+		dynAttribute = new DynamicAttribute("localizedName", "nrfLocalizedNames", String.class);
+		addAttribute(dynAttribute);
+		
+		dynAttribute = new DynamicAttribute("localizedDescription", "nrfLocalizedDescrs", String.class);
+		addAttribute(dynAttribute);
+}
 	
 	public DynamicObject getEntitlement() throws DynamicObjectException {
 		try {

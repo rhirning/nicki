@@ -24,6 +24,9 @@ public class Function extends DynamicTemplateObject {
 		addMethod("allUsers", new LoadObjectsMethod(Person.class, this, 
 				Config.getProperty("nicki.data.basedn"), "objectClass=Person"));
 
+		addMethod("allGroups", new LoadObjectsMethod(Group.class, this, 
+				Config.getProperty("nicki.data.basedn"), "objectClass=nrfGroup"));
+
 		addMethod("objects", new DynamicLoadObjectsMethod(getContext()));
 
 	}

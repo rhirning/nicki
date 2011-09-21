@@ -10,6 +10,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
@@ -405,6 +406,21 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+	
+	public String getLocalizedValue(String attributeName, String locale) {
+		Map<String, String> valueMap = DataHelper.getMap(getAttribute(attributeName), "|", "~");
+		if (valueMap.size() == 0) {
+			return null;
+		} else if (valueMap.containsKey(locale)) {
+			return valueMap.get(locale);
+		} else {
+			return valueMap.values().iterator().next();
+		}
+	}
+	
+	public String toString() {
+		return getDisplayName();
 	}
 
 

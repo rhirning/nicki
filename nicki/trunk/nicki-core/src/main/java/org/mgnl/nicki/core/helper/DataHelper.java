@@ -103,7 +103,7 @@ public class DataHelper {
 		for (Iterator<String> iterator = list.iterator(); iterator.hasNext();) {
 			String string = iterator.next();
 			try {
-				String entry[] = StringUtils.split(string, '=');
+				String entry[] = StringUtils.split(string, valueSeparator);
 				map.put(entry[0], entry[1]);
 			} catch (Exception e) {
 				e.printStackTrace();

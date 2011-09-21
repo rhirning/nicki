@@ -35,9 +35,15 @@ public class Role extends DynamicStructObject {
 		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("approver", "nrfApprovers", String.class);
-		//dynAttribute.setForeignKey();
+		dynAttribute = new StructuredDynamicAttribute("approver", "nrfApprovers", String.class);
+		dynAttribute.setForeignKey(Person.class);
 		dynAttribute.setMultiple();
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("localizedName", "nrfLocalizedNames", String.class);
+		addAttribute(dynAttribute);
+		
+		dynAttribute = new DynamicAttribute("localizedDescription", "nrfLocalizedDescrs", String.class);
 		addAttribute(dynAttribute);
 	};
 	
