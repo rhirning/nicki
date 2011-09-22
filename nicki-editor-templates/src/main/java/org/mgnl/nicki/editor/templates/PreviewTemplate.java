@@ -77,7 +77,8 @@ public class PreviewTemplate extends BaseTreeAction {
 			if (!StringUtils.equals(context.getTarget().getName(), data.getTarget().getName())) {
 				templateContext = AppContext.getSystemContext(data.getTarget().getName(), null);
 			}
-			String resultString = TemplateEngine.getInstance().executeTemplate(templatePath, data.getDataModel(templateContext));
+			String resultString = TemplateEngine.getInstance().executeTemplateToString(
+					templatePath, data.getDataModel(templateContext));
 			this.result.setValue(resultString);
 			if (null != this.getParent()) {
 				this.setParent(null);
