@@ -1,7 +1,5 @@
 package org.mgnl.nicki.template.engine;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.util.Map;
 
@@ -58,8 +56,7 @@ public class BasicTemplateStreamSource {
 	
 	public InputStream getStringStream() {
 		try {
-			String templateResult = TemplateEngine.getInstance().executeTemplate(getTemplatePath(), getDataModel());
-			return new ByteArrayInputStream(templateResult.getBytes("UTF-8"));
+			return TemplateEngine.getInstance().executeTemplate(getTemplatePath(), getDataModel());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -69,9 +66,7 @@ public class BasicTemplateStreamSource {
 
 	public InputStream getPdfStream() {
 		try {
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			TemplateEngine.getInstance().executeTemplateAsPdf(getTemplatePath(), getDataModel(), out);
-			return new ByteArrayInputStream(out.toByteArray());
+			return TemplateEngine.getInstance().executeTemplateAsPdf(getTemplatePath(), getDataModel());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -80,9 +75,7 @@ public class BasicTemplateStreamSource {
 	}
 	public InputStream getCsVStream() {
 		try {
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			TemplateEngine.getInstance().executeTemplateAsCsv(getTemplatePath(), getDataModel(), out);
-			return new ByteArrayInputStream(out.toByteArray());
+			return TemplateEngine.getInstance().executeTemplateAsCsv(getTemplatePath(), getDataModel());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

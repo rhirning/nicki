@@ -11,11 +11,22 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+public class XsltRenderer extends Thread implements Runnable {
+	InputStream in;
+	OutputStream out;
+	InputStream xslTemplate;
+	
 
-public class XsltHelper {
+	public XsltRenderer(InputStream in, OutputStream out,
+			InputStream xslTemplate) {
+		super();
+		this.in = in;
+		this.out = out;
+		this.xslTemplate = xslTemplate;
+	}
 
-	public static void xsl(InputStream in, OutputStream out, InputStream xslTemplate) {
-        try {
+	public void run() {
+		try {
             // Create transformer factory
             TransformerFactory factory = TransformerFactory.newInstance();
 
@@ -31,9 +42,10 @@ public class XsltHelper {
 
             // Apply the xsl file to the source file and write the result to the output file
             xformer.transform(source, result);
-        } catch (Exception e) {
+			out.flush();
+			out.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-    
-    }
+	}
 }

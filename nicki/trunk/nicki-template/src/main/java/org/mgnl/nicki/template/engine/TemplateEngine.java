@@ -1,17 +1,18 @@
 package org.mgnl.nicki.template.engine;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.StringWriter;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.helper.XsltHelper;
+import org.mgnl.nicki.core.helper.XsltRenderer;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
 import org.mgnl.nicki.ldap.context.AppContext;
@@ -57,13 +58,13 @@ public class TemplateEngine {
 		
 		switch (outputType) {
 		case TXT:
-			getInstance().executeTemplateAsTxt(templateName, handler.getDataModel(), System.out);
+			getInstance().executeTemplateAsTxt(templateName, handler.getDataModel(), out);
 			break;
 		case CSV:
-			getInstance().executeTemplateAsCsv(templateName, handler.getDataModel(), System.out);
+			IOUtils.copy(executeTemplateAsCsv(templateName, handler.getDataModel()), out);
 			break;
 		case PDF:
-			getInstance().executeTemplateAsPdf(templateName, handler.getDataModel(), System.out);
+			IOUtils.copy(executeTemplateAsPdf(templateName, handler.getDataModel()), out);
 			break;
 
 		default:
@@ -73,7 +74,7 @@ public class TemplateEngine {
 	}
 
 
-	public String executeTemplate(String templateName,
+	public InputStream executeTemplate(String templateName,
 			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException {
 
@@ -82,34 +83,48 @@ public class TemplateEngine {
 						Config.getProperty(PROPERTY_BASE_DN, DEFAULT_BASE_DN));
 
 		Template template = cfg.getTemplate(templateName);
+	    PipedOutputStream pos = new PipedOutputStream();
+	    PipedInputStream pis = new PipedInputStream(pos);
+	    RenderTemplate renderTemplate = new RenderTemplate(template, dataModel, pos);
+	    renderTemplate.start();
+		return pis;
+	}
 
-		StringWriter out = new StringWriter();
-		template.process(dataModel, out);
-		out.flush();
-		return out.toString();
+	public String executeTemplateToString(String templateName,
+			Map<String, Object> dataModel) {
+		try {
+			return IOUtils.toString(executeTemplate(templateName, dataModel));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	public void executeTemplateAsTxt(String templateName,
 			Map<String, Object> dataModel, OutputStream out) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
-		String templateResult = executeTemplate(templateName, dataModel);
-		out.write(templateResult.getBytes("UTF-8"));
+		IOUtils.copy(executeTemplate(templateName, dataModel), out);
 	}
 
-	public void executeTemplateAsPdf(String templateName,
-			Map<String, Object> dataModel, OutputStream out) throws IOException,
+	public InputStream executeTemplateAsPdf(String templateName,
+			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
-		String templateResult = executeTemplate(templateName, dataModel);
-		PdfTemplateRenderer.getInstance().render(new ByteArrayInputStream(templateResult.getBytes("UTF-8")), out);
+	    PipedOutputStream pos = new PipedOutputStream();
+	    PipedInputStream pis = new PipedInputStream(pos);
+		PdfTemplateRenderer renderer = new PdfTemplateRenderer(executeTemplate(templateName, dataModel), pos);
+		renderer.start();
+		return pis;
 	}
 
-	public void executeTemplateAsCsv(String templateName,
-			Map<String, Object> dataModel, OutputStream out) throws IOException,
+	public InputStream executeTemplateAsCsv(String templateName,
+			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
-		String templateResult = executeTemplate(templateName, dataModel);
-		InputStream in = new ByteArrayInputStream(templateResult.getBytes("UTF-8"));
 		InputStream xslTemplate = this.getClass().getResourceAsStream("/META-INF/nicki/xsl/csv.xsl");
-		XsltHelper.xsl(in, out, xslTemplate);
+	    PipedOutputStream pos = new PipedOutputStream();
+	    PipedInputStream pis = new PipedInputStream(pos);
+		XsltRenderer renderer = new XsltRenderer(executeTemplate(templateName, dataModel), pos, xslTemplate);
+		renderer.start();
+		return pis;
 	}
 
 	public static TemplateEngine getInstance() {
