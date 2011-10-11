@@ -30,7 +30,6 @@ import freemarker.template.TemplateException;
 public class TemplateEngine {
 	public enum OUTPUT_TYPE {TXT, PDF, CSV };
 	public static final String PROPERTY_BASE_DN = "nicki.templates.basedn";
-	public static final String DEFAULT_BASE_DN = "ou=templates,o=utopia";
 	
 	private static TemplateEngine instance = new TemplateEngine();
 
@@ -58,7 +57,7 @@ public class TemplateEngine {
 		
 		switch (outputType) {
 		case TXT:
-			getInstance().executeTemplateAsTxt(templateName, handler.getDataModel(), out);
+			IOUtils.copy(executeTemplate(templateName, handler.getDataModel()), out);
 			break;
 		case CSV:
 			IOUtils.copy(executeTemplateAsCsv(templateName, handler.getDataModel()), out);
@@ -70,9 +69,7 @@ public class TemplateEngine {
 		default:
 			break;
 		}
-
 	}
-
 
 	public InputStream executeTemplate(String templateName,
 			Map<String, Object> dataModel) throws IOException,
@@ -80,7 +77,7 @@ public class TemplateEngine {
 
 		Configuration cfg = ConfigurationFactory.getInstance()
 				.getConfiguration(
-						Config.getProperty(PROPERTY_BASE_DN, DEFAULT_BASE_DN));
+						Config.getProperty(PROPERTY_BASE_DN));
 
 		Template template = cfg.getTemplate(templateName);
 	    PipedOutputStream pos = new PipedOutputStream();
@@ -88,22 +85,6 @@ public class TemplateEngine {
 	    RenderTemplate renderTemplate = new RenderTemplate(template, dataModel, pos);
 	    renderTemplate.start();
 		return pis;
-	}
-
-	public String executeTemplateToString(String templateName,
-			Map<String, Object> dataModel) {
-		try {
-			return IOUtils.toString(executeTemplate(templateName, dataModel));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public void executeTemplateAsTxt(String templateName,
-			Map<String, Object> dataModel, OutputStream out) throws IOException,
-			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
-		IOUtils.copy(executeTemplate(templateName, dataModel), out);
 	}
 
 	public InputStream executeTemplateAsPdf(String templateName,

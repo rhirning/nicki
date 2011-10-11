@@ -11,8 +11,8 @@ import com.vaadin.terminal.StreamResource.StreamSource;
 public class StringStreamSource extends BasicTemplateStreamSource implements StreamSource {
 	private static final long serialVersionUID = 4222973194514516918L;
 	
-	public StringStreamSource(Template template, NickiContext context) {
-		super(template, context);
+	public StringStreamSource(Template template, NickiContext context, Object params) {
+		super(template, context, params);
 	}
 
 	@Override

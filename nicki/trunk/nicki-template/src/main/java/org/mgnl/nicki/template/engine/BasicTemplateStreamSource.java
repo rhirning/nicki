@@ -19,7 +19,7 @@ public class BasicTemplateStreamSource {
 	private String templatePath;
 	private TemplateHandler handler;
 	
-	public BasicTemplateStreamSource(Template template, NickiContext context) {
+	public BasicTemplateStreamSource(Template template, NickiContext context, Object params) {
 		this.template = template;
 		// render template
 		String parentPath = Config.getProperty("nicki.templates.basedn");

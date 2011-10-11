@@ -1,6 +1,8 @@
 package org.mgnl.nicki.editor.templates;
 
 
+import java.util.Map;
+
 import javax.naming.NamingException;
 
 import org.mgnl.nicki.core.i18n.I18n;
@@ -22,6 +24,7 @@ import com.vaadin.ui.Link;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Component.Event;
 
 @SuppressWarnings("serial")
 public class TemplateViewer extends CustomComponent implements ClassEditor {
@@ -86,16 +89,17 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 				}
 			}
 		});
+		Map<String, Object> params = null;
 		
 		pdfLink.setCaption("PDF");
 		pdfLink.setTargetName("_blank");
-		PdfStreamSource pdfStreamSource = new PdfStreamSource(template, template.getContext());
+		PdfStreamSource pdfStreamSource = new PdfStreamSource(template, template.getContext(), params);
 		pdfLink.setResource(new LinkResource(pdfStreamSource, template.getName() + ".pdf",
 				nickiEditor.getApplication(), "application/pdf"));
 
 		csvLink.setCaption("CSV");
 		csvLink.setTargetName("_blank");
-		CsvStreamSource csvStreamSource = new CsvStreamSource(template, template.getContext());
+		CsvStreamSource csvStreamSource = new CsvStreamSource(template, template.getContext(), params);
 		csvLink.setResource(new LinkResource(csvStreamSource, template.getName() + ".csv",
 				nickiEditor.getApplication(), "text/comma-separated-values"));
 	}

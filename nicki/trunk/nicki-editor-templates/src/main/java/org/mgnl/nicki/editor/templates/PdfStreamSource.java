@@ -10,8 +10,8 @@ import com.vaadin.terminal.StreamResource.StreamSource;
 
 public class PdfStreamSource extends BasicTemplateStreamSource implements StreamSource {
 	private static final long serialVersionUID = 4222973194514516918L;
-	public PdfStreamSource(Template template, NickiContext context) {
-		super(template, context);
+	public PdfStreamSource(Template template, NickiContext context, Object params) {
+		super(template, context, params);
 	}
 
 	@Override
