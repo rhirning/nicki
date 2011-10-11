@@ -8,6 +8,7 @@ import org.mgnl.nicki.ldap.context.NickiContext;
 public interface TemplateHandler {
 	void setUser(Person person);
 	void setContext(NickiContext context);
+	void setParams(Object params);
 
 	Map<String, Object> getDataModel();
 }

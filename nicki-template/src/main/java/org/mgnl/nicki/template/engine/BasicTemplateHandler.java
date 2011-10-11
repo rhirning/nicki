@@ -12,6 +12,7 @@ public class BasicTemplateHandler implements TemplateHandler{
 	
 	private Person person = null;
 	private NickiContext context = null;
+	private Object params = null;
 	
 
 	@Override
@@ -37,7 +38,14 @@ public class BasicTemplateHandler implements TemplateHandler{
 			e.printStackTrace();
 		}
 		dataModel.put("person", person);
+		if (params != null) {
+			dataModel.put("params", params);
+		}
 		return dataModel;
+	}
+
+	public void setParams(Object params) {
+		this.params = params;
 	}
 
 }

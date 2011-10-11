@@ -1,8 +1,6 @@
 package org.mgnl.nicki.editor.templates;
 
 
-import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.ldap.context.NickiContext;
@@ -64,14 +62,12 @@ public class HtmlPreviewTemplate extends BaseTreeAction {
 	public void execute(Window parentWindow, DynamicObject dynamicObject) {
 		this.parentWindow = parentWindow;
 		Template template = (Template) dynamicObject;
-		String parentPath = Config.getProperty("nicki.templates.basedn");
-		String templatePath = template.getSlashPath(parentPath);
-		if (StringUtils.contains(templatePath, "_")) {
-			templatePath = StringUtils.substringBefore(templatePath, "_");
-		}
-		
+		showResultDialog(template, null);
+	}
+
+	private void showResultDialog(Template template, Object params) {
 		try {
-			StringStreamSource streamSource = new StringStreamSource(template, context);
+			StringStreamSource streamSource = new StringStreamSource(template, context, params);
 
 			this.result.setSource(new LinkResource(streamSource, template.getName() + ".html?a=b", parentWindow.getApplication(), "text/html"));
 			if (null != this.getParent()) {
