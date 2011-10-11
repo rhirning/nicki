@@ -1,8 +1,5 @@
 package org.mgnl.nicki.editor.templates;
 
-
-import java.util.Map;
-
 import javax.naming.NamingException;
 
 import org.mgnl.nicki.core.i18n.I18n;
@@ -16,15 +13,15 @@ import org.mgnl.nicki.vaadin.base.data.ListPartDataContainer;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
+import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Link;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Component.Event;
 
 @SuppressWarnings("serial")
 public class TemplateViewer extends CustomComponent implements ClassEditor {
@@ -34,12 +31,10 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 	private TabSheet tab;
 	private Template template;
 	private Button saveButton;
-	private Button previewButton;
-	private Button htmlPreviewButton;
-	private Link csvLink;
-	private Link pdfLink;
+	private Button executeButton;
 	private NickiTreeEditor editor;
-	
+	private Window previewWindow;	
+
 	/**
 	 * The constructor should first build the main layout, set the
 	 * composition root and then do any custom initialization.
@@ -55,6 +50,7 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 		this.template = (Template) dynamicObject;
 		buildEditor();
 		setCompositionRoot(mainLayout);
+		initI18n();
 		
 		createSheets();
 		
@@ -68,59 +64,39 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 				}
 			}
 		});
-		previewButton.addListener(new Button.ClickListener() {
+		executeButton.addListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
 				try {
-					preview();
+					execute();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 		
-		htmlPreviewButton.addListener(new Button.ClickListener() {
-			
-			public void buttonClick(ClickEvent event) {
-				try {
-					htmlPreview();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		Map<String, Object> params = null;
-		
-		pdfLink.setCaption("PDF");
-		pdfLink.setTargetName("_blank");
-		PdfStreamSource pdfStreamSource = new PdfStreamSource(template, template.getContext(), params);
-		pdfLink.setResource(new LinkResource(pdfStreamSource, template.getName() + ".pdf",
-				nickiEditor.getApplication(), "application/pdf"));
-
-		csvLink.setCaption("CSV");
-		csvLink.setTargetName("_blank");
-		CsvStreamSource csvStreamSource = new CsvStreamSource(template, template.getContext(), params);
-		csvLink.setResource(new LinkResource(csvStreamSource, template.getName() + ".csv",
-				nickiEditor.getApplication(), "text/comma-separated-values"));
+	}
+	
+	private void initI18n() {
+		saveButton.setCaption(I18n.getText(editor.getMessageKeyBase() + ".button.save"));
+		executeButton.setCaption(I18n.getText(editor.getMessageKeyBase() + ".button.execute"));
 	}
 
-	protected void preview() throws DynamicObjectException, NamingException {
+	protected void execute() throws DynamicObjectException, NamingException {
 		save();
-		PreviewTemplate preview = new PreviewTemplate(editor.getNickiContext(), editor.getMessageKeyBase());
-		preview.execute(getWindow(), template);
-	}
-
-	protected void htmlPreview() throws DynamicObjectException, NamingException {
-		save();
-		HtmlPreviewTemplate preview = new HtmlPreviewTemplate(editor.getNickiContext(), editor.getMessageKeyBase());
-		preview.execute(getWindow(), template);
+		TemplateConfig configDialog = new TemplateConfig(editor, template);
+		previewWindow = new Window(I18n.getText(editor.getMessageKeyBase() + ".config.window.title"), configDialog);
+		previewWindow.setModal(true);
+		previewWindow.setWidth(480, Sizeable.UNITS_PIXELS);
+		previewWindow.setHeight(520, Sizeable.UNITS_PIXELS);
+		this.getWindow().addWindow(previewWindow);
 	}
 
 	private void createSheets() {
 		tab.addTab(new SimpleEditor(new AttributeDataContainer(template, "data")), I18n.getText(editor.getMessageKeyBase() +".tab.data"), null);
 		tab.addTab(new TestDataView(new ListPartDataContainer(template, "testData", "="), editor.getMessageKeyBase()),
 				I18n.getText(editor.getMessageKeyBase() +".tab.testdata"), null);
-
+		tab.addTab(new SimpleEditor(new AttributeDataContainer(template, "params")), I18n.getText(editor.getMessageKeyBase() +".tab.params"), null);
 	}
 	
 	private AbsoluteLayout buildEditor() {
@@ -151,26 +127,13 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 		saveButton.setImmediate(true);
 		horizontalLayout.addComponent(saveButton);
 		
-		previewButton = new Button();
-		previewButton.setWidth("-1px");
-		previewButton.setHeight("-1px");
-		previewButton.setCaption("Vorschau");
-		previewButton.setImmediate(true);
-		horizontalLayout.addComponent(previewButton);
-		
-		htmlPreviewButton = new Button();
-		htmlPreviewButton.setWidth("-1px");
-		htmlPreviewButton.setHeight("-1px");
-		htmlPreviewButton.setCaption("HTML Vorschau");
-		htmlPreviewButton.setImmediate(true);
-		horizontalLayout.addComponent(htmlPreviewButton);
-		
-		pdfLink = new Link();
-		horizontalLayout.addComponent(pdfLink);
-		
-		csvLink = new Link();
-		horizontalLayout.addComponent(csvLink);
-		
+		executeButton = new Button();
+		executeButton.setWidth("-1px");
+		executeButton.setHeight("-1px");
+		executeButton.setCaption("Execute");
+		executeButton.setImmediate(true);
+		horizontalLayout.addComponent(executeButton);
+				
 		return mainLayout;
 	}
 

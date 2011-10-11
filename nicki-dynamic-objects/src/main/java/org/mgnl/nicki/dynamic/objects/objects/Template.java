@@ -18,6 +18,9 @@ public class Template extends DynamicTemplateObject {
 		dynAttribute = new DynamicAttribute("data", "nickiTemplateData", String.class);
 		addAttribute(dynAttribute);
 		
+		dynAttribute = new DynamicAttribute("params", "nickiTemplateParams", String.class);
+		addAttribute(dynAttribute);
+		
 		dynAttribute = new DynamicAttribute("handler", "nickiHandler", String.class);
 		addAttribute(dynAttribute);
 		
