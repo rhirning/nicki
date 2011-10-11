@@ -1,6 +1,8 @@
 package org.mgnl.nicki.editor.templates;
 
 
+import java.util.Map;
+
 import org.apache.commons.io.IOUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
@@ -25,6 +27,7 @@ public class PreviewTemplate extends BaseTreeAction {
 	private Window previewWindow;
 	private NickiContext context;
 	private String i18nBase;
+	private Map<String, Object> params;
 
 	/**
 	 * The constructor should first build the main layout, set the
@@ -45,16 +48,17 @@ public class PreviewTemplate extends BaseTreeAction {
 		result.setWordwrap(false);
 	}
 
-	public PreviewTemplate(NickiContext context, String i18nBase) {
+	public PreviewTemplate(NickiContext context, String i18nBase, Map<String, Object> params) {
 		super(null, null);
 		this.context = context;
 		this.i18nBase = i18nBase;
+		this.params = params;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 
 		result.setWordwrap(false);
 	}
-
+	
 	public void close() {
 		this.parentWindow.removeWindow(previewWindow);
 	}
@@ -63,7 +67,7 @@ public class PreviewTemplate extends BaseTreeAction {
 	public void execute(Window parentWindow, DynamicObject dynamicObject) {
 		this.parentWindow = parentWindow;
 		Template template = (Template) dynamicObject;
-		showResultDialog(template, null);
+		showResultDialog(template, params);
 	}
 
 	private void showResultDialog(Template template, Object params) {

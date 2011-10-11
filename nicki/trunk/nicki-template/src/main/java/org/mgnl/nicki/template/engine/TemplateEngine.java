@@ -51,7 +51,7 @@ public class TemplateEngine {
 		if (user == null) {
 			throw new Exception("login failed");
 		}
-		TemplateHandler handler = new BasicTemplateHandler();
+		TemplateHandler handler = new BasicTemplateHandler(templateName);
 		handler.setUser(user);
 		handler.setContext(user.getContext());
 		
@@ -74,11 +74,8 @@ public class TemplateEngine {
 	public InputStream executeTemplate(String templateName,
 			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException {
-
-		Configuration cfg = ConfigurationFactory.getInstance()
-				.getConfiguration(
-						Config.getProperty(PROPERTY_BASE_DN));
-
+		Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(
+				Config.getProperty(PROPERTY_BASE_DN));
 		Template template = cfg.getTemplate(templateName);
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);

@@ -27,19 +27,11 @@ public class BasicTemplateStreamSource {
 		if (StringUtils.contains(templatePath, "_")) {
 			templatePath = StringUtils.substringBefore(templatePath, "_");
 		}
-		handler = null;
-		if (template.hasHandler()) {
-			try {
-				handler = (TemplateHandler) Class.forName(template.getHandler()).newInstance();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if (handler == null) {
-			handler = new BasicTemplateHandler();
-		}
+		handler = TemplateHelper.getTemplateHandler(template);
+
 		handler.setUser((Person) template.getContext().getUser());
 		handler.setContext(context);
+		handler.setParams(params);
 	}
 
 	public Map<String, Object> getDataModel() {

@@ -9,6 +9,7 @@ public class LinkResource extends StreamResource {
 			Application application, String mimeType) {
 		super(streamSource, filename, application);
 		this.mimeType = mimeType;
+		setCacheTime(-1);
 	}
 
 	private static final long serialVersionUID = -426896041747116523L;
