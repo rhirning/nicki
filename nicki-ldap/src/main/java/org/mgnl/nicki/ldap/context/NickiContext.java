@@ -8,7 +8,6 @@ import org.mgnl.nicki.ldap.core.LdapQuery;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
-import org.mgnl.nicki.ldap.objects.DynamicReference;
 
 public interface NickiContext extends Serializable {
 	public static enum READONLY {TRUE, FALSE};

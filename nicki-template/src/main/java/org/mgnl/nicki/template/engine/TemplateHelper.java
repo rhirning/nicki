@@ -9,8 +9,6 @@ import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.template.handler.TemplateHandler;
 
-import com.lowagie.text.List;
-
 public class TemplateHelper {
 
 	public static Map<String, Object> getDataModel(NickiContext context, Map<String, Object> data, Map<String, String> objects) {

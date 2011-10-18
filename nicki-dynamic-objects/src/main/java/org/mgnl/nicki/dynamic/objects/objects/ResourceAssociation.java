@@ -1,10 +1,8 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
 import org.apache.commons.lang.StringUtils;
-import org.jdom.Element;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
-import org.mgnl.nicki.ldap.methods.StructuredData;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 

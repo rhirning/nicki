@@ -8,7 +8,6 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.ldap.context.NickiContext;
-import org.mgnl.nicki.template.engine.BasicTemplateHandler;
 import org.mgnl.nicki.template.handler.TemplateHandler;
 
 
@@ -16,11 +15,13 @@ public class BasicTemplateStreamSource {
 	private static final long serialVersionUID = 4222973194514516918L;
 
 	Template template;
+	Map<String, Object> params;
 	private String templatePath;
 	private TemplateHandler handler;
 	
-	public BasicTemplateStreamSource(Template template, NickiContext context, Object params) {
+	public BasicTemplateStreamSource(Template template, NickiContext context, Map<String, Object> params) {
 		this.template = template;
+		this.params = params;
 		// render template
 		String parentPath = Config.getProperty("nicki.templates.basedn");
 		templatePath = template.getSlashPath(parentPath);
@@ -73,6 +74,14 @@ public class BasicTemplateStreamSource {
 		}
 		
 		return null;
+	}
+
+	public Template getTemplate() {
+		return template;
+	}
+
+	public Map<String, Object> getParams() {
+		return params;
 	}
 	
 

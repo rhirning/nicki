@@ -2,7 +2,11 @@
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/resources"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/nicki-core"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nicki-core">
+		<attributes>
+			<attribute name="org.eclipse.jst.component.dependency" value="../"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry exported="true" kind="var" path="M2_REPO/org/jdom/jdom/1.1/jdom-1.1.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="../"/>
@@ -24,7 +28,7 @@
 			<attribute name="org.eclipse.jst.component.dependency" value="../"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/org/jaxen/jaxen/1.1.1/jaxen-1.1.1.jar">
+	<classpathentry exported="true" kind="var" path="M2_REPO/org/jaxen/jaxen/1.1.1/jaxen-1.1.1.jar">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="../"/>
 		</attributes>

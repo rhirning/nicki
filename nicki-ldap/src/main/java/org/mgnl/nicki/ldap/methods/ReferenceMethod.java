@@ -26,6 +26,7 @@ public class ReferenceMethod implements TemplateMethodModel, Serializable {
 		this.reference = reference;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (objects == null) {

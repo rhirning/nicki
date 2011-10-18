@@ -8,7 +8,6 @@ import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.core.LdapQuery;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicReference;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
 import freemarker.template.TemplateMethodModel;
@@ -27,6 +26,7 @@ public class StructuredReferenceMethod implements TemplateMethodModel, Serializa
 		this.reference = structuredDynamicReference;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (objects == null) {
