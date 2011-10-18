@@ -44,7 +44,8 @@ public class XmlHelper implements Serializable{
         return new Document();
     }
 
-    public <T extends Content> List<T> selectNodes(Class<T> clazz, Parent ctx, String xpath) {
+    @SuppressWarnings("unchecked")
+	public <T extends Content> List<T> selectNodes(Class<T> clazz, Parent ctx, String xpath) {
         List<T> list = new ArrayList<T>();
         List<Object> nodes;
 
@@ -65,7 +66,8 @@ public class XmlHelper implements Serializable{
 
     }
 
-    public <T extends Content> T selectNode(Class<T> clazz, Parent ctx, String xpath) {
+    @SuppressWarnings("unchecked")
+	public <T extends Content> T selectNode(Class<T> clazz, Parent ctx, String xpath) {
         Object node = null;
 
          try {

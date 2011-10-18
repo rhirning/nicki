@@ -25,10 +25,12 @@ public class ConfiguredTemplateConfigDialog extends CustomComponent {
 	private Template template;
 	private Map<TemplateParameter, Field> fields = new HashMap<TemplateParameter, Field>();
 	private Map<String, Object> params;
+	private TemplateConfig templateConfig;
 
-	public ConfiguredTemplateConfigDialog(Template template, Map<String, Object> params) {
+	public ConfiguredTemplateConfigDialog(Template template, Map<String, Object> params, TemplateConfig templateConfig) {
 		this.template = template;
 		this.params = params;
+		this.templateConfig = templateConfig;
 		
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
@@ -58,7 +60,7 @@ public class ConfiguredTemplateConfigDialog extends CustomComponent {
 					field.setInvalidAllowed(false);
 					mainLayout.addComponent(field);
 					DateHelper.init(field);
-					field.addListener(new ParamInputListener(field, templateParameter.getName(), params));
+					field.addListener(new ParamInputListener(field, templateParameter.getName(), params, templateConfig));
 					fields.put(templateParameter, field);
 				} else if (StringUtils.equalsIgnoreCase("string", templateParameter.getDataType())) {
 					TextField field = new TextField();
@@ -68,7 +70,7 @@ public class ConfiguredTemplateConfigDialog extends CustomComponent {
 					field.setHeight("-1px");
 					field.setInvalidAllowed(false);
 					mainLayout.addComponent(field);
-					field.addListener(new ParamInputListener(field, templateParameter.getName(), params));
+					field.addListener(new ParamInputListener(field, templateParameter.getName(), params, templateConfig));
 					fields.put(templateParameter, field);
 				} else if (StringUtils.equalsIgnoreCase("static", templateParameter.getDataType())) {
 					params.put(templateParameter.getName(), templateParameter.getValue());

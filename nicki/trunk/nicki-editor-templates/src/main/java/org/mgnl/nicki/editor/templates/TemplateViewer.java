@@ -84,7 +84,8 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 
 	protected void execute() throws DynamicObjectException, NamingException {
 		save();
-		TemplateConfig configDialog = new TemplateConfig(editor, template);
+		TemplateConfig configDialog = new TemplateConfig();
+		configDialog.setDynamicObject(editor, template);
 		previewWindow = new Window(I18n.getText(editor.getMessageKeyBase() + ".config.window.title"), configDialog);
 		previewWindow.setModal(true);
 		previewWindow.setWidth(480, Sizeable.UNITS_PIXELS);

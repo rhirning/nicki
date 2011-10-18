@@ -70,7 +70,7 @@ public class PreviewTemplate extends BaseTreeAction {
 		showResultDialog(template, params);
 	}
 
-	private void showResultDialog(Template template, Object params) {
+	private void showResultDialog(Template template, Map<String, Object> params) {
 		try {
 			StringStreamSource streamSource = new StringStreamSource(template, context, params);
 			this.result.setValue(IOUtils.toString(streamSource.getStream()));

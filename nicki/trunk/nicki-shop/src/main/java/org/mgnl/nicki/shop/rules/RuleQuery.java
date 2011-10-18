@@ -1,8 +1,5 @@
 package org.mgnl.nicki.shop.rules;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
 
 public class RuleQuery {

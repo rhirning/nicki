@@ -25,6 +25,7 @@ public class FreeSelectComponent extends BasicAttributeComponent implements Attr
 		setArticle(article);
 		setAttribute(attribute);
 		setCaption(attribute.getLabel());
+		@SuppressWarnings("unchecked")
 		List<String> content = getContent(List.class, user, person);
 		if (content != null) {
 			for (Iterator<String> iterator = content.iterator(); iterator.hasNext();) {

@@ -49,7 +49,6 @@ public class BasicActionOperator {
 		}
 	}
 
-	@SuppressWarnings("OverridableMethodCallInConstructor")
 	public BasicActionOperator(NickiContext ctx, String actionname, String target, boolean noexec) {
 		this.ctx = ctx;
 		this.actionname = actionname;
@@ -133,7 +132,6 @@ public class BasicActionOperator {
 		return actionname + sdf.format(new Date());
 	}
 
-	@SuppressWarnings("CallToThreadDumpStack")
 	protected void initDocument() {
 		DocumentBuilderFactory domfactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = null;
