@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nicki-core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nicki-ldap"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nicki-mailtemplate"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nicki-template"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nicki-dynamic-objects"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nicki-config-rhi"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/efg-editor-bu"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/nicki-dynamic-objects-ad"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
