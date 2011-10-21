@@ -1,0 +1,108 @@
+version: 1
+
+#NDS attribute:nickiRecipient
+#Syntax:SYN_DIST_NAME
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: (
+  nickirecipient-oid
+  NAME 'nickiRecipient'
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+  SINGLE-VALUE
+  X-NDS_NOT_SCHED_SYNC_IMMEDIATE '1'
+  )
+
+#NDS attribute:nickiData
+#Syntax:SYN_CI_STRING
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: (
+  nickidata-oid
+  NAME 'nickiData'
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+  SINGLE-VALUE
+  X-NDS_NOT_SCHED_SYNC_IMMEDIATE '1'
+  )
+
+#NDS attribute:nickiProcessDate
+#Syntax:SYN_CI_STRING
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: (
+  nickiprocessdate-oid
+  NAME 'nickiProcessDate'
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+  SINGLE-VALUE
+  X-NDS_NOT_SCHED_SYNC_IMMEDIATE '1'
+  )
+
+#NDS attribute:nickiProcessResult
+#Syntax:SYN_CI_STRING
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: (
+  nickiprocessresult-oid
+  NAME 'nickiProcessResult'
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+  SINGLE-VALUE
+  X-NDS_NOT_SCHED_SYNC_IMMEDIATE '1'
+  )
+
+#NDS attribute:nickiStatus
+#Syntax:SYN_CI_STRING
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: (
+  nickistatus-oid
+  NAME 'nickiStatus'
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+  SINGLE-VALUE
+  X-NDS_NOT_SCHED_SYNC_IMMEDIATE '1'
+  )
+
+#NDS attribute:nickiRequestDate
+#Syntax:SYN_CI_STRING
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: (
+  nickirequestdate-oid
+  NAME 'nickiRequestDate'
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+  SINGLE-VALUE
+  X-NDS_NOT_SCHED_SYNC_IMMEDIATE '1'
+  )
+
+#NDS attribute:nickiInitiator
+#Syntax:SYN_DIST_NAME
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: (
+  nickiinitiator-oid
+  NAME 'nickiInitiator'
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+  SINGLE-VALUE
+  X-NDS_NOT_SCHED_SYNC_IMMEDIATE '1'
+  )
+
+#NDS class:nickiCart
+dn: cn=schema
+changetype: modify
+add: objectClasses
+objectClasses: (
+  nickicart-oid
+  NAME 'nickiCart'
+  STRUCTURAL
+  SUP ( Top )
+  X-NDS_CONTAINMENT 'organizationalUnit'
+  MAY ( nickiData $ nickiInitiator $ nickiProcessDate $ nickiProcessResult $ nickiRecipient $ 
+   nickiRequestDate $ nickiStatus )
+  X-NDS_NOT_CONTAINER '1'
+  )
+
