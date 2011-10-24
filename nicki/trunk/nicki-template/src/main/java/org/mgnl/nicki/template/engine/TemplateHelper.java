@@ -34,7 +34,8 @@ public class TemplateHelper {
 			}
 		}
 		if (handler == null) {
-			handler = new BasicTemplateHandler(template);
+			handler = new BasicTemplateHandler();
+			handler.setTemplate(template);
 		}
 		return handler;
 	}

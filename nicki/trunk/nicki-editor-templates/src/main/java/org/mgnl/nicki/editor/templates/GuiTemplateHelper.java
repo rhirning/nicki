@@ -4,8 +4,6 @@ import java.util.Map;
 
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.template.engine.TemplateHelper;
-import org.mgnl.nicki.template.engine.TemplateParameter;
-import org.mgnl.nicki.template.handler.TemplateHandler;
 
 import com.vaadin.ui.Component;
 
@@ -21,7 +19,8 @@ public class GuiTemplateHelper extends TemplateHelper {
 			}
 		}
 		if (handler == null) {
-			handler = new BasicGuiTemplateHandler(template);
+			handler = new BasicGuiTemplateHandler();
+			handler.setTemplate(template);
 		}
 		return handler;
 	}

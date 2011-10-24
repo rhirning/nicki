@@ -51,7 +51,7 @@ public class TemplateEngine {
 		if (user == null) {
 			throw new Exception("login failed");
 		}
-		TemplateHandler handler = new BasicTemplateHandler(templateName);
+		TemplateHandler handler = new BasicTemplateHandler();
 		handler.setUser(user);
 		handler.setContext(user.getContext());
 		
