@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.template.engine.TemplateParameter;
 
@@ -14,4 +15,5 @@ public interface TemplateHandler {
 
 	Map<String, Object> getDataModel();
 	List<TemplateParameter> getTemplateParameters();
+	void setTemplate(Template template);
 }

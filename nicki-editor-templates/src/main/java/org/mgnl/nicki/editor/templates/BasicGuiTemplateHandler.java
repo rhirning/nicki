@@ -11,8 +11,8 @@ import com.vaadin.ui.Component;
 public class BasicGuiTemplateHandler extends BasicTemplateHandler implements
 		GuiTemplateHandler {
 
-	public BasicGuiTemplateHandler(Template template) {
-		super(template);
+	public BasicGuiTemplateHandler() {
+		super();
 	}
 
 	@Override

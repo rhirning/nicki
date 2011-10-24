@@ -23,14 +23,12 @@ public class BasicTemplateHandler implements TemplateHandler{
 	private Object params = null;
 	private Template template = null;
 	
-
-	public BasicTemplateHandler(Template template) {
-		super();
-		this.template = template;
+	public BasicTemplateHandler() {
 	}
 
-	public BasicTemplateHandler(String templateName) {
-		// TODO Auto-generated constructor stub
+	@Override
+	public void setTemplate(Template template) {
+		this.template = template;
 	}
 
 	@Override
