@@ -10,7 +10,6 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
-import org.mgnl.nicki.template.engine.TemplateHelper;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
@@ -132,7 +131,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	}
 
 	protected boolean isComplete() {
-		if (!TemplateHelper.isComplete(template, params)) {
+		if (!GuiTemplateHelper.isComplete(template, params)) {
 			getWindow().showNotification(I18n.getText(editor.getMessageKeyBase()+ ".error.params.incomplete"));
 			return false;
 		} else {
@@ -193,7 +192,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	}
 
 	public void paramsChanged() {
-		if (TemplateHelper.isComplete(template, params)) {
+		if (GuiTemplateHelper.isComplete(template, params)) {
 			pdfLink.setEnabled(true);
 			csvLink.setEnabled(true);
 		} else {

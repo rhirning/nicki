@@ -39,20 +39,4 @@ public class TemplateHelper {
 		return handler;
 	}
 
-	public static boolean isComplete(Template template, Map<String, Object> params) {
-		TemplateHandler handler = getTemplateHandler(template);
-		java.util.List<TemplateParameter> list = handler.getTemplateParameters();
-		if (list != null) {
-			for (TemplateParameter templateParameter : list) {
-				if (!params.containsKey(templateParameter.getName())) {
-					return false;
-				} else {
-					if (null == params.get(templateParameter.getName())) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	}
 }

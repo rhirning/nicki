@@ -12,4 +12,6 @@ public interface GuiTemplateHandler extends TemplateHandler {
 	Component getConfigDialog(Template template,
 			Map<String, Object> params, TemplateConfig templateConfig);
 
+	boolean isComplete(Map<String, Object> params);
+
 }
