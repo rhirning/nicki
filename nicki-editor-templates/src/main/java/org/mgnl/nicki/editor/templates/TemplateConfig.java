@@ -16,6 +16,7 @@ import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Link;
@@ -27,7 +28,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 
 	private AbsoluteLayout mainLayout;
 	
-	private ConfiguredTemplateConfigDialog configDialog;
+	private Component configDialog;
 	private Template template;
 	private Button closeButton;
 	private Button previewButton;
@@ -151,10 +152,9 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		setWidth("100.0%");
 		setHeight("100.0%");
 		
-		configDialog = new ConfiguredTemplateConfigDialog(template, params, this);
+		configDialog = GuiTemplateHelper.getConfigDialog(template, params, this);
 		configDialog.setWidth("400px");
 		configDialog.setHeight("400px");
-		configDialog.setImmediate(true);
 		verticalLayout.addComponent(configDialog);
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();

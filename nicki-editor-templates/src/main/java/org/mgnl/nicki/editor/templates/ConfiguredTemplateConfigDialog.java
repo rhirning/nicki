@@ -16,7 +16,7 @@ import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 
-public class ConfiguredTemplateConfigDialog extends CustomComponent {
+public class ConfiguredTemplateConfigDialog extends CustomComponent implements TemplateConfigDialog {
 
 	private static final long serialVersionUID = -1295818262583276359L;
 
