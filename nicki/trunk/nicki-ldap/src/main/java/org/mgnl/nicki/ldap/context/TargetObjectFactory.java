@@ -58,7 +58,7 @@ public class TargetObjectFactory implements ObjectFactory {
 		for (@SuppressWarnings("unchecked")
 		Iterator<T> iterator = (Iterator<T>) target.getDynamicObjects().iterator(); iterator.hasNext();) {
 			T dynamicObject = iterator.next();
-			if (classDefinition == null || dynamicObject.getClass() == classDefinition) {
+			if (classDefinition == null || classDefinition.isAssignableFrom(dynamicObject.getClass())) {
 				if (dynamicObject.accept(rs)) {
 					T result = getExistingDynamicObject(dynamicObject, dn);
 					if (result != null) {
