@@ -28,6 +28,10 @@ public class Template extends DynamicTemplateObject {
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
+		dynAttribute = new DynamicAttribute("filter", "nickiFilter", String.class);
+		dynAttribute.setMultiple();
+		addAttribute(dynAttribute);
+
 		dynAttribute = new DynamicAttribute("testData", "nickiStructuredRef", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
