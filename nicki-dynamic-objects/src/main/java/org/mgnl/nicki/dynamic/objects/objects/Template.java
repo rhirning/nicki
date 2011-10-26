@@ -58,5 +58,17 @@ public class Template extends DynamicTemplateObject {
 	public boolean hasHandler() {
 		return StringUtils.isNotEmpty(getHandler());
 	}
+	
+	public boolean acceptFilter(String filter) {
+		if (StringUtils.isEmpty(filter)) {
+			return true;
+		}
+		@SuppressWarnings("unchecked")
+		List<String> filterList = (List<String>) get("filter");
+		if (filterList == null || filterList.contains(filter)) {
+			return true;
+		}
+		return false;
+	}
 
 }
