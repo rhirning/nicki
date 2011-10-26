@@ -80,13 +80,11 @@ public class TargetObjectFactory implements ObjectFactory {
 		return dynamicObject.getModel().getNamingLdapAttribute();
 	}
 
-	
-	// TODO
 	@SuppressWarnings("unchecked")
 	private <T extends DynamicObject> T findDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		for (Iterator<DynamicObject> iterator = target.getDynamicObjects().iterator(); iterator.hasNext();) {
 			DynamicObject dynamicObject = iterator.next();
-			if (dynamicObject.getClass() == classDefinition) {
+			if (classDefinition.isAssignableFrom(dynamicObject.getClass())){
 				return (T) dynamicObject;
 			}
 		}
