@@ -65,7 +65,7 @@ public class Template extends DynamicTemplateObject {
 		}
 		@SuppressWarnings("unchecked")
 		List<String> filterList = (List<String>) get("filter");
-		if (filterList == null || filterList.contains(filter)) {
+		if (filterList != null && filterList.contains(filter)) {
 			return true;
 		}
 		return false;
