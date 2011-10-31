@@ -51,6 +51,10 @@ public class Role extends DynamicStructObject {
 		return getDateInfo("/assignment/start_tm");
 	}
 	
+	public Date getEndTime() {
+		return getDateInfo("/assignment/end_tm");
+	}
+	
 	public String getRequester() {
 		return getInfo("/assignment/req");
 	}
