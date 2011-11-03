@@ -278,7 +278,10 @@ public class Person extends DynamicTemplateObject {
 
 	@SuppressWarnings("unchecked")
 	public List<String> getCatalogAttributeValues() {
-		return (List<String>) get("attributeValue");
+		if (get("attributeValue") != null) {
+			return (List<String>) get("attributeValue");
+		}
+		return new ArrayList<String>();
 	}
 
 	public enum GENDER {

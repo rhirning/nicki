@@ -1,6 +1,7 @@
 package org.mgnl.nicki.vaadin.base.shop.inventory;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,18 +9,19 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.dynamic.objects.objects.Resource;
 import org.mgnl.nicki.dynamic.objects.objects.Role;
 import org.mgnl.nicki.shop.catalog.CartEntry.ACTION;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
 import org.mgnl.nicki.shop.catalog.CatalogArticleAttribute;
+import org.mgnl.nicki.vaadin.base.data.DateHelper;
 import org.mgnl.nicki.vaadin.base.shop.attributes.AttributeComponentFactory;
 
 @SuppressWarnings("serial")
 public class InventoryArticle implements Serializable{
 	public enum STATUS {NONE, PROVISIONED, NEW, MODIFIED, DELETED};
 	
-	private Date start;
 	private STATUS originalStatus = STATUS.NONE;
 	private STATUS status;
 	private CatalogArticle article;
@@ -27,8 +29,8 @@ public class InventoryArticle implements Serializable{
 
 	public InventoryArticle(CatalogArticle article) {
 		this.article = article;
-		setStatus(STATUS.NEW);
 		addEmptyAttributes();
+		setStatus(STATUS.NEW);
 	}
 
 	private void addEmptyAttributes() {
@@ -54,6 +56,7 @@ public class InventoryArticle implements Serializable{
 			}
 		}
 		setStart(resource.getStartTime());
+		setEnd(resource.getEndTime());
 		setStatus(STATUS.PROVISIONED);
 		originalStatus = STATUS.PROVISIONED;
 	}
@@ -61,16 +64,22 @@ public class InventoryArticle implements Serializable{
 	public InventoryArticle(CatalogArticle article,
 			Role role,
 			List<InventoryAttribute> attributes) {
+		this.article = article;
+		addEmptyAttributes();
+		if (attributes != null) {
+			for (Iterator<InventoryAttribute> iterator = attributes.iterator(); iterator.hasNext();) {
+				InventoryAttribute attribute = iterator.next();
+				this.attributes.put(attribute.getName(), attribute);
+			}
+		}
 		setStart(role.getStartTime());
+		setEnd(role.getEndTime());
 		setStatus(STATUS.PROVISIONED);
+		originalStatus = STATUS.PROVISIONED;
 	}
 
 	public void setStart(Date start) {
-		this.start = start;
-	}
-
-	public Date getStart() {
-		return start;
+		setValue(attributes.get("dateFrom"), start);
 	}
 
 	public void setStatus(STATUS status) {
@@ -94,8 +103,7 @@ public class InventoryArticle implements Serializable{
 		StringBuffer sb = new StringBuffer();
 		sb.append("[Article path=").append(article.getPath());
 		sb.append(" target=").append(article.getReferencePath());
-		sb.append(" status=").append(getStatus());
-		sb.append(" start=").append(getStart()).append("]");
+		sb.append(" status=").append(getStatus()).append("]");
 		for (Iterator<String> iterator = attributes.keySet().iterator(); iterator.hasNext();) {
 			sb.append("\n").append(attributes.get(iterator.next()).toString());
 		}
@@ -106,13 +114,29 @@ public class InventoryArticle implements Serializable{
 		return article;
 	}
 
+	public Object getValue(CatalogArticleAttribute attribute) {
+		return getValue(attribute.getName());
+	}
+
+	public Object getValue(String attributeName) {
+		InventoryAttribute iAttribute = attributes.get(attributeName);
+		return iAttribute.getValue();
+	}
+
 	public void setValue(CatalogArticleAttribute attribute, Object value) {
-		String stringValue = AttributeComponentFactory.getAttributeComponent(attribute.getType()).getStringValue(value);
 		InventoryAttribute iAttribute = attributes.get(attribute.getName());
-		if (getStatus() == STATUS.PROVISIONED && !StringUtils.equals(stringValue, iAttribute.getOldValue())) {
-			setStatus(STATUS.MODIFIED);
+		setValue(iAttribute, value);
+	}
+
+	private void setValue(InventoryAttribute iAttribute, Object value) {
+		CatalogArticleAttribute attribute = iAttribute.getAttribute();
+		String stringValue = AttributeComponentFactory.getAttributeComponent(attribute.getType()).getStringValue(value);
+		if (iAttribute != null) {
+			if (getStatus() == STATUS.PROVISIONED && !StringUtils.equals(stringValue, iAttribute.getOldValue())) {
+				setStatus(STATUS.MODIFIED);
+			}
+			attributes.get(attribute.getName()).setValue(stringValue);
 		}
-		attributes.get(attribute.getName()).setValue(stringValue);
 	}
 
 	public boolean hasChanged() {
@@ -139,5 +163,29 @@ public class InventoryArticle implements Serializable{
 
 	public Map<String, InventoryAttribute> getAttributes() {
 		return attributes;
+	}
+
+	public void setEnd(Date end) {
+		if (end != null) {
+			setValue(attributes.get("dateTo"), end);
+			setStatus(STATUS.MODIFIED);
+		}
+	}
+
+	public Date getStart() {
+		Object stored = getValue("dateFrom");
+		if (stored instanceof Date) {
+			return (Date) stored;
+		}
+		if (stored instanceof String) {
+			try {
+				return DataHelper.dateFromString((String) stored);
+			} catch (ParseException e) {
+				System.out.println(stored);
+				e.printStackTrace();
+			}
+			System.out.println(stored);
+		}
+		return null;
 	}
 }

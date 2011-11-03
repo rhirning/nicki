@@ -41,6 +41,11 @@ public class ResourceArticle extends CatalogArticle {
 	}
 
 	@Override
+	public String getPath() {
+		return resource.getPath();
+	}
+
+	@Override
 	public String getDisplayName() {
 		return resource.getDisplayName();
 	}

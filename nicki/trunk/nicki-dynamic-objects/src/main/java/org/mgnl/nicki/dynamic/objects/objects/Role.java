@@ -52,7 +52,11 @@ public class Role extends DynamicStructObject {
 	}
 	
 	public Date getEndTime() {
-		return getDateInfo("/assignment/end_tm");
+		try {
+			return getDateInfo("/assignment/end_tm");
+		} catch (Exception e) {
+			return null;
+		}
 	}
 	
 	public String getRequester() {

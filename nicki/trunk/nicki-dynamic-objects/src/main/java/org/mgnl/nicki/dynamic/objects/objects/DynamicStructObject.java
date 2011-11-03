@@ -40,7 +40,7 @@ public abstract class DynamicStructObject extends DynamicTemplateObject {
 		try {
 			String info = StringUtils.chomp(getInfo(infoPath), "Z");
 			return DataHelper.formatTime.parse(info);
-		} catch (ParseException e) {
+		} catch (Exception e) {
 			return null;
 		}
 	}

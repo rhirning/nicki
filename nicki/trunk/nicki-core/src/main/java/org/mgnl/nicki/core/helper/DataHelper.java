@@ -1,5 +1,6 @@
 package org.mgnl.nicki.core.helper;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -149,5 +150,10 @@ public class DataHelper {
 
 	public static String getDay(Date value) {
 		return formatDay.format(value);
+	}
+
+	public static Date dateFromString(String stored) throws ParseException {
+		// TODO Auto-generated method stub
+		return formatDay.parse(stored);
 	}
 }

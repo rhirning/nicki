@@ -1,9 +1,13 @@
 package org.mgnl.nicki.vaadin.base.shop.renderer;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.smartcardio.ATR;
+
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
@@ -45,7 +49,11 @@ public class BaseShopRenderer {
 		try {
 			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
 			attributeComponent.setValue(value);
-			inventory.getArticle(article).setValue(articleAttribute, value);
+			if (StringUtils.equalsIgnoreCase("dateFrom", articleAttribute.getName())) {
+				inventory.getArticle(article).setStart((Date) value);
+			} else {
+				inventory.getArticle(article).setValue(articleAttribute, value);
+			}
 			attributeComponent.setEnabled(enabled);
 			return attributeComponent.getInstance(getInventory().getUser(), getInventory().getPerson(),
 					getInventory().getArticle(article), articleAttribute);

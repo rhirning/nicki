@@ -27,7 +27,11 @@ public class RolesProvider implements Provider, Serializable {
 
 	@Override
 	public CatalogArticle getArticle(String key) {
-		return page.getContext().loadObject(CatalogArticle.class, key);
+		Role role = this.page.getContext().loadObject(Role.class, key);
+		if (role != null) {
+			return  new RoleArticle(role, this.page);
+		}
+		return null;
 	}
 
 	@Override
