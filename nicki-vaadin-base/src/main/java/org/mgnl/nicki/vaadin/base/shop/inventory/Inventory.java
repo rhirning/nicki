@@ -42,18 +42,18 @@ public class Inventory implements Serializable{
 		Catalog catalog = Catalog.getCatalog();
 		for (Iterator<Role> iterator = person.getRoles().iterator(); iterator.hasNext();) {
 			Role role = iterator.next();
-			CatalogArticle article = catalog.getArticle(role);
-			if (article != null) {
-				List<InventoryAttribute> attributes = getAttributes(article);
-				articles.put(article.getRolePath(), new InventoryArticle(article, role, attributes));
+			List<CatalogArticle> catalogArticles = catalog.getArticles(role);
+			for (CatalogArticle catalogArticle : catalogArticles) {
+				List<InventoryAttribute> attributes = getAttributes(catalogArticle);
+				articles.put(catalogArticle.getPath(), new InventoryArticle(catalogArticle, role, attributes));
 			}
 		}
 		for (Iterator<Resource> iterator = person.getResources().iterator(); iterator.hasNext();) {
 			Resource resource = iterator.next();
-			CatalogArticle article = catalog.getArticle(resource);
-			if (article != null) {
-				List<InventoryAttribute> attributes = getAttributes(article);
-				articles.put(article.getReferencePath(), new InventoryArticle(article, resource, attributes));
+			List<CatalogArticle> catalogArticles = catalog.getArticles(resource);
+			for (CatalogArticle catalogArticle : catalogArticles) {
+				List<InventoryAttribute> attributes = getAttributes(catalogArticle);
+				articles.put(catalogArticle.getPath(), new InventoryArticle(catalogArticle, resource, attributes));
 			}
 		}
 	}
@@ -81,17 +81,17 @@ public class Inventory implements Serializable{
 	}
 
 	public boolean hasArticle(CatalogArticle article) {
-		return articles.containsKey(article.getReferencePath());
+		return articles.containsKey(article.getPath());
 	}
 
 	public InventoryArticle getArticle(CatalogArticle article) {
-		return articles.get(article.getReferencePath());
+		return articles.get(article.getPath());
 	}
 
 	public void addArticle(CatalogArticle article) {
 		InventoryArticle iArticle = getArticle(article);
 		if (iArticle == null) {
-			articles.put(article.getReferencePath(), new InventoryArticle(article));
+			articles.put(article.getPath(), new InventoryArticle(article));
 		} else if (iArticle.getStatus() == STATUS.DELETED) {
 			iArticle.reset();
 		}
@@ -101,7 +101,7 @@ public class Inventory implements Serializable{
 		InventoryArticle iArticle = getArticle(article);
 		if (iArticle != null) {
 			if (iArticle.getStatus() == STATUS.NEW) {
-				articles.remove(article.getReferencePath());
+				articles.remove(article.getPath());
 			} else {
 				iArticle.setStatus(STATUS.DELETED);
 			}
@@ -119,6 +119,7 @@ public class Inventory implements Serializable{
 	}
 	
 	public Cart save() throws InstantiateDynamicObjectException, DynamicObjectException {
+		System.out.println(toString());
 		if (hasChanged()) {
 			Cart cart = person.getContext().getObjectFactory().getDynamicObject(Cart.class);
 			cart.initNew(Config.getProperty("nicki.carts.basedn"), Long.toString(new Date().getTime()));

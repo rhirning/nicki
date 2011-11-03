@@ -7,6 +7,7 @@ import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 
 public class TargetObjectFactory implements ObjectFactory {
 
@@ -45,7 +46,7 @@ public class TargetObjectFactory implements ObjectFactory {
 		throw new InstantiateDynamicObjectException("Could not getObject " + dn);
 	}
 
-	public <T extends DynamicObject> T getObject(ContextSearchResult rs, Class<T> classDefinition) throws InstantiateDynamicObjectException {
+	public <T extends DynamicObject> T getObject(ContextSearchResult rs, Class<T> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException {
 		T object =  _getObject(rs, classDefinition);
 		object.setContext(context);
 		return object;

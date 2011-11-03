@@ -35,7 +35,9 @@ public class ObjectsLoaderLdapQueryHandler extends ObjectLoaderLdapQueryHandler 
 		for (Iterator<ContextSearchResult> iterator = results.iterator(); iterator.hasNext();) {
 			if (getClassDefinition() != null) {
 				try {
-					list.add(getContext().getObjectFactory().getObject(iterator.next(), getClassDefinition()));
+					ContextSearchResult rs = iterator.next();
+					DynamicObject dynamicObject = getContext().getObjectFactory().getObject(rs, getClassDefinition());
+					list.add(dynamicObject);
 				} catch (InstantiateDynamicObjectException e) {
 					System.out.println(e.getMessage());
 				}

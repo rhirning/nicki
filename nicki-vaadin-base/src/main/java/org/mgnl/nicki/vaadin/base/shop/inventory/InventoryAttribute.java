@@ -31,6 +31,10 @@ public class InventoryAttribute implements Serializable{
 		this.value = value;
 	}
 	
+	public void setOldValue(String value) {
+		this.oldValue = value;
+	}
+	
 	
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

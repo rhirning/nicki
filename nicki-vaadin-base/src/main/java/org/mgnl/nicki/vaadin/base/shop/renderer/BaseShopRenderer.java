@@ -45,15 +45,11 @@ public class BaseShopRenderer {
 		}
 	}
 
-	protected Component getAttributeComponent(Person user, Person person, CatalogArticle article, CatalogArticleAttribute articleAttribute, boolean enabled, Object value) {
+	protected Component getAttributeComponent(CatalogArticle article, CatalogArticleAttribute articleAttribute, boolean enabled, Object value) {
 		try {
 			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
 			attributeComponent.setValue(value);
-			if (StringUtils.equalsIgnoreCase("dateFrom", articleAttribute.getName())) {
-				inventory.getArticle(article).setStart((Date) value);
-			} else {
-				inventory.getArticle(article).setValue(articleAttribute, value);
-			}
+			inventory.getArticle(article).setValue(articleAttribute, value);
 			attributeComponent.setEnabled(enabled);
 			return attributeComponent.getInstance(getInventory().getUser(), getInventory().getPerson(),
 					getInventory().getArticle(article), articleAttribute);
