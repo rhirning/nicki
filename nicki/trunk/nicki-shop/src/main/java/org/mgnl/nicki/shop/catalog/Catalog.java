@@ -1,7 +1,6 @@
 package org.mgnl.nicki.shop.catalog;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,13 +14,12 @@ import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
 import org.mgnl.nicki.ldap.context.AppContext;
 import org.mgnl.nicki.ldap.methods.LoadObjectsMethod;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 
 @SuppressWarnings("serial")
 public class Catalog extends DynamicTemplateObject {
 	public static final String PATH_SEPARATOR = "/";
-	private static final int renew = 1; // minutes
-	private static Catalog instance;
-	private static long nextInit = 0;
+	private static Catalog instance = null;
 	
 	private List<CatalogPage> pages = null;
 	private List<CatalogArticle> articles = null;
@@ -64,7 +62,7 @@ public class Catalog extends DynamicTemplateObject {
 		return getContext().loadChildObject(CatalogPage.class, this, key);
 	}
 
-	public List<CatalogArticle> getArticles() {
+	private List<CatalogArticle> getArticles() {
 		if (articles == null) {
 			articles = new ArrayList<CatalogArticle>();
 			for (Iterator<CatalogPage> iterator = getPages().iterator(); iterator
@@ -77,9 +75,8 @@ public class Catalog extends DynamicTemplateObject {
 	}
 	
 	public static synchronized Catalog getCatalog() {
-		if (nextInit == 0 || nextInit < new Date().getTime()) {
+		if (instance == null) {
 			load();
-			nextInit = new Date().getTime() + renew * 60 * 1000;
 		}
 		return instance;
 	}
@@ -109,55 +106,64 @@ public class Catalog extends DynamicTemplateObject {
 		}
 	}
 
-	public CatalogArticle getArticle(Role role) {
-		for (Iterator<CatalogArticle> iterator = getArticles().iterator(); iterator.hasNext();) {
+	public List<CatalogArticle> getArticles(Role role) {
+		List<CatalogArticle> catalogArticles = new ArrayList<CatalogArticle>();
+		for (Iterator<CatalogArticle> iterator = getAllArticles().iterator(); iterator.hasNext();) {
 			CatalogArticle article = iterator.next();
 			if (article.getArticleType() == CatalogArticle.TYPE.ROLE) {
 				if (StringUtils.equalsIgnoreCase(role.getPath(), article.getRolePath())) {
-					return article;
+					catalogArticles.add(article);
 				}
 			}
 		}
-		return null;
+		return catalogArticles;
 	}
 
-	public CatalogArticle getArticle(Resource resource) {
-		for (Iterator<CatalogArticle> iterator = getArticles().iterator(); iterator.hasNext();) {
+	public List<CatalogArticle> getArticles(Resource resource) {
+		List<CatalogArticle> catalogArticles = new ArrayList<CatalogArticle>();
+		for (Iterator<CatalogArticle> iterator = getAllArticles().iterator(); iterator.hasNext();) {
 			CatalogArticle article = iterator.next();
 			if (article.getArticleType() == CatalogArticle.TYPE.RESOURCE) {
 				if (StringUtils.equalsIgnoreCase(resource.getPath(), article.getName())) {
-					return article;
+					catalogArticles.add(article);
 				}
 			}
 		}
-		return null;
+		return catalogArticles;
 	}
 
 	public List<CatalogPage> getPages() {
 		if (pages == null) {
 			pages = getContext().loadChildObjects(CatalogPage.class, this.getPath(), null);
+			for (CatalogPage page : pages) {
+				try {
+					getContext().loadObject(page);
+				} catch (DynamicObjectException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 		return pages;
 	}
 	
 	public List<CatalogArticle> getAllArticles(Person person) {
-		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
-		for (Iterator<CatalogArticle> iterator = getArticles().iterator(); iterator.hasNext();) {
+		List<CatalogArticle> catalogArticles = new ArrayList<CatalogArticle>();
+		for (Iterator<CatalogArticle> iterator = getAllArticles().iterator(); iterator.hasNext();) {
 			CatalogArticle catalogArticle = iterator.next();
 			if (hasArticle(person, catalogArticle)) {
-				articles.add(catalogArticle);
+				catalogArticles.add(catalogArticle);
 			}
 		}
-		return articles;
+		return catalogArticles;
 	}
 
 	public List<CatalogArticle> getAllArticles() {
-		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
+		List<CatalogArticle> catalogArticles = new ArrayList<CatalogArticle>();
 		for (Iterator<CatalogArticle> iterator = getArticles().iterator(); iterator.hasNext();) {
 			CatalogArticle catalogArticle = iterator.next();
-			articles.add(catalogArticle);
+			catalogArticles.add(catalogArticle);
 		}
-		return articles;
+		return catalogArticles;
 	}
 
 

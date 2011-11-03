@@ -15,7 +15,6 @@ import org.mgnl.nicki.dynamic.objects.objects.Role;
 import org.mgnl.nicki.shop.catalog.CartEntry.ACTION;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
 import org.mgnl.nicki.shop.catalog.CatalogArticleAttribute;
-import org.mgnl.nicki.vaadin.base.data.DateHelper;
 import org.mgnl.nicki.vaadin.base.shop.attributes.AttributeComponentFactory;
 
 @SuppressWarnings("serial")
@@ -72,14 +71,19 @@ public class InventoryArticle implements Serializable{
 				this.attributes.put(attribute.getName(), attribute);
 			}
 		}
-		setStart(role.getStartTime());
-		setEnd(role.getEndTime());
+		setStart(role.getStartTime(), role.getStartTime());
+		setEnd(role.getEndTime(), role.getEndTime());
 		setStatus(STATUS.PROVISIONED);
 		originalStatus = STATUS.PROVISIONED;
 	}
 
 	public void setStart(Date start) {
 		setValue(attributes.get("dateFrom"), start);
+	}
+
+	public void setStart(Date start, Date oldValue) {
+		setValue(attributes.get("dateFrom"), start);
+		setOldValue(attributes.get("dateFrom"), start);
 	}
 
 	public void setStatus(STATUS status) {
@@ -139,6 +143,17 @@ public class InventoryArticle implements Serializable{
 		}
 	}
 
+	private void setOldValue(InventoryAttribute iAttribute, Object value) {
+		CatalogArticleAttribute attribute = iAttribute.getAttribute();
+		String stringValue = AttributeComponentFactory.getAttributeComponent(attribute.getType()).getStringValue(value);
+		if (iAttribute != null) {
+			if (getStatus() == STATUS.PROVISIONED && !StringUtils.equals(stringValue, iAttribute.getValue())) {
+				setStatus(STATUS.MODIFIED);
+			}
+			attributes.get(attribute.getName()).setOldValue(stringValue);
+		}
+	}
+
 	public boolean hasChanged() {
 		if (getStatus() == STATUS.NEW
 				|| getStatus() == STATUS.MODIFIED
@@ -166,10 +181,14 @@ public class InventoryArticle implements Serializable{
 	}
 
 	public void setEnd(Date end) {
-		if (end != null) {
-			setValue(attributes.get("dateTo"), end);
-			setStatus(STATUS.MODIFIED);
-		}
+		setValue(attributes.get("dateTo"), end);
+		setStatus(STATUS.MODIFIED);
+	}
+
+	public void setEnd(Date end, Date oldEnd) {
+		setValue(attributes.get("dateTo"), end);
+		setOldValue(attributes.get("dateTo"), end);
+		setStatus(STATUS.MODIFIED);
 	}
 
 	public Date getStart() {
@@ -178,6 +197,23 @@ public class InventoryArticle implements Serializable{
 			return (Date) stored;
 		}
 		if (stored instanceof String) {
+			try {
+				return DataHelper.dateFromString((String) stored);
+			} catch (ParseException e) {
+				System.out.println(stored);
+				e.printStackTrace();
+			}
+			System.out.println(stored);
+		}
+		return null;
+	}
+	
+	public Date getEnd() {
+		Object stored = getValue("dateTo");
+		if (stored instanceof Date) {
+			return (Date) stored;
+		}
+		if (stored instanceof String && StringUtils.isNotEmpty((String) stored)) {
 			try {
 				return DataHelper.dateFromString((String) stored);
 			} catch (ParseException e) {

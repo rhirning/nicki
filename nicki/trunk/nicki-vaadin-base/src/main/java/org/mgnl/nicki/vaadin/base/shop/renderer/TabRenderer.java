@@ -10,6 +10,8 @@ import org.mgnl.nicki.vaadin.base.shop.core.ShopPage;
 import org.mgnl.nicki.vaadin.base.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.vaadin.base.shop.core.ShopPage.TYPE;
 import org.mgnl.nicki.vaadin.base.shop.inventory.Inventory;
+import org.mgnl.nicki.vaadin.base.shop.inventory.InventoryArticle;
+import org.mgnl.nicki.vaadin.base.shop.inventory.InventoryArticle.STATUS;
 
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.AbstractOrderedLayout;
@@ -118,10 +120,16 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 	@Override
 	protected AbstractOrderedLayout getHorizontalArticleAttributes(
 			CatalogArticle article, boolean enabled) {
+		InventoryArticle inventoryArticle = getInventory().getArticle(article);
+		Date start = new Date();
+		Date end = null;
+		if (inventoryArticle != null && inventoryArticle.getStatus() != STATUS.NEW) {
+			start = inventoryArticle.getStart();
+			end = inventoryArticle.getEnd();
+		}
 		AbstractOrderedLayout layout = super.getHorizontalArticleAttributes(article, enabled);
-		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), enabled));
-		layout.addComponentAsFirst(getAttributeComponent(getInventory().getUser(), getInventory().getPerson(),
-				article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, new Date()));
+		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), enabled, end));
+		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, start));
 
 		return layout;
 	}
@@ -131,9 +139,15 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 			CatalogArticle article, boolean provisioned) {
 		AbstractOrderedLayout layout =  super.getVerticalArticleAttributes(article, provisioned);
 		boolean enabled = true;
-		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), enabled));
-		layout.addComponentAsFirst(getAttributeComponent(getInventory().getUser(), getInventory().getPerson(),
-				article, CatalogArticle.getFixedAttribute("dateFrom"), !provisioned, new Date()));
+		InventoryArticle inventoryArticle = getInventory().getArticle(article);
+		Date start = new Date();
+		Date end = null;
+		if (inventoryArticle != null && inventoryArticle.getStatus() != STATUS.NEW) {
+			start = inventoryArticle.getStart();
+			end = inventoryArticle.getEnd();
+		}
+		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), enabled, end));
+		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateFrom"), !provisioned, start));
 
 		return layout;
 	}

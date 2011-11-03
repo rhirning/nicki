@@ -105,14 +105,15 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 		InventoryArticle inventoryArticle = getInventory().getArticle(article);
 
 		Date start = new Date();
+		Date end = null;
 		boolean enabled = true;
 		if (inventoryArticle != null && inventoryArticle.getStatus() != STATUS.NEW) {
 			start = inventoryArticle.getStart();
+			end = inventoryArticle.getEnd();
 			enabled = false;
 		}
-		item.getItemProperty("dateFrom").setValue(getAttributeComponent(getInventory().getUser(), getInventory().getPerson(),
-				article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, start));
-		item.getItemProperty("dateTo").setValue(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), true));
+		item.getItemProperty("dateFrom").setValue(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, start));
+		item.getItemProperty("dateTo").setValue(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), true, end));
 		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article, enabled));
 //		showArticleAttributes(parent);
 	}
