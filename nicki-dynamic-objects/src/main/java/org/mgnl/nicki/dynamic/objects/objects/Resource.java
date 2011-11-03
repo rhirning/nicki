@@ -51,6 +51,10 @@ public class Resource extends DynamicStructObject {
 	public Date getStartTime() {
 		return getDateInfo("/assignment/start_tm");
 	}
+	
+	public Date getEndTime() {
+		return getDateInfo("/assignment/end_tm");
+	}
 
 	public Date getRequestTime() {
 		return getDateInfo("/assignment/req_tm");

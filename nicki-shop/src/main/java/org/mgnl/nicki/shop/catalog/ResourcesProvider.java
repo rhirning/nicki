@@ -27,7 +27,11 @@ public class ResourcesProvider implements Provider, Serializable {
 
 	@Override
 	public CatalogArticle getArticle(String key) {
-		return page.getContext().loadObject(CatalogArticle.class, key);
+		Resource resource = this.page.getContext().loadObject(Resource.class, key);
+		if (resource != null) {
+			return new ResourceArticle(resource, this.page);
+		}
+		return null;
 	}
 
 	@Override

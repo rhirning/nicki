@@ -36,6 +36,11 @@ public class RoleArticle extends CatalogArticle {
 	}
 
 	@Override
+	public String getPath() {
+		return role.getPath();
+	}
+
+	@Override
 	public String getName() {
 		return role.getPath();
 	}
