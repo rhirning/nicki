@@ -46,6 +46,9 @@ public class CatalogArticle extends DynamicTemplateObject {
 		dynAttribute = new DynamicAttribute("description", "nickiDescription", TextArea.class);
 		addAttribute(dynAttribute);
 		
+		dynAttribute = new DynamicAttribute("approval", "nickiApproval", String.class);
+		addAttribute(dynAttribute);
+		
 		dynAttribute = new DynamicAttribute("category", "nickiCategory", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
@@ -146,6 +149,10 @@ public class CatalogArticle extends DynamicTemplateObject {
 
 	public String getRolePath() {
 		return getAttribute("role");
+	}
+	
+	public String getApprovalPath() {
+		return getAttribute("approval");
 	}
 	
 	public String getResourcePath() {
