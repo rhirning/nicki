@@ -22,8 +22,8 @@
 }
 
 /* Höhe von Textfeldern */
-.v-theme-nicki .v-textfield {
-	height: 20px;
+.v-theme-nicki .v-textfield, .v-window .v-textfield {
+	height: 24px;
 }
 
 /* Font von Popupmenu */
@@ -32,7 +32,11 @@
 }
 
 /* Tabelle richtig formatieren */
-
 .v-theme-nicki .v-table div {
 	font-size: 10pt;
+}
+
+/** DropDown */
+.v-theme-nicki .v-filterselect div {
+	height: 24px;
 }
