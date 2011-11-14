@@ -1,5 +1,7 @@
 package org.mgnl.nicki.template.report;
 
+import java.io.FileOutputStream;
+
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.template.engine.TemplateEngine;
 
@@ -27,5 +29,12 @@ public class Report {
 		}
 		
 		TemplateEngine.getInstance().execute(userName, password, templateName, outputType, System.out);
+	}
+	
+	public static void toFile(String userName, String password, String templateName,
+			String outputType, String fileName) throws Exception {
+		FileOutputStream out = new FileOutputStream(fileName);
+		TemplateEngine.getInstance().execute(userName, DataHelper.getPassword(password), templateName, outputType, out);
+		
 	}
 }
