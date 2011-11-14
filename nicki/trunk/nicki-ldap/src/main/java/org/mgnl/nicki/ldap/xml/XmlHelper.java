@@ -1,29 +1,134 @@
 /*
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
+To change this template, choose Tools | Templates
+ * and open the template in the editor.
  */
 package org.mgnl.nicki.ldap.xml;
 
-import java.io.IOException;
-import java.io.Serializable;
-import java.io.StringReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 import org.apache.commons.lang.StringUtils;
-import org.jdom.Content;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.Parent;
-import org.jdom.input.SAXBuilder;
-import org.jdom.output.Format;
-import org.jdom.output.XMLOutputter;
-import org.jdom.xpath.XPath;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSSerializer;
+import org.xml.sax.SAXException;
 
 /**
  *
  * @author cna
  */
-@SuppressWarnings("serial")
+public class XmlHelper implements java.io.Serializable {
+
+	private static DocumentBuilder getDocBuilder() throws ParserConfigurationException {
+		
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		return dbf.newDocumentBuilder();
+	}
+
+	private static XPath getXpath() {
+		return XPathFactory.newInstance().newXPath();
+	}
+
+	public static Document getNewDocument() {
+		try {
+			return getDocBuilder().newDocument();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	public static <T extends Node> List<T> selectNodes(Class<T> clazz, Node ctx, String xpath) {
+		//TODO XPATH parsen und $ELEM_* && $ATTR_* ersetzen durch Konstanten
+		NodeList nodes;
+		List<T> list = new ArrayList<T>();
+
+		try {
+			XPathExpression expr = getXpath().compile(xpath);
+			nodes = (NodeList) expr.evaluate(ctx, XPathConstants.NODESET);
+		} catch (XPathExpressionException ex) {
+			System.err.println("corrupted xpath expression: " + xpath + " - " + ex.getMessage());
+			return null;
+		}
+
+		for (int i = 0; i < nodes.getLength(); i++) {
+			if (clazz.isInstance(nodes.item(i))) {
+				list.add((T) nodes.item(i));
+			}
+		}
+
+		return list;
+	}
+
+	public static <T extends Node> T selectNode(Class<T> clazz, Node ctx, String xpath) {
+		Object node = null;
+
+		try {
+			XPathExpression expr = getXpath().compile(xpath);
+			node = expr.evaluate(ctx, XPathConstants.NODE);
+		} catch (XPathExpressionException ex) {
+			System.err.println("corrupted xpath expression: " + xpath + " - " + ex.getMessage());
+		}
+
+		if (clazz.isInstance(node)) {
+			return (T) node;
+		} else {
+			return null;
+		}
+	}
+
+	public static Document getDocumentFromXml(String xml) throws SAXException {
+		if (null == xml) {
+			xml = "";
+		}
+
+		InputStream is = new ByteArrayInputStream(xml.getBytes());
+
+		Document document = null;
+		try {
+
+			document = getDocBuilder().parse(is);
+
+		} catch (Exception ex) {
+			System.err.println(ex.getMessage());
+		}
+
+		return document;
+
+	}
+
+	private static String getXml(Document doc, Node node) {
+		DOMImplementationLS impl = (DOMImplementationLS) doc.getImplementation();
+		LSSerializer serializer = impl.createLSSerializer();
+		String xml = serializer.writeToString(node);
+		return StringUtils.substringAfter(xml, "\n");
+	}
+
+	public String getXml(Node node) {
+		return getXml(node.getOwnerDocument(), node);
+	}
+
+	public static String getXml(Document doc) {
+		return getXml(doc, doc);
+	}
+}
+/**
+ *
+ * @author cna
+ */
+/** @SuppressWarnings("serial")
 public class XmlHelper implements Serializable{
 
     private static XmlHelper instance = null;
@@ -112,3 +217,4 @@ public class XmlHelper implements Serializable{
     }
 
 }
+**/
