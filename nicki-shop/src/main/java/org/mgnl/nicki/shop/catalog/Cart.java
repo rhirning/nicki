@@ -5,7 +5,7 @@
 package org.mgnl.nicki.shop.catalog;
 
 import java.text.ParseException;
-import org.jdom.JDOMException;
+
 import org.mgnl.nicki.dynamic.objects.components.ProcessResult;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
@@ -14,8 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.NotImplementedException;
-import org.jdom.Document;
-import org.jdom.Element;
+import org.w3c.dom.Document;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.ldap.context.NickiContext;
@@ -24,6 +23,8 @@ import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.xml.XmlHelper;
+import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
 /**
  *
@@ -46,9 +47,10 @@ public class Cart extends DynamicObject {
             return STATUS.valueOf(str.toUpperCase());
         }
     }
+	
+	private Document doc = null;
     private Catalog catalog = null;
     private HashMap<String, CartEntry> cartentries = new HashMap<String, CartEntry>();
-    private XmlHelper helper = XmlHelper.getInstance();
     private final String ELEM_ATTRIBUTE = "attribute";
     private final String ELEM_CARTENTRY = "entry";
     private final String ELEM_CART = "cart";
@@ -100,17 +102,17 @@ public class Cart extends DynamicObject {
         }
     }
 
-    public void fromXml(String xml) throws JDOMException {
+    public void fromXml(String xml) throws SAXException  {
 
-        Document doc = helper.getDocumentFromXml(xml);
+        Document doc = XmlHelper.getDocumentFromXml(xml);
 
-        Element cart = helper.selectNode(Element.class, doc, ELEM_CART);
-        catalog = getContext().loadObject(Catalog.class, cart.getAttributeValue(ATTR_CATALOG));
+        Element cart = XmlHelper.selectNode(Element.class, doc, ELEM_CART);
+        catalog = getContext().loadObject(Catalog.class, cart.getAttribute(ATTR_CATALOG));
         if (catalog == null) {
-            System.err.println("could not load catalog object - id is invalid: \"" + cart.getAttributeValue(ATTR_CATALOG) + "\"");
+            System.err.println("could not load catalog object - id is invalid: \"" + cart.getAttribute(ATTR_CATALOG) + "\"");
         }
 
-        List<Element> entries = helper.selectNodes(Element.class, cart, ELEM_CARTENTRY);
+        List<Element> entries = XmlHelper.selectNodes(Element.class, cart, ELEM_CARTENTRY);
         CartEntry entry;
 
         for (Element node : entries) {
@@ -125,20 +127,22 @@ public class Cart extends DynamicObject {
             throw new DynamicObjectException("catalog undefined");
         }
 
-        Document doc = helper.getNewDocument();
+        Document doc = XmlHelper.getNewDocument();
 
-        doc.setRootElement(new Element(ELEM_CART));
-        Element cart = doc.getRootElement();
+        Element cart = doc.createElement(ELEM_CART);
 
         cart.setAttribute(ATTR_CATALOG, catalog.getPath());
 
         for (String key : cartentries.keySet()) {
-            cart.addContent(getCartEntryNode(cartentries.get(key)));
+			
+            cart.appendChild(getCartEntryNode(doc, cartentries.get(key)));
         }
 
-        return helper.getXml(doc);
+        return XmlHelper.getXml(doc);
 
     }
+	
+	
 
     @Override
     public void create() throws DynamicObjectException {
@@ -232,19 +236,20 @@ public class Cart extends DynamicObject {
         }
 
         CartEntry entry = new CartEntry(
-                node.getAttributeValue(ATTR_ID),
-                CartEntry.ACTION.valueOf(node.getAttributeValue(ATTR_ACTION).toUpperCase()));
+                node.getAttribute(ATTR_ID),
+                CartEntry.ACTION.valueOf(node.getAttribute(ATTR_ACTION).toUpperCase()));
 
-        for (Element element : helper.selectNodes(Element.class, node, ELEM_ATTRIBUTE)) {
-            entry.addAttribute(element.getAttributeValue(ATTR_NAME), element.getText());
+        for (Element element : XmlHelper.selectNodes(Element.class, node, ELEM_ATTRIBUTE)) {
+            entry.addAttribute(element.getAttribute(ATTR_NAME), element.getTextContent());
         }
 
         return entry;
     }
 
-    private Element getCartEntryNode(CartEntry entry) {
-        Element cartentry = new Element(ELEM_CARTENTRY);
-
+    private Element getCartEntryNode(Document doc, CartEntry entry) {
+      
+		Element cartentry = doc.createElement(ELEM_CARTENTRY);
+		
         cartentry.setAttribute(ATTR_ID, entry.getId());
         cartentry.setAttribute(ATTR_ACTION, entry.getAction().toString().toLowerCase());
 
@@ -252,11 +257,11 @@ public class Cart extends DynamicObject {
         Element attr;
 
         for (String key : attributes.keySet()) {
-            attr = new Element(ELEM_ATTRIBUTE);
+            attr = doc.createElement(ELEM_ATTRIBUTE);
             attr.setAttribute(ATTR_NAME, key);
-            attr.setText(attributes.get(key));
+            attr.setTextContent(attributes.get(key));
 
-            cartentry.addContent(attr);
+            cartentry.appendChild(attr);
         }
 
         return cartentry;
