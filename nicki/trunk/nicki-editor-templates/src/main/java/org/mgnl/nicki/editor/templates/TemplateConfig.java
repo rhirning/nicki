@@ -51,6 +51,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	public void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject) {
 		this.editor = nickiEditor;
 		this.template = (Template) dynamicObject;
+		params = new HashMap<String, Object>();
 		buildEditor();
 		setCompositionRoot(mainLayout);
 		initI18n();
