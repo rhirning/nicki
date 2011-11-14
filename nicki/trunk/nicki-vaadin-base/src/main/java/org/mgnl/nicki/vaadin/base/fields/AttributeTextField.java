@@ -22,7 +22,7 @@ public class AttributeTextField  extends BaseDynamicAttributeField implements Dy
 
 		property = new AttributeDataContainer(dynamicObject, attributeName);
 		field = new TextField(getName(dynamicObject, attributeName));
-		field.setHeight(1.5f, Sizeable.UNITS_EM);
+		field.setHeight(2, Sizeable.UNITS_EM);
 		field.setWidth("400px");
 		field.setValue(property.getValue());
 		field.setImmediate(false);
