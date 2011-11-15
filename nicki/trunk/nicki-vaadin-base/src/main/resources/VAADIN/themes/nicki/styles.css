@@ -24,6 +24,7 @@
 /* Höhe von Textfeldern */
 .v-theme-nicki .v-textfield, .v-window .v-textfield {
 	height: 24px;
+	background: none;
 }
 
 /* Font von Popupmenu */
@@ -37,6 +38,15 @@
 }
 
 /** DropDown */
-.v-theme-nicki .v-filterselect div {
+.v-theme-nicki .v-filterselect div, .v-theme-nicki .v-fiterselect-input {
 	height: 24px;
+	background: none;
 }
+
+.v-theme-nicki .v-filterselect-suggestmenu .gwt-MenuItem {
+	font-size: 10pt;
+}
+
+.v-theme-nicki .v-table-caption-container {
+	font-size: 10pt;
+}	
