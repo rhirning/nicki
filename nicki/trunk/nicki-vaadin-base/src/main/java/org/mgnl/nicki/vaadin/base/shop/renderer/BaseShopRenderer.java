@@ -1,15 +1,10 @@
 package org.mgnl.nicki.vaadin.base.shop.renderer;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.smartcardio.ATR;
-
-import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.catalog.CatalogArticle;
 import org.mgnl.nicki.shop.catalog.CatalogArticleAttribute;
 import org.mgnl.nicki.vaadin.base.shop.attributes.AttributeComponent;

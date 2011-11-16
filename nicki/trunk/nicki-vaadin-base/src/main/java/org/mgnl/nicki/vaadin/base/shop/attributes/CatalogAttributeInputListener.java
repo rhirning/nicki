@@ -1,8 +1,5 @@
 package org.mgnl.nicki.vaadin.base.shop.attributes;
 
-import java.util.Date;
-
-import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.shop.catalog.CatalogArticleAttribute;
 import org.mgnl.nicki.vaadin.base.shop.inventory.InventoryArticle;
 
