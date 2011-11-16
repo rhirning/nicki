@@ -26,7 +26,7 @@
  <xsl:template match="td">
   <xsl:variable name="table" select="ancestor::table[1]" />
   <xsl:value-of select="$highcomma" />
-  <xsl:copy-of select="descendant::text()[ancestor::table[1] = $table]" />
+  <xsl:copy-of select=".//text()" />
   <xsl:value-of select="$highcomma" />
   <xsl:value-of select="$separator" />
  </xsl:template>
@@ -34,7 +34,7 @@
  <xsl:template match="td[last()]">
   <xsl:variable name="table" select="ancestor::table[1]" />
   <xsl:value-of select="$highcomma" />
-  <xsl:copy-of select="descendant::text()[ancestor::table[1] = $table]" />
+  <xsl:copy-of select=".//text()" />
   <xsl:value-of select="$highcomma" />
  </xsl:template>
  
