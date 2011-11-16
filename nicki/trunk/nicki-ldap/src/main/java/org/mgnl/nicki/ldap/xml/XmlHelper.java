@@ -121,7 +121,7 @@ public class XmlHelper implements java.io.Serializable {
 	}
 
 	public static String getXml(Document doc) {
-		return getXml(doc, doc);
+		return getXml(doc, doc.getDocumentElement());
 	}
 }
 /**

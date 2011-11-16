@@ -88,6 +88,9 @@ public class Cart extends DynamicObject {
 
         dynAttribute = new DynamicAttribute("status", "nickiStatus", String.class);
         addAttribute(dynAttribute);
+		
+		dynAttribute = new DynamicAttribute("source", "nickiSource", String.class);
+        addAttribute(dynAttribute);
     }
 
     @Override
@@ -137,6 +140,8 @@ public class Cart extends DynamicObject {
 			
             cart.appendChild(getCartEntryNode(doc, cartentries.get(key)));
         }
+		
+		doc.appendChild(cart);
 
         return XmlHelper.getXml(doc);
 
@@ -198,6 +203,14 @@ public class Cart extends DynamicObject {
 
     public STATUS getStatus() {
         return STATUS.fromString((String) get("status"));
+    }
+	
+	public void setSource(String source) {
+        put("status", source);
+    }
+
+    public String getSource() {
+        return (String) get("source");
     }
 
     public void addCartEntry(CartEntry entry) {
