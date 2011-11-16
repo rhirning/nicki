@@ -1,6 +1,5 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
-import java.text.ParseException;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
