@@ -10,9 +10,9 @@
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>org.mgnl.nicki</groupId>
-			<artifactId>nicki-core</artifactId>
-			<version>1.37-SNAPSHOT</version>
+			<groupId>javax.portlet</groupId>
+			<artifactId>portlet-api</artifactId>
+			<version>1.0</version>
 		</dependency>
 	</dependencies>
 </project>
