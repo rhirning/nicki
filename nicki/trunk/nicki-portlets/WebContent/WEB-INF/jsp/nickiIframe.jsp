@@ -1,9 +1,7 @@
 <%@ page import="javax.portlet.RenderRequest" %>
 <%@ page import="javax.portlet.PortletPreferences" %>
 <%@ page session="false" %>
-<%@ taglib uri="http://java.sun.com/portlet" prefix="portlet" %>
 <%
-
   RenderRequest pReq = (RenderRequest)request.getAttribute("javax.portlet.request");
   PortletPreferences pref = pReq.getPreferences();
   String frameborder = pref.getValue("frameborder", "1");
