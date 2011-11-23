@@ -26,6 +26,7 @@
 		<nicki-vaadin-base.version>1.2</nicki-vaadin-base.version>
 	</properties>
 	<modules>
+		<module>nicki-portlets</module>
 		<module>nicki-config-rhi</module>
 		<module>nicki-core</module>
 		<module>nicki-db</module>
