@@ -13,7 +13,7 @@ public class IframePortlet extends GenericPortlet {
 	@Override
 	protected void doView(RenderRequest request, RenderResponse response)
 			throws PortletException, IOException {
-		include(request, response, "/WEB-INF/jsp/view.jsp");
+		include(request, response, "/WEB-INF/jsp/nickiIframe.jsp");
 	}
 
 
