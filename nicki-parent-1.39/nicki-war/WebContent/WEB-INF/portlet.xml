@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<portlet-app xmlns="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1"
+	xsi:noNamespaceSchemaLocation="http://java.sun.com/xml/ns/portlet/portlet-app_1_0.xsd">
+	<portlet>
+		<description xml:lang="en">Script Portlet</description>
+		<description xml:lang="de">Script Portlet</description>
+		<portlet-name>ScriptPortlet</portlet-name>
+		<display-name xml:lang="en">Script Portlet</display-name>
+		<display-name xml:lang="de">Script Portlet</display-name>
+		<portlet-class>com.vaadin.terminal.gwt.server.ApplicationPortlet</portlet-class>
+		<init-param>
+			<name>application</name>
+			<value>scripts</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+		</supports>
+		<supported-locale>en</supported-locale>
+		<supported-locale>de</supported-locale>
+		<resource-bundle>i18n.vaadin-base.messages</resource-bundle>
+		<portlet-info>
+			<title>Script Portlet</title>
+			<short-title>Script Portlet</short-title>
+			<keywords>BeanShell</keywords>
+		</portlet-info>
+	</portlet>
+	<portlet>
+		<description xml:lang="en">BU GF Portlet</description>
+		<description xml:lang="de">BU GF Portlet</description>
+		<portlet-name>BUGFPortlet</portlet-name>
+		<display-name xml:lang="en">Bu GF Portlet</display-name>
+		<display-name xml:lang="de">BU GF Portlet</display-name>
+		<portlet-class>com.vaadin.terminal.gwt.server.ApplicationPortlet</portlet-class>
+		<init-param>
+			<name>application</name>
+			<value>bu</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+		</supports>
+		<supported-locale>en</supported-locale>
+		<supported-locale>de</supported-locale>
+		<resource-bundle>i18n.vaadin-base.messages</resource-bundle>
+		<portlet-info>
+			<title>BU GF Portlet</title>
+			<short-title>BU GF Portlet</short-title>
+			<keywords>BU GF</keywords>
+		</portlet-info>
+	</portlet>
+	<portlet>
+		<description xml:lang="en">Mailtemplates Portlet</description>
+		<description xml:lang="de">Mailtemplates Portlet</description>
+		<portlet-name>MailtemplatesPortlet</portlet-name>
+		<display-name xml:lang="en">Mailtemplates Portlet</display-name>
+		<display-name xml:lang="de">Mailtemplates Portlet</display-name>
+		<portlet-class>com.vaadin.terminal.gwt.server.ApplicationPortlet</portlet-class>
+		<init-param>
+			<name>application</name>
+			<value>mailtemplates</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+		</supports>
+		<supported-locale>en</supported-locale>
+		<supported-locale>de</supported-locale>
+		<resource-bundle>i18n.vaadin-base.messages</resource-bundle>
+		<portlet-info>
+			<title>Mailtemplates</title>
+			<short-title>Mailtemplates</short-title>
+			<keywords>Mailtemplates</keywords>
+		</portlet-info>
+	</portlet>
+	<portlet>
+		<description xml:lang="en">Projects Portlet</description>
+		<description xml:lang="de">Projects Portlet</description>
+		<portlet-name>ProjectsPortlet</portlet-name>
+		<display-name xml:lang="en">Projects Portlet</display-name>
+		<display-name xml:lang="de">Projects Portlet</display-name>
+		<portlet-class>com.vaadin.terminal.gwt.server.ApplicationPortlet</portlet-class>
+		<init-param>
+			<name>application</name>
+			<value>projects</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+		</supports>
+		<supported-locale>en</supported-locale>
+		<supported-locale>de</supported-locale>
+		<resource-bundle>i18n.vaadin-base.messages</resource-bundle>
+		<portlet-info>
+			<title>Projects</title>
+			<short-title>Projects</short-title>
+			<keywords>Projects</keywords>
+		</portlet-info>
+	</portlet>
+	<portlet>
+		<description xml:lang="en">Shops Portlet</description>
+		<description xml:lang="de">Shops Portlet</description>
+		<portlet-name>ShopsPortlet</portlet-name>
+		<display-name xml:lang="en">Shops Portlet</display-name>
+		<display-name xml:lang="de">Shops Portlet</display-name>
+		<portlet-class>com.vaadin.terminal.gwt.server.ApplicationPortlet</portlet-class>
+		<init-param>
+			<name>application</name>
+			<value>catalogs</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+		</supports>
+		<supported-locale>en</supported-locale>
+		<supported-locale>de</supported-locale>
+		<resource-bundle>i18n.vaadin-base.messages</resource-bundle>
+		<portlet-info>
+			<title>Shops</title>
+			<short-title>Shops</short-title>
+			<keywords>Shops</keywords>
+		</portlet-info>
+	</portlet>
+	<portlet>
+		<description xml:lang="en">Templates Portlet</description>
+		<description xml:lang="de">Templates Portlet</description>
+		<portlet-name>TemplatesPortlet</portlet-name>
+		<display-name xml:lang="en">Templates Portlet</display-name>
+		<display-name xml:lang="de">Templates Portlet</display-name>
+		<portlet-class>com.vaadin.terminal.gwt.server.ApplicationPortlet</portlet-class>
+		<init-param>
+			<name>application</name>
+			<value>templates</value>
+		</init-param>
+		<expiration-cache>0</expiration-cache>
+		<supports>
+			<mime-type>text/html</mime-type>
+		</supports>
+		<supported-locale>en</supported-locale>
+		<supported-locale>de</supported-locale>
+		<resource-bundle>i18n.vaadin-base.messages</resource-bundle>
+		<portlet-info>
+			<title>Templates</title>
+			<short-title>Templates</short-title>
+			<keywords>Templates</keywords>
+		</portlet-info>
+	</portlet>
+</portlet-app>
