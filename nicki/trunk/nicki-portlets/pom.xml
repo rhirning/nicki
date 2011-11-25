@@ -14,5 +14,10 @@
 			<artifactId>portlet-api</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.mgnl.nicki</groupId>
+			<artifactId>nicki-novell-userapp</artifactId>
+			<version>1.40-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>
