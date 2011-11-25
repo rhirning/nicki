@@ -119,6 +119,7 @@ public abstract class NickiApplication extends Application  implements HttpServl
 				}
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return null;
 	}
