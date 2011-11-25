@@ -113,7 +113,7 @@ public class XmlHelper implements java.io.Serializable {
 		DOMImplementationLS impl = (DOMImplementationLS) doc.getImplementation();
 		LSSerializer serializer = impl.createLSSerializer();
 		String xml = serializer.writeToString(node);
-		return StringUtils.substringAfter(xml, "\n");
+		return StringUtils.substringAfter(xml, ">");
 	}
 
 	public String getXml(Node node) {
