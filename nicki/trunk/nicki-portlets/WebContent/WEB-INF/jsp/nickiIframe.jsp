@@ -7,7 +7,7 @@
   String frameborder = pref.getValue("frameborder", "1");
   String height = pref.getValue("height", "400");
   String scrolling = pref.getValue("scrolling", "yes");
-  String url = pref.getValue("url", "");
+  String url = (String) pReq.getAttribute("nickiUrl");
   String width = pref.getValue("width", "100%");
 %>
 <iframe src="<%=url%>" 
