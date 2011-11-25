@@ -44,8 +44,8 @@ public class IframePortlet extends GenericPortlet {
 		  UserAppAdapter uaa = new UserAppAdapter();
 		  String user = uaa.getName(request);
 		  char passwd[] = uaa.getPassword(request);
-		  String args = "?nickiName=" + Base64.encodeBase64(user.getBytes()) + "&nickiPassword="
-				  + Base64.encodeBase64(new String(passwd).getBytes());
+		  String args = "?nickiName=" + new String(Base64.encodeBase64(user.getBytes())) + "&nickiPassword="
+				  + new String(Base64.encodeBase64(new String(passwd).getBytes()));
 		  return url + args;
 	}
 }
