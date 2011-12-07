@@ -95,13 +95,11 @@ public class CatalogPageViewer extends CustomComponent implements ClassEditor {
 			}
 		}
 		newCategoryButton.addListener(new Button.ClickListener() {
-			@Override
 			public void buttonClick(ClickEvent event) {
 				addEntry(categories);
 			}
 		});
 		deleteCategoryButton.addListener(new Button.ClickListener() {
-			@Override
 			public void buttonClick(ClickEvent event) {
 				deleteEntry(categories);
 			}
@@ -136,13 +134,11 @@ public class CatalogPageViewer extends CustomComponent implements ClassEditor {
 			}
 		}
 		newAttributeButton.addListener(new Button.ClickListener() {
-			@Override
 			public void buttonClick(ClickEvent event) {
 				addEntry(attributes);
 			}
 		});
 		deleteAttributeButton.addListener(new Button.ClickListener() {
-			@Override
 			public void buttonClick(ClickEvent event) {
 				deleteEntry(attributes);
 			}
