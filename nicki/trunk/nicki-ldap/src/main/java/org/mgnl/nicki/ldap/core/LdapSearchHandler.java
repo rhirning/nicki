@@ -98,7 +98,6 @@ public class LdapSearchHandler extends BasicLdapHandler implements QueryHandler 
 		return result;
 	}
 
-	@Override
 	public SearchControls getConstraints() {
 		SearchControls constraints = new SearchControls();
 		if (this.scope != NO_SCOPE) {

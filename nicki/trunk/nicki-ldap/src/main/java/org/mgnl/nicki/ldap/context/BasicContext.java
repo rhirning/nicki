@@ -99,7 +99,6 @@ public abstract class BasicContext implements NickiContext {
 		return new InitialDirContext(env);
 	}
 	
-	@Override
 	public DynamicObject login(String username, String password) {
 		DynamicObject user = loadObject(username);
 		if (user == null) {
@@ -118,7 +117,6 @@ public abstract class BasicContext implements NickiContext {
 		return null;
 	}
 
-	@Override
 	public void loadObject(DynamicObject dynamicObject) throws DynamicObjectException {
 		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler(dynamicObject);
 		search(handler);
@@ -259,7 +257,6 @@ public abstract class BasicContext implements NickiContext {
 		return target;
 	}
 
-	@Override
 	public void updateObject(DynamicObject dynamicObject) throws DynamicObjectException {
 		if (this.readonly == READONLY.TRUE) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
@@ -281,7 +278,6 @@ public abstract class BasicContext implements NickiContext {
 		}
 	}
 
-	@Override
 	public DynamicObject createObject(DynamicObject dynamicObject)
 			throws DynamicObjectException {
 		if (this.readonly == READONLY.TRUE) {
@@ -315,7 +311,6 @@ public abstract class BasicContext implements NickiContext {
 		}
 	}
 
-	@Override
 	public void deleteObject(DynamicObject dynamicObject)
 			throws DynamicObjectException {
 		if (this.readonly == READONLY.TRUE) {
@@ -339,7 +334,6 @@ public abstract class BasicContext implements NickiContext {
 		}
 	}
 
-	@Override
 	public DynamicObject moveObject(DynamicObject dynamicObject, String newPath)
 			throws DynamicObjectException {
 		if (this.readonly == READONLY.TRUE) {
@@ -366,7 +360,6 @@ public abstract class BasicContext implements NickiContext {
 		}
 	}
 
-	@Override
 	public DynamicObject renameObject(DynamicObject dynamicObject,
 			String newName) throws DynamicObjectException {
 		if (this.readonly == READONLY.TRUE) {
@@ -376,7 +369,6 @@ public abstract class BasicContext implements NickiContext {
 		return moveObject(dynamicObject, newPath);
 	}
 
-	@Override
 	public void search(QueryHandler queryHandler) throws DynamicObjectException {
 		DirContext ctx = null;
 		NamingEnumeration<SearchResult> results = null;
@@ -418,12 +410,10 @@ public abstract class BasicContext implements NickiContext {
 	}
 
 
-	@Override
 	public ObjectFactory getObjectFactory() {
 		return getTarget().getObjectFactory(this);
 	}
 
-	@Override
 	public NickiPrincipal getPrincipal() throws DynamicObjectException {
 		return this.principal;
 	}
@@ -432,12 +422,10 @@ public abstract class BasicContext implements NickiContext {
 		this.principal = principal;
 	}
 
-	@Override
 	public DynamicObject getUser() {
 		return user;
 	}
 
-	@Override
 	public void setUser(DynamicObject user) {
 		this.user = user;
 	}

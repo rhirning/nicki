@@ -58,7 +58,6 @@ public class ForeignKeyMethod implements Serializable,TemplateMethodModel {
 		this.classDefinition = classDefinition;
 	}
 
-	@Override
 	public DynamicObject exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (object == null) {
 			object = context.loadObject(this.classDefinition, this.foreignKey);

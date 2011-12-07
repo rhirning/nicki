@@ -66,12 +66,10 @@ public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements Qu
 	}
 
 
-	@Override
 	public String getBaseDN() {
 		return this.dn;
 	}
 
-	@Override
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
 		try {
 			if (results != null && results.size() > 0) {

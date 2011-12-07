@@ -44,12 +44,10 @@ public class JndiSearchResult implements ContextSearchResult {
 		this.rs = rs;
 	}
 
-	@Override
 	public String getNameInNamespace() {
 		return rs.getNameInNamespace();
 	}
 
-	@Override
 	public ContextAttributes getAttributes() {		
 		return new JndiAttributes(rs.getAttributes());
 	}

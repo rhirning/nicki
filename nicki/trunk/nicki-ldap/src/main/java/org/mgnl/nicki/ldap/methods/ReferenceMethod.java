@@ -59,7 +59,6 @@ public class ReferenceMethod implements TemplateMethodModel, Serializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (objects == null) {
 			LdapQuery query = new LdapQuery(path, reference);
