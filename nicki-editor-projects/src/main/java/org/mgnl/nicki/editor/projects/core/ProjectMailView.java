@@ -85,7 +85,6 @@ public class ProjectMailView extends CustomComponent implements ClassEditor {
 	public ProjectMailView() {
 	}
 
-	@Override
 	public void setDynamicObject(NickiTreeEditor nickiEditor,
 			DynamicObject dynamicObject) {
 		this.project = (Project) dynamicObject;
