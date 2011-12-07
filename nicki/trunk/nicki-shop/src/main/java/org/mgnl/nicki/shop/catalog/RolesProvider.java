@@ -43,7 +43,6 @@ import org.mgnl.nicki.dynamic.objects.objects.Role;
 @SuppressWarnings("serial")
 public class RolesProvider implements Provider, Serializable {
 	CatalogPage page = null;
-	@Override
 	public List<CatalogArticle> getArticles(CatalogPage catalogPage) {
 		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
 		List<Role> roles = catalogPage.getContext().loadObjects(Role.class,
@@ -57,7 +56,6 @@ public class RolesProvider implements Provider, Serializable {
 		return articles;
 	}
 
-	@Override
 	public CatalogArticle getArticle(String key) {
 		Role role = this.page.getContext().loadObject(Role.class, key);
 		if (role != null) {
@@ -66,7 +64,6 @@ public class RolesProvider implements Provider, Serializable {
 		return null;
 	}
 
-	@Override
 	public void init(CatalogPage catalogPage) {
 		this.page = catalogPage;
 	}
