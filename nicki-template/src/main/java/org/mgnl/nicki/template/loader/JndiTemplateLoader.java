@@ -75,7 +75,6 @@ public class JndiTemplateLoader implements TemplateLoader {
 		this.baseDN = baseDN;
 	}
 
-	@Override
 	public void closeTemplateSource(Object object) throws IOException {
 		TemplateDescriptor td = (TemplateDescriptor) object;
 		if (this.templates.containsKey(td.getName())) {
@@ -86,7 +85,6 @@ public class JndiTemplateLoader implements TemplateLoader {
 	/**
 	 * path does not start with a /
 	 */
-	@Override
 	public TemplateDescriptor findTemplateSource(String path) throws IOException {
 		// analyze path
 		// strip appendix
@@ -162,12 +160,10 @@ public class JndiTemplateLoader implements TemplateLoader {
 		return NAME_ATTRIBUTE + "=" + templateName + sb.toString() + "," + baseDN;
 	}
 
-	@Override
 	public long getLastModified(Object td) {
 		return new Date().getTime();
 	}
 
-	@Override
 	public Reader getReader(Object templateDescriptor, String encoding) throws IOException {
 		if (templateDescriptor instanceof TemplateDescriptor) {
 			TemplateDescriptor td = (TemplateDescriptor) templateDescriptor;

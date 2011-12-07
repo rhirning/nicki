@@ -58,22 +58,18 @@ public class BasicTemplateHandler implements TemplateHandler{
 	public BasicTemplateHandler() {
 	}
 
-	@Override
 	public void setTemplate(Template template) {
 		this.template = template;
 	}
 
-	@Override
 	public void setUser(Person person) {
 		this.person = person;
 	}
 
-	@Override
 	public void setContext(NickiContext context) {
 		this.context = context;
 	}
 
-	@Override
 	public Map<String, Object> getDataModel() {
 		Map<String, Object> dataModel = new HashMap<String, Object>();
 		Function function = null;

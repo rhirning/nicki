@@ -65,12 +65,10 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 	}
 
 
-	@Override
 	public String getBaseDN() {
 		return this.dn;
 	}
 
-	@Override
 	public void handle(List<ContextSearchResult> results) {
 		try {
 			template = new Template(this.name);
