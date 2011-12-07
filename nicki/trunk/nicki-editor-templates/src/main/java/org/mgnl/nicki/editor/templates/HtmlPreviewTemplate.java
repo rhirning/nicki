@@ -74,7 +74,6 @@ public class HtmlPreviewTemplate extends BaseTreeAction {
 		this.parentWindow.removeWindow(previewWindow);
 	}
 
-	@Override
 	public void execute(Window parentWindow, DynamicObject dynamicObject) {
 		this.parentWindow = parentWindow;
 		Template template = (Template) dynamicObject;

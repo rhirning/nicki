@@ -47,13 +47,11 @@ public class BasicGuiTemplateHandler extends BasicTemplateHandler implements
 		super();
 	}
 
-	@Override
 	public Component getConfigDialog(Template template,
 			Map<String, Object> params, TemplateConfig templateConfig) {
 		return new ConfiguredTemplateConfigDialog(template, params, templateConfig);
 	}
 
-	@Override
 	public boolean isComplete(Map<String, Object> params) {
 		java.util.List<TemplateParameter> list = getTemplateParameters();
 		if (list != null) {
