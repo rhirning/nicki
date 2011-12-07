@@ -43,7 +43,6 @@ public class JndiAttributes implements ContextAttributes {
 		this.attributes = attributes;
 	}
 
-	@Override
 	public ContextAttribute get(String attributeName) {
 		return new JndiContextAttribute(attributes.get(attributeName));
 	}

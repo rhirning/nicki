@@ -48,7 +48,6 @@ public class JndiContextAttribute implements ContextAttribute {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Override
 	public Enumeration<Object> getAll() throws DynamicObjectException {
 		try {
 			if (this.attribute != null) {
@@ -59,13 +58,11 @@ public class JndiContextAttribute implements ContextAttribute {
 		}
 		return new Enumeration<Object>() {
 			
-			@Override
 			public String nextElement() {
 				// TODO Auto-generated method stub
 				return null;
 			}
 			
-			@Override
 			public boolean hasMoreElements() {
 				// TODO Auto-generated method stub
 				return false;
@@ -73,7 +70,6 @@ public class JndiContextAttribute implements ContextAttribute {
 		};
 	}
 
-	@Override
 	public Object get() throws DynamicObjectException {
 		try {
 			return this.attribute.get();

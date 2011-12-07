@@ -68,7 +68,6 @@ public abstract class NickiLoginModule implements LoginModule {
 
 	public abstract boolean login() throws LoginException;
 
-	@Override
 	public void initialize(Subject subject, CallbackHandler callbackHandler,
 			Map<String, ?> sharedState, Map<String, ?> options) {
 
@@ -82,8 +81,6 @@ public abstract class NickiLoginModule implements LoginModule {
 		debug = "true".equalsIgnoreCase((String) options.get("debug"));
 	}
 
-
-	@Override
 	public boolean commit() throws LoginException {
 		if (succeeded == false) {
 			return false;
@@ -109,7 +106,6 @@ public abstract class NickiLoginModule implements LoginModule {
 		}
 	}
 
-	@Override
 	public boolean abort() throws LoginException {
 		if (succeeded == false) {
 			return false;
@@ -126,7 +122,6 @@ public abstract class NickiLoginModule implements LoginModule {
 		return true;
 	}
 
-	@Override
 	public boolean logout() throws LoginException {
 		subject.getPrincipals().remove(userPrincipal);
 		succeeded = false;
