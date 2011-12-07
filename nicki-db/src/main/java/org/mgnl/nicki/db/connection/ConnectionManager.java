@@ -74,7 +74,6 @@ public class ConnectionManager implements ConfigListener{
     	return instance;
     }
     
-	@Override
 	public void configChanged() {
     	this.dataSources.clear();
     	this.pools.clear();
