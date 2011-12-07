@@ -48,7 +48,6 @@ public class StringStreamSource extends BasicTemplateStreamSource implements Str
 		super(template, context, params);
 	}
 
-	@Override
 	public InputStream getStream() {
 		return getStringStream();
 	}
