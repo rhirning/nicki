@@ -67,7 +67,6 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 	public DynamicObjectViewer() {
 	}
 
-	@Override
 	public void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject) {
 		this.dynamicObject = dynamicObject;
 		this.create = false;
@@ -79,7 +78,6 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 		this.listener = listener;
 	}
 	
-	@Override
 	public void init(DynamicObject parent, Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException {
 		this.parent = parent;
 		this.dynamicObject = parent.getContext().getObjectFactory().getNewDynamicObject(classDefinition, parent.getPath(), "");

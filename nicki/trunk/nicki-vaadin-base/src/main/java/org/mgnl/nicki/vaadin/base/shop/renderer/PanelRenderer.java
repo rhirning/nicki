@@ -47,7 +47,6 @@ import com.vaadin.ui.Panel;
 @SuppressWarnings("serial")
 public class PanelRenderer extends BaseShopRenderer implements ShopRenderer{
 
-	@Override
 	public Component render(ShopViewerComponent shopViewerComponent, Inventory inventory) {
 		setInventory(inventory);
 		// collect all articles

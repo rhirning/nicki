@@ -71,7 +71,6 @@ public class OrgValueProvider extends BasicValueProvider implements ValueProvide
 	public OrgValueProvider() {
 	}
 
-	@Override
 	public Component getValueList() {
 		layout = new HorizontalLayout();
 		layout.setSpacing(true);
@@ -114,7 +113,6 @@ public class OrgValueProvider extends BasicValueProvider implements ValueProvide
 		}
 	}
 	
-	@Override
 	public String getPersonQuery(CatalogArticle article, String value) {
 		value = StringUtils.stripEnd(value, "/");
 		if (getType(value) == TYPE.ALL) {
@@ -143,7 +141,6 @@ public class OrgValueProvider extends BasicValueProvider implements ValueProvide
 		}
 	}
 
-	@Override
 	public String getArticleQuery(Person person, Object value) {
 		StringBuffer sb = new StringBuffer();
 		LdapHelper.addQuery(sb, "nickiRule=" + getSelector().getName() + "=*", LOGIC.OR);

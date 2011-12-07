@@ -51,7 +51,6 @@ public class SelectComponent extends BasicAttributeComponent implements Attribut
 		field.setImmediate(true);
 		setField(field);
 	}
-	@Override
 	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
 		setAttribute(attribute);

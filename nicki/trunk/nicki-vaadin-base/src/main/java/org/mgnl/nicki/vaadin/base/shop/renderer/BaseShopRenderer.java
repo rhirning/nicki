@@ -113,7 +113,6 @@ public class BaseShopRenderer {
 		layout.addComponent(checkBox);
 		checkBox.addListener(new Button.ClickListener() {
 			
-			@Override
 			public void buttonClick(ClickEvent event) {
 				  boolean enabled = event.getButton().booleanValue();
 				  HorizontalLayout parent = (HorizontalLayout) event.getButton().getParent();

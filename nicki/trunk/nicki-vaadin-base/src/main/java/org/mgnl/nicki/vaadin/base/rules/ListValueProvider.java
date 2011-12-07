@@ -51,7 +51,6 @@ public class ListValueProvider extends BasicValueProvider implements ValueProvid
 	public ListValueProvider() {
 	}
 
-	@Override
 	public AbstractSelect getValueList() {
 		
 		value = new ListSelect();
@@ -72,12 +71,10 @@ public class ListValueProvider extends BasicValueProvider implements ValueProvid
 		return (String)value.getValue();
 	}
 
-	@Override
 	public String getPersonQuery(CatalogArticle article, String value) {
 		return getLdapName(article, getSelector().getName()) + "=" + value;
 	}
 
-	@Override
 	public String getArticleQuery(Person person, Object value) {
 		StringBuffer sb2 = new StringBuffer();
 		LdapHelper.addQuery(sb2, "nickiRule=" + getSelector().getName() + "=*", LOGIC.OR);

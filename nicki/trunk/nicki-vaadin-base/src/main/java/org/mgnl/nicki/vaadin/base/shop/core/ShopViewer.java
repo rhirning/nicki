@@ -115,12 +115,10 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 			Button selectPerson = new Button(I18n.getText("nicki.editor.generic.button.selectPerson"));
 			selectPerson.addListener(new Button.ClickListener() {
 				
-				@Override
 				public void buttonClick(ClickEvent event) {
 					boolean useActiveInactive = true;
 					personSelector.init(user.getContext(), useActiveInactive, new SelectPersonCommand() {
 						
-						@Override
 						public void setSelectedPerson(Person selectedPerson) {
 							person = selectedPerson;
 							inventory = new Inventory(user, person);
@@ -200,24 +198,20 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	}
 
 
-	@Override
 	public ShopViewerComponent getShopViewerComponent() {
 		return this;
 	}
 
 
-	@Override
 	public List<ShopPage> getPageList() {
 		return this.shop.getPageList();
 	}
 
 
-	@Override
 	public List<CatalogArticle> getArticles() {
 		return shop.getArticles();
 	}
 
-	@Override
 	public List<CatalogArticle> getAllArticles() {
 		return shop.getAllArticles();
 	}

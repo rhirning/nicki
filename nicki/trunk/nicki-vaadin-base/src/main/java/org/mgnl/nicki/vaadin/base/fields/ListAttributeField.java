@@ -82,7 +82,6 @@ public class ListAttributeField extends BaseDynamicAttributeField implements Dyn
 		container.addComponent(dataLayout);
 	}
 
-	@Override
 	public ComponentContainer getComponent(boolean readOnly) {
 		container.setReadOnly(readOnly);
 		return container;

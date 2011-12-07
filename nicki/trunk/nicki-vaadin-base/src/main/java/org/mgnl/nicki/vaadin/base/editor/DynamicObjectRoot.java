@@ -49,22 +49,18 @@ public class DynamicObjectRoot implements DataProvider, Serializable {
 		this.entryFilter = entryFilter;
 	}
 
-	@Override
 	public List<DynamicObject> getChildren(NickiContext context) {
 		return context.loadChildObjects(baseDn, "objectClass=*");
 	}
 
-	@Override
 	public DynamicObject getRoot(NickiContext context) {
 		return context.loadObject(baseDn);
 	}
 
-	@Override
 	public String getMessage() {
 		return "";
 	}
 
-	@Override
 	public EntryFilter getEntryFilter() {
 		return this.entryFilter;
 	}

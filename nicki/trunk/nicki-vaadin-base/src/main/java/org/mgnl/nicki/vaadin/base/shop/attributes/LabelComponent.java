@@ -49,7 +49,6 @@ public class LabelComponent extends BasicAttributeComponent implements Attribute
 		label = new Label();
 	}
 
-	@Override
 	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
 		setAttribute(attribute);
@@ -76,7 +75,7 @@ public class LabelComponent extends BasicAttributeComponent implements Attribute
 	}
 
 	@Override
-	public Object getvalue() {
+	public Object getValue() {
 		return null;
 	}
 	@Override

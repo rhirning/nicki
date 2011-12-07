@@ -75,7 +75,6 @@ public class WelcomeDialog extends CustomComponent {
 		logout.setCaption(I18n.getText("nicki.application.logout"));
 		logout.addListener(new Button.ClickListener() {
 			
-			@Override
 			public void buttonClick(ClickEvent event) {
 				application.logout();
 			}

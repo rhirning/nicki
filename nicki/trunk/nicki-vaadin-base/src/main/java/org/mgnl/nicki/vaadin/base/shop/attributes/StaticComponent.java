@@ -50,7 +50,6 @@ public class StaticComponent extends BasicAttributeComponent implements Attribut
 		field.setWidth("200px");
 		field.setEnabled(false);
 	}
-	@Override
 	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
 		setAttribute(attribute);

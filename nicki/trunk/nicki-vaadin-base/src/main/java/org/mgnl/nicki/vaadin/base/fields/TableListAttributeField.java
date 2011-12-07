@@ -79,13 +79,11 @@ public class TableListAttributeField extends BaseDynamicAttributeField implement
 			addItem(value);
 		}
 		newEntryButton.addListener(new Button.ClickListener() {
-			@Override
 			public void buttonClick(ClickEvent event) {
 				addEntry(entries);
 			}
 		});
 		deleteEntryButton.addListener(new Button.ClickListener() {
-			@Override
 			public void buttonClick(ClickEvent event) {
 				deleteEntry(entries);
 			}
@@ -134,7 +132,6 @@ public class TableListAttributeField extends BaseDynamicAttributeField implement
 	}
 
 	
-	@Override
 	public ComponentContainer getComponent(boolean readOnly) {
 		mainLayout.setReadOnly(readOnly);
 		return mainLayout;

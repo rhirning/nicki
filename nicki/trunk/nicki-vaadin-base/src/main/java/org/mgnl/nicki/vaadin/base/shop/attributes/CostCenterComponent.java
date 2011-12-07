@@ -48,7 +48,6 @@ public class CostCenterComponent extends BasicAttributeComponent implements Attr
 		field.setImmediate(true);
 		setField(field);
 	}
-	@Override
 	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
 		setAttribute(attribute);

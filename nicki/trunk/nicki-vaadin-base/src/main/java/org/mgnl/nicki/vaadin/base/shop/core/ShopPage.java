@@ -248,17 +248,14 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 		return articles;
 	}
 
-	@Override
 	public ShopViewerComponent getShopViewerComponent() {
 		return this;
 	}
 
-	@Override
 	public List<ShopPage> getPageList() {
 		return pageList;
 	}
 
-	@Override
 	public List<CatalogArticle> getArticles() {
 		return articleList;
 	}

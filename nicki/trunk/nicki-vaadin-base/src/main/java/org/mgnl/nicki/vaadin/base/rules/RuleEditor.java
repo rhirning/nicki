@@ -84,7 +84,6 @@ public class RuleEditor extends CustomComponent {
 		initSelector();
 		addButton.addListener(new Button.ClickListener() {
 			
-			@Override
 			public void buttonClick(ClickEvent event) {
 				if (getValue() != null) {
 					ruleHandler.setRule((Selector) selector.getValue(), getValue());
@@ -109,7 +108,6 @@ public class RuleEditor extends CustomComponent {
 	private void initSelector() {
 		selector.addListener(new Property.ValueChangeListener() {
 			
-			@Override
 			public void valueChange(ValueChangeEvent event) {
 				initValues((Selector)event.getProperty().getValue());
 			}

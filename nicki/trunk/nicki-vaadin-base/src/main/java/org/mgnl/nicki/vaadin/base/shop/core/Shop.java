@@ -126,7 +126,6 @@ public class Shop implements ShopViewerComponent, Serializable {
 		return articles;
 	}
 
-	@Override
 	public ShopViewerComponent getShopViewerComponent() {
 		return this;
 	}

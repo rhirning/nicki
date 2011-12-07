@@ -47,7 +47,6 @@ import com.vaadin.ui.PopupDateField;
 @SuppressWarnings("serial")
 public class DateComponent extends BasicAttributeComponent implements AttributeComponent {
 
-	@Override
 	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
 		setAttribute(attribute);

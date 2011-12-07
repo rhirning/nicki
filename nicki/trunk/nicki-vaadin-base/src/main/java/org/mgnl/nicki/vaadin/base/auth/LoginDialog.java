@@ -80,7 +80,6 @@ public class LoginDialog extends CustomComponent {
 
 		buttonLogin.addListener(new Button.ClickListener() {
 			
-			@Override
 			public void buttonClick(ClickEvent event) {
 				count++;
 				if (count > MAX_COUNT) {
