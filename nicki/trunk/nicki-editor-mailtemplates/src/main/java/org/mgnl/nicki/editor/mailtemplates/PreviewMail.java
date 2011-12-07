@@ -104,7 +104,6 @@ public class PreviewMail extends BaseTreeAction {
 		this.parentWindow.removeWindow(previewWindow);
 	}
 
-	@Override
 	public void execute(Window parentWindow, DynamicObject dynamicObject) {
 		this.parentWindow = parentWindow;
 		String parentPath = Config.getProperty("nicki.mailtemplates.basedn");
