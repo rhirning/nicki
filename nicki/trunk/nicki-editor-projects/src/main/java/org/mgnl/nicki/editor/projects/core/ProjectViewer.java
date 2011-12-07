@@ -71,7 +71,6 @@ public class ProjectViewer extends CustomComponent implements ClassEditor {
 		tabSheet.addTab(mailView, I18n.getText("nicki.editor.projects.tab.mail.title"), Icon.EMAIL.getResource());
 	}
 	
-	@Override
 	public void setDynamicObject(NickiTreeEditor nickiEditor,
 			DynamicObject dynamicObject) {
 		this.project = (Project) dynamicObject;

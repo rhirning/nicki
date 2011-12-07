@@ -85,7 +85,6 @@ public class ProjectDataView extends CustomComponent implements ClassEditor {
 	public ProjectDataView() {
 	}
 
-	@Override
 	public void setDynamicObject(NickiTreeEditor nickiEditor,
 			DynamicObject dynamicObject) {
 		this.project = (Project) dynamicObject;
