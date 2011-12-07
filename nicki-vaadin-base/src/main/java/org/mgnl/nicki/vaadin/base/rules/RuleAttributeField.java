@@ -86,20 +86,17 @@ public class RuleAttributeField extends BaseDynamicAttributeField implements Dyn
 			addItem(value);
 		}
 		newEntryButton.addListener(new Button.ClickListener() {
-			@Override
 			public void buttonClick(ClickEvent event) {
 				addEntry(entries);
 			}
 		});
 		deleteEntryButton.addListener(new Button.ClickListener() {
-			@Override
 			public void buttonClick(ClickEvent event) {
 				deleteEntry(entries);
 			}
 		});
 		testButton.addListener(new Button.ClickListener() {
 			
-			@Override
 			public void buttonClick(ClickEvent event) {
 				showTest();
 			}
@@ -173,7 +170,6 @@ public class RuleAttributeField extends BaseDynamicAttributeField implements Dyn
 	}
 
 	
-	@Override
 	public ComponentContainer getComponent(boolean readOnly) {
 		mainLayout.setReadOnly(readOnly);
 		return mainLayout;

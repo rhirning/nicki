@@ -44,12 +44,10 @@ public class TableSelector extends BasicNickiSelector {
 		super.setComponent(component);
 	}
 
-	@Override
 	public void setSelectable(boolean selectable) {
 		component.setSelectable(selectable);
 	}
 
-	@Override
 	public void addActionHandler(Handler handler) {
 		component.addActionHandler(handler);
 	}

@@ -57,7 +57,7 @@ import com.vaadin.ui.Button.ClickEvent;
 public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 
 	private ShopViewerComponent shopViewerComponent;
-	@Override
+
 	public Component render(ShopViewerComponent shopViewerComponent, Inventory inventory) {
 		this.shopViewerComponent = shopViewerComponent;
 		setInventory(inventory);
@@ -121,7 +121,6 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 
 		checkBox.addListener(new Button.ClickListener() {
 			
-			@Override
 			public void buttonClick(ClickEvent event) {
 				  boolean checked = event.getButton().booleanValue();
 				  AbsoluteLayout parent = (AbsoluteLayout) event.getButton().getParent();

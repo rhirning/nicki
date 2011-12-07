@@ -37,7 +37,6 @@ import org.mgnl.nicki.ldap.context.AppContext;
 
 public class DevSSOAdapter implements SSOAdapter {
 
-	@Override
 	public String getName(Object request) {
 		 try {
 			return AppContext.getSystemContext().getPrincipal().getName();
@@ -46,7 +45,6 @@ public class DevSSOAdapter implements SSOAdapter {
 		}
 	}
 
-	@Override
 	public char[] getPassword(Object request) {
 		 try {
 				return AppContext.getSystemContext().getPrincipal().getPassword().toCharArray();

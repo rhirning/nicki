@@ -52,7 +52,6 @@ public class FreeSelectComponent extends BasicAttributeComponent implements Attr
 		field.setImmediate(true);
 		setField(field);
 	}
-	@Override
 	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
 		setAttribute(attribute);
@@ -73,7 +72,6 @@ public class FreeSelectComponent extends BasicAttributeComponent implements Attr
 		
 		return getField();
 	}
-	@Override
 	public void addNewItem(String newItemCaption) {
         if (!field.containsId(newItemCaption)) {
             field.addItem(newItemCaption);

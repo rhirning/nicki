@@ -56,7 +56,6 @@ public class TestDataValueChangeListener implements ValueChangeListener {
 		this.separator = separator;
 	}
 
-	@Override
 	public void valueChange(ValueChangeEvent event) {
 		dataContainer.setValue(collectValues(testData));
 	}

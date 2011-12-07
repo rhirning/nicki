@@ -65,13 +65,11 @@ public abstract class BasicAttributeComponent implements AttributeComponent, Ser
 
 
 	
-	@Override
 	public void setValue(Object value) {
 		field.setValue(value);
 	}
 
-	@Override
-	public Object getvalue() {
+	public Object getValue() {
 		return field.getValue();
 	}
 
@@ -84,12 +82,10 @@ public abstract class BasicAttributeComponent implements AttributeComponent, Ser
 		return field;
 	}
 	
-	@Override
 	public void setCaption(String caption) {
 		field.setCaption(caption);
 	}
 	
-	@Override
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 		this.field.setEnabled(enabled);
@@ -115,7 +111,6 @@ public abstract class BasicAttributeComponent implements AttributeComponent, Ser
 		return attribute;
 	}
 	
-	@Override
 	public String getStringValue(Object value) {
 		return (String) value;
 	}

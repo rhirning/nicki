@@ -46,7 +46,6 @@ public class DeleteCommand implements Command {
 		this.target = target;
 	}
 
-	@Override
 	public void execute() throws CommandException {
 		DynamicObject parent = this.nickiEditor.getParent(this.target);
 		try {
@@ -61,27 +60,22 @@ public class DeleteCommand implements Command {
 		}
 	}
 
-	@Override
 	public String getTitle() {
 		return I18n.getText("nicki.editor.delete.title");
 	}
 
-	@Override
 	public String getHeadline() {
 		return I18n.getText("nicki.editor.delete.headline", target.getDisplayName());
 	}
 
-	@Override
 	public String getCancelCaption() {
 		return I18n.getText("nicki.editor.delete.cancel");
 	}
 
-	@Override
 	public String getConfirmCaption() {
 		return I18n.getText("nicki.editor.delete.confirm");
 	}
 
-	@Override
 	public String getErrorText() {
 		return I18n.getText("nicki.editor.delete.error");
 	}

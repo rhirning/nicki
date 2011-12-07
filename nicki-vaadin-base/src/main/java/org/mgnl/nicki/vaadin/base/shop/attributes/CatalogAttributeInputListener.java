@@ -49,7 +49,6 @@ public class CatalogAttributeInputListener implements ValueChangeListener {
 		this.attribute = attribute;
 	}
 
-	@Override
 	public void valueChange(ValueChangeEvent event) {
 		Object value = event.getProperty().getValue();
 		try {

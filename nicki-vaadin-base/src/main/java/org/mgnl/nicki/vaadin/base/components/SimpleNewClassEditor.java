@@ -46,7 +46,6 @@ public class SimpleNewClassEditor extends EnterNameDialog implements NewClassEdi
 		this.treeEditor = nickiEditor;
 	}
 
-	@Override
 	public void init(DynamicObject parent, Class<? extends DynamicObject> classDefinition) {
 		setHandler( new NewObjectEnterNameHandler(treeEditor, parent, classDefinition));
 	}

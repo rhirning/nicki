@@ -41,7 +41,7 @@ import com.vaadin.ui.Component;
 public interface AttributeComponent {
 
 	void setValue(Object value);
-	Object getvalue();
+	Object getValue();
 	void setCaption(String caption);
 	void setEnabled(boolean enabled);
 	boolean isEnabled();

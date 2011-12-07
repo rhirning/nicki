@@ -58,7 +58,6 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 	
 	private Table table;
 
-	@Override
 	public Component render(ShopViewerComponent shopViewerComponent, Inventory inventory) {
 		setInventory(inventory);
 		// collect all articles
@@ -97,7 +96,6 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 
 			checkBox.addListener(new Button.ClickListener() {
 				
-				@Override
 				public void buttonClick(ClickEvent event) {
 					  CatalogArticle article = (CatalogArticle) event.getButton().getData();
 					  Item item = table.getItem(article);
