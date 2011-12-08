@@ -115,4 +115,12 @@ public class BasicTemplateHandler implements TemplateHandler{
 		return list;
 	}
 
+	public Person getPerson() {
+		return person;
+	}
+
+	public Template getTemplate() {
+		return template;
+	}
+
 }
