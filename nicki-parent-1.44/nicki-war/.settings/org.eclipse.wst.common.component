@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="nicki-war">
+        <wb-resource deploy-path="/WEB-INF/web.xml" source-path="/WebContent/WEB-INF/web.xml"/>
+        <wb-resource deploy-path="/" source-path="/target/m2e-wtp/web-resources"/>
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="nicki-config-rhi-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-config-rhi/nicki-config-rhi">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-editor-scripts-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-editor-scripts/nicki-editor-scripts">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-editor-mailtemplates-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-editor-mailtemplates/nicki-editor-mailtemplates">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-mailtemplate-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-mailtemplate/nicki-mailtemplate">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-editor-projects-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-editor-projects/nicki-editor-projects">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-editor-shops-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-editor-shops/nicki-editor-shops">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-shop-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-shop/nicki-shop">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-editor-templates-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-editor-templates/nicki-editor-templates">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-template-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-template/nicki-template">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-novell-userapp-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-novell-userapp/nicki-novell-userapp">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-ldap-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-ldap/nicki-ldap">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-core-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-core/nicki-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-vaadin-base-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-vaadin-base/nicki-vaadin-base">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-dynamic-objects-1.44-SNAPSHOT.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-dynamic-objects/nicki-dynamic-objects">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="nicki.war"/>
+        <property name="java-output-path" value="/nicki-war/target/classes"/>
+    </wb-module>
+</project-modules>
