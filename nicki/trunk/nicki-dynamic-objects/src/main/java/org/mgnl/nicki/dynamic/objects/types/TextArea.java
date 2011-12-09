@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2011 deron Consulting GmbH
+ * This file Copyright (c) 2003-2011 Dr. Ralf Hirning
  * Author: Dr. Ralf Hirning
  * All rights reserved.
  *
