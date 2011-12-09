@@ -19,16 +19,10 @@
         <dependent-module archiveName="nicki-config-rhi.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-config-rhi/nicki-config-rhi">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="nicki-novell-userapp.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-novell-userapp/nicki-novell-userapp">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="nicki-dynamic-objects-ad.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-dynamic-objects-ad/nicki-dynamic-objects-ad">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="efg-dynamic-objects.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/efg-dynamic-objects/efg-dynamic-objects">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="nicki-shop.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-shop/nicki-shop">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="context-root" value="scripts"/>
