@@ -19,7 +19,6 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.mgnl.nicki.core.helper.XMLHelper;
-import org.mgnl.nicki.dynamic.objects.objects.Function;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.ldap.context.NickiContext;
@@ -49,6 +48,7 @@ public class BasicTemplateHandler implements TemplateHandler{
 
 	public Map<String, Object> getDataModel() {
 		Map<String, Object> dataModel = new HashMap<String, Object>();
+		/*
 		Function function = null;
 		try {
 			function = new Function(context);
@@ -58,6 +58,7 @@ public class BasicTemplateHandler implements TemplateHandler{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		*/
 		dataModel.put("person", person);
 		if (params != null) {
 			dataModel.put("params", params);
