@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.dynamic.objects.objects.Function;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.context.Target;
 import org.mgnl.nicki.ldap.context.TargetFactory;
@@ -54,19 +53,8 @@ public class TestData {
 	}
 
 	public Map<String, Object> getData(NickiContext context) {
-		
-
 		// Create the root hash
 		Map<String, Object> root = new HashMap<String, Object>();
-		Function function = null;
-		try {
-			function = new Function(context);
-			function.setContext(context);
-			function.initDataModel();
-			root.put("function", function);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		return root;
 	}
 	
@@ -78,15 +66,6 @@ public class TestData {
 	
 	public Map<String, Object> getDataModel(NickiContext context) {
 		Map<String, Object> dataModel = new HashMap<String, Object>();
-		Function function = null;
-		try {
-			function = new Function(context);
-			function.setContext(context);
-			function.initDataModel();
-			dataModel.put("function", function);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		@SuppressWarnings("unchecked")
 		List<String> testData = (List<String>) dynamicObject.get("testData");
 		if (testData != null) {
