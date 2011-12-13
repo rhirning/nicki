@@ -19,7 +19,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Script Editor</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/nickiScripts/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Script Editor</servlet-name>
