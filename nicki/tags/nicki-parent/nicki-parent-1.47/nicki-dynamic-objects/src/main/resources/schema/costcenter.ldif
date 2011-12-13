@@ -1,0 +1,132 @@
+version: 1
+
+#NDS attribute:CN
+#Syntax:SYN_CI_STRING
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: (
+  2.5.4.3
+  NAME ( 'cn' 'commonName' )
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{64}
+  X-NDS_NAME 'CN'
+  X-NDS_LOWER_BOUND '1'
+  X-NDS_NONREMOVABLE '1'
+  )
+
+#NDS attribute:costCenter
+#Syntax:SYN_CI_STRING
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: (
+  2.16.840.1.113719.1.8.4.14
+  NAME 'costCenter'
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.15
+  )
+
+#NDS attribute:nickiOwner
+#Syntax:SYN_DIST_NAME
+dn: cn=schema
+changetype: modify
+add: attributeTypes
+attributeTypes: (
+  nickiowner-oid
+  NAME 'nickiOwner'
+  SYNTAX 1.3.6.1.4.1.1466.115.121.1.12
+  SINGLE-VALUE
+  X-NDS_NOT_SCHED_SYNC_IMMEDIATE '1'
+  )
+
+#NDS class:nickiCostCenter
+dn: cn=schema
+changetype: modify
+add: objectClasses
+objectClasses: (
+  nickicostcenter-oid
+  NAME 'nickiCostCenter'
+  STRUCTURAL
+  SUP ( Top )
+  X-NDS_CONTAINMENT 'organizationalUnit'
+  X-NDS_NAMING 'cn'
+  MUST ( cn $ costCenter )
+  MAY ( nickiOwner )
+  X-NDS_NOT_CONTAINER '1'
+  )
+
+#NDS class:Template
+#Class included for association of the following optional attribute(s) only.
+#Verify and correct any differences from live system before using.
+# Attribute:costCenter
+dn: cn=schema
+changetype: modify
+add: objectClasses
+objectClasses: (
+  2.16.840.1.113719.1.64.6.1.1
+  NAME 'Template'
+  STRUCTURAL
+  SUP ( Top )
+  X-NDS_CONTAINMENT ( 'Organization' 'organizationalUnit' )
+  MAY ( accountBalance $ allowUnlimitedCredit $ assistant $ assistantPhone $ city $ co $ company $ 
+   costCenter $ costCenterDescription $ departmentNumber $ description $ eMailAddress $ employeeType $ 
+   facsimileTelephoneNumber $ groupMembership $ higherPrivileges $ ndsHomeDirectory $ homeDirectoryRights $ 
+   l $ Language $ loginAllowedTimeMap $ loginDisabled $ loginExpirationTime $ loginGraceLimit $ 
+   loginMaximumSimultaneous $ loginScript $ mailboxID $ mailboxLocation $ mailstop $ manager $ 
+   managerWorkforceID $ member $ membersOfTemplate $ messageServer $ minimumAccountBalance $ networkAddressRestriction $ 
+   newObject'sDSRights $ newObject'sFSRights $ newObject'sSelfRights $ ou $ passwordAllowChange $ 
+   passwordExpirationInterval $ passwordExpirationTime $ passwordMinimumLength $ passwordRequired $ 
+   passwordUniqueRequired $ physicalDeliveryOfficeName $ postalAddress $ postalCode $ postOfficeBox $ 
+   Profile $ runSetupScript $ st $ street $ securityEquals $ securityFlags $ seeAlso $ setPasswordAfterCreate $ 
+   setupScript $ siteLocation $ telephoneNumber $ title $ tollFreePhoneNumber $ trusteesOfNewObject $ 
+   volumeSpaceRestrictions )
+  X-NDS_NOT_CONTAINER '1'
+  )
+
+#NDS class:sapAddOnUM
+#Class included for association of the following optional attribute(s) only.
+#Verify and correct any differences from live system before using.
+# Attribute:costCenter
+dn: cn=schema
+changetype: modify
+add: objectClasses
+objectClasses: (
+  1.3.6.1.4.1.694.2.2.6
+  NAME 'sapAddOnUM'
+  AUXILIARY
+  MUST ( sn )
+  MAY ( birthName $ buildingName $ commType $ costCenter $ DirXML-sapLocProfiles $ DirXML-sapLocRoles $ 
+   DirXML-sapLocUClass $ DirXML-sapUClass $ facsimileTelephoneNumber $ firstPrefix $ floor $ givenName $ 
+   inHouseMail $ initials $ initialsSig $ mail $ middleName $ nickName $ employeeNumber $ ou $ 
+   personalTitle $ roomNumber $ salutation $ sapAlias $ sapCATT $ sapClass $ sapCompanyKey $ sapDateFormat $ 
+   sapDecimalFormat $ sapGroups $ sapLanguage $ sapLoginLanguage $ sapParameters $ sapPrintParam1 $ 
+   sapPrintParam2 $ sapPrintParam3 $ sapProfiles $ sapRefUser $ sapRoles $ sapSncGuiFlag $ sapSncName $ 
+   sapSpool $ sapStartMenu $ sapTimeZone $ sapUsername $ sapUserType $ sapValidFrom $ sapValidTo $ 
+   secondName $ secondPrefix $ telephoneNumber $ title $ titleAcademic1 $ titleAcademic2 )
+  X-NDS_NOT_CONTAINER '1'
+  )
+
+#NDS class:Person
+#Class included for association of the following optional attribute(s) only.
+#Verify and correct any differences from live system before using.
+# Attribute:costCenter
+dn: cn=schema
+changetype: modify
+add: objectClasses
+objectClasses: (
+  2.5.6.6
+  NAME 'Person'
+  STRUCTURAL
+  SUP ( ndsLoginProperties )
+  X-NDS_CONTAINMENT ( 'domain' 'Organization' 'organizationalUnit' )
+  X-NDS_NAMING 'uid'
+  MUST ( sn )
+  MAY ( accessCardNumber $ assistant $ assistantPhone $ city $ co $ company $ costCenter $ 
+   costCenterDescription $ departmentNumber $ description $ directReports $ employeeStatus $ employeeType $ 
+   fullName $ generationQualifier $ givenName $ initials $ instantMessagingID $ isManager $ jackNumber $ 
+   jobCode $ mailstop $ manager $ managerWorkforceID $ mobile $ otherPhoneNumber $ pager $ personalTitle $ 
+   photo $ preferredName $ roomNumber $ st $ seeAlso $ siteLocation $ telephoneNumber $ tollFreePhoneNumber $ 
+   uid $ vehicleInformation $ workforceID )
+  X-NDS_NOT_CONTAINER '1'
+  X-NDS_NONREMOVABLE '1'
+  )
+
