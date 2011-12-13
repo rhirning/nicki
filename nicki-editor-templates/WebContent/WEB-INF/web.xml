@@ -19,7 +19,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>Template Editor</servlet-name>
-		<url-pattern>/*</url-pattern>
+		<url-pattern>/nickiTemplates/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Template Editor</servlet-name>
