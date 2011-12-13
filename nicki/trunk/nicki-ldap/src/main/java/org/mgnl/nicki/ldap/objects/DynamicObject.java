@@ -21,6 +21,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.ldap.context.NickiContext;
+import org.mgnl.nicki.ldap.context.NickiContext.READONLY;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.methods.StructuredData;
@@ -430,6 +431,13 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	
 	public String toString() {
 		return getDisplayName();
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends DynamicObject> T getWritable(T dynamicObject) {
+		NickiContext ctx = dynamicObject.getContext();
+		ctx.setReadonly(READONLY.FALSE);
+		return (T) ctx.loadObject(dynamicObject.getClass(), dynamicObject.getPath());
 	}
 
 
