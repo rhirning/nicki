@@ -406,5 +406,13 @@ public abstract class BasicContext implements NickiContext {
 	public void setUser(DynamicObject user) {
 		this.user = user;
 	}
+
+	public READONLY getReadonly() {
+		return readonly;
+	}
+
+	public void setReadonly(READONLY readonly) {
+		this.readonly = readonly;
+	}
 	
 }
