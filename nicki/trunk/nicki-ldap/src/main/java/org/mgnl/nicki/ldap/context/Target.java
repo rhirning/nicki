@@ -62,7 +62,7 @@ public class Target implements Serializable {
 
 	public DynamicObject login(NickiPrincipal principal) {
 		try {
-			return new SystemContext(this, null, READONLY.TRUE).login(principal.getName(), principal.getPassword());
+			return new SystemContext(this, null, READONLY.FALSE).login(principal.getName(), principal.getPassword());
 		} catch (InvalidPrincipalException e) {
 			return null;
 		}
