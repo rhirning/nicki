@@ -29,6 +29,6 @@
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/nicki-reports/build/classes"/>
-        <property name="context-root" value="reports"/>
+        <property name="context-root" value="nickiReports"/>
     </wb-module>
 </project-modules>
