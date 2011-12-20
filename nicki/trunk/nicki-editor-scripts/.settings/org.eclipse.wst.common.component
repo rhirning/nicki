@@ -25,7 +25,7 @@
         <dependent-module archiveName="efg-dynamic-objects.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/efg-dynamic-objects/efg-dynamic-objects">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <property name="context-root" value="scripts"/>
         <property name="java-output-path" value="/nicki.editor-scripts/build/classes"/>
+        <property name="context-root" value="nickiScripts"/>
     </wb-module>
 </project-modules>
