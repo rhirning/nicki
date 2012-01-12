@@ -11,6 +11,8 @@
 		<project>nicki-config-rhi</project>
 		<project>efg-dynamic-objects</project>
 		<project>nicki-dynamic-objects-ad</project>
+		<project>deron-shop</project>
+		<project>deron-dynamic-objects</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
