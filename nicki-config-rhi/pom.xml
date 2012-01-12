@@ -9,4 +9,16 @@
 		<groupId>org.mgnl.nicki</groupId>
 		<relativePath>..</relativePath>
 	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>de.deron</groupId>
+			<artifactId>deron-dynamic-objects</artifactId>
+			<version>1.17-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>de.deron.projects.efg</groupId>
+			<version>1.20-SNAPSHOT</version>
+			<artifactId>efg-dynamic-objects</artifactId>
+		</dependency>
+	</dependencies>
 </project>
