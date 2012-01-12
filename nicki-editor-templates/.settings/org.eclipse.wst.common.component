@@ -28,6 +28,12 @@
         <dependent-module archiveName="nicki-dynamic-objects-ad.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-dynamic-objects-ad/nicki-dynamic-objects-ad">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="deron-shop.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/deron-shop/deron-shop">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="deron-dynamic-objects.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/deron-dynamic-objects/deron-dynamic-objects">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/nicki-editor-templates/build/classes"/>
         <property name="context-root" value="nickiTemplates"/>
     </wb-module>
