@@ -24,51 +24,57 @@ import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 @SuppressWarnings("serial")
 public class Template extends DynamicTemplateObject {
 
+	public static final String ATTRIBUTE_DATA = "data";
+	public static final String ATTRIBUTE_PARAMS = "params";
+	public static final String ATTRIBUTE_HANDLER = "handler";
+	public static final String ATTRIBUTE_PARTS = "parts";
+	public static final String ATTRIBUTE_FILTER = "filter";
+	public static final String ATTRIBUTE_TESTDATA = "testData";
 	public void initDataModel() {
 		addObjectClass("nickiTemplate");
 		addObjectClass("organizationalUnit");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "ou", String.class);
+		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_NAME, "ou", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("data", "nickiTemplateData", String.class);
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_DATA, "nickiTemplateData", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute("params", "nickiTemplateParams", String.class);
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_PARAMS, "nickiTemplateParams", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute("handler", "nickiHandler", String.class);
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_HANDLER, "nickiHandler", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute("parts", "nickiTemplatePart", String.class);
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_PARTS, "nickiTemplatePart", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("filter", "nickiFilter", String.class);
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_FILTER, "nickiFilter", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("testData", "nickiStructuredRef", String.class);
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_TESTDATA, "nickiStructuredRef", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		
 	};
 	
 	public String getData() {
-		return getAttribute("data");
+		return getAttribute(ATTRIBUTE_DATA);
 	}
 
 	public void setData(String data) {
-		this.put("data", data);
+		this.put(ATTRIBUTE_DATA, data);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<String> getParts() {
-		return (List<String>) get("parts");
+		return (List<String>) get(ATTRIBUTE_PARTS);
 	}
 	
 	public String getHandler() {
-		return getAttribute("handler");
+		return getAttribute(ATTRIBUTE_HANDLER);
 	}
 	
 	public boolean hasHandler() {
@@ -80,7 +86,7 @@ public class Template extends DynamicTemplateObject {
 			return true;
 		}
 		@SuppressWarnings("unchecked")
-		List<String> filterList = (List<String>) get("filter");
+		List<String> filterList = (List<String>) get(ATTRIBUTE_FILTER);
 		if (filterList != null && filterList.contains(filter)) {
 			return true;
 		}

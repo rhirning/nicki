@@ -21,23 +21,26 @@ import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
 
 public class Group extends DynamicTemplateObject {
+	public static final String ATTRIBUTE_DESCRIPTION = "description";
+	public static final String ATTRIBUTE_MEMBER = "member";
+	public static final String ATTRIBUTE_OWNER = "owner";
 
 	private static final long serialVersionUID = 6170300879001415636L;
 	public void initDataModel() {
 		addObjectClass("groupOfNames");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
+		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_NAME, "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("description", "description", String.class);
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_DESCRIPTION, "description", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("member", "member", String.class);
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_MEMBER, "member", String.class);
 		dynAttribute.setForeignKey(Person.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("owner", "owner", String.class);
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_OWNER, "owner", String.class);
 		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
 
