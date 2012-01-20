@@ -23,32 +23,38 @@ import org.mgnl.nicki.ldap.objects.DynamicReference;
 
 @SuppressWarnings("serial")
 public class Person extends DynamicTemplateObject {
+	public static final String ATTRIBUTE_SURNAME = "surname";
+	public static final String ATTRIBUTE_GIVENNAME = "givenname";
+	public static final String ATTRIBUTE_FULLNAME = "fullname";
+	public static final String ATTRIBUTE_LANGUAGE = "language";
+	public static final String ATTRIBUTE_MEMBEROF = "memberOf";
+
 	public void initDataModel() {
 		addObjectClass("Person");
 		addAdditionalObjectClass("nickiUserAux");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn",
+		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_NAME, "cn",
 				String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("surname", "sn", String.class);
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_SURNAME, "sn", String.class);
 		dynAttribute.setMandatory();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("givenname", "givenName",
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_GIVENNAME, "givenName",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("fullname", "fullName",
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_FULLNAME, "fullName",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("language", "Language",
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_LANGUAGE, "Language",
 				String.class);
 		addAttribute(dynAttribute);
 
 		
-		dynAttribute = new DynamicReference(Group.class, "memberOf", Config.getProperty("nicki.data.basedn"), 
+		dynAttribute = new DynamicReference(Group.class, ATTRIBUTE_MEMBEROF, Config.getProperty("nicki.data.basedn"), 
 				"member", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
@@ -58,11 +64,11 @@ public class Person extends DynamicTemplateObject {
 	@Override
 	public String getDisplayName() {
 		StringBuffer sb = new StringBuffer();
-		sb.append(StringUtils.trimToEmpty(getAttribute("givenname")));
+		sb.append(StringUtils.trimToEmpty(getAttribute(ATTRIBUTE_GIVENNAME)));
 		if (sb.length() > 0) {
 			sb.append(" ");
 		}
-		sb.append(StringUtils.trimToEmpty(getAttribute("surname")));
+		sb.append(StringUtils.trimToEmpty(getAttribute(ATTRIBUTE_SURNAME)));
 		sb.append(" (");
 		sb.append(getName());
 		sb.append(")");
@@ -71,19 +77,19 @@ public class Person extends DynamicTemplateObject {
 
 
 	public String getFullname() {
-		return getAttribute("fullname");
+		return getAttribute(ATTRIBUTE_FULLNAME);
 	}
 
 	public void setName(String value) {
-		put("surname", value);
+		put(ATTRIBUTE_SURNAME, value);
 	}
 
 	public void setGivenName(String value) {
-		put("givenname", value);
+		put(ATTRIBUTE_GIVENNAME, value);
 	}
 
 	public void setLanguage(String value) {
-		put("language", value);
+		put(ATTRIBUTE_LANGUAGE, value);
 	}
 
 

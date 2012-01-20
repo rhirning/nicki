@@ -20,23 +20,25 @@ import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
 @SuppressWarnings("serial")
 public class Script extends DynamicTemplateObject {
+	public static final String ATTRIBUTE_DATA = "data";
+
 
 	public void initDataModel() {
 		addObjectClass("nickiScript");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
+		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_NAME, "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("data", "nickiScriptData", String.class);
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_DATA, "nickiScriptData", String.class);
 		addAttribute(dynAttribute);
 	};
 	
 	public String getData() {
-		return getAttribute("data");
+		return getAttribute(ATTRIBUTE_DATA);
 	}
 
 	public void setData(String data) {
-		this.put("data", data);
+		this.put(ATTRIBUTE_DATA, data);
 	}
 
 

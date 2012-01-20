@@ -23,16 +23,17 @@ import org.mgnl.nicki.ldap.objects.DynamicObject;
 
 @SuppressWarnings("serial")
 public class Org extends DynamicObject implements Serializable {
+	public static final String ATTRIBUTE_CHILD = "child";
 
 	@Override
 	public void initDataModel() {
 		addObjectClass("organizationalUnit");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "ou", String.class);
+		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_NAME, "ou", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
 		// TODO
-		addChild("child", "objectClass=*");
+		addChild(ATTRIBUTE_CHILD, "objectClass=*");
 	}
 
 }
