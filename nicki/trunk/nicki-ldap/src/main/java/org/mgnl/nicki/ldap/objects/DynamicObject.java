@@ -35,6 +35,7 @@ import org.mgnl.nicki.ldap.methods.StructuredData;
 
 @SuppressWarnings("serial")
 public abstract class DynamicObject implements Serializable, Cloneable {
+	public static final String ATTRIBUTE_NAME = "name";
 	public static final String SEPARATOR = "/";
 
 	public enum STATUS {
@@ -382,7 +383,7 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	};
 	
 	public String getDisplayName() {
-		return getAttribute("name");
+		return getAttribute(ATTRIBUTE_NAME);
 	}
 
 	@Override
