@@ -51,7 +51,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
 				<configuration>
-					<tagBase>https://svn.nicki-tools.de/nicki/tags/${project.artifactId}</tagBase>
+					<tagBase>https://svn.nicki-tools.de/nicki/nicki/tags/${project.artifactId}</tagBase>
 					<autoversionsubmodules>true</autoversionsubmodules>
 				</configuration>
 			</plugin>
@@ -79,9 +79,9 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:svn:https://svn.nicki-tools.de/nicki/trunk</connection>
-		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/trunk</developerConnection>
-		<url>https://svn.nicki-tools.de/nicki/tags/nicki</url>
+		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</connection>
+		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</developerConnection>
+		<url>https://svn.nicki-tools.de/nicki/nicki/tags/nicki</url>
 	</scm>
 	<repositories>
 		<repository>
