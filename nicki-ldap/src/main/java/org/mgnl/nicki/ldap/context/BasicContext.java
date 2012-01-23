@@ -176,6 +176,13 @@ public abstract class BasicContext implements NickiContext {
 		}
 		return null;
 	}
+	
+	
+
+	public <T extends DynamicObject> T loadObjectAs(Class<T> classDefinition,
+			DynamicObject dynamicObject) {
+		return loadObject(classDefinition, dynamicObject.getPath());
+	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadObjects(Class<T> classDefinition, String baseDn, String filter) {
