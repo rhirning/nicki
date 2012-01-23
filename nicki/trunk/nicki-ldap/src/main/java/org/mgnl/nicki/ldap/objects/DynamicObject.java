@@ -464,5 +464,9 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		return (T) ctx.loadObject(dynamicObject.getClass(), dynamicObject.getPath());
 	}
 
+	public <T extends DynamicObject> T getAs(Class<T> classDefinition,
+			DynamicObject dynamicObject) {
+		return getContext().loadObjectAs(classDefinition, this);
+	}
 
 }
