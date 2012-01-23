@@ -108,5 +108,9 @@ public class Person extends DynamicTemplateObject {
 		put(ATTRIBUTE_LANGUAGE, value);
 	}
 
+	public String getLanguage() {
+		return (String) get(ATTRIBUTE_LANGUAGE);
+	}
+
 
 }
