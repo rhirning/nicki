@@ -6,14 +6,14 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>1.54-SNAPSHOT</version>
+		<version>1.54</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-templates</artifactId>
-			<version>1.54-SNAPSHOT</version>
+			<version>1.54</version>
 		</dependency>
 	</dependencies>
 </project>
