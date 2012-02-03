@@ -54,14 +54,15 @@ public class XMLBuilder {
 	String path;
 	NickiContext context;
 
-	public XMLBuilder(NickiContext context, String path)  {
+	public XMLBuilder(NickiContext context, String path, boolean selfOnly)  {
 		this.context = context;
 		this.path = path;
 		DynamicObject root = context.loadObject(path);
 		Element rootNode = getElement(root);
 		document = new Document(rootNode);
-		DynamicObject parent = context.loadObject(path);
-		addChildren(rootNode, parent);
+		if (!selfOnly) {
+			addChildren(rootNode, root);
+		}
 	}
 
 	private void addChildren(Element parentNode, DynamicObject parent) {
