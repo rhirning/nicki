@@ -53,6 +53,10 @@ public class TemplateHelper {
 		return dataModel;
 	}
 
+	public static Map<String, Object> getDataModel(String xmlDataModel) {
+		return getDataModel(DataModelDescription.fromXml(xmlDataModel));
+	}
+	
 	/**
 	 *
 	 * @param xmlDataModel 
@@ -65,16 +69,14 @@ public class TemplateHelper {
 	 *	</datamodel>
 	 * @return dataModel
 	 */
-	public static Map<String, Object> getDataModel(String xmlDataModel) throws InvalidPrincipalException {
+	public static Map<String, Object> getDataModel(DataModelDescription dataModelDescr) {
 		Map<String, Object> dataModel = new HashMap<String, Object>();
 
-		DataModelDescription model = DataModelDescription.fromXml(xmlDataModel);
-
-		for (DMEntry entry : model.getEntries()) {
+		for (DMEntry entry : dataModelDescr.getEntries()) {
 			dataModel.put(entry.name, entry.value);
 		}
 
-		for (DMFunction function : model.getFunctions()) {
+		for (DMFunction function : dataModelDescr.getFunctions()) {
 			try {
 				Object f = Class.forName((String) function.clazz).newInstance();
 
@@ -101,7 +103,7 @@ public class TemplateHelper {
 		NickiContext actualContext = null;
 		DynamicObject obj = null;
 
-		for (DMObject object : model.getObjects()) {
+		for (DMObject object : dataModelDescr.getObjects()) {
 			try {
 				if (StringUtils.isNotBlank(object.target)) {
 					actualContext = AppContext.getSystemContext(object.target);
