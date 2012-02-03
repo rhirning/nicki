@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.helper.NameValue;
 import org.mgnl.nicki.ldap.xml.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -42,13 +43,13 @@ public class DataModelDescription {
 	public DataModelDescription() {
 	}
 
-	public void addFunction(String name, String clazz, List<String[]> param) {
+	public void addFunction(String name, String clazz, List<NameValue> param) {
 		DMFunction f = new DMFunction();
 		f.name = name;
 		f.clazz = clazz;
 
-		for (String[] p : param) {
-			f.addParam(p[0], p[1]);
+		for (NameValue p : param) {
+			f.addParam(p.getName(), p.getValue());
 		}
 
 
@@ -106,7 +107,7 @@ public class DataModelDescription {
 			description.addEntry(node.getAttribute("name"), node.getAttribute("value"));
 		}
 
-		List<String[]> parameter = new ArrayList<String[]>();
+		List<NameValue> parameter = new ArrayList<NameValue>();
 		List<Element> params;
 		for (Element node : functions) {
 			parameter.clear();
@@ -114,7 +115,7 @@ public class DataModelDescription {
 			params = XmlHelper.selectNodes(Element.class, node, ELEM_PARAM);
 
 			for (Element param : params) {
-				parameter.add(new String[]{param.getAttribute("name"), param.getAttribute("value")});
+				parameter.add(new NameValue(param.getAttribute("name"), param.getAttribute("value")));
 			}
 			description.addFunction(node.getAttribute("name"), node.getAttribute("class"), parameter);
 		}
