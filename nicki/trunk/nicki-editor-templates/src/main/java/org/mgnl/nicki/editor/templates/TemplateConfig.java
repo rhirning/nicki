@@ -61,7 +61,6 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	
 	private Component configDialog;
 	private Template template;
-	private Button closeButton;
 	private Button previewButton;
 	private Button htmlPreviewButton;
 	private Link csvLink;
@@ -87,17 +86,6 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		buildEditor();
 		setCompositionRoot(mainLayout);
 		initI18n();
-		
-		closeButton.addListener(new Button.ClickListener() {
-			
-			public void buttonClick(ClickEvent event) {
-				try {
-					close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
 		
 		previewButton.addListener(new Button.ClickListener() {
 			
@@ -137,7 +125,6 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	}
 	
 	private void initI18n() {
-		closeButton.setCaption(I18n.getText(editor.getMessageKeyBase() + ".config.button.close"));
 		previewButton.setCaption(I18n.getText(editor.getMessageKeyBase() + ".config.button.preview"));
 		htmlPreviewButton.setCaption(I18n.getText(editor.getMessageKeyBase() + ".config.button.htmlpreview"));
 		pdfLink.setCaption(I18n.getText(editor.getMessageKeyBase() + ".config.link.pdf"));
@@ -193,13 +180,6 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		horizontalLayout.setSpacing(true);
 		horizontalLayout.setHeight(40, UNITS_PIXELS);
 		verticalLayout.addComponent(horizontalLayout);
-		
-		closeButton = new Button();
-		closeButton.setWidth("-1px");
-		closeButton.setHeight("-1px");
-		closeButton.setCaption("Schliessen");
-		closeButton.setImmediate(true);
-		horizontalLayout.addComponent(closeButton);
 		
 		previewButton = new Button();
 		previewButton.setWidth("-1px");
