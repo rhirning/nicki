@@ -6,14 +6,11 @@
 		<project>nicki-dynamic-objects</project>
 		<project>nicki-config-rhi</project>
 		<project>nicki-dynamic-objects-ad</project>
-		<project>efg-dynamic-objects</project>
-		<project>deron-dynamic-objects</project>
 		<project>nicki-vaadin-base</project>
 		<project>nicki-ldap</project>
 		<project>nicki-core</project>
 		<project>nicki-editor-templates</project>
 		<project>nicki-template</project>
-		<project>deron-shop</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
