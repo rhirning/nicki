@@ -32,6 +32,8 @@
  */
 package org.mgnl.nicki.ldap.context;
 
+import java.util.List;
+
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
@@ -55,5 +57,7 @@ public interface ObjectFactory {
 	String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException;
 
 	String getNamingLdapAttribute(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException;
+
+	<T extends DynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) throws InstantiateDynamicObjectException;
 
 }
