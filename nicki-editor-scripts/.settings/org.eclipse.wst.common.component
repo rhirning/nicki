@@ -13,9 +13,6 @@
         <dependent-module archiveName="nicki-vaadin-base.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-vaadin-base/nicki-vaadin-base">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="efg-dynamic-objects.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/efg-dynamic-objects/efg-dynamic-objects">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="nicki-dynamic-objects-ad.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-dynamic-objects-ad/nicki-dynamic-objects-ad">
             <dependency-type>uses</dependency-type>
         </dependent-module>
@@ -25,16 +22,10 @@
         <dependent-module archiveName="nicki-template.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-template/nicki-template">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="deron-dynamic-objects.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/deron-dynamic-objects/deron-dynamic-objects">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
         <dependent-module archiveName="nicki-dynamic-objects.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-dynamic-objects/nicki-dynamic-objects">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="nicki-ldap.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-ldap/nicki-ldap">
-            <dependency-type>uses</dependency-type>
-        </dependent-module>
-        <dependent-module archiveName="deron-shop.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/deron-shop/deron-shop">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/nicki.editor-scripts/build/classes"/>
