@@ -32,7 +32,9 @@
  */
 package org.mgnl.nicki.ldap.context;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.ldap.context.NickiContext;
@@ -122,6 +124,17 @@ public class TargetObjectFactory implements ObjectFactory {
 			}
 		}
 		throw new InstantiateDynamicObjectException("Could not getObject " + classDefinition);
+	}
+	
+	public <T extends DynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) throws InstantiateDynamicObjectException {
+		List<T> list = new ArrayList<T>();
+		for (Iterator<DynamicObject> iterator = target.getDynamicObjects().iterator(); iterator.hasNext();) {
+			DynamicObject dynamicObject = iterator.next();
+			if (classDefinition.isAssignableFrom(dynamicObject.getClass())){
+				list.add((T) dynamicObject);
+			}
+		}
+		throw new InstantiateDynamicObjectException("Could not getObjects " + classDefinition);
 	}
 	
 	// TODO
