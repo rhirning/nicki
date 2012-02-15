@@ -469,4 +469,9 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		return getContext().loadObjectAs(classDefinition, this);
 	}
 
+	public void clear(String key) {
+		put(key, null);
+	}
+
+
 }

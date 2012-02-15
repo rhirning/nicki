@@ -34,6 +34,7 @@ package org.mgnl.nicki.dynamic.objects.shop;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -240,6 +241,16 @@ public class CatalogArticle extends DynamicTemplateObject {
 	@SuppressWarnings("unchecked")
 	public List<String> getRules() {
 		return (List<String>) get("rule");
+	}
+
+	public Date getStart(Person person) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public Date getEnd(Person person) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
