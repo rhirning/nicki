@@ -50,7 +50,7 @@ import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
 @SuppressWarnings("serial")
-public class CatalogArticle extends DynamicTemplateObject {
+public abstract class CatalogArticle extends DynamicTemplateObject {
 
 	public static final String TYPE_ARTICLE = "ARTICLE";
 	
@@ -97,12 +97,7 @@ public class CatalogArticle extends DynamicTemplateObject {
 
 	// TODO: class must know how to get the assigned articles
 	
-	public List<CatalogArticle> getArticles(Person person) {
-		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
-		
-		return articles;
-		
-	}
+	public abstract List<CatalogArticle> getArticles(Person person);
 	
 	public boolean hasArticle(Person person, CatalogArticle article) {
 		return getArticles(person).contains(article);
@@ -243,14 +238,10 @@ public class CatalogArticle extends DynamicTemplateObject {
 		return (List<String>) get("rule");
 	}
 
-	public Date getStart(Person person) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public abstract Date getStart(Person person);
 
-	public Date getEnd(Person person) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	public abstract Date getEnd(Person person);
+
+	public abstract String getSpecifier(Person person);
 
 }

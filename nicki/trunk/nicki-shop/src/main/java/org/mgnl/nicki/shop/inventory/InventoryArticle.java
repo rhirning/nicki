@@ -33,7 +33,6 @@
 package org.mgnl.nicki.shop.inventory;
 
 import java.io.Serializable;
-import java.text.ParseException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -56,6 +55,10 @@ public class InventoryArticle implements Serializable{
 	private STATUS status;
 	private CatalogArticle article;
 	private SOURCE source = SOURCE.NONE;
+	private Date start = null;
+	private Date end = null;
+	private Date orgEnd = null;
+	private String specifier = null;
 	private Map<String, InventoryAttribute> attributes = new HashMap<String, InventoryAttribute>();
 
 	public InventoryArticle(CatalogArticle article) {
@@ -75,9 +78,10 @@ public class InventoryArticle implements Serializable{
 		}
 	}
 
-	public InventoryArticle(CatalogArticle article, Date start, Date end,
+	public InventoryArticle(CatalogArticle article, String specifier, Date start, Date end,
 			List<InventoryAttribute> attributes) {
 		this.article = article;
+		this.specifier = specifier;
 		addEmptyAttributes();
 		if (attributes != null) {
 			for (Iterator<InventoryAttribute> iterator = attributes.iterator(); iterator.hasNext();) {
@@ -85,19 +89,11 @@ public class InventoryArticle implements Serializable{
 				this.attributes.put(attribute.getName(), attribute);
 			}
 		}
-		setStart(start);
-		setEnd(end);
+		this.start = start;
+		this.end = end;
+		this.orgEnd = end;
 		setStatus(STATUS.PROVISIONED);
 		originalStatus = STATUS.PROVISIONED;
-	}
-
-	public void setStart(Date start) {
-		setValue(attributes.get("dateFrom"), start);
-	}
-
-	public void setStart(Date start, Date oldValue) {
-		setValue(attributes.get("dateFrom"), start);
-		setOldValue(attributes.get("dateFrom"), start);
 	}
 
 	public void setStatus(STATUS status) {
@@ -121,6 +117,8 @@ public class InventoryArticle implements Serializable{
 		StringBuffer sb = new StringBuffer();
 		sb.append("[Article path=").append(article.getPath());
 		sb.append(" target=").append(article.getArticlePath());
+		sb.append(" start=").append(start);
+		sb.append(" end=").append(end);
 		sb.append(" status=").append(getStatus()).append("]");
 		for (Iterator<String> iterator = attributes.keySet().iterator(); iterator.hasNext();) {
 			sb.append("\n").append(attributes.get(iterator.next()).toString());
@@ -157,17 +155,6 @@ public class InventoryArticle implements Serializable{
 		}
 	}
 
-	private void setOldValue(InventoryAttribute iAttribute, Object value) {
-		CatalogArticleAttribute attribute = iAttribute.getAttribute();
-		String stringValue = AttributeComponentFactory.getAttributeComponent(attribute.getType()).getStringValue(value);
-		if (iAttribute != null) {
-			if (getStatus() == STATUS.PROVISIONED && !StringUtils.equals(stringValue, iAttribute.getValue())) {
-				setStatus(STATUS.MODIFIED);
-			}
-			attributes.get(attribute.getName()).setOldValue(stringValue);
-		}
-	}
-
 	public boolean hasChanged() {
 		if (getStatus() == STATUS.NEW
 				|| getStatus() == STATUS.MODIFIED
@@ -195,48 +182,21 @@ public class InventoryArticle implements Serializable{
 	}
 
 	public void setEnd(Date end) {
-		setValue(attributes.get("dateTo"), end);
-		setStatus(STATUS.MODIFIED);
-	}
-
-	public void setEnd(Date end, Date oldEnd) {
-		setValue(attributes.get("dateTo"), end);
-		setOldValue(attributes.get("dateTo"), end);
-		setStatus(STATUS.MODIFIED);
+		this.end = end;
+		try {
+			if (!StringUtils.equals(DataHelper.getDay(end), DataHelper.getDay(orgEnd))) {
+				setStatus(STATUS.MODIFIED);
+			}
+		} catch (Exception e) {
+		}
 	}
 
 	public Date getStart() {
-		Object stored = getValue("dateFrom");
-		if (stored instanceof Date) {
-			return (Date) stored;
-		}
-		if (stored instanceof String) {
-			try {
-				return DataHelper.dateFromString((String) stored);
-			} catch (ParseException e) {
-				System.out.println(stored);
-				e.printStackTrace();
-			}
-			System.out.println(stored);
-		}
-		return null;
+		return start;
 	}
 	
 	public Date getEnd() {
-		Object stored = getValue("dateTo");
-		if (stored instanceof Date) {
-			return (Date) stored;
-		}
-		if (stored instanceof String && StringUtils.isNotEmpty((String) stored)) {
-			try {
-				return DataHelper.dateFromString((String) stored);
-			} catch (ParseException e) {
-				System.out.println(stored);
-				e.printStackTrace();
-			}
-			System.out.println(stored);
-		}
-		return null;
+		return end;
 	}
 
 	public SOURCE getSource() {

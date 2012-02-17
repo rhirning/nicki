@@ -35,14 +35,12 @@ package org.mgnl.nicki.dynamic.objects.shop;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import org.mgnl.nicki.dynamic.objects.components.ProcessResult;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.commons.lang.NotImplementedException;
 import org.w3c.dom.Document;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
@@ -79,13 +77,9 @@ public class Cart extends DynamicObject {
 	
     private Catalog catalog = null;
     private HashMap<String, CartEntry> cartentries = new HashMap<String, CartEntry>();
-    private final String ELEM_ATTRIBUTE = "attribute";
-    private final String ELEM_CARTENTRY = "entry";
-    private final String ELEM_CART = "cart";
-    private final String ATTR_CATALOG = "catalog";
-    private final String ATTR_ACTION = "action";
-    private final String ATTR_ID = "id";
-    private final String ATTR_NAME = "name";
+    private final static String ELEM_CARTENTRY = "entry";
+    private final static String ELEM_CART = "cart";
+    private final static String ATTR_CATALOG = "catalog";
 
     @Override
     public void initDataModel() {
@@ -151,7 +145,7 @@ public class Cart extends DynamicObject {
         CartEntry entry;
 
         for (Element node : entries) {
-            entry = getCartEntryInstance(node);
+            entry = CartEntry.fromNode(node);
 
             cartentries.put(entry.getId(), entry);
         }
@@ -170,7 +164,7 @@ public class Cart extends DynamicObject {
 
         for (String key : cartentries.keySet()) {
 			
-            cart.appendChild(getCartEntryNode(doc, cartentries.get(key)));
+            cart.appendChild(cartentries.get(key).getNode(doc, ELEM_CARTENTRY));
         }
 		
 		doc.appendChild(cart);
@@ -191,18 +185,6 @@ public class Cart extends DynamicObject {
     public void update() throws DynamicObjectException {
         put("data", toXml());
         super.update();
-    }
-
-    public void addProcessResult(ProcessResult result) {
-        throw new NotImplementedException();
-    }
-
-    public ProcessResult getProcessResult(CartEntry entry) {
-        throw new NotImplementedException();
-    }
-
-    public List<ProcessResult> getProcessResults() {
-        throw new NotImplementedException();
     }
 
     public void setRequestDate(Date date) {
@@ -295,43 +277,6 @@ public class Cart extends DynamicObject {
 
     public Person getInitiator() {
         return getContext().loadObject(Person.class, (String) get("initiator"));
-    }
-
-    private CartEntry getCartEntryInstance(Element node) {
-        if (null == node) {
-            return null;
-        }
-
-        CartEntry entry = new CartEntry(
-                node.getAttribute(ATTR_ID),
-                CartEntry.ACTION.valueOf(node.getAttribute(ATTR_ACTION).toUpperCase()));
-
-        for (Element element : XmlHelper.selectNodes(Element.class, node, ELEM_ATTRIBUTE)) {
-            entry.addAttribute(element.getAttribute(ATTR_NAME), element.getTextContent());
-        }
-
-        return entry;
-    }
-
-    private Element getCartEntryNode(Document doc, CartEntry entry) {
-      
-		Element cartentry = doc.createElement(ELEM_CARTENTRY);
-		
-        cartentry.setAttribute(ATTR_ID, entry.getId());
-        cartentry.setAttribute(ATTR_ACTION, entry.getAction().toString().toLowerCase());
-
-        Map<String, String> attributes = entry.getAttributes();
-        Element attr;
-
-        for (String key : attributes.keySet()) {
-            attr = doc.createElement(ELEM_ATTRIBUTE);
-            attr.setAttribute(ATTR_NAME, key);
-            attr.setTextContent(attributes.get(key));
-
-            cartentry.appendChild(attr);
-        }
-
-        return cartentry;
     }
 
     public static List<Cart> getAllCarts(NickiContext ctx) {

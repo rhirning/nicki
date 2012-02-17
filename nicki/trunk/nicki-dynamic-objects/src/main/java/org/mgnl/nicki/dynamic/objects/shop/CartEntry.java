@@ -32,14 +32,29 @@
  */
 package org.mgnl.nicki.dynamic.objects.shop;
 
+import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.ldap.xml.XmlHelper;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  *
  * @author cna
  */
 public class CartEntry {
+    public static final String ATTR_ID = "id";
+    public static final String ATTR_ACTION = "action";
+    public static final String ATTR_START = "start";
+    public static final String ATTR_END = "end";
+    public static final String ATTR_SPECIFIER = "specifier";
+	public static final String ATTR_NAME = "name";
+    public static final String ELEM_ATTRIBUTE = "attribute";
 
     public enum ACTION {
 
@@ -49,8 +64,78 @@ public class CartEntry {
     }
     private String id;
     private ACTION action;
+    private Date start = null;
+    private Date end = null;
+    private String specifier;
+    
     private Map<String, String> attributes = new HashMap<String, String>();
 
+    public Element getNode(Document doc, String name) {
+        
+		Element cartentry = doc.createElement(name);
+		
+		if (start != null) {
+	        cartentry.setAttribute(ATTR_START, DataHelper.getDay(start));
+		}
+		if (end != null) {
+	        cartentry.setAttribute(ATTR_START, DataHelper.getDay(end));
+		}
+        cartentry.setAttribute(ATTR_ID, getId());
+		if (specifier != null) {
+	        cartentry.setAttribute(ATTR_SPECIFIER, specifier);
+		}
+        cartentry.setAttribute(ATTR_ACTION, getAction().toString().toLowerCase());
+
+        Map<String, String> attributes = getAttributes();
+        Element attr;
+
+        for (String key : attributes.keySet()) {
+            attr = doc.createElement(ELEM_ATTRIBUTE);
+            attr.setAttribute(ATTR_NAME, key);
+            attr.setTextContent(attributes.get(key));
+
+            cartentry.appendChild(attr);
+        }
+
+        return cartentry;
+    }
+
+    public static CartEntry fromNode(Element node) {
+        if (null == node) {
+            return null;
+        }
+        
+        CartEntry entry = new CartEntry(
+                node.getAttribute(ATTR_ID),
+                CartEntry.ACTION.valueOf(node.getAttribute(ATTR_ACTION).toUpperCase()));
+
+        if (StringUtils.isNotEmpty(node.getAttribute(ATTR_SPECIFIER))) {
+        	entry.setSpecifier(node.getAttribute(ATTR_SPECIFIER));
+        }
+        if (StringUtils.isNotEmpty(node.getAttribute(ATTR_START))) {
+        	try {
+				entry.setStart(DataHelper.dateFromString(node.getAttribute(ATTR_START)));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+        }
+        if (StringUtils.isNotEmpty(node.getAttribute(ATTR_END))) {
+        	try {
+				entry.setEnd(DataHelper.dateFromString(node.getAttribute(ATTR_END)));
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+        }
+        for (Element element : XmlHelper.selectNodes(Element.class, node, ELEM_ATTRIBUTE)) {
+            entry.addAttribute(element.getAttribute(ATTR_NAME), element.getTextContent());
+        }
+
+        return entry;
+    }
+
+
+
+    
     public ACTION getAction() {
         return action;
     }
@@ -84,7 +169,19 @@ public class CartEntry {
         return attributes;
     }
 
-    @Override
+    public void setStart(Date start) {
+		this.start = start;
+	}
+
+	public void setEnd(Date end) {
+		this.end = end;
+	}
+
+    public void setSpecifier(String specifier) {
+		this.specifier = specifier;
+	}
+
+	@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("[CARTENTRY id=");
