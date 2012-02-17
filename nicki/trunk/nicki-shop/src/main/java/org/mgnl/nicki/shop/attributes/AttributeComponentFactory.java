@@ -42,13 +42,13 @@ public class AttributeComponentFactory {
 	protected static Map<String, String> attributeComponents 
 		= new HashMap<String, String>();
 	static {
-		attributeComponents.put("date", "de.deron.shop.attributes.DateComponent");
-		attributeComponents.put("text", "de.deron.shop.attributes.TextComponent");
-		attributeComponents.put("checkbox", "de.deron.shop.attributes.CheckboxComponent");
-		attributeComponents.put("select", "de.deron.shop.attributes.SelectComponent");
-		attributeComponents.put("freeselect", "de.deron.shop.attributes.FreeSelectComponent");
-		attributeComponents.put("static", "de.deron.shop.attributes.LabelComponent");
-		attributeComponents.put(DEFAULT, "de.deron.shop.attributes.LabelComponent");
+		attributeComponents.put("date", "org.mgnl.nicki.shop.attributes.DateComponent");
+		attributeComponents.put("text", "org.mgnl.nicki.shop.attributes.TextComponent");
+		attributeComponents.put("checkbox", "org.mgnl.nicki.shop.attributes.CheckboxComponent");
+		attributeComponents.put("select", "org.mgnl.nicki.shop.attributes.SelectComponent");
+		attributeComponents.put("freeselect", "org.mgnl.nicki.shop.attributes.FreeSelectComponent");
+		attributeComponents.put("static", "org.mgnl.nicki.shop.attributes.LabelComponent");
+		attributeComponents.put(DEFAULT, "org.mgnl.nicki.shop.attributes.LabelComponent");
 	}
 	
 	static public AttributeComponent getAttributeComponent(String type) {
