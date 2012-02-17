@@ -45,6 +45,7 @@ public class Person extends DynamicTemplateObject {
 	public static final String ATTRIBUTE_LANGUAGE = "language";
 	public static final String ATTRIBUTE_MEMBEROF = "memberOf";
 	public static final String ATTRIBUTE_STATUS = "status";
+	public static final String ATTRIBUTE_LOCATION = "location";
 	public static final String ATTRIBUTE_ASSIGNEDARTICLE = "assignedArticle";
 	public static final String ATTRIBUTE_ATTRIBUTEVALUE = "attributeValue";
 
@@ -79,6 +80,10 @@ public class Person extends DynamicTemplateObject {
 		addAttribute(dynAttribute);
 
 		dynAttribute = new DynamicAttribute(ATTRIBUTE_STATUS, "nickiStatus",
+				String.class);
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_LOCATION, "nickiLocation",
 				String.class);
 		addAttribute(dynAttribute);
 

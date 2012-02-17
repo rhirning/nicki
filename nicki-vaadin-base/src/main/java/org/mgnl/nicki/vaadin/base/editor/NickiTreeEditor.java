@@ -122,7 +122,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		this.hsplit = new HorizontalSplitPanel();
 		hsplit.setSplitPosition(200, Sizeable.UNITS_PIXELS);
 		hsplit.setHeight("100%");
-		setHeight(800, UNITS_PIXELS);
+//		setHeight(900, UNITS_PIXELS);
 
 		selector = select;
 		loadTree();
