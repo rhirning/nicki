@@ -190,9 +190,9 @@ public abstract class NickiApplication extends Application  implements HttpServl
 		getMainWindow().removeAllComponents();
 		if (isUseWelcomeDialog()) {
 			AbsoluteLayout layout = new AbsoluteLayout();
-			layout.setHeight("800px");
+			layout.setHeight("100%");
 			layout.addComponent(new WelcomeDialog(this), "top:0.0px;left:20.0px;");
-			layout.addComponent(getEditor(), "top:20.0px;left:20.0px;");
+			layout.addComponent(getEditor(), "top:30.0px;left:20.0px;");
 			getMainWindow().addComponent(layout);
 		} else {
 			getMainWindow().addComponent(getEditor());

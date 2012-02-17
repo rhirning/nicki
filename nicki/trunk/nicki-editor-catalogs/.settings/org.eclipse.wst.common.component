@@ -10,6 +10,21 @@
         <dependent-module archiveName="nicki-shop.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-shop/nicki-shop">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="nicki-config-rhi.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-config-rhi/nicki-config-rhi">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-dynamic-objects-ad.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-dynamic-objects-ad/nicki-dynamic-objects-ad">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-core.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-core/nicki-core">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-dynamic-objects.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-dynamic-objects/nicki-dynamic-objects">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-ldap.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-ldap/nicki-ldap">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="nickiCatalogs"/>
         <property name="java-output-path" value="/nicki-editor-catalogs/build/classes"/>
     </wb-module>

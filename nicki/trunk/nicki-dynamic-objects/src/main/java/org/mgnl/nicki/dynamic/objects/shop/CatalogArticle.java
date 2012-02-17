@@ -88,7 +88,7 @@ public abstract class CatalogArticle extends DynamicTemplateObject {
 		
 		dynAttribute = new DynamicAttribute("rule", "nickiRule", String.class);
 		dynAttribute.setMultiple();
-		dynAttribute.setEditorClass("de.deron.shop.rules.RuleAttributeField");
+		dynAttribute.setEditorClass("org.mgnl.nicki.shop.rules.RuleAttributeField");
 		addAttribute(dynAttribute);
 		
 		dynAttribute = new DynamicAttribute("attributes", "nickiAttributes", TextArea.class);
