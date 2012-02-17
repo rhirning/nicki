@@ -101,7 +101,8 @@ public class Inventory implements Serializable{
 			List<InventoryAttribute> attributes = getAttributes(catalogArticle);
 			Date start = catalogArticle.getStart(person);
 			Date end = catalogArticle.getEnd(person);
-			articles.put(catalogArticle.getPath(), new InventoryArticle(catalogArticle, start, end, attributes));
+			String specifier = catalogArticle.getSpecifier(person);
+			articles.put(catalogArticle.getPath(), new InventoryArticle(catalogArticle, specifier, start, end, attributes));
 		}
 	}
 

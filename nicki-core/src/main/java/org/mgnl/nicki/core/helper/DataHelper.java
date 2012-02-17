@@ -185,7 +185,6 @@ public class DataHelper {
 	}
 
 	public static Date dateFromString(String stored) throws ParseException {
-		// TODO Auto-generated method stub
 		return formatDay.parse(stored);
 	}
 }

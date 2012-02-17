@@ -4,6 +4,12 @@
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/java"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src/main/resources"/>
+        <dependent-module archiveName="nicki-vaadin-base.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-vaadin-base/nicki-vaadin-base">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-shop.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-shop/nicki-shop">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="nickiCatalogs"/>
         <property name="java-output-path" value="/nicki-editor-catalogs/build/classes"/>
     </wb-module>

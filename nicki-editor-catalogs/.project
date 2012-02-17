@@ -3,6 +3,8 @@
 	<name>nicki-editor-catalogs</name>
 	<comment></comment>
 	<projects>
+		<project>nicki-vaadin-base</project>
+		<project>nicki-shop</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
