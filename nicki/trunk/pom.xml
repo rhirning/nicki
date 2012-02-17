@@ -16,10 +16,12 @@
 		<module>nicki-db</module>
 		<module>nicki-dynamic-objects</module>
 		<module>nicki-dynamic-objects-ad</module>
+		<module>nicki-editor-catalogs</module>
 		<module>nicki-editor-scripts</module>
 		<module>nicki-editor-templates</module>
 		<module>nicki-ldap</module>
 		<module>nicki-reports</module>
+		<module>nicki-shop</module>
 		<module>nicki-template</module>
 		<module>nicki-vaadin-base</module>
 	</modules>
