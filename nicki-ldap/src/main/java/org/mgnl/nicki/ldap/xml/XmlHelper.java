@@ -77,6 +77,7 @@ public class XmlHelper implements java.io.Serializable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T extends Node> List<T> selectNodes(Class<T> clazz, Node ctx, String xpath) {
 		//TODO XPATH parsen und $ELEM_* && $ATTR_* ersetzen durch Konstanten
 		NodeList nodes;
@@ -99,6 +100,7 @@ public class XmlHelper implements java.io.Serializable {
 		return list;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static <T extends Node> T selectNode(Class<T> clazz, Node ctx, String xpath) {
 		Object node = null;
 

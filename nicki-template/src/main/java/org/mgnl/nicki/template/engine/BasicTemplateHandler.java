@@ -51,6 +51,10 @@ public class BasicTemplateHandler implements TemplateHandler{
 	
 	private Person person = null;
 	private NickiContext context = null;
+	public NickiContext getContext() {
+		return context;
+	}
+
 	private Object params = null;
 	private Template template = null;
 	
