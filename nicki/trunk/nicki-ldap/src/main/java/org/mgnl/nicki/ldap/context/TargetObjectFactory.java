@@ -126,6 +126,7 @@ public class TargetObjectFactory implements ObjectFactory {
 		throw new InstantiateDynamicObjectException("Could not getObject " + classDefinition);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		List<T> list = new ArrayList<T>();
 		for (Iterator<DynamicObject> iterator = target.getDynamicObjects().iterator(); iterator.hasNext();) {
