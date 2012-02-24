@@ -39,6 +39,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 
 public class TargetFactory {
@@ -88,9 +89,7 @@ public class TargetFactory {
 
 
 	private DynamicObject getDynamicObject(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-		Class<?> classDefinition = Class.forName(className);
-		DynamicObject object = (DynamicObject) classDefinition.newInstance();
-		return object;
+		return Classes.newInstance(className);
 	}
 
 	public static Target getTarget(String targetName) {
