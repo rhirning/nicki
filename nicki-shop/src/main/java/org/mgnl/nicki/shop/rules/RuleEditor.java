@@ -36,6 +36,7 @@ import java.util.List;
 
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.shop.Selector;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 
@@ -190,7 +191,7 @@ public class RuleEditor extends CustomComponent {
 	}
 	
 	public ValueProviderComponent getValueProvider(Selector selector) throws InstantiationException, IllegalAccessException, ClassNotFoundException {
-		return (ValueProviderComponent) Class.forName((String) selector.getValueProviderClass()).newInstance();
+		return (ValueProviderComponent) Classes.newInstance((String) selector.getValueProviderClass());
 	};
 
 

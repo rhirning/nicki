@@ -36,6 +36,7 @@ package org.mgnl.nicki.shop.attributes;
 import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.shop.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
@@ -52,7 +53,7 @@ public abstract class BasicAttributeComponent implements AttributeComponent, Ser
 	protected <T extends Object> T getContent(Class<T> classDefinition, Person user, Person person) {
 		if (StringUtils.isNotEmpty(attribute.getContentClass())) {
 			try {
-				AttributeContent contentProvider = (AttributeContent) Class.forName(attribute.getContentClass()).newInstance();
+				AttributeContent contentProvider = (AttributeContent) Classes.newInstance(attribute.getContentClass());
 				return contentProvider.getContent(classDefinition, user, person);
 			} catch (Exception e) {
 				e.printStackTrace();

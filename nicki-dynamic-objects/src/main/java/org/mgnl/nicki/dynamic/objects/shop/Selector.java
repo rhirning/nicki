@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.DynamicTemplateObject;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
@@ -77,7 +78,7 @@ public class Selector extends DynamicTemplateObject {
 
 	public ValueProvider getValueProvider() {
 		try {
-			ValueProvider provider = (ValueProvider)Class.forName(getValueProviderClass()).newInstance();
+			ValueProvider provider = (ValueProvider)Classes.newInstance(getValueProviderClass());
 			return provider;
 		} catch (Exception e) {
 			e.printStackTrace();

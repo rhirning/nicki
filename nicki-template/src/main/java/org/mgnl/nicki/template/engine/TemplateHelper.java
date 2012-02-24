@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
 import org.mgnl.nicki.ldap.context.AppContext;
@@ -78,7 +79,7 @@ public class TemplateHelper {
 
 		for (DMFunction function : dataModelDescr.getFunctions()) {
 			try {
-				Object f = Class.forName((String) function.clazz).newInstance();
+				Object f = Classes.newInstance((String) function.clazz);
 
 				Method m;
 				for (DMParam param : (List<DMParam>) function.param) {
@@ -128,7 +129,7 @@ public class TemplateHelper {
 		TemplateHandler handler = null;
 		if (template.hasHandler()) {
 			try {
-				handler = (TemplateHandler) Class.forName(template.getHandler()).newInstance();
+				handler = (TemplateHandler) Classes.newInstance(template.getHandler());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

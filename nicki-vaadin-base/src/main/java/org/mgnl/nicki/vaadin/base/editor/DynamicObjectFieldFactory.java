@@ -36,6 +36,7 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.ldap.objects.DataModel;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
@@ -62,7 +63,7 @@ public class DynamicObjectFieldFactory implements Serializable {
 		DynamicAttributeField field = null;
 		if (StringUtils.isNotEmpty(dynAttribute.getEditorClass())) {
 			try {
-				field = (DynamicAttributeField) Class.forName(dynAttribute.getEditorClass()).newInstance();
+				field = (DynamicAttributeField) Classes.newInstance(dynAttribute.getEditorClass());
 				field.init(attributeName, dynamicObject, objectListener);
 			} catch (Exception e) {
 				field = null;
