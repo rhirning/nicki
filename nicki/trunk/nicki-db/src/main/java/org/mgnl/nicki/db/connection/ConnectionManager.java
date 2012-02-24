@@ -40,6 +40,7 @@ import org.apache.commons.pool.impl.GenericObjectPool;
 import org.apache.commons.pool.ObjectPool;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.config.ConfigListener;
+import org.mgnl.nicki.core.util.Classes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -111,7 +112,7 @@ public class ConnectionManager implements ConfigListener{
 
         try
         {
-            java.lang.Class.forName( config.getDbDriverName() ).newInstance();
+            Classes.newInstance( config.getDbDriverName() );
         }
         catch(Exception e)
         {

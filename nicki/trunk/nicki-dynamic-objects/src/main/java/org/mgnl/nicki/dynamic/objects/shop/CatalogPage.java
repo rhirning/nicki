@@ -42,6 +42,7 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.mgnl.nicki.core.helper.XMLHelper;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.DynamicTemplateObject;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
@@ -189,7 +190,7 @@ public class CatalogPage extends DynamicTemplateObject {
 		String providerClass = getAttribute("provider");
 		if (StringUtils.isNotEmpty(providerClass)) {
 			try {
-				this.provider = (Provider) Class.forName(providerClass).newInstance();
+				this.provider = (Provider) Classes.newInstance(providerClass);
 				this.provider.init(this);
 			} catch (Exception e) {
 				e.printStackTrace();

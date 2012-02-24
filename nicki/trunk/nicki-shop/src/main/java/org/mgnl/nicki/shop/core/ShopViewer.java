@@ -37,6 +37,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
 import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
@@ -89,7 +90,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	public void init() {
 		if (shop.getRenderer() != null) {
 			try {
-				this.renderer = (ShopRenderer) Class.forName(shop.getRenderer()).newInstance();
+				this.renderer = (ShopRenderer) Classes.newInstance(shop.getRenderer());
 			} catch (Exception e) {
 				e.printStackTrace();
 				this.renderer = null;

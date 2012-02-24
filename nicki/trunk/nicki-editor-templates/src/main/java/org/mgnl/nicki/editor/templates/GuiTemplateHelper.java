@@ -34,6 +34,7 @@ package org.mgnl.nicki.editor.templates;
 
 import java.util.Map;
 
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.template.engine.TemplateHelper;
 
@@ -45,7 +46,7 @@ public class GuiTemplateHelper extends TemplateHelper {
 		GuiTemplateHandler handler = null;
 		if (template.hasHandler()) {
 			try {
-				handler = (GuiTemplateHandler) Class.forName(template.getHandler()).newInstance();
+				handler = (GuiTemplateHandler) Classes.newInstance(template.getHandler());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

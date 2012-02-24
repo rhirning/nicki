@@ -38,6 +38,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.ldap.auth.NickiPrincipal;
 import org.mgnl.nicki.ldap.auth.SSOAdapter;
 import org.mgnl.nicki.ldap.context.AppContext;
@@ -136,7 +137,7 @@ public abstract class NickiApplication extends Application  implements HttpServl
 		try {
 			String ssoLoginClass = Config.getProperty("nicki.login.sso");
 			if (StringUtils.isNotEmpty(ssoLoginClass)) {
-				SSOAdapter adapter = (SSOAdapter) Class.forName(ssoLoginClass).newInstance();
+				SSOAdapter adapter = (SSOAdapter) Classes.newInstance(ssoLoginClass);
 				NickiPrincipal principal = new NickiPrincipal(adapter.getName(getRequest()), new String(adapter.getPassword(getRequest())));
 				if (principal != null) {
 					DynamicObject user = getTarget().login(principal);

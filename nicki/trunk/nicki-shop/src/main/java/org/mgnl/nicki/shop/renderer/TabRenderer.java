@@ -36,6 +36,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
 import org.mgnl.nicki.shop.core.ShopPage;
 import org.mgnl.nicki.shop.core.ShopPage.TYPE;
@@ -85,7 +86,7 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 		} else {
 			ShopRenderer renderer = null;
 			try {
-				renderer = (ShopRenderer) Class.forName(page.getRenderer()).newInstance();
+				renderer = (ShopRenderer) Classes.newInstance(page.getRenderer());
 			} catch (Exception e) {
 				renderer = new TabRenderer();
 			}

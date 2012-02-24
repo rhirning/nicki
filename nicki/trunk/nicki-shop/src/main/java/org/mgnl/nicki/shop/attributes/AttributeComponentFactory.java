@@ -35,6 +35,8 @@ package org.mgnl.nicki.shop.attributes;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.mgnl.nicki.core.util.Classes;
+
 
 
 public class AttributeComponentFactory {
@@ -54,9 +56,9 @@ public class AttributeComponentFactory {
 	static public AttributeComponent getAttributeComponent(String type) {
 		try {
 			if (attributeComponents.containsKey(type)) {
-				return (AttributeComponent) Class.forName(attributeComponents.get(type)).newInstance();
+				return (AttributeComponent) Classes.newInstance(attributeComponents.get(type));
 			} else {
-				return (AttributeComponent) Class.forName(attributeComponents.get(DEFAULT)).newInstance();
+				return (AttributeComponent) Classes.newInstance(attributeComponents.get(DEFAULT));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

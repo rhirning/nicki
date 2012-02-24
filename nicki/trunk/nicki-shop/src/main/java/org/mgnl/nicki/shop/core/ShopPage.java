@@ -40,6 +40,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.shop.Catalog;
 import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
 import org.mgnl.nicki.dynamic.objects.shop.CatalogArticleAttribute;
@@ -117,7 +118,7 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 			this.label = I18n.getText(pageElement.getAttributeValue("label"));
 			this.selectorClass = pageElement.getAttributeValue("selector");
 			try {
-				CatalogArticleSelector selector = (CatalogArticleSelector) Class.forName(selectorClass).newInstance();
+				CatalogArticleSelector selector = (CatalogArticleSelector) Classes.newInstance(selectorClass);
 				selector.setShopper(shop.getShopper());
 				selector.setRecipient(shop.getRecipient());
 				List<CatalogArticle> articles = selector.getArticles();
