@@ -11,6 +11,7 @@
 		<project.build.sourceEncoding>iso-8859-1</project.build.sourceEncoding>
 	</properties>
 	<modules>
+		<module>nicki-config-efg</module>
 		<module>nicki-config-rhi</module>
 		<module>nicki-core</module>
 		<module>nicki-db</module>
