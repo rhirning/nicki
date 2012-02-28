@@ -252,9 +252,18 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		init();
 		return this.map.get(key);
 	}
+	
+	public Object get(Class<?> clazz, String key) {
+		return get(clazz.getName() + "." + key);
+	}
+	
 	public void put(String key, Object value) {
 		init();
 		listen(key, value, this.map.put(key, value));
+	}
+	
+	public void put(Class<?> clazz, String key, Object data) {
+		put(clazz.getName() + "." + key, data);
 	}
 	
 	public void listen(String key, Object value, Object oldValue) {

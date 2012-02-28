@@ -74,6 +74,7 @@ public interface NickiContext extends Serializable {
 	void setUser(DynamicObject user);
 	String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException;
 	void loadObject(DynamicObject dynamicObject) throws DynamicObjectException;
+	void loadAttributes(DynamicObject dynamicObject, Class<?> requester, String[] attributes) throws DynamicObjectException;
 	void setReadonly(READONLY readonly);
 	<T extends DynamicObject> T loadObjectAs(Class<T> classDefinition, DynamicObject dynamicObject);
 

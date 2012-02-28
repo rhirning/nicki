@@ -22,10 +22,16 @@
         <dependent-module archiveName="nicki-core.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-core/nicki-core">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="nicki-editor-templates.war" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-editor-templates/nicki-editor-templates">
+        <dependent-module archiveName="nicki-template.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-template/nicki-template">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="nicki-template.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-template/nicki-template">
+        <dependent-module archiveName="efg-dynamic-objects.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/efg-dynamic-objects/efg-dynamic-objects">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="deron-dynamic-objects.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/deron-dynamic-objects/deron-dynamic-objects">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="nicki-editor-templates.war" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-editor-templates/nicki-editor-templates">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <property name="java-output-path" value="/nicki-reports/build/classes"/>

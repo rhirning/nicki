@@ -9,8 +9,10 @@
 		<project>nicki-vaadin-base</project>
 		<project>nicki-ldap</project>
 		<project>nicki-core</project>
-		<project>nicki-editor-templates</project>
 		<project>nicki-template</project>
+		<project>efg-dynamic-objects</project>
+		<project>deron-dynamic-objects</project>
+		<project>nicki-editor-templates</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

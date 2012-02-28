@@ -11,6 +11,8 @@
 		<project>nicki-template</project>
 		<project>nicki-dynamic-objects</project>
 		<project>nicki-ldap</project>
+		<project>efg-dynamic-objects</project>
+		<project>deron-dynamic-objects</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
