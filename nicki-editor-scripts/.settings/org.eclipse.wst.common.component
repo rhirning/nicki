@@ -28,6 +28,12 @@
         <dependent-module archiveName="nicki-ldap.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-ldap/nicki-ldap">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="efg-dynamic-objects.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/efg-dynamic-objects/efg-dynamic-objects">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="deron-dynamic-objects.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/deron-dynamic-objects/deron-dynamic-objects">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="java-output-path" value="/nicki.editor-scripts/build/classes"/>
         <property name="context-root" value="nickiScripts"/>
     </wb-module>

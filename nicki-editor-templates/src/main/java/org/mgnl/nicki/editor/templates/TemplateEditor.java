@@ -61,7 +61,7 @@ public class TemplateEditor extends NickiApplication {
 	public Component getEditor() {
 		TemplateViewer templateViewer = new TemplateViewer();
 
-		DataProvider dataProvider = new DynamicObjectRoot(Config.getProperty("nicki.templates.basedn"), new ShowAllFilter());
+		DataProvider dataProvider = new DynamicObjectRoot(getTemplatesRoot(), new ShowAllFilter());
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), dataProvider, getI18nBase());
 		editor.configureClass(Org.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, Org.class, Template.class );
 		editor.configureClass(Template.class, Icon.DOCUMENT, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
@@ -71,7 +71,10 @@ public class TemplateEditor extends NickiApplication {
 		editor.addAction(new ExportTreeAction(getNickiContext(), Org.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
 		editor.addAction(new ExportTreeAction(getNickiContext(), Template.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
 		editor.initActions();
-		
+		editor.setHeight("100%");
+		getMainWindow().setHeight("100%");
+		getMainWindow().getContent().setHeight("100%");
+
 		return editor;
 	}
 
@@ -83,6 +86,10 @@ public class TemplateEditor extends NickiApplication {
 	@Override
 	public String getI18nBase() {
 		return "nicki.editor.templates";
+	}
+
+	public String getTemplatesRoot() {
+		return Config.getProperty("nicki.templates.basedn");
 	}
 
 

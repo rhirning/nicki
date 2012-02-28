@@ -48,6 +48,7 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.ldap.auth.NickiPrincipal;
 import org.mgnl.nicki.ldap.core.LdapQuery;
+import org.mgnl.nicki.ldap.data.AttributeLoaderLdapQueryHandler;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.data.IsExistLdapQueryHandler;
 import org.mgnl.nicki.ldap.data.ObjectLoaderLdapQueryHandler;
@@ -224,7 +225,18 @@ public abstract class BasicContext implements NickiContext {
 
 	public <T extends DynamicObject> List<T> loadChildObjects(Class<T> class1, DynamicObject parent, String filter) {
 		return loadChildObjects(class1, parent.getPath(), filter);
-}
+	}
+
+	public void loadAttributes(DynamicObject dynamicObject, Class<?> requester, String[] attributes) throws DynamicObjectException {
+		try {
+			AttributeLoaderLdapQueryHandler handler = new AttributeLoaderLdapQueryHandler(dynamicObject, attributes);
+			search(handler);
+			for (String attribute : handler.getLists().keySet()) {
+				dynamicObject.put(requester, attribute, handler.getLists().get(attribute));
+			}
+		} catch (DynamicObjectException e) {
+		} 
+	}
 
 
 	@SuppressWarnings("unchecked")
