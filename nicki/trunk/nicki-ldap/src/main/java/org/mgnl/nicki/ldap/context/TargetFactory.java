@@ -39,13 +39,16 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicObjectExtension;
 
 public class TargetFactory {
 
 	public static final String PROPERTY_BASE = "nicki.targets";
 	public static final String PROPERTY_OBJECTS = "objects";
+	public static final String PROPERTY_EXTENSIONS = "extensions";
 	public static final String SEPARATOR = ",";
 	
 	
@@ -63,32 +66,74 @@ public class TargetFactory {
 				String targetName = targetNames[i];
 				String base = PROPERTY_BASE + "." + targetName;
 				Target target = new Target(targetName, base);
-				target.setDynamicObjects(initDynamicObjects(targetName));
+				initExtensions(target);
+				initDynamicObjects(target);
 				targets.put(targetName, target);
 			}
 		}
 	}
 
-	private List<DynamicObject> initDynamicObjects(String target) {
-		List<DynamicObject> list = new ArrayList<DynamicObject>();
-		String base = PROPERTY_BASE + "." + target + "." + PROPERTY_OBJECTS;
+	private void initExtensions(Target target) {
+		Map<String, DynamicObjectExtension> map= new HashMap<String, DynamicObjectExtension>();
+		String base = PROPERTY_BASE + "." + target.getName() + "." + PROPERTY_EXTENSIONS;
 		String objectsNames = Config.getProperty(base);
 		if (StringUtils.isNotEmpty(objectsNames)) {
 			String objects[] = StringUtils.split(objectsNames, SEPARATOR);
 			for (int i = 0; i < objects.length; i++) {
 				String className = Config.getProperty(base + "." + objects[i]);
 				try {
-					list.add(getDynamicObject(className));
+					map.put(objects[i], getExtension(className));
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		}
-		return list;
+		target.setExtensionsMap(map);
 	}
 
 
+	private void initDynamicObjects(Target target) {
+		List<String> dynamicObjects = new ArrayList<String>();
+		Map<String, DynamicObject> map = new HashMap<String, DynamicObject>();
+		Map<String, List<String>> extensions = new HashMap<String, List<String>>();
+		String base = PROPERTY_BASE + "." + target.getName() + "." + PROPERTY_OBJECTS;
+		String objectsNames = Config.getProperty(base);
+		if (StringUtils.isNotEmpty(objectsNames)) {
+			String objects[] = StringUtils.split(objectsNames, SEPARATOR);
+			for (int i = 0; i < objects.length; i++) {
+				String className = Config.getProperty(base + "." + objects[i]);
+				try {
+					DynamicObject dynamicObject = getDynamicObject(className);
+					dynamicObject.initDataModel();
+					map.put(objects[i], dynamicObject);
+					
+					dynamicObjects.add(objects[i]);
+					String extensionNames = Config.getProperty(base + "." + objects[i] + "." + PROPERTY_EXTENSIONS);
+					if (StringUtils.isNotEmpty(extensionNames)) {
+						List<String> dynamicObjectExtensions = DataHelper.getList(extensionNames, SEPARATOR);
+						if (dynamicObjectExtensions != null) {
+							extensions.put(objects[i], DataHelper.getList(extensionNames, SEPARATOR));
+							for (String extensionName : dynamicObjectExtensions) {
+								DynamicObjectExtension extension = target.getExtension(extensionName);
+								dynamicObject.extend(extension);
+							}
+						}
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		target.setDynamicObjects(dynamicObjects);
+		target.setDynamicObjectsMap(map);
+		target.setExtensions(extensions);
+	}
+
 	private DynamicObject getDynamicObject(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		return Classes.newInstance(className);
+	}
+
+	private DynamicObjectExtension getExtension(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		return Classes.newInstance(className);
 	}
 

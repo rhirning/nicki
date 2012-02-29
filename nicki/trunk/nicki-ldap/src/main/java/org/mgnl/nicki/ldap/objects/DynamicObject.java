@@ -77,7 +77,8 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	private NickiContext context;
 	
 	protected DynamicObject() {
-		initDataModel();
+		// removed: must be called in TargetObjectFactory
+		//		initDataModel();
 	}
 
 	public void initNew(String parentPath, String namingValue) {
@@ -480,6 +481,27 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 
 	public void clear(String key) {
 		put(key, null);
+	}
+
+	public void extend(DynamicObjectExtension extension) {
+		if (extension != null && extension.getExtensionModel() != null) {
+			ExtensionModel extensionModel = extension.getExtensionModel();
+			if (extensionModel.hasObjectClasses()) {
+				for (String objectClass : extensionModel.getObjectClasses()) {
+					addObjectClass(objectClass);
+				}
+			}
+			if (extensionModel.hasAdditionalObjectClasses()) {
+				for (String additionalObjectClass : extensionModel.getAdditionalObjectClasses()) {
+					addAdditionalObjectClass(additionalObjectClass);
+				}
+			}
+			if (extensionModel.hasDynamicAttributes()) {
+				for (DynamicAttribute dynamicAttribute : extensionModel.getDynamicAttributes()) {
+					addAttribute(dynamicAttribute);
+				}
+			}
+		}
 	}
 
 

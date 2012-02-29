@@ -33,8 +33,8 @@
 package org.mgnl.nicki.ldap.context;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
@@ -42,26 +42,39 @@ import org.mgnl.nicki.ldap.auth.NickiPrincipal;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.context.NickiContext.READONLY;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicObjectExtension;
 
 @SuppressWarnings("serial")
 public class Target implements Serializable {
 
 	private String targetName;
 	private String propertyBase;
-	private List<DynamicObject> dynamicObjects = null;
+	private List<String> dynamicObjects = null;
+	private Map<String, DynamicObject> dynamicObjectsMap = null;
+	private Map<String, DynamicObjectExtension> extensionsMap = null;
+	private Map<String, List<String>> extensions = null;
+
+	public Map<String, DynamicObjectExtension> getExtensionsMap() {
+		return extensionsMap;
+	}
 
 	public Target(String targetName, String propertyBase) {
 		this.targetName = targetName;
 		this.propertyBase = propertyBase;
 	}
 
-	public void setDynamicObjects(List<DynamicObject> initDynamicObjects) {
-		dynamicObjects = initDynamicObjects;
+	public void setDynamicObjectsMap(Map<String, DynamicObject> initDynamicObjectsMap) {
+		dynamicObjectsMap = initDynamicObjectsMap;
 		
 	}
 
-	public List<DynamicObject> getDynamicObjects() {
-		return dynamicObjects;
+	public void setExtensionsMap(Map<String, DynamicObjectExtension> initExtensionsMap) {
+		extensionsMap = initExtensionsMap;
+		
+	}
+
+	public Map<String, DynamicObject> getDynamicObjectsMap() {
+		return dynamicObjectsMap;
 	}
 	
 	public String getProperty(String appendix) {
@@ -76,9 +89,14 @@ public class Target implements Serializable {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Target [").append(targetName).append("]:");
-		for (Iterator<DynamicObject> iterator = dynamicObjects.iterator(); iterator.hasNext();) {
-			sb.append(" ");
-			sb.append(iterator.next().getClass().getSimpleName());
+		for (String dynamicObjectName : dynamicObjectsMap.keySet()) {
+			sb.append(" ").append(dynamicObjectName).append(":");
+			sb.append(dynamicObjectsMap.get(dynamicObjectName).getClass().getSimpleName());
+		}
+		sb.append(", ");
+		for (String extensionName : extensionsMap.keySet()) {
+			sb.append(" ").append(extensionName).append(":");
+			sb.append(extensionsMap.get(extensionName).getClass().getSimpleName());
 		}
 		return sb.toString();
 	}
@@ -101,5 +119,28 @@ public class Target implements Serializable {
 
 	public String getName() {
 		return targetName;
+	}
+
+	public void setExtensions(Map<String, List<String>> extensions) {
+		this.extensions = extensions;
+	}
+
+	public Map<String, List<String>> getExtensions() {
+		return extensions;
+	}
+
+	public void setDynamicObjects(List<String> dynamicObjects) {
+		this.dynamicObjects = dynamicObjects;
+	}
+
+	public List<String> getDynamicObjects() {
+		return dynamicObjects;
+	}
+	public DynamicObject getDynamicObject(String dynamicObjectName) {
+		return getDynamicObjectsMap().get(dynamicObjectName);
+	}
+
+	public DynamicObjectExtension getExtension(String extensionName) {
+		return getExtensionsMap().get(extensionName);
 	}
 }

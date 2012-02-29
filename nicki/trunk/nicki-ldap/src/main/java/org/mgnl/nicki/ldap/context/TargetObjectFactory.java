@@ -33,7 +33,6 @@
 package org.mgnl.nicki.ldap.context;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -45,10 +44,6 @@ import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 
 public class TargetObjectFactory implements ObjectFactory {
 
-	public static final String PROPERTY_BASE = "nicki.template.objectfactory";
-	public static final String PROPERTY_OBJECTS = "objects";
-	public static final String SEPARATOR = ",";
-	
 	private NickiContext context;
 	private Target target;
 	
@@ -68,8 +63,8 @@ public class TargetObjectFactory implements ObjectFactory {
 	
 	private synchronized  DynamicObject _getObject(ContextSearchResult rs) throws InstantiateDynamicObjectException {
 		String dn = rs.getNameInNamespace();
-		for (Iterator<DynamicObject> iterator = target.getDynamicObjects().iterator(); iterator.hasNext();) {
-			DynamicObject dynamicObject = iterator.next();
+		for (String dynamicObjectName : target.getDynamicObjects()) {
+			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);
 			if (dynamicObject.accept(rs)) {
 				DynamicObject result = getExistingDynamicObject(dynamicObject, dn);
 				if (result != null) {
@@ -90,9 +85,9 @@ public class TargetObjectFactory implements ObjectFactory {
 	
 	private synchronized <T extends DynamicObject> T _getObject(ContextSearchResult rs, Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		String dn = rs.getNameInNamespace();
-		for (@SuppressWarnings("unchecked")
-		Iterator<T> iterator = (Iterator<T>) target.getDynamicObjects().iterator(); iterator.hasNext();) {
-			T dynamicObject = iterator.next();
+		for (String dynamicObjectName : target.getDynamicObjects()) {
+			@SuppressWarnings("unchecked")
+			T dynamicObject = (T) target.getDynamicObject(dynamicObjectName);
 			if (classDefinition == null || classDefinition.isAssignableFrom(dynamicObject.getClass())) {
 				if (dynamicObject.accept(rs)) {
 					T result = getExistingDynamicObject(dynamicObject, dn);
@@ -117,8 +112,8 @@ public class TargetObjectFactory implements ObjectFactory {
 
 	@SuppressWarnings("unchecked")
 	private <T extends DynamicObject> T findDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException {
-		for (Iterator<DynamicObject> iterator = target.getDynamicObjects().iterator(); iterator.hasNext();) {
-			DynamicObject dynamicObject = iterator.next();
+		for (String dynamicObjectName : target.getDynamicObjects()) {
+			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);
 			if (classDefinition.isAssignableFrom(dynamicObject.getClass())){
 				return (T) dynamicObject;
 			}
@@ -129,8 +124,8 @@ public class TargetObjectFactory implements ObjectFactory {
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		List<T> list = new ArrayList<T>();
-		for (Iterator<DynamicObject> iterator = target.getDynamicObjects().iterator(); iterator.hasNext();) {
-			DynamicObject dynamicObject = iterator.next();
+		for (String dynamicObjectName : target.getDynamicObjects()) {
+			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);
 			if (classDefinition.isAssignableFrom(dynamicObject.getClass())){
 				list.add((T) dynamicObject);
 			}
@@ -140,8 +135,8 @@ public class TargetObjectFactory implements ObjectFactory {
 	
 	// TODO
 	private DynamicObject findDynamicObject(String className) throws InstantiateDynamicObjectException {
-		for (Iterator<DynamicObject> iterator = target.getDynamicObjects().iterator(); iterator.hasNext();) {
-			DynamicObject dynamicObject = iterator.next();
+		for (String dynamicObjectName : target.getDynamicObjects()) {
+			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);
 			if (StringUtils.equals(dynamicObject.getClass().getName(), className)) {
 				return dynamicObject;
 			}
@@ -189,12 +184,17 @@ public class TargetObjectFactory implements ObjectFactory {
 		try {
 			@SuppressWarnings("unchecked")
 			T object = (T) pattern.getClass().newInstance();
-			object.setModel(pattern.getModel());
+			initDataModel(pattern, object);
 			return object;
 		} catch (Exception e) {
 			throw new InstantiateDynamicObjectException(e);
 		}
 	}
+	
+	private void initDataModel(DynamicObject pattern, DynamicObject dynamicObject) {
+		dynamicObject.setModel(pattern.getModel());
+	}
+
 
 	public <T extends DynamicObject> T getNewDynamicObject(Class<T> classDefinition, 
 			String parentPath, String namingValue) throws InstantiateDynamicObjectException {
