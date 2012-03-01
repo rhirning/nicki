@@ -38,6 +38,7 @@ import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.ldap.objects.DynamicObjectExtension;
 
 public interface ObjectFactory {
 
@@ -60,4 +61,5 @@ public interface ObjectFactory {
 
 	<T extends DynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) throws InstantiateDynamicObjectException;
 
+	<T extends DynamicObjectExtension> T getDynamicObjectExtension(Class<T> extensionClass, DynamicObject dynamicObject) throws DynamicObjectException;
 }

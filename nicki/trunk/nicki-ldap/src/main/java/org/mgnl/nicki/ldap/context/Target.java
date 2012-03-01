@@ -42,6 +42,7 @@ import org.mgnl.nicki.ldap.auth.NickiPrincipal;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.context.NickiContext.READONLY;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.objects.DynamicObjectExtension;
 
 @SuppressWarnings("serial")
@@ -136,6 +137,25 @@ public class Target implements Serializable {
 	public List<String> getDynamicObjects() {
 		return dynamicObjects;
 	}
+	
+	public String getDynamicObjectName(DynamicObject dynamicObject) throws DynamicObjectException {
+		for (String name : getDynamicObjectsMap().keySet()) {
+			if (dynamicObject.getClass() == getDynamicObjectsMap().get(name).getClass()) {
+				return name;
+			}
+		}
+		throw new DynamicObjectException("Invalid DynamicObject: " + dynamicObject.getClass().getName());
+	}
+	
+	public <T extends DynamicObjectExtension> String getExtensionName(Class<T> extensionClass) throws DynamicObjectException {
+		for (String name : getExtensionsMap().keySet()) {
+			if (extensionClass == getExtensionsMap().get(name).getClass()) {
+				return name;
+			}
+		}
+		throw new DynamicObjectException("Invalid DynamicObject: " + extensionClass.getClass().getName());
+	}
+	
 	public DynamicObject getDynamicObject(String dynamicObjectName) {
 		return getDynamicObjectsMap().get(dynamicObjectName);
 	}
@@ -143,4 +163,25 @@ public class Target implements Serializable {
 	public DynamicObjectExtension getExtension(String extensionName) {
 		return getExtensionsMap().get(extensionName);
 	}
+
+	@SuppressWarnings("unchecked")
+	public <T extends DynamicObjectExtension> T getExtension(Class<T> extensionClass) {
+		for (DynamicObjectExtension extension : getExtensionsMap().values()) {
+			if (extension.getClass() == extensionClass) {
+				return (T) extension;
+			}
+			
+		}
+		return null;
+	}
+	
+	public <T extends DynamicObjectExtension> boolean hasExtension(DynamicObject dynamicObject, 
+			Class<T> extensionClass) {
+		try {
+			return getExtensions().get(getDynamicObjectName(dynamicObject)).contains(getExtensionName(extensionClass));
+		} catch (DynamicObjectException e) {
+			return false;
+		}
+	}
+
 }
