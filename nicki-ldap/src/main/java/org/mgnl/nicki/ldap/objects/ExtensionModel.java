@@ -1,11 +1,12 @@
 package org.mgnl.nicki.ldap.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ExtensionModel {
-	private List<String> objectClasses;
-	private List<String> additionalObjectClasses;
-	private List<DynamicAttribute> dynamicAttributes;
+	private List<String> objectClasses = new ArrayList<String>();
+	private List<String> additionalObjectClasses = new ArrayList<String>();
+	private List<DynamicAttribute> dynamicAttributes = new ArrayList<DynamicAttribute>();
 
 	public boolean hasObjectClasses() {
 		return objectClasses != null && !objectClasses.isEmpty();
@@ -19,20 +20,20 @@ public class ExtensionModel {
 		return objectClasses;
 	}
 
-	public void setObjectClasses(List<String> objectClasses) {
-		this.objectClasses = objectClasses;
+	public void addObjectClass(String objectClass) {
+		this.objectClasses.add(objectClass);
 	}
 
-	public void setAdditionalObjectClasses(List<String> additionalObjectClasses) {
-		this.additionalObjectClasses = additionalObjectClasses;
+	public void addAdditionalObjectClass(String additionalObjectClass) {
+		this.additionalObjectClasses.add(additionalObjectClass);
 	}
 
 	public List<String> getAdditionalObjectClasses() {
 		return additionalObjectClasses;
 	}
 
-	public void setDynamicAttributes(List<DynamicAttribute> dynamicAttributes) {
-		this.dynamicAttributes = dynamicAttributes;
+	public void addDynamicAttribute(DynamicAttribute dynamicAttribute) {
+		this.dynamicAttributes.add(dynamicAttribute);
 	}
 
 	public List<DynamicAttribute> getDynamicAttributes() {
@@ -42,5 +43,6 @@ public class ExtensionModel {
 	public boolean hasDynamicAttributes() {
 		return dynamicAttributes != null && !dynamicAttributes.isEmpty();
 	}
+
 
 }
