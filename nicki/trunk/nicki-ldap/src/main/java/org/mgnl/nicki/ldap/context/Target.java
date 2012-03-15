@@ -165,9 +165,11 @@ public class Target implements Serializable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends DynamicObjectExtension> T getExtension(Class<T> extensionClass) {
-		for (DynamicObjectExtension extension : getExtensionsMap().values()) {
-			if (extension.getClass() == extensionClass) {
+	public <T extends DynamicObjectExtension> T getExtension(DynamicObject dynamicObject, Class<T> extensionClass) {
+		for (DynamicObjectExtension extenstionPattern : getExtensionsMap().values()) {
+			if (extenstionPattern.getClass() == extensionClass) {
+				DynamicObjectExtension extension = extenstionPattern.clone();
+				extension.setDynamicObject(dynamicObject);
 				return (T) extension;
 			}
 			

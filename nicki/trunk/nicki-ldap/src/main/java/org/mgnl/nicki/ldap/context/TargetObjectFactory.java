@@ -228,7 +228,7 @@ public class TargetObjectFactory implements ObjectFactory {
 	public <T extends DynamicObjectExtension> T getDynamicObjectExtension(
 			Class<T> extensionClass, DynamicObject dynamicObject) throws DynamicObjectException {
 		if (target.hasExtension(dynamicObject, extensionClass)) {
-			return target.getExtension(extensionClass);
+			return target.getExtension(dynamicObject, extensionClass);
 		}
 		throw new DynamicObjectException("Invalid Extension: " + 
 				dynamicObject.getClass().getName() + " -> " + 
