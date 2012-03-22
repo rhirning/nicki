@@ -23,6 +23,7 @@ public class ResourceCatalogArticle extends CatalogArticle {
 	@Override
 	public void initDataModel() {
 		super.initDataModel();
+		addObjectClass("nickiResourceArticle");
 		
 		DynamicAttribute dynAttribute = new ReferenceDynamicAttribute(Resource.class, ATTRIBUTE_RESOURCE, "nickiResourceRef", String.class,
 				Config.getProperty("nicki.resources.basedn"));

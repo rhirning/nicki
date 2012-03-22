@@ -31,6 +31,9 @@
         <dependent-module archiveName="nicki-config-rhi.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-config-rhi/nicki-config-rhi">
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="nicki-idm-novell.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/nicki-idm-novell/nicki-idm-novell">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="nickiCatalogs"/>
         <property name="java-output-path" value="/nicki-editor-catalogs/build/classes"/>
     </wb-module>
