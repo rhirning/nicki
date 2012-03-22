@@ -34,7 +34,6 @@ package org.mgnl.nicki.vaadin.base.editor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -250,7 +249,9 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		this.treeContainer.setClassIcon(classDefinition, icon);
 	}
 
-	public void configureClass(Class<? extends DynamicObject> parentClass, Icon icon, CREATE allowCreate, DELETE allowDelete, RENAME allowRename, Class<? extends DynamicObject> ... childClass) {
+	public void configureClass(Class<? extends DynamicObject> parentClass, Icon icon,
+			CREATE allowCreate, DELETE allowDelete, RENAME allowRename,
+			Class<? extends DynamicObject> ... childClass) {
 		if (icon != null) {
 			setClassIcon(parentClass, icon);
 		}
@@ -361,31 +362,34 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		refreshAction = new Action(
 				I18n.getText(this.messageKeyBase + ".action.refresh"));
 
-		for (Iterator<Class<? extends DynamicObject>> iterator = this.children.keySet().iterator(); iterator.hasNext();) {
-			Class<? extends DynamicObject> classDefinition = iterator.next();
+		for (Class<? extends DynamicObject> classDefinition : this.children.keySet()) {
 			List<Action> classActions = new ArrayList<Action>();
 			List<Action> rootClassActions = new ArrayList<Action>();
 			Map<Action, Class<? extends DynamicObject>> map = new HashMap<Action, Class<? extends DynamicObject>>();
 			// treeActions
 			if (this.treeActions.containsKey(classDefinition)) {
-				for (Iterator<TreeAction> iterator2 = this.treeActions.get(classDefinition).iterator(); iterator2
-						.hasNext();) {
-					TreeAction treeAction = iterator2.next();
+				for (TreeAction treeAction : this.treeActions.get(classDefinition)) {
 					Action action = new Action(treeAction.getName());
 					classActions.add(action);
 					rootClassActions.add(action);
 					treeActionMap.put(action, treeAction);
 				}
 			}			
-			List<Class<? extends DynamicObject>> children = this.children.get(classDefinition);
-			for (Iterator<Class<? extends DynamicObject>> iterator2 = children.iterator(); iterator2.hasNext();) {
-				Class<? extends DynamicObject> childClass = iterator2.next();
-				if (this.allowCreate.contains(childClass)) {
-					Action childAction = new Action(
-							I18n.getText(this.messageKeyBase + ".action." + getClassName(childClass) + ".new"));
-					classActions.add(childAction);
-					rootClassActions.add(childAction);
-					map.put(childAction, childClass);
+			for (Class<? extends DynamicObject> childClassPattern : this.children.get(classDefinition)) {
+				if (this.allowCreate.contains(childClassPattern)) {
+					try {
+						List<? extends DynamicObject> allClasses
+							= getNickiContext().getObjectFactory().findDynamicObjects(childClassPattern);
+						for (DynamicObject childClass  : allClasses) {
+							Action childAction = new Action(
+									I18n.getText(this.messageKeyBase + ".action." + getClassName(childClass.getClass()) + ".new"));
+							classActions.add(childAction);
+							rootClassActions.add(childAction);
+							map.put(childAction, childClass.getClass());
+						}
+					} catch (InstantiateDynamicObjectException e) {
+						e.printStackTrace();
+					}
 				}				
 			}
 			// delete
