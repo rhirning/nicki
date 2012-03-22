@@ -20,6 +20,7 @@
 		<module>nicki-editor-catalogs</module>
 		<module>nicki-editor-scripts</module>
 		<module>nicki-editor-templates</module>
+		<module>nicki-idm-novell</module>
 		<module>nicki-ldap</module>
 		<module>nicki-reports</module>
 		<module>nicki-shop</module>
