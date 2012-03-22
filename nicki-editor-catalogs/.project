@@ -12,6 +12,7 @@
 		<project>efg-dynamic-objects</project>
 		<project>deron-dynamic-objects</project>
 		<project>nicki-config-rhi</project>
+		<project>nicki-idm-novell</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

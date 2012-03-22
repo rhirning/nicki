@@ -123,7 +123,7 @@ public class TargetObjectFactory implements ObjectFactory {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T extends DynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) throws InstantiateDynamicObjectException {
+	public <T extends DynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) {
 		List<T> list = new ArrayList<T>();
 		for (String dynamicObjectName : target.getDynamicObjects()) {
 			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);
@@ -131,7 +131,7 @@ public class TargetObjectFactory implements ObjectFactory {
 				list.add((T) dynamicObject);
 			}
 		}
-		throw new InstantiateDynamicObjectException("Could not getObjects " + classDefinition);
+		return list;
 	}
 	
 	// TODO

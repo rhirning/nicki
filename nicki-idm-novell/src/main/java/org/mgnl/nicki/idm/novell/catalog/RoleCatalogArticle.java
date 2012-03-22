@@ -22,7 +22,8 @@ public class RoleCatalogArticle extends CatalogArticle {
 	@Override
 	public void initDataModel() {
 		super.initDataModel();
-		
+		addObjectClass("nickiRoleArticle");
+
 		DynamicAttribute dynAttribute = new ReferenceDynamicAttribute(Role.class, ATTRIBUTE_ROLE, "nickiRoleRef", String.class,
 				Config.getProperty("nicki.roles.basedn"));
 		dynAttribute.setForeignKey(Role.class);
