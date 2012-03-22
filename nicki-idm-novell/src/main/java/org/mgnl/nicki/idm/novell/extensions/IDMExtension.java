@@ -1,5 +1,6 @@
 package org.mgnl.nicki.idm.novell.extensions;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -25,7 +26,9 @@ import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
-public class IDMExtension extends BasicExtension implements DynamicObjectExtension {
+public class IDMExtension extends BasicExtension implements DynamicObjectExtension, Serializable {
+
+	private static final long serialVersionUID = -6791692458041112275L;
 	public static final String ATTRIBUTE_LASTWORKINGDAY = "lastWorkingDay";
 	public static final String ATTRIBUTE_QUITDATE = "quitDate";
 	public static final String ATTRIBUTE_ACTIVATIONDATE = "activationDate";
