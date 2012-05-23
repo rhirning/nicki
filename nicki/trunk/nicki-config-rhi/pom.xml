@@ -17,7 +17,7 @@
 		</dependency>
 		<dependency>
 			<groupId>de.deron.projects.efg</groupId>
-			<version>1.19</version>
+			<version>1.21</version>
 			<artifactId>efg-dynamic-objects</artifactId>
 		</dependency>
 	</dependencies>
