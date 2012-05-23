@@ -114,8 +114,8 @@
 	</repositories>
 	<distributionManagement>
 		<repository>
-			<id>hirning.de</id>
-			<url>ftp://hirning.de/repo</url>
+			<id>nexus</id>
+			<url>http://nexus.nicki-tools.de/nexus/content/repositories/snapshots</url>
 		</repository>
 	</distributionManagement>
 </project>
