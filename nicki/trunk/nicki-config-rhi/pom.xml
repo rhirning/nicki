@@ -13,11 +13,11 @@
 		<dependency>
 			<groupId>de.deron</groupId>
 			<artifactId>deron-dynamic-objects</artifactId>
-			<version>1.35</version>
+			<version>${deron.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>de.deron.projects.efg</groupId>
-			<version>1.21</version>
+			<version>${efg.version}</version>
 			<artifactId>efg-dynamic-objects</artifactId>
 		</dependency>
 	</dependencies>
