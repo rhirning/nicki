@@ -8,6 +8,7 @@
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
 	<properties>
+		<deron.version>1.37</deron.version>
 		<project.build.sourceEncoding>iso-8859-1</project.build.sourceEncoding>
 	</properties>
 	<modules>
