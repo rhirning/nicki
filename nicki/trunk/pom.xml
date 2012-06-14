@@ -59,7 +59,6 @@
 				<configuration>
 					<tagBase>https://svn.nicki-tools.de/nicki/nicki/tags/${project.artifactId}</tagBase>
 					<autoversionsubmodules>true</autoversionsubmodules>
-					<useReleaseProfile>false</useReleaseProfile>
 				</configuration>
 			</plugin>
 			<plugin>
