@@ -32,15 +32,10 @@
  */
 package org.mgnl.nicki.report;
 
-
-
-import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.editor.templates.TemplateConfig;
 import org.mgnl.nicki.editor.templates.TemplateEditor;
-import org.mgnl.nicki.ldap.context.Target;
-import org.mgnl.nicki.ldap.context.TargetFactory;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
 import org.mgnl.nicki.vaadin.base.editor.EntryFilter;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
