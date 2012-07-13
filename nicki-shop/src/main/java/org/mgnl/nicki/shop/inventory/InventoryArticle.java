@@ -81,7 +81,7 @@ public class InventoryArticle implements Serializable{
 	public InventoryArticle(CatalogArticle article, String specifier, Date start, Date end,
 			List<InventoryAttribute> attributes) {
 		this.article = article;
-		this.specifier = specifier;
+		this.setSpecifier(specifier);
 		addEmptyAttributes();
 		if (attributes != null) {
 			for (Iterator<InventoryAttribute> iterator = attributes.iterator(); iterator.hasNext();) {
@@ -205,5 +205,13 @@ public class InventoryArticle implements Serializable{
 
 	public void setSource(SOURCE source) {
 		this.source = source;
+	}
+
+	public String getSpecifier() {
+		return specifier;
+	}
+
+	public void setSpecifier(String specifier) {
+		this.specifier = specifier;
 	}
 }

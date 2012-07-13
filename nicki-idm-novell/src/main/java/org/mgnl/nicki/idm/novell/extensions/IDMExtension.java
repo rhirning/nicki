@@ -289,7 +289,6 @@ public class IDMExtension extends BasicExtension implements DynamicObjectExtensi
 	public List<AssignedArticle> getAssignedArticles() {
 		if (extensionGet(ATTRIBUTE_ASSIGNEDARTICLE) == null) {
 			List<AssignedArticle> list = new ArrayList<AssignedArticle>();
-			@SuppressWarnings("unchecked")
 			List<String> articles = (List<String>) get(ATTRIBUTE_ASSIGNEDARTICLE);
 			if (articles != null) {
 				for (String text : articles) {

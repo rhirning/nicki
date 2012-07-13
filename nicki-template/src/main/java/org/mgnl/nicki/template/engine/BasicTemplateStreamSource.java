@@ -44,7 +44,6 @@ import org.mgnl.nicki.template.handler.TemplateHandler;
 
 
 public class BasicTemplateStreamSource {
-	private static final long serialVersionUID = 4222973194514516918L;
 
 	Template template;
 	Map<String, Object> params;

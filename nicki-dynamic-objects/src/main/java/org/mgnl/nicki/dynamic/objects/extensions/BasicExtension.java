@@ -1,6 +1,5 @@
 package org.mgnl.nicki.dynamic.objects.extensions;
 
-import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectExtension;
