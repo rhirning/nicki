@@ -66,7 +66,7 @@ public class Validation {
 	}
 
 	public static void notEmpty(Field component, String error) throws ValidationException {
-		if (StringUtils.isEmpty((String) component.getValue())) {
+		if (StringUtils.isNotBlank((String) component.getValue())) {
 			throw new ValidationException(error);
 		}
 	}
