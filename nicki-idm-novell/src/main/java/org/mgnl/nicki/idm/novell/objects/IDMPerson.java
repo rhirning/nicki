@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.idm.novell.extensions;
+package org.mgnl.nicki.idm.novell.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -41,7 +41,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.dynamic.objects.extensions.BasicExtension;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
@@ -52,13 +51,12 @@ import org.mgnl.nicki.idm.novell.objects.Entitlement;
 import org.mgnl.nicki.idm.novell.objects.Resource;
 import org.mgnl.nicki.idm.novell.objects.Role;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObjectExtension;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
-public class IDMExtension extends BasicExtension implements DynamicObjectExtension, Serializable {
+public class IDMPerson extends Person implements Serializable {
 
 	private static final long serialVersionUID = -6791692458041112275L;
 	public static final String ATTRIBUTE_LASTWORKINGDAY = "lastWorkingDay";
@@ -87,9 +85,13 @@ public class IDMExtension extends BasicExtension implements DynamicObjectExtensi
 	public static final String ATTRIBUTE_MAIL = "mail";
 	public static final String ATTRIBUTE_PHONENUMBER = "phoneNumber";
 
+	private List<AssignedArticle> assignedArticles = null;
+	private List<Role> assignedRoles = null;
+	private List<Resource> assignedResources = null;
+	
 	@Override
-	public void initExtensionModel() {
-		super.initExtensionModel();
+	public void initDataModel() {
+		super.initDataModel();
 		addObjectClass("inetOrgPerson");
 		addAdditionalObjectClass("DirXML-EntitlementRecipient");
 		addAdditionalObjectClass("DirXML-EmployeeAux");
@@ -287,7 +289,7 @@ public class IDMExtension extends BasicExtension implements DynamicObjectExtensi
 
 	@SuppressWarnings("unchecked")
 	public List<AssignedArticle> getAssignedArticles() {
-		if (extensionGet(ATTRIBUTE_ASSIGNEDARTICLE) == null) {
+		if (this.assignedArticles == null) {
 			List<AssignedArticle> list = new ArrayList<AssignedArticle>();
 			List<String> articles = (List<String>) get(ATTRIBUTE_ASSIGNEDARTICLE);
 			if (articles != null) {
@@ -295,53 +297,51 @@ public class IDMExtension extends BasicExtension implements DynamicObjectExtensi
 					list.add(new AssignedArticle(text));
 				}
 			}
-			extensionPut(ATTRIBUTE_ASSIGNEDARTICLE, list);
+			this.assignedArticles = list;
 		}
-		return (List<AssignedArticle>) extensionGet(ATTRIBUTE_ASSIGNEDARTICLE);
+		return this.assignedArticles;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Role> getRoles() {
-		final String ROLES_ATTRIBUTE = "Roles";
-		if (extensionGet(ROLES_ATTRIBUTE) == null) {
+		if (assignedRoles == null) {
 			TemplateMethodModel method = (TemplateMethodModel) get("getRoles");
 			if (method != null) {
 				try {
-					extensionPut(ROLES_ATTRIBUTE, (List<Role>) method.exec(null));
+					assignedRoles = (List<Role>) method.exec(null);
 				} catch (TemplateModelException e) {
 					e.printStackTrace();
-					extensionPut(ROLES_ATTRIBUTE, new ArrayList<Role>());
+					assignedRoles =  new ArrayList<Role>();
 				}
 			}
 			for (AssignedArticle article : getAssignedArticles()) {
 				if (article.getCatalogArticle().getClass().isAssignableFrom(RoleCatalogArticle.class)) {
-					((List<Role>)extensionGet(ROLES_ATTRIBUTE)).add(((RoleCatalogArticle)article.getCatalogArticle()).getRole());
+					assignedRoles.add(((RoleCatalogArticle)article.getCatalogArticle()).getRole());
 				}
 			}
 		}
-		return (List<Role>)extensionGet(ROLES_ATTRIBUTE);
+		return assignedRoles;
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Resource> getResources() {
-		final String RESOURCES_ATTRIBUTE = "RESOURCES";
-		if (extensionGet(RESOURCES_ATTRIBUTE) == null) {
+		if (assignedResources == null) {
 			TemplateMethodModel method = (TemplateMethodModel) get("getResources");
 			if (method != null) {
 				try {
-					extensionPut(RESOURCES_ATTRIBUTE, (List<Role>) method.exec(null));
+					assignedResources = (List<Resource>) method.exec(null);
 				} catch (TemplateModelException e) {
 					e.printStackTrace();
-					extensionPut(RESOURCES_ATTRIBUTE, new ArrayList<Role>());
+					assignedResources = new ArrayList<Resource>();
 				}
 			}
 			for (AssignedArticle article : getAssignedArticles()) {
 				if (article.getCatalogArticle().getClass().isAssignableFrom(ResourceCatalogArticle.class)) {
-					((List<Resource>)extensionGet(RESOURCES_ATTRIBUTE)).add(((ResourceCatalogArticle)article.getCatalogArticle()).getResource());
+					assignedResources.add(((ResourceCatalogArticle)article.getCatalogArticle()).getResource());
 				}
 			}
 		}
-		return (List<Resource>)extensionGet(RESOURCES_ATTRIBUTE);
+		return assignedResources;
 	}
 
 	@SuppressWarnings("unchecked")

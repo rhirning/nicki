@@ -41,7 +41,6 @@ import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
-import org.mgnl.nicki.ldap.objects.DynamicObjectExtension;
 
 public class TargetObjectFactory implements ObjectFactory {
 
@@ -222,17 +221,6 @@ public class TargetObjectFactory implements ObjectFactory {
 		} catch (Exception e) {
 			throw new InstantiateDynamicObjectException(e);
 		}
-	}
-
-	@Override
-	public <T extends DynamicObjectExtension> T getDynamicObjectExtension(
-			Class<T> extensionClass, DynamicObject dynamicObject) throws DynamicObjectException {
-		if (target.hasExtension(dynamicObject, extensionClass)) {
-			return target.getExtension(dynamicObject, extensionClass);
-		}
-		throw new DynamicObjectException("Invalid Extension: " + 
-				dynamicObject.getClass().getName() + " -> " + 
-				extensionClass.getName());
 	}
 	
 }

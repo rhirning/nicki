@@ -483,26 +483,4 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 		put(key, null);
 	}
 
-	public void extend(DynamicObjectExtension extension) {
-		if (extension != null && extension.getExtensionModel() != null) {
-			ExtensionModel extensionModel = extension.getExtensionModel();
-			if (extensionModel.hasObjectClasses()) {
-				for (String objectClass : extensionModel.getObjectClasses()) {
-					addObjectClass(objectClass);
-				}
-			}
-			if (extensionModel.hasAdditionalObjectClasses()) {
-				for (String additionalObjectClass : extensionModel.getAdditionalObjectClasses()) {
-					addAdditionalObjectClass(additionalObjectClass);
-				}
-			}
-			if (extensionModel.hasDynamicAttributes()) {
-				for (DynamicAttribute dynamicAttribute : extensionModel.getDynamicAttributes()) {
-					addAttribute(dynamicAttribute);
-				}
-			}
-		}
-	}
-
-
 }

@@ -42,16 +42,16 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.shop.Catalog;
 import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
-import org.mgnl.nicki.idm.novell.extensions.IDMExtension;
+import org.mgnl.nicki.idm.novell.objects.IDMPerson;
 import org.mgnl.nicki.idm.novell.objects.Resource;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 
 public class ResourceCatalogArticle extends CatalogArticle {
 
 	private static final long serialVersionUID = 3397169876567940029L;
 
 	public static final String ATTRIBUTE_RESOURCE = "resource";
+	private List<CatalogArticle> catalogArticles = null;;
 	@Override
 	public void initDataModel() {
 		super.initDataModel();
@@ -66,32 +66,22 @@ public class ResourceCatalogArticle extends CatalogArticle {
 
 	@Override
 	public List<CatalogArticle> getArticles(Person person) {
-		IDMExtension extension;
-		try {
-			extension = person.getContext().getObjectFactory().getDynamicObjectExtension(IDMExtension.class, person);
-			@SuppressWarnings("unchecked")
-			List<CatalogArticle> catalogArticles = (List<CatalogArticle>) extension.get("ResourceCatalogArticles");
-			if (catalogArticles == null) {
-				catalogArticles = new ArrayList<CatalogArticle>();
-				List<Resource> resources = extension.getResources();
-				List<CatalogArticle> articles = Catalog.getCatalog().getAllArticles();
-				for (CatalogArticle catalogArticle : articles) {
-					if (ResourceCatalogArticle.class.isAssignableFrom(catalogArticle.getClass())) {
-						ResourceCatalogArticle resourceCatalogArticle = (ResourceCatalogArticle) catalogArticle;
-						for (Resource resource : resources) {
-							if (resourceCatalogArticle.contains(resource)) {
-								catalogArticles.add(resourceCatalogArticle);
-							}
+		if (catalogArticles == null) {
+			catalogArticles = new ArrayList<CatalogArticle>();
+			List<Resource> resources = ((IDMPerson)person).getResources();
+			List<CatalogArticle> articles = Catalog.getCatalog().getAllArticles();
+			for (CatalogArticle catalogArticle : articles) {
+				if (ResourceCatalogArticle.class.isAssignableFrom(catalogArticle.getClass())) {
+					ResourceCatalogArticle resourceCatalogArticle = (ResourceCatalogArticle) catalogArticle;
+					for (Resource resource : resources) {
+						if (resourceCatalogArticle.contains(resource)) {
+							catalogArticles.add(resourceCatalogArticle);
 						}
 					}
 				}
-				extension.put("ResourceCatalogArticles", catalogArticles);
 			}
-			return catalogArticles;
-		} catch (DynamicObjectException e) {
-			e.printStackTrace();
 		}
-		return new ArrayList<CatalogArticle>();
+		return catalogArticles;
 	}
 
 	public boolean contains(Resource resource) {
