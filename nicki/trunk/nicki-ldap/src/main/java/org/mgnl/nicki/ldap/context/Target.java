@@ -43,7 +43,6 @@ import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.context.NickiContext.READONLY;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
-import org.mgnl.nicki.ldap.objects.DynamicObjectExtension;
 
 @SuppressWarnings("serial")
 public class Target implements Serializable {
@@ -52,12 +51,7 @@ public class Target implements Serializable {
 	private String propertyBase;
 	private List<String> dynamicObjects = null;
 	private Map<String, DynamicObject> dynamicObjectsMap = null;
-	private Map<String, DynamicObjectExtension> extensionsMap = null;
 	private Map<String, List<String>> extensions = null;
-
-	public Map<String, DynamicObjectExtension> getExtensionsMap() {
-		return extensionsMap;
-	}
 
 	public Target(String targetName, String propertyBase) {
 		this.targetName = targetName;
@@ -66,11 +60,6 @@ public class Target implements Serializable {
 
 	public void setDynamicObjectsMap(Map<String, DynamicObject> initDynamicObjectsMap) {
 		dynamicObjectsMap = initDynamicObjectsMap;
-		
-	}
-
-	public void setExtensionsMap(Map<String, DynamicObjectExtension> initExtensionsMap) {
-		extensionsMap = initExtensionsMap;
 		
 	}
 
@@ -93,11 +82,6 @@ public class Target implements Serializable {
 		for (String dynamicObjectName : dynamicObjectsMap.keySet()) {
 			sb.append(" ").append(dynamicObjectName).append(":");
 			sb.append(dynamicObjectsMap.get(dynamicObjectName).getClass().getSimpleName());
-		}
-		sb.append(", ");
-		for (String extensionName : extensionsMap.keySet()) {
-			sb.append(" ").append(extensionName).append(":");
-			sb.append(extensionsMap.get(extensionName).getClass().getSimpleName());
 		}
 		return sb.toString();
 	}
@@ -147,43 +131,8 @@ public class Target implements Serializable {
 		throw new DynamicObjectException("Invalid DynamicObject: " + dynamicObject.getClass().getName());
 	}
 	
-	public <T extends DynamicObjectExtension> String getExtensionName(Class<T> extensionClass) throws DynamicObjectException {
-		for (String name : getExtensionsMap().keySet()) {
-			if (extensionClass == getExtensionsMap().get(name).getClass()) {
-				return name;
-			}
-		}
-		throw new DynamicObjectException("Invalid DynamicObject: " + extensionClass.getClass().getName());
-	}
-	
 	public DynamicObject getDynamicObject(String dynamicObjectName) {
 		return getDynamicObjectsMap().get(dynamicObjectName);
-	}
-
-	public DynamicObjectExtension getExtension(String extensionName) {
-		return getExtensionsMap().get(extensionName);
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T extends DynamicObjectExtension> T getExtension(DynamicObject dynamicObject, Class<T> extensionClass) {
-		for (DynamicObjectExtension extenstionPattern : getExtensionsMap().values()) {
-			if (extenstionPattern.getClass() == extensionClass) {
-				DynamicObjectExtension extension = extenstionPattern.clone();
-				extension.setDynamicObject(dynamicObject);
-				return (T) extension;
-			}
-			
-		}
-		return null;
-	}
-	
-	public <T extends DynamicObjectExtension> boolean hasExtension(DynamicObject dynamicObject, 
-			Class<T> extensionClass) {
-		try {
-			return getExtensions().get(getDynamicObjectName(dynamicObject)).contains(getExtensionName(extensionClass));
-		} catch (DynamicObjectException e) {
-			return false;
-		}
 	}
 
 }

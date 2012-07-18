@@ -72,4 +72,10 @@ public class ReportApplication extends TemplateEditor {
 	}
 	
 
+
+	@Override
+	public String getI18nBase() {
+		return "nicki.application.reports";
+	}
+
 }

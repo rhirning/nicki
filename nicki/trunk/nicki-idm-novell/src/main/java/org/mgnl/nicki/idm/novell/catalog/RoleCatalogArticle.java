@@ -42,15 +42,15 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.shop.Catalog;
 import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
-import org.mgnl.nicki.idm.novell.extensions.IDMExtension;
+import org.mgnl.nicki.idm.novell.objects.IDMPerson;
 import org.mgnl.nicki.idm.novell.objects.Role;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 
 public class RoleCatalogArticle extends CatalogArticle {
 
 	private static final long serialVersionUID = -5530389061310235734L;
 	public static final String ATTRIBUTE_ROLE = "role";
+	private List<CatalogArticle> catalogArticles = null;;
 	@Override
 	public void initDataModel() {
 		super.initDataModel();
@@ -66,32 +66,22 @@ public class RoleCatalogArticle extends CatalogArticle {
 
 	@Override
 	public List<CatalogArticle> getArticles(Person person) {
-		IDMExtension extension;
-		try {
-			extension = person.getContext().getObjectFactory().getDynamicObjectExtension(IDMExtension.class, person);
-			@SuppressWarnings("unchecked")
-			List<CatalogArticle> catalogArticles = (List<CatalogArticle>) extension.get("RoleCatalogArticles");
-			if (catalogArticles == null) {
-				catalogArticles = new ArrayList<CatalogArticle>();
-				List<Role> roles = extension.getRoles();
-				List<CatalogArticle> articles = Catalog.getCatalog().getAllArticles();
-				for (CatalogArticle catalogArticle : articles) {
-					if (RoleCatalogArticle.class.isAssignableFrom(catalogArticle.getClass())) {
-						RoleCatalogArticle roleCatalogArticle = (RoleCatalogArticle) catalogArticle;
-						for (Role role : roles) {
-							if (roleCatalogArticle.contains(role)) {
-								catalogArticles.add(roleCatalogArticle);
-							}
+		if (catalogArticles == null) {
+			catalogArticles = new ArrayList<CatalogArticle>();
+			List<Role> roles = ((IDMPerson)person).getRoles();
+			List<CatalogArticle> articles = Catalog.getCatalog().getAllArticles();
+			for (CatalogArticle catalogArticle : articles) {
+				if (RoleCatalogArticle.class.isAssignableFrom(catalogArticle.getClass())) {
+					RoleCatalogArticle roleCatalogArticle = (RoleCatalogArticle) catalogArticle;
+					for (Role role : roles) {
+						if (roleCatalogArticle.contains(role)) {
+							catalogArticles.add(roleCatalogArticle);
 						}
 					}
 				}
-				extension.put("RoleCatalogArticles", catalogArticles);
 			}
-			return catalogArticles;
-		} catch (DynamicObjectException e) {
-			e.printStackTrace();
 		}
-		return new ArrayList<CatalogArticle>();
+		return catalogArticles;
 	}
 
 	public boolean contains(Role role) {
