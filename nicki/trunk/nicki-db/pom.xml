@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>1.70-SNAPSHOT</version>
+		<version>1.70</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-core</artifactId>
-			<version>1.70-SNAPSHOT</version>
+			<version>1.70</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
