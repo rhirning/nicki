@@ -71,5 +71,17 @@ public class Validation {
 		}
 	}
 
+	public static void isTrue(boolean check, String error) throws ValidationException {
+		if (!check) {
+			throw new ValidationException(error);
+		}
+	}
+
+	public static void isNumeric(Field component, String error) throws ValidationException {
+		if (StringUtils.isNumeric((String) component.getValue())) {
+			throw new ValidationException(error);
+		}
+	}
+
 
 }
