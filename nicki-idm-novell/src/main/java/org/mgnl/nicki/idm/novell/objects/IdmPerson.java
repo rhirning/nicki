@@ -57,7 +57,7 @@ import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
-public class IDMPerson extends Person implements Serializable {
+public class IdmPerson extends Person implements Serializable {
 
 	private static final long serialVersionUID = -6791692458041112275L;
 	public static final String ATTRIBUTE_LASTWORKINGDAY = "lastWorkingDay";
