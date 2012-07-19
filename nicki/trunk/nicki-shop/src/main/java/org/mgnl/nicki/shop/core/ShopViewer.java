@@ -118,8 +118,9 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 			selectPerson.addListener(new Button.ClickListener() {
 				
 				public void buttonClick(ClickEvent event) {
+					boolean useInternalExternal = true;
 					boolean useActiveInactive = true;
-					personSelector.init(user.getContext(), useActiveInactive, new SelectPersonCommand() {
+					personSelector.init(user.getContext(), useInternalExternal, useActiveInactive, new SelectPersonCommand() {
 						
 						public void setSelectedPerson(Person selectedPerson) {
 							try {
