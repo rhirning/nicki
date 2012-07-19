@@ -39,6 +39,6 @@ import com.vaadin.ui.ComponentContainer;
 
 public interface PersonSelector extends ComponentContainer {
 
-	void init(NickiContext context, boolean useActiveInactive, SelectPersonCommand selectPersonCommand);
+	void init(NickiContext context, boolean useInternExtern, boolean useActiveInactive, SelectPersonCommand selectPersonCommand);
 
 }
