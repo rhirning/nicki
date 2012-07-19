@@ -42,7 +42,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.shop.Catalog;
 import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
-import org.mgnl.nicki.idm.novell.objects.IDMPerson;
+import org.mgnl.nicki.idm.novell.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.objects.Role;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
@@ -68,7 +68,7 @@ public class RoleCatalogArticle extends CatalogArticle {
 	public List<CatalogArticle> getArticles(Person person) {
 		if (catalogArticles == null) {
 			catalogArticles = new ArrayList<CatalogArticle>();
-			List<Role> roles = ((IDMPerson)person).getRoles();
+			List<Role> roles = ((IdmPerson)person).getRoles();
 			List<CatalogArticle> articles = Catalog.getCatalog().getAllArticles();
 			for (CatalogArticle catalogArticle : articles) {
 				if (RoleCatalogArticle.class.isAssignableFrom(catalogArticle.getClass())) {
