@@ -41,6 +41,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.dynamic.objects.objects.Group;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
@@ -65,6 +66,7 @@ public class IDMPerson extends Person implements Serializable {
 	public static final String ATTRIBUTE_MANAGER = "manager";
 	public static final String ATTRIBUTE_TYPE = "type";
 	public static final String ATTRIBUTE_COSTCENTER = "costCenter";
+	public static final String ATTRIBUTE_GENDER = "gender";
 	public static final String ATTRIBUTE_ENTITLEMENT = "entitlement";
 	public static final String ATTRIBUTE_ROLE = "role";
 	public static final String ATTRIBUTE_RESOURCE = "resource";
@@ -92,6 +94,9 @@ public class IDMPerson extends Person implements Serializable {
 	@Override
 	public void initDataModel() {
 		super.initDataModel();
+
+		getModel().getObjectClasses().clear();
+		getModel().getAttributes().remove(ATTRIBUTE_MEMBEROF);
 		addObjectClass("inetOrgPerson");
 		addAdditionalObjectClass("DirXML-EntitlementRecipient");
 		addAdditionalObjectClass("DirXML-EmployeeAux");
@@ -122,6 +127,9 @@ public class IDMPerson extends Person implements Serializable {
 				String.class);
 		addAttribute(dynAttribute);
 
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_GENDER, "nickiGender",
+				String.class);
+		addAttribute(dynAttribute);
 
 		dynAttribute = new StructuredDynamicAttribute(ATTRIBUTE_ENTITLEMENT,
 				"DirXML-EntitlementRef", String.class);
@@ -190,6 +198,11 @@ public class IDMPerson extends Person implements Serializable {
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_MEMBEROF, "groupMembership", String.class);
+		dynAttribute.setForeignKey(Group.class);
+		dynAttribute.setMultiple();
+		addAttribute(dynAttribute);
+		
 		dynAttribute = new DynamicAttribute(ATTRIBUTE_OU, "ou", String.class);
 		dynAttribute.setForeignKey(Org.class);
 		addAttribute(dynAttribute);
@@ -225,10 +238,118 @@ public class IDMPerson extends Person implements Serializable {
 		return false;
 	}
 
+	public void setType(PERSONTYPE type) {
+		if(null != type) {
+			put(ATTRIBUTE_TYPE, type.getValue());
+		} else {
+			clear(ATTRIBUTE_TYPE);
+		}
+	}
+
+	public PERSONTYPE getType() {
+		return PERSONTYPE.fromValue(getAttribute(ATTRIBUTE_TYPE));
+	}
+
 	public void setCostCenter(String value) {
 		put(ATTRIBUTE_COSTCENTER, value);
 	}
 
+	public void setGender(GENDER value) {
+		if(null != value) {
+			put(ATTRIBUTE_GENDER, value.toString());
+		} else {
+			clear(ATTRIBUTE_GENDER);
+		}
+	}
+
+	public void setBirthDate(Date value) {
+		if (value != null) {
+			put(ATTRIBUTE_BIRTHDATE, DataHelper.formatDay.format(value));
+		} else {
+			clear(ATTRIBUTE_BIRTHDATE);
+		}
+	}
+
+	public void setQuitDate(Date value) {
+		if (value != null) {
+			put(ATTRIBUTE_QUITDATE, DataHelper.formatDay.format(value));
+		} else {
+			clear(ATTRIBUTE_QUITDATE);
+		}
+	}
+
+	public void setActivationDate(Date value) {
+		if (value != null) {
+			put(ATTRIBUTE_ACTIVATIONDATE, DataHelper.formatDay.format(value));
+		} else {
+			clear(ATTRIBUTE_ACTIVATIONDATE);
+		}
+	}
+
+	public void setEntryDate(Date value) {
+		if (value != null) {
+			put(ATTRIBUTE_ENTRYDATE, DataHelper.formatDay.format(value));
+		} else {
+			clear(ATTRIBUTE_ENTRYDATE);
+		}
+	}
+
+	public void setOuChangeDate(Date value) {
+		if (value != null) {
+			put(ATTRIBUTE_OUCHANGEDATE, DataHelper.formatDay.format(value));
+		} else {
+			clear(ATTRIBUTE_OUCHANGEDATE);
+		}
+	}
+
+	public void setOuTransferDate(Date value) {
+		if (value != null) {
+			put(ATTRIBUTE_OUTRANSFERDATE, DataHelper.formatDay.format(value));
+		} else {
+			clear(ATTRIBUTE_OUTRANSFERDATE);
+		}
+	}
+
+	public void setNextOu(String value) {
+		put(ATTRIBUTE_NEXTOU, value);
+	}
+
+	public void setNextCostCenter(String value) {
+		put(ATTRIBUTE_NEXTCOSTCENTER, value);
+	}
+
+	public void setLastWorkingDay(Date date) {
+		if (date != null) {
+			put(ATTRIBUTE_LASTWORKINGDAY, DataHelper.formatDay.format(date));
+		} else {
+			clear(ATTRIBUTE_LASTWORKINGDAY);
+		}
+	}
+
+	public Date getQuitDate() {
+		try {
+			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_QUITDATE));
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+
+	public Date getActivationDate() {
+		try {
+			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_ACTIVATIONDATE));
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+
+	public Date getEntryDate() {
+		try {
+			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_ENTRYDATE));
+		} catch (Exception ex) {
+			return null;
+		}
+	}
+	
 	public Date getBirthDate() {
 		try {
 			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_BIRTHDATE));
@@ -287,17 +408,16 @@ public class IDMPerson extends Person implements Serializable {
 		put(ATTRIBUTE_OCCUPATION, value);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<AssignedArticle> getAssignedArticles() {
 		if (this.assignedArticles == null) {
-			List<AssignedArticle> list = new ArrayList<AssignedArticle>();
+			this.assignedArticles = new ArrayList<AssignedArticle>();
+			@SuppressWarnings("unchecked")
 			List<String> articles = (List<String>) get(ATTRIBUTE_ASSIGNEDARTICLE);
 			if (articles != null) {
 				for (String text : articles) {
-					list.add(new AssignedArticle(text));
+					this.assignedArticles.add(new AssignedArticle(text));
 				}
 			}
-			this.assignedArticles = list;
 		}
 		return this.assignedArticles;
 	}
@@ -366,5 +486,38 @@ public class IDMPerson extends Person implements Serializable {
 		
 		return retVal;
 	}
+
+	public enum GENDER {
+
+		MALE, FEMALE
+	};
+
+	public enum PERSONTYPE {
+
+		INTERNAL_USER("INTERNAL"), EXTERNAL_USER("EXTERNAL"), TECHNICAL_USER(
+		"TECHNICAL"), NOT_SET("");
+		private final String type;
+
+		private PERSONTYPE(String type) {
+			this.type = type;
+		}
+
+		public static PERSONTYPE fromValue(String type) {
+			if (INTERNAL_USER.getValue().equals(type)) {
+				return INTERNAL_USER;
+			} else if (EXTERNAL_USER.getValue().equals(type)) {
+				return EXTERNAL_USER;
+			} else if (TECHNICAL_USER.getValue().equals(type)) {
+				return TECHNICAL_USER;
+			}
+
+			return NOT_SET;
+
+		}
+
+		public String getValue() {
+			return type;
+		}
+	};
 
 }
