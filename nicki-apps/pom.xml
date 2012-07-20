@@ -2,7 +2,12 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>nicki-apps</groupId>
 	<artifactId>nicki-apps</artifactId>
-	<version>1.75-SNAPSHOT</version>
+	<parent>
+		<artifactId>nicki-parent</artifactId>
+		<version>1.75-SNAPSHOT</version>
+		<groupId>org.mgnl.nicki</groupId>
+		<relativePath>..</relativePath>
+	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
