@@ -113,7 +113,7 @@ public class IdmPerson extends Person implements Serializable {
 				"nickiActivationDate", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new ReferenceDynamicAttribute(Person.class, "ATTRIBUTE_MANAGER",
+		dynAttribute = new ReferenceDynamicAttribute(Person.class, ATTRIBUTE_MANAGER,
 				"manager", String.class,
 				Config.getProperty("nicki.users.basedn"));
 		dynAttribute.setForeignKey(Person.class);

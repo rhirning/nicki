@@ -58,10 +58,15 @@ import com.vaadin.event.Action;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.NativeButton;
+import com.vaadin.ui.Panel;
+import com.vaadin.ui.Slider;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Tree.ExpandEvent;
 
 @SuppressWarnings("serial")
@@ -72,6 +77,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 	public enum RENAME {ALLOW, DENY};
 	
 	private NickiSelect selector;
+	private Panel panel;
 	private VerticalLayout selectorLayout;
 	private DynamicObject selectedObject = null;
 	private ClassEditor viewer;
@@ -105,6 +111,8 @@ public class NickiTreeEditor extends AbsoluteLayout {
 	private NickiApplication application;
 	private HorizontalSplitPanel hsplit;
 	private NickiTreeEditor nickiEditor;
+	private float viewerHeight = 800;
+	private Slider changeSize;
 
 	public NickiTreeEditor(NickiApplication application, NickiContext ctx) {
 		this.nickiEditor = this;
@@ -133,11 +141,46 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		addComponent(hsplit, "top:0.0px;left:0.0px;");
 		
 		selectorLayout = new VerticalLayout();
-		selectorLayout.setHeight("100%");
 
+        changeSize = new Slider();
+        changeSize.setImmediate(true);
+        changeSize.setMin(800);
+        changeSize.setMax(2000);
+        changeSize.setWidth("100%");
+        changeSize.addListener(new Property.ValueChangeListener() {
+			
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				Object value = event.getProperty().getValue();
+				viewerHeight = Float.parseFloat(value.toString());
+				if (viewer != null) {
+					viewer.setHeight(viewerHeight, UNITS_PIXELS);
+				}
+				
+			}
+		});
+        /*
+        changeSize.addListener(new Button.ClickListener() {
+			
+			@Override
+			public void buttonClick(ClickEvent event) {
+				viewerHeight += 100;
+				if (viewer != null) {
+					viewer.setHeight(viewerHeight, UNITS_PIXELS);
+				}
+			}
+		});
+         */
 		selectorLayout.addComponent(selector.getComponent());
 
+
 		hsplit.setFirstComponent(selectorLayout);
+		this.panel = new Panel();
+		VerticalLayout panelLayout = new VerticalLayout();
+		panelLayout.setMargin(false);
+		panel.setContent(panelLayout);
+		panel.setHeight("100%");
+		hsplit.setSecondComponent(panel);
 
 		selector.setImmediate(true);
 		selector.setSelectable(true);
@@ -146,7 +189,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 				DynamicObject selected = (DynamicObject) selector.getValue();
 				if (selected == null) {
 					if (viewer != null) {
-						hsplit.removeComponent(viewer);
+						panel.removeComponent(viewer);
 						viewer = null;
 					return;
 					}
@@ -162,11 +205,15 @@ public class NickiTreeEditor extends AbsoluteLayout {
 						ClassEditor classEditor = classEditors.get(selected.getClass());
 						classEditor.setDynamicObject(getEditor(), selected);
 						viewer = classEditor;
+						viewer.setHeight(viewerHeight, UNITS_PIXELS);
 					} else {
 						viewer = new DynamicObjectViewer();
 						viewer.setDynamicObject(getEditor(), selected);
+						viewer.setHeight(viewerHeight, UNITS_PIXELS);
 					}
-					hsplit.setSecondComponent(viewer);
+					panel.removeAllComponents();
+			        panel.addComponent(changeSize);
+					panel.addComponent(viewer);
 				}
 			}
 		});
@@ -232,7 +279,8 @@ public class NickiTreeEditor extends AbsoluteLayout {
 			selector.unselect(selectedObject);
 			setSelectedObject(null);
 		}
-		hsplit.removeAllComponents();
+
+		panel.removeAllComponents();
 		hsplit.setFirstComponent(selectorLayout);
 		viewer = null;
 
