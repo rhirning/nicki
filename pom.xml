@@ -28,6 +28,7 @@
 		<module>nicki-shop</module>
 		<module>nicki-template</module>
 		<module>nicki-vaadin-base</module>
+		<module>nicki-apps</module>
 	</modules>
 	<dependencies>
 		<dependency>
