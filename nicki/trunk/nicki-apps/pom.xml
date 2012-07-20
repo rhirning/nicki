@@ -2,47 +2,47 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>nicki-apps</groupId>
 	<artifactId>nicki-apps</artifactId>
-	<version>1.74</version>
+	<version>1.75-SNAPSHOT</version>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-catalogs</artifactId>
-			<version>1.74</version>
+			<version>1.75-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-scripts</artifactId>
-			<version>1.74</version>
+			<version>1.75-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-templates</artifactId>
-			<version>1.74</version>
+			<version>1.75-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-reports</artifactId>
-			<version>1.74</version>
+			<version>1.75-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-config-rhi</artifactId>
-			<version>1.74</version>
+			<version>1.75-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-idm-novell</artifactId>
-			<version>1.74</version>
+			<version>1.75-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-dynamic-objects</artifactId>
-			<version>1.74</version>
+			<version>1.75-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-dynamic-objects-ad</artifactId>
-			<version>1.74</version>
+			<version>1.75-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
