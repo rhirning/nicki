@@ -60,8 +60,8 @@ import com.vaadin.ui.Window.Notification;
 public class ShopViewer extends CustomComponent implements ShopViewerComponent, Serializable {
 
 	private AbsoluteLayout mainLayout;
-	private Person user;
-	private Person person = null;
+	private Person shopper;
+	private Person recipient = null;
 	private Inventory inventory = null;
 	private Shop shop;
 	private Button saveButton;
@@ -69,8 +69,8 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	private ShopRenderer renderer = null;
 	private ShopParent parent;
 	
-	public ShopViewer(Person user, Shop shop, PersonSelector personSelector, ShopParent parent) {
-		this.user = user;
+	public ShopViewer(Person shopper, Shop shop, PersonSelector personSelector, ShopParent parent) {
+		this.shopper = shopper;
 		this.shop = shop;
 		this.personSelector = personSelector;
 		this.parent = parent;
@@ -78,12 +78,12 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	}
 
 
-	public ShopViewer(Person user, Shop shop, Person person, ShopParent parent) throws InvalidPrincipalException, InstantiateDynamicObjectException {
-		this.user = user;
+	public ShopViewer(Person user, Shop shop, Person recipient, ShopParent parent) throws InvalidPrincipalException, InstantiateDynamicObjectException {
+		this.shopper = user;
 		this.shop = shop;
-		this.person = person;
+		this.recipient = recipient;
 		this.parent = parent;
-		this.inventory = new Inventory(user, person);
+		this.inventory = new Inventory(user, recipient);
 		init();
 	}
 	
@@ -111,7 +111,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		// top-level component properties
 		setWidth("100.0%");
 		setHeight("100.0%");
-		if (person != null) {
+		if (recipient != null) {
 			showShop();
 		} else {
 			Button selectPerson = new Button(I18n.getText("nicki.editor.generic.button.selectPerson"));
@@ -120,12 +120,12 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 				public void buttonClick(ClickEvent event) {
 					boolean useInternalExternal = true;
 					boolean useActiveInactive = true;
-					personSelector.init(user.getContext(), useInternalExternal, useActiveInactive, new SelectPersonCommand() {
+					personSelector.init(shopper.getContext(), useInternalExternal, useActiveInactive, new SelectPersonCommand() {
 						
 						public void setSelectedPerson(Person selectedPerson) {
 							try {
-								person = selectedPerson;
-								inventory = new Inventory(user, person);
+								recipient = selectedPerson;
+								inventory = new Inventory(shopper, recipient);
 								mainLayout.removeAllComponents();
 								showShop();
 							} catch (Exception e) {
@@ -155,7 +155,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 			AbsoluteLayout personLayout = new AbsoluteLayout();
 			personLayout.setHeight("30px");
 			personLayout.setWidth("100%");
-			Label personLabel = new Label(person.getDisplayName());
+			Label personLabel = new Label(recipient.getDisplayName());
 			personLabel.setWidth("200px");
 			personLayout.addComponent(personLabel, "top:0.0px;left:20.0px;");
 	
