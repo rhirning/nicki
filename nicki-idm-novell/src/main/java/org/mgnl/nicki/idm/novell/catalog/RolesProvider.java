@@ -30,37 +30,45 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.shop;
+package org.mgnl.nicki.idm.novell.catalog;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
-import org.mgnl.nicki.ldap.context.AppContext;
-import org.mgnl.nicki.ldap.context.ObjectFactory;
-import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
+import org.mgnl.nicki.dynamic.objects.shop.CatalogPage;
+import org.mgnl.nicki.dynamic.objects.shop.Provider;
+import org.mgnl.nicki.idm.novell.objects.Role;
 
-public class CatalogArticleFactory {
-	private static CatalogArticleFactory instance = null;
-	private List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
-	
-	public static CatalogArticleFactory getInstance() throws InvalidPrincipalException, InstantiateDynamicObjectException {
-		if (instance == null) {
-			instance = new CatalogArticleFactory();
+@SuppressWarnings("serial")
+public class RolesProvider implements Provider, Serializable {
+	CatalogPage page = null;
+	public List<CatalogArticle> getArticles(CatalogPage catalogPage) {
+		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
+		List<Role> roles = catalogPage.getContext().loadObjects(Role.class,
+				Config.getProperty("nicki.roles.basedn"), null);
+		if (roles != null && roles.size() > 0) {
+			for (Iterator<Role> iterator = roles.iterator(); iterator.hasNext();) {
+				Role role = iterator.next();
+				articles.add(new VirtualRoleCatalogArticle(role, catalogPage));
+			}
 		}
-		return instance;
-	}
-
-	public CatalogArticleFactory() throws InvalidPrincipalException, InstantiateDynamicObjectException {
-		ObjectFactory objectFactory = AppContext.getSystemContext().getObjectFactory();
-		for (CatalogArticle catalogArticle : objectFactory.findDynamicObjects(CatalogArticle.class)) {
-			articles.add(catalogArticle);
-		};
-	}
-
-	public List<CatalogArticle> getArticles() {
 		return articles;
 	}
-	
-	
+
+	public CatalogArticle getArticle(String key) {
+		Role role = this.page.getContext().loadObject(Role.class, key);
+		if (role != null) {
+			return  new VirtualRoleCatalogArticle(role, this.page);
+		}
+		return null;
+	}
+
+	public void init(CatalogPage catalogPage) {
+		this.page = catalogPage;
+	}
+
 }

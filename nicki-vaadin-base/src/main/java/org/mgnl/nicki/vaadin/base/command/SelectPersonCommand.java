@@ -32,9 +32,11 @@
  */
 package org.mgnl.nicki.vaadin.base.command;
 
+import java.io.Serializable;
+
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
-public interface SelectPersonCommand {
+public interface SelectPersonCommand extends Serializable {
 
 	void setSelectedPerson(Person person);
 }
