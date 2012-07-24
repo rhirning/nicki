@@ -46,7 +46,6 @@ public class TargetFactory {
 
 	public static final String PROPERTY_BASE = "nicki.targets";
 	public static final String PROPERTY_OBJECTS = "objects";
-	public static final String PROPERTY_EXTENSIONS = "extensions";
 	public static final String SEPARATOR = ",";
 	
 	
@@ -74,7 +73,6 @@ public class TargetFactory {
 	private void initDynamicObjects(Target target) {
 		List<String> dynamicObjects = new ArrayList<String>();
 		Map<String, DynamicObject> map = new HashMap<String, DynamicObject>();
-		Map<String, List<String>> extensions = new HashMap<String, List<String>>();
 		String base = PROPERTY_BASE + "." + target.getName() + "." + PROPERTY_OBJECTS;
 		String objectsNames = Config.getProperty(base);
 		if (StringUtils.isNotEmpty(objectsNames)) {
@@ -94,7 +92,6 @@ public class TargetFactory {
 		}
 		target.setDynamicObjects(dynamicObjects);
 		target.setDynamicObjectsMap(map);
-		target.setExtensions(extensions);
 	}
 
 	private DynamicObject getDynamicObject(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
