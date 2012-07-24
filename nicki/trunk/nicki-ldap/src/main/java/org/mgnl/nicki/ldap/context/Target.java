@@ -51,7 +51,6 @@ public class Target implements Serializable {
 	private String propertyBase;
 	private List<String> dynamicObjects = null;
 	private Map<String, DynamicObject> dynamicObjectsMap = null;
-	private Map<String, List<String>> extensions = null;
 
 	public Target(String targetName, String propertyBase) {
 		this.targetName = targetName;
@@ -104,14 +103,6 @@ public class Target implements Serializable {
 
 	public String getName() {
 		return targetName;
-	}
-
-	public void setExtensions(Map<String, List<String>> extensions) {
-		this.extensions = extensions;
-	}
-
-	public Map<String, List<String>> getExtensions() {
-		return extensions;
 	}
 
 	public void setDynamicObjects(List<String> dynamicObjects) {

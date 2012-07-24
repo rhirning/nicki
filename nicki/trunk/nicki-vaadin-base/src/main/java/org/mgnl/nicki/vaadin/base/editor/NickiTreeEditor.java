@@ -58,15 +58,12 @@ import com.vaadin.event.Action;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.AbstractSelect;
-import com.vaadin.ui.Button;
 import com.vaadin.ui.HorizontalSplitPanel;
-import com.vaadin.ui.NativeButton;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Slider;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Tree.ExpandEvent;
 
 @SuppressWarnings("serial")
@@ -300,25 +297,42 @@ public class NickiTreeEditor extends AbsoluteLayout {
 	public void configureClass(Class<? extends DynamicObject> parentClass, Icon icon,
 			CREATE allowCreate, DELETE allowDelete, RENAME allowRename,
 			Class<? extends DynamicObject> ... childClass) {
-		if (icon != null) {
-			setClassIcon(parentClass, icon);
+		List<? extends DynamicObject> dynamicObjects;
+		try {
+			dynamicObjects = getNickiContext().getObjectFactory().findDynamicObjects(parentClass);
+		} catch (InstantiateDynamicObjectException e) {
+			dynamicObjects = new ArrayList<DynamicObject>();
 		}
-		if (allowCreate == CREATE.ALLOW) {
-			this.allowCreate.add(parentClass);
-		}
-		if (allowDelete == DELETE.ALLOW) {
-			this.allowDelete.add(parentClass);
-		}
-		if (allowRename == RENAME.ALLOW) {
-			this.allowRename.add(parentClass);
-		}
-		List<Class<? extends DynamicObject>> list = children.get(parentClass);
-		if (list == null) {
-			list = new ArrayList<Class<? extends DynamicObject>>();
-			children.put(parentClass, list);
-		}
-		for (int i = 0; i < childClass.length; i++) {
-			list.add(childClass[i]);
+
+		for (DynamicObject dynamicObject : dynamicObjects) {
+			if (icon != null) {
+				setClassIcon(dynamicObject.getClass(), icon);
+			}
+			if (allowCreate == CREATE.ALLOW) {
+				this.allowCreate.add(dynamicObject.getClass());
+			}
+			if (allowDelete == DELETE.ALLOW) {
+				this.allowDelete.add(dynamicObject.getClass());
+			}
+			if (allowRename == RENAME.ALLOW) {
+				this.allowRename.add(dynamicObject.getClass());
+			}
+			
+			List<Class<? extends DynamicObject>> list = children.get(dynamicObject.getClass());
+			if (list == null) {
+				list = new ArrayList<Class<? extends DynamicObject>>();
+				children.put(dynamicObject.getClass(), list);
+			}
+			for (int i = 0; i < childClass.length; i++) {
+				try {
+					List<? extends DynamicObject> childObjects = getNickiContext().getObjectFactory().findDynamicObjects(childClass[i]);
+					for (DynamicObject childObject : childObjects) {
+						list.add(childObject.getClass());
+					}
+				} catch (InstantiateDynamicObjectException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	
@@ -422,23 +436,25 @@ public class NickiTreeEditor extends AbsoluteLayout {
 					rootClassActions.add(action);
 					treeActionMap.put(action, treeAction);
 				}
-			}			
-			for (Class<? extends DynamicObject> childClassPattern : this.children.get(classDefinition)) {
-				if (this.allowCreate.contains(childClassPattern)) {
-					try {
-						List<? extends DynamicObject> allClasses
-							= getNickiContext().getObjectFactory().findDynamicObjects(childClassPattern);
-						for (DynamicObject childClass  : allClasses) {
-							Action childAction = new Action(
-									I18n.getText(this.messageKeyBase + ".action." + getClassName(childClass.getClass()) + ".new"));
-							classActions.add(childAction);
-							rootClassActions.add(childAction);
-							map.put(childAction, childClass.getClass());
+			}
+			if (this.children.get(classDefinition) != null) {
+				for (Class<? extends DynamicObject> childClassPattern : this.children.get(classDefinition)) {
+					if (this.allowCreate.contains(childClassPattern)) {
+						try {
+							List<? extends DynamicObject> allClasses
+								= getNickiContext().getObjectFactory().findDynamicObjects(childClassPattern);
+							for (DynamicObject childClass  : allClasses) {
+								Action childAction = new Action(
+										I18n.getText(this.messageKeyBase + ".action." + getClassName(childClass.getClass()) + ".new"));
+								classActions.add(childAction);
+								rootClassActions.add(childAction);
+								map.put(childAction, childClass.getClass());
+							}
+						} catch (InstantiateDynamicObjectException e) {
+							e.printStackTrace();
 						}
-					} catch (InstantiateDynamicObjectException e) {
-						e.printStackTrace();
-					}
-				}				
+					}				
+				}
 			}
 			// delete
 			if (this.allowDelete.contains(classDefinition)) {
