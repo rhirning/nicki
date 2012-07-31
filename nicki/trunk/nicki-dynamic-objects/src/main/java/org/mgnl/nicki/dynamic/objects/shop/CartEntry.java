@@ -100,7 +100,19 @@ public class CartEntry {
         return cartentry;
     }
 
-    public static CartEntry fromNode(Element node) {
+    public Date getStart() {
+		return start;
+	}
+
+	public Date getEnd() {
+		return end;
+	}
+
+	public String getSpecifier() {
+		return specifier;
+	}
+
+	public static CartEntry fromNode(Element node) {
         if (null == node) {
             return null;
         }

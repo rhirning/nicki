@@ -65,6 +65,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	private Inventory inventory = null;
 	private Shop shop;
 	private Button saveButton;
+	private Button showCartButton;
 	private PersonSelector personSelector;
 	private ShopRenderer renderer = null;
 	private ShopParent parent;
@@ -199,9 +200,38 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 				}
 			}
 		});
+		
 
-		layout.addComponent(renderer.render(getShopViewerComponent(), getInventory()), "top:0.0px;bottom:30.0px;left:0.0px;");
-		layout.addComponent(saveButton, "bottom:0.0px;left:20.0px;");
+		showCartButton = new Button(I18n.getText("nicki.editor.generic.button.showCart"));
+		showCartButton.addListener(new Button.ClickListener() {
+			
+			public void buttonClick(ClickEvent event) {
+				if (getInventory() != null) {
+					if (!getInventory().hasChanged()) {
+						getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".showCart.empty"),
+								Notification.TYPE_HUMANIZED_MESSAGE);
+					} else {
+						CartViewer cartViewer = new CartViewer(getInventory().getCart("shop"));
+						Window newWindow = new Window(I18n.getText(parent.getI18nBase() + ".cart.window.title"), cartViewer);
+						newWindow.setWidth(1000, Sizeable.UNITS_PIXELS);
+						newWindow.setHeight(600, Sizeable.UNITS_PIXELS);
+						newWindow.setModal(true);
+						getWindow().addWindow(newWindow);
+						/*
+						getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".showCart.success"), getInventory().toString(),
+								Notification.TYPE_HUMANIZED_MESSAGE);
+						*/
+					}
+				} else {
+					getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".showCart.empty"),
+							Notification.TYPE_HUMANIZED_MESSAGE);
+				}
+			}
+		});
+
+		layout.addComponent(saveButton, "top:0.0px;left:20.0px;");
+		layout.addComponent(showCartButton, "top:0.0px;right:20.0px;");
+		layout.addComponent(renderer.render(getShopViewerComponent(), getInventory()), "top:30.0px;;left:0.0px;");
 	}
 
 

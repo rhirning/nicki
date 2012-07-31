@@ -52,6 +52,7 @@ public class BooleanAttributeInputListener implements ValueChangeListener {
 	public void valueChange(ValueChangeEvent event) {
 		String value = event.getProperty().getValue().toString();
 		property.setValue(value);
+		property.getDynamicObject().setModified(true);
 		if (objectListener != null) {
 			objectListener.valueChange(property.getDynamicObject(), property.getAttributeName(), value);
 		}

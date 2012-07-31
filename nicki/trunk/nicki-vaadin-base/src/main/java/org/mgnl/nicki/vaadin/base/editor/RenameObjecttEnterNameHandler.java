@@ -59,4 +59,9 @@ public class RenameObjecttEnterNameHandler extends EnterNameHandler implements S
 		editor.reloadChildren(parent);
 	}
 
+	@Override
+	public String getName() {
+		return dynamicObject.getName();
+	}
+
 }

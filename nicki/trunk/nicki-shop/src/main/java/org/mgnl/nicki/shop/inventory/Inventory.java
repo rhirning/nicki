@@ -55,7 +55,7 @@ import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.shop.inventory.InventoryArticle.STATUS;
 
 @SuppressWarnings("serial")
-public class Inventory implements Serializable{
+public class Inventory implements Serializable {
 	public enum SOURCE {
 		SHOP, RULE, NONE;
 
@@ -82,7 +82,8 @@ public class Inventory implements Serializable{
 		return articles;
 	}
 
-	public Inventory(Person user, Person person) throws InvalidPrincipalException, InstantiateDynamicObjectException {
+	public Inventory(Person user, Person person)
+			throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		super();
 		this.setUser(user);
 		this.person = person;
@@ -95,20 +96,24 @@ public class Inventory implements Serializable{
 		return null;
 	}
 
-	private void init() throws InvalidPrincipalException, InstantiateDynamicObjectException {
-		List<CatalogArticle> availableArticles = CatalogArticleFactory.getInstance().getArticles();
+	private void init() throws InvalidPrincipalException,
+			InstantiateDynamicObjectException {
+		List<CatalogArticle> availableArticles = CatalogArticleFactory
+				.getInstance().getArticles();
 		for (CatalogArticle catalogArticle : availableArticles) {
 			List<InventoryAttribute> attributes = getAttributes(catalogArticle);
 			Date start = catalogArticle.getStart(person);
 			Date end = catalogArticle.getEnd(person);
 			String specifier = catalogArticle.getSpecifier(person);
-			articles.put(catalogArticle.getPath(), new InventoryArticle(catalogArticle, specifier, start, end, attributes));
+			articles.put(catalogArticle.getPath(), new InventoryArticle(
+					catalogArticle, specifier, start, end, attributes));
 		}
 	}
 
 	private List<InventoryAttribute> getAttributes(CatalogArticle article) {
 		List<InventoryAttribute> attributes = new ArrayList<InventoryAttribute>();
-		for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
+		for (Iterator<CatalogArticleAttribute> iterator = article
+				.getAllAttributes().iterator(); iterator.hasNext();) {
 			CatalogArticleAttribute attribute = iterator.next();
 			String value = getCatalogAttributeValue(article, attribute);
 			attributes.add(new InventoryAttribute(article, attribute, value));
@@ -116,14 +121,16 @@ public class Inventory implements Serializable{
 		return attributes;
 	}
 
-	private String getCatalogAttributeValue(CatalogArticle article, CatalogArticleAttribute attribute) {
+	private String getCatalogAttributeValue(CatalogArticle article,
+			CatalogArticleAttribute attribute) {
 		String attributeId = article.getAttributeId(attribute.getName());
-		for (Iterator<String> iterator = this.attributeValues.iterator(); iterator.hasNext();) {
+		for (Iterator<String> iterator = this.attributeValues.iterator(); iterator
+				.hasNext();) {
 			String entry = iterator.next();
 			if (StringUtils.startsWith(entry, attributeId + "=")) {
 				return StringUtils.substringAfter(entry, attributeId + "=");
 			}
-			
+
 		}
 		return null;
 	}
@@ -155,42 +162,63 @@ public class Inventory implements Serializable{
 			}
 		}
 	}
-	
+
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		sb.append("Inventory for ").append(person.getDisplayName()).append("\n");
-		for (Iterator<String> iterator = articles.keySet().iterator(); iterator.hasNext();) {
-			String key= iterator.next();
+		sb.append("Inventory for ").append(person.getDisplayName())
+				.append("\n");
+		for (Iterator<String> iterator = articles.keySet().iterator(); iterator
+				.hasNext();) {
+			String key = iterator.next();
 			sb.append(articles.get(key).toString()).append("\n");
 		}
 		return sb.toString();
 	}
-	
-	public Cart save(String source) throws InstantiateDynamicObjectException, DynamicObjectException {
+
+	public Cart getCart(String source) {
 		if (hasChanged()) {
-			Cart cart = person.getContext().getObjectFactory().getDynamicObject(Cart.class);
-			cart.initNew(Config.getProperty("nicki.carts.basedn"), Long.toString(new Date().getTime()));
-			cart.setInitiator(user);
-			cart.setRecipient(person);
-			cart.setRequestDate(new Date());
-			cart.setStatus(Cart.STATUS.REQUESTED);
-			cart.setSource(source);
-			cart.setCatalog(Catalog.getCatalog());
-			for (Iterator<InventoryArticle> iterator = articles.values().iterator(); iterator.hasNext();) {
-				InventoryArticle iArticle = iterator.next();
-				if (iArticle.hasChanged()) {
-					CartEntry entry = new CartEntry(iArticle.getArticle().getCatalogPath(),
-											InventoryArticle.getAction(iArticle.getStatus()));
-					for (Iterator<InventoryAttribute> iterator2 = iArticle.getAttributes().values().iterator();
-							iterator2.hasNext();) {
-						InventoryAttribute iAttribute = iterator2.next();
-						if (iAttribute.hasChanged()) {
-							entry.addAttribute(iAttribute.getName(), iAttribute.getValue());
+			Cart cart;
+			try {
+				cart = person.getContext().getObjectFactory()
+						.getDynamicObject(Cart.class);
+				cart.initNew(Config.getProperty("nicki.carts.basedn"),
+						Long.toString(new Date().getTime()));
+				cart.setInitiator(user);
+				cart.setRecipient(person);
+				cart.setRequestDate(new Date());
+				cart.setStatus(Cart.STATUS.REQUESTED);
+				cart.setSource(source);
+				cart.setCatalog(Catalog.getCatalog());
+				for (String key : articles.keySet()) {
+					InventoryArticle iArticle = articles.get(key);
+					if (iArticle.hasChanged()) {
+						CartEntry entry = new CartEntry(
+								iArticle.getArticle().getCatalogPath(),
+								InventoryArticle.getAction(iArticle.getStatus()));
+						for (Iterator<InventoryAttribute> iterator2 = iArticle
+								.getAttributes().values().iterator(); iterator2
+								.hasNext();) {
+							InventoryAttribute iAttribute = iterator2.next();
+							if (iAttribute.hasChanged()) {
+								entry.addAttribute(iAttribute.getName(),
+										iAttribute.getValue());
+							}
 						}
+						cart.addCartEntry(entry);
 					}
-					cart.addCartEntry(entry);
 				}
+				return cart;
+			} catch (InstantiateDynamicObjectException e) {
+				e.printStackTrace();
 			}
+		}
+		return null;
+	}
+
+	public Cart save(String source) throws InstantiateDynamicObjectException,
+			DynamicObjectException {
+		if (hasChanged()) {
+			Cart cart = getCart(source);
 			cart.create();
 			return cart;
 		}
@@ -198,7 +226,8 @@ public class Inventory implements Serializable{
 	}
 
 	public boolean hasChanged() {
-		for (Iterator<InventoryArticle> iterator = articles.values().iterator(); iterator.hasNext();) {
+		for (Iterator<InventoryArticle> iterator = articles.values().iterator(); iterator
+				.hasNext();) {
 			if (iterator.next().hasChanged()) {
 				return true;
 			}

@@ -214,4 +214,8 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		}		
 	}
 
+	@Override
+	public void save() {
+	}
+
 }

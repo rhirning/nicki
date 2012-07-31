@@ -41,44 +41,65 @@ import org.mgnl.nicki.vaadin.base.editor.ValidationException;
 import com.vaadin.ui.Field;
 
 public class Validation {
-	public static void notNull(DynamicObject dynamicObject, String error) throws ValidationException {
+	public static void notNull(Field component, DynamicObject dynamicObject, String error) throws ValidationException {
 		if (dynamicObject == null) {
+			if (component != null) {
+				component.focus();
+			}
 			throw new ValidationException(error);
 		}
 	}
 
-	public static void notNull(Date date, String error) throws ValidationException {
+	public static void notNull(Field component, Date date, String error) throws ValidationException {
 		if (date == null) {
+			if (component != null) {
+				component.focus();
+			}
 			throw new ValidationException(error);
 		}
 	}
 
-	public static void dateInFuture(Date date, String error) throws ValidationException {
+	public static void dateInFuture(Field component, Date date, String error) throws ValidationException {
 		if (date == null || date.compareTo(new Date()) < 0) {
+			if (component != null) {
+				component.focus();
+			}
 			throw new ValidationException(error);
 		}
 	}
 
-	public static void dateInPast(Date date, String error) throws ValidationException {
+	public static void dateInPast(Field component, Date date, String error) throws ValidationException {
 		if (date == null || date.compareTo(new Date()) > 0) {
+			if (component != null) {
+				component.focus();
+			}
 			throw new ValidationException(error);
 		}
 	}
 
 	public static void notEmpty(Field component, String error) throws ValidationException {
-		if (StringUtils.isNotBlank((String) component.getValue())) {
+		if (!StringUtils.isNotBlank((String) component.getValue())) {
+			if (component != null) {
+				component.focus();
+			}
 			throw new ValidationException(error);
 		}
 	}
 
-	public static void isTrue(boolean check, String error) throws ValidationException {
+	public static void isTrue(Field component, boolean check, String error) throws ValidationException {
 		if (!check) {
+			if (component != null) {
+				component.focus();
+			}
 			throw new ValidationException(error);
 		}
 	}
 
 	public static void isNumeric(Field component, String error) throws ValidationException {
-		if (StringUtils.isNumeric((String) component.getValue())) {
+		if (!StringUtils.isNumeric((String) component.getValue())) {
+			if (component != null) {
+				component.focus();
+			}
 			throw new ValidationException(error);
 		}
 	}

@@ -53,6 +53,7 @@ public class AttributeInputListener implements ValueChangeListener {
 	public void valueChange(ValueChangeEvent event) {
 		String value = StringUtils.trimToEmpty((String) event.getProperty().getValue());
 		property.setValue(value);
+		property.getDynamicObject().setModified(true);
 		if (objectListener != null) {
 			objectListener.valueChange(property.getDynamicObject(), property.getAttributeName(), value);
 		}

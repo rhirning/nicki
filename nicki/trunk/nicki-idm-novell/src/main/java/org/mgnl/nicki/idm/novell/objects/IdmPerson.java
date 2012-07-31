@@ -184,10 +184,6 @@ public class IdmPerson extends Person implements Serializable {
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_LOCATION, "nickiLocation",
-				String.class);
-		addAttribute(dynAttribute);
-
 		dynAttribute = new DynamicAttribute(ATTRIBUTE_ASSIGNEDARTICLE, "nickiCatalogArticle",
 				String.class);
 		dynAttribute.setMultiple();
@@ -402,6 +398,35 @@ public class IdmPerson extends Person implements Serializable {
 
 	public void setCompany(String value) {
 		put(ATTRIBUTE_COMPANY, value);
+	}
+
+	public String getCompany() {
+		return (String) get(ATTRIBUTE_COMPANY);
+	}
+
+
+	public void setLocation(String value) {
+		put(ATTRIBUTE_LOCATION, value);
+	}
+
+	public String getLocation() {
+		return (String) get(ATTRIBUTE_LOCATION);
+	}
+	
+	public void setOu(String value) {
+		put(ATTRIBUTE_OU, value);
+	}
+
+	public String getOu() {
+		return (String) get(ATTRIBUTE_OU);
+	}
+
+	public void setWorkforceId(String value) {
+		put(ATTRIBUTE_WORKFORCEID, value);
+	}
+
+	public String getWorkforceId() {
+		return (String) get(ATTRIBUTE_WORKFORCEID);
 	}
 
 	public void setOccupation(String value) {

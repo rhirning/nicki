@@ -38,6 +38,10 @@ public abstract class EnterNameHandler {
 	
 	public abstract void setName(String name) throws Exception;
 	
+	public String getName() {
+		return "";
+	}
+	
 	
 	public void setDialog(EnterNameDialog enterNameDialog) {
 		this.dialog = enterNameDialog;
