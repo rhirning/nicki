@@ -67,6 +67,8 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 	private DynamicObject parent = null;
 	
 	private STATUS status;
+	
+	private boolean modified = false;
 
 	// Map with the attribute values
 	private Map<String, Object> map = new HashMap<String, Object>();
@@ -481,6 +483,14 @@ public abstract class DynamicObject implements Serializable, Cloneable {
 
 	public void clear(String key) {
 		put(key, null);
+	}
+
+	public boolean isModified() {
+		return modified;
+	}
+
+	public void setModified(boolean modified) {
+		this.modified = modified;
 	}
 
 }

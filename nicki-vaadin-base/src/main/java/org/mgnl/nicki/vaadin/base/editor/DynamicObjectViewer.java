@@ -118,11 +118,12 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 		return layout;
 	}
 
-	protected void save() {
+	public void save() {
 		try {
 			if (create) {
 				dynamicObject.create();
 			} else {
+				getWindow().showNotification(I18n.getText("nicki.editor.save.info"));
 				dynamicObject.update();
 			}
 			if (listener != null) {

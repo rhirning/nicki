@@ -48,13 +48,19 @@ import org.apache.commons.lang.StringUtils;
 public class DataHelper {
 
 	public final static String FORMAT_DAY = "yyyyMMdd";
+	public final static String FORMAT_DISPLAY_DAY = "dd.MM.yyyy";
 	// 20091030115321
 	public final static String FORMAT_TIME = "yyyyMMddHHmmss";
 	public final static String FORMAT_MILLI = "yyyyMMddHHmmssSSS";
+	
+	public final static String FORMAT_TIMESTAMP = "yyyy-MM-dd HH:mm:ss Z";
+
         
 	public static SimpleDateFormat formatDay = new SimpleDateFormat(FORMAT_DAY);
+	public static SimpleDateFormat formatDisplayDay = new SimpleDateFormat(FORMAT_DISPLAY_DAY);
 	public static SimpleDateFormat formatTime = new SimpleDateFormat(FORMAT_TIME);
 	public static SimpleDateFormat formatMilli = new SimpleDateFormat(FORMAT_MILLI);
+	public static SimpleDateFormat formatTimestamp = new SimpleDateFormat(FORMAT_TIMESTAMP);
 
 	public static int getInteger(String stringValue, int defaultValue) {
 		stringValue = StringUtils.strip(stringValue);

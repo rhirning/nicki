@@ -68,6 +68,9 @@ public class ListAttributeListener extends BaseAttributeListener implements Valu
 		if (objectListener != null) {
 			objectListener.valueChange(property.getDynamicObject(), getName(), values);
 		}
+		property.getDynamicObject().setModified(true);
+
+		
 		
 	}
 	public ListAttributeListener(DynamicObject dynamicObject, String attributeName,

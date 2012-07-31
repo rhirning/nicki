@@ -126,7 +126,7 @@ public class ScriptViewer extends CustomComponent implements ClassEditor {
 
 	}
 
-	protected void save() throws DynamicObjectException, NamingException {
+	public void save() throws DynamicObjectException, NamingException {
 		script.setData((String) editor.getValue());
 		script.update();
 	}

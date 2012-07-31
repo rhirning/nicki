@@ -110,8 +110,10 @@ public class TestDataView extends CustomComponent {
 	}
 
 	protected void addNewField() {
+		EnterNameDialog dialog = new EnterNameDialog(messageKeyBase);
+		dialog.setHandler(new NewFieldHandler());
 		newFieldWindow = new Window(I18n.getText(messageKeyBase + ".window.title"),
-				new EnterNameDialog(new NewFieldHandler(), messageKeyBase));
+				dialog);
 		newFieldWindow.setPositionX(300);
 		newFieldWindow.setPositionY(100);
 		newFieldWindow.setWidth(440, Sizeable.UNITS_PIXELS);

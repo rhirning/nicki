@@ -153,7 +153,6 @@ public class Person extends DynamicTemplateObject {
 		} else {
 			clear(ATTRIBUTE_STATUS);
 		}
-		
 	}
 
 	public STATUS getStatus() {

@@ -59,5 +59,6 @@ public class ListForeignKeyListener extends BaseAttributeListener implements Val
 		} else {
 			getDynamicObject().remove(getName());
 		}
+		getDynamicObject().setModified(true);
 	}
 }

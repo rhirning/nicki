@@ -56,6 +56,8 @@ public class ForeignKeyInputListener extends BaseAttributeListener implements Va
 		} else {
 			getDynamicObject().remove(getName());
 		}
+		getDynamicObject().setModified(true);
+
 	}
 
 }
