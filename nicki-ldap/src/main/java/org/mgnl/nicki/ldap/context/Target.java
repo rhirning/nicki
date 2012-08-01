@@ -33,6 +33,7 @@
 package org.mgnl.nicki.ldap.context;
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,6 +42,7 @@ import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
 import org.mgnl.nicki.ldap.auth.NickiPrincipal;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.context.NickiContext.READONLY;
+import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 
@@ -50,6 +52,7 @@ public class Target implements Serializable {
 	private String targetName;
 	private String propertyBase;
 	private List<String> dynamicObjects = null;
+	private Map<Class<? extends DynamicObject>, DynamicObject> allDynamicObjectsMap = new HashMap<Class<? extends DynamicObject>, DynamicObject>();
 	private Map<String, DynamicObject> dynamicObjectsMap = null;
 
 	public Target(String targetName, String propertyBase) {
@@ -124,6 +127,22 @@ public class Target implements Serializable {
 	
 	public DynamicObject getDynamicObject(String dynamicObjectName) {
 		return getDynamicObjectsMap().get(dynamicObjectName);
+	}
+
+	public DynamicObject getDynamicObject(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
+		DynamicObject dynamicObject = allDynamicObjectsMap.get(classDefinition);
+		if (dynamicObject == null) {
+			try {
+				dynamicObject = classDefinition.newInstance();
+				dynamicObject.initDataModel();
+				allDynamicObjectsMap.put(classDefinition, dynamicObject);
+				return dynamicObject;
+			} catch (Exception e) {
+				throw new InstantiateDynamicObjectException(e);
+			}
+		} else {
+			return dynamicObject;
+		}
 	}
 
 }

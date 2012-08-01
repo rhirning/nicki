@@ -42,6 +42,7 @@ import org.mgnl.nicki.shop.core.ShopPage;
 import org.mgnl.nicki.shop.core.ShopPage.TYPE;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.inventory.Inventory;
+import org.mgnl.nicki.shop.inventory.SpecifiedArticle;
 import org.mgnl.nicki.shop.inventory.Inventory.SOURCE;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryArticle.STATUS;
@@ -109,9 +110,10 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 		return null;
 	}
 
-	protected Component getArticleComponent(CatalogArticle article) {
+	protected Component getArticleComponent(SpecifiedArticle specifiedArticle) {
+		CatalogArticle article = specifiedArticle.getCatalogArticle();
 		AbsoluteLayout layout = new AbsoluteLayout();
-		layout.setData(article);
+		layout.setData(specifiedArticle);
 		layout.setHeight("420px");
 		CheckBox checkBox = new CheckBox(I18n.getText("nicki.rights.checkbox.label"));
 		checkBox.setImmediate(true);
@@ -124,57 +126,64 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 		checkBox.addListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
-				  boolean checked = event.getButton().booleanValue();
-				  AbsoluteLayout parent = (AbsoluteLayout) event.getButton().getParent();
-				  CatalogArticle article = (CatalogArticle) parent.getData(); 
-				  if (checked) {
-					  getInventory().addArticle(article);
-					  // TODO
+				AbsoluteLayout parent = (AbsoluteLayout) event.getButton().getParent();
+
+				SpecifiedArticle specifiedArticle = (SpecifiedArticle) parent.getData();
+				  boolean enabled = event.getButton().booleanValue();
+				  if (enabled) {
+					  getInventory().addArticle(specifiedArticle);
 					  boolean provisioned = false;
-					  parent.addComponent(getVerticalArticleAttributes(article, provisioned, SOURCE.NONE),
+					  parent.addComponent(getVerticalArticleAttributes(specifiedArticle, provisioned, SOURCE.NONE),
 							  "top:60.0px;left:20.0px;right:20.0px;");
 				  } else {
-					  getInventory().removeArticle(article);
+					  getInventory().removeArticle(specifiedArticle);
 					  removeExcept(parent, event.getButton());
 				  }
 			}
 		});
 
 		if (getInventory().hasArticle(article)) {
-			InventoryArticle inventoryArticle = getInventory().getArticle(article);
+			InventoryArticle inventoryArticle = getInventory().getInventoryArticle(specifiedArticle);
 			checkBox.setValue(true);
 			checkBox.setEnabled(false);
 			// TODO
 			boolean provisioned = true;
-			layout.addComponent(getVerticalArticleAttributes(article, provisioned, inventoryArticle.getSource()),
+			layout.addComponent(getVerticalArticleAttributes(specifiedArticle, provisioned, inventoryArticle.getSource()),
 					"top:60.0px;left:20.0px;right:20.0px;");
 		}
 		return layout;
 	}
 	
+	/* TODO: kann das entfernt werden?
 
 	@Override
 	protected AbstractOrderedLayout getHorizontalArticleAttributes(
 			CatalogArticle article, boolean enabled) {
-		InventoryArticle inventoryArticle = getInventory().getArticle(article);
-		Date start = new Date();
-		Date end = null;
-		if (inventoryArticle != null && inventoryArticle.getStatus() != STATUS.NEW) {
-			start = inventoryArticle.getStart();
-			end = inventoryArticle.getEnd();
+		Map<String, InventoryArticle> iArticles = getInventory().getArticles(article);
+		for (String specifier : iArticles.keySet()) {
+			InventoryArticle inventoryArticle = iArticles.get(specifier);
+			Date start = new Date();
+			Date end = null;
+			if (inventoryArticle != null && inventoryArticle.getStatus() != STATUS.NEW) {
+				start = inventoryArticle.getStart();
+				end = inventoryArticle.getEnd();
+			}
+			AbstractOrderedLayout layout = super.getHorizontalArticleAttributes(article, enabled);
+			layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), enabled, end));
+			layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, start));
+			
 		}
-		AbstractOrderedLayout layout = super.getHorizontalArticleAttributes(article, enabled);
-		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), enabled, end));
-		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, start));
 
 		return layout;
 	}
+	*/
 
 	@Override
 	protected AbstractOrderedLayout getVerticalArticleAttributes(
-			CatalogArticle article, boolean provisioned, SOURCE source) {
-		AbstractOrderedLayout layout =  super.getVerticalArticleAttributes(article, provisioned, source);
-		InventoryArticle inventoryArticle = getInventory().getArticle(article);
+			SpecifiedArticle specifiedArticle, boolean provisioned, SOURCE source) {
+		CatalogArticle article = specifiedArticle.getCatalogArticle();
+		AbstractOrderedLayout layout =  super.getVerticalArticleAttributes(specifiedArticle, provisioned, source);
+		InventoryArticle inventoryArticle = getInventory().getFirstInventoryArticle(article);
 		Date start = new Date();
 		Date end = null;
 		if (inventoryArticle != null && inventoryArticle.getStatus() != STATUS.NEW) {
@@ -186,8 +195,8 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 			enabled = false;
 		}
 
-		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), enabled, end));
-		layout.addComponentAsFirst(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateFrom"), !provisioned, start));
+		layout.addComponentAsFirst(getAttributeComponent(specifiedArticle, CatalogArticle.getFixedAttribute("dateTo"), enabled, end));
+		layout.addComponentAsFirst(getAttributeComponent(specifiedArticle, CatalogArticle.getFixedAttribute("dateFrom"), !provisioned, start));
 
 		return layout;
 	}

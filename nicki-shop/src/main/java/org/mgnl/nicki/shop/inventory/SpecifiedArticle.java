@@ -30,36 +30,37 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.shop;
+package org.mgnl.nicki.shop.inventory;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
 
-import org.mgnl.nicki.dynamic.objects.objects.Person;
-
-public class GenericCatalogArticle extends CatalogArticle {
-
-	private static final long serialVersionUID = 6670344927911810883L;
-
-	@Override
-	public List<CatalogArticle> getArticles(Person person) {
-		return new ArrayList<CatalogArticle>();
+public class SpecifiedArticle {
+	private CatalogArticle catalogArticle;
+	private String specifier = null;
+	
+	public SpecifiedArticle(CatalogArticle catalogArticle) {
+		this.setCatalogArticle(catalogArticle);
 	}
 
-	@Override
-	public Date getStart(Person person) {
-		return null;
+	public SpecifiedArticle(CatalogArticle catalogArticle, String specifier) {
+		this.setCatalogArticle(catalogArticle);
+		this.setSpecifier(specifier);
 	}
 
-	@Override
-	public Date getEnd(Person person) {
-		return null;
+	public CatalogArticle getCatalogArticle() {
+		return catalogArticle;
 	}
 
-	@Override
-	public String getSpecifier(Person person) {
-		return null;
+	private void setCatalogArticle(CatalogArticle catalogArticle) {
+		this.catalogArticle = catalogArticle;
+	}
+
+	public String getSpecifier() {
+		return specifier;
+	}
+
+	public void setSpecifier(String specifier) {
+		this.specifier = specifier;
 	}
 
 }

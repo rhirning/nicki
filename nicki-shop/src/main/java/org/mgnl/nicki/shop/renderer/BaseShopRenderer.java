@@ -45,6 +45,7 @@ import org.mgnl.nicki.shop.attributes.LabelComponent;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.inventory.Inventory;
 import org.mgnl.nicki.shop.inventory.Inventory.SOURCE;
+import org.mgnl.nicki.shop.inventory.SpecifiedArticle;
 
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.AbstractOrderedLayout;
@@ -61,30 +62,30 @@ public class BaseShopRenderer {
 	
 	private Inventory inventory;
 	
-	protected Component getAttributeComponent(CatalogArticle article, CatalogArticleAttribute articleAttribute, boolean enabled) {
+	protected Component getAttributeComponent(SpecifiedArticle specifiedArticle, CatalogArticleAttribute articleAttribute, boolean enabled) {
 		try {
 			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
 			attributeComponent.setEnabled(enabled);
-			return attributeComponent.getInstance(getInventory().getUser(), getInventory().getPerson(),
-					getInventory().getArticle(article), articleAttribute);
+			return attributeComponent.getInstance(inventory.getUser(), inventory.getPerson(),
+					inventory.getInventoryArticle(specifiedArticle), articleAttribute);
 		} catch (Exception e) {
-			return new LabelComponent().getInstance(getInventory().getUser(), getInventory().getPerson(),
-					getInventory().getArticle(article), articleAttribute);
+			return new LabelComponent().getInstance(inventory.getUser(), inventory.getPerson(),
+					inventory.getInventoryArticle(specifiedArticle), articleAttribute);
 		}
 	}
 
-	protected Component getAttributeComponent(CatalogArticle article, CatalogArticleAttribute articleAttribute, boolean enabled, Object value) {
+	protected Component getAttributeComponent(SpecifiedArticle specifiedArticle, CatalogArticleAttribute articleAttribute, boolean enabled, Object value) {
 		try {
 			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
 			attributeComponent.setValue(value);
-			inventory.getArticle(article).setValue(articleAttribute, value);
+			inventory.getInventoryArticle(specifiedArticle).setValue(articleAttribute, value);
 			attributeComponent.setEnabled(enabled);
 			return attributeComponent.getInstance(getInventory().getUser(), getInventory().getPerson(),
-					getInventory().getArticle(article), articleAttribute);
+					getInventory().getInventoryArticle(specifiedArticle), articleAttribute);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new LabelComponent().getInstance(getInventory().getUser(), getInventory().getPerson(),
-					getInventory().getArticle(article), articleAttribute);
+					getInventory().getInventoryArticle(specifiedArticle), articleAttribute);
 		}
 	}
 
@@ -129,14 +130,15 @@ public class BaseShopRenderer {
 	}
 	
 	protected void showArticleAttributes(HorizontalLayout layout ) {
-		CatalogArticle article = (CatalogArticle) layout.getData(); 
+		SpecifiedArticle specifiedArticle = (SpecifiedArticle) layout.getData();
+		CatalogArticle article = specifiedArticle.getCatalogArticle();
 		
 		if (article.hasAttributes()) {
 			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
 				CatalogArticleAttribute pageAttribute = iterator.next();
 				// TODO
 				boolean enabled = true;
-				layout.addComponent(getAttributeComponent(article, pageAttribute, enabled));
+				layout.addComponent(getAttributeComponent(specifiedArticle, pageAttribute, enabled));
 			}
 		}
 	}
@@ -156,6 +158,7 @@ public class BaseShopRenderer {
 		return layout;
 	}
 
+	/* TODO: kann das entfernt werden?
 	protected AbstractOrderedLayout getHorizontalArticleAttributes(CatalogArticle article, boolean enabled) {
 		AbstractOrderedLayout layout = new HorizontalLayout();
 		layout.setSpacing(true);
@@ -168,15 +171,15 @@ public class BaseShopRenderer {
 		}
 		return layout;
 	}
-
-	protected AbstractOrderedLayout getVerticalArticleAttributes(CatalogArticle article, boolean provisioned, SOURCE source) {
+	*/
+	protected AbstractOrderedLayout getVerticalArticleAttributes(SpecifiedArticle specifiedArticle, boolean provisioned, SOURCE source) {
 		AbstractOrderedLayout attrLayout = new VerticalLayout();
-		
+		CatalogArticle article = specifiedArticle.getCatalogArticle();
 		if (article.hasAttributes()) {
 			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
 				CatalogArticleAttribute pageAttribute = iterator.next();
 				boolean enabled = true;
-				attrLayout.addComponent(getAttributeComponent(article, pageAttribute, enabled));
+				attrLayout.addComponent(getAttributeComponent(specifiedArticle, pageAttribute, enabled));
 			}
 		}
 		return attrLayout;

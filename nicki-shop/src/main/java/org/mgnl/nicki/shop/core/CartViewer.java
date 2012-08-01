@@ -53,10 +53,9 @@ public class CartViewer extends CustomComponent {
 		cartEntries.addContainerProperty("attributes", String.class, "");
 		cartEntries.setColumnWidth("attributes", 420);
 		cartEntries.setColumnHeader("attributes", "attributes");
-		for (String entryId : cart.getCartEntries().keySet()) {
-			CartEntry cartEntry = cart.getCartEntry(entryId);
+		for (CartEntry cartEntry : cart.getCartEntries()) {
 			Item item = cartEntries.addItem(cartEntry);
-			CatalogArticle article = Catalog.getCatalog().getArticle(entryId);
+			CatalogArticle article = Catalog.getCatalog().getArticle(cartEntry.getId());
 			item.getItemProperty("right").setValue(article.getDisplayName());
 			item.getItemProperty("action").setValue(cartEntry.getAction());
 			item.getItemProperty("attributes").setValue(cartEntry.getAttributes());
