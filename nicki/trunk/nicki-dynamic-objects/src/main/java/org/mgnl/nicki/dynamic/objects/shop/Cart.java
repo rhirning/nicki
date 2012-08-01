@@ -38,9 +38,7 @@ import java.util.ArrayList;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.w3c.dom.Document;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
@@ -76,7 +74,7 @@ public class Cart extends DynamicObject {
     }
 	
     private Catalog catalog = null;
-    private HashMap<String, CartEntry> cartentries = new HashMap<String, CartEntry>();
+    private List<CartEntry> cartentries = new ArrayList<CartEntry>();
     private final static String ELEM_CARTENTRY = "entry";
     private final static String ELEM_CART = "cart";
     private final static String ATTR_CATALOG = "catalog";
@@ -147,7 +145,7 @@ public class Cart extends DynamicObject {
         for (Element node : entries) {
             entry = CartEntry.fromNode(node);
 
-            cartentries.put(entry.getId(), entry);
+            cartentries.add(entry);
         }
     }
 
@@ -162,9 +160,8 @@ public class Cart extends DynamicObject {
 
         cart.setAttribute(ATTR_CATALOG, catalog.getPath());
 
-        for (String key : cartentries.keySet()) {
-			
-            cart.appendChild(cartentries.get(key).getNode(doc, ELEM_CARTENTRY));
+        for (CartEntry entry : cartentries) {			
+            cart.appendChild(entry.getNode(doc, ELEM_CARTENTRY));
         }
 		
 		doc.appendChild(cart);
@@ -250,17 +247,12 @@ public class Cart extends DynamicObject {
     }
 
     public void addCartEntry(CartEntry entry) {
-        cartentries.put(entry.getId(), entry);
+        cartentries.add(entry);
 
     }
 
-    public CartEntry getCartEntry(String id) {
-        return cartentries.get(id);
-    }
-
-    @SuppressWarnings("unchecked")
-	public Map<String, CartEntry> getCartEntries() {
-        return (Map<String, CartEntry>) cartentries.clone();
+	public List<CartEntry> getCartEntries() {
+       	return cartentries;
     }
 
     public void setRecipient(Person person) {

@@ -39,6 +39,7 @@ import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
 import org.mgnl.nicki.dynamic.objects.shop.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.inventory.Inventory;
+import org.mgnl.nicki.shop.inventory.SpecifiedArticle;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -63,12 +64,13 @@ public class PanelRenderer extends BaseShopRenderer implements ShopRenderer{
 	}
 	
 	protected void showArticleAttributes(HorizontalLayout layout, boolean enabled) {
-		CatalogArticle article = (CatalogArticle) layout.getData(); 
+		SpecifiedArticle specifiedArticle = (SpecifiedArticle) layout.getData(); 
 		
+		CatalogArticle article = specifiedArticle.getCatalogArticle();
 		if (article.hasAttributes()) {
 			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
 				CatalogArticleAttribute pageAttribute = iterator.next();
-				layout.addComponent(getAttributeComponent(article, pageAttribute, enabled));
+				layout.addComponent(getAttributeComponent(specifiedArticle, pageAttribute, enabled));
 			}
 		}
 	}

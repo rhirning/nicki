@@ -93,7 +93,7 @@ public class RoleCatalogArticle extends CatalogArticle {
 
 
 	@Override
-	public Date getStart(Person person) {
+	public Date getStart(Person person, String specifier) {
 		Role role = getRole();
 		if (role != null) {
 			return role.getStartTime();
@@ -102,7 +102,7 @@ public class RoleCatalogArticle extends CatalogArticle {
 	}
 
 	@Override
-	public Date getEnd(Person person) {
+	public Date getEnd(Person person, String specifier) {
 		Role role = getRole();
 		if (role != null) {
 			return role.getEndTime();

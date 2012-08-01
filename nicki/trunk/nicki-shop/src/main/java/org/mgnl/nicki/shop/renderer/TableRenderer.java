@@ -43,6 +43,7 @@ import org.mgnl.nicki.shop.inventory.Inventory;
 import org.mgnl.nicki.shop.inventory.Inventory.SOURCE;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryArticle.STATUS;
+import org.mgnl.nicki.shop.inventory.SpecifiedArticle;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 
 import com.vaadin.data.Item;
@@ -67,8 +68,8 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 		table = new Table();
 		table.setWidth("100%");
 		table.setHeight("100%");
-		table.addContainerProperty("checkbox", CheckBox.class, "");
-		table.setColumnWidth("checkbox", 36);
+		table.addContainerProperty("checkbox", Button.class, "");
+		table.setColumnWidth("checkbox", 64);
 		table.setColumnHeader("checkbox", "");
 		table.addContainerProperty("title", String.class, "");
 		table.setColumnWidth("title", 200);
@@ -86,43 +87,86 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 		// add articles to table
 		for (Iterator<CatalogArticle> iterator = articles.iterator(); iterator.hasNext();) {
 			CatalogArticle article = (CatalogArticle) iterator.next();
-			CheckBox checkBox = new CheckBox();
-			checkBox.setData(article);
-			checkBox.setImmediate(true);
-			checkBox.setWidth("-1px");
-			if (article.hasDescription()) {
-				checkBox.setIcon(Icon.HELP.getResource());
-				checkBox.setDescription(article.getDescription());
-			}
-
-			checkBox.addListener(new Button.ClickListener() {
-				
-				public void buttonClick(ClickEvent event) {
-					  CatalogArticle article = (CatalogArticle) event.getButton().getData();
-					  Item item = table.getItem(article);
-					  boolean enabled = event.getButton().booleanValue();
-					  if (enabled) {
-						  getInventory().addArticle(article);
-						  showEntry(item, article);
-					  } else {
-						  getInventory().removeArticle(article);
-						  hideEntry(item);
-					  }
+			SpecifiedArticle specifiedArticle = new SpecifiedArticle(article);
+			if (!article.isMultiple()) {
+				if (getInventory().hasArticle(article)) {
+					specifiedArticle = getInventory().getFirstSpecifiedArticle(article);
 				}
-
-			});
-			Item item = table.addItem(article);
-			item.getItemProperty("title").setValue(article.getDisplayName());
-			item.getItemProperty("checkbox").setValue(checkBox);
-//			item.getItemProperty("attributes").setValue(getArticleAttributes(article));
-			if (getInventory().hasArticle(article)) {
-				checkBox.setValue(true);
-				checkBox.setEnabled(false);
-				showEntry(item, article);
+				addArticle(specifiedArticle, null, getInventory().hasArticle(article));
+			} else {
+		        Button button = new Button("+");
+		        button.setData(specifiedArticle);
+		        button.setImmediate(true);
+		        button.setWidth("-1px");
+				if (article.hasDescription()) {
+					button.setIcon(Icon.HELP.getResource());
+					button.setDescription(article.getDescription());
+				}
+		        button.addListener(new Button.ClickListener() {
+					
+					@Override
+					public void buttonClick(ClickEvent event) {
+						SpecifiedArticle specifiedArticle = (SpecifiedArticle) event.getButton().getData();
+						addArticle(new SpecifiedArticle(specifiedArticle.getCatalogArticle()), specifiedArticle, false);
+					}
+				});
+	
+				Item item = addArticle(specifiedArticle, null, false);
+				item.getItemProperty("title").setValue(article.getDisplayName());
+				item.getItemProperty("checkbox").setValue(button);
 			}
-
 		}
 		return table;
+	}
+	
+	protected Item addArticle(SpecifiedArticle specifiedArticle, SpecifiedArticle previous, boolean hasArticle) {
+		CheckBox checkBox = new CheckBox();
+		CatalogArticle article = specifiedArticle.getCatalogArticle();
+		if (hasArticle) {
+			specifiedArticle.setSpecifier(article.getSpecifier(getInventory().getPerson()));
+		}
+		checkBox.setData(specifiedArticle);
+
+		checkBox.setImmediate(true);
+		checkBox.setWidth("-1px");
+		if (article.hasDescription()) {
+			checkBox.setIcon(Icon.HELP.getResource());
+			checkBox.setDescription(article.getDescription());
+		}
+
+		checkBox.addListener(new Button.ClickListener() {
+			
+			public void buttonClick(ClickEvent event) {
+				SpecifiedArticle specifiedArticle = (SpecifiedArticle) event.getButton().getData();
+				  Item item = table.getItem(specifiedArticle);
+				  boolean enabled = event.getButton().booleanValue();
+				  if (enabled) {
+					  getInventory().addArticle(specifiedArticle);
+					  showEntry(item, specifiedArticle);
+				  } else {
+					  getInventory().removeArticle(specifiedArticle);
+					  hideEntry(item);
+				  }
+			}
+
+		});
+		Item item;
+
+		if (previous != null) {
+			item = table.addItemAfter(previous, specifiedArticle);
+		}
+		else {
+			item = table.addItem(specifiedArticle);
+		}
+		item.getItemProperty("title").setValue(article.getDisplayName());
+		item.getItemProperty("checkbox").setValue(checkBox);
+
+		if (hasArticle) {
+			checkBox.setValue(true);
+			checkBox.setEnabled(false);
+			showEntry(item, specifiedArticle);
+		}
+		return item;
 	}
 
 	protected void hideEntry(Item item) {
@@ -132,25 +176,26 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 //		removeExcept(parent, event.getButton());
 	}
 
-	private void showEntry(Item item, CatalogArticle article) {
-		InventoryArticle inventoryArticle = getInventory().getArticle(article);
-
+	private void showEntry(Item item, SpecifiedArticle specifiedArticle) {
+		InventoryArticle inventoryArticle = getInventory().getInventoryArticle(specifiedArticle);
+		SOURCE source = SOURCE.SHOP;
 		Date start = new Date();
 		Date end = null;
 		boolean enabled = true;
+		boolean toEnabled = true;
 		if (inventoryArticle != null && inventoryArticle.getStatus() != STATUS.NEW) {
 			start = inventoryArticle.getStart();
 			end = inventoryArticle.getEnd();
 			enabled = false;
-		}
-		boolean toEnabled = true;
-		if (inventoryArticle.getSource() == SOURCE.RULE) {
-			toEnabled = false;
+			source = inventoryArticle.getSource();
+			if (source == SOURCE.RULE) {
+				toEnabled = false;
+			}
 		}
 
-		item.getItemProperty("dateFrom").setValue(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, start));
-		item.getItemProperty("dateTo").setValue(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), toEnabled, end));
-		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article, enabled, inventoryArticle.getSource()));
+		item.getItemProperty("dateFrom").setValue(getAttributeComponent(specifiedArticle, CatalogArticle.getFixedAttribute("dateFrom"), enabled, start));
+		item.getItemProperty("dateTo").setValue(getAttributeComponent(specifiedArticle, CatalogArticle.getFixedAttribute("dateTo"), toEnabled, end));
+		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(specifiedArticle, enabled, source));
 //		showArticleAttributes(parent);
 	}
 

@@ -50,7 +50,7 @@ import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
 @SuppressWarnings("serial")
-public abstract class CatalogArticle extends DynamicTemplateObject {
+public class CatalogArticle extends DynamicTemplateObject {
 
 	public static final String TYPE_ARTICLE = "ARTICLE";
 	
@@ -87,14 +87,15 @@ public abstract class CatalogArticle extends DynamicTemplateObject {
 		dynAttribute.setMultiple();
 		dynAttribute.setEditorClass("org.mgnl.nicki.shop.rules.RuleAttributeField");
 		addAttribute(dynAttribute);
-		
+
 		dynAttribute = new DynamicAttribute("attributes", "nickiAttributes", TextArea.class);
 		addAttribute(dynAttribute);
 	};
 
 	// TODO: class must know how to get the assigned articles
-	
-	public abstract List<CatalogArticle> getArticles(Person person);
+	public List<CatalogArticle> getArticles(Person person) {
+		return new ArrayList<CatalogArticle>();
+	}
 	
 	public boolean hasArticle(Person person, CatalogArticle article) {
 		return getArticles(person).contains(article);
@@ -234,11 +235,21 @@ public abstract class CatalogArticle extends DynamicTemplateObject {
 	public List<String> getRules() {
 		return (List<String>) get("rule");
 	}
+	
+	public boolean isMultiple() {
+		return false;
+	}
 
-	public abstract Date getStart(Person person);
+	public Date getStart(Person person, String specifier) {
+		return null;
+	}
 
-	public abstract Date getEnd(Person person);
+	public Date getEnd(Person person, String specifier) {
+		return null;
+	}
 
-	public abstract String getSpecifier(Person person);
+	public String getSpecifier(Person person) {
+		return "0";
+	}
 
 }

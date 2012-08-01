@@ -95,13 +95,13 @@ public class VirtualResourceCatalogArticle extends CatalogArticle {
 	}
 
 	@Override
-	public Date getStart(Person person) {
+	public Date getStart(Person person, String specifier) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Date getEnd(Person person) {
+	public Date getEnd(Person person, String specifier) {
 		// TODO Auto-generated method stub
 		return null;
 	}

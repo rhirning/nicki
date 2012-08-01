@@ -76,9 +76,9 @@ public class Inventory implements Serializable {
 	private Person person;
 	private List<String> attributeValues;
 
-	private Map<String, InventoryArticle> articles = new HashMap<String, InventoryArticle>();
-
-	public Map<String, InventoryArticle> getArticles() {
+	private Map<String, Map<SpecifiedArticle, InventoryArticle>> articles = new HashMap<String, Map<SpecifiedArticle, InventoryArticle>>();
+	
+	public Map<String, Map<SpecifiedArticle, InventoryArticle>> getArticles() {
 		return articles;
 	}
 
@@ -102,12 +102,23 @@ public class Inventory implements Serializable {
 				.getInstance().getArticles();
 		for (CatalogArticle catalogArticle : availableArticles) {
 			List<InventoryAttribute> attributes = getAttributes(catalogArticle);
-			Date start = catalogArticle.getStart(person);
-			Date end = catalogArticle.getEnd(person);
-			String specifier = catalogArticle.getSpecifier(person);
-			articles.put(catalogArticle.getPath(), new InventoryArticle(
-					catalogArticle, specifier, start, end, attributes));
+			String specifier = catalogArticle.getSpecifier(getPerson());
+			Date start = catalogArticle.getStart(getPerson(), specifier);
+			Date end = catalogArticle.getEnd(getPerson(), specifier);
+			SpecifiedArticle specifiedArticle = new SpecifiedArticle(catalogArticle, specifier);
+			addArticle(specifiedArticle, new InventoryArticle(
+					specifiedArticle, specifier, start, end, attributes));
 		}
+	}
+
+	private void addArticle(SpecifiedArticle specifiedArticle, InventoryArticle inventoryArticle) {
+		CatalogArticle catalogArticle = specifiedArticle.getCatalogArticle();
+		Map<SpecifiedArticle, InventoryArticle> map = this.articles.get(catalogArticle.getPath());
+		if (map == null) {
+			map = new HashMap<SpecifiedArticle, InventoryArticle>();
+			this.articles.put(catalogArticle.getPath(), map);
+		}
+		map.put(specifiedArticle, inventoryArticle);
 	}
 
 	private List<InventoryAttribute> getAttributes(CatalogArticle article) {
@@ -139,27 +150,45 @@ public class Inventory implements Serializable {
 		return articles.containsKey(article.getPath());
 	}
 
-	public InventoryArticle getArticle(CatalogArticle article) {
+	public Map<SpecifiedArticle, InventoryArticle> getArticles(CatalogArticle article) {
 		return articles.get(article.getPath());
 	}
 
-	public void addArticle(CatalogArticle article) {
-		InventoryArticle iArticle = getArticle(article);
+	public void addArticle(SpecifiedArticle specifiedArticle) {
+		InventoryArticle iArticle = getInventoryArticle(specifiedArticle);
 		if (iArticle == null) {
-			articles.put(article.getPath(), new InventoryArticle(article));
+			this.addArticle(specifiedArticle, new InventoryArticle(specifiedArticle));
 		} else if (iArticle.getStatus() == STATUS.DELETED) {
 			iArticle.reset();
 		}
 	}
+	
+	public InventoryArticle getInventoryArticle(SpecifiedArticle specifiedArticle) {
+		CatalogArticle catalogArticle = specifiedArticle.getCatalogArticle();
+		Map<SpecifiedArticle, InventoryArticle> map = this.articles.get(catalogArticle.getPath());
+		if (map != null) {
+			return map.get(specifiedArticle);
+		}
+		return null;
+	}
 
-	public void removeArticle(CatalogArticle article) {
-		InventoryArticle iArticle = getArticle(article);
+	public void removeArticle(SpecifiedArticle specifiedArticle) {
+		CatalogArticle catalogArticle = specifiedArticle.getCatalogArticle();
+		InventoryArticle iArticle = getInventoryArticle(specifiedArticle);
 		if (iArticle != null) {
 			if (iArticle.getStatus() == STATUS.NEW) {
-				articles.remove(article.getPath());
+				removeArticle(catalogArticle.getPath(), specifiedArticle);
 			} else {
 				iArticle.setStatus(STATUS.DELETED);
 			}
+		}
+	}
+
+	private void removeArticle(String path, SpecifiedArticle specifiedArticle) {
+		Map<SpecifiedArticle, InventoryArticle> map = this.articles.get(path);
+		if (map != null) {
+			if (map.containsKey(specifiedArticle));
+			map.remove(specifiedArticle);
 		}
 	}
 
@@ -190,21 +219,24 @@ public class Inventory implements Serializable {
 				cart.setSource(source);
 				cart.setCatalog(Catalog.getCatalog());
 				for (String key : articles.keySet()) {
-					InventoryArticle iArticle = articles.get(key);
-					if (iArticle.hasChanged()) {
-						CartEntry entry = new CartEntry(
-								iArticle.getArticle().getCatalogPath(),
-								InventoryArticle.getAction(iArticle.getStatus()));
-						for (Iterator<InventoryAttribute> iterator2 = iArticle
-								.getAttributes().values().iterator(); iterator2
-								.hasNext();) {
-							InventoryAttribute iAttribute = iterator2.next();
-							if (iAttribute.hasChanged()) {
-								entry.addAttribute(iAttribute.getName(),
-										iAttribute.getValue());
+					Map<SpecifiedArticle, InventoryArticle> list = articles.get(key);
+					for (SpecifiedArticle specifiedArticle : list.keySet()) {
+						InventoryArticle iArticle = list.get(specifiedArticle);
+						if (iArticle.hasChanged()) {
+							CartEntry entry = new CartEntry(
+									iArticle.getArticle().getCatalogPath(),
+									InventoryArticle.getAction(iArticle.getStatus()));
+							for (Iterator<InventoryAttribute> iterator2 = iArticle
+									.getAttributes().values().iterator(); iterator2
+									.hasNext();) {
+								InventoryAttribute iAttribute = iterator2.next();
+								if (iAttribute.hasChanged()) {
+									entry.addAttribute(iAttribute.getName(),
+											iAttribute.getValue());
+								}
 							}
+							cart.addCartEntry(entry);
 						}
-						cart.addCartEntry(entry);
 					}
 				}
 				return cart;
@@ -226,10 +258,13 @@ public class Inventory implements Serializable {
 	}
 
 	public boolean hasChanged() {
-		for (Iterator<InventoryArticle> iterator = articles.values().iterator(); iterator
-				.hasNext();) {
-			if (iterator.next().hasChanged()) {
-				return true;
+		for (String key : articles.keySet()) {
+			Map<SpecifiedArticle, InventoryArticle> map = articles.get(key);
+			for (SpecifiedArticle specifiedArticle : map.keySet()) {
+				InventoryArticle iArticle = map.get(specifiedArticle);
+				if (iArticle.hasChanged()) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -245,6 +280,26 @@ public class Inventory implements Serializable {
 
 	public Person getPerson() {
 		return person;
+	}
+
+	public SpecifiedArticle getFirstSpecifiedArticle(CatalogArticle article) {
+		Map<SpecifiedArticle, InventoryArticle> map = this.articles.get(article.getPath());
+		if (map != null) {
+			for (SpecifiedArticle specifiedArticle : map.keySet()) {
+				return specifiedArticle;
+			}
+		}
+		return null;
+	}
+
+	public InventoryArticle getFirstInventoryArticle(CatalogArticle article) {
+		Map<SpecifiedArticle, InventoryArticle> map = this.articles.get(article.getPath());
+		if (map != null) {
+			for (SpecifiedArticle specifiedArticle : map.keySet()) {
+				return map.get(specifiedArticle);
+			}
+		}
+		return null;
 	}
 
 }

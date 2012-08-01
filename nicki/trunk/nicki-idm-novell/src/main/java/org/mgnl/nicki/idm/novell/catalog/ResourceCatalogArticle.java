@@ -92,7 +92,7 @@ public class ResourceCatalogArticle extends CatalogArticle {
 	}
 
 	@Override
-	public Date getStart(Person person) {
+	public Date getStart(Person person, String specifier) {
 		Resource resource = getResource();
 		if (resource != null) {
 			return resource.getStartTime();
@@ -101,7 +101,7 @@ public class ResourceCatalogArticle extends CatalogArticle {
 	}
 
 	@Override
-	public Date getEnd(Person person) {
+	public Date getEnd(Person person, String specifier) {
 		Resource resource = getResource();
 		if (resource != null) {
 			return resource.getEndTime();

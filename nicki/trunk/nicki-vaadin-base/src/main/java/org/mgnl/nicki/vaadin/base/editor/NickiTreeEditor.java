@@ -92,7 +92,8 @@ public class NickiTreeEditor extends AbsoluteLayout {
 	private DataProvider treeDataProvider;
 	private String treeTitle;
 
-	private Map<Class<? extends DynamicObject>, List<Class<? extends DynamicObject>>> children = new HashMap<Class<? extends DynamicObject>, List<Class<? extends DynamicObject>>>();
+	private Map<Class<? extends DynamicObject>, List<Class<? extends DynamicObject>>> children
+		= new HashMap<Class<? extends DynamicObject>, List<Class<? extends DynamicObject>>>();
 
 	private Map<Class<? extends DynamicObject>, Map<Action, Class<? extends DynamicObject>>> actions = new HashMap<Class<? extends DynamicObject>, Map<Action, Class<? extends DynamicObject>>>();
 	private Map<Class<? extends DynamicObject>, Action[]> actionsList = new HashMap<Class<? extends DynamicObject>, Action[]>();
@@ -320,6 +321,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 	public void configureClass(Class<? extends DynamicObject> parentClass,
 			Icon icon, CREATE allowCreate, DELETE allowDelete,
 			RENAME allowRename, Class<? extends DynamicObject>... childClass) {
+
 		List<? extends DynamicObject> dynamicObjects;
 		try {
 			dynamicObjects = getNickiContext().getObjectFactory()
@@ -360,7 +362,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 					e.printStackTrace();
 				}
 			}
-		}
+}
 	}
 
 	public void addAction(TreeAction treeAction) {
@@ -479,23 +481,13 @@ public class NickiTreeEditor extends AbsoluteLayout {
 				for (Class<? extends DynamicObject> childClassPattern : this.children
 						.get(classDefinition)) {
 					if (this.allowCreate.contains(childClassPattern)) {
-						try {
-							List<? extends DynamicObject> allClasses = getNickiContext()
-									.getObjectFactory().findDynamicObjects(
-											childClassPattern);
-							for (DynamicObject childClass : allClasses) {
-								Action childAction = new Action(
-										I18n.getText(this.messageKeyBase
-												+ ".action."
-												+ getClassName(childClass
-														.getClass()) + ".new"));
-								classActions.add(childAction);
-								rootClassActions.add(childAction);
-								map.put(childAction, childClass.getClass());
-							}
-						} catch (InstantiateDynamicObjectException e) {
-							e.printStackTrace();
-						}
+						Action childAction = new Action(
+								I18n.getText(this.messageKeyBase
+										+ ".action."
+										+ getClassName(childClassPattern) + ".new"));
+						classActions.add(childAction);
+						rootClassActions.add(childAction);
+						map.put(childAction, childClassPattern);
 					}
 				}
 			}
