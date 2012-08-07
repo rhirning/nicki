@@ -37,10 +37,11 @@ import java.io.Serializable;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.inventory.Inventory;
 
-import com.vaadin.ui.Component;
+import com.vaadin.ui.AbstractComponent;
 
 public interface ShopRenderer extends Serializable{
 
-	Component render(ShopViewerComponent shopViewerComponent, Inventory inventory);
+	AbstractComponent render(ShopViewerComponent shopViewerComponent, Inventory inventory);
+	void render();
 
 }

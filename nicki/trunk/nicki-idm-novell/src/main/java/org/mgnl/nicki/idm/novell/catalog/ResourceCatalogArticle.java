@@ -33,25 +33,26 @@
 package org.mgnl.nicki.idm.novell.catalog;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
-import org.mgnl.nicki.dynamic.objects.shop.Catalog;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
 import org.mgnl.nicki.idm.novell.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.objects.Resource;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.shop.inventory.InventoryArticle;
+import org.mgnl.nicki.shop.inventory.InventoryAttribute;
+import org.mgnl.nicki.shop.objects.Catalog;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
 
 public class ResourceCatalogArticle extends CatalogArticle {
 
 	private static final long serialVersionUID = 3397169876567940029L;
 
 	public static final String ATTRIBUTE_RESOURCE = "resource";
-	private List<CatalogArticle> catalogArticles = null;;
 	@Override
 	public void initDataModel() {
 		super.initDataModel();
@@ -65,61 +66,37 @@ public class ResourceCatalogArticle extends CatalogArticle {
 	}
 
 	@Override
-	public List<CatalogArticle> getArticles(Person person) {
-		if (catalogArticles == null) {
-			catalogArticles = new ArrayList<CatalogArticle>();
-			List<Resource> resources = ((IdmPerson)person).getResources();
-			List<CatalogArticle> articles = Catalog.getCatalog().getAllArticles();
-			for (CatalogArticle catalogArticle : articles) {
-				if (ResourceCatalogArticle.class.isAssignableFrom(catalogArticle.getClass())) {
-					ResourceCatalogArticle resourceCatalogArticle = (ResourceCatalogArticle) catalogArticle;
-					for (Resource resource : resources) {
-						if (resourceCatalogArticle.contains(resource)) {
-							catalogArticles.add(resourceCatalogArticle);
-						}
+	public List<InventoryArticle> getInventoryArticles(Person person) {
+		List<InventoryArticle> inventoryArticles = new ArrayList<InventoryArticle>();
+		List<Resource> resources = ((IdmPerson)person).getResources();
+		List<CatalogArticle> articles = Catalog.getCatalog().getAllArticles();
+		for (CatalogArticle catalogArticle : articles) {
+			if (ResourceCatalogArticle.class.isAssignableFrom(catalogArticle.getClass())) {
+				ResourceCatalogArticle resourceCatalogArticle = (ResourceCatalogArticle) catalogArticle;
+				for (Resource resource : resources) {
+					if (resourceCatalogArticle.contains(resource)) {
+						String articleId = catalogArticle.getCatalogPath();
+						String specifier = resource.getParameter();
+						Map<String, String> attributeMap = person.getCatalogAttributes(articleId, specifier);
+						List<InventoryAttribute> attributes = getInventoryAttributes(catalogArticle, attributeMap);
+						inventoryArticles.add(new InventoryArticle(catalogArticle, resource.getStartTime(),
+								resource.getEndTime(), attributes));
 					}
 				}
 			}
 		}
-		return catalogArticles;
+		return inventoryArticles;
 	}
 
 	public boolean contains(Resource resource) {
-		if (StringUtils.equalsIgnoreCase(resource.getPath(), (String) get(ATTRIBUTE_RESOURCE))) {
+		if (getResource() != null && StringUtils.equalsIgnoreCase(resource.getPath(), getResource().getPath())) {
 			return true;
 		}
 		return false;
 	}
 
-	@Override
-	public Date getStart(Person person, String specifier) {
-		Resource resource = getResource();
-		if (resource != null) {
-			return resource.getStartTime();
-		}
-		return null;
-	}
-
-	@Override
-	public Date getEnd(Person person, String specifier) {
-		Resource resource = getResource();
-		if (resource != null) {
-			return resource.getEndTime();
-		}
-		return null;
-	}
-
-	@Override
-	public String getSpecifier(Person person) {
-		Resource resource = getResource();
-		if (resource != null) {
-			return resource.getParameter();
-		}
-		return null;
-	}
-
 	public Resource getResource() {
 		return getForeignKeyObject(Resource.class, ATTRIBUTE_RESOURCE);
 	}
-
+	
 }

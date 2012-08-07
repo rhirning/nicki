@@ -30,11 +30,10 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.shop;
+package org.mgnl.nicki.shop.objects;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -44,10 +43,14 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.mgnl.nicki.core.helper.XMLHelper;
+import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.DynamicTemplateObject;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.shop.inventory.InventoryArticle;
+import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 
 @SuppressWarnings("serial")
 public class CatalogArticle extends DynamicTemplateObject {
@@ -92,13 +95,13 @@ public class CatalogArticle extends DynamicTemplateObject {
 		addAttribute(dynAttribute);
 	};
 
-	// TODO: class must know how to get the assigned articles
-	public List<CatalogArticle> getArticles(Person person) {
-		return new ArrayList<CatalogArticle>();
-	}
-	
 	public boolean hasArticle(Person person, CatalogArticle article) {
-		return getArticles(person).contains(article);
+		for (InventoryArticle inventoryArticle : getInventoryArticles(person)) {
+			if (inventoryArticle.getArticle().getPath() == article.getPath()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public String getArticleType() {
@@ -236,20 +239,42 @@ public class CatalogArticle extends DynamicTemplateObject {
 		return (List<String>) get("rule");
 	}
 	
+	@Override
+	public String getDisplayName() {
+		if (StringUtils.isNotEmpty((String) get("displayName"))) {
+			return I18n.getText((String) get("displayName"));
+		} else {
+			return super.getDisplayName();
+		}
+	}
+
 	public boolean isMultiple() {
 		return false;
 	}
 
-	public Date getStart(Person person, String specifier) {
-		return null;
+	public List<InventoryArticle> getInventoryArticles(Person person) {
+		List<InventoryArticle> result = new ArrayList<InventoryArticle>();
+		// find all articles of that kind for person
+		List<AssignedArticle> assignedArticles = person.getAssignedArticles();
+		for (AssignedArticle assignedArticle : assignedArticles) {
+			CatalogArticle catalogArticle = Catalog.getCatalog().getArticle(assignedArticle.getArticleId());
+			Map<String, String> attributeMap = person.getCatalogAttributes(assignedArticle);
+			List<InventoryAttribute> attributes = getInventoryAttributes(catalogArticle, attributeMap);
+			result.add(new InventoryArticle(catalogArticle, assignedArticle, attributes));
+		}
+		return result;
 	}
-
-	public Date getEnd(Person person, String specifier) {
-		return null;
+	
+	public List<InventoryAttribute> getInventoryAttributes(CatalogArticle article,
+			Map<String, String> attributeMap) {
+		List<InventoryAttribute> attributes = new ArrayList<InventoryAttribute>();
+		for (String key : attributeMap.keySet()) {
+			for (CatalogArticleAttribute attribute : article.getAllAttributes()) {
+				if (StringUtils.equals(key, attribute.getName())) {
+					attributes.add(new InventoryAttribute(article, attribute, attributeMap.get(key)));
+				}
+			}
+		}
+		return attributes;
 	}
-
-	public String getSpecifier(Person person) {
-		return "0";
-	}
-
 }

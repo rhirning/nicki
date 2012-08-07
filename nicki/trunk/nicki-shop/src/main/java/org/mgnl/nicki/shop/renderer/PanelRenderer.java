@@ -35,46 +35,42 @@ package org.mgnl.nicki.shop.renderer;
 import java.util.Iterator;
 import java.util.List;
 
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticleAttribute;
+import org.mgnl.nicki.shop.core.ShopArticle;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.inventory.Inventory;
-import org.mgnl.nicki.shop.inventory.SpecifiedArticle;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
 
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Panel;
 
 @SuppressWarnings("serial")
 public class PanelRenderer extends BaseShopRenderer implements ShopRenderer{
 
-	public Component render(ShopViewerComponent shopViewerComponent, Inventory inventory) {
+	private ShopViewerComponent shopViewerComponent;
+	private Panel panel;
+	
+	public AbstractComponent render(ShopViewerComponent shopViewerComponent, Inventory inventory) {
+		this.shopViewerComponent = shopViewerComponent;
 		setInventory(inventory);
-		// collect all articles
-		List<CatalogArticle> articles = shopViewerComponent.getAllArticles();
 		// create Panel
 		Panel panel = new Panel();
 		panel.setScrollable(true);
+		render();
+		return panel;
+	}
+
+	@Override
+	public void render() {
+
+		ShopRenderer articleRenderer = new TableRenderer();
+		// collect all articles
+		List<CatalogArticle> articles = shopViewerComponent.getAllArticles();
+		panel.removeAllComponents();
 		// add articles to panel
 		for (Iterator<CatalogArticle> iterator = articles.iterator(); iterator.hasNext();) {
 			CatalogArticle article = (CatalogArticle) iterator.next();
-			panel.addComponent(getArticleComponent(article));
-		}
-		return panel;
-	}
-	
-	protected void showArticleAttributes(HorizontalLayout layout, boolean enabled) {
-		SpecifiedArticle specifiedArticle = (SpecifiedArticle) layout.getData(); 
-		
-		CatalogArticle article = specifiedArticle.getCatalogArticle();
-		if (article.hasAttributes()) {
-			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
-				CatalogArticleAttribute pageAttribute = iterator.next();
-				layout.addComponent(getAttributeComponent(specifiedArticle, pageAttribute, enabled));
-			}
+			panel.addComponent(articleRenderer.render(new ShopArticle(article), getInventory()));
 		}
 	}
-	
-
 
 }

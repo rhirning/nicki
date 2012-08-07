@@ -30,37 +30,12 @@
  * intact.
  *
  */
-package org.mgnl.nicki.shop.inventory;
+package org.mgnl.nicki.shop.renderer;
 
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
+public interface CreateInstanceHandler {
 
-public class SpecifiedArticle {
-	private CatalogArticle catalogArticle;
-	private String specifier = null;
-	
-	public SpecifiedArticle(CatalogArticle catalogArticle) {
-		this.setCatalogArticle(catalogArticle);
-	}
+	void setName(String value);
 
-	public SpecifiedArticle(CatalogArticle catalogArticle, String specifier) {
-		this.setCatalogArticle(catalogArticle);
-		this.setSpecifier(specifier);
-	}
-
-	public CatalogArticle getCatalogArticle() {
-		return catalogArticle;
-	}
-
-	private void setCatalogArticle(CatalogArticle catalogArticle) {
-		this.catalogArticle = catalogArticle;
-	}
-
-	public String getSpecifier() {
-		return specifier;
-	}
-
-	public void setSpecifier(String specifier) {
-		this.specifier = specifier;
-	}
+	String getName();
 
 }

@@ -41,9 +41,9 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.util.Classes;
-import org.mgnl.nicki.dynamic.objects.shop.Catalog;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticleAttribute;
+import org.mgnl.nicki.shop.objects.Catalog;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 
 @SuppressWarnings("serial")
 public class ShopPage implements ShopViewerComponent, Serializable{
@@ -69,6 +69,7 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 				this.name = article.getName();
 				this.label = article.getDisplayName();
 				this.articleList.add(article);
+				this.renderer = pageElement.getAttributeValue("renderer");
 			}
 		} else if (type == TYPE.STRUCTURE_PAGE) {
 			this.renderer = pageElement.getAttributeValue("renderer");

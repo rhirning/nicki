@@ -38,10 +38,10 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogPage;
-import org.mgnl.nicki.dynamic.objects.shop.Provider;
 import org.mgnl.nicki.idm.novell.objects.Role;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.objects.CatalogPage;
+import org.mgnl.nicki.shop.objects.Provider;
 
 @SuppressWarnings("serial")
 public class RolesProvider implements Provider, Serializable {

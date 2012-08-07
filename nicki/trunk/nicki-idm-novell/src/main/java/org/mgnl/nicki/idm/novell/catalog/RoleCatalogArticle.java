@@ -33,24 +33,25 @@
 package org.mgnl.nicki.idm.novell.catalog;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
-import org.mgnl.nicki.dynamic.objects.shop.Catalog;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
 import org.mgnl.nicki.idm.novell.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.objects.Role;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.shop.inventory.InventoryArticle;
+import org.mgnl.nicki.shop.inventory.InventoryAttribute;
+import org.mgnl.nicki.shop.objects.Catalog;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
 
 public class RoleCatalogArticle extends CatalogArticle {
 
 	private static final long serialVersionUID = -5530389061310235734L;
 	public static final String ATTRIBUTE_ROLE = "role";
-	private List<CatalogArticle> catalogArticles = null;;
 	@Override
 	public void initDataModel() {
 		super.initDataModel();
@@ -65,23 +66,25 @@ public class RoleCatalogArticle extends CatalogArticle {
 
 
 	@Override
-	public List<CatalogArticle> getArticles(Person person) {
-		if (catalogArticles == null) {
-			catalogArticles = new ArrayList<CatalogArticle>();
-			List<Role> roles = ((IdmPerson)person).getRoles();
-			List<CatalogArticle> articles = Catalog.getCatalog().getAllArticles();
-			for (CatalogArticle catalogArticle : articles) {
-				if (RoleCatalogArticle.class.isAssignableFrom(catalogArticle.getClass())) {
-					RoleCatalogArticle roleCatalogArticle = (RoleCatalogArticle) catalogArticle;
-					for (Role role : roles) {
-						if (roleCatalogArticle.contains(role)) {
-							catalogArticles.add(roleCatalogArticle);
-						}
+	public List<InventoryArticle> getInventoryArticles(Person person) {
+		List<InventoryArticle> inventoryArticles = new ArrayList<InventoryArticle>();
+		List<Role> roles = ((IdmPerson)person).getRoles();
+		List<CatalogArticle> articles = Catalog.getCatalog().getAllArticles();
+		for (CatalogArticle catalogArticle : articles) {
+			if (RoleCatalogArticle.class.isAssignableFrom(catalogArticle.getClass())) {
+				RoleCatalogArticle roleCatalogArticle = (RoleCatalogArticle) catalogArticle;
+				for (Role role : roles) {
+					if (roleCatalogArticle.contains(role)) {
+						String articleId = catalogArticle.getCatalogPath();
+						Map<String, String> attributeMap = person.getCatalogAttributes(articleId, null);
+						List<InventoryAttribute> attributes = getInventoryAttributes(catalogArticle, attributeMap);
+						inventoryArticles.add(new InventoryArticle(catalogArticle, role.getStartTime(),
+								role.getEndTime(), attributes));
 					}
 				}
 			}
 		}
-		return catalogArticles;
+		return inventoryArticles;
 	}
 
 	public boolean contains(Role role) {
@@ -89,30 +92,6 @@ public class RoleCatalogArticle extends CatalogArticle {
 			return true;
 		}
 		return false;
-	}
-
-
-	@Override
-	public Date getStart(Person person, String specifier) {
-		Role role = getRole();
-		if (role != null) {
-			return role.getStartTime();
-		}
-		return null;
-	}
-
-	@Override
-	public Date getEnd(Person person, String specifier) {
-		Role role = getRole();
-		if (role != null) {
-			return role.getEndTime();
-		}
-		return null;
-	}
-
-	@Override
-	public String getSpecifier(Person person) {
-		return null;
 	}
 
 	public Role getRole() {

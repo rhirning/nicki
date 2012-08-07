@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.shop;
+package org.mgnl.nicki.shop.objects;
 
 import java.io.IOException;
 import java.util.ArrayList;

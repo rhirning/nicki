@@ -33,8 +33,8 @@
 package org.mgnl.nicki.shop.attributes;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
+import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.NativeSelect;

@@ -30,36 +30,41 @@
  * intact.
  *
  */
-package org.mgnl.nicki.shop.attributes;
+package org.mgnl.nicki.shop.core;
 
-import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.shop.inventory.InventoryArticle;
-import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
 
-@SuppressWarnings("serial")
-public class StaticComponent extends BasicAttributeComponent implements AttributeComponent {
 
-	private Label field;
+public class ShopArticle implements ShopViewerComponent {
+	
+	List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
 
-	public StaticComponent() {
-		field = new Label();
-		field.setWidth("200px");
-		field.setEnabled(false);
+	public ShopArticle(CatalogArticle catalogArticle) {
+		super();
+		this.articles.add(catalogArticle);
 	}
-	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
-		setArticle(article);
-		setAttribute(attribute);
-		String value = attribute.getLabel();
-		if (StringUtils.isNotEmpty(value)) {
-			value += ": ";
-		}
-		String content = getContent(String.class, user, person);
-		value += StringUtils.trimToEmpty(content);
-		field.setCaption(value);
-		return field;
+
+	@Override
+	public ShopViewerComponent getShopViewerComponent() {
+		return this;
 	}
+
+	@Override
+	public List<ShopPage> getPageList() {
+		return new ArrayList<ShopPage>();
+	}
+
+	@Override
+	public List<CatalogArticle> getArticles() {
+		return articles;
+	}
+
+	@Override
+	public List<CatalogArticle> getAllArticles() {
+		return articles;
+	}
+
 }

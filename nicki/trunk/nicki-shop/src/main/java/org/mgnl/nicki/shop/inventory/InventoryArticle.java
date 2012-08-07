@@ -41,11 +41,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.dynamic.objects.shop.CartEntry.ACTION;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticleAttribute;
+import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.shop.attributes.AttributeComponentFactory;
 import org.mgnl.nicki.shop.inventory.Inventory.SOURCE;
+import org.mgnl.nicki.shop.objects.CartEntry.ACTION;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 
 @SuppressWarnings("serial")
 public class InventoryArticle implements Serializable{
@@ -53,7 +54,7 @@ public class InventoryArticle implements Serializable{
 	
 	private STATUS originalStatus = STATUS.NONE;
 	private STATUS status;
-	private SpecifiedArticle specifiedArticle;
+	private CatalogArticle catalogArticle;
 	private SOURCE source = SOURCE.NONE;
 	private Date start = null;
 	private Date end = null;
@@ -61,8 +62,16 @@ public class InventoryArticle implements Serializable{
 	private String specifier = null;
 	private Map<String, InventoryAttribute> attributes = new HashMap<String, InventoryAttribute>();
 
-	public InventoryArticle(SpecifiedArticle specifiedArticle) {
-		this.specifiedArticle = specifiedArticle;
+	public InventoryArticle(CatalogArticle catalogArticle) {
+		this.catalogArticle = catalogArticle;
+		addEmptyAttributes();
+		setStatus(STATUS.NEW);
+	}
+	
+
+	public InventoryArticle(CatalogArticle catalogArticle, String specifier) {
+		this.catalogArticle = catalogArticle;
+		this.specifier = specifier;
 		addEmptyAttributes();
 		setStatus(STATUS.NEW);
 	}
@@ -78,10 +87,9 @@ public class InventoryArticle implements Serializable{
 		}
 	}
 
-	public InventoryArticle(SpecifiedArticle specifiedArticle, String specifier, Date start, Date end,
+	public InventoryArticle(CatalogArticle catalogArticle, Date start, Date end,
 			List<InventoryAttribute> attributes) {
-		this.specifiedArticle = specifiedArticle;
-		this.setSpecifier(specifier);
+		this.catalogArticle = catalogArticle;
 		addEmptyAttributes();
 		if (attributes != null) {
 			for (Iterator<InventoryAttribute> iterator = attributes.iterator(); iterator.hasNext();) {
@@ -96,6 +104,44 @@ public class InventoryArticle implements Serializable{
 		originalStatus = STATUS.PROVISIONED;
 	}
 
+	public InventoryArticle(CatalogArticle catalogArticle, String specifier, Date start, Date end,
+			List<InventoryAttribute> attributes) {
+		this.catalogArticle = catalogArticle;
+		this.setSpecifier(specifier);
+		addEmptyAttributes();
+		if (attributes != null) {
+			for (Iterator<InventoryAttribute> iterator = attributes.iterator(); iterator.hasNext();) {
+				InventoryAttribute attribute = iterator.next();
+				this.attributes.put(attribute.getName(), attribute);
+			}
+		}
+		this.start = start;
+		this.end = end;
+		this.orgEnd = end;
+		setStatus(STATUS.PROVISIONED);
+		originalStatus = STATUS.PROVISIONED;
+	}
+	
+
+	public InventoryArticle(CatalogArticle catalogArticle, AssignedArticle assignedArticle,
+			List<InventoryAttribute> attributes) {
+		this.catalogArticle = catalogArticle;
+		this.setSpecifier(assignedArticle.getSpecifier());
+		addEmptyAttributes();
+		if (attributes != null) {
+			for (Iterator<InventoryAttribute> iterator = attributes.iterator(); iterator.hasNext();) {
+				InventoryAttribute attribute = iterator.next();
+				this.attributes.put(attribute.getName(), attribute);
+			}
+		}
+		this.start = assignedArticle.getStart();
+		this.end = assignedArticle.getEnd();
+		this.orgEnd = end;
+		setStatus(STATUS.PROVISIONED);
+		originalStatus = STATUS.PROVISIONED;
+	}
+
+
 	public void setStatus(STATUS status) {
 		this.status = status;
 	}
@@ -109,7 +155,6 @@ public class InventoryArticle implements Serializable{
 	}
 
 	public void reset() {
-		// TODO reset attributes
 		setStatus(STATUS.PROVISIONED);
 	}
 	
@@ -127,7 +172,7 @@ public class InventoryArticle implements Serializable{
 	}
 
 	public CatalogArticle getArticle() {
-		return specifiedArticle.getCatalogArticle();
+		return catalogArticle;
 	}
 
 	public Object getValue(CatalogArticleAttribute attribute) {
@@ -214,4 +259,5 @@ public class InventoryArticle implements Serializable{
 	public void setSpecifier(String specifier) {
 		this.specifier = specifier;
 	}
+
 }

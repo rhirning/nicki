@@ -36,56 +36,47 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.attributes.AttributeComponent;
 import org.mgnl.nicki.shop.attributes.AttributeComponentFactory;
 import org.mgnl.nicki.shop.attributes.LabelComponent;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.inventory.Inventory;
-import org.mgnl.nicki.shop.inventory.Inventory.SOURCE;
-import org.mgnl.nicki.shop.inventory.SpecifiedArticle;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 
 import com.vaadin.ui.AbsoluteLayout;
-import com.vaadin.ui.AbstractOrderedLayout;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextArea;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
 
 public class BaseShopRenderer {
 	
 	private Inventory inventory;
 	
-	protected Component getAttributeComponent(SpecifiedArticle specifiedArticle, CatalogArticleAttribute articleAttribute, boolean enabled) {
+	protected Component getAttributeComponent(CatalogArticle article, CatalogArticleAttribute articleAttribute, boolean enabled) {
 		try {
 			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
 			attributeComponent.setEnabled(enabled);
 			return attributeComponent.getInstance(inventory.getUser(), inventory.getPerson(),
-					inventory.getInventoryArticle(specifiedArticle), articleAttribute);
+					inventory.getInventoryArticle(article), articleAttribute);
 		} catch (Exception e) {
 			return new LabelComponent().getInstance(inventory.getUser(), inventory.getPerson(),
-					inventory.getInventoryArticle(specifiedArticle), articleAttribute);
+					inventory.getInventoryArticle(article), articleAttribute);
 		}
 	}
 
-	protected Component getAttributeComponent(SpecifiedArticle specifiedArticle, CatalogArticleAttribute articleAttribute, boolean enabled, Object value) {
+	protected Component getAttributeComponent(CatalogArticle article, CatalogArticleAttribute articleAttribute, boolean enabled, Object value) {
 		try {
 			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
 			attributeComponent.setValue(value);
-			inventory.getInventoryArticle(specifiedArticle).setValue(articleAttribute, value);
+			inventory.getInventoryArticle(article).setValue(articleAttribute, value);
 			attributeComponent.setEnabled(enabled);
 			return attributeComponent.getInstance(getInventory().getUser(), getInventory().getPerson(),
-					getInventory().getInventoryArticle(specifiedArticle), articleAttribute);
+					getInventory().getInventoryArticle(article), articleAttribute);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new LabelComponent().getInstance(getInventory().getUser(), getInventory().getPerson(),
-					getInventory().getInventoryArticle(specifiedArticle), articleAttribute);
+					getInventory().getInventoryArticle(article), articleAttribute);
 		}
 	}
 
@@ -102,46 +93,6 @@ public class BaseShopRenderer {
 			parent.removeComponent(component);
 		}
 	}
-
-	@SuppressWarnings("serial")
-	protected Component getArticleComponent(CatalogArticle article) {
-		HorizontalLayout layout = new HorizontalLayout();
-		layout.setSpacing(true);
-		layout.setData(article);
-		layout.setHeight("40px");
-		CheckBox checkBox = new CheckBox(I18n.getText(article.getDisplayName()));
-		checkBox.setImmediate(true);
-		checkBox.setWidth("200px");
-		layout.addComponent(checkBox);
-		checkBox.addListener(new Button.ClickListener() {
-			
-			public void buttonClick(ClickEvent event) {
-				  boolean enabled = event.getButton().booleanValue();
-				  HorizontalLayout parent = (HorizontalLayout) event.getButton().getParent();
-				  if (enabled) {
-					  showArticleAttributes(parent);
-				  } else {
-//					  removeExcept(parent, event.getButton());
-				  }
-			}
-		});
-
-		return layout;
-	}
-	
-	protected void showArticleAttributes(HorizontalLayout layout ) {
-		SpecifiedArticle specifiedArticle = (SpecifiedArticle) layout.getData();
-		CatalogArticle article = specifiedArticle.getCatalogArticle();
-		
-		if (article.hasAttributes()) {
-			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
-				CatalogArticleAttribute pageAttribute = iterator.next();
-				// TODO
-				boolean enabled = true;
-				layout.addComponent(getAttributeComponent(specifiedArticle, pageAttribute, enabled));
-			}
-		}
-	}
 	
 
 	public Component getXMLComponent(ShopViewerComponent shopViewerComponent) {
@@ -156,33 +107,6 @@ public class BaseShopRenderer {
 		layout.addComponent(xml, "top:20.0px;left:20.0px;right:20.0px;");
 
 		return layout;
-	}
-
-	/* TODO: kann das entfernt werden?
-	protected AbstractOrderedLayout getHorizontalArticleAttributes(CatalogArticle article, boolean enabled) {
-		AbstractOrderedLayout layout = new HorizontalLayout();
-		layout.setSpacing(true);
-		layout.setHeight("40px");
-		if (article.hasAttributes()) {
-			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
-				CatalogArticleAttribute attribute = iterator.next();
-				layout.addComponent(getAttributeComponent(article, attribute, enabled));
-			}
-		}
-		return layout;
-	}
-	*/
-	protected AbstractOrderedLayout getVerticalArticleAttributes(SpecifiedArticle specifiedArticle, boolean provisioned, SOURCE source) {
-		AbstractOrderedLayout attrLayout = new VerticalLayout();
-		CatalogArticle article = specifiedArticle.getCatalogArticle();
-		if (article.hasAttributes()) {
-			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
-				CatalogArticleAttribute pageAttribute = iterator.next();
-				boolean enabled = true;
-				attrLayout.addComponent(getAttributeComponent(specifiedArticle, pageAttribute, enabled));
-			}
-		}
-		return attrLayout;
 	}
 	
 	public void setInventory(Inventory inventory) {

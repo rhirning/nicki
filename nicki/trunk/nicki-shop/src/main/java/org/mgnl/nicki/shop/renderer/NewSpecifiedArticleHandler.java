@@ -30,36 +30,39 @@
  * intact.
  *
  */
-package org.mgnl.nicki.shop.attributes;
+package org.mgnl.nicki.shop.renderer;
 
-import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.shop.inventory.InventoryArticle;
-import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
+import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
 
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.Window;
 
-@SuppressWarnings("serial")
-public class StaticComponent extends BasicAttributeComponent implements AttributeComponent {
+public class NewSpecifiedArticleHandler implements CreateInstanceHandler {
 
-	private Label field;
+	private CatalogArticle catalogArticle;
+	private TableRenderer tableRenderer;
 
-	public StaticComponent() {
-		field = new Label();
-		field.setWidth("200px");
-		field.setEnabled(false);
+
+	public NewSpecifiedArticleHandler(CatalogArticle catalogArticle, TableRenderer tableRenderer) {
+		super();
+		this.catalogArticle = catalogArticle;
+		this.tableRenderer = tableRenderer;
 	}
-	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
-		setArticle(article);
-		setAttribute(attribute);
-		String value = attribute.getLabel();
-		if (StringUtils.isNotEmpty(value)) {
-			value += ": ";
+
+	@Override
+	public void setName(String value) {
+		if (tableRenderer.getInventory().hasArticle(catalogArticle, value)) {
+			tableRenderer.getWindow().showNotification(I18n.getText("nicki.rights.specifier.exists"),
+					Window.Notification.TYPE_ERROR_MESSAGE);
+		} else {
+			tableRenderer.getInventory().addArticle(catalogArticle, value);
+			tableRenderer.render();
 		}
-		String content = getContent(String.class, user, person);
-		value += StringUtils.trimToEmpty(content);
-		field.setCaption(value);
-		return field;
 	}
+
+	@Override
+	public String getName() {
+		return "";
+	}
+
 }

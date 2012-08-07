@@ -35,37 +35,59 @@ package org.mgnl.nicki.shop.renderer;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.inventory.Inventory;
 import org.mgnl.nicki.shop.inventory.Inventory.SOURCE;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryArticle.STATUS;
-import org.mgnl.nicki.shop.inventory.SpecifiedArticle;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
+import org.mgnl.nicki.shop.objects.MultipleInstancesCatalogArticle;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 
 import com.vaadin.data.Item;
+import com.vaadin.terminal.Sizeable;
+import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.Component;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.Table;
 
 @SuppressWarnings("serial")
-public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
+public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 	
-	private Table table;
+	private ShopViewerComponent shopViewerComponent;
+	private Table table = null;
+	private AbsoluteLayout layout = new AbsoluteLayout();
 
-	public Component render(ShopViewerComponent shopViewerComponent, Inventory inventory) {
+	public AbstractComponent render(ShopViewerComponent shopViewerComponent, Inventory inventory) {
+		this.shopViewerComponent = shopViewerComponent;
 		setInventory(inventory);
+		render();
+		return layout;
+	}
+
+	public void render() {
 		// collect all articles
 		List<CatalogArticle> articles = shopViewerComponent.getAllArticles();
 		// create Table
+		
+		if (table != null) {
+			layout.removeAllComponents();
+			table = null;
+		}
+		
 		table = new Table();
+		layout.addComponent(table, "top:0.0px;left:0.0px;");
 		table.setWidth("100%");
 		table.setHeight("100%");
 		table.addContainerProperty("checkbox", Button.class, "");
@@ -87,15 +109,11 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 		// add articles to table
 		for (Iterator<CatalogArticle> iterator = articles.iterator(); iterator.hasNext();) {
 			CatalogArticle article = (CatalogArticle) iterator.next();
-			SpecifiedArticle specifiedArticle = new SpecifiedArticle(article);
 			if (!article.isMultiple()) {
-				if (getInventory().hasArticle(article)) {
-					specifiedArticle = getInventory().getFirstSpecifiedArticle(article);
-				}
-				addArticle(specifiedArticle, null, getInventory().hasArticle(article));
+				addArticle(article, getInventory().getArticle(article));
 			} else {
 		        Button button = new Button("+");
-		        button.setData(specifiedArticle);
+		        button.setData(article);
 		        button.setImmediate(true);
 		        button.setWidth("-1px");
 				if (article.hasDescription()) {
@@ -106,26 +124,80 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 					
 					@Override
 					public void buttonClick(ClickEvent event) {
-						SpecifiedArticle specifiedArticle = (SpecifiedArticle) event.getButton().getData();
-						addArticle(new SpecifiedArticle(specifiedArticle.getCatalogArticle()), specifiedArticle, false);
+						CatalogArticle article = (CatalogArticle) event.getButton().getData();
+						addInstance(article);
 					}
 				});
-	
-				Item item = addArticle(specifiedArticle, null, false);
+
+				Item item = table.addItem(article);
 				item.getItemProperty("title").setValue(article.getDisplayName());
 				item.getItemProperty("checkbox").setValue(button);
+				
+		        Map<String, InventoryArticle> articleMap = getInventory().getArticles(article);
+		        if (articleMap != null) {
+			        for (String specifier : articleMap.keySet()) {
+						InventoryArticle iArticle = articleMap.get(specifier);
+						addMultiArticle(iArticle, iArticle.getStatus());
+					}
+		        }	
 			}
 		}
-		return table;
 	}
 	
-	protected Item addArticle(SpecifiedArticle specifiedArticle, SpecifiedArticle previous, boolean hasArticle) {
+	protected void addInstance(CatalogArticle catalogArticle) {
+		EnterSpecifierAsSelectDialog dialog = new EnterSpecifierAsSelectDialog("nicki.rights.specifier");
+//		EnterSpecifierAsTextDialog dialog = new EnterSpecifierAsTextDialog("nicki.rights.specifier");
+		NewSpecifiedArticleHandler handler = new NewSpecifiedArticleHandler(catalogArticle, this);
+		dialog.setHandler(handler);
+		dialog.init((MultipleInstancesCatalogArticle) catalogArticle);
+
+		Window newWindow = new Window(I18n.getText("nicki.rights.specifier.define.window.title"),
+				dialog);
+		newWindow.setWidth(440, Sizeable.UNITS_PIXELS);
+		newWindow.setHeight(500, Sizeable.UNITS_PIXELS);
+		newWindow.setModal(true);
+		table.getWindow().addWindow(newWindow);		
+	}
+
+	public Item addMultiArticle(InventoryArticle iArticle, STATUS status) {
 		CheckBox checkBox = new CheckBox();
-		CatalogArticle article = specifiedArticle.getCatalogArticle();
-		if (hasArticle) {
-			specifiedArticle.setSpecifier(article.getSpecifier(getInventory().getPerson()));
+		CatalogArticle article = iArticle.getArticle();
+		checkBox.setData(iArticle);
+		checkBox.setImmediate(true);
+		checkBox.setWidth("-1px");
+		if (article.hasDescription()) {
+			checkBox.setIcon(Icon.HELP.getResource());
+			checkBox.setDescription(article.getDescription());
 		}
-		checkBox.setData(specifiedArticle);
+		checkBox.setValue(true);
+		if (status == STATUS.NEW) {
+			checkBox.setEnabled(true);
+		} else {
+			checkBox.setEnabled(false);
+		}
+
+		checkBox.addListener(new Button.ClickListener() {
+			
+			public void buttonClick(ClickEvent event) {
+				InventoryArticle iArticle = (InventoryArticle) event.getButton().getData();
+				boolean enabled = event.getButton().booleanValue();
+				if (!enabled) {
+					getInventory().removeArticle(iArticle);
+					render();
+				}
+			}
+
+		});
+		Item item = table.addItem(iArticle);
+		item.getItemProperty("title").setValue(iArticle.getSpecifier());
+		item.getItemProperty("checkbox").setValue(checkBox);
+
+		return item;
+	}
+
+	public Item addArticle(CatalogArticle article, InventoryArticle inventoryArticle) {
+		CheckBox checkBox = new CheckBox();
+		checkBox.setData(article);
 
 		checkBox.setImmediate(true);
 		checkBox.setWidth("-1px");
@@ -137,34 +209,31 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 		checkBox.addListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
-				SpecifiedArticle specifiedArticle = (SpecifiedArticle) event.getButton().getData();
-				  Item item = table.getItem(specifiedArticle);
+				CatalogArticle article = (CatalogArticle) event.getButton().getData();
+				  Item item = table.getItem(article);
 				  boolean enabled = event.getButton().booleanValue();
 				  if (enabled) {
-					  getInventory().addArticle(specifiedArticle);
-					  showEntry(item, specifiedArticle);
+					  getInventory().addArticle(article);
+					  showEntry(item, article);
 				  } else {
-					  getInventory().removeArticle(specifiedArticle);
+					  getInventory().removeArticle(article);
 					  hideEntry(item);
 				  }
 			}
 
 		});
-		Item item;
-
-		if (previous != null) {
-			item = table.addItemAfter(previous, specifiedArticle);
-		}
-		else {
-			item = table.addItem(specifiedArticle);
-		}
+		Item item = table.addItem(article);
 		item.getItemProperty("title").setValue(article.getDisplayName());
 		item.getItemProperty("checkbox").setValue(checkBox);
 
-		if (hasArticle) {
+		if (inventoryArticle != null) {
 			checkBox.setValue(true);
-			checkBox.setEnabled(false);
-			showEntry(item, specifiedArticle);
+			if (inventoryArticle.getStatus() == STATUS.NEW) {
+				checkBox.setEnabled(true);
+			} else {
+				checkBox.setEnabled(false);
+			}
+			showEntry(item, article);
 		}
 		return item;
 	}
@@ -176,8 +245,8 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 //		removeExcept(parent, event.getButton());
 	}
 
-	private void showEntry(Item item, SpecifiedArticle specifiedArticle) {
-		InventoryArticle inventoryArticle = getInventory().getInventoryArticle(specifiedArticle);
+	private void showEntry(Item item, CatalogArticle article) {
+		InventoryArticle inventoryArticle = getInventory().getInventoryArticle(article);
 		SOURCE source = SOURCE.SHOP;
 		Date start = new Date();
 		Date end = null;
@@ -193,10 +262,27 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer{
 			}
 		}
 
-		item.getItemProperty("dateFrom").setValue(getAttributeComponent(specifiedArticle, CatalogArticle.getFixedAttribute("dateFrom"), enabled, start));
-		item.getItemProperty("dateTo").setValue(getAttributeComponent(specifiedArticle, CatalogArticle.getFixedAttribute("dateTo"), toEnabled, end));
-		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(specifiedArticle, enabled, source));
+		item.getItemProperty("dateFrom").setValue(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, start));
+		item.getItemProperty("dateTo").setValue(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), toEnabled, end));
+		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article, enabled, source));
 //		showArticleAttributes(parent);
+	}
+	
+
+	private AbstractOrderedLayout getVerticalArticleAttributes(CatalogArticle article, boolean provisioned, SOURCE source) {
+		AbstractOrderedLayout attrLayout = new VerticalLayout();
+		if (article.hasAttributes()) {
+			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
+				CatalogArticleAttribute pageAttribute = iterator.next();
+				boolean enabled = true;
+				attrLayout.addComponent(getAttributeComponent(article, pageAttribute, enabled));
+			}
+		}
+		return attrLayout;
+	}
+
+	public Window getWindow() {
+		return table.getWindow();
 	}
 
 }

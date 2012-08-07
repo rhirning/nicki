@@ -33,24 +33,25 @@
 package org.mgnl.nicki.idm.novell.catalog;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.dynamic.objects.shop.Catalog;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticleAttribute;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogPage;
 import org.mgnl.nicki.idm.novell.objects.Resource;
+import org.mgnl.nicki.shop.objects.Catalog;
+import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
+import org.mgnl.nicki.shop.objects.CatalogPage;
 
 @SuppressWarnings("serial")
-public class VirtualResourceCatalogArticle extends CatalogArticle {
+public class VirtualResourceCatalogArticle extends ResourceCatalogArticle {
 	private Resource resource;
 	private CatalogPage page;
 
 	public VirtualResourceCatalogArticle(Resource resource, CatalogPage page) {
 		this.resource = resource;
 		this.page = page;
+	}
+
+	public Resource getResource() {
+		return resource;
 	}
 
 	@Override
@@ -86,30 +87,6 @@ public class VirtualResourceCatalogArticle extends CatalogArticle {
 	@Override
 	public String getCatalogPath() {
 		return page.getCatalogPath() + Catalog.PATH_SEPARATOR + getName();
-	}
-
-	@Override
-	public List<CatalogArticle> getArticles(Person person) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Date getStart(Person person, String specifier) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Date getEnd(Person person, String specifier) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getSpecifier(Person person) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 

@@ -42,17 +42,17 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.dynamic.objects.shop.Cart;
-import org.mgnl.nicki.dynamic.objects.shop.CartEntry;
-import org.mgnl.nicki.dynamic.objects.shop.Catalog;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
-import org.mgnl.nicki.dynamic.objects.shop.Selector;
-import org.mgnl.nicki.dynamic.objects.shop.ValueProvider;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.shop.inventory.Inventory;
+import org.mgnl.nicki.shop.objects.Cart;
+import org.mgnl.nicki.shop.objects.CartEntry;
+import org.mgnl.nicki.shop.objects.Catalog;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.objects.Selector;
+import org.mgnl.nicki.shop.objects.ValueProvider;
 
 /* 
  * Attribute nickiDirectory: Pfad getrennt mit "/"

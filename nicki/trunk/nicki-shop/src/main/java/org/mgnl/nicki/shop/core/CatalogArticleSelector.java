@@ -35,7 +35,7 @@ package org.mgnl.nicki.shop.core;
 import java.util.List;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
 
 public interface CatalogArticleSelector {
 
