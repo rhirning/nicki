@@ -30,19 +30,14 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.shop;
+package org.mgnl.nicki.shop.objects;
 
-import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.shop.objects.CatalogValueProvider;
 
-public interface ValueProvider {
-	public enum TYPE {SELF,ALL};
+public interface MultipleInstancesCatalogArticle {
 
-	void init(Selector selector, String i18nBase);
+	boolean isMultiple();
 
-	String getValue();
-
-	String getPersonQuery(CatalogArticle article, String value);
-
-	String getArticleQuery(Person person, Object value);
-
+	CatalogValueProvider getValueProvider();
+	
 }

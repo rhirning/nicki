@@ -30,17 +30,19 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.shop;
+package org.mgnl.nicki.shop.objects;
 
-import java.util.List;
+import org.mgnl.nicki.dynamic.objects.objects.Person;
 
+public interface ValueProvider {
+	public enum TYPE {SELF,ALL};
 
-public interface Provider {
+	void init(Selector selector, String i18nBase);
 
-	List<CatalogArticle> getArticles(CatalogPage catalogPage);
+	String getValue();
 
-	CatalogArticle getArticle(String key);
+	String getPersonQuery(CatalogArticle article, String value);
 
-	void init(CatalogPage catalogPage);
+	String getArticleQuery(Person person, Object value);
 
 }

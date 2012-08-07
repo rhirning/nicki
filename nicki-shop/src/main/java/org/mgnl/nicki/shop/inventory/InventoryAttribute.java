@@ -35,8 +35,8 @@ package org.mgnl.nicki.shop.inventory;
 import java.io.Serializable;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticle;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticleAttribute;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 
 
 @SuppressWarnings("serial")

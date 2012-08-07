@@ -33,16 +33,20 @@
 package org.mgnl.nicki.dynamic.objects.shop;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.helper.DataHelper;
 
 @SuppressWarnings("serial")
 public class AssignedArticle implements Serializable{
 	private String source;
 	private String articleId;
 	private String specifier;
-	private CatalogArticle catalogArticle;
 	private String targetDn;
+	private Date start;
+	private Date end;
 	
 	
 	public AssignedArticle(String text) {
@@ -50,9 +54,18 @@ public class AssignedArticle implements Serializable{
 		String entry[] = StringUtils.split(text, "#");
 		this.source = entry[0];
 		this.articleId = entry[1];
-		this.specifier = entry[2];		                       
+		this.specifier = entry[2];
 		this.targetDn = entry[3];
-		this.catalogArticle = Catalog.getCatalog().getArticle(articleId);
+		try {
+			this.start = DataHelper.dateFromString(entry[4]);
+		} catch (ParseException e) {
+			this.start = null;
+		}
+		try {
+			this.end = DataHelper.dateFromString(entry[5]);
+		} catch (ParseException e) {
+			this.start = null;
+		}
 	}
 	
 	public String getSource() {
@@ -65,17 +78,20 @@ public class AssignedArticle implements Serializable{
 	}
 
 
-	public CatalogArticle getCatalogArticle() {
-		return catalogArticle;
-	}
-
-
 	public String getTargetDn() {
 		return targetDn;
 	}
 
 	public String getSpecifier() {
 		return specifier;
+	}
+
+	public Date getStart() {
+		return start;
+	}
+
+	public Date getEnd() {
+		return end;
 	}
 	
 	

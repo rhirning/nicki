@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.shop;
+package org.mgnl.nicki.shop.objects;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -211,6 +211,16 @@ public class Catalog extends DynamicTemplateObject {
 		} else {
 			return null;
 		}
+	}
+
+	public List<CatalogArticle> getArticlesOfType(CatalogArticle catalogArticle) {
+		List<CatalogArticle> result = new ArrayList<CatalogArticle>();
+		for (CatalogArticle article : getAllArticles()) {
+			if (catalogArticle.getClass().isAssignableFrom(article.getClass())) {
+				result.add(article);
+			}
+		}
+		return result;
 	}
 
 }

@@ -36,8 +36,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
+import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;

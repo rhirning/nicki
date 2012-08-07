@@ -30,36 +30,19 @@
  * intact.
  *
  */
-package org.mgnl.nicki.shop.attributes;
+package org.mgnl.nicki.shop.objects;
 
-import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.shop.inventory.InventoryArticle;
-import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
+import java.util.Map;
 
-import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
+public interface CatalogValueProvider {
+	
+	
+	Map<String, String> getEntries();
+	
+	boolean checkEntry(String entry);
 
-@SuppressWarnings("serial")
-public class StaticComponent extends BasicAttributeComponent implements AttributeComponent {
+	boolean isOnlyDefinedEntries();
+	
+	void init(CatalogArticle article);
 
-	private Label field;
-
-	public StaticComponent() {
-		field = new Label();
-		field.setWidth("200px");
-		field.setEnabled(false);
-	}
-	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
-		setArticle(article);
-		setAttribute(attribute);
-		String value = attribute.getLabel();
-		if (StringUtils.isNotEmpty(value)) {
-			value += ": ";
-		}
-		String content = getContent(String.class, user, person);
-		value += StringUtils.trimToEmpty(content);
-		field.setCaption(value);
-		return field;
-	}
 }

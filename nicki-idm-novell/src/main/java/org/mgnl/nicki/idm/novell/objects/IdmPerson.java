@@ -53,6 +53,8 @@ import org.mgnl.nicki.idm.novell.objects.Resource;
 import org.mgnl.nicki.idm.novell.objects.Role;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
+import org.mgnl.nicki.shop.objects.Catalog;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
@@ -81,13 +83,10 @@ public class IdmPerson extends Person implements Serializable {
 	public static final String ATTRIBUTE_OU = "ou";
 	public static final String ATTRIBUTE_OCCUPATION = "occupation";
 	public static final String ATTRIBUTE_LOCATION = "location";
-	public static final String ATTRIBUTE_ASSIGNEDARTICLE = "assignedArticle";
-	public static final String ATTRIBUTE_ATTRIBUTEVALUE = "attributeValue";
 	public static final String ATTRIBUTE_WORKFORCEID = "workforceId";
 	public static final String ATTRIBUTE_MAIL = "mail";
 	public static final String ATTRIBUTE_PHONENUMBER = "phoneNumber";
 
-	private List<AssignedArticle> assignedArticles = null;
 	private List<Role> assignedRoles = null;
 	private List<Resource> assignedResources = null;
 	
@@ -182,16 +181,6 @@ public class IdmPerson extends Person implements Serializable {
 
 		dynAttribute = new DynamicAttribute(ATTRIBUTE_OCCUPATION, "nickiOccupation",
 				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_ASSIGNEDARTICLE, "nickiCatalogArticle",
-				String.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_ATTRIBUTEVALUE,
-				"nickiCatalogAttribute", String.class);
-		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
 		dynAttribute = new DynamicAttribute(ATTRIBUTE_MEMBEROF, "groupMembership", String.class);
@@ -433,20 +422,6 @@ public class IdmPerson extends Person implements Serializable {
 		put(ATTRIBUTE_OCCUPATION, value);
 	}
 
-	public List<AssignedArticle> getAssignedArticles() {
-		if (this.assignedArticles == null) {
-			this.assignedArticles = new ArrayList<AssignedArticle>();
-			@SuppressWarnings("unchecked")
-			List<String> articles = (List<String>) get(ATTRIBUTE_ASSIGNEDARTICLE);
-			if (articles != null) {
-				for (String text : articles) {
-					this.assignedArticles.add(new AssignedArticle(text));
-				}
-			}
-		}
-		return this.assignedArticles;
-	}
-
 	@SuppressWarnings("unchecked")
 	public List<Role> getRoles() {
 		if (assignedRoles == null) {
@@ -460,8 +435,9 @@ public class IdmPerson extends Person implements Serializable {
 				}
 			}
 			for (AssignedArticle article : getAssignedArticles()) {
-				if (article.getCatalogArticle().getClass().isAssignableFrom(RoleCatalogArticle.class)) {
-					assignedRoles.add(((RoleCatalogArticle)article.getCatalogArticle()).getRole());
+				CatalogArticle catalogArticle = Catalog.getCatalog().getArticle(article.getArticleId());
+				if (catalogArticle.getClass().isAssignableFrom(RoleCatalogArticle.class)) {
+					assignedRoles.add(((RoleCatalogArticle)catalogArticle).getRole());
 				}
 			}
 		}
@@ -481,35 +457,13 @@ public class IdmPerson extends Person implements Serializable {
 				}
 			}
 			for (AssignedArticle article : getAssignedArticles()) {
-				if (article.getCatalogArticle().getClass().isAssignableFrom(ResourceCatalogArticle.class)) {
-					assignedResources.add(((ResourceCatalogArticle)article.getCatalogArticle()).getResource());
+				CatalogArticle catalogArticle = Catalog.getCatalog().getArticle(article.getArticleId());
+				if (catalogArticle.getClass().isAssignableFrom(ResourceCatalogArticle.class)) {
+					assignedResources.add(((ResourceCatalogArticle)catalogArticle).getResource());
 				}
 			}
 		}
 		return assignedResources;
-	}
-
-	@SuppressWarnings("unchecked")
-	public List<String> getCatalogAttributeValues() {
-		if (get("attributeValue") != null) {
-			return (List<String>) get(ATTRIBUTE_ATTRIBUTEVALUE);
-		}
-		return new ArrayList<String>();
-	}
-	
-	public String getCatalogAttribute(String key) {
-		String retVal = "";
-		String value;
-		
-		for(Iterator<String> i = getCatalogAttributeValues().iterator(); i.hasNext();) {
-			value = i.next();
-			if(value.startsWith(key)) {
-				retVal = StringUtils.substringAfter(value, "=");
-				break;
-			}
-		}
-		
-		return retVal;
 	}
 
 	public enum GENDER {

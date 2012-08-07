@@ -32,8 +32,14 @@
  */
 package org.mgnl.nicki.dynamic.objects.objects;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicReference;
 
@@ -49,6 +55,14 @@ public class Person extends DynamicTemplateObject {
 	public static final String ATTRIBUTE_ASSIGNEDARTICLE = "assignedArticle";
 	public static final String ATTRIBUTE_ATTRIBUTEVALUE = "attributeValue";
 
+	public static final String SEPARATOR_SPECIFIER = "|";
+	public static final String SEPARATOR_KEY = "|";
+	public static final String SEPARATOR_VALUE = "=";
+
+	private List<AssignedArticle> assignedArticles = null;
+	private List<String> attributeValues = null;
+	private Map<String, String> catalogAttributes = new HashMap<String, String>();
+	
 	public void initDataModel() {
 		addObjectClass("Person");
 		addAdditionalObjectClass("nickiUserAux");
@@ -192,5 +206,61 @@ public class Person extends DynamicTemplateObject {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<String> getCatalogAttributeValues() {
+		if (this.attributeValues == null) {
+			if (get("attributeValue") != null) {
+				this.attributeValues = (List<String>) get(ATTRIBUTE_ATTRIBUTEVALUE);
+			} else {
+				this.attributeValues = new ArrayList<String>();
+			}
+			for (String value : this.attributeValues) {
+				String key = StringUtils.substringBefore(value, SEPARATOR_VALUE);
+				String attribute = StringUtils.substringAfter(value, SEPARATOR_VALUE);
+				this.catalogAttributes.put(key, attribute);
+			}
+		}
+		return this.attributeValues;
+	}
+	
+	public Map<String, String> getCatalogAttributes() {
+		return catalogAttributes;
+	}
 
+	public Map<String, String> getCatalogAttributes(AssignedArticle assignedArticle) {
+		return getCatalogAttributes(assignedArticle.getArticleId(), assignedArticle.getSpecifier());
+	}
+
+	public Map<String, String> getCatalogAttributes(String articleId, String specifier) {
+		Map<String,String> result = new HashMap<String, String>();
+		StringBuffer prefix = new StringBuffer(articleId);
+		if (StringUtils.isNotEmpty(specifier)) {
+			prefix.append(SEPARATOR_SPECIFIER).append(specifier);
+		}
+		prefix.append(SEPARATOR_KEY);
+		
+		for (String value : getCatalogAttributeValues()) {
+			if (StringUtils.startsWith(value, prefix.toString())) {
+				String name = StringUtils.substringBefore(value, SEPARATOR_VALUE);
+				String key = StringUtils.substringAfterLast(name, SEPARATOR_KEY);
+				String attribute = StringUtils.substringAfter(value, SEPARATOR_VALUE);
+				result.put(key, attribute);
+			}
+		}
+		return result;
+	}
+
+	public List<AssignedArticle> getAssignedArticles() {
+		if (this.assignedArticles == null) {
+			this.assignedArticles = new ArrayList<AssignedArticle>();
+			@SuppressWarnings("unchecked")
+			List<String> articles = (List<String>) get(ATTRIBUTE_ASSIGNEDARTICLE);
+			if (articles != null) {
+				for (String text : articles) {
+					this.assignedArticles.add(new AssignedArticle(text));
+				}
+			}
+		}
+		return this.assignedArticles;
+	}
 }

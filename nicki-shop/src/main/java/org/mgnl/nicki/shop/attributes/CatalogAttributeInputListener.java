@@ -32,8 +32,8 @@
  */
 package org.mgnl.nicki.shop.attributes;
 
-import org.mgnl.nicki.dynamic.objects.shop.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
+import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;

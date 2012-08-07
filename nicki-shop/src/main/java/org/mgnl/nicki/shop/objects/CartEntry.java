@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.shop;
+package org.mgnl.nicki.shop.objects;
 
 import java.text.ParseException;
 import java.util.Date;
@@ -158,6 +158,12 @@ public class CartEntry {
 
     public CartEntry(String id, ACTION action) {
         this.id = id;
+        this.action = action;
+    }
+
+    public CartEntry(String id, String specifier, ACTION action) {
+        this.id = id;
+        this.specifier = specifier;
         this.action = action;
     }
 

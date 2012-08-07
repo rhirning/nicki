@@ -33,12 +33,16 @@
 package org.mgnl.nicki.idm.novell.catalog;
 
 import org.mgnl.nicki.core.util.Classes;
-import org.mgnl.nicki.dynamic.objects.shop.CatalogValueProvider;
+import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.shop.objects.CatalogValueProvider;
+import org.mgnl.nicki.shop.objects.MultipleInstancesCatalogArticle;
+import org.mgnl.nicki.shop.objects.XmlValueProvider;
 
-public class ValuedResourceCatalogArticle extends ResourceCatalogArticle {
+public class ValuedResourceCatalogArticle extends ResourceCatalogArticle implements MultipleInstancesCatalogArticle {
 
 	private static final long serialVersionUID = -7208705030668378943L;
+	private CatalogValueProvider provider = null;
 
 	@Override
 	public void initDataModel() {
@@ -47,6 +51,9 @@ public class ValuedResourceCatalogArticle extends ResourceCatalogArticle {
 		
 		DynamicAttribute dynAttribute = new DynamicAttribute("provider", "nickiProvider", String.class);
 		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("providerData", "nickiProviderData", TextArea.class);
+		addAttribute(dynAttribute);
 	}
 
 	public boolean isMultiple() {
@@ -54,17 +61,21 @@ public class ValuedResourceCatalogArticle extends ResourceCatalogArticle {
 	}
 
 	public String getValueProviderClass() {
-		return (String) get("provider");
+		return getAttribute("provider");
 	}
 
 	public CatalogValueProvider getValueProvider() {
-		try {
-			CatalogValueProvider provider = (CatalogValueProvider)Classes.newInstance(getValueProviderClass());
-			return provider;
-		} catch (Exception e) {
-			e.printStackTrace();
+		if (provider == null) {
+			try {
+				provider = (CatalogValueProvider)Classes.newInstance(getValueProviderClass());
+				provider.init(this);
+				return provider;
+			} catch (Exception e) {
+				provider = new XmlValueProvider();
+				provider.init(this);				
+			}
 		}
-		return null;
+		return provider;
 	}
 
 }
