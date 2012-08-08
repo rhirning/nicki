@@ -32,9 +32,20 @@
  */
 package org.mgnl.nicki.idm.novell.catalog;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.mgnl.nicki.core.util.Classes;
+import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
+import org.mgnl.nicki.idm.novell.objects.IdmPerson;
+import org.mgnl.nicki.idm.novell.objects.Resource;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.shop.inventory.InventoryArticle;
+import org.mgnl.nicki.shop.inventory.InventoryAttribute;
+import org.mgnl.nicki.shop.objects.Catalog;
+import org.mgnl.nicki.shop.objects.CatalogArticle;
 import org.mgnl.nicki.shop.objects.CatalogValueProvider;
 import org.mgnl.nicki.shop.objects.MultipleInstancesCatalogArticle;
 import org.mgnl.nicki.shop.objects.XmlValueProvider;
@@ -77,5 +88,30 @@ public class ValuedResourceCatalogArticle extends ResourceCatalogArticle impleme
 		}
 		return provider;
 	}
+	
+	@Override
+	public List<InventoryArticle> getInventoryArticles(Person person) {
+		List<InventoryArticle> inventoryArticles = new ArrayList<InventoryArticle>();
+		List<Resource> resources = ((IdmPerson)person).getResources();
+		List<CatalogArticle> articles = Catalog.getCatalog().getAllArticles();
+		for (CatalogArticle catalogArticle : articles) {
+			if (ValuedResourceCatalogArticle.class.isAssignableFrom(catalogArticle.getClass())) {
+				ValuedResourceCatalogArticle resourceCatalogArticle = (ValuedResourceCatalogArticle) catalogArticle;
+				for (Resource resource : resources) {
+					if (resourceCatalogArticle.contains(resource)) {
+						String articleId = catalogArticle.getCatalogPath();
+						String specifier = resource.getParameter();
+						Map<String, String> attributeMap = person.getCatalogAttributes(articleId, specifier);
+						List<InventoryAttribute> attributes = getInventoryAttributes(catalogArticle, attributeMap);
+						inventoryArticles.add(new InventoryArticle(catalogArticle, resource.getStartTime(),
+								resource.getEndTime(), attributes));
+					}
+				}
+			}
+		}
+		return inventoryArticles;
+	}
+
+
 
 }

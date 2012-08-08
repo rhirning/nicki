@@ -37,12 +37,11 @@ import java.util.List;
 
 import org.mgnl.nicki.idm.novell.objects.Role;
 import org.mgnl.nicki.shop.objects.Catalog;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
 import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.objects.CatalogPage;
 
 @SuppressWarnings("serial")
-public class VirtualRoleCatalogArticle extends CatalogArticle {
+public class VirtualRoleCatalogArticle extends RoleCatalogArticle {
 	private Role role;
 	private CatalogPage page;
 
@@ -84,6 +83,10 @@ public class VirtualRoleCatalogArticle extends CatalogArticle {
 	@Override
 	public String getCatalogPath() {
 		return page.getCatalogPath() + Catalog.PATH_SEPARATOR + getName();
+	}
+
+	public Role getRole() {
+		return role;
 	}
 
 

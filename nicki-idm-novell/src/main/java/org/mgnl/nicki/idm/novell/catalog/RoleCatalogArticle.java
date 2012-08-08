@@ -41,6 +41,7 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.idm.novell.objects.IdmPerson;
+import org.mgnl.nicki.idm.novell.objects.Resource;
 import org.mgnl.nicki.idm.novell.objects.Role;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
@@ -88,7 +89,7 @@ public class RoleCatalogArticle extends CatalogArticle {
 	}
 
 	public boolean contains(Role role) {
-		if (StringUtils.equalsIgnoreCase(role.getPath(), (String) get(ATTRIBUTE_ROLE))) {
+		if (getRole() != null && StringUtils.equalsIgnoreCase(role.getPath(), getRole().getPath())) {
 			return true;
 		}
 		return false;

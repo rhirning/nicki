@@ -30,27 +30,30 @@
  * intact.
  *
  */
-package org.mgnl.nicki.editor.templates;
+package org.mgnl.nicki.shop.inventory;
 
-import java.io.InputStream;
-import java.util.Map;
+import java.util.Date;
 
-import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.ldap.context.NickiContext;
-import org.mgnl.nicki.template.engine.BasicTemplateStreamSource;
+import org.mgnl.nicki.shop.inventory.InventoryArticle;
 
-import com.vaadin.terminal.StreamResource.StreamSource;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 
-public class CsvStreamSource extends BasicTemplateStreamSource implements StreamSource {
-	private static final long serialVersionUID = 4222973194514516918L;
-	
-	public CsvStreamSource(Template template, NickiContext context, Map<String, Object> params) {
-		super(template, context, params);
+@SuppressWarnings("serial")
+public class EndInputListener implements ValueChangeListener {
+	private InventoryArticle article;
+
+	public EndInputListener(InventoryArticle article) {
+		this.article = article;
 	}
 
-	public InputStream getStream() {
-		return getCsVStream();
+	public void valueChange(ValueChangeEvent event) {
+		Object value = event.getProperty().getValue();
+		try {
+			article.setEnd((Date) value);
+		} catch (Exception e) {
+			article.setEnd(null);
+		}
 	}
-	
 
 }

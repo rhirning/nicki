@@ -104,9 +104,13 @@ public class Inventory implements Serializable {
 		}
 	}
 	
-	public void addArticle(CatalogArticle catalogArticle) {
+	public InventoryArticle addArticle(CatalogArticle catalogArticle) {
 		if (!this.articles.containsKey(catalogArticle.getPath())) {
-			this.articles.put(catalogArticle.getPath(), new InventoryArticle(catalogArticle));
+			InventoryArticle inventoryArticle = new InventoryArticle(catalogArticle);
+			this.articles.put(catalogArticle.getPath(), inventoryArticle);
+			return inventoryArticle;
+		} else {
+			return this.articles.get(catalogArticle.getPath());
 		}
 	}
 
@@ -222,6 +226,8 @@ public class Inventory implements Serializable {
 							CartEntry entry = new CartEntry(
 									iArticle.getArticle().getCatalogPath(), specifier,
 									InventoryArticle.getAction(iArticle.getStatus()));
+							entry.setStart(iArticle.getStart());
+							entry.setEnd(iArticle.getEnd());
 							for (Iterator<InventoryAttribute> iterator2 = iArticle
 									.getAttributes().values().iterator(); iterator2
 									.hasNext();) {
@@ -321,6 +327,10 @@ public class Inventory implements Serializable {
 		} else {
 			removeArticle(iArticle.getArticle());
 		}
+	}
+
+	public Map<String, Map<String, InventoryArticle>> getMulitArticles() {
+		return mulitArticles;
 	}
 
 }

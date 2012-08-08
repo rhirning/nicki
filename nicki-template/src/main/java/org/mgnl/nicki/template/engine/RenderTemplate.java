@@ -34,26 +34,34 @@ package org.mgnl.nicki.template.engine;
 
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import freemarker.template.Template;
 
 public class RenderTemplate extends Thread implements Runnable {
+	public final static String DEFAULT_CHARSET = "UTF-8";
 	Template template;
 	Map<String, Object> dataModel;
 	OutputStream out;
+	String charset;
 	
 	public RenderTemplate(Template template, Map<String, Object> dataModel,
-			OutputStream out) {
+			OutputStream out, String charset) {
 		super();
 		this.template = template;
 		this.dataModel = dataModel;
 		this.out = out;
+		if (Charset.isSupported(charset)) {
+			this.charset = charset; 
+		} else {
+			this.charset = DEFAULT_CHARSET;
+		}
 	}
 
 	public void run() {
 		try {
-			template.process(dataModel, new OutputStreamWriter(out, "UTF-8"));
+			template.process(dataModel, new OutputStreamWriter(out, charset));
 			out.flush();
 			out.close();
 		} catch (Exception e) {

@@ -36,6 +36,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Component;
 
 public interface AttributeComponent {
@@ -48,4 +49,5 @@ public interface AttributeComponent {
 	String getStringValue(Object value);
 	Component getInstance(Person user, Person person, InventoryArticle article,
 			CatalogArticleAttribute attribute);
+	Component getInstance(String caption, Object value, ValueChangeListener listener);
 }
