@@ -65,6 +65,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	private Button htmlPreviewButton;
 	private Link csvLink;
 	private Link pdfLink;
+	private boolean usePreview = true;
 	private NickiTreeEditor editor;
 	private Map<String, Object> params = new HashMap<String, Object>();
 
@@ -87,16 +88,18 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		setCompositionRoot(mainLayout);
 		initI18n();
 		
-		previewButton.addListener(new Button.ClickListener() {
-			
-			public void buttonClick(ClickEvent event) {
-				try {
-					preview();
-				} catch (Exception e) {
-					e.printStackTrace();
+		if (usePreview) {
+			previewButton.addListener(new Button.ClickListener() {
+				
+				public void buttonClick(ClickEvent event) {
+					try {
+						preview();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		});
+			});
+		}
 		
 		htmlPreviewButton.addListener(new Button.ClickListener() {
 			
@@ -186,8 +189,9 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		previewButton.setHeight("-1px");
 		previewButton.setCaption("Vorschau");
 		previewButton.setImmediate(true);
-		horizontalLayout.addComponent(previewButton);
-		
+		if (usePreview) {
+			horizontalLayout.addComponent(previewButton);
+		}
 		htmlPreviewButton = new Button();
 		htmlPreviewButton.setWidth("-1px");
 		htmlPreviewButton.setHeight("-1px");
@@ -216,6 +220,14 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 
 	@Override
 	public void save() {
+	}
+
+	public boolean isUsePreview() {
+		return usePreview;
+	}
+
+	public void setUsePreview(boolean usePreview) {
+		this.usePreview = usePreview;
 	}
 
 }

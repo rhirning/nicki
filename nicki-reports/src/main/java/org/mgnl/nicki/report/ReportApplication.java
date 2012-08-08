@@ -32,6 +32,8 @@
  */
 package org.mgnl.nicki.report;
 
+import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.editor.templates.TemplateConfig;
@@ -58,7 +60,10 @@ public class ReportApplication extends TemplateEditor {
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), dataProvider, getI18nBase());
 		editor.configureClass(Org.class, Icon.FOLDER, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Org.class, Template.class );
 		editor.configureClass(Template.class, Icon.DOCUMENT, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY);
-		editor.setClassEditor(Template.class, new TemplateConfig());
+		TemplateConfig templateConfig = new TemplateConfig();
+		boolean usePreview = DataHelper.booleanOf(Config.getProperty("nicki.report.usePreview", "false"));
+		templateConfig.setUsePreview(usePreview);
+		editor.setClassEditor(Template.class, templateConfig);
 		editor.initActions();
 		editor.setHeight("100%");
 		getMainWindow().setHeight("100%");
