@@ -1,5 +1,7 @@
 package org.mgnl.nicki.shop.core;
 
+import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.shop.objects.Cart;
 import org.mgnl.nicki.shop.objects.CartEntry;
 import org.mgnl.nicki.shop.objects.Catalog;
@@ -46,10 +48,17 @@ public class CartViewer extends CustomComponent {
 
 		cartEntries.addContainerProperty("action", String.class, "");
 		cartEntries.setColumnWidth("action", 50);
-		cartEntries.setColumnHeader("action", "action");
+		cartEntries.setColumnHeader("action", "Aktion");
 		cartEntries.addContainerProperty("right", String.class, "");
 		cartEntries.setColumnWidth("right", 420);
-		cartEntries.setColumnHeader("right", "id");
+		cartEntries.setColumnHeader("right", "Artikel");
+		cartEntries.addContainerProperty("start", String.class, "");
+		cartEntries.setColumnWidth("start", 70);
+		cartEntries.setColumnHeader("start", I18n.getText(CatalogArticle.CAPTION_START));
+		cartEntries.addContainerProperty("end", String.class, "");
+		cartEntries.setColumnWidth("end", 70);
+		cartEntries.setColumnHeader("end", I18n.getText(CatalogArticle.CAPTION_END));
+
 		cartEntries.addContainerProperty("attributes", String.class, "");
 		cartEntries.setColumnWidth("attributes", 420);
 		cartEntries.setColumnHeader("attributes", "attributes");
@@ -57,9 +66,14 @@ public class CartViewer extends CustomComponent {
 			Item item = cartEntries.addItem(cartEntry);
 			CatalogArticle article = Catalog.getCatalog().getArticle(cartEntry.getId());
 			item.getItemProperty("right").setValue(article.getDisplayName());
-			item.getItemProperty("action").setValue(cartEntry.getAction());
+			item.getItemProperty("action").setValue(cartEntry.getAction());	
+			if (cartEntry.getStart() != null) {
+				item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(cartEntry.getStart()));
+			}
+			if (cartEntry.getEnd() != null) {
+				item.getItemProperty("end").setValue(DataHelper.formatDisplayDay.format(cartEntry.getEnd()));
+			}
 			item.getItemProperty("attributes").setValue(cartEntry.getAttributes());
-			item.getItemProperty("dateTo").setValue(cartEntry.getEnd());
 		}
 	}
 

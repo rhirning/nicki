@@ -41,6 +41,8 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 
+import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.Field;
 
 @SuppressWarnings("serial")
@@ -60,6 +62,19 @@ public abstract class BasicAttributeComponent implements AttributeComponent, Ser
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Component getInstance(String caption, Object date, ValueChangeListener listener) {
+		setCaption(caption);
+		try {
+			getField().setValue(date);
+		} catch (Exception e) {
+		}
+		if (isEnabled()) {
+			getField().addListener(listener);
+		}
+		return getField();
 	}
 
 

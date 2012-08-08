@@ -65,6 +65,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	private Inventory inventory = null;
 	private Shop shop;
 	private Button saveButton;
+	private Button showInventoryButton;
 	private Button showCartButton;
 	private PersonSelector personSelector;
 	private ShopRenderer renderer = null;
@@ -202,6 +203,24 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		});
 		
 
+		showInventoryButton = new Button(I18n.getText("nicki.editor.generic.button.showInventory"));
+		showInventoryButton.addListener(new Button.ClickListener() {
+			
+			public void buttonClick(ClickEvent event) {
+				if (getInventory() != null) {
+					InventoryViewer inventoryViewer = new InventoryViewer(getInventory());
+					Window newWindow = new Window(I18n.getText(parent.getI18nBase() + ".inventory.window.title"), inventoryViewer);
+					newWindow.setWidth(1000, Sizeable.UNITS_PIXELS);
+					newWindow.setHeight(600, Sizeable.UNITS_PIXELS);
+					newWindow.setModal(true);
+					getWindow().addWindow(newWindow);
+				} else {
+					getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".showInventory.empty"),
+							Notification.TYPE_HUMANIZED_MESSAGE);
+				}
+			}
+		});
+
 		showCartButton = new Button(I18n.getText("nicki.editor.generic.button.showCart"));
 		showCartButton.addListener(new Button.ClickListener() {
 			
@@ -230,6 +249,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		});
 
 		layout.addComponent(saveButton, "top:0.0px;left:20.0px;");
+		layout.addComponent(showInventoryButton, "top:0.0px;right:200.0px;");
 		layout.addComponent(showCartButton, "top:0.0px;right:20.0px;");
 		layout.addComponent(renderer.render(getShopViewerComponent(), getInventory()), "top:30.0px;;left:0.0px;");
 	}

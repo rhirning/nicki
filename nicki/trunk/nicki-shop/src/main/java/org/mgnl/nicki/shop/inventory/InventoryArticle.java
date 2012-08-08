@@ -77,10 +77,6 @@ public class InventoryArticle implements Serializable{
 	}
 
 	private void addEmptyAttributes() {
-		for (Iterator<CatalogArticleAttribute> iterator = CatalogArticle.getFixedAttributes().iterator(); iterator.hasNext();) {
-			CatalogArticleAttribute attribute =  iterator.next();
-			this.attributes.put(attribute.getName(), new InventoryAttribute(getArticle(), attribute, ""));
-		}
 		for (Iterator<CatalogArticleAttribute> iterator = getArticle().getAllAttributes().iterator(); iterator.hasNext();) {
 			CatalogArticleAttribute attribute =  iterator.next();
 			this.attributes.put(attribute.getName(), new InventoryAttribute(getArticle(), attribute, ""));
@@ -224,6 +220,12 @@ public class InventoryArticle implements Serializable{
 
 	public Map<String, InventoryAttribute> getAttributes() {
 		return attributes;
+	}
+
+	public void setStart(Date start) {
+		if (STATUS.NEW == getStatus()) {
+			this.start = start;
+		}
 	}
 
 	public void setEnd(Date end) {

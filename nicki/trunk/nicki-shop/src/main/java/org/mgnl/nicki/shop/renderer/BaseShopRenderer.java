@@ -33,17 +33,23 @@
 package org.mgnl.nicki.shop.renderer;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.shop.attributes.AttributeComponent;
 import org.mgnl.nicki.shop.attributes.AttributeComponentFactory;
 import org.mgnl.nicki.shop.attributes.LabelComponent;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
+import org.mgnl.nicki.shop.inventory.EndInputListener;
 import org.mgnl.nicki.shop.inventory.Inventory;
+import org.mgnl.nicki.shop.inventory.InventoryArticle;
+import org.mgnl.nicki.shop.inventory.StartInputListener;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
@@ -53,15 +59,15 @@ public class BaseShopRenderer {
 	
 	private Inventory inventory;
 	
-	protected Component getAttributeComponent(CatalogArticle article, CatalogArticleAttribute articleAttribute, boolean enabled) {
+	protected Component getAttributeComponent(CatalogArticle article, InventoryArticle inventoryArticle, CatalogArticleAttribute articleAttribute, boolean enabled) {
 		try {
 			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
 			attributeComponent.setEnabled(enabled);
 			return attributeComponent.getInstance(inventory.getUser(), inventory.getPerson(),
-					inventory.getInventoryArticle(article), articleAttribute);
+					inventoryArticle, articleAttribute);
 		} catch (Exception e) {
 			return new LabelComponent().getInstance(inventory.getUser(), inventory.getPerson(),
-					inventory.getInventoryArticle(article), articleAttribute);
+					inventoryArticle, articleAttribute);
 		}
 	}
 
@@ -77,6 +83,34 @@ public class BaseShopRenderer {
 			e.printStackTrace();
 			return new LabelComponent().getInstance(getInventory().getUser(), getInventory().getPerson(),
 					getInventory().getInventoryArticle(article), articleAttribute);
+		}
+	}
+
+	protected Component getStartDateComponent(InventoryArticle inventoryArticle, boolean enabled, Date start) {
+		try {
+			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(AttributeComponentFactory.TYPE_DATE);
+			attributeComponent.setValue(start);
+			inventoryArticle.setStart(start);
+			attributeComponent.setEnabled(enabled);
+			ValueChangeListener listener = new StartInputListener(inventoryArticle);
+			return attributeComponent.getInstance(I18n.getText(CatalogArticle.CAPTION_START), start, listener);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new LabelComponent().getInstance(I18n.getText(CatalogArticle.CAPTION_START), start, null);
+		}
+	}
+
+	protected Component getEndDateComponent(InventoryArticle inventoryArticle, boolean enabled, Date end) {
+		try {
+			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(AttributeComponentFactory.TYPE_DATE);
+			attributeComponent.setValue(end);
+			inventoryArticle.setEnd(end);
+			attributeComponent.setEnabled(enabled);
+			ValueChangeListener listener = new EndInputListener(inventoryArticle);
+			return attributeComponent.getInstance(I18n.getText(CatalogArticle.CAPTION_END), end, listener);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new LabelComponent().getInstance(I18n.getText(CatalogArticle.CAPTION_END), end, null);
 		}
 	}
 

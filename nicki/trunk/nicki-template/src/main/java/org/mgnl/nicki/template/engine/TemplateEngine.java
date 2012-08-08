@@ -61,6 +61,8 @@ import freemarker.template.TemplateException;
 
 public class TemplateEngine {
 	public enum OUTPUT_TYPE {TXT, PDF, CSV };
+	public final static String DEFAULT_CHARSET = "UTF-8";
+	public final static String CSV_CHARSET = "ISO-8859-1";
 	public static final String PROPERTY_BASE_DN = "nicki.templates.basedn";
 	
 	private static TemplateEngine instance = new TemplateEngine();
@@ -89,10 +91,10 @@ public class TemplateEngine {
 		
 		switch (outputType) {
 		case TXT:
-			IOUtils.copy(executeTemplate(templateName, handler.getDataModel()), out);
+			IOUtils.copy(executeTemplate(templateName, handler.getDataModel(), DEFAULT_CHARSET), out);
 			break;
 		case CSV:
-			IOUtils.copy(executeTemplateAsCsv(templateName, handler.getDataModel()), out);
+			IOUtils.copy(executeTemplateAsCsv(templateName, handler.getDataModel(), CSV_CHARSET), out);
 			break;
 		case PDF:
 			IOUtils.copy(executeTemplateAsPdf(templateName, handler.getDataModel()), out);
@@ -104,14 +106,14 @@ public class TemplateEngine {
 	}
 
 	public InputStream executeTemplate(String templateName,
-			Map<String, Object> dataModel) throws IOException,
+			Map<String, Object> dataModel, String charset) throws IOException,
 			TemplateException, InvalidPrincipalException {
 		Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(
 				Config.getProperty(PROPERTY_BASE_DN));
 		Template template = cfg.getTemplate(templateName);
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
-	    RenderTemplate renderTemplate = new RenderTemplate(template, dataModel, pos);
+	    RenderTemplate renderTemplate = new RenderTemplate(template, dataModel, pos, charset);
 	    renderTemplate.start();
 		return pis;
 	}
@@ -121,18 +123,18 @@ public class TemplateEngine {
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
-		PdfTemplateRenderer renderer = new PdfTemplateRenderer(executeTemplate(templateName, dataModel), pos);
+		PdfTemplateRenderer renderer = new PdfTemplateRenderer(executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos);
 		renderer.start();
 		return pis;
 	}
 
 	public InputStream executeTemplateAsCsv(String templateName,
-			Map<String, Object> dataModel) throws IOException,
+			Map<String, Object> dataModel, String charset) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
 		InputStream xslTemplate = this.getClass().getResourceAsStream("/META-INF/nicki/xsl/csv.xsl");
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
-		XsltRenderer renderer = new XsltRenderer(executeTemplate(templateName, dataModel), pos, xslTemplate);
+		XsltRenderer renderer = new XsltRenderer(executeTemplate(templateName, dataModel, charset), pos, xslTemplate);
 		renderer.start();
 		return pis;
 	}

@@ -38,27 +38,34 @@ import java.util.Map;
 import org.mgnl.nicki.core.util.Classes;
 
 
-
 public class AttributeComponentFactory {
-	public static final String DEFAULT = "default";
-	protected static Map<String, String> attributeComponents 
-		= new HashMap<String, String>();
+	public static final String TYPE_DATE = "date";
+	public static final String TYPE_TEXT = "text";
+	public static final String TYPE_CHECKBOX = "checkboc";
+	public static final String TYPE_SELECT = "select";
+	public static final String TYPE_FREESELECT = "freeselect";
+	public static final String TYPE_STATIC = "static";
+	public static final String TYPE_DEFAULT = "default";
+
+	protected static Map<String, String> attributeComponents = new HashMap<String, String>();
 	static {
-		attributeComponents.put("date", "org.mgnl.nicki.shop.attributes.DateComponent");
-		attributeComponents.put("text", "org.mgnl.nicki.shop.attributes.TextComponent");
-		attributeComponents.put("checkbox", "org.mgnl.nicki.shop.attributes.CheckboxComponent");
-		attributeComponents.put("select", "org.mgnl.nicki.shop.attributes.SelectComponent");
-		attributeComponents.put("freeselect", "org.mgnl.nicki.shop.attributes.FreeSelectComponent");
-		attributeComponents.put("static", "org.mgnl.nicki.shop.attributes.LabelComponent");
-		attributeComponents.put(DEFAULT, "org.mgnl.nicki.shop.attributes.LabelComponent");
+		attributeComponents.put(TYPE_DATE, "org.mgnl.nicki.shop.attributes.DateComponent");
+		attributeComponents.put(TYPE_TEXT, "org.mgnl.nicki.shop.attributes.TextComponent");
+		attributeComponents.put(TYPE_CHECKBOX, "org.mgnl.nicki.shop.attributes.CheckboxComponent");
+		attributeComponents.put(TYPE_SELECT, "org.mgnl.nicki.shop.attributes.SelectComponent");
+		attributeComponents.put(TYPE_FREESELECT, "org.mgnl.nicki.shop.attributes.FreeSelectComponent");
+		attributeComponents.put(TYPE_STATIC, "org.mgnl.nicki.shop.attributes.LabelComponent");
+		attributeComponents.put(TYPE_DEFAULT, "org.mgnl.nicki.shop.attributes.LabelComponent");
 	}
-	
+
 	static public AttributeComponent getAttributeComponent(String type) {
 		try {
 			if (attributeComponents.containsKey(type)) {
-				return (AttributeComponent) Classes.newInstance(attributeComponents.get(type));
+				return (AttributeComponent) Classes
+						.newInstance(attributeComponents.get(type));
 			} else {
-				return (AttributeComponent) Classes.newInstance(attributeComponents.get(DEFAULT));
+				return (AttributeComponent) Classes
+						.newInstance(attributeComponents.get(TYPE_DEFAULT));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

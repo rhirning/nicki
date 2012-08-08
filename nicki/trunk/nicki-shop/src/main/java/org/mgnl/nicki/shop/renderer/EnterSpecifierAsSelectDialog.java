@@ -88,8 +88,6 @@ public class EnterSpecifierAsSelectDialog extends CustomComponent implements New
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 
-		name.setNewItemsAllowed(true);
-		name.setNewItemHandler(this);
 		name.focus();
 		applyI18n(messageBase);
 		
@@ -125,6 +123,12 @@ public class EnterSpecifierAsSelectDialog extends CustomComponent implements New
 		for (String value : provider.getEntries().keySet()) {
 			Item item = name.addItem(value);
 			name.setItemCaption(item, provider.getEntries().get(value));
+		}
+		if (provider.isOnlyDefinedEntries()) {
+			name.setNewItemsAllowed(false);
+		} else {
+			name.setNewItemsAllowed(true);
+			name.setNewItemHandler(this);
 		}
 	}
 

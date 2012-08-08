@@ -98,10 +98,10 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		table.setColumnHeader("title", I18n.getText("nicki.rights.attribute.title.label"));
 		table.addContainerProperty("dateFrom", PopupDateField.class, "");
 		table.setColumnWidth("dateFrom", 100);
-		table.setColumnHeader("dateFrom", CatalogArticle.getFixedAttribute("dateFrom").getLabel());
+		table.setColumnHeader("dateFrom", I18n.getText(CatalogArticle.CAPTION_START));
 		table.addContainerProperty("dateTo", PopupDateField.class, "");
 		table.setColumnWidth("dateTo", 100);
-		table.setColumnHeader("dateTo", CatalogArticle.getFixedAttribute("dateTo").getLabel());
+		table.setColumnHeader("dateTo", I18n.getText(CatalogArticle.CAPTION_END));
 		
 		table.addContainerProperty("attributes", Layout.class, "");
 		table.setColumnHeader("attributes", I18n.getText("nicki.rights.attributes.label"));
@@ -191,6 +191,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		Item item = table.addItem(iArticle);
 		item.getItemProperty("title").setValue(iArticle.getSpecifier());
 		item.getItemProperty("checkbox").setValue(checkBox);
+		showEntry(item, article, iArticle);
 
 		return item;
 	}
@@ -213,8 +214,8 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 				  Item item = table.getItem(article);
 				  boolean enabled = event.getButton().booleanValue();
 				  if (enabled) {
-					  getInventory().addArticle(article);
-					  showEntry(item, article);
+					  InventoryArticle inventoryArticle = getInventory().addArticle(article);
+					  showEntry(item, article, inventoryArticle);
 				  } else {
 					  getInventory().removeArticle(article);
 					  hideEntry(item);
@@ -233,7 +234,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 			} else {
 				checkBox.setEnabled(false);
 			}
-			showEntry(item, article);
+			showEntry(item, article, inventoryArticle);
 		}
 		return item;
 	}
@@ -245,8 +246,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 //		removeExcept(parent, event.getButton());
 	}
 
-	private void showEntry(Item item, CatalogArticle article) {
-		InventoryArticle inventoryArticle = getInventory().getInventoryArticle(article);
+	private void showEntry(Item item, CatalogArticle article, InventoryArticle inventoryArticle) {
 		SOURCE source = SOURCE.SHOP;
 		Date start = new Date();
 		Date end = null;
@@ -262,20 +262,20 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 			}
 		}
 
-		item.getItemProperty("dateFrom").setValue(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateFrom"), enabled, start));
-		item.getItemProperty("dateTo").setValue(getAttributeComponent(article, CatalogArticle.getFixedAttribute("dateTo"), toEnabled, end));
-		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article, enabled, source));
+		item.getItemProperty("dateFrom").setValue(getStartDateComponent(inventoryArticle, enabled, start));
+		item.getItemProperty("dateTo").setValue(getEndDateComponent(inventoryArticle, toEnabled, end));
+		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article, inventoryArticle, enabled, source));
 //		showArticleAttributes(parent);
 	}
 	
 
-	private AbstractOrderedLayout getVerticalArticleAttributes(CatalogArticle article, boolean provisioned, SOURCE source) {
+	private AbstractOrderedLayout getVerticalArticleAttributes(CatalogArticle article, InventoryArticle inventoryArticle, boolean provisioned, SOURCE source) {
 		AbstractOrderedLayout attrLayout = new VerticalLayout();
 		if (article.hasAttributes()) {
 			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
 				CatalogArticleAttribute pageAttribute = iterator.next();
 				boolean enabled = true;
-				attrLayout.addComponent(getAttributeComponent(article, pageAttribute, enabled));
+				attrLayout.addComponent(getAttributeComponent(article, inventoryArticle, pageAttribute, enabled));
 			}
 		}
 		return attrLayout;

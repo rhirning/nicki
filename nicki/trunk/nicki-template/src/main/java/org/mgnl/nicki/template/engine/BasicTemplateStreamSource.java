@@ -80,7 +80,8 @@ public class BasicTemplateStreamSource {
 	
 	public InputStream getStringStream() {
 		try {
-			return TemplateEngine.getInstance().executeTemplate(getTemplatePath(), getDataModel());
+			return TemplateEngine.getInstance().executeTemplate(getTemplatePath(), getDataModel(),
+					TemplateEngine.DEFAULT_CHARSET);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -99,7 +100,8 @@ public class BasicTemplateStreamSource {
 	}
 	public InputStream getCsVStream() {
 		try {
-			return TemplateEngine.getInstance().executeTemplateAsCsv(getTemplatePath(), getDataModel());
+			return TemplateEngine.getInstance().executeTemplateAsCsv(getTemplatePath(), getDataModel(),
+					TemplateEngine.CSV_CHARSET);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -64,6 +64,5 @@ public class CheckboxComponent extends BasicAttributeComponent implements Attrib
 	public String getStringValue(Object value) {
 		return ((Boolean) value)?"1":"0";
 	}
-	
 
 }

@@ -56,8 +56,10 @@ import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 public class CatalogArticle extends DynamicTemplateObject {
 
 	public static final String TYPE_ARTICLE = "ARTICLE";
+	public static final String CAPTION_START = "nicki.rights.attribute.dateFrom.label";
+	public static final String CAPTION_END = "nicki.rights.attribute.dateTo.label";
 	
-	public static Map<String, CatalogArticleAttribute> fixedAttributes = new HashMap<String, CatalogArticleAttribute>();
+	private static Map<String, CatalogArticleAttribute> fixedAttributes = new HashMap<String, CatalogArticleAttribute>();
 	static {
 		fixedAttributes.put("dateFrom", new CatalogArticleAttribute("dateFrom",
 				"nicki.rights.attribute.dateFrom.label",
@@ -116,7 +118,7 @@ public class CatalogArticle extends DynamicTemplateObject {
 		put("attribute", attributes);
 	}
 
-	public static Collection<CatalogArticleAttribute> getFixedAttributes() {
+	private static Collection<CatalogArticleAttribute> getFixedAttributes() {
 		return fixedAttributes.values();
 	}
 
@@ -194,7 +196,7 @@ public class CatalogArticle extends DynamicTemplateObject {
 		return sb.toString();
 	}
 
-	public static CatalogArticleAttribute getFixedAttribute(String name) {
+	private static CatalogArticleAttribute getFixedAttribute(String name) {
 		return fixedAttributes.get(name);
 	}
 
