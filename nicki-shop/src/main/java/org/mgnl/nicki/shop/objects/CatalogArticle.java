@@ -58,16 +58,6 @@ public class CatalogArticle extends DynamicTemplateObject {
 	public static final String TYPE_ARTICLE = "ARTICLE";
 	public static final String CAPTION_START = "nicki.rights.attribute.dateFrom.label";
 	public static final String CAPTION_END = "nicki.rights.attribute.dateTo.label";
-	
-	private static Map<String, CatalogArticleAttribute> fixedAttributes = new HashMap<String, CatalogArticleAttribute>();
-	static {
-		fixedAttributes.put("dateFrom", new CatalogArticleAttribute("dateFrom",
-				"nicki.rights.attribute.dateFrom.label",
-				"date"));
-		fixedAttributes.put("dateTo", new CatalogArticleAttribute("dateTo",
-				"nicki.rights.attribute.dateTo.label",
-				"date"));
-	}
 
 	public void initDataModel() {
 		addObjectClass("nickiCatalogArticle");
@@ -116,10 +106,6 @@ public class CatalogArticle extends DynamicTemplateObject {
 	
 	public void setAttributes(List<CatalogArticleAttribute> attributes) {
 		put("attribute", attributes);
-	}
-
-	private static Collection<CatalogArticleAttribute> getFixedAttributes() {
-		return fixedAttributes.values();
 	}
 
 	public Map<String, CatalogArticleAttribute> getAttributeMap() {
@@ -194,10 +180,6 @@ public class CatalogArticle extends DynamicTemplateObject {
 			}
 		}
 		return sb.toString();
-	}
-
-	private static CatalogArticleAttribute getFixedAttribute(String name) {
-		return fixedAttributes.get(name);
 	}
 
 	public String getApprovalPath() {
