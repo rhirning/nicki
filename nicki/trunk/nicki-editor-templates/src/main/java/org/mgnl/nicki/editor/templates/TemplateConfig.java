@@ -42,6 +42,7 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.template.engine.TemplateEngine;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
@@ -122,7 +123,8 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		csvLink.setTargetName("_blank");
 		CsvStreamSource csvStreamSource = new CsvStreamSource(template, template.getContext(), params);
 		csvLink.setResource(new LinkResource(csvStreamSource, template.getName() + ".csv",
-				nickiEditor.getApplication(), "text/comma-separated-values"));
+				nickiEditor.getApplication(),
+				"text/comma-separated-values; charset=" + TemplateEngine.CSV_CHARSET));
 		
 		paramsChanged();
 	}
