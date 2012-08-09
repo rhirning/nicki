@@ -41,7 +41,6 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.idm.novell.objects.IdmPerson;
-import org.mgnl.nicki.idm.novell.objects.Resource;
 import org.mgnl.nicki.idm.novell.objects.Role;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
