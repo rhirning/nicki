@@ -32,13 +32,10 @@
  */
 package org.mgnl.nicki.core.helper;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.Reader;
-import java.io.Writer;
 import java.nio.charset.Charset;
 
 import org.apache.commons.io.IOUtils;
@@ -59,14 +56,11 @@ public class StreamConverter extends Thread implements Runnable {
 	}
 
 	public void run() {
-		Reader inputReader = new InputStreamReader(
-				this.in, this.charsetIn);
-
-		Writer outputWriter = new OutputStreamWriter(this.out, this.charsetOut);
-
 		try {
-			IOUtils.copy(inputReader, outputWriter);
-			inputReader.close();
+			byte[] byteArray = IOUtils.toByteArray(in);
+			String string = new String(byteArray, charsetIn);
+			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(string.getBytes(charsetOut));
+			IOUtils.copy(byteArrayInputStream, out);
 			out.flush();
 			out.close();
 		} catch (IOException e) {
