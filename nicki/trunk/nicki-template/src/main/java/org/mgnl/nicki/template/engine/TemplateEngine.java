@@ -62,8 +62,7 @@ import freemarker.template.TemplateException;
 public class TemplateEngine {
 	public enum OUTPUT_TYPE {TXT, PDF, CSV };
 	public final static String DEFAULT_CHARSET = "UTF-8";
-	public final static String CSV_CHARSET = "UTF-8";
-//	public final static String CSV_CHARSET = "ISO-8859-1";
+	public final static String CSV_CHARSET = "ISO-8859-1";
 	public static final String PROPERTY_BASE_DN = "nicki.templates.basedn";
 	
 	private static TemplateEngine instance = new TemplateEngine();
@@ -135,7 +134,7 @@ public class TemplateEngine {
 		InputStream xslTemplate = this.getClass().getResourceAsStream("/META-INF/nicki/xsl/csv.xsl");
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
-		XsltRenderer renderer = new XsltRenderer(executeTemplate(templateName, dataModel, CSV_CHARSET), pos, xslTemplate);
+		XsltRenderer renderer = new XsltRenderer(executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos, xslTemplate);
 		renderer.start();
 		return pis;
 	}

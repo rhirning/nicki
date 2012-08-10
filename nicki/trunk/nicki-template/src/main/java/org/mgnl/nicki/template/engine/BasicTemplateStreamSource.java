@@ -32,11 +32,16 @@
  */
 package org.mgnl.nicki.template.engine;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.nio.charset.Charset;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.StreamConverter;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.ldap.context.NickiContext;
@@ -100,7 +105,8 @@ public class BasicTemplateStreamSource {
 	}
 	public InputStream getCsVStream() {
 		try {
-			return TemplateEngine.getInstance().executeTemplateAsCsv(getTemplatePath(), getDataModel());
+			return convertStream(TemplateEngine.getInstance().executeTemplateAsCsv(getTemplatePath(), getDataModel()),
+					Charset.forName(TemplateEngine.DEFAULT_CHARSET), Charset.forName(TemplateEngine.CSV_CHARSET));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -117,5 +123,12 @@ public class BasicTemplateStreamSource {
 	}
 	
 
+	public InputStream convertStream(InputStream inputStream, Charset charsetIn, Charset charsetOut) throws IOException {
+	    PipedOutputStream pos = new PipedOutputStream();
+	    PipedInputStream pis = new PipedInputStream(pos);
+		StreamConverter converter = new StreamConverter(inputStream, pos, charsetIn, charsetOut);
+		converter.start();
+		return pis;
+	}
 
 }
