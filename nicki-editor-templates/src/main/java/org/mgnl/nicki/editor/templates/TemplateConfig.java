@@ -124,7 +124,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		CsvStreamSource csvStreamSource = new CsvStreamSource(template, template.getContext(), params);
 		csvLink.setResource(new LinkResource(csvStreamSource, template.getName() + ".csv",
 				nickiEditor.getApplication(),
-				"text/comma-separated-values; charset=" + TemplateEngine.CSV_CHARSET));
+				"text/comma-separated-values"));
 		
 		paramsChanged();
 	}
