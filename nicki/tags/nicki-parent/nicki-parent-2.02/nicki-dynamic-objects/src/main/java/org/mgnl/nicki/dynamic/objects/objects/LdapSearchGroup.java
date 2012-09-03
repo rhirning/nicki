@@ -1,0 +1,162 @@
+/**
+ * This file Copyright (c) 2003-2011 Dr. Ralf Hirning
+ * All rights reserved.
+ *
+ *
+ * This file is dual-licensed under both the GNU General
+ * Public License and an individual license with Dr. Ralf
+ * Hirning.
+ *
+ * This file is distributed in the hope that it will be
+ * useful, but AS-IS and WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, or NONINFRINGEMENT.
+ * Redistribution, except as permitted by whichever of the GPL
+ * or the individual license, is prohibited.
+ *
+ * 1. For the GPL license (GPL), you can redistribute and/or
+ * modify this file under the terms of the GNU General
+ * Public License, Version 3, as published by the Free Software
+ * Foundation.  You should have received a copy of the GNU
+ * General Public License, Version 3 along with this program;
+ * if not, write to the Free Software Foundation, Inc., 51
+ * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * 2. For the individual license, this file and the accompanying
+ * materials are made available under the terms of the
+ * individual license.
+ *
+ * Any modifications to this file must keep this entire header
+ * intact.
+ *
+ */
+package org.mgnl.nicki.dynamic.objects.objects;
+
+import java.util.HashMap;
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicObject;
+
+/**
+ *
+ * @author cna
+ */
+@SuppressWarnings("serial")
+public class LdapSearchGroup extends DynamicObject {
+
+	public enum SEARCHSCOPE {
+
+		SUBORDINATES("base"),
+		OBJECT("one"),
+		SUBTREE("sub");
+		private String value;
+		private static final HashMap<String, SEARCHSCOPE> map = new HashMap<String, SEARCHSCOPE>();
+
+		static {
+			map.put("base", SUBORDINATES);
+			map.put("sub", SUBTREE);
+			map.put("one", OBJECT);
+		}
+
+		;
+
+		private SEARCHSCOPE(String value) {
+			this.value = value;
+		}
+
+		public String getValue() {
+			return value;
+		}
+
+		public static SEARCHSCOPE fromValue(String type) {
+			return map.get(type);
+		}
+	};
+	private String ldapSearch = "";
+	private SEARCHSCOPE searchScope;
+	private String searchRoot = "";
+	private boolean initialized;
+
+	@Override
+	public void initDataModel() {
+		addObjectClass("dynamicGroup");
+		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
+		dynAttribute.setNaming();
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("member", "member", String.class);
+		dynAttribute.setMultiple();
+		dynAttribute.setForeignKey(Person.class);
+		dynAttribute.setReadonly();
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicAttribute("query", "memberQueryURL", String.class);
+		addAttribute(dynAttribute);
+	}
+
+	private void load() {
+		if (initialized != true && StringUtils.isNotEmpty((String) get("query"))) {
+			String memberQuery = (String) get("query");
+
+			searchRoot = StringUtils.substringBetween(memberQuery, "///", "??");
+			searchScope = SEARCHSCOPE.fromValue(StringUtils.substringBetween(memberQuery, "??", "?"));
+			ldapSearch = StringUtils.substringAfterLast(memberQuery, "?");
+
+			initialized = true;
+		}
+	}
+
+	private void reload() {
+		String memberQuery = (String) get("query");
+
+		searchRoot = StringUtils.substringBetween(memberQuery, "///", "??");
+		searchScope = SEARCHSCOPE.valueOf(StringUtils.upperCase(StringUtils.substringBetween(memberQuery, "??", "?")));
+		ldapSearch = StringUtils.substringAfterLast(memberQuery, "?");
+
+		initialized = true;
+	}
+
+	public String getQueryURL() {
+		load();
+		if (initialized) {
+			return "ldap:///" + searchRoot + "??" + searchScope.getValue() + "?" + ldapSearch;
+		} else {
+			return null;
+		}
+
+	}
+
+	public void setQueryURL(String memberQuery) {
+		put("query", memberQuery);
+		reload();
+	}
+
+	public String getQuery() {
+		load();
+		return ldapSearch;
+	}
+
+	public void setQueryComponents(String searchRoot, SEARCHSCOPE searchScope, String ldapSearch) {
+		if (StringUtils.isNotBlank(searchRoot) && StringUtils.isNotBlank(ldapSearch) && null != searchScope) {
+			this.ldapSearch = ldapSearch;
+			this.searchRoot = searchRoot;
+			this.searchScope = searchScope;
+
+			put("query", getQueryURL());
+			initialized = true;
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	public SEARCHSCOPE getSearchScope() {
+		load();
+		return searchScope;
+	}
+
+	public String getSearchRoot() {
+		load();
+		return searchRoot;
+	}
+}
