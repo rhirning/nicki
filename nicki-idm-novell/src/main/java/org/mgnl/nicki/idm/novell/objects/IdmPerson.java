@@ -164,7 +164,7 @@ public class IdmPerson extends Person implements Serializable {
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_NEXTCOSTCENTER, "nickiNextCostCenter",
+		dynAttribute = new DynamicAttribute(ATTRIBUTE_NEXTCOSTCENTER, "nickiNextOu",
 				String.class);
 		addAttribute(dynAttribute);
 
@@ -402,6 +402,14 @@ public class IdmPerson extends Person implements Serializable {
 		return (String) get(ATTRIBUTE_LOCATION);
 	}
 	
+	public void setPhoneNumber(String value) {
+		put(ATTRIBUTE_PHONENUMBER, value);
+	}
+
+	public String getPhoneNumber() {
+		return (String) get(ATTRIBUTE_PHONENUMBER);
+	}
+	
 	public void setOu(String value) {
 		put(ATTRIBUTE_OU, value);
 	}
@@ -497,6 +505,5 @@ public class IdmPerson extends Person implements Serializable {
 		public String getValue() {
 			return type;
 		}
-	};
-
+	}
 }

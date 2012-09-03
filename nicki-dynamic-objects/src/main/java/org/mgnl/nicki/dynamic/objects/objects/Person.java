@@ -43,6 +43,7 @@ import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicReference;
 
+
 @SuppressWarnings("serial")
 public class Person extends DynamicTemplateObject {
 	public static final String ATTRIBUTE_SURNAME = "surname";
@@ -50,7 +51,6 @@ public class Person extends DynamicTemplateObject {
 	public static final String ATTRIBUTE_FULLNAME = "fullname";
 	public static final String ATTRIBUTE_LANGUAGE = "language";
 	public static final String ATTRIBUTE_MEMBEROF = "memberOf";
-	public static final String ATTRIBUTE_STATUS = "status";
 	public static final String ATTRIBUTE_LOCATION = "location";
 	public static final String ATTRIBUTE_ASSIGNEDARTICLE = "assignedArticle";
 	public static final String ATTRIBUTE_ATTRIBUTEVALUE = "attributeValue";
@@ -93,10 +93,6 @@ public class Person extends DynamicTemplateObject {
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_STATUS, "nickiStatus",
-				String.class);
-		addAttribute(dynAttribute);
-
 		dynAttribute = new DynamicAttribute(ATTRIBUTE_LOCATION, "nickiLocation",
 				String.class);
 		addAttribute(dynAttribute);
@@ -132,8 +128,16 @@ public class Person extends DynamicTemplateObject {
 		return getAttribute(ATTRIBUTE_FULLNAME);
 	}
 
-	public void setName(String value) {
+	public void setSurname(String value) {
 		put(ATTRIBUTE_SURNAME, value);
+	}
+
+	public String getSurname() {
+		return getAttribute(ATTRIBUTE_SURNAME);
+	}
+
+	public String getGivenname() {
+		return getAttribute(ATTRIBUTE_GIVENNAME);
 	}
 
 	public void setGivenName(String value) {
@@ -146,64 +150,6 @@ public class Person extends DynamicTemplateObject {
 
 	public String getLanguage() {
 		return (String) get(ATTRIBUTE_LANGUAGE);
-	}
-
-	public static String getActiveFilter() {
-		return "nickiStatus=" + STATUS.ACTIVE.getValue();
-	}
-
-	public static String getInActiveFilter() {
-		return "!(|(nickiStatus=" + STATUS.ACTIVE.getValue() + ")(nickiStatus="
-				+ STATUS.REQUESTED.getValue() + "))";
-	}
-
-	public static String getAllFilter() {
-		return "!(nickiStatus=" + STATUS.REQUESTED.getValue() + ")";
-	}
-
-	public void setStatus(STATUS status) {
-		if(null != status) {
-			put(ATTRIBUTE_STATUS, status.getValue());
-		} else {
-			clear(ATTRIBUTE_STATUS);
-		}
-	}
-
-	public STATUS getStatus() {
-		return STATUS.fromValue(getAttribute(ATTRIBUTE_STATUS));
-	}
-
-	public enum STATUS {
-
-		REQUESTED("beantragt"), INACTIVE("inaktiv-vor-eintritt"), ACTIVE(
-		"aktiv"), DEACTIVATED("deaktiviert"), RESIGNED("ausgetreten"), NOT_SET(
-		"");
-		private final String status;
-
-		private STATUS(String status) {
-			this.status = status;
-		}
-
-		public static STATUS fromValue(String status) {
-			if (INACTIVE.getValue().equals(status)) {
-				return INACTIVE;
-			} else if (ACTIVE.getValue().equals(status)) {
-				return ACTIVE;
-			} else if (DEACTIVATED.getValue().equals(status)) {
-				return DEACTIVATED;
-			} else if (RESIGNED.getValue().equals(status)) {
-				return RESIGNED;
-			} else if (REQUESTED.getValue().equals(status)) {
-				return REQUESTED;
-			}
-
-			return NOT_SET;
-
-		}
-
-		public String getValue() {
-			return status;
-		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -262,5 +208,9 @@ public class Person extends DynamicTemplateObject {
 			}
 		}
 		return this.assignedArticles;
+	}
+
+	public String getActiveFilter() {
+		return "!(nickiStatus=inactive)";
 	}
 }
