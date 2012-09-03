@@ -42,6 +42,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.ldap.context.AppContext;
 import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
@@ -58,6 +59,17 @@ import org.mgnl.nicki.shop.objects.ValueProvider;
  * Attribute nickiDirectory: Pfad getrennt mit "/"
  */
 public class RuleManager {
+	private static String activeFilter;
+	
+	static {
+		try {
+			activeFilter = AppContext.getSystemContext().getObjectFactory().getDynamicObject(Person.class).getActiveFilter();
+		} catch (Exception e) {
+			activeFilter = null;
+			e.printStackTrace();
+		}
+
+	}
 	
 	public static List<CatalogArticle> getArticles(Person person) {
 		String query = getArticleQuery(person);
@@ -219,7 +231,9 @@ public class RuleManager {
 				LdapHelper.addQuery(sb, sb2.toString(), LOGIC.AND);
 			}
 		}
-		LdapHelper.addQuery(sb, Person.getActiveFilter(), LOGIC.AND);
+		if (activeFilter != null) {
+			LdapHelper.addQuery(sb, activeFilter, LOGIC.AND);
+		}
 
 		ruleQuery.setBaseDn(Config.getProperty("nicki.users.basedn"));
 		ruleQuery.setQuery(sb.toString());
