@@ -40,11 +40,14 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicReference;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 
 
 @SuppressWarnings("serial")
+@DynamicObject(target="edir")
 public class Person extends DynamicTemplateObject {
 	public static final String ATTRIBUTE_SURNAME = "surname";
 	public static final String ATTRIBUTE_GIVENNAME = "givenname";

@@ -42,11 +42,12 @@ import java.util.List;
 import org.w3c.dom.Document;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 import org.mgnl.nicki.ldap.xml.XmlHelper;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -56,7 +57,8 @@ import org.xml.sax.SAXException;
  * @author cna
  */
 @SuppressWarnings("serial")
-public class Cart extends DynamicObject {
+@DynamicObject(target="edir")
+public class Cart extends DynamicTemplateObject {
 
     public enum STATUS {
 

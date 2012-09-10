@@ -32,11 +32,13 @@
  */
 package org.mgnl.nicki.dynamic.objects.ad;
 
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 
 @SuppressWarnings("serial")
-public class Person extends DynamicObject {
+@DynamicObject(target="ad")
+public class Person extends DynamicTemplateObject {
 
 	public void initDataModel()
 	{

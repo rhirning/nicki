@@ -37,11 +37,13 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.util.Classes;
-import org.mgnl.nicki.dynamic.objects.objects.DynamicTemplateObject;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 
 @SuppressWarnings("serial")
+@DynamicObject(target="edir")
 public class Selector extends DynamicTemplateObject {
 	public void initDataModel() {
 		addObjectClass("nickiSelector");

@@ -34,11 +34,13 @@ package org.mgnl.nicki.dynamic.objects.ad;
 
 import java.io.Serializable;
 
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 
 @SuppressWarnings("serial")
-public class Org extends DynamicObject implements Serializable {
+@DynamicObject(target="ad")
+public class Org extends DynamicTemplateObject implements Serializable {
 
 	@Override
 	public void initDataModel() {

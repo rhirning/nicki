@@ -41,6 +41,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.idm.novell.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.objects.Resource;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryAttribute;
@@ -50,6 +51,7 @@ import org.mgnl.nicki.shop.objects.CatalogValueProvider;
 import org.mgnl.nicki.shop.objects.MultipleInstancesCatalogArticle;
 import org.mgnl.nicki.shop.objects.XmlValueProvider;
 
+@DynamicObject(target="edir")
 public class ValuedResourceCatalogArticle extends ResourceCatalogArticle implements MultipleInstancesCatalogArticle {
 
 	private static final long serialVersionUID = -7208705030668378943L;

@@ -43,16 +43,18 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.core.util.Classes;
-import org.mgnl.nicki.dynamic.objects.objects.DynamicTemplateObject;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.ContextSearchResult;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
 @SuppressWarnings("serial")
+@DynamicObject(target="edir")
 public class CatalogPage extends DynamicTemplateObject {
 	
 	private Provider provider = null;

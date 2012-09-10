@@ -33,13 +33,15 @@
 package org.mgnl.nicki.dynamic.objects.ad;
 
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.data.jndi.OctetString;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 import org.mgnl.nicki.ldap.objects.StaticAttribute;
 
 
-public class Group extends DynamicObject {
+@DynamicObject(target="ad")
+public class Group extends DynamicTemplateObject {
 	public enum TYPE {
 		SECURITY_GLOBAL (-2147483646),
 		SECURITY_LOCAL (-2147483644),
@@ -89,7 +91,7 @@ public class Group extends DynamicObject {
 
 		dynAttribute = new StaticAttribute("objectCategory", "objectCategory", String.class,
 						Config.getProperty("nicki.target.ad.static.group.objectCategory"));
-		dynAttribute.setForeignKey(DynamicObject.class);
+		dynAttribute.setForeignKey(org.mgnl.nicki.ldap.objects.DynamicObject.class);
 		dynAttribute.setMandatory();
 		dynAttribute.setStatic();
 		dynAttribute.setReadonly();

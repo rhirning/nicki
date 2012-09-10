@@ -32,9 +32,11 @@
  */
 package org.mgnl.nicki.idm.novell.objects;
 
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 
 @SuppressWarnings("serial")
+@DynamicObject(target="edir")
 public class Entitlement extends DynamicStructObject {
 	
 	@Override

@@ -36,11 +36,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.mgnl.nicki.idm.novell.objects.Resource;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.shop.objects.Catalog;
 import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.objects.CatalogPage;
 
 @SuppressWarnings("serial")
+@DynamicObject(target="edir")
 public class VirtualResourceCatalogArticle extends ResourceCatalogArticle {
 	private Resource resource;
 	private CatalogPage page;

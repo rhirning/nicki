@@ -32,9 +32,12 @@
  */
 package org.mgnl.nicki.dynamic.objects.objects;
 
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 
 @SuppressWarnings("serial")
+@DynamicObject(target="edir")
 public class Script extends DynamicTemplateObject {
 	public static final String ATTRIBUTE_DATA = "data";
 

@@ -42,12 +42,14 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.idm.novell.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.objects.Role;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 import org.mgnl.nicki.shop.objects.Catalog;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 
+@DynamicObject(target="edir")
 public class RoleCatalogArticle extends CatalogArticle {
 
 	private static final long serialVersionUID = -5530389061310235734L;
