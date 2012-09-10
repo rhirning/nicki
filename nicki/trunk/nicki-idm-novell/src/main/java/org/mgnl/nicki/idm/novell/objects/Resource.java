@@ -35,12 +35,13 @@ package org.mgnl.nicki.idm.novell.objects;
 import java.util.Date;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 
 @SuppressWarnings("serial")
+@DynamicObject(target="edir")
 public class Resource extends DynamicStructObject {
 
 	@Override
@@ -71,9 +72,9 @@ public class Resource extends DynamicStructObject {
 		addAttribute(dynAttribute);
 }
 	
-	public DynamicObject getEntitlement() throws DynamicObjectException {
+	public Entitlement getEntitlement() throws DynamicObjectException {
 		try {
-			return (DynamicObject) execute("getEntitlement", null);
+			return (Entitlement) execute("getEntitlement", null);
 		} catch (Exception e) {
 			return null;
 		}

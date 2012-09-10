@@ -38,8 +38,8 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.dynamic.objects.objects.DynamicTemplateObject;
 import org.mgnl.nicki.ldap.methods.StructuredData;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 
 
 @SuppressWarnings("serial")

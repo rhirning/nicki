@@ -38,12 +38,14 @@ import java.util.List;
 
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicReference;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
 
+@DynamicObject(target="edir")
 public class Role extends DynamicStructObject {
 	
 	private static final long serialVersionUID = 6170300879001415636L;

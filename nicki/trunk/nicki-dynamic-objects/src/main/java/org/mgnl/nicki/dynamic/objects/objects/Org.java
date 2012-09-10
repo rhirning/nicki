@@ -34,11 +34,13 @@ package org.mgnl.nicki.dynamic.objects.objects;
 
 import java.io.Serializable;
 
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 
 @SuppressWarnings("serial")
-public class Org extends DynamicObject implements Serializable {
+@DynamicObject(target="edir")
+public class Org extends DynamicTemplateObject implements Serializable {
 	public static final String ATTRIBUTE_CHILD = "child";
 
 	@Override

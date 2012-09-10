@@ -32,10 +32,13 @@
  */
 package org.mgnl.nicki.dynamic.objects.objects;
 
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 
 
 
+@DynamicObject(target="edir")
 public class Group extends DynamicTemplateObject {
 	public static final String ATTRIBUTE_DESCRIPTION = "description";
 	public static final String ATTRIBUTE_MEMBER = "member";

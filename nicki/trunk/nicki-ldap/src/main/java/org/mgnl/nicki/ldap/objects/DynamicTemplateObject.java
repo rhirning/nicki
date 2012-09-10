@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.objects;
+package org.mgnl.nicki.ldap.objects;
 
 import java.util.Iterator;
 import java.util.List;

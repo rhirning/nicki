@@ -51,6 +51,7 @@ import org.mgnl.nicki.idm.novell.catalog.RoleCatalogArticle;
 import org.mgnl.nicki.idm.novell.objects.Entitlement;
 import org.mgnl.nicki.idm.novell.objects.Resource;
 import org.mgnl.nicki.idm.novell.objects.Role;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 import org.mgnl.nicki.shop.objects.Catalog;
@@ -59,6 +60,7 @@ import org.mgnl.nicki.shop.objects.CatalogArticle;
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
+@DynamicObject(target="edir")
 public class IdmPerson extends Person implements Serializable {
 
 	private static final long serialVersionUID = -6791692458041112275L;

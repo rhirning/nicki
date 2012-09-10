@@ -35,9 +35,12 @@ package org.mgnl.nicki.dynamic.objects.objects;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 
 @SuppressWarnings("serial")
+@DynamicObject(target="edir")
 public class Template extends DynamicTemplateObject {
 
 	public static final String ATTRIBUTE_DATA = "data";

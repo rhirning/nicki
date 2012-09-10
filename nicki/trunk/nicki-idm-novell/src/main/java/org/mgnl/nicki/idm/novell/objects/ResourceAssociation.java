@@ -34,13 +34,15 @@ package org.mgnl.nicki.idm.novell.objects;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.dynamic.objects.objects.DynamicTemplateObject;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 
 
 @SuppressWarnings("serial")
+@DynamicObject(target="edir")
 public class ResourceAssociation extends DynamicTemplateObject {
 	
 	@Override

@@ -39,16 +39,18 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.dynamic.objects.objects.DynamicTemplateObject;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
 import org.mgnl.nicki.ldap.context.AppContext;
 import org.mgnl.nicki.ldap.methods.LoadObjectsMethod;
 import org.mgnl.nicki.ldap.objects.DynamicAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
 
 
 @SuppressWarnings("serial")
+@DynamicObject(target="edir")
 public class Catalog extends DynamicTemplateObject {
 	public static final String PATH_SEPARATOR = "/";
 	private static long lastBuild = 0;
