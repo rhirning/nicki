@@ -34,8 +34,9 @@ package org.mgnl.nicki.ldap.data.jndi;
 
 import javax.naming.directory.Attributes;
 
-import org.mgnl.nicki.ldap.objects.ContextAttribute;
-import org.mgnl.nicki.ldap.objects.ContextAttributes;
+import org.mgnl.nicki.core.objects.ContextAttribute;
+import org.mgnl.nicki.core.objects.ContextAttributes;
+
 
 public class JndiAttributes implements ContextAttributes {
 	Attributes attributes;

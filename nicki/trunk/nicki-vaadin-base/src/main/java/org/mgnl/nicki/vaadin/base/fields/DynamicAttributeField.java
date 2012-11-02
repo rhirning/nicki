@@ -32,7 +32,7 @@
  */
 package org.mgnl.nicki.vaadin.base.fields;
 
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectValueChangeListener;
 
 import com.vaadin.ui.Component;

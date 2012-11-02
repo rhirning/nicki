@@ -36,8 +36,8 @@ package org.mgnl.nicki.shop.core;
 import java.io.Serializable;
 import java.util.List;
 
+import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 
 import com.vaadin.data.util.IndexedContainer;
 

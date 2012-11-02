@@ -36,11 +36,11 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.objects.DataModel;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
-import org.mgnl.nicki.ldap.objects.DataModel;
-import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.fields.AttributeSelectObjectField;
 import org.mgnl.nicki.vaadin.base.fields.AttributeTextAreaField;
 import org.mgnl.nicki.vaadin.base.fields.AttributeTextField;

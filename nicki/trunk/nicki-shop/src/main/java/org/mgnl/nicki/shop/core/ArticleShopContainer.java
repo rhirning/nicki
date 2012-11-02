@@ -39,8 +39,8 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.shop.objects.Catalog;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 

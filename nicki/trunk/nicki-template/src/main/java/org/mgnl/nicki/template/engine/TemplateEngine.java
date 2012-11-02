@@ -43,11 +43,11 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.XsltRenderer;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
-import org.mgnl.nicki.ldap.context.AppContext;
+import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.template.engine.ConfigurationFactory;
 import org.mgnl.nicki.template.handler.TemplateHandler;
 import org.mgnl.nicki.template.pdf.PdfTemplateRenderer;

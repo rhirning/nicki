@@ -33,10 +33,10 @@
 package org.mgnl.nicki.vaadin.base.editor;
 
 
+import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.components.NewClassEditor;
 
 import com.vaadin.ui.AbsoluteLayout;

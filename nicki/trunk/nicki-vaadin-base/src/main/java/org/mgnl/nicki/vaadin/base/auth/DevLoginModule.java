@@ -36,9 +36,9 @@ import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.ldap.auth.NickiLoginModule;
-import org.mgnl.nicki.ldap.auth.NickiPrincipal;
-import org.mgnl.nicki.ldap.context.AppContext;
+import org.mgnl.nicki.core.auth.NickiLoginModule;
+import org.mgnl.nicki.core.auth.NickiPrincipal;
+import org.mgnl.nicki.core.context.AppContext;
 
 public class DevLoginModule extends NickiLoginModule implements LoginModule {
 

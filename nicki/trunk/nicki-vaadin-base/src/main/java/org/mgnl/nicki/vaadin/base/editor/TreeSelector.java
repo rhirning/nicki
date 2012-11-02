@@ -34,7 +34,8 @@ package org.mgnl.nicki.vaadin.base.editor;
 
 import java.util.Collection;
 
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObject;
+
 
 import com.vaadin.event.Action.Handler;
 import com.vaadin.ui.Tree;

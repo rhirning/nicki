@@ -35,7 +35,7 @@ package org.mgnl.nicki.vaadin.base.fields;
 import java.io.Serializable;
 
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.data.AttributeDataContainer;
 import org.mgnl.nicki.vaadin.base.data.DataContainer;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectValueChangeListener;

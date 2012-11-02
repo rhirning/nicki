@@ -42,7 +42,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.ldap.auth.SSOAdapter;
+import org.mgnl.nicki.core.auth.SSOAdapter;
 
 import com.sssw.fw.directory.api.EbiRealmGroup;
 import com.sssw.fw.directory.api.EbiRealmUser;

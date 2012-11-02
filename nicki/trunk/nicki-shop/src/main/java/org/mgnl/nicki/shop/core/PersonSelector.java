@@ -32,7 +32,7 @@
  */
 package org.mgnl.nicki.shop.core;
 
-import org.mgnl.nicki.ldap.context.NickiContext;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.vaadin.base.command.SelectPersonCommand;
 
 import com.vaadin.ui.ComponentContainer;

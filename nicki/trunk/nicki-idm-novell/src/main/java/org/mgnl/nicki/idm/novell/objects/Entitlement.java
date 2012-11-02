@@ -32,8 +32,8 @@
  */
 package org.mgnl.nicki.idm.novell.objects;
 
-import org.mgnl.nicki.ldap.annotations.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
 
 @SuppressWarnings("serial")
 @DynamicObject(target="edir")

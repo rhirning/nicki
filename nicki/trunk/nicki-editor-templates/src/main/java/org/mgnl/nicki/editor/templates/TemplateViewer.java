@@ -35,9 +35,9 @@ package org.mgnl.nicki.editor.templates;
 import javax.naming.NamingException;
 
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.components.SimpleEditor;
 import org.mgnl.nicki.vaadin.base.components.TestDataView;
 import org.mgnl.nicki.vaadin.base.data.AttributeDataContainer;

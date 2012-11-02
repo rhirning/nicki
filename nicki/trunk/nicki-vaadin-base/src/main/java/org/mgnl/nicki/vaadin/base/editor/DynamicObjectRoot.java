@@ -35,8 +35,9 @@ package org.mgnl.nicki.vaadin.base.editor;
 import java.io.Serializable;
 import java.util.List;
 
-import org.mgnl.nicki.ldap.context.NickiContext;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.objects.DynamicObject;
+
 
 @SuppressWarnings("serial")
 public class DynamicObjectRoot implements DataProvider, Serializable {

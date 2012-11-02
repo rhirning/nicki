@@ -31,12 +31,12 @@ import java.util.List;
 import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
+import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
-import org.mgnl.nicki.ldap.context.AppContext;
-import org.mgnl.nicki.ldap.context.NickiContext;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.template.handler.TemplateHandler;
 
 public class TemplateHelper {

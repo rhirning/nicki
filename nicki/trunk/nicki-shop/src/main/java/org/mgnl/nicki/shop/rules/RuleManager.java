@@ -41,12 +41,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.helper.LdapHelper;
+import org.mgnl.nicki.core.helper.LdapHelper.LOGIC;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.ldap.context.AppContext;
-import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.ldap.helper.LdapHelper;
-import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
 import org.mgnl.nicki.shop.inventory.Inventory;
 import org.mgnl.nicki.shop.objects.Cart;
 import org.mgnl.nicki.shop.objects.CartEntry;
@@ -273,7 +273,7 @@ public class RuleManager {
 			cart.setInitiator(user);
 			cart.setRecipient(person);
 			cart.setRequestDate(new Date());
-			cart.setStatus(Cart.STATUS.REQUESTED);
+			cart.setCartStatus(Cart.CART_STATUS.REQUESTED);
 			cart.setSource(Inventory.SOURCE.RULE.getValue());
 			cart.setCatalog(Catalog.getCatalog());
 			for (ArticleChange article : changeSet.getChanges()) {
@@ -295,7 +295,7 @@ public class RuleManager {
 				cart.setInitiator(user);
 				cart.setRecipient(article.getPerson());
 				cart.setRequestDate(new Date());
-				cart.setStatus(Cart.STATUS.REQUESTED);
+				cart.setCartStatus(Cart.CART_STATUS.REQUESTED);
 				cart.setSource(Inventory.SOURCE.RULE.getValue());
 				cart.setCatalog(Catalog.getCatalog());
 	

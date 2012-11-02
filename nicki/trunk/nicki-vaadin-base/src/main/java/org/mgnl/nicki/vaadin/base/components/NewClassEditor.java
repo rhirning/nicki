@@ -32,9 +32,9 @@
  */
 package org.mgnl.nicki.vaadin.base.components;
 
-import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicObject;
 
 import com.vaadin.ui.ComponentContainer;
 

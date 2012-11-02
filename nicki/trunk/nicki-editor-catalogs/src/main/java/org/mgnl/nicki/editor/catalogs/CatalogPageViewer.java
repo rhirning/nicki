@@ -35,8 +35,8 @@ package org.mgnl.nicki.editor.catalogs;
 import java.util.Iterator;
 
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.shop.objects.CatalogPage;
 import org.mgnl.nicki.vaadin.base.components.EnterNameDialog;
 import org.mgnl.nicki.vaadin.base.components.EnterNameHandler;

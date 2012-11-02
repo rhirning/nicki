@@ -10,7 +10,6 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
-
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-vaadin-base</artifactId>

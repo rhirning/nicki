@@ -34,11 +34,11 @@ package org.mgnl.nicki.idm.novell.objects;
 
 import java.util.Date;
 
+import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.StructuredDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.ldap.annotations.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
-import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 
 @SuppressWarnings("serial")
 @DynamicObject(target="edir")

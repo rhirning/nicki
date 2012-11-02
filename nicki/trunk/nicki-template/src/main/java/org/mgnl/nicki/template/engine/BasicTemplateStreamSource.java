@@ -44,7 +44,7 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.StreamConverter;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.ldap.context.NickiContext;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.template.handler.TemplateHandler;
 
 

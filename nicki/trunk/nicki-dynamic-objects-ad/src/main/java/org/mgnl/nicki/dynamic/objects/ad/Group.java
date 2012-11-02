@@ -32,13 +32,12 @@
  */
 package org.mgnl.nicki.dynamic.objects.ad;
 
+import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.ldap.annotations.DynamicObject;
-import org.mgnl.nicki.ldap.data.jndi.OctetString;
-import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
-import org.mgnl.nicki.ldap.objects.StaticAttribute;
-
+import org.mgnl.nicki.core.data.OctetString;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.DynamicTemplateObject;
+import org.mgnl.nicki.core.objects.StaticAttribute;
 
 @DynamicObject(target="ad")
 public class Group extends DynamicTemplateObject {
@@ -91,7 +90,7 @@ public class Group extends DynamicTemplateObject {
 
 		dynAttribute = new StaticAttribute("objectCategory", "objectCategory", String.class,
 						Config.getProperty("nicki.target.ad.static.group.objectCategory"));
-		dynAttribute.setForeignKey(org.mgnl.nicki.ldap.objects.DynamicObject.class);
+		dynAttribute.setForeignKey(org.mgnl.nicki.core.objects.DynamicObject.class);
 		dynAttribute.setMandatory();
 		dynAttribute.setStatic();
 		dynAttribute.setReadonly();

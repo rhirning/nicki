@@ -39,8 +39,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.StructuredDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.objects.Group;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
@@ -51,9 +54,6 @@ import org.mgnl.nicki.idm.novell.catalog.RoleCatalogArticle;
 import org.mgnl.nicki.idm.novell.objects.Entitlement;
 import org.mgnl.nicki.idm.novell.objects.Resource;
 import org.mgnl.nicki.idm.novell.objects.Role;
-import org.mgnl.nicki.ldap.annotations.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 import org.mgnl.nicki.shop.objects.Catalog;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 

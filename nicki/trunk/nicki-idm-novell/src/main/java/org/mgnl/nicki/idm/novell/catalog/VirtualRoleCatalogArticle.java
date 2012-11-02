@@ -35,8 +35,8 @@ package org.mgnl.nicki.idm.novell.catalog;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.idm.novell.objects.Role;
-import org.mgnl.nicki.ldap.annotations.DynamicObject;
 import org.mgnl.nicki.shop.objects.Catalog;
 import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.objects.CatalogPage;

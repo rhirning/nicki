@@ -37,7 +37,7 @@ import java.util.Map;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.ldap.context.NickiContext;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.template.engine.TemplateParameter;
 
 public interface TemplateHandler {

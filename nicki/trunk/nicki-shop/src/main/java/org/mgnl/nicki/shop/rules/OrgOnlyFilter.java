@@ -32,7 +32,7 @@
  */
 package org.mgnl.nicki.shop.rules;
 
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.editor.EntryFilter;
 
 public class OrgOnlyFilter implements EntryFilter {

@@ -32,11 +32,9 @@
  */
 package org.mgnl.nicki.dynamic.objects.objects;
 
-import org.mgnl.nicki.ldap.annotations.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
-
-
+import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.DynamicTemplateObject;
 
 @DynamicObject(target="edir")
 public class Group extends DynamicTemplateObject {

@@ -32,8 +32,8 @@
  */
 package org.mgnl.nicki.vaadin.base.auth;
 
-import org.mgnl.nicki.ldap.auth.SSOAdapter;
-import org.mgnl.nicki.ldap.context.AppContext;
+import org.mgnl.nicki.core.auth.SSOAdapter;
+import org.mgnl.nicki.core.context.AppContext;;
 
 public class DevSSOAdapter implements SSOAdapter {
 

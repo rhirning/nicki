@@ -36,11 +36,11 @@ package org.mgnl.nicki.shop.core;
 import java.io.Serializable;
 import java.util.List;
 
+import org.mgnl.nicki.core.auth.InvalidPrincipalException;
+import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
-import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.shop.inventory.Inventory;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 import org.mgnl.nicki.shop.renderer.ShopRenderer;

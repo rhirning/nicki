@@ -32,7 +32,7 @@
  */
 package org.mgnl.nicki.vaadin.base.editor;
 
-import org.mgnl.nicki.ldap.context.NickiContext;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 
 @SuppressWarnings("serial")

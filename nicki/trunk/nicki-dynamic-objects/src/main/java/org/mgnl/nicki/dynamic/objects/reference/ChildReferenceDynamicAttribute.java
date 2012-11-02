@@ -34,8 +34,8 @@ package org.mgnl.nicki.dynamic.objects.reference;
 
 import java.util.List;
 
-import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.DynamicObject;
 
 @SuppressWarnings("serial")
 public class ChildReferenceDynamicAttribute extends DynamicAttribute {

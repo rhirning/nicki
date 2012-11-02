@@ -34,12 +34,12 @@ package org.mgnl.nicki.editor.scripts;
 
 
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.context.Target;
+import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.dynamic.objects.objects.Script;
-import org.mgnl.nicki.ldap.context.Target;
-import org.mgnl.nicki.ldap.context.TargetFactory;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
 import org.mgnl.nicki.vaadin.base.editor.ExportTreeAction;
