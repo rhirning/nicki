@@ -37,13 +37,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.idm.novell.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.objects.Resource;
-import org.mgnl.nicki.ldap.annotations.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 import org.mgnl.nicki.shop.objects.Catalog;

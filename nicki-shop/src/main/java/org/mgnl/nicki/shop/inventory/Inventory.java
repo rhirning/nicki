@@ -40,11 +40,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
-import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.shop.inventory.InventoryArticle.STATUS;
 import org.mgnl.nicki.shop.objects.Cart;
 import org.mgnl.nicki.shop.objects.CartEntry;
@@ -215,7 +215,7 @@ public class Inventory implements Serializable {
 				cart.setInitiator(user);
 				cart.setRecipient(person);
 				cart.setRequestDate(new Date());
-				cart.setStatus(Cart.STATUS.REQUESTED);
+				cart.setCartStatus(Cart.CART_STATUS.REQUESTED);
 				cart.setSource(source);
 				cart.setCatalog(Catalog.getCatalog());
 				for (String key : mulitArticles.keySet()) {

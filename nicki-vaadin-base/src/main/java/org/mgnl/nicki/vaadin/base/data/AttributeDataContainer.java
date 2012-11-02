@@ -33,7 +33,7 @@
 package org.mgnl.nicki.vaadin.base.data;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObject;
 
 import com.vaadin.data.Property;
 

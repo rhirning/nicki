@@ -35,8 +35,8 @@ package org.mgnl.nicki.template.engine;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
-import org.mgnl.nicki.ldap.context.AppContext;
+import org.mgnl.nicki.core.auth.InvalidPrincipalException;
+import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.template.loader.JndiTemplateLoader;
 
 import freemarker.template.Configuration;

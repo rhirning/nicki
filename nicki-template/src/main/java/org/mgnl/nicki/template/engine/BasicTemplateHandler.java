@@ -44,7 +44,7 @@ import org.jdom.Element;
 import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.ldap.context.NickiContext;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.template.handler.TemplateHandler;
 
 public class BasicTemplateHandler implements TemplateHandler{

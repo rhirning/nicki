@@ -38,13 +38,13 @@ import java.util.List;
 import javax.naming.directory.SearchControls;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.ldap.context.NickiContext;
-import org.mgnl.nicki.ldap.context.QueryHandler;
-import org.mgnl.nicki.ldap.core.BasicLdapHandler;
-import org.mgnl.nicki.ldap.objects.ContextAttribute;
-import org.mgnl.nicki.ldap.objects.ContextAttributes;
-import org.mgnl.nicki.ldap.objects.ContextSearchResult;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.ContextAttribute;
+import org.mgnl.nicki.core.objects.ContextAttributes;
+import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.data.QueryHandler;
+import org.mgnl.nicki.ldap.query.BasicLdapHandler;
 import org.mgnl.nicki.template.engine.Template;
 
 public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements QueryHandler {

@@ -40,7 +40,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.ldap.auth.SSOAdapter;
+import org.mgnl.nicki.core.auth.SSOAdapter;
 
 
 public class IframeAdapter implements SSOAdapter {

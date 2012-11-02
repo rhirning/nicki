@@ -37,8 +37,9 @@ import java.util.Enumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 
-import org.mgnl.nicki.ldap.objects.ContextAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.ContextAttribute;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
+
 
 public class JndiContextAttribute implements ContextAttribute {
 

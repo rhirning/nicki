@@ -34,7 +34,8 @@ package org.mgnl.nicki.vaadin.base.editor;
 
 import java.io.Serializable;
 
-import org.mgnl.nicki.ldap.context.NickiContext;
+import org.mgnl.nicki.core.context.NickiContext;
+
 
 import com.vaadin.ui.CustomComponent;
 

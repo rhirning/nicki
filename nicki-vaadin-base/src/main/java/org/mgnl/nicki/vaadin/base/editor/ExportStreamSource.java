@@ -37,9 +37,9 @@ import java.io.InputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import org.mgnl.nicki.ldap.context.NickiContext;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
-import org.mgnl.nicki.ldap.xml.XMLBuilder;
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.util.XMLBuilder;
 
 import com.vaadin.terminal.StreamResource.StreamSource;
 

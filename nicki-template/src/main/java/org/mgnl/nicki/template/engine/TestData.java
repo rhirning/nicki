@@ -39,10 +39,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.ldap.context.NickiContext;
-import org.mgnl.nicki.ldap.context.Target;
-import org.mgnl.nicki.ldap.context.TargetFactory;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.context.Target;
+import org.mgnl.nicki.core.context.TargetFactory;
+import org.mgnl.nicki.core.objects.DynamicObject;
 
 public class TestData {
 

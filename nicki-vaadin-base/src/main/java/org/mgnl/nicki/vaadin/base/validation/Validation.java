@@ -35,7 +35,7 @@ package org.mgnl.nicki.vaadin.base.validation;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.editor.ValidationException;
 
 import com.vaadin.ui.Field;

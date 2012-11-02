@@ -33,8 +33,8 @@
 package org.mgnl.nicki.vaadin.base.command;
 
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
 public class DeleteCommand implements Command {

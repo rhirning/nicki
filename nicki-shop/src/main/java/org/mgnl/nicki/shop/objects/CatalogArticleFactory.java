@@ -35,10 +35,10 @@ package org.mgnl.nicki.shop.objects;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mgnl.nicki.ldap.auth.InvalidPrincipalException;
-import org.mgnl.nicki.ldap.context.AppContext;
-import org.mgnl.nicki.ldap.context.ObjectFactory;
-import org.mgnl.nicki.ldap.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.auth.InvalidPrincipalException;
+import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.core.context.ObjectFactory;
+import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 
 public class CatalogArticleFactory {
 	private static CatalogArticleFactory instance = null;

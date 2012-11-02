@@ -34,8 +34,8 @@ package org.mgnl.nicki.vaadin.base.editor;
 
 import java.io.Serializable;
 
-import org.mgnl.nicki.ldap.objects.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.components.EnterNameHandler;
 
 @SuppressWarnings("serial")

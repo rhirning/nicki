@@ -34,8 +34,9 @@ package org.mgnl.nicki.ldap.data.jndi;
 
 import javax.naming.directory.SearchResult;
 
-import org.mgnl.nicki.ldap.objects.ContextAttributes;
-import org.mgnl.nicki.ldap.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.ContextAttributes;
+import org.mgnl.nicki.core.objects.ContextSearchResult;
+
 
 public class JndiSearchResult implements ContextSearchResult {
 	private SearchResult rs;

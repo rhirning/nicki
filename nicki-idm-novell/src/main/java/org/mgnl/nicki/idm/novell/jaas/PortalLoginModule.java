@@ -39,8 +39,8 @@ import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.ldap.auth.NickiLoginCallbackHandler;
-import org.mgnl.nicki.ldap.auth.NickiLoginModule;
+import org.mgnl.nicki.core.auth.NickiLoginCallbackHandler;
+import org.mgnl.nicki.core.auth.NickiLoginModule;
 
 public class PortalLoginModule extends NickiLoginModule implements LoginModule {
 

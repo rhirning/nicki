@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObject;
 
 import com.vaadin.data.Property;
 

@@ -3,6 +3,8 @@ package org.mgnl.nicki.ldap.objects;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+
 public class ExtensionModel {
 	private List<String> objectClasses = new ArrayList<String>();
 	private List<String> additionalObjectClasses = new ArrayList<String>();

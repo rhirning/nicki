@@ -32,7 +32,7 @@
  */
 package org.mgnl.nicki.vaadin.base.components;
 
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.editor.NewObjectEnterNameHandler;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 

@@ -39,7 +39,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.ldap.xml.XmlHelper;
+import org.mgnl.nicki.core.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

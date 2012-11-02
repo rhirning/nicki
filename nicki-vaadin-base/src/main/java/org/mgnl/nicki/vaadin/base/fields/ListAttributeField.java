@@ -37,7 +37,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.data.DataContainer;
 import org.mgnl.nicki.vaadin.base.data.ListAttributeDataContainer;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectValueChangeListener;

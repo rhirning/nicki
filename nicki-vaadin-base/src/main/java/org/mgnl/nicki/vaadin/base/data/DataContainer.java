@@ -34,7 +34,7 @@ package org.mgnl.nicki.vaadin.base.data;
 
 import java.io.Serializable;
 
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObject;
 
 import com.vaadin.data.Property;
 

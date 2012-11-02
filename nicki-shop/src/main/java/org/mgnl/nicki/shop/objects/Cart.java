@@ -40,15 +40,15 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import java.util.Date;
 import java.util.List;
 import org.w3c.dom.Document;
+import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.ldap.annotations.DynamicObject;
-import org.mgnl.nicki.ldap.context.NickiContext;
-import org.mgnl.nicki.ldap.objects.ContextSearchResult;
-import org.mgnl.nicki.ldap.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
-import org.mgnl.nicki.ldap.objects.DynamicTemplateObject;
-import org.mgnl.nicki.ldap.xml.XmlHelper;
+import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicTemplateObject;
+import org.mgnl.nicki.core.util.XmlHelper;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
@@ -60,7 +60,7 @@ import org.xml.sax.SAXException;
 @DynamicObject(target="edir")
 public class Cart extends DynamicTemplateObject {
 
-    public enum STATUS {
+    public enum CART_STATUS {
 
         NEW,
         REQUESTED,
@@ -70,8 +70,8 @@ public class Cart extends DynamicTemplateObject {
             return this.toString().toLowerCase();
         }
 
-        public static STATUS fromString(String str) {
-            return STATUS.valueOf(str.toUpperCase());
+        public static CART_STATUS fromString(String str) {
+            return CART_STATUS.valueOf(str.toUpperCase());
         }
     }
 	
@@ -210,7 +210,7 @@ public class Cart extends DynamicTemplateObject {
         return catalog;
     }
 
-    public void setStatus(STATUS status) {
+    public void setCartStatus(CART_STATUS status) {
         put("status", status.getValue());
     }
 	
@@ -231,8 +231,8 @@ public class Cart extends DynamicTemplateObject {
 		put("statusFlag", list);
     }
 
-    public STATUS getStatus() {
-        return STATUS.fromString((String) get("status"));
+    public CART_STATUS getCartStatus() {
+        return CART_STATUS.fromString((String) get("status"));
     }
     
 	@SuppressWarnings("unchecked")

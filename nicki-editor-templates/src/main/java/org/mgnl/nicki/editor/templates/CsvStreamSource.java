@@ -35,8 +35,8 @@ package org.mgnl.nicki.editor.templates;
 import java.io.InputStream;
 import java.util.Map;
 
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.ldap.context.NickiContext;
 import org.mgnl.nicki.template.engine.BasicTemplateStreamSource;
 
 import com.vaadin.terminal.StreamResource.StreamSource;

@@ -32,7 +32,7 @@
  */
 package org.mgnl.nicki.vaadin.base.editor;
 
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObject;
 
 import com.vaadin.ui.Window;
 

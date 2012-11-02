@@ -35,7 +35,7 @@ package org.mgnl.nicki.vaadin.base.editor;
 import java.io.Serializable;
 import java.util.Collection;
 
-import org.mgnl.nicki.ldap.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObject;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Property.ValueChangeListener;

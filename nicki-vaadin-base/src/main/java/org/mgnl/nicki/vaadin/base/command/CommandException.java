@@ -32,7 +32,7 @@
  */
 package org.mgnl.nicki.vaadin.base.command;
 
-import org.mgnl.nicki.ldap.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 @SuppressWarnings("serial")
 public class CommandException extends Exception {
