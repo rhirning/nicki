@@ -34,8 +34,6 @@ package org.mgnl.nicki.ldap.query;
 
 import java.util.List;
 
-import javax.naming.directory.SearchControls;
-
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
@@ -67,14 +65,13 @@ public class IsExistLdapQueryHandler extends BasicLdapHandler implements QueryHa
 		}
 	}
 
-	public SearchControls getConstraints() {
-		SearchControls constraints = new SearchControls();
-		constraints.setSearchScope(SearchControls.OBJECT_SCOPE);
-		return constraints;
+	public boolean isExist() {
+		return exist;
 	}
 
 
-	public boolean isExist() {
-		return exist;
+	@Override
+	public SCOPE getScope() {
+		return SCOPE.OBJECT;
 	}
 }

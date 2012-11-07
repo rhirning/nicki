@@ -38,12 +38,15 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;;
 
 public interface QueryHandler {
+	public static enum SCOPE {OBJECT, ONELEVEL, SUBTREE};
 
 	String getBaseDN();
 
 	String getFilter();
 
 	Object getConstraints();
+
+	SCOPE getScope();
 
 	void handle(List<ContextSearchResult> results) throws DynamicObjectException;
 

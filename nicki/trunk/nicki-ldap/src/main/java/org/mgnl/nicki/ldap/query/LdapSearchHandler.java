@@ -37,8 +37,6 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.naming.directory.SearchControls;
-
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.Query;
 import org.mgnl.nicki.core.data.QueryHandler;
@@ -54,7 +52,7 @@ public class LdapSearchHandler extends BasicLdapHandler implements QueryHandler 
 
 	private Query query;
 	private List<SearchResultEntry> result = new ArrayList<SearchResultEntry>();
-	private int scope = NO_SCOPE;
+	private SCOPE scope = SCOPE.SUBTREE;
 
 	public LdapSearchHandler(NickiContext context, Query query) {
 		super(context);
@@ -62,7 +60,7 @@ public class LdapSearchHandler extends BasicLdapHandler implements QueryHandler 
 		this.setFilter(query.getFilter());
 	}
 
-	public LdapSearchHandler(NickiContext context, Query query, int scope) {
+	public LdapSearchHandler(NickiContext context, Query query, SCOPE scope) {
 		this(context, query);
 		this.setFilter(query.getFilter());
 		this.scope = scope;
@@ -100,14 +98,9 @@ public class LdapSearchHandler extends BasicLdapHandler implements QueryHandler 
 		return result;
 	}
 
-	public SearchControls getConstraints() {
-		SearchControls constraints = new SearchControls();
-		if (this.scope != NO_SCOPE) {
-			constraints.setSearchScope(this.scope);
-		} else {
-			constraints.setSearchScope(SearchControls.SUBTREE_SCOPE);
-		}
-		return constraints;
+	@Override
+	public SCOPE getScope() {
+		return scope;
 	}
 
 

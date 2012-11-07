@@ -30,41 +30,44 @@
  * intact.
  *
  */
-package org.mgnl.nicki.ldap.query;
+package org.mgnl.nicki.jcr.methods;
 
+
+import java.io.Serializable;
 import java.util.List;
 
-import javax.naming.directory.SearchControls;
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.core.data.QueryHandler;
-import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicObject;
 
-public class InitialObjectLdapQueryHandler extends ObjectLoaderLdapQueryHandler implements QueryHandler {
+import freemarker.template.TemplateMethodModel;
+
+public class ChildrenMethod implements Serializable, TemplateMethodModel {
+
+	private static final long serialVersionUID = -81535049844368520L;
+	private List<DynamicObject> objects = null;
+	private String parent;
+	private String filter;
+	private NickiContext context;
 	
-	public InitialObjectLdapQueryHandler(NickiContext context, String path) {
-		super(context, path);
-	}
-
-	@Override
-	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
-		if (results != null && results.size() > 0) {
-			try {
-				dynamicObject = getContext().getObjectFactory().getObject(results.get(0));
-				dynamicObject.initExisting(getContext(), getBaseDN());
-			} catch (InstantiateDynamicObjectException e) {
-				throw new DynamicObjectException(e);
-			}
+	public ChildrenMethod(NickiContext context, Node node, String filter) {
+		this.context = context;
+		try {
+			this.parent = node.getPath();
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		this.filter = filter;
 	}
 
-	public SearchControls getConstraints() {
-		SearchControls constraints = super.getConstraints();
-		String[] attrIDs = { "objectClass" };
-		constraints.setReturningAttributes(attrIDs);
-		return constraints;
+	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
+		if (objects == null) {
+			objects = context.loadChildObjects(parent, filter);
+		}
+		return objects;
 	}
 
 }

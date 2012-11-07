@@ -35,8 +35,6 @@ package org.mgnl.nicki.template.loader;
 import java.util.Enumeration;
 import java.util.List;
 
-import javax.naming.directory.SearchControls;
-
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.objects.ContextAttribute;
 import org.mgnl.nicki.core.objects.ContextAttributes;
@@ -116,9 +114,8 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 	}
 
 
-	public SearchControls getConstraints() {
-		SearchControls constraints = new SearchControls();
-		constraints.setSearchScope(SearchControls.OBJECT_SCOPE);
-		return constraints;
+	@Override
+	public SCOPE getScope() {
+		return SCOPE.OBJECT;
 	}
 }
