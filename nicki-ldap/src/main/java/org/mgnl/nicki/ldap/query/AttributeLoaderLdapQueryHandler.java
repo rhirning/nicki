@@ -64,8 +64,7 @@ public class AttributeLoaderLdapQueryHandler extends BasicLdapHandler implements
 	}
 
 	public SearchControls getConstraints() {
-		SearchControls constraints = new SearchControls();
-		constraints.setSearchScope(SearchControls.OBJECT_SCOPE);
+		SearchControls constraints = super.getConstraints();
 		// Specify the ids of the attributes to return
 		constraints.setReturningAttributes(attributes);
 		return constraints;
@@ -81,5 +80,10 @@ public class AttributeLoaderLdapQueryHandler extends BasicLdapHandler implements
 
 	public Map<String, List<Object>> getLists() {
 		return lists;
+	}
+
+	@Override
+	public SCOPE getScope() {
+		return SCOPE.OBJECT;
 	}
 }

@@ -32,24 +32,17 @@
  */
 package org.mgnl.nicki.ldap.query;
 
-import javax.naming.directory.SearchControls;
-
 import org.mgnl.nicki.core.context.NickiContext;
-
 
 public class SubObjectsLoaderLdapQueryHandler extends ObjectsLoaderLdapQueryHandler {
 
 	public SubObjectsLoaderLdapQueryHandler(NickiContext context, String parent, String filter) {
 		super(context, parent, filter);
 	}
-
+	
 	@Override
-	public SearchControls getConstraints() {
-		SearchControls constraints = new SearchControls();
-		constraints.setSearchScope(SearchControls.ONELEVEL_SCOPE);
-		// Specify the ids of the attributes to return
-		String[] attrIDs = { "objectClass" };
-		constraints.setReturningAttributes(attrIDs);
-		return constraints;
+	public SCOPE getScope() {
+		return SCOPE.ONELEVEL;
 	}
+
 }

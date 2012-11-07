@@ -30,41 +30,46 @@
  * intact.
  *
  */
-package org.mgnl.nicki.ldap.query;
+package org.mgnl.nicki.jcr.objects;
 
+import java.util.Iterator;
 import java.util.List;
 
-import javax.naming.directory.SearchControls;
+import javax.jcr.Node;
 
-import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.core.data.QueryHandler;
-import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.jcr.methods.ChildrenMethod;
 
-public class InitialObjectLdapQueryHandler extends ObjectLoaderLdapQueryHandler implements QueryHandler {
-	
-	public InitialObjectLdapQueryHandler(NickiContext context, String path) {
-		super(context, path);
-	}
+
+import freemarker.template.TemplateMethodModel;
+
+@SuppressWarnings("serial")
+public abstract class NodeDynamicTemplateObject extends BaseJcrDynamicObject {
 
 	@Override
-	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
-		if (results != null && results.size() > 0) {
-			try {
-				dynamicObject = getContext().getObjectFactory().getObject(results.get(0));
-				dynamicObject.initExisting(getContext(), getBaseDN());
-			} catch (InstantiateDynamicObjectException e) {
-				throw new DynamicObjectException(e);
-			}
+	public void init(Node node) throws DynamicObjectException {
+		super.init(node);
+		
+		for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
+			String key = iterator.next();
+			String filter = getModel().getChildren().get(key);
+			put(DynamicAttribute.getGetter(key), new ChildrenMethod(getContext(),node, filter));
 		}
 	}
-
-	public SearchControls getConstraints() {
-		SearchControls constraints = super.getConstraints();
-		String[] attrIDs = { "objectClass" };
-		constraints.setReturningAttributes(attrIDs);
-		return constraints;
+	
+	public void addMethod(String name, TemplateMethodModel method) {
+		put(DynamicAttribute.getGetter(name), method);
+	};
+	
+	public Object execute(String methodName, @SuppressWarnings("rawtypes") List arguments) throws DynamicObjectException {
+		try {
+			TemplateMethodModel method = (TemplateMethodModel) get(methodName);
+			return method.exec(arguments);
+		} catch (Exception e) {
+			throw new DynamicObjectException(e);
+		}		
 	}
+
 
 }

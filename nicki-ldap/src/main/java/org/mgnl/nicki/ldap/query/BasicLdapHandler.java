@@ -32,14 +32,17 @@
  */
 package org.mgnl.nicki.ldap.query;
 
+import javax.naming.directory.SearchControls;
+
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.helper.LdapHelper;
 import org.mgnl.nicki.core.helper.LdapHelper.LOGIC;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-public class BasicLdapHandler {
+public abstract class BasicLdapHandler implements QueryHandler {
 	private NickiContext context;
 	private Class<? extends DynamicObject> classDefinition = null;
 	private String filter;
@@ -86,7 +89,17 @@ public class BasicLdapHandler {
 		this.filter = filter;
 	}
 
-
+	public SearchControls getConstraints() {
+		SearchControls constraints = new SearchControls();
+		if (getScope() == SCOPE.OBJECT) {
+			constraints.setSearchScope(SearchControls.OBJECT_SCOPE);
+		} else if (getScope() == SCOPE.ONELEVEL) {
+			constraints.setSearchScope(SearchControls.ONELEVEL_SCOPE);
+		} else if (getScope() == SCOPE.SUBTREE) {
+			constraints.setSearchScope(SearchControls.SUBTREE_SCOPE);
+		}
+		return constraints;
+	}
 
 
 

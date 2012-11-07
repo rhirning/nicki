@@ -83,12 +83,17 @@ public class ObjectsLoaderLdapQueryHandler extends ObjectLoaderLdapQueryHandler 
 			}
 		}
 	}
+	
+
+
+	@Override
+	public SCOPE getScope() {
+		return SCOPE.SUBTREE;
+	}
 
 	@Override
 	public SearchControls getConstraints() {
-		SearchControls constraints = new SearchControls();
-		constraints.setSearchScope(SearchControls.SUBTREE_SCOPE);
-		// Specify the ids of the attributes to return
+		SearchControls constraints =super.getConstraints();
 		String[] attrIDs = { "objectClass" };
 		constraints.setReturningAttributes(attrIDs);
 

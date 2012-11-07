@@ -34,8 +34,6 @@ package org.mgnl.nicki.ldap.query;
 
 import java.util.List;
 
-import javax.naming.directory.SearchControls;
-
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.data.QueryHandler;
@@ -92,10 +90,9 @@ public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements Qu
 		}
 	}
 
-	public SearchControls getConstraints() {
-		SearchControls constraints = new SearchControls();
-		constraints.setSearchScope(SearchControls.OBJECT_SCOPE);
-		return constraints;
+	@Override
+	public SCOPE getScope() {
+		return SCOPE.OBJECT;
 	}
 
 }
