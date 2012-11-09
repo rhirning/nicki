@@ -30,41 +30,44 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.methods;
-
+package org.mgnl.nicki.ldap.objects;
 
 import java.io.Serializable;
-import java.util.List;
 
-import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.data.LdapQuery;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.core.objects.StructuredDynamicReference;
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.ldap.methods.ReferenceMethod;
 
-import freemarker.template.TemplateMethodModel;
+@SuppressWarnings("serial")
+public class DynamicReference extends DynamicAttribute implements Serializable {
 
-public class StructuredReferenceMethod implements TemplateMethodModel, Serializable {
-
-	private static final long serialVersionUID = -81535049844368520L;
-	List<DynamicObject> objects = null;
-	StructuredDynamicReference reference;
-	String path;
-	NickiContext context;
-	
-	public StructuredReferenceMethod(NickiContext context, ContextSearchResult rs, StructuredDynamicReference structuredDynamicReference) {
-		this.context = context;
-		this.path = rs.getNameInNamespace();
-		this.reference = structuredDynamicReference;
+	private String attributeName;
+	private String baseDn;
+	private Class<? extends DynamicObject> classDefinition;
+	public DynamicReference(Class<? extends DynamicObject> classDefinition, String name, String baseDn, String attributeName, Class<?> attributeClass) {
+		super(name, name, attributeClass);
+		this.classDefinition = classDefinition;
+		setVirtual();
+		this.setBaseDn(baseDn);
+		this.attributeName = attributeName;
 	}
-
-	@SuppressWarnings("unchecked")
-	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
-		if (objects == null) {
-			LdapQuery query = new LdapQuery(path, reference);
-			objects = (List<DynamicObject>) context.loadReferenceObjects(this.reference.getClassDefinition(), query);
-		}
-		return objects;
+	public String getAttributeName() {
+		return attributeName;
 	}
-
+	public void setBaseDn(String baseDn) {
+		this.baseDn = baseDn;
+	}
+	public String getBaseDn() {
+		return baseDn;
+	}
+	@Override
+	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
+		dynamicObject.put(getGetter(getName()), new ReferenceMethod(context, rs, this));
+	}
+	public Class<? extends DynamicObject> getClassDefinition() {
+		return classDefinition;
+	}
 }
+

@@ -39,11 +39,11 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.methods.StructuredData;
-import org.mgnl.nicki.core.objects.DynamicTemplateObject;
+import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 
 @SuppressWarnings("serial")
-public abstract class DynamicStructObject extends DynamicTemplateObject {
+public abstract class DynamicStructObject extends DynamicLdapTemplateObject {
 
 	public static final String SEPARATOR = "/";
 	/*

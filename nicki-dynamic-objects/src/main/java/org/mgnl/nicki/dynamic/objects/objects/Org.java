@@ -36,11 +36,11 @@ import java.io.Serializable;
 
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
-import org.mgnl.nicki.core.objects.DynamicTemplateObject;
+import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 @SuppressWarnings("serial")
 @DynamicObject(target="edir")
-public class Org extends DynamicTemplateObject implements Serializable {
+public class Org extends DynamicLdapTemplateObject implements Serializable {
 	public static final String ATTRIBUTE_CHILD = "child";
 
 	@Override

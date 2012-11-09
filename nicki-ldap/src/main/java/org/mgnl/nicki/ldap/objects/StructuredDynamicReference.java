@@ -30,13 +30,15 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.objects;
+package org.mgnl.nicki.ldap.objects;
 
 import java.io.Serializable;
 
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.methods.StructuredReferenceMethod;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.ldap.methods.StructuredReferenceMethod;
 
 @SuppressWarnings("serial")
 public class StructuredDynamicReference extends DynamicAttribute implements Serializable {

@@ -36,11 +36,11 @@ import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.data.OctetString;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
-import org.mgnl.nicki.core.objects.DynamicTemplateObject;
 import org.mgnl.nicki.core.objects.StaticAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 @DynamicObject(target="ad")
-public class Group extends DynamicTemplateObject {
+public class Group extends DynamicLdapTemplateObject {
 	public enum TYPE {
 		SECURITY_GLOBAL (-2147483646),
 		SECURITY_LOCAL (-2147483644),

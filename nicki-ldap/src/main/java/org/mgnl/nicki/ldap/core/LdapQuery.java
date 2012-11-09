@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.data;
+package org.mgnl.nicki.ldap.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,8 +42,8 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.data.Query;
 import org.mgnl.nicki.core.helper.LdapHelper;
 import org.mgnl.nicki.core.helper.LdapHelper.LOGIC;
-import org.mgnl.nicki.core.objects.DynamicReference;
-import org.mgnl.nicki.core.objects.StructuredDynamicReference;
+import org.mgnl.nicki.ldap.objects.DynamicReference;
+import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
 public class LdapQuery implements Query {
 	Map<String, List<String>> searchValues = new HashMap<String, List<String>>();

@@ -43,15 +43,15 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 import org.mgnl.nicki.core.methods.LoadObjectsMethod;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.core.objects.DynamicTemplateObject;
 
 
 @SuppressWarnings("serial")
 @DynamicObject(target="edir")
-public class Catalog extends DynamicTemplateObject {
+public class Catalog extends DynamicLdapTemplateObject {
 	public static final String PATH_SEPARATOR = "/";
 	private static long lastBuild = 0;
 	private static long buildInterval = 10*60*1000; // ms

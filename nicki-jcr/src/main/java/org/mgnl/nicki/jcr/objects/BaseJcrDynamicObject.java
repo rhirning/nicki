@@ -3,6 +3,7 @@ package org.mgnl.nicki.jcr.objects;
 import javax.jcr.Node;
 
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
+import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 public class BaseJcrDynamicObject extends BaseDynamicObject {
@@ -20,6 +21,18 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 
 	public Node getNode() {
 		return node;
+	}
+
+	@Override
+	public void setModel(DataModel model) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public DataModel getModel() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
