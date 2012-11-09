@@ -18,8 +18,6 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.core.data.Query;
-import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.objects.NodeDynamicObject;
@@ -116,11 +114,6 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 	private void updateNode(Node node, DynamicObject dynamicObject) {
 
 		
-	}
-
-	@Override
-	public void search(QueryHandler queryHandler) throws DynamicObjectException {
-		throw new DynamicObjectException("not supported");
 	}
 
 	public List<DynamicObject> search(JcrQueryHandler queryHandler) throws DynamicObjectException {
@@ -298,12 +291,6 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 		return list;
 	}
 
-	@Override
-	public List<DynamicObject> loadReferenceObjects(Query query) {
-		// not supported
-		return null;
-	}
-
 	@SuppressWarnings("unchecked") // if casting fails, then null is returned. That's fine
 	@Override
 	public 	<T extends DynamicObject> T loadObject(Class<T> classDefinition, String path) {
@@ -349,13 +336,6 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 	@Override
 	public void loadAttributes(DynamicObject dynamicObject, Class<?> requester, String[] attributes) throws DynamicObjectException {
 		// not implemented
-	}
-
-
-	@Override
-	public <T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, Query query) {
-		// not implemented
-		return null;
 	}
 
 	@Override

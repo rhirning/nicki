@@ -40,7 +40,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 import org.mgnl.nicki.ldap.objects.DynamicReference;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
@@ -69,24 +69,24 @@ public class Person extends DynamicLdapTemplateObject {
 	public void initDataModel() {
 		addObjectClass("Person");
 		addAdditionalObjectClass("nickiUserAux");
-		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_NAME, "cn",
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NAME, "cn",
 				String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_SURNAME, "sn", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_SURNAME, "sn", String.class);
 		dynAttribute.setMandatory();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_GIVENNAME, "givenName",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_GIVENNAME, "givenName",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_FULLNAME, "fullName",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_FULLNAME, "fullName",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_LANGUAGE, "Language",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_LANGUAGE, "Language",
 				String.class);
 		addAttribute(dynAttribute);
 
@@ -96,16 +96,16 @@ public class Person extends DynamicLdapTemplateObject {
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_LOCATION, "nickiLocation",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_LOCATION, "nickiLocation",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_ASSIGNEDARTICLE, "nickiCatalogArticle",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_ASSIGNEDARTICLE, "nickiCatalogArticle",
 				String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_ATTRIBUTEVALUE,
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_ATTRIBUTEVALUE,
 				"nickiCatalogAttribute", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);

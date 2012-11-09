@@ -41,7 +41,8 @@ import org.mgnl.nicki.core.objects.ContextAttributes;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.data.QueryHandler;
+import org.mgnl.nicki.ldap.context.LdapContext;
+import org.mgnl.nicki.ldap.data.QueryHandler;
 import org.mgnl.nicki.ldap.query.BasicLdapHandler;
 import org.mgnl.nicki.template.engine.Template;
 
@@ -56,7 +57,7 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 	private Template template = null;
 
 	public TemplateLoaderLdapQueryHandler(NickiContext context, String name, String dn) {
-		super(context);
+		super((LdapContext) context);
 		this.name = name;
 		this.dn = dn;
 		this.setFilter("objectClass=nickiTemplate");

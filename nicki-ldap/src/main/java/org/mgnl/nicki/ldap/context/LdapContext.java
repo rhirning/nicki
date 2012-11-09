@@ -18,13 +18,14 @@ import org.mgnl.nicki.core.context.BasicContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.core.data.Query;
-import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.core.DynamicObjectWrapper;
+import org.mgnl.nicki.ldap.data.Query;
+import org.mgnl.nicki.ldap.data.QueryHandler;
 import org.mgnl.nicki.ldap.data.jndi.JndiSearchResult;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 import org.mgnl.nicki.ldap.query.AttributeLoaderLdapQueryHandler;
 import org.mgnl.nicki.ldap.query.IsExistLdapQueryHandler;
 import org.mgnl.nicki.ldap.query.ObjectLoaderLdapQueryHandler;
@@ -94,7 +95,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		DirContext ctx = null;
 		try {
 			ctx = getDirContext();
-			ctx.bind(dynamicObject.getPath(), new DynamicObjectWrapper(dynamicObject));
+			ctx.bind(dynamicObject.getPath(), new DynamicObjectWrapper((BaseLdapDynamicObject) dynamicObject));
 			// load new object
 			DynamicObject newObject = loadObject(dynamicObject.getPath());
 			/*
@@ -119,8 +120,6 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
-
-	@Override
 	public void search(QueryHandler queryHandler) throws DynamicObjectException {
 		DirContext ctx = null;
 		NamingEnumeration<SearchResult> results = null;
@@ -158,14 +157,15 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
-	public void updateObject(DynamicObject dynamicObject) throws DynamicObjectException {
+	public <T extends DynamicObject> void updateObject(T dynamicObject) throws DynamicObjectException {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
 		}
+		BaseLdapDynamicObject ldapDynamicObject = (BaseLdapDynamicObject) dynamicObject;
 		DirContext ctx = null;
 		try {
 			ctx = getDirContext();
-			ctx.modifyAttributes(dynamicObject.getPath(),DirContext.REPLACE_ATTRIBUTE,dynamicObject.getModel().getLdapAttributes(dynamicObject));
+			ctx.modifyAttributes(dynamicObject.getPath(),DirContext.REPLACE_ATTRIBUTE,ldapDynamicObject.getModel().getLdapAttributes(dynamicObject));
 		} catch (NamingException e) {
 			throw new DynamicObjectException(e);
 		} finally {
@@ -293,7 +293,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 	public void loadObject(DynamicObject dynamicObject) throws DynamicObjectException {
-		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler(dynamicObject);
+		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler((BaseLdapDynamicObject) dynamicObject);
 		search(handler);
 	}
 

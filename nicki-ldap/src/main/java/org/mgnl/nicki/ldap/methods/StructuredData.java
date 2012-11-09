@@ -30,19 +30,27 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.objects;
+package org.mgnl.nicki.ldap.methods;
+
+import java.io.Serializable;
+
+import org.jdom.Document;
+import org.mgnl.nicki.core.helper.XMLHelper;
 
 @SuppressWarnings("serial")
-public class StaticAttribute extends DynamicAttribute {
-	private String value;
+public class StructuredData implements Serializable {
+	Document document = null;
 
-	public StaticAttribute(String name, String ldapName, Class<?> attributeClass, String value) {
-		super(name, ldapName, attributeClass);
-		this.value = value;
+	public StructuredData(String xml) {
+		try {
+			document = XMLHelper.documentFromString(xml);
+		} catch (Exception e) {
+			document = null;
+		}
 	}
 
-	public String getValue() {
-		return value;
-	}
+	public Document getDocument() {
+		return document;
+	}	
 
 }

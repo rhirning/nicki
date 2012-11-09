@@ -35,40 +35,25 @@ package org.mgnl.nicki.core.objects;
 import java.util.List;
 import java.util.Map;
 
-import javax.naming.directory.Attributes;
-
-import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.context.NickiContext;
-
 public interface DataModel  {
 
 	public enum ATTRIBUTE_TYPE {MANDATORY, OPTIONAL, OPTIONAL_LIST, FOREIGN_KEY, FOREIGN_KEY_LIST, STRUCTURED, UNDEFINED};
 	
-	List<String> getObjectClasses();
-	String getNamingAttribute();
-	List<DynamicAttribute> getMandatoryAttributes();
-	List<DynamicAttribute> getOptionalAttributes();
-	List<DynamicAttribute> getListOptionalAttributes();
-	List<DynamicAttribute> getForeignKeys();
-	List<DynamicAttribute> getListForeignKeys();
+	<T extends DynamicAttribute> List<T> getMandatoryAttributes();
+	<T extends DynamicAttribute> List<T> getOptionalAttributes();
+	<T extends DynamicAttribute> List<T> getListOptionalAttributes();
+	<T extends DynamicAttribute> List<T> getForeignKeys();
+	<T extends DynamicAttribute> List<T> getListForeignKeys();
 	Map<String, String> getChildren();
-// TODO	Map<String, DynamicReference> getReferences();
 	void addChild(String attribute, String filter);
 	void addObjectClasses(String objectClass);
 	void addAdditionalObjectClasses(String objectClass);
-	Attributes getLdapAttributesForCreate(DynamicObject dynamicObject);
-	// objectClass + naming
-	void addBasicLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject);
-	Attributes getLdapAttributes(DynamicObject dynamicObject);
-	void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject, boolean nullable);
-	Map<DynamicAttribute, Object> getNonMandatoryAttributes(DynamicObject dynamicObject);	
+	<T extends DynamicAttribute> Map<T, Object> getNonMandatoryAttributes(DynamicObject dynamicObject);	
 	String getNamingLdapAttribute();
 	DynamicAttribute getDynamicAttribute(String name);
 	boolean childrenAllowed();
-	void addAttribute(DynamicAttribute dynAttribute);
-	void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs);
 	boolean isComplete(DynamicObject dynamicObject);
-	Map<String, DynamicAttribute> getAttributes();
+	<T extends DynamicAttribute> Map<String, T> getAttributes();
 	List<String> getAdditionalObjectClasses();
 	String getObjectClassFilter();
 }

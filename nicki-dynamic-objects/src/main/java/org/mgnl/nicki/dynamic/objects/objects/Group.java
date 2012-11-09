@@ -33,7 +33,7 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 @DynamicObject(target="edir")
@@ -45,19 +45,19 @@ public class Group extends DynamicLdapTemplateObject {
 	private static final long serialVersionUID = 6170300879001415636L;
 	public void initDataModel() {
 		addObjectClass("groupOfNames");
-		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_NAME, "cn", String.class);
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NAME, "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_DESCRIPTION, "description", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_DESCRIPTION, "description", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_MEMBER, "member", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_MEMBER, "member", String.class);
 		dynAttribute.setForeignKey(Person.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_OWNER, "owner", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_OWNER, "owner", String.class);
 		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
 

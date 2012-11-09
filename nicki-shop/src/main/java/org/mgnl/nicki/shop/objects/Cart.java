@@ -36,6 +36,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 import java.util.Date;
@@ -46,7 +47,6 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.util.XmlHelper;
 import org.w3c.dom.Element;
@@ -84,38 +84,38 @@ public class Cart extends DynamicLdapTemplateObject {
     @Override
     public void initDataModel() {
         addObjectClass("nickiCart");
-        DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
+        DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
         dynAttribute.setNaming();
         addAttribute(dynAttribute);
 
-        dynAttribute = new DynamicAttribute("data", "nickiData", String.class);
+        dynAttribute = new DynamicLdapAttribute("data", "nickiData", String.class);
         addAttribute(dynAttribute);
 
-        dynAttribute = new DynamicAttribute("initiator", "nickiInitiator", String.class);
+        dynAttribute = new DynamicLdapAttribute("initiator", "nickiInitiator", String.class);
         dynAttribute.setForeignKey(Person.class);
         addAttribute(dynAttribute);
 
-        dynAttribute = new DynamicAttribute("processdate", "nickiProcessDate", String.class);
+        dynAttribute = new DynamicLdapAttribute("processdate", "nickiProcessDate", String.class);
         addAttribute(dynAttribute);
 
-        dynAttribute = new DynamicAttribute("processresult", "nickiProcessResult", String.class);
+        dynAttribute = new DynamicLdapAttribute("processresult", "nickiProcessResult", String.class);
         addAttribute(dynAttribute);
 
-        dynAttribute = new DynamicAttribute("recipient", "nickiRecipient", String.class);
+        dynAttribute = new DynamicLdapAttribute("recipient", "nickiRecipient", String.class);
         dynAttribute.setForeignKey(Person.class);
         addAttribute(dynAttribute);
 
-        dynAttribute = new DynamicAttribute("requestdate", "nickiRequestDate", String.class);
+        dynAttribute = new DynamicLdapAttribute("requestdate", "nickiRequestDate", String.class);
         addAttribute(dynAttribute);
 
-        dynAttribute = new DynamicAttribute("status", "nickiStatus", String.class);
+        dynAttribute = new DynamicLdapAttribute("status", "nickiStatus", String.class);
         addAttribute(dynAttribute);
         
-		dynAttribute = new DynamicAttribute("statusFlag", "nickiStatusFlag", String.class);
+		dynAttribute = new DynamicLdapAttribute("statusFlag", "nickiStatusFlag", String.class);
         dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute("source", "nickiSource", String.class);
+		dynAttribute = new DynamicLdapAttribute("source", "nickiSource", String.class);
         addAttribute(dynAttribute);
     }
 

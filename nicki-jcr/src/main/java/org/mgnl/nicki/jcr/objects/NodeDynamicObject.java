@@ -2,8 +2,6 @@ package org.mgnl.nicki.jcr.objects;
 
 import javax.jcr.Node;
 
-import org.mgnl.nicki.core.objects.DynamicAttribute;
-
 public class NodeDynamicObject extends NodeDynamicTemplateObject {
 	private static final long serialVersionUID = -2438906061486993342L;
 	public static final String ATTRIBUTE_SURNAME = "surname";
@@ -15,6 +13,7 @@ public class NodeDynamicObject extends NodeDynamicTemplateObject {
 	
 	@Override
 	public void initDataModel() {
+		/*
 		addObjectClass("Person");
 		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_NAME, "cn",
 				String.class);
@@ -40,6 +39,7 @@ public class NodeDynamicObject extends NodeDynamicTemplateObject {
 		dynAttribute = new DynamicAttribute(ATTRIBUTE_PASSWORD, "password",
 				String.class);
 		addAttribute(dynAttribute);
+		*/
 
 	}
 

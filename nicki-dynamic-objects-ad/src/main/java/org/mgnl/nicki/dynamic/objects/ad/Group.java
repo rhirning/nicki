@@ -34,9 +34,9 @@ package org.mgnl.nicki.dynamic.objects.ad;
 
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.data.OctetString;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
-import org.mgnl.nicki.core.objects.StaticAttribute;
+import org.mgnl.nicki.ldap.data.OctetString;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
+import org.mgnl.nicki.ldap.objects.StaticAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 @DynamicObject(target="ad")
@@ -64,27 +64,27 @@ public class Group extends DynamicLdapTemplateObject {
 	private static final long serialVersionUID = 6170300879001415636L;
 	public void initDataModel() {
 		addObjectClass("group");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("sAMAccountName", "sAMAccountName", String.class);
+		dynAttribute = new DynamicLdapAttribute("sAMAccountName", "sAMAccountName", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute("member", "member", String.class);
+		dynAttribute = new DynamicLdapAttribute("member", "member", String.class);
 		dynAttribute.setMultiple();
 		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("guid", "objectGUID", OctetString.class);
+		dynAttribute = new DynamicLdapAttribute("guid", "objectGUID", OctetString.class);
 		dynAttribute.setReadonly();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("groupType", "groupType", String.class);
+		dynAttribute = new DynamicLdapAttribute("groupType", "groupType", String.class);
 		dynAttribute.setMandatory();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("instanceType", "instanceType", String.class);
+		dynAttribute = new DynamicLdapAttribute("instanceType", "instanceType", String.class);
 		dynAttribute.setReadonly();
 		addAttribute(dynAttribute);
 

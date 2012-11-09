@@ -33,7 +33,7 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 @SuppressWarnings("serial")
@@ -44,11 +44,11 @@ public class Script extends DynamicLdapTemplateObject {
 
 	public void initDataModel() {
 		addObjectClass("nickiScript");
-		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_NAME, "cn", String.class);
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NAME, "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_DATA, "nickiScriptData", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_DATA, "nickiScriptData", String.class);
 		addAttribute(dynAttribute);
 	};
 	

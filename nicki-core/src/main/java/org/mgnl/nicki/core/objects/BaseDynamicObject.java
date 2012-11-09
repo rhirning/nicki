@@ -34,21 +34,16 @@ package org.mgnl.nicki.core.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.jdom.Element;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.LdapHelper;
-import org.mgnl.nicki.core.methods.StructuredData;
-import org.mgnl.nicki.core.objects.ContextAttribute;
-import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 @SuppressWarnings("serial")
@@ -67,10 +62,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 
 	// Map with the attribute values
 	private Map<String, Object> map = new HashMap<String, Object>();
-	
-	// cached attributes
-	private Map<String, List<DynamicObject>> childObjects = null;
-	
+		
 	private NickiContext context;
 	
 	protected BaseDynamicObject() {
@@ -80,6 +72,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	
 	public abstract DataModel getModel();
 
+	/*
 	public void initNew(String parentPath, String namingValue) {
 		this.status = STATUS.NEW;
 		this.path = LdapHelper.getPath(parentPath, getModel().getNamingLdapAttribute(), namingValue);
@@ -100,7 +93,8 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		this.path = path;
 		this.map.put(getModel().getNamingAttribute(), LdapHelper.getNamingValue(path));
 	}
-	
+	*/
+	/*
 	public void init(ContextSearchResult rs) throws DynamicObjectException {
 		if (status != STATUS.EXISTS) {
 			throw new DynamicObjectException("Invalid call");
@@ -109,6 +103,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		this.getModel().init(context, this, rs);
 		this.original = (DynamicObject) this.clone();
 	}
+	*/
 	
 	private void init() {
 		if (status == STATUS.EXISTS) {
@@ -142,6 +137,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return this.path;
 	}
 
+	/*
 	public boolean accept(ContextSearchResult rs) {
 		boolean accepted = true;
 		for (Iterator<String> iterator = getModel().getObjectClasses().iterator(); iterator.hasNext();) {
@@ -150,22 +146,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		}
 		return accepted;
 	}
-
-	private boolean checkAttribute(ContextSearchResult rs, String attribute,
-			String value) {
-		try {
-			ContextAttribute attr = rs.getAttributes().get(attribute);
-			for (Enumeration<Object> vals 
-					= (Enumeration<Object>) attr.getAll(); vals.hasMoreElements();) {
-				if (StringUtils.equalsIgnoreCase(value, (String) vals.nextElement())) {
-					return true;
-				}
-		}
-		} catch (Exception e) {
-		}
-		return false;
-	}
-	public abstract void initDataModel();
+	*/
 
 	public <T extends DynamicObject> T getForeignKeyObject(Class<T> classDefinition, String key) {
 		String path = getAttribute(key);
@@ -192,6 +173,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return objects;
 	}
 
+	/*
 	public void loadChildren() {
 		init();
 		if (childObjects == null) {
@@ -199,23 +181,22 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 			for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
 				String key = iterator.next();
 				String filter = getModel().getChildren().get(key);
-				List<DynamicObject> list = context.loadChildObjects(path, filter);
+				List<? extends DynamicObject> list = context.loadChildObjects(path, filter);
 				if (list != null) {
 					childObjects.put(key, list);
 				}
 			}
 		}
 	}
+	*/
 	
-	public void unLoadChildren() {
-		this.childObjects = null;
-	}
-	
+	/*
 	public List<DynamicObject> getChildren(String key) {
 		loadChildren();
 		return childObjects.get(key);
 	}
-	
+	*/
+	/*
 	public List<DynamicObject> getAllChildren() {
 		loadChildren();
 		List<DynamicObject> list = new ArrayList<DynamicObject>();
@@ -224,7 +205,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		}
 		return list;
 	}
-
+*/
 	public <T extends DynamicObject> List<T>  getChildren(Class<T> classDefinition) {
 		init();
 		return getContext().loadChildObjects(classDefinition, this, "");
@@ -349,6 +330,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return getModel().getDynamicAttribute(name);
 	}
 
+	/*
 	public String getSlashPath(DynamicObject parent) {
 		if (parent != null) {
 			return getSlashPath(parent.getPath());
@@ -356,10 +338,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 			return getSlashPath("");
 		}
 	}
-
-	public String getSlashPath(String parentPath) {
-		return LdapHelper.getSlashPath(parentPath, getPath());
-	}
+	*/
 
 	public DynamicObject getParent() {
 		if (parent == null) {
@@ -380,9 +359,11 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		}
 	}
 
+	/*
 	public void addAttribute(DynamicAttribute dynAttribute) {
 		this.getModel().addAttribute(dynAttribute);
 	}
+	*/
 
 	public void setContext(NickiContext context) {
 		this.context = context;
@@ -420,28 +401,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return getPath().hashCode();
 	}
 
-	public String getInfo(String xml, String infoPath) {
-		String parts[] = StringUtils.split(infoPath, SEPARATOR);
-		if (parts.length < 2) {
-			return null;
-		}
-		// correct xml
-		StringUtils.replace(xml, "&lt;", "<");
-		StringUtils.replace(xml, "&gt;", ">");
-		StructuredData data  = new StructuredData(xml); 
-		try {
-			Element element = data.getDocument().getRootElement();
-			int i = 1;
-			while (i < parts.length - 1) {
-				element = element.getChild(parts[i]);
-				i++;
-			}
-			
-			return element.getChildTextTrim(parts[i]);
-		} catch (Exception e) {
-			return null;
-		}
-	}
+	public abstract String getInfo(String xml, String infoPath);
 	
 	public String getLocalizedValue(String attributeName, String locale) {
 		Map<String, String> valueMap = DataHelper.getMap(getAttribute(attributeName), "|", "~");

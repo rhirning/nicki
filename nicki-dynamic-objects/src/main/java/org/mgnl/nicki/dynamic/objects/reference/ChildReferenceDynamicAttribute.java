@@ -34,11 +34,11 @@ package org.mgnl.nicki.dynamic.objects.reference;
 
 import java.util.List;
 
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 
 @SuppressWarnings("serial")
-public class ChildReferenceDynamicAttribute extends DynamicAttribute {
+public class ChildReferenceDynamicAttribute extends DynamicLdapAttribute {
 	private String filter;
 
 	public ChildReferenceDynamicAttribute(String name, String ldapName, Class<?> attributeClass,
@@ -48,7 +48,7 @@ public class ChildReferenceDynamicAttribute extends DynamicAttribute {
 	}
 
 	@Override
-	public List<DynamicObject> getOptions(DynamicObject dynamicObject) {
+	public List<? extends DynamicObject> getOptions(DynamicObject dynamicObject) {
 		return dynamicObject.getContext().loadChildObjects(dynamicObject.getPath(), filter);
 	}
 

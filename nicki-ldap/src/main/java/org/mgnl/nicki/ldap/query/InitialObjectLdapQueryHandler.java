@@ -38,21 +38,23 @@ import javax.naming.directory.SearchControls;
 
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.ldap.context.LdapContext;
+import org.mgnl.nicki.ldap.data.QueryHandler;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 public class InitialObjectLdapQueryHandler extends ObjectLoaderLdapQueryHandler implements QueryHandler {
 	
 	public InitialObjectLdapQueryHandler(NickiContext context, String path) {
-		super(context, path);
+		super((LdapContext) context, path);
 	}
 
 	@Override
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
 		if (results != null && results.size() > 0) {
 			try {
-				dynamicObject = getContext().getObjectFactory().getObject(results.get(0));
+				dynamicObject = (BaseLdapDynamicObject) getContext().getObjectFactory().getObject(results.get(0));
 				dynamicObject.initExisting(getContext(), getBaseDN());
 			} catch (InstantiateDynamicObjectException e) {
 				throw new DynamicObjectException(e);

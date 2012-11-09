@@ -32,12 +32,12 @@
  */
 package org.mgnl.nicki.ldap.core;
 
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.ldap.core.JNDIWrapper;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 public class DynamicObjectWrapper extends JNDIWrapper {
 
-	public DynamicObjectWrapper(DynamicObject dynamicObject) {
+	public DynamicObjectWrapper(BaseLdapDynamicObject dynamicObject) {
 		super();
 		setAttributes(dynamicObject.getModel().getLdapAttributesForCreate(dynamicObject));
 	}

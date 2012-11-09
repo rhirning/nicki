@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.methods;
+package org.mgnl.nicki.ldap.methods;
 
 
 import java.io.Serializable;

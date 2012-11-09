@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.util;
+package org.mgnl.nicki.ldap.xml;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -45,8 +45,9 @@ import org.jdom.Text;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 
 
 public class XMLBuilder {
@@ -57,7 +58,7 @@ public class XMLBuilder {
 	public XMLBuilder(NickiContext context, String path, boolean selfOnly)  {
 		this.context = context;
 		this.path = path;
-		DynamicObject root = context.loadObject(path);
+		BaseLdapDynamicObject root = (BaseLdapDynamicObject) context.loadObject(path);
 		Element rootNode = getElement(root);
 		document = new Document(rootNode);
 		if (!selfOnly) {
@@ -66,16 +67,16 @@ public class XMLBuilder {
 	}
 
 	private void addChildren(Element parentNode, DynamicObject parent) {
-		List<DynamicObject> children = parent.getAllChildren();
-		for (Iterator<DynamicObject> iterator = children.iterator(); iterator.hasNext();) {
+		List<? extends DynamicObject> children = parent.getAllChildren();
+		for (Iterator<? extends DynamicObject> iterator = children.iterator(); iterator.hasNext();) {
 			DynamicObject child = iterator.next();
-			Element childNode = getElement(child);
+			Element childNode = getElement((BaseLdapDynamicObject) child);
 			parentNode.addContent(childNode);
 			addChildren(childNode, child);
 		}
 	}
 
-	private Element getElement(DynamicObject dynamicObject) {
+	private Element getElement(BaseLdapDynamicObject dynamicObject) {
 		Element newNode = new Element("dynamicObject");
 		String nodePath = StringUtils.substringBeforeLast(dynamicObject.getPath(), this.path);
 		if (StringUtils.endsWith(nodePath, ",")) {
@@ -85,7 +86,7 @@ public class XMLBuilder {
 		newNode.setAttribute("class", dynamicObject.getClass().getName());
 		for (Iterator<String> iterator = dynamicObject.getModel().getAttributes().keySet().iterator(); iterator.hasNext();) {
 			String attributeName = iterator.next();
-			DynamicAttribute dynamicAttribute = dynamicObject.getModel().getDynamicAttribute(attributeName);
+			DynamicLdapAttribute dynamicAttribute = dynamicObject.getModel().getDynamicAttribute(attributeName);
 			if (!dynamicAttribute.isVirtual() && dynamicObject.get(attributeName) != null) {
 				Element attributeNode = new Element("attribute");
 				attributeNode.setAttribute("name", attributeName);

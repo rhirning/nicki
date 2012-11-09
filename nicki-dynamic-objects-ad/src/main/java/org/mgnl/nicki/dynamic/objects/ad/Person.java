@@ -33,7 +33,7 @@
 package org.mgnl.nicki.dynamic.objects.ad;
 
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 
@@ -44,20 +44,20 @@ public class Person extends DynamicLdapTemplateObject {
 	public void initDataModel()
 	{
 		addObjectClass("person");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("surname", "sn", String.class);
+		dynAttribute = new DynamicLdapAttribute("surname", "sn", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("givenname", "givenName", String.class);
+		dynAttribute = new DynamicLdapAttribute("givenname", "givenName", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("fullname", "displayName", String.class);
+		dynAttribute = new DynamicLdapAttribute("fullname", "displayName", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("group", "memberOf", String.class);
+		dynAttribute = new DynamicLdapAttribute("group", "memberOf", String.class);
 		dynAttribute.setMultiple();
 		dynAttribute.setForeignKey(Group.class);
 		addAttribute(dynAttribute);

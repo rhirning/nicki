@@ -37,12 +37,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.idm.novell.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.objects.Resource;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 import org.mgnl.nicki.shop.objects.Catalog;
@@ -62,10 +62,10 @@ public class ValuedResourceCatalogArticle extends ResourceCatalogArticle impleme
 		super.initDataModel();
 		addObjectClass("nickiValuedResourceArticle");
 		
-		DynamicAttribute dynAttribute = new DynamicAttribute("provider", "nickiProvider", String.class);
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("provider", "nickiProvider", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("providerData", "nickiProviderData", TextArea.class);
+		dynAttribute = new DynamicLdapAttribute("providerData", "nickiProviderData", TextArea.class);
 		addAttribute(dynAttribute);
 	}
 
