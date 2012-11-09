@@ -42,8 +42,8 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
-import org.mgnl.nicki.core.objects.StructuredDynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
+import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.objects.Group;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
@@ -102,15 +102,15 @@ public class IdmPerson extends Person implements Serializable {
 		addAdditionalObjectClass("DirXML-EntitlementRecipient");
 		addAdditionalObjectClass("DirXML-EmployeeAux");
 
-		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_LASTWORKINGDAY,
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_LASTWORKINGDAY,
 				"nickiLastWorkingDay", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_QUITDATE,
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_QUITDATE,
 				"nickiQuitDate", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_ACTIVATIONDATE,
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_ACTIVATIONDATE,
 				"nickiActivationDate", String.class);
 		addAttribute(dynAttribute);
 
@@ -120,15 +120,15 @@ public class IdmPerson extends Person implements Serializable {
 		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_TYPE, "employeeType",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_TYPE, "employeeType",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_COSTCENTER, "costCenter",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_COSTCENTER, "costCenter",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_GENDER, "nickiGender",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_GENDER, "nickiGender",
 				String.class);
 		addAttribute(dynAttribute);
 
@@ -150,57 +150,57 @@ public class IdmPerson extends Person implements Serializable {
 		dynAttribute.setForeignKey(Resource.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_BIRTHDATE, "nickiBirthDate",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_BIRTHDATE, "nickiBirthDate",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_ENTRYDATE, "nickiEntryDate",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_ENTRYDATE, "nickiEntryDate",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_OUCHANGEDATE, "nickiOuChangeDate",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_OUCHANGEDATE, "nickiOuChangeDate",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_NEXTOU, "nickiNextOu",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NEXTOU, "nickiNextOu",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_NEXTCOSTCENTER, "nickiNextOu",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NEXTCOSTCENTER, "nickiNextOu",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_OUTRANSFERDATE, "nickiOuTransferDate",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_OUTRANSFERDATE, "nickiOuTransferDate",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_OWNER, "nickiOwner", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_OWNER, "nickiOwner", String.class);
 		dynAttribute.setForeignKey(Person.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_COMPANY, "company", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_COMPANY, "company", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_OCCUPATION, "nickiOccupation",
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_OCCUPATION, "nickiOccupation",
 				String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_MEMBEROF, "groupMembership", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_MEMBEROF, "groupMembership", String.class);
 		dynAttribute.setForeignKey(Group.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_OU, "ou", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_OU, "ou", String.class);
 		dynAttribute.setForeignKey(Org.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_WORKFORCEID, "workforceID", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_WORKFORCEID, "workforceID", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_MAIL, "mail", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_MAIL, "mail", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_PHONENUMBER, "telephoneNumber", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_PHONENUMBER, "telephoneNumber", String.class);
 		addAttribute(dynAttribute);
 	}
 

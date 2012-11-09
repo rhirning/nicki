@@ -36,9 +36,9 @@ package org.mgnl.nicki.ldap.methods;
 import java.io.Serializable;
 import java.util.List;
 
-import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.ldap.context.LdapContext;
 import org.mgnl.nicki.ldap.core.LdapQuery;
 import org.mgnl.nicki.ldap.objects.DynamicReference;
 
@@ -50,9 +50,9 @@ public class ReferenceMethod implements TemplateMethodModel, Serializable {
 	List<DynamicObject> objects = null;
 	DynamicReference reference;
 	String path;
-	NickiContext context;
+	LdapContext context;
 	
-	public ReferenceMethod(NickiContext context, ContextSearchResult rs, DynamicReference reference) {
+	public ReferenceMethod(LdapContext context, ContextSearchResult rs, DynamicReference reference) {
 		this.context = context;
 		this.path = rs.getNameInNamespace();
 		this.reference = reference;

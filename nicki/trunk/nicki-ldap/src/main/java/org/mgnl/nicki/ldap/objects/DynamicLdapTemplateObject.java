@@ -35,9 +35,8 @@ package org.mgnl.nicki.ldap.objects;
 import java.util.Iterator;
 import java.util.List;
 
-import org.mgnl.nicki.core.methods.ChildrenMethod;
+import org.mgnl.nicki.ldap.methods.ChildrenMethod;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 
@@ -53,12 +52,12 @@ public abstract class DynamicLdapTemplateObject extends BaseLdapDynamicObject {
 		for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
 			String key = iterator.next();
 			String filter = getModel().getChildren().get(key);
-			put(DynamicAttribute.getGetter(key), new ChildrenMethod(getContext(), rs, filter));
+			put(DynamicLdapAttribute.getGetter(key), new ChildrenMethod(getContext(), rs, filter));
 		}
 	}
 	
 	public void addMethod(String name, TemplateMethodModel method) {
-		put(DynamicAttribute.getGetter(name), method);
+		put(DynamicLdapAttribute.getGetter(name), method);
 	};
 	
 	public Object execute(String methodName, @SuppressWarnings("rawtypes") List arguments) throws DynamicObjectException {

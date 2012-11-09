@@ -35,9 +35,9 @@ package org.mgnl.nicki.idm.novell.objects;
 import java.util.Date;
 
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.core.objects.StructuredDynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
+import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 @SuppressWarnings("serial")
@@ -47,7 +47,7 @@ public class Resource extends DynamicStructObject {
 	@Override
 	public void initDataModel() {
 		addObjectClass("nrfResource");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
@@ -65,10 +65,10 @@ public class Resource extends DynamicStructObject {
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute("localizedName", "nrfLocalizedNames", String.class);
+		dynAttribute = new DynamicLdapAttribute("localizedName", "nrfLocalizedNames", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute("localizedDescription", "nrfLocalizedDescrs", String.class);
+		dynAttribute = new DynamicLdapAttribute("localizedDescription", "nrfLocalizedDescrs", String.class);
 		addAttribute(dynAttribute);
 }
 	

@@ -36,7 +36,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 @SuppressWarnings("serial")
@@ -52,28 +52,28 @@ public class Template extends DynamicLdapTemplateObject {
 	public void initDataModel() {
 		addObjectClass("nickiTemplate");
 		addObjectClass("organizationalUnit");
-		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_NAME, "ou", String.class);
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NAME, "ou", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_DATA, "nickiTemplateData", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_DATA, "nickiTemplateData", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_PARAMS, "nickiTemplateParams", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_PARAMS, "nickiTemplateParams", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_HANDLER, "nickiHandler", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_HANDLER, "nickiHandler", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_PARTS, "nickiTemplatePart", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_PARTS, "nickiTemplatePart", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_FILTER, "nickiFilter", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_FILTER, "nickiFilter", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_TESTDATA, "nickiStructuredRef", String.class);
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_TESTDATA, "nickiStructuredRef", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		

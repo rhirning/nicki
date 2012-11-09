@@ -34,30 +34,31 @@ package org.mgnl.nicki.ldap.query;
 
 import java.util.List;
 
-import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.ldap.context.LdapContext;
+import org.mgnl.nicki.ldap.data.QueryHandler;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
 	
 	private String dn = null;
-	protected DynamicObject dynamicObject;
+	protected BaseLdapDynamicObject dynamicObject;
 
 	public DynamicObject getDynamicObject() {
 		return dynamicObject;
 	}
 
-	public ObjectLoaderLdapQueryHandler(DynamicObject dynamicObject) {
-		super(dynamicObject.getContext());
+	public ObjectLoaderLdapQueryHandler(BaseLdapDynamicObject dynamicObject) {
+		super((LdapContext) dynamicObject.getContext());
 		this.dynamicObject = dynamicObject;
 		this.dn = dynamicObject.getPath();
 	}
 
 
-	public ObjectLoaderLdapQueryHandler(NickiContext context, String dn) {
+	public ObjectLoaderLdapQueryHandler(LdapContext context, String dn) {
 		super(context);
 		this.dynamicObject = null;
 		this.dn = dn;
@@ -74,9 +75,9 @@ public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements Qu
 				if (this.dynamicObject == null) {
 					try {
 						if (getClassDefinition() != null) {
-							dynamicObject = getContext().getObjectFactory().getObject(results.get(0), getClassDefinition());
+							dynamicObject = (BaseLdapDynamicObject) getContext().getObjectFactory().getObject(results.get(0), getClassDefinition());
 						} else {
-							dynamicObject = getContext().getObjectFactory().getObject(results.get(0));
+							dynamicObject = (BaseLdapDynamicObject) getContext().getObjectFactory().getObject(results.get(0));
 						}
 					} catch (InstantiateDynamicObjectException e) {
 						throw new DynamicObjectException(e);

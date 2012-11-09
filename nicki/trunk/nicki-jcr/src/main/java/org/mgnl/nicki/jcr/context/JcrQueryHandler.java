@@ -9,12 +9,12 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
-import org.mgnl.nicki.core.data.QueryHandler.SCOPE;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.query.JcrConstraints;
 
 public interface JcrQueryHandler {
+	public static enum SCOPE {OBJECT, ONELEVEL, SUBTREE};
 	static enum LANGUAGE {
 		 JCR_SQL2("JCR-SQL2"),
 		 JCR_JQOM("JCR-JQOM");

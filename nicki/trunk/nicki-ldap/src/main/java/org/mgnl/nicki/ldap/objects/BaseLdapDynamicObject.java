@@ -46,7 +46,6 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.LdapHelper;
-import org.mgnl.nicki.core.methods.StructuredData;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.ContextAttribute;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
@@ -54,6 +53,7 @@ import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.ldap.methods.StructuredData;
 
 @SuppressWarnings("serial")
 public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
@@ -73,11 +73,11 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 	private Map<String, Object> map = new HashMap<String, Object>();
 	
 	// cached attributes
-	private Map<String, List<DynamicObject>> childObjects = null;
+	private Map<String, List<BaseLdapDynamicObject>> childObjects = null;
 	
 	private NickiContext context;
 	
-	private DataModel model = null;
+	private LdapDataModel model = null;
 	
 	protected BaseLdapDynamicObject() {
 		// removed: must be called in TargetObjectFactory
@@ -199,11 +199,12 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 	public void loadChildren() {
 		init();
 		if (childObjects == null) {
-			childObjects = new HashMap<String, List<DynamicObject>>();
+			childObjects = new HashMap<String, List<BaseLdapDynamicObject>>();
 			for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
 				String key = iterator.next();
 				String filter = getModel().getChildren().get(key);
-				List<DynamicObject> list = context.loadChildObjects(path, filter);
+				@SuppressWarnings("unchecked")
+				List<BaseLdapDynamicObject> list = (List<BaseLdapDynamicObject>) context.loadChildObjects(path, filter);
 				if (list != null) {
 					childObjects.put(key, list);
 				}
@@ -215,12 +216,12 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 		this.childObjects = null;
 	}
 	
-	public List<DynamicObject> getChildren(String key) {
+	public List<BaseLdapDynamicObject> getChildren(String key) {
 		loadChildren();
 		return childObjects.get(key);
 	}
 	
-	public List<DynamicObject> getAllChildren() {
+	public List<? extends DynamicObject> getAllChildren() {
 		loadChildren();
 		List<DynamicObject> list = new ArrayList<DynamicObject>();
 		for (Iterator<String> iterator = childObjects.keySet().iterator(); iterator.hasNext();) {
@@ -385,7 +386,7 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 	}
 
 	public void addAttribute(DynamicAttribute dynAttribute) {
-		this.getModel().addAttribute(dynAttribute);
+		this.getModel().addAttribute((DynamicLdapAttribute) dynAttribute);
 	}
 
 	public void setContext(NickiContext context) {
@@ -497,11 +498,11 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 
 	@Override
 	public void setModel(DataModel model) {
-		this.model = model;
+		this.model = (LdapDataModel) model;
 	}
 
 	@Override
-	public DataModel getModel() {
+	public LdapDataModel getModel() {
 		if (model == null) {
 			model = new LdapDataModel();
 		}

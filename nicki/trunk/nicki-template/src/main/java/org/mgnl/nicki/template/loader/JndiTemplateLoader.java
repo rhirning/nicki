@@ -42,8 +42,8 @@ import java.util.Map;
 import javax.naming.NamingException;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.ldap.context.LdapContext;
 import org.mgnl.nicki.template.engine.Template;
 import org.mgnl.nicki.template.engine.TemplateDescriptor;
 
@@ -67,9 +67,9 @@ public class JndiTemplateLoader implements TemplateLoader {
 	
 	private String baseDN;
 	private Map<String, Template> templates = new HashMap<String, Template>();
-	private NickiContext context;
+	private LdapContext context;
 	
-	public JndiTemplateLoader(NickiContext context, String baseDN) {
+	public JndiTemplateLoader(LdapContext context, String baseDN) {
 		super();
 		this.context = context;
 		this.baseDN = baseDN;
@@ -128,7 +128,7 @@ public class JndiTemplateLoader implements TemplateLoader {
 	 * @throws NamingException 
 	 * 
 	 */
-	public TemplateDescriptor getTemplate(NickiContext context, String name, String dnPath, String part) {
+	public TemplateDescriptor getTemplate(LdapContext context, String name, String dnPath, String part) {
 		if (this.templates.containsKey(name)) {
 			return new TemplateDescriptor(templates.get(name), part);
 		}

@@ -110,9 +110,9 @@ public class TreeContainer implements Serializable {
 		Property loaded = container.getItem(object).getItemProperty(PROPERTY_LOADED);
 		if (!(Boolean)loaded.getValue()) {
 			if (object == this.root) {
-			    List<DynamicObject> objects = this.treeDataProvider.getChildren(context);
+			    List<? extends DynamicObject> objects = this.treeDataProvider.getChildren(context);
 			    if (objects != null) {
-				    for (Iterator<DynamicObject> iterator = objects.iterator(); iterator.hasNext();) {
+				    for (Iterator<? extends DynamicObject> iterator = objects.iterator(); iterator.hasNext();) {
 						DynamicObject p = iterator.next();
 						if (this.entryFilter.accepts(p)) {
 							addItem(p, root, true);
@@ -130,8 +130,8 @@ public class TreeContainer implements Serializable {
 	}
 	
 	public void addChildren(Object parent,
-			List<DynamicObject> children) {
-		for (Iterator<DynamicObject> iterator = children.iterator(); iterator.hasNext();) {
+			List<? extends DynamicObject> children) {
+		for (Iterator<? extends DynamicObject> iterator = children.iterator(); iterator.hasNext();) {
 			DynamicObject p = iterator.next();
 			if (this.entryFilter.accepts(p)) {
 				addChild(parent, p);

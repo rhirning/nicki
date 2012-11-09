@@ -32,39 +32,46 @@
  */
 package org.mgnl.nicki.ldap.methods;
 
-
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.ldap.context.LdapContext;
-import org.mgnl.nicki.ldap.core.LdapQuery;
-import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
-import freemarker.template.TemplateMethodModel;
+@SuppressWarnings("serial")
+public class ListStructuredForeignKeyMethod extends ListForeignKeyMethod {
 
-public class StructuredReferenceMethod implements TemplateMethodModel, Serializable {
-
-	private static final long serialVersionUID = -81535049844368520L;
-	List<DynamicObject> objects = null;
-	StructuredDynamicReference reference;
-	String path;
-	LdapContext context;
-	
-	public StructuredReferenceMethod(LdapContext context, ContextSearchResult rs, StructuredDynamicReference structuredDynamicReference) {
-		this.context = context;
-		this.path = rs.getNameInNamespace();
-		this.reference = structuredDynamicReference;
+	public ListStructuredForeignKeyMethod(NickiContext context,
+			ContextSearchResult rs, String ldapName,
+			Class<? extends DynamicObject> classDefinition) {
+		super(context, rs, ldapName, classDefinition);
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
-		if (objects == null) {
-			LdapQuery query = new LdapQuery(path, reference);
-			objects = (List<DynamicObject>) context.loadReferenceObjects(this.reference.getClassDefinition(), query);
+		if (getObjects() == null) {
+			setObjects(new ArrayList<DynamicObject>());
+			for (Iterator<Object> iterator = this.getForeignKeys().iterator(); iterator.hasNext();) {
+				String structuredForeignKey = (String) iterator.next();
+				String path = StringUtils.substringBefore(structuredForeignKey, "#");
+				String rest = StringUtils.substringAfter(structuredForeignKey, "#");
+				String flag = StringUtils.substringBefore(rest, "#");
+				String xml = StringUtils.substringAfter(rest, "#");
+
+				DynamicObject object = getContext().loadObject(path);
+				if (object != null) {
+					object.put("struct:flag" , flag);
+					object.put("struct:xml" , xml);
+					object.put("struct" , new StructuredData(xml));
+					getObjects().add(object);
+				} else {
+					System.out.println("Could not build object: " + path);
+				}
+			}
 		}
-		return objects;
+		return getObjects();
 	}
 
 }

@@ -37,6 +37,6 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 public interface EntryFilter {
 
-	boolean accepts(DynamicObject object);
+	<T extends DynamicObject> boolean accepts(T object);
 
 }

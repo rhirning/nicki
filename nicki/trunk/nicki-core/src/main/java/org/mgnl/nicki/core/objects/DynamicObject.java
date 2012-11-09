@@ -55,7 +55,7 @@ public interface DynamicObject {
 
 	public void initExisting(NickiContext context, String path);
 	
-	public void init(ContextSearchResult rs) throws DynamicObjectException;
+//	public void init(ContextSearchResult rs) throws DynamicObjectException;
 	
 //	private void init();
 	
@@ -89,9 +89,9 @@ public interface DynamicObject {
 	
 	public void unLoadChildren();
 	
-	public List<DynamicObject> getChildren(String key);
+	public List<? extends DynamicObject> getChildren(String key);
 	
-	public List<DynamicObject> getAllChildren();
+	public List<? extends DynamicObject> getAllChildren();
 
 	public <T extends DynamicObject> List<T>  getChildren(Class<T> classDefinition);
 
@@ -145,7 +145,7 @@ public interface DynamicObject {
 
 	public <T extends DynamicObject> T getParent(Class<T> classDefinition);
 
-	public void addAttribute(DynamicAttribute dynAttribute);
+	public <T extends DynamicAttribute >void addAttribute(T dynAttribute);
 
 	public void setContext(NickiContext context);
 

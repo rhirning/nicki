@@ -37,7 +37,6 @@ import java.util.List;
 
 import javax.jcr.Node;
 
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.methods.ChildrenMethod;
 
@@ -54,12 +53,12 @@ public abstract class NodeDynamicTemplateObject extends BaseJcrDynamicObject {
 		for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
 			String key = iterator.next();
 			String filter = getModel().getChildren().get(key);
-			put(DynamicAttribute.getGetter(key), new ChildrenMethod(getContext(),node, filter));
+			put(DynamicJcrAttribute.getGetter(key), new ChildrenMethod(getContext(),node, filter));
 		}
 	}
 	
 	public void addMethod(String name, TemplateMethodModel method) {
-		put(DynamicAttribute.getGetter(name), method);
+		put(DynamicJcrAttribute.getGetter(name), method);
 	};
 	
 	public Object execute(String methodName, @SuppressWarnings("rawtypes") List arguments) throws DynamicObjectException {

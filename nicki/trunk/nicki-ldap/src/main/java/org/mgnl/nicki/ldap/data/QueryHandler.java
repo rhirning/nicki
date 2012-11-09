@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.data;
+package org.mgnl.nicki.ldap.data;
 
 import java.util.List;
 

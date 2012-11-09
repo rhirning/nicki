@@ -35,13 +35,13 @@ package org.mgnl.nicki.ldap.objects;
 import java.io.Serializable;
 
 import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.ldap.context.LdapContext;
 import org.mgnl.nicki.ldap.methods.ReferenceMethod;
 
 @SuppressWarnings("serial")
-public class DynamicReference extends DynamicAttribute implements Serializable {
+public class DynamicReference extends DynamicLdapAttribute implements Serializable {
 
 	private String attributeName;
 	private String baseDn;
@@ -64,7 +64,7 @@ public class DynamicReference extends DynamicAttribute implements Serializable {
 	}
 	@Override
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
-		dynamicObject.put(getGetter(getName()), new ReferenceMethod(context, rs, this));
+		dynamicObject.put(getGetter(getName()), new ReferenceMethod((LdapContext) context, rs, this));
 	}
 	public Class<? extends DynamicObject> getClassDefinition() {
 		return classDefinition;

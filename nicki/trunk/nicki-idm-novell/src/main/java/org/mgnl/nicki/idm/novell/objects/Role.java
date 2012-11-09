@@ -38,9 +38,9 @@ import java.util.List;
 
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicReference;
-import org.mgnl.nicki.core.objects.StructuredDynamicAttribute;
+import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
@@ -52,7 +52,7 @@ public class Role extends DynamicStructObject {
 
 	public void initDataModel() {
 		addObjectClass("nrfRole");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
@@ -75,10 +75,10 @@ public class Role extends DynamicStructObject {
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("localizedName", "nrfLocalizedNames", String.class);
+		dynAttribute = new DynamicLdapAttribute("localizedName", "nrfLocalizedNames", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute("localizedDescription", "nrfLocalizedDescrs", String.class);
+		dynAttribute = new DynamicLdapAttribute("localizedDescription", "nrfLocalizedDescrs", String.class);
 		addAttribute(dynAttribute);
 	};
 	

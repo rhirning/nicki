@@ -40,10 +40,11 @@ import javax.naming.directory.SearchControls;
 
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.core.data.Query;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.ldap.context.LdapContext;
+import org.mgnl.nicki.ldap.data.Query;
 
 public class ObjectsLoaderLdapQueryHandler extends ObjectLoaderLdapQueryHandler {
 
@@ -54,12 +55,12 @@ public class ObjectsLoaderLdapQueryHandler extends ObjectLoaderLdapQueryHandler 
 	}
 
 	public ObjectsLoaderLdapQueryHandler(NickiContext context, String dn, String filter) {
-		super(context, dn);
+		super((LdapContext) context, dn);
 		setFilter(filter);
 	}
 
 	public ObjectsLoaderLdapQueryHandler(NickiContext context, Query query) {
-		super(context, query.getBaseDN());
+		super((LdapContext) context, query.getBaseDN());
 		setFilter(query.getFilter());
 	}
 

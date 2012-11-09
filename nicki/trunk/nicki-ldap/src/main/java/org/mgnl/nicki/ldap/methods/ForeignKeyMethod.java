@@ -30,36 +30,59 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.methods;
+package org.mgnl.nicki.ldap.methods;
 
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.helper.LdapHelper;
+import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
 import freemarker.template.TemplateMethodModel;
 
-@SuppressWarnings("serial")
-public class DynamicLoadObjectsMethod implements TemplateMethodModel, Serializable {
+public class ForeignKeyMethod implements Serializable,TemplateMethodModel {
 
+	private static final long serialVersionUID = -5726598490077862331L;
+	private DynamicObject object = null;
+	private String foreignKey = null;
 	private NickiContext context;
+	private Class<? extends DynamicObject> classDefinition;
 	
-	public DynamicLoadObjectsMethod(NickiContext context) {
-		super();
+	public ForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName,
+			Class<? extends DynamicObject> classDefinition) {
 		this.context = context;
+		this.foreignKey = (String) LdapHelper.getAttribute(rs, ldapName);
+		this.classDefinition = classDefinition;
 	}
 
-	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
-		if (arguments != null && arguments.size() == 2) {
-			String dynamicBaseDn = (String) arguments.get(0);
-			String dynamicFilter = (String) arguments.get(1);
-			return context.loadObjects(dynamicBaseDn, dynamicFilter);
-		} else {
-			return new ArrayList<DynamicObject>();
+	public DynamicObject exec(@SuppressWarnings("rawtypes") List arguments) {
+		if (object == null) {
+			object = context.loadObject(this.classDefinition, this.foreignKey);
 		}
+		return object;
+	}
+
+	protected DynamicObject getObject() {
+		return object;
+	}
+
+	protected void setObject(DynamicObject object) {
+		this.object = object;
+	}
+
+	protected String getForeignKey() {
+		return foreignKey;
+	}
+
+	protected NickiContext getContext() {
+		return context;
+	}
+
+	public Class<? extends DynamicObject> getClassDefinition() {
+		return classDefinition;
 	}
 
 }

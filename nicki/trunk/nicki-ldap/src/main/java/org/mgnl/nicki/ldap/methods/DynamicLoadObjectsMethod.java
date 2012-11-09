@@ -30,40 +30,36 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.objects;
+package org.mgnl.nicki.ldap.methods;
+
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.helper.LdapHelper;
-import org.mgnl.nicki.core.methods.ListStructuredForeignKeyMethod;
-import org.mgnl.nicki.core.methods.StructuredForeignKeyMethod;
-import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicObject;
+
+import freemarker.template.TemplateMethodModel;
 
 @SuppressWarnings("serial")
-public class StructuredDynamicAttribute extends DynamicAttribute implements Serializable {
+public class DynamicLoadObjectsMethod implements TemplateMethodModel, Serializable {
 
-	public StructuredDynamicAttribute(String name, String ldapName,	Class<String> attributeClass) {
-		super(name, ldapName, attributeClass);
+	private NickiContext context;
+	
+	public DynamicLoadObjectsMethod(NickiContext context) {
+		super();
+		this.context = context;
 	}
-	@Override
-	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
-		if (isMultiple()) {
-			List<Object> values = LdapHelper.getAttributes(rs, getLdapName());
-			dynamicObject.put(getName(), values);
-			dynamicObject.put(getMultipleGetter(getName()),
-					new ListStructuredForeignKeyMethod(context, rs, getLdapName(), getForeignKeyClass()));
 
+	public List<? extends DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
+		if (arguments != null && arguments.size() == 2) {
+			String dynamicBaseDn = (String) arguments.get(0);
+			String dynamicFilter = (String) arguments.get(1);
+			return context.loadObjects(dynamicBaseDn, dynamicFilter);
 		} else {
-			String value = (String) LdapHelper.getAttribute(rs, getLdapName());
-			if (StringUtils.isNotEmpty(value)) {
-				dynamicObject.put(getName(), value);
-				dynamicObject.put(getGetter(getName()),
-						new StructuredForeignKeyMethod(context, rs, getLdapName(), getForeignKeyClass()));
-			}
+			return new ArrayList<DynamicObject>();
 		}
 	}
-}
 
+}

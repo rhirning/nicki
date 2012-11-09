@@ -30,48 +30,41 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.methods;
+package org.mgnl.nicki.ldap.objects;
 
-import java.util.ArrayList;
-import java.util.Iterator;
+import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.helper.LdapHelper;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.ldap.methods.ListStructuredForeignKeyMethod;
+import org.mgnl.nicki.ldap.methods.StructuredForeignKeyMethod;
 
 @SuppressWarnings("serial")
-public class ListStructuredForeignKeyMethod extends ListForeignKeyMethod {
+public class StructuredDynamicAttribute extends DynamicLdapAttribute implements Serializable {
 
-	public ListStructuredForeignKeyMethod(NickiContext context,
-			ContextSearchResult rs, String ldapName,
-			Class<? extends DynamicObject> classDefinition) {
-		super(context, rs, ldapName, classDefinition);
+	public StructuredDynamicAttribute(String name, String ldapName,	Class<String> attributeClass) {
+		super(name, ldapName, attributeClass);
 	}
+	@Override
+	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
+		if (isMultiple()) {
+			List<Object> values = LdapHelper.getAttributes(rs, getLdapName());
+			dynamicObject.put(getName(), values);
+			dynamicObject.put(getMultipleGetter(getName()),
+					new ListStructuredForeignKeyMethod(context, rs, getLdapName(), getForeignKeyClass()));
 
-	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
-		if (getObjects() == null) {
-			setObjects(new ArrayList<DynamicObject>());
-			for (Iterator<Object> iterator = this.getForeignKeys().iterator(); iterator.hasNext();) {
-				String structuredForeignKey = (String) iterator.next();
-				String path = StringUtils.substringBefore(structuredForeignKey, "#");
-				String rest = StringUtils.substringAfter(structuredForeignKey, "#");
-				String flag = StringUtils.substringBefore(rest, "#");
-				String xml = StringUtils.substringAfter(rest, "#");
-
-				DynamicObject object = getContext().loadObject(path);
-				if (object != null) {
-					object.put("struct:flag" , flag);
-					object.put("struct:xml" , xml);
-					object.put("struct" , new StructuredData(xml));
-					getObjects().add(object);
-				} else {
-					System.out.println("Could not build object: " + path);
-				}
+		} else {
+			String value = (String) LdapHelper.getAttribute(rs, getLdapName());
+			if (StringUtils.isNotEmpty(value)) {
+				dynamicObject.put(getName(), value);
+				dynamicObject.put(getGetter(getName()),
+						new StructuredForeignKeyMethod(context, rs, getLdapName(), getForeignKeyClass()));
 			}
 		}
-		return getObjects();
 	}
-
 }
+

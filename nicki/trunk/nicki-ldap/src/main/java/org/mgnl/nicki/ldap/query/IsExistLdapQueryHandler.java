@@ -35,8 +35,9 @@ package org.mgnl.nicki.ldap.query;
 import java.util.List;
 
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.ldap.context.LdapContext;
+import org.mgnl.nicki.ldap.data.QueryHandler;
 
 
 public class IsExistLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
@@ -46,7 +47,7 @@ public class IsExistLdapQueryHandler extends BasicLdapHandler implements QueryHa
 	private boolean exist = false;
 
 	public IsExistLdapQueryHandler(NickiContext context, String path) {
-		super(context);
+		super((LdapContext) context);
 		this.dn = path;
 	}
 

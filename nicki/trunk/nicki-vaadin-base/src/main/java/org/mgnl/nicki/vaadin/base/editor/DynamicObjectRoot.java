@@ -50,7 +50,7 @@ public class DynamicObjectRoot implements DataProvider, Serializable {
 		this.entryFilter = entryFilter;
 	}
 
-	public List<DynamicObject> getChildren(NickiContext context) {
+	public List<? extends DynamicObject> getChildren(NickiContext context) {
 		return context.loadChildObjects(baseDn, "objectClass=*");
 	}
 

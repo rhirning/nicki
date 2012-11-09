@@ -30,31 +30,31 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.data;
+package org.mgnl.nicki.ldap.data;
 
-public class OctetString {
-	byte octetString[];
+import java.util.List;
+import java.util.Map;
 
-	public OctetString(byte octet[]) {
-		this.octetString = octet;
-	}
 
-	public Object getValue() {
-		return octetString;
-	}
+public interface Query {
 
-	public String toString() {
-		try {
-			String result = "";
-			for (int i = 0; i < octetString.length; i++) {
-				result += Integer.toString((octetString[i] & 0xff) + 0x100, 16)
-						.substring(1);
-			}
-			return result;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	void addFilter(String filter);
+	
+	void addSearchValue(String key, String value);
+	
+	public List<String> getSearchValue(String key);
+
+	public Map<String, List<String>> getSearchValues();
+	
+	public String getFilter();
+	
+	public String getBaseDN();
+
+	public Map<String, String> getResultAttributes();
+
+	public void setResultAttributes(Map<String, String> resultAttributes);
+	
+	public void addResultAttribute(String targetName, String displayName);
+
 
 }

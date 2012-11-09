@@ -43,9 +43,9 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.ldap.methods.LoadObjectsMethod;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
-import org.mgnl.nicki.core.methods.LoadObjectsMethod;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 
@@ -67,11 +67,11 @@ public class Catalog extends DynamicLdapTemplateObject {
 	public void initDataModel() {
 		// objectClass
 		addObjectClass("nickiCatalog");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicAttribute("category", "nickiCategory", String.class);
+		dynAttribute = new DynamicLdapAttribute("category", "nickiCategory", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		

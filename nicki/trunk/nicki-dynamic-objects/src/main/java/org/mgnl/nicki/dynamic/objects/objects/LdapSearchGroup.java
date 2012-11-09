@@ -35,8 +35,8 @@ package org.mgnl.nicki.dynamic.objects.objects;
 import java.util.HashMap;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 /**
@@ -83,17 +83,17 @@ public class LdapSearchGroup extends DynamicLdapTemplateObject {
 	@Override
 	public void initDataModel() {
 		addObjectClass("dynamicGroup");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("member", "member", String.class);
+		dynAttribute = new DynamicLdapAttribute("member", "member", String.class);
 		dynAttribute.setMultiple();
 		dynAttribute.setForeignKey(Person.class);
 		dynAttribute.setReadonly();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicAttribute("query", "memberQueryURL", String.class);
+		dynAttribute = new DynamicLdapAttribute("query", "memberQueryURL", String.class);
 		addAttribute(dynAttribute);
 	}
 

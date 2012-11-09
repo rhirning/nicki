@@ -40,7 +40,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 public interface DataProvider {
 
-	public List<DynamicObject> getChildren(NickiContext context);
+	public List<? extends DynamicObject> getChildren(NickiContext context);
 	public DynamicObject getRoot(NickiContext context);
 	public String getMessage();
 	public EntryFilter getEntryFilter();
