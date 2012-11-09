@@ -46,16 +46,16 @@ import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.core.objects.DynamicTemplateObject;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
+import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
 @SuppressWarnings("serial")
 @DynamicObject(target="edir")
-public class CatalogPage extends DynamicTemplateObject {
+public class CatalogPage extends DynamicLdapTemplateObject {
 	
 	private Provider provider = null;
 

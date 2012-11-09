@@ -36,8 +36,8 @@ import java.util.HashMap;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
-import org.mgnl.nicki.core.objects.DynamicTemplateObject;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 /**
  *
@@ -45,7 +45,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
  */
 @SuppressWarnings("serial")
 @DynamicObject(target="edir")
-public class LdapSearchGroup extends DynamicTemplateObject {
+public class LdapSearchGroup extends DynamicLdapTemplateObject {
 
 	public enum SEARCHSCOPE {
 

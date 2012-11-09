@@ -36,6 +36,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 import java.util.Date;
 import java.util.List;
@@ -47,7 +48,6 @@ import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.core.objects.DynamicTemplateObject;
 import org.mgnl.nicki.core.util.XmlHelper;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -58,7 +58,7 @@ import org.xml.sax.SAXException;
  */
 @SuppressWarnings("serial")
 @DynamicObject(target="edir")
-public class Cart extends DynamicTemplateObject {
+public class Cart extends DynamicLdapTemplateObject {
 
     public enum CART_STATUS {
 

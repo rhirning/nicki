@@ -39,9 +39,9 @@ import java.util.List;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
-import org.mgnl.nicki.core.objects.DynamicReference;
+import org.mgnl.nicki.ldap.objects.DynamicReference;
 import org.mgnl.nicki.core.objects.StructuredDynamicAttribute;
-import org.mgnl.nicki.core.objects.StructuredDynamicReference;
+import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 

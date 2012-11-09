@@ -30,34 +30,44 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.objects;
+package org.mgnl.nicki.ldap.objects;
 
-import org.mgnl.nicki.core.annotation.DynamicObject;
+import java.util.Iterator;
+import java.util.List;
+
+import org.mgnl.nicki.core.methods.ChildrenMethod;
+import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
+
+
+import freemarker.template.TemplateMethodModel;
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
-public class Script extends DynamicLdapTemplateObject {
-	public static final String ATTRIBUTE_DATA = "data";
+public abstract class DynamicLdapTemplateObject extends BaseLdapDynamicObject {
 
-
-	public void initDataModel() {
-		addObjectClass("nickiScript");
-		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_NAME, "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_DATA, "nickiScriptData", String.class);
-		addAttribute(dynAttribute);
+	@Override
+	public void init(ContextSearchResult rs) throws DynamicObjectException {
+		super.init(rs);
+		
+		for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
+			String key = iterator.next();
+			String filter = getModel().getChildren().get(key);
+			put(DynamicAttribute.getGetter(key), new ChildrenMethod(getContext(), rs, filter));
+		}
+	}
+	
+	public void addMethod(String name, TemplateMethodModel method) {
+		put(DynamicAttribute.getGetter(name), method);
 	};
 	
-	public String getData() {
-		return getAttribute(ATTRIBUTE_DATA);
-	}
-
-	public void setData(String data) {
-		this.put(ATTRIBUTE_DATA, data);
+	public Object execute(String methodName, @SuppressWarnings("rawtypes") List arguments) throws DynamicObjectException {
+		try {
+			TemplateMethodModel method = (TemplateMethodModel) get(methodName);
+			return method.exec(arguments);
+		} catch (Exception e) {
+			throw new DynamicObjectException(e);
+		}		
 	}
 
 

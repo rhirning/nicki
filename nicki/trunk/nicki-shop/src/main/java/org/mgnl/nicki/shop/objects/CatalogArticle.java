@@ -46,16 +46,16 @@ import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
-import org.mgnl.nicki.core.objects.DynamicTemplateObject;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
+import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 
 @SuppressWarnings("serial")
 @DynamicObject(target="edir")
-public class CatalogArticle extends DynamicTemplateObject {
+public class CatalogArticle extends DynamicLdapTemplateObject {
 
 	public static final String TYPE_ARTICLE = "ARTICLE";
 	public static final String CAPTION_START = "nicki.rights.attribute.dateFrom.label";

@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.objects;
+package org.mgnl.nicki.ldap.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -47,12 +47,16 @@ import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.LdapHelper;
 import org.mgnl.nicki.core.methods.StructuredData;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.ContextAttribute;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DataModel;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 @SuppressWarnings("serial")
-public abstract class BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
+public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
 	public static final String ATTRIBUTE_NAME = "name";
 	public static final String SEPARATOR = "/";
 
@@ -73,13 +77,13 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	
 	private NickiContext context;
 	
-	protected BaseDynamicObject() {
+	private DataModel model = null;
+	
+	protected BaseLdapDynamicObject() {
 		// removed: must be called in TargetObjectFactory
 		//		initDataModel();
 	}
 	
-	public abstract DataModel getModel();
-
 	public void initNew(String parentPath, String namingValue) {
 		this.status = STATUS.NEW;
 		this.path = LdapHelper.getPath(parentPath, getModel().getNamingLdapAttribute(), namingValue);
@@ -490,4 +494,17 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return map;
 	}
 
+
+	@Override
+	public void setModel(DataModel model) {
+		this.model = model;
+	}
+
+	@Override
+	public DataModel getModel() {
+		if (model == null) {
+			model = new LdapDataModel();
+		}
+		return model;
+	}
 }

@@ -30,32 +30,32 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.methods;
+package org.mgnl.nicki.ldap.methods;
 
 
 import java.io.Serializable;
 import java.util.List;
 
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.data.LdapQuery;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicReference;
+import org.mgnl.nicki.ldap.core.LdapQuery;
+import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
 import freemarker.template.TemplateMethodModel;
 
-public class ReferenceMethod implements TemplateMethodModel, Serializable {
+public class StructuredReferenceMethod implements TemplateMethodModel, Serializable {
 
 	private static final long serialVersionUID = -81535049844368520L;
 	List<DynamicObject> objects = null;
-	DynamicReference reference;
+	StructuredDynamicReference reference;
 	String path;
 	NickiContext context;
 	
-	public ReferenceMethod(NickiContext context, ContextSearchResult rs, DynamicReference reference) {
+	public StructuredReferenceMethod(NickiContext context, ContextSearchResult rs, StructuredDynamicReference structuredDynamicReference) {
 		this.context = context;
 		this.path = rs.getNameInNamespace();
-		this.reference = reference;
+		this.reference = structuredDynamicReference;
 	}
 
 	@SuppressWarnings("unchecked")
