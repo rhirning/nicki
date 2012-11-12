@@ -43,7 +43,6 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.core.helper.LdapHelper;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 @SuppressWarnings("serial")
