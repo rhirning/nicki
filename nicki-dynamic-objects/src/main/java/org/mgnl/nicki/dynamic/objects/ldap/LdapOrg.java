@@ -30,36 +30,28 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.objects;
+package org.mgnl.nicki.dynamic.objects.ldap;
 
-import java.util.List;
+import java.io.Serializable;
 
-import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
+import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
-public interface DynamicAttribute {
+@SuppressWarnings("serial")
+@DynamicObject(target="edir")
+public class LdapOrg extends DynamicLdapTemplateObject implements Serializable {
+	public static final String ATTRIBUTE_CHILD = "child";
 
-//	public String getLdapName();	
-	public <T extends NickiContext> void init(T context, DynamicObject dynamicObject, ContextSearchResult rs);
-	public Class<?> getAttributeClass();
-	public boolean isNaming();
-	public void setNaming();
-	public boolean isMandatory();
-	public void setMandatory();
-	public boolean isMultiple();
-	public void setMultiple();
-	public boolean isForeignKey();
-	public void setForeignKey(Class<? extends DynamicObject> classDefinition);
-	public void setForeignKey(String className);
-	public String getName();
-	public void setVirtual();
-	public boolean isVirtual();
-	public List<? extends DynamicObject> getOptions(DynamicObject dynamicObject);
-	public void setReadonly();
-	public boolean isReadonly();
-	public void setStatic();
-	public boolean isStatic();
-	public Class<? extends DynamicObject> getForeignKeyClass();
-	public void setEditorClass(String editorClass);
-	public String getEditorClass();
+	@Override
+	public void initDataModel() {
+		addObjectClass("organizationalUnit");
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NAME, "ou", String.class);
+		dynAttribute.setNaming();
+		addAttribute(dynAttribute);
+
+		// TODO
+		addChild(ATTRIBUTE_CHILD, "objectClass=*");
+	}
+
 }

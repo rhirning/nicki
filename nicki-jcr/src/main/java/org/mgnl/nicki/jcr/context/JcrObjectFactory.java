@@ -39,13 +39,14 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.context.ObjectFactory;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.objects.NodeDynamicObject;
 
-public class JcrObjectFactory  {
+public class JcrObjectFactory implements ObjectFactory {
 
 	private JcrContext context;
 	private Target target;
@@ -120,11 +121,6 @@ public class JcrObjectFactory  {
 		return dynamicObject.getModel().getObjectClassFilter();
 	}
 
-	public String getNamingLdapAttribute(Class<? extends NodeDynamicObject> classDefinition) throws InstantiateDynamicObjectException {
-		NodeDynamicObject dynamicObject = findDynamicObject(classDefinition);
-		return dynamicObject.getModel().getNamingLdapAttribute();
-	}
-
 	@SuppressWarnings("unchecked")
 	private <T extends DynamicObject> T findDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		for (String dynamicObjectName : target.getDynamicObjects()) {
@@ -137,7 +133,7 @@ public class JcrObjectFactory  {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T extends NodeDynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) {
+	public <T extends DynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) {
 		List<T> list = new ArrayList<T>();
 		for (String dynamicObjectName : target.getDynamicObjects()) {
 			NodeDynamicObject dynamicObject = (NodeDynamicObject) target.getDynamicObject(dynamicObjectName);
@@ -237,5 +233,6 @@ public class JcrObjectFactory  {
 			throw new InstantiateDynamicObjectException(e);
 		}
 	}
+
 	
 }

@@ -35,7 +35,7 @@ package org.mgnl.nicki.ldap.data;
 import java.util.List;
 
 import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicObjectException;;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 public interface QueryHandler {
 	public static enum SCOPE {OBJECT, ONELEVEL, SUBTREE};

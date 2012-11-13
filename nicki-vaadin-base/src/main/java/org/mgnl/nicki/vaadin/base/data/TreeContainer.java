@@ -39,9 +39,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.helper.LdapHelper;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.vaadin.base.editor.EntryFilter;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 import org.mgnl.nicki.vaadin.base.editor.DataProvider;

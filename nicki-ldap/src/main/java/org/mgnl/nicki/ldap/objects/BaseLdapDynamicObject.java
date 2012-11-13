@@ -45,7 +45,6 @@ import org.jdom.Element;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.core.helper.LdapHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.ContextAttribute;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
@@ -53,6 +52,7 @@ import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.methods.StructuredData;
 
 @SuppressWarnings("serial")
@@ -64,9 +64,7 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 	private String path = null;
 	private DynamicObject original = null;
 	private DynamicObject parent = null;
-	
-	private STATUS status;
-	
+		
 	private boolean modified = false;
 
 	// Map with the attribute values
@@ -85,7 +83,7 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 	}
 	
 	public void initNew(String parentPath, String namingValue) {
-		this.status = STATUS.NEW;
+		this.setStatus(STATUS.NEW);
 		this.path = LdapHelper.getPath(parentPath, getModel().getNamingLdapAttribute(), namingValue);
 		put(getModel().getNamingAttribute(), namingValue);
 	}
@@ -99,23 +97,23 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 	}
 
 	public void initExisting(NickiContext context, String path) {
-		this.status = STATUS.EXISTS;
+		this.setStatus(STATUS.EXISTS);
 		this.context = context;
 		this.path = path;
 		this.map.put(getModel().getNamingAttribute(), LdapHelper.getNamingValue(path));
 	}
 	
 	public void init(ContextSearchResult rs) throws DynamicObjectException {
-		if (status != STATUS.EXISTS) {
+		if (getStatus() != STATUS.EXISTS) {
 			throw new DynamicObjectException("Invalid call");
 		}
-		this.status = STATUS.LOADED;
+		this.setStatus(STATUS.LOADED);
 		this.getModel().init(context, this, rs);
 		this.original = (DynamicObject) this.clone();
 	}
 	
 	private void init() {
-		if (status == STATUS.EXISTS) {
+		if (getStatus() == STATUS.EXISTS) {
 			try {
 				this.context.loadObject(this);
 			} catch (DynamicObjectException e) {
@@ -126,7 +124,7 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 	}
 	
 	public boolean isNew() {
-		return (this.status == STATUS.NEW);
+		return (this.getStatus() == STATUS.NEW);
 	}
 	
 	public boolean isComplete() {
@@ -294,7 +292,7 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 	public void copyFrom(DynamicObject object) {
 		this.setModel(object.getModel());
 		this.map = object.getMap();
-		this.status = object.getStatus();
+		this.setStatus(object.getStatus());
 	}
 	
 	@Override
@@ -485,10 +483,6 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 
 	public void setModified(boolean modified) {
 		this.modified = modified;
-	}
-
-	public STATUS getStatus() {
-		return status;
 	}
 
 	public Map<String, Object> getMap() {

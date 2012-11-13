@@ -45,7 +45,7 @@ public class NodeDynamicObject extends NodeDynamicTemplateObject {
 
 	public boolean accept(Node node2) {
 		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 
 	public void setJcrNode(Node node2) {

@@ -38,12 +38,12 @@ import java.util.Map;
 
 import javax.naming.directory.SearchControls;
 
-import org.mgnl.nicki.core.helper.LdapHelper;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.context.LdapContext;
 import org.mgnl.nicki.ldap.data.QueryHandler;
+import org.mgnl.nicki.ldap.helper.LdapHelper;
 
 public class AttributeLoaderLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
 

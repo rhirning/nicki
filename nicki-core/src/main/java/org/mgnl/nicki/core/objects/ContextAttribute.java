@@ -34,6 +34,8 @@ package org.mgnl.nicki.core.objects;
 
 import java.util.Enumeration;
 
+import org.mgnl.nicki.core.objects.DynamicObjectException;
+
 public interface ContextAttribute {
 
 	Enumeration<Object> getAll() throws DynamicObjectException;

@@ -35,9 +35,7 @@ package org.mgnl.nicki.core.context;
 import java.util.List;
 
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 public interface ObjectFactory {
 
@@ -50,13 +48,7 @@ public interface ObjectFactory {
 	
 	DynamicObject getDynamicObject(String className) throws InstantiateDynamicObjectException;
 
-	DynamicObject getObject(ContextSearchResult contextSearchResult) throws InstantiateDynamicObjectException;
-
-	<T extends DynamicObject> T getObject(ContextSearchResult contextSearchResult, Class<T> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException;
-
 	String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException;
-
-	String getNamingLdapAttribute(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException;
 
 	<T extends DynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) throws InstantiateDynamicObjectException;
 

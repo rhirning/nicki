@@ -72,10 +72,6 @@ public class Target implements Serializable {
 		return Config.getProperty(propertyBase + "." + appendix);
 	}
 
-	public ObjectFactory getObjectFactory(NickiContext context) {
-		return new TargetObjectFactory(context, this);
-	}
-
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

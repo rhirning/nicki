@@ -57,6 +57,10 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	
 	private STATUS status;
 	
+	public void setStatus(STATUS status) {
+		this.status = status;
+	}
+
 	private boolean modified = false;
 
 	// Map with the attribute values
@@ -357,13 +361,11 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 			return null;
 		}
 	}
-
 	/*
 	public void addAttribute(DynamicAttribute dynAttribute) {
 		this.getModel().addAttribute(dynAttribute);
 	}
-	*/
-
+	 */
 	public void setContext(NickiContext context) {
 		this.context = context;
 	}
@@ -380,7 +382,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	};
 	
 	public String getDisplayName() {
-		return getAttribute(ATTRIBUTE_NAME);
+		return getName();
 	}
 
 	@Override

@@ -30,12 +30,15 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.context;
+package org.mgnl.nicki.ldap.context;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.context.ObjectFactory;
+import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
@@ -46,7 +49,7 @@ public class TargetObjectFactory implements ObjectFactory {
 	private NickiContext context;
 	private Target target;
 	
-	protected TargetObjectFactory(NickiContext context, Target target) {
+	public TargetObjectFactory(NickiContext context, Target target) {
 		super();
 		this.context = context;
 		this.target = target;

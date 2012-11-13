@@ -37,7 +37,6 @@ import javax.naming.directory.Attributes;
 import org.mgnl.nicki.core.objects.ContextAttribute;
 import org.mgnl.nicki.core.objects.ContextAttributes;
 
-
 public class JndiAttributes implements ContextAttributes {
 	Attributes attributes;
 	public JndiAttributes(Attributes attributes) {

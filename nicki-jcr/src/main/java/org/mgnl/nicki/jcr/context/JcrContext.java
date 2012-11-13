@@ -2,6 +2,8 @@ package org.mgnl.nicki.jcr.context;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Repository;
@@ -10,7 +12,6 @@ import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
-import javax.naming.Context;
 import javax.naming.InitialContext;
 
 import org.apache.commons.lang.StringUtils;
@@ -41,17 +42,45 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 	}
 	private Session session= null;
 	private Node root = null;
+	private static boolean hasAdminUser = false;
 
 	public JcrContext(Target target, READONLY readonly) {
 		super(target, readonly);
 		
 		try {
-			InitialContext context = new InitialContext();
-			Context environment = (Context) context.lookup("java:comp/env");
-			Repository repository = (Repository) environment.lookup("jackrabbit.repository");
+			Properties env = new Properties();
+			env.put("java.naming.provider.url", "http://www.apache.org/jackrabbit");
+			env.put("java.naming.factory.initial", "org.apache.jackrabbit.core.jndi.provider.DummyInitialContextFactory");
+			InitialContext context = new InitialContext(env);
+//			Context environment = (Context) context.lookup("java:comp/env");
+			Repository repository = (Repository) context.lookup("jcr.repository");
 			session = repository.login(new SimpleCredentials("username",
 							"password".toCharArray()));
 			root = session.getRootNode();
+			
+			if (!hasAdminUser) {
+				hasAdminUser = true;
+				Node node = null;
+				try {
+					node = root.getNode("scripts");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (node == null) {
+					Node root = session.getRootNode();
+
+					// Store content
+					Node scripts = root.addNode("scripts");
+					session.save();
+
+					// Retrieve content
+					System.out.println(scripts.getPath());
+
+					session.save();
+				}
+			}
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -89,7 +118,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 			throw new DynamicObjectException("READONLY: could not create object: " + dynamicObject.getPath());
 		}
 		try {
-			Node parent = root.getNode(dynamicObject.getParentPath());
+			Node parent = session.getNode(dynamicObject.getParentPath());
 			Node node = parent.addNode(dynamicObject.getName());
 			updateNode(node, dynamicObject);
 			session.save();
@@ -133,7 +162,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
 		}
 		try {
-			Node node = root.getNode(dynamicObject.getPath());
+			Node node = session.getNode(dynamicObject.getPath());
 			updateNode(node, dynamicObject);
 			session.save();
 		} catch (Exception e) {
@@ -148,7 +177,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 			throw new DynamicObjectException("READONLY: could not delete object: " + dynamicObject.getPath());
 		}
 		try {
-			Node node = root.getNode(dynamicObject.getPath());
+			Node node = session.getNode(dynamicObject.getPath());
 			node.remove();
 			session.save();
 		} catch (Exception e) {
@@ -190,6 +219,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 		try {
 			return getDynamicObject(session.getNode(path));
 		} catch (Exception e) {
+			e.printStackTrace();
 			logger.debug("Could not load object " + path, e);
 		}
 		return null;

@@ -80,7 +80,7 @@ public abstract class BasicJcrContext implements NickiContext {
 	abstract public JcrObjectFactory getJcrObjectFactory();
 	
 	public ObjectFactory getObjectFactory() {
-		return null;
+		return getJcrObjectFactory();
 	}
 
 	public NickiPrincipal getPrincipal() throws DynamicObjectException {
