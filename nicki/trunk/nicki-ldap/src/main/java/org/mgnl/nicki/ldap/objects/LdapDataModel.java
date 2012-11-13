@@ -50,8 +50,8 @@ import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.helper.LdapHelper;
-import org.mgnl.nicki.core.helper.LdapHelper.LOGIC;
+import org.mgnl.nicki.ldap.helper.LdapHelper;
+import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 
 @SuppressWarnings("serial")
 public class LdapDataModel implements DataModel, Serializable {

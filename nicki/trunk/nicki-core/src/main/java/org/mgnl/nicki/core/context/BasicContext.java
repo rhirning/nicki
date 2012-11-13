@@ -73,11 +73,6 @@ public abstract class BasicContext implements NickiContext {
 		return getObjectFactory().getObjectClassFilter(classDefinition);
 	}
 
-
-	public ObjectFactory getObjectFactory() {
-		return getTarget().getObjectFactory(this);
-	}
-
 	public NickiPrincipal getPrincipal() throws DynamicObjectException {
 		return this.principal;
 	}

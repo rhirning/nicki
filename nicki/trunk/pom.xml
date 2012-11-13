@@ -20,6 +20,7 @@
 		<module>nicki-dynamic-objects</module>
 		<module>nicki-dynamic-objects-ad</module>
 		<module>nicki-editor-catalogs</module>
+		<module>nicki-editor-jcr</module>
 		<module>nicki-editor-scripts</module>
 		<module>nicki-editor-templates</module>
 		<module>nicki-idm-novell</module>

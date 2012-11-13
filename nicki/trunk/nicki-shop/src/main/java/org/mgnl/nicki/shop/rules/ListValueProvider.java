@@ -36,8 +36,8 @@ import java.util.List;
 
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.core.helper.LdapHelper;
-import org.mgnl.nicki.core.helper.LdapHelper.LOGIC;
+import org.mgnl.nicki.ldap.helper.LdapHelper;
+import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 
 import com.vaadin.ui.AbstractSelect;

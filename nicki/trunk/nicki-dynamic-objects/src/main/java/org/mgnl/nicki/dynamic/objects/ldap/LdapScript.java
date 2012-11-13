@@ -30,36 +30,35 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.objects;
+package org.mgnl.nicki.dynamic.objects.ldap;
 
-import java.util.List;
+import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.dynamic.objects.objects.Script;
+import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 
-import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.objects.DynamicObject;
+@SuppressWarnings("serial")
+@DynamicObject(target="edir")
+public class LdapScript extends Script {
+	public static final String ATTRIBUTE_DATA = "data";
 
-public interface DynamicAttribute {
 
-//	public String getLdapName();	
-	public <T extends NickiContext> void init(T context, DynamicObject dynamicObject, ContextSearchResult rs);
-	public Class<?> getAttributeClass();
-	public boolean isNaming();
-	public void setNaming();
-	public boolean isMandatory();
-	public void setMandatory();
-	public boolean isMultiple();
-	public void setMultiple();
-	public boolean isForeignKey();
-	public void setForeignKey(Class<? extends DynamicObject> classDefinition);
-	public void setForeignKey(String className);
-	public String getName();
-	public void setVirtual();
-	public boolean isVirtual();
-	public List<? extends DynamicObject> getOptions(DynamicObject dynamicObject);
-	public void setReadonly();
-	public boolean isReadonly();
-	public void setStatic();
-	public boolean isStatic();
-	public Class<? extends DynamicObject> getForeignKeyClass();
-	public void setEditorClass(String editorClass);
-	public String getEditorClass();
+	public void initDataModel() {
+		addObjectClass("nickiScript");
+		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NAME, "cn", String.class);
+		dynAttribute.setNaming();
+		addAttribute(dynAttribute);
+
+		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_DATA, "nickiScriptData", String.class);
+		addAttribute(dynAttribute);
+	};
+	
+	public String getData() {
+		return getAttribute(ATTRIBUTE_DATA);
+	}
+
+	public void setData(String data) {
+		this.put(ATTRIBUTE_DATA, data);
+	}
+
+
 }

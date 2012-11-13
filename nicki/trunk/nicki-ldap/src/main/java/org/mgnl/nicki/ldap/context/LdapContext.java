@@ -16,6 +16,7 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.BasicContext;
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.context.ObjectFactory;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
@@ -36,6 +37,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 
 	private static final long serialVersionUID = -3079627211615613041L;
 
+	private TargetObjectFactory objectFactory = null;
 
 	public LdapContext(Target target, READONLY readonly) {
 		super(target, readonly);
@@ -321,17 +323,29 @@ public class LdapContext extends BasicContext implements NickiContext {
 		return null;
 	}
 	
+	
 	public <T extends DynamicObject> T loadChildObject(Class<T> class1, DynamicObject parent, String namingValue) {
 		try {
-			Target target = parent.getContext().getTarget();
 			String namingAttribute = 
-				target.getObjectFactory(parent.getContext()).getNamingLdapAttribute(class1);
+				getLdapObjectFactory().getNamingLdapAttribute(class1);
 			String path = namingAttribute + "=" + namingValue + "," + parent.getPath();
 			return loadObject(class1, path);
 		} catch (InstantiateDynamicObjectException e) {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+
+	public ObjectFactory getObjectFactory() {
+		return getLdapObjectFactory();
+	}
+
+	public TargetObjectFactory getLdapObjectFactory() {
+		if (objectFactory == null) {
+			objectFactory = new TargetObjectFactory(this, getTarget());
+		}
+		return objectFactory;
 	}
 
 

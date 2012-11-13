@@ -70,14 +70,14 @@ public class ObjectsLoaderLdapQueryHandler extends ObjectLoaderLdapQueryHandler 
 			if (getClassDefinition() != null) {
 				try {
 					ContextSearchResult rs = iterator.next();
-					DynamicObject dynamicObject = getContext().getObjectFactory().getObject(rs, getClassDefinition());
+					DynamicObject dynamicObject = getContext().getLdapObjectFactory().getObject(rs, getClassDefinition());
 					list.add(dynamicObject);
 				} catch (InstantiateDynamicObjectException e) {
 					System.out.println(e.getMessage());
 				}
 			} else {
 				try {
-					list.add(getContext().getObjectFactory().getObject(iterator.next()));
+					list.add(getContext().getLdapObjectFactory().getObject(iterator.next()));
 				} catch (InstantiateDynamicObjectException e) {
 					throw new DynamicObjectException(e);
 				}

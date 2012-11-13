@@ -54,7 +54,7 @@ public class InitialObjectLdapQueryHandler extends ObjectLoaderLdapQueryHandler 
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
 		if (results != null && results.size() > 0) {
 			try {
-				dynamicObject = (BaseLdapDynamicObject) getContext().getObjectFactory().getObject(results.get(0));
+				dynamicObject = (BaseLdapDynamicObject) getContext().getLdapObjectFactory().getObject(results.get(0));
 				dynamicObject.initExisting(getContext(), getBaseDN());
 			} catch (InstantiateDynamicObjectException e) {
 				throw new DynamicObjectException(e);

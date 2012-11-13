@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.helper;
+package org.mgnl.nicki.ldap.helper;
 
 import java.util.ArrayList;
 import java.util.Enumeration;

@@ -51,11 +51,10 @@
             This servlet provides other servlets and jsps a common way to access
             the repository. The repository can be accessed via JNDI, RMI or Webdav.
         </description>
-        <servlet-name>Repository</servlet-name>
+        <servlet-name>Repository Access</servlet-name>
         <servlet-class>org.apache.jackrabbit.j2ee.RepositoryAccessServlet</servlet-class>
         <init-param>
-			<description>
-			Vaadin application class to start</description>
+			<description></description>
 			<param-name>bootstrap-config</param-name>
 			<param-value>/WEB-INF/conf/nicki/jcr.properties</param-value>
 		</init-param>
@@ -144,9 +143,19 @@
 			<param-value>org.mgnl.nicki.editor.catalogs.CatalogEditor</param-value>
 		</init-param>
 	</servlet>
+	<servlet>
+		<servlet-name>JCR Editor</servlet-name>
+		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
+		<init-param>
+			<description>
+			Vaadin application class to start</description>
+			<param-name>application</param-name>
+			<param-value>org.mgnl.nicki.editor.jcr.JcrEditor</param-value>
+		</init-param>
+	</servlet>
 	<servlet-mapping>
-		<servlet-name>RepositoryStartup</servlet-name>
-		<url-pattern>/jcr/*</url-pattern>
+		<servlet-name>JCR Editor</servlet-name>
+		<url-pattern>/editor/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Report Application</servlet-name>

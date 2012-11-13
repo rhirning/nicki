@@ -39,9 +39,9 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.helper.LdapHelper;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.ldap.helper.LdapHelper;
 
 import freemarker.template.TemplateMethodModel;
 
