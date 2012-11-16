@@ -51,17 +51,17 @@ public class StructuredDynamicAttribute extends DynamicLdapAttribute implements 
 	@Override
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
 		if (isMultiple()) {
-			List<Object> values = rs.getValues(getLdapName());
+			List<Object> values = rs.getValues(getExternalName());
 			dynamicObject.put(getName(), values);
 			dynamicObject.put(getMultipleGetter(getName()),
-					new ListStructuredForeignKeyMethod(context, rs, getLdapName(), getForeignKeyClass()));
+					new ListStructuredForeignKeyMethod(context, rs, getExternalName(), getForeignKeyClass()));
 
 		} else {
-			String value = (String) rs.getValue(getLdapName());
+			String value = (String) rs.getValue(getExternalName());
 			if (StringUtils.isNotEmpty(value)) {
 				dynamicObject.put(getName(), value);
 				dynamicObject.put(getGetter(getName()),
-						new StructuredForeignKeyMethod(context, rs, getLdapName(), getForeignKeyClass()));
+						new StructuredForeignKeyMethod(context, rs, getExternalName(), getForeignKeyClass()));
 			}
 		}
 	}

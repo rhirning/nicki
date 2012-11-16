@@ -61,7 +61,7 @@ public class DynamicLdapAttribute implements DynamicAttribute, Serializable {
 	private boolean staticAttribute = false;
 	private String editorClass = null;
 
-	public String getLdapName() {
+	public String getExternalName() {
 		return ldapName;
 	}
 
@@ -77,14 +77,14 @@ public class DynamicLdapAttribute implements DynamicAttribute, Serializable {
 		}
 		// mandatory
 		if (isMandatory()) {
-			Object attribute = rs.getValue(getLdapName());
+			Object attribute = rs.getValue(getExternalName());
 			if (attribute != null) {
 				dynamicObject.put(name, attribute);
 			}
 		}
 		// optional
 		if (!isMandatory() && !isMultiple() && !isForeignKey()) {
-			Object attribute = rs.getValue(getLdapName());
+			Object attribute = rs.getValue(getExternalName());
 			if (attribute != null) {
 				if (attributeClass == OctetString.class) {
 					dynamicObject.put(name, new OctetString(((byte[])attribute)));
@@ -95,12 +95,12 @@ public class DynamicLdapAttribute implements DynamicAttribute, Serializable {
 		}
 		// optional list
 		if (!isMandatory() && isMultiple() && !isForeignKey()) {
-			List<Object> attributes = rs.getValues(getLdapName());
+			List<Object> attributes = rs.getValues(getExternalName());
 			dynamicObject.put(name, attributes);
 		}
 		// foreign key
 		if (!isMandatory() && !isMultiple() && isForeignKey()) {
-			String value = (String) rs.getValue(getLdapName());
+			String value = (String) rs.getValue(getExternalName());
 			if (StringUtils.isNotEmpty(value)) {
 				dynamicObject.put(name, value);
 				dynamicObject.put(getGetter(name),
@@ -109,7 +109,7 @@ public class DynamicLdapAttribute implements DynamicAttribute, Serializable {
 		}
 		// list foreign key
 		if (!isMandatory() && isMultiple() && isForeignKey()) {
-			List<Object> values = rs.getValues(getLdapName());
+			List<Object> values = rs.getValues(getExternalName());
 			dynamicObject.put(name, values);
 			dynamicObject.put(getMultipleGetter(name),
 					new ListForeignKeyMethod(context, rs, ldapName, getForeignKeyClass()));

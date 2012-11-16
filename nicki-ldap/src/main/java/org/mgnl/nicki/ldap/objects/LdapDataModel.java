@@ -56,12 +56,12 @@ import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 @SuppressWarnings("serial")
 public class LdapDataModel implements DataModel, Serializable {
 
-	private Map<String, DynamicLdapAttribute> attributes = new HashMap<String, DynamicLdapAttribute>();
+	private Map<String, DynamicAttribute> attributes = new HashMap<String, DynamicAttribute>();
 	private List<String> objectClasses = new ArrayList<String>();
 	private List<String> additionalObjectClasses = new ArrayList<String>();
 	private String namingAttribute = null;
 
-	private List<DynamicLdapAttribute> mandatoryAttributes = null;
+	private List<DynamicAttribute> mandatoryAttributes = null;
 	private List<DynamicAttribute> optionalAttributes = null;
 	private List<DynamicAttribute> listOptionalAttributes = null;
 	private List<DynamicAttribute> foreignKeys = null;
@@ -82,11 +82,11 @@ public class LdapDataModel implements DataModel, Serializable {
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public  List<DynamicLdapAttribute> getMandatoryAttributes() {
+	public  List<DynamicAttribute> getMandatoryAttributes() {
 		if (this.mandatoryAttributes == null) {
-			this.mandatoryAttributes = new ArrayList<DynamicLdapAttribute>();
-			for (Iterator<DynamicLdapAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
-				DynamicLdapAttribute dynAttribute  = iterator.next();
+			this.mandatoryAttributes = new ArrayList<DynamicAttribute>();
+			for (Iterator<DynamicAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
+				DynamicAttribute dynAttribute  = iterator.next();
 				if (dynAttribute.isMandatory()) {
 					this.mandatoryAttributes.add(dynAttribute);
 				}
@@ -97,7 +97,7 @@ public class LdapDataModel implements DataModel, Serializable {
 	public List<DynamicAttribute> getOptionalAttributes() {
 		if (this.optionalAttributes == null) {
 			this.optionalAttributes = new ArrayList<DynamicAttribute>();
-			for (Iterator<DynamicLdapAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
+			for (Iterator<DynamicAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
 				DynamicAttribute dynAttribute  = iterator.next();
 				if (!dynAttribute.isMandatory()) {
 					this.optionalAttributes.add(dynAttribute);
@@ -109,7 +109,7 @@ public class LdapDataModel implements DataModel, Serializable {
 	public List<DynamicAttribute> getListOptionalAttributes() {
 		if (this.listOptionalAttributes == null) {
 			this.listOptionalAttributes = new ArrayList<DynamicAttribute>();
-			for (Iterator<DynamicLdapAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
+			for (Iterator<DynamicAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
 				DynamicAttribute dynAttribute  = iterator.next();
 				if (dynAttribute.isMultiple()) {
 					this.listOptionalAttributes.add(dynAttribute);
@@ -121,7 +121,7 @@ public class LdapDataModel implements DataModel, Serializable {
 	public List<DynamicAttribute> getForeignKeys() {
 		if (this.foreignKeys == null) {
 			this.foreignKeys = new ArrayList<DynamicAttribute>();
-			for (Iterator<DynamicLdapAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
+			for (Iterator<DynamicAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
 				DynamicAttribute dynAttribute  = iterator.next();
 				if (dynAttribute.isForeignKey() && !dynAttribute.isMultiple()) {
 					this.foreignKeys.add(dynAttribute);
@@ -133,7 +133,7 @@ public class LdapDataModel implements DataModel, Serializable {
 	public List<DynamicAttribute> getListForeignKeys() {
 		if (this.listForeignKeys == null) {
 			this.listForeignKeys = new ArrayList<DynamicAttribute>();
-			for (Iterator<DynamicLdapAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
+			for (Iterator<DynamicAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
 				DynamicAttribute dynAttribute  = iterator.next();
 				if (dynAttribute.isForeignKey() && dynAttribute.isMultiple()) {
 					this.listForeignKeys.add(dynAttribute);
@@ -178,10 +178,10 @@ public class LdapDataModel implements DataModel, Serializable {
 			oc.add(objectClass);
 		}
 		myAttrs.put(oc);
-		for (Iterator<DynamicLdapAttribute> iterator = dynamicObject.getModel().getMandatoryAttributes().iterator(); iterator.hasNext();) {
-			DynamicLdapAttribute dynAttribute =  iterator.next();
+		for (Iterator<DynamicAttribute> iterator = dynamicObject.getModel().getMandatoryAttributes().iterator(); iterator.hasNext();) {
+			DynamicAttribute dynAttribute =  iterator.next();
 			if (dynAttribute.isNaming()) {
-				myAttrs.put(dynAttribute.getLdapName(), dynamicObject.getAttribute(dynAttribute.getName()));
+				myAttrs.put(dynAttribute.getExternalName(), dynamicObject.getAttribute(dynAttribute.getName()));
 			}			
 		}
 	}
@@ -195,22 +195,22 @@ public class LdapDataModel implements DataModel, Serializable {
 	public void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject, boolean nullable) {
 
 		// single attributes (except namingAttribute)
-		for (Iterator<DynamicLdapAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
-			DynamicLdapAttribute dynAttribute = iterator.next();
+		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
+			DynamicAttribute dynAttribute = iterator.next();
 			if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
 				String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
 				if (nullable || value != null) {
-					Attribute attribute = new BasicAttribute(dynAttribute.getLdapName(), value);
+					Attribute attribute = new BasicAttribute(dynAttribute.getExternalName(), value);
 					myAttrs.put(attribute);
 				}
 			}
 		}
 		
 		// multi attributes
-		for (Iterator<DynamicLdapAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
-			DynamicLdapAttribute dynAttribute = iterator.next();
+		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
+			DynamicAttribute dynAttribute = iterator.next();
 			if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
-				Attribute attribute = new BasicAttribute(dynAttribute.getLdapName());
+				Attribute attribute = new BasicAttribute(dynAttribute.getExternalName());
 				@SuppressWarnings("unchecked")
 				List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
 				if (list != null) {
@@ -232,8 +232,8 @@ public class LdapDataModel implements DataModel, Serializable {
 	public Map<DynamicAttribute, Object> getNonMandatoryAttributes(DynamicObject dynamicObject) {
 		Map<DynamicAttribute, Object> map = new HashMap<DynamicAttribute, Object>();
 		// single attributes (except namingAttribute)
-		for (Iterator<DynamicLdapAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
-			DynamicLdapAttribute dynAttribute = iterator.next();
+		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
+			DynamicAttribute dynAttribute = iterator.next();
 			if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple()
 					&& !dynAttribute.isReadonly() && !dynAttribute.isMandatory()) {
 				String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
@@ -244,8 +244,8 @@ public class LdapDataModel implements DataModel, Serializable {
 		}
 		
 		// multi attributes
-		for (Iterator<DynamicLdapAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
-			DynamicLdapAttribute dynAttribute = iterator.next();
+		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
+			DynamicAttribute dynAttribute = iterator.next();
 			if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()
 					&& !dynAttribute.isMandatory()) {
 				@SuppressWarnings("unchecked")
@@ -261,10 +261,10 @@ public class LdapDataModel implements DataModel, Serializable {
 
 	
 	public String getNamingLdapAttribute() {
-		return getAttributes().get(getNamingAttribute()).getLdapName();
+		return getAttributes().get(getNamingAttribute()).getExternalName();
 	}
 	
-	public DynamicLdapAttribute getDynamicAttribute(String name) {
+	public DynamicAttribute getDynamicAttribute(String name) {
 		return getAttributes().get(name);
 	}
 	
@@ -276,7 +276,7 @@ public class LdapDataModel implements DataModel, Serializable {
 		}
 	}
 	
-	public void addAttribute(DynamicLdapAttribute dynAttribute) {
+	public void addAttribute(DynamicAttribute dynAttribute) {
 		String attributeName =  dynAttribute.getName();
 		this.attributes.put(attributeName, dynAttribute);
 		if (dynAttribute.isNaming()) {
@@ -284,7 +284,7 @@ public class LdapDataModel implements DataModel, Serializable {
 		}
 	}
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
-		for (Iterator<DynamicLdapAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
+		for (Iterator<DynamicAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
 			iterator.next().init(context, dynamicObject, rs);
 		}
 	}
@@ -294,7 +294,7 @@ public class LdapDataModel implements DataModel, Serializable {
 		complete &= dynamicObject.attributeIsNotEmpty(getNamingAttribute());
 		
 		// check mandatory attributes
-		for (Iterator<DynamicLdapAttribute> iterator = getMandatoryAttributes().iterator(); iterator.hasNext();) {
+		for (Iterator<DynamicAttribute> iterator = getMandatoryAttributes().iterator(); iterator.hasNext();) {
 			DynamicAttribute dynAttribute = iterator.next();
 			if (dynAttribute.isStatic()) {
 				StaticAttribute staticAttribute = (StaticAttribute) dynAttribute;
@@ -322,7 +322,7 @@ public class LdapDataModel implements DataModel, Serializable {
 		return complete;
 	}
 	@SuppressWarnings("unchecked")
-	public Map<String, DynamicLdapAttribute> getAttributes() {
+	public Map<String, DynamicAttribute> getAttributes() {
 		return attributes;
 	}
 	public List<String> getAdditionalObjectClasses() {

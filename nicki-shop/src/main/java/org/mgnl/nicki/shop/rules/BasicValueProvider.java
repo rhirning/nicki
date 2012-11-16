@@ -57,7 +57,7 @@ public class BasicValueProvider {
 	public static String getLdapName(CatalogArticle article, String selectorName) {
 		try {
 			Person person = article.getContext().getObjectFactory().getDynamicObject(Person.class);
-			return person.getModel().getAttributes().get(selectorName).getLdapName();
+			return person.getModel().getAttributes().get(selectorName).getExternalName();
 		} catch (InstantiateDynamicObjectException e) {
 			e.printStackTrace();
 			return "INVALID";

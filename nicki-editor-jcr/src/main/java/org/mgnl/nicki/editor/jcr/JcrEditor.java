@@ -62,7 +62,8 @@ public class JcrEditor extends NickiApplication {
 	@Override
 	public Component getEditor() {
 
-		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.scripts.basedn"), new ShowAllFilter());
+		DataProvider treeDataProvider = new DynamicObjectRoot("/", new ShowAllFilter());
+//		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.scripts.basedn"), new ShowAllFilter());
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), treeDataProvider, getI18nBase());
 		editor.configureClass(NodeDynamicObject.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, NodeDynamicObject.class);
 		editor.addAction(new ImportTreeAction(editor, NodeDynamicObject.class, I18n.getText(getI18nBase() + ".action.import"), getI18nBase()));

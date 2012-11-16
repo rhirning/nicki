@@ -62,4 +62,5 @@ public interface DynamicAttribute {
 	public Class<? extends DynamicObject> getForeignKeyClass();
 	public void setEditorClass(String editorClass);
 	public String getEditorClass();
+	public String getExternalName();
 }

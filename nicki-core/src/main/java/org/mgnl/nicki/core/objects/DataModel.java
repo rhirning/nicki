@@ -56,4 +56,5 @@ public interface DataModel  {
 	<T extends DynamicAttribute> Map<String, T> getAttributes();
 	List<String> getAdditionalObjectClasses();
 	String getObjectClassFilter();
+	void addAttribute(DynamicAttribute dynAttribute);
 }

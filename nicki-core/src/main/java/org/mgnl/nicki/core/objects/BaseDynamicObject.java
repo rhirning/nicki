@@ -43,6 +43,7 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 @SuppressWarnings("serial")
@@ -50,18 +51,15 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	public static final String ATTRIBUTE_NAME = "name";
 	public static final String SEPARATOR = "/";
 
-	// Schema
 	private String path = null;
+	private String parentPath = null;
 	private DynamicObject original = null;
 	private DynamicObject parent = null;
-	
 	private STATUS status;
-	
-	public void setStatus(STATUS status) {
-		this.status = status;
-	}
-
 	private boolean modified = false;
+	
+	// cached attributes
+	private Map<String, List<DynamicObject>> childObjects = null;
 
 	// Map with the attribute values
 	private Map<String, Object> map = new HashMap<String, Object>();
@@ -75,40 +73,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	
 	public abstract DataModel getModel();
 
-	/*
-	public void initNew(String parentPath, String namingValue) {
-		this.status = STATUS.NEW;
-		this.path = LdapHelper.getPath(parentPath, getModel().getNamingLdapAttribute(), namingValue);
-		put(getModel().getNamingAttribute(), namingValue);
-	}
-	
-	public String getNamingValue() {
-		return getAttribute(getModel().getNamingAttribute());
-	}
-
-	public String getParentPath() {
-		return LdapHelper.getParentPath(path);
-	}
-
-	public void initExisting(NickiContext context, String path) {
-		this.status = STATUS.EXISTS;
-		this.context = context;
-		this.path = path;
-		this.map.put(getModel().getNamingAttribute(), LdapHelper.getNamingValue(path));
-	}
-	*/
-	/*
-	public void init(ContextSearchResult rs) throws DynamicObjectException {
-		if (status != STATUS.EXISTS) {
-			throw new DynamicObjectException("Invalid call");
-		}
-		this.status = STATUS.LOADED;
-		this.getModel().init(context, this, rs);
-		this.original = (DynamicObject) this.clone();
-	}
-	*/
-	
-	private void init() {
+	public void init() {
 		if (status == STATUS.EXISTS) {
 			try {
 				this.context.loadObject(this);
@@ -128,8 +93,12 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return getModel().isComplete(this);
 	}
 
-	public boolean attributeIsNotEmpty(String namingAttribute) {
-		return StringUtils.isNotEmpty(getAttribute(namingAttribute));
+	public boolean attributeIsNotEmpty(String attribute) {
+		return StringUtils.isNotEmpty(getAttribute(attribute));
+	}
+	
+	public void setPath(String path) {
+		this.path = path;
 	}
 
 	public String getPath() {
@@ -139,17 +108,6 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	public String getId() {
 		return this.path;
 	}
-
-	/*
-	public boolean accept(ContextSearchResult rs) {
-		boolean accepted = true;
-		for (Iterator<String> iterator = getModel().getObjectClasses().iterator(); iterator.hasNext();) {
-			String objectClass = iterator.next();
-			accepted &= checkAttribute(rs,"objectClass", objectClass);
-		}
-		return accepted;
-	}
-	*/
 
 	public <T extends DynamicObject> T getForeignKeyObject(Class<T> classDefinition, String key) {
 		String path = getAttribute(key);
@@ -175,23 +133,6 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		}
 		return objects;
 	}
-
-	/*
-	public void loadChildren() {
-		init();
-		if (childObjects == null) {
-			childObjects = new HashMap<String, List<DynamicObject>>();
-			for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
-				String key = iterator.next();
-				String filter = getModel().getChildren().get(key);
-				List<? extends DynamicObject> list = context.loadChildObjects(path, filter);
-				if (list != null) {
-					childObjects.put(key, list);
-				}
-			}
-		}
-	}
-	*/
 	
 	/*
 	public List<DynamicObject> getChildren(String key) {
@@ -260,6 +201,10 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	
 	public void addAdditionalObjectClass(String objectClass) {
 		getModel().addAdditionalObjectClasses(objectClass);
+	}
+	
+	public void addAttribute(DynamicAttribute dynAttribute) {
+		this.getModel().addAttribute(dynAttribute);
 	}
 	
 	public void setOriginal(DynamicObject original) {
@@ -333,7 +278,6 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return getModel().getDynamicAttribute(name);
 	}
 
-	/*
 	public String getSlashPath(DynamicObject parent) {
 		if (parent != null) {
 			return getSlashPath(parent.getPath());
@@ -341,13 +285,20 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 			return getSlashPath("");
 		}
 	}
-	*/
+
+	public String getSlashPath(String parentPath) {
+		return PathHelper.getSlashPath(parentPath, getPath());
+	}
 
 	public DynamicObject getParent() {
 		if (parent == null) {
 			parent = context.loadObject(getParentPath());
 		}
 		return parent;
+	}
+
+	protected void setParent(DynamicObject parent) {
+		this.parent = parent;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -443,12 +394,50 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		this.modified = modified;
 	}
 
+	public void setStatus(STATUS status) {
+		this.status = status;
+	}
+
 	public STATUS getStatus() {
 		return status;
 	}
 
 	public Map<String, Object> getMap() {
 		return map;
+	}
+
+	protected Map<String, List<DynamicObject>> getChildObjects() {
+		return childObjects;
+	}
+
+	protected void initChildren() {
+		childObjects = new HashMap<String, List<DynamicObject>>();
+	}
+
+	public void unLoadChildren() {
+		this.childObjects = null;
+	}
+	
+	public List<DynamicObject> getChildren(String key) {
+		loadChildren();
+		return childObjects.get(key);
+	}
+	
+	public List<? extends DynamicObject> getAllChildren() {
+		loadChildren();
+		List<DynamicObject> list = new ArrayList<DynamicObject>();
+		for (Iterator<String> iterator = childObjects.keySet().iterator(); iterator.hasNext();) {
+			list.addAll(getChildren(iterator.next()));
+		}
+		return list;
+	}
+
+	public String getParentPath() {
+		return parentPath;
+	}
+
+	public void setParentPath(String parentPath) {
+		this.parentPath = parentPath;
 	}
 
 }

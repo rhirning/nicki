@@ -115,4 +115,10 @@ public class JcrDataModel implements DataModel {
 		return "";
 	}
 
+	@Override
+	public void addAttribute(DynamicAttribute dynAttribute) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

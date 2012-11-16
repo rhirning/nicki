@@ -183,6 +183,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 			Node node = session.getNode(dynamicObject.getPath());
 			node.remove();
 			session.save();
+			dynamicObject.setOriginal(null);
 		} catch (Exception e) {
 			throw new DynamicObjectException(e);
 		}
@@ -212,14 +213,16 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not rename object: " + dynamicObject.getPath());
 		}
-		String newPath = dynamicObject.getParentPath() + PATH_SEPARATOR + newName;
+		String newPath = dynamicObject.getPath(dynamicObject.getParentPath(), newName);
 		return moveObject(dynamicObject, newPath);
 	}
-
 
 	@Override
 	public DynamicObject loadObject(String path) {
 		try {
+			if (StringUtils.equals(path, PATH_SEPARATOR)) {
+				return getDynamicObject(session.getRootNode());
+			}
 			return getDynamicObject(session.getNode(path));
 		} catch (Exception e) {
 			e.printStackTrace();

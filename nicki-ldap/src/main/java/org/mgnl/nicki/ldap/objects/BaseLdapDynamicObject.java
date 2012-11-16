@@ -33,8 +33,6 @@
 package org.mgnl.nicki.ldap.objects;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +40,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
@@ -57,21 +54,6 @@ import org.mgnl.nicki.ldap.methods.StructuredData;
 public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
 	public static final String ATTRIBUTE_NAME = "name";
 	public static final String SEPARATOR = "/";
-
-	// Schema
-	private String path = null;
-	private DynamicObject original = null;
-	private DynamicObject parent = null;
-		
-	private boolean modified = false;
-
-	// Map with the attribute values
-	private Map<String, Object> map = new HashMap<String, Object>();
-	
-	// cached attributes
-	private Map<String, List<BaseLdapDynamicObject>> childObjects = null;
-	
-	private NickiContext context;
 	
 	private LdapDataModel model = null;
 	
@@ -80,66 +62,41 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 		//		initDataModel();
 	}
 	
+	@Override
 	public void initNew(String parentPath, String namingValue) {
 		this.setStatus(STATUS.NEW);
-		this.path = LdapHelper.getPath(parentPath, getModel().getNamingLdapAttribute(), namingValue);
+		setParentPath(parentPath);
+		setPath(LdapHelper.getPath(parentPath, getModel().getNamingLdapAttribute(), namingValue));
 		put(getModel().getNamingAttribute(), namingValue);
 	}
-	
+
+	@Override
 	public String getNamingValue() {
 		return getAttribute(getModel().getNamingAttribute());
 	}
 
+	@Override
 	public String getParentPath() {
-		return LdapHelper.getParentPath(path);
+		return LdapHelper.getParentPath(getPath());
 	}
 
+	@Override
 	public void initExisting(NickiContext context, String path) {
 		this.setStatus(STATUS.EXISTS);
-		this.context = context;
-		this.path = path;
-		this.map.put(getModel().getNamingAttribute(), LdapHelper.getNamingValue(path));
+		setContext(context);
+		setPath(path);
+		setParentPath(LdapHelper.getParentPath(getPath()));
+
+		getMap().put(getModel().getNamingAttribute(), LdapHelper.getNamingValue(path));
 	}
-	
+
 	public void init(ContextSearchResult rs) throws DynamicObjectException {
 		if (getStatus() != STATUS.EXISTS) {
 			throw new DynamicObjectException("Invalid call");
 		}
 		this.setStatus(STATUS.LOADED);
-		this.getModel().init(context, this, rs);
-		this.original = (DynamicObject) this.clone();
-	}
-	
-	private void init() {
-		if (getStatus() == STATUS.EXISTS) {
-			try {
-				this.context.loadObject(this);
-			} catch (DynamicObjectException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	
-	public boolean isNew() {
-		return (this.getStatus() == STATUS.NEW);
-	}
-	
-	public boolean isComplete() {
-		init();
-		return getModel().isComplete(this);
-	}
-
-	public boolean attributeIsNotEmpty(String namingAttribute) {
-		return StringUtils.isNotEmpty(getAttribute(namingAttribute));
-	}
-
-	public String getPath() {
-		return this.path;
-	}
-
-	public String getId() {
-		return this.path;
+		this.getModel().init(getContext(), this, rs);
+		setOriginal((DynamicObject) this.clone());
 	}
 
 	public boolean accept(ContextSearchResult rs) {
@@ -164,233 +121,25 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 		}
 		return false;
 	}
+	
 	public abstract void initDataModel();
-
-	public <T extends DynamicObject> T getForeignKeyObject(Class<T> classDefinition, String key) {
-		String path = getAttribute(key);
-		if (StringUtils.isNotEmpty(path)) {
-			return context.loadObject(classDefinition, path);
-		} else {
-			return null;
-		}
-	}
-
-	public <T extends DynamicObject> List<T> getForeignKeyObjects(Class<T> classDefinition, String key) {
-		List<T> objects = new ArrayList<T>();
-		@SuppressWarnings("unchecked")
-		List<String> foreignKeys = (List<String>) get(key);
-		for (Iterator<String> iterator = foreignKeys.iterator(); iterator.hasNext();) {
-			String path = (String) iterator.next();
-			DynamicObject object = context.loadObject(classDefinition, path);
-			if (object != null) {
-				objects.add(context.loadObject(classDefinition, path));
-			} else {
-				System.out.println("Could not build object: " + path);
-			}
-		}
-		return objects;
-	}
 
 	public void loadChildren() {
 		init();
-		if (childObjects == null) {
-			childObjects = new HashMap<String, List<BaseLdapDynamicObject>>();
+		if (getChildObjects() == null) {
+			initChildren();
 			for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
 				String key = iterator.next();
 				String filter = getModel().getChildren().get(key);
 				@SuppressWarnings("unchecked")
-				List<BaseLdapDynamicObject> list = (List<BaseLdapDynamicObject>) context.loadChildObjects(path, filter);
+				List<DynamicObject> list = (List<DynamicObject>) getContext().loadChildObjects(getPath(), filter);
 				if (list != null) {
-					childObjects.put(key, list);
+					getChildObjects().put(key, list);
 				}
 			}
 		}
 	}
-	
-	public void unLoadChildren() {
-		this.childObjects = null;
-	}
-	
-	public List<BaseLdapDynamicObject> getChildren(String key) {
-		loadChildren();
-		return childObjects.get(key);
-	}
-	
-	public List<? extends DynamicObject> getAllChildren() {
-		loadChildren();
-		List<DynamicObject> list = new ArrayList<DynamicObject>();
-		for (Iterator<String> iterator = childObjects.keySet().iterator(); iterator.hasNext();) {
-			list.addAll(getChildren(iterator.next()));
-		}
-		return list;
-	}
-
-	public <T extends DynamicObject> List<T>  getChildren(Class<T> classDefinition) {
-		init();
-		return getContext().loadChildObjects(classDefinition, this, "");
-	}
-
-	public void addChild(String attribute, String filter) {
-		getModel().addChild(attribute, filter);
-	}
-	
-	// TODO
-	public String getAttribute(String attributeName) {
-		init();
-		return (String) get(attributeName);
-	}
-
-	public Object get(String key) {
-		init();
-		return this.map.get(key);
-	}
-	
-	public Object get(Class<?> clazz, String key) {
-		return get(clazz.getName() + "." + key);
-	}
-	
-	public void put(String key, Object value) {
-		init();
-		listen(key, value, this.map.put(key, value));
-	}
-	
-	public void put(Class<?> clazz, String key, Object data) {
-		put(clazz.getName() + "." + key, data);
-	}
-	
-	public void listen(String key, Object value, Object oldValue) {
-	}
-
-	public void remove(String key) {
-		init();
-		if (this.map.containsKey(key)) {
-			this.map.remove(key);
-		}
-	}
-	
 	// Schema
-	
-	public void addObjectClass(String objectClass) {
-		getModel().addObjectClasses(objectClass);
-	}
-	
-	public void addAdditionalObjectClass(String objectClass) {
-		getModel().addAdditionalObjectClasses(objectClass);
-	}
-	
-	public void setOriginal(DynamicObject original) {
-		this.original = original;
-	}
-
-	public DynamicObject getOriginal() {
-		return original;
-	}
-	
-	public void copyFrom(DynamicObject object) {
-		this.setModel(object.getModel());
-		this.map = object.getMap();
-		this.setStatus(object.getStatus());
-	}
-	
-	@Override
-	public DynamicObject clone() {
-		DynamicObject cloned = null;
-		try {
-			cloned = context.getObjectFactory().getNewDynamicObject(this.getClass(), getParentPath(), getNamingValue());
-			cloned.copyFrom(this);
-		} catch (InstantiateDynamicObjectException e) {
-			e.printStackTrace();
-		}
-		return cloned;
-	}
-
-	public String getName() {
-		return getNamingValue();
-	}
-	
-	public void update() throws DynamicObjectException {
-		if (isNew()) {
-			throw new DynamicObjectException("Object does not exist: " + getPath());
-		}
-		if (!isComplete()) {
-			throw new DynamicObjectException("Object incomplete: " + getPath());
-		}
-		if (!StringUtils.equalsIgnoreCase(getPath(), getOriginal().getPath())) {
-			throw new DynamicObjectException("Path has changed: " + getOriginal().getPath() + "->" + getPath());
-		}
-		context.updateObject(this);
-	}
-	
-	public void create() throws DynamicObjectException {
-		if (!isNew() ||context.isExist(getPath())) {
-			throw new DynamicObjectException("Object exists: " + getPath());
-		}
-		if (!isComplete()) {
-			throw new DynamicObjectException("Object incomplete: " + getPath());
-		}
-		context.createObject(this);
-	}
-
-	public void delete() throws DynamicObjectException {
-		if (!isNew()) {
-			context.deleteObject(this);
-		}
-	}
-
-	public DynamicObject rename(String newName) throws DynamicObjectException {
-		return context.renameObject(this, newName);
-	}
-
-	public DynamicObject move(String newPath) throws DynamicObjectException {
-		return context.moveObject(this, newPath);
-	}
-
-	public DynamicAttribute getDynamicAttribute(String name) {
-		return getModel().getDynamicAttribute(name);
-	}
-
-	public String getSlashPath(DynamicObject parent) {
-		if (parent != null) {
-			return getSlashPath(parent.getPath());
-		} else {
-			return getSlashPath("");
-		}
-	}
-
-	public String getSlashPath(String parentPath) {
-		return LdapHelper.getSlashPath(parentPath, getPath());
-	}
-
-	public DynamicObject getParent() {
-		if (parent == null) {
-			parent = context.loadObject(getParentPath());
-		}
-		return parent;
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T extends DynamicObject> T getParent(Class<T> classDefinition) {
-		if (parent == null) {
-			parent = context.loadObject(getParentPath());
-		}
-		try {
-			return (T) parent;
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	public void addAttribute(DynamicAttribute dynAttribute) {
-		this.getModel().addAttribute((DynamicLdapAttribute) dynAttribute);
-	}
-
-	public void setContext(NickiContext context) {
-		this.context = context;
-	}
-
-	public NickiContext getContext() {
-		return context;
-	}
 
 	public void merge(Map<DynamicAttribute, Object> changeAttributes) {
 		for (Iterator<DynamicAttribute> iterator = changeAttributes.keySet().iterator(); iterator.hasNext();) {
@@ -398,27 +147,6 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 			put(dynamicAttribute.getName(), changeAttributes.get(dynamicAttribute));
 		}
 	};
-	
-	public String getDisplayName() {
-		return getAttribute(ATTRIBUTE_NAME);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		try {
-			if (StringUtils.equalsIgnoreCase(getPath(), ((DynamicObject)obj).getPath())) {
-				return true;
-			}
-		} catch (Exception e) {
-			return false;
-		}
-		return false;
-	}
-
-	@Override
-	public int hashCode() {
-		return getPath().hashCode();
-	}
 
 	public String getInfo(String xml, String infoPath) {
 		String parts[] = StringUtils.split(infoPath, SEPARATOR);
@@ -458,35 +186,6 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 		return getDisplayName();
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T extends DynamicObject> T getWritable(T dynamicObject) {
-		NickiContext ctx = dynamicObject.getContext();
-		ctx.setReadonly(false);
-		return (T) ctx.loadObject(dynamicObject.getClass(), dynamicObject.getPath());
-	}
-
-	public <T extends DynamicObject> T getAs(Class<T> classDefinition,
-			DynamicObject dynamicObject) {
-		return getContext().loadObjectAs(classDefinition, this);
-	}
-
-	public void clear(String key) {
-		put(key, null);
-	}
-
-	public boolean isModified() {
-		return modified;
-	}
-
-	public void setModified(boolean modified) {
-		this.modified = modified;
-	}
-
-	public Map<String, Object> getMap() {
-		return map;
-	}
-
-
 	@Override
 	public void setModel(DataModel model) {
 		this.model = (LdapDataModel) model;
@@ -499,4 +198,10 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 		}
 		return model;
 	}
+	
+	@Override
+	public String getPath(String parentPath, String name) {
+		return LdapHelper.getPath(parentPath, getModel().getNamingLdapAttribute(), name);
+	}
+
 }
