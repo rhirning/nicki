@@ -76,5 +76,4 @@ public interface NickiContext extends Serializable {
 	void loadAttributes(DynamicObject dynamicObject, Class<?> requester, String[] attributes) throws DynamicObjectException;
 	void setReadonly(boolean readonly);
 	<T extends DynamicObject> T loadObjectAs(Class<T> classDefinition, DynamicObject dynamicObject);
-
 }

@@ -222,7 +222,7 @@ public class NodeViewer extends CustomComponent implements ClassEditor {
 		// table
 		table = new Table();
 		table.setImmediate(false);
-		table.setWidth("-1px");
+		table.setWidth("100%");
 		table.setHeight("-1px");
 		mainLayout.addComponent(table, "top:20.0px;left:20.0px;");
 		

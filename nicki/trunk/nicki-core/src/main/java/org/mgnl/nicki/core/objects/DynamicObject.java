@@ -180,4 +180,6 @@ public interface DynamicObject {
 	
 	public STATUS getStatus();
 
+	String getPath(String parentPath, String name);
+
 }

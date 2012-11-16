@@ -6,18 +6,21 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DataModel;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.jcr.context.JcrContext;
 
 
 public class BaseJcrDynamicObject extends BaseDynamicObject {
 
+
+	@Override
 	public String getNamingValue() {
 		return namingValue;
 	}
@@ -26,10 +29,8 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 	private JcrDataModel model = null;
 	private Node node;
 	private String namingValue = null;
-	private String path = null;
-	private String parentPath = null;
 	// cached attributes
-	private List<BaseJcrDynamicObject> childObjects = null;
+	private List<DynamicObject> childObjects = null;
 	
 	@Override
 	public void initDataModel() {
@@ -38,8 +39,8 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 	public void init(Node node) throws DynamicObjectException {
 		this.node = node;
 		try {
-			this.path = node.getPath();
-			this.parentPath = node.getParent().getPath();
+			setPath(node.getPath());
+			this.setParentPath(node.getParent().getPath());
 			this.namingValue = node.getName();
 
 			setOriginal((DynamicObject) this.clone());
@@ -53,13 +54,6 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 
 	public Node getNode() {
 		return node;
-	}
-	
-	
-
-	@Override
-	public String getPath() {
-		return path;
 	}
 
 	@Override
@@ -78,30 +72,13 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 	public void loadChildren() {
 		init();
 		if (childObjects == null) {
-			childObjects = new ArrayList<BaseJcrDynamicObject>();
+			childObjects = new ArrayList<DynamicObject>();
 			@SuppressWarnings("unchecked")
-			List<BaseJcrDynamicObject> list = (List<BaseJcrDynamicObject>) getContext().loadChildObjects(path, "*");
+			List<BaseJcrDynamicObject> list = (List<BaseJcrDynamicObject>) getContext().loadChildObjects(getPath(), "*");
 			if (list != null) {
 				childObjects.addAll(list);
 			}
 		}
-	}
-	
-	private void init() {
-		if (getStatus() == STATUS.EXISTS) {
-			try {
-				getContext().loadObject(this);
-			} catch (DynamicObjectException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-
-	@Override
-	public <T extends DynamicAttribute> void addAttribute(T dynAttribute) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -113,21 +90,16 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 	@Override
 	public void initNew(String parentPath, String namingValue) {
 		this.setStatus(STATUS.NEW);
-		this.parentPath = parentPath;
-		this.path = parentPath + SEPARATOR + namingValue;
+		this.setParentPath(parentPath);
+		setPath(parentPath + SEPARATOR + namingValue);
 		this.namingValue = namingValue;
-	}
-
-	@Override
-	public String getParentPath() {
-		return parentPath;
 	}
 
 	@Override
 	public void initExisting(NickiContext context, String path) {
 		this.setStatus(STATUS.EXISTS);
 		setContext(context);
-		this.path = path;
+		setPath(path);
 	}
 
 	@Override
@@ -164,4 +136,11 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 		return PathHelper.getSlashPath(parentPath, getPath());
 	}
 
+	public String getPath(String parentPath, String name) {
+		if (StringUtils.equals(parentPath, JcrContext.PATH_SEPARATOR)) {
+			return JcrContext.PATH_SEPARATOR + name;
+		} else {
+			return parentPath + JcrContext.PATH_SEPARATOR + name; 
+		}
+	}
 }

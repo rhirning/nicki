@@ -11,13 +11,6 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 public class DynamicJcrAttribute implements DynamicAttribute {
 
 	@Override
-	public void init(NickiContext context, DynamicObject dynamicObject,
-			ContextSearchResult rs) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public Class<?> getAttributeClass() {
 		// TODO Auto-generated method stub
 		return null;
@@ -149,6 +142,19 @@ public class DynamicJcrAttribute implements DynamicAttribute {
 
 	public static String getMultipleGetter(String name) {
 		return "get" + StringUtils.capitalize(name) + "s";
+	}
+
+	@Override
+	public <T extends NickiContext> void init(T context,
+			DynamicObject dynamicObject, ContextSearchResult rs) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getExternalName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -45,9 +45,9 @@ import org.jdom.Text;
 import org.jdom.output.Format;
 import org.jdom.output.XMLOutputter;
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 
 
 public class XMLBuilder {
@@ -86,11 +86,11 @@ public class XMLBuilder {
 		newNode.setAttribute("class", dynamicObject.getClass().getName());
 		for (Iterator<String> iterator = dynamicObject.getModel().getAttributes().keySet().iterator(); iterator.hasNext();) {
 			String attributeName = iterator.next();
-			DynamicLdapAttribute dynamicAttribute = dynamicObject.getModel().getDynamicAttribute(attributeName);
+			DynamicAttribute dynamicAttribute = dynamicObject.getModel().getDynamicAttribute(attributeName);
 			if (!dynamicAttribute.isVirtual() && dynamicObject.get(attributeName) != null) {
 				Element attributeNode = new Element("attribute");
 				attributeNode.setAttribute("name", attributeName);
-				attributeNode.setAttribute("ldapName", dynamicAttribute.getLdapName());
+				attributeNode.setAttribute("ldapName", dynamicAttribute.getExternalName());
 				if (dynamicAttribute.isMultiple()) {
 					@SuppressWarnings("unchecked")
 					List<Object> values = (List<Object>) dynamicObject.get(attributeName);
