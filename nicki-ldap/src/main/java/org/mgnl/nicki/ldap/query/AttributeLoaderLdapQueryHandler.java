@@ -43,7 +43,6 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.context.LdapContext;
 import org.mgnl.nicki.ldap.data.QueryHandler;
-import org.mgnl.nicki.ldap.helper.LdapHelper;
 
 public class AttributeLoaderLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
 
@@ -59,7 +58,7 @@ public class AttributeLoaderLdapQueryHandler extends BasicLdapHandler implements
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
 		for (ContextSearchResult rs : results) {
 			for(int i = 0; i < attributes.length; i++) {
-				lists.put(attributes[i], LdapHelper.getAttributes(rs, attributes[i]));
+				lists.put(attributes[i], rs.getValues(attributes[i]));
 			}
 		}
 	}

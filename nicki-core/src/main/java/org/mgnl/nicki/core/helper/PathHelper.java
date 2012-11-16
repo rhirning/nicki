@@ -30,18 +30,38 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.objects;
+package org.mgnl.nicki.core.helper;
 
-import java.util.List;
+import org.apache.commons.lang.StringUtils;
 
-public interface ContextSearchResult {
+public class PathHelper {
 
-	String getNameInNamespace();
+	public static boolean isPathEqual(String refPath, String comparePath) {
+		if (StringUtils.equalsIgnoreCase(refPath, comparePath)) {
+			return true;
+		}
 
-	//ContextAttributes getAttributes();
-	
-	Object getValue(String name);
-	
-	List<Object> getValues(String name);
+		return false;
+	}
+
+	public static String getSlashPath(String parentPath, String childPath) {
+		StringBuffer sb = new StringBuffer();
+		if (StringUtils.isNotEmpty(parentPath)) {
+			if (StringUtils.equals(parentPath, childPath)) {
+				return "/";
+			}
+			childPath = StringUtils.substringBeforeLast(childPath, "," + parentPath);
+		}
+		
+		String parts[] = StringUtils.split(childPath, ",");
+		if (parts != null) {
+			for (int i = parts.length - 1; i >=0; i--) {
+				String part = StringUtils.substringAfter(parts[i], "=");
+				sb.append("/");
+				sb.append(part);
+			}
+		}
+		return sb.toString();
+	}
 
 }

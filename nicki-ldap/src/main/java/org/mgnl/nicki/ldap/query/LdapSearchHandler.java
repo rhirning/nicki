@@ -33,13 +33,10 @@
 package org.mgnl.nicki.ldap.query;
 
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.objects.ContextAttribute;
-import org.mgnl.nicki.core.objects.ContextAttributes;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.objects.SearchResultEntry;
@@ -71,20 +68,13 @@ public class LdapSearchHandler extends BasicLdapHandler implements QueryHandler 
 		for (Iterator<ContextSearchResult> resultsIterator = results.iterator(); resultsIterator.hasNext();) {
 			ContextSearchResult rs = resultsIterator.next();
 			SearchResultEntry entry = new SearchResultEntry();
-			ContextAttributes attrs = rs.getAttributes();
 			String dn = rs.getNameInNamespace();
 			entry.setDn(dn);
 			entry.addValue("dn", dn);
 			for (Iterator<String> iterator = query.getResultAttributes().keySet().iterator(); iterator.hasNext();) {
 				String attributeName = iterator.next();
-				ContextAttribute attr = attrs.get(attributeName);
-				if (attr != null) {
-					Enumeration<Object> vals = (Enumeration<Object>) attr.getAll();
-					if (vals.hasMoreElements()) {
-						Object value = vals.nextElement();
-						entry.addValue(query.getResultAttributes().get(attributeName), value);
-					}
-				}
+				Object value = rs.getValue(attributeName);
+				entry.addValue(query.getResultAttributes().get(attributeName), value);
 			}
 			result.add(entry);
 		}

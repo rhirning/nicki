@@ -30,40 +30,61 @@
  * intact.
  *
  */
-package org.mgnl.nicki.ldap.objects;
+package org.mgnl.nicki.jcr.data;
 
-import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.context.NickiContext;
+import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.PropertyIterator;
+import javax.jcr.RepositoryException;
+
 import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.ldap.methods.ListStructuredForeignKeyMethod;
-import org.mgnl.nicki.ldap.methods.StructuredForeignKeyMethod;
 
-@SuppressWarnings("serial")
-public class StructuredDynamicAttribute extends DynamicLdapAttribute implements Serializable {
+public class JcrSearchResult implements ContextSearchResult {
+	private Node node;
 
-	public StructuredDynamicAttribute(String name, String ldapName,	Class<String> attributeClass) {
-		super(name, ldapName, attributeClass);
+	public JcrSearchResult(Node node) {
+		this.node = node;
 	}
-	@Override
-	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
-		if (isMultiple()) {
-			List<Object> values = rs.getValues(getLdapName());
-			dynamicObject.put(getName(), values);
-			dynamicObject.put(getMultipleGetter(getName()),
-					new ListStructuredForeignKeyMethod(context, rs, getLdapName(), getForeignKeyClass()));
 
-		} else {
-			String value = (String) rs.getValue(getLdapName());
-			if (StringUtils.isNotEmpty(value)) {
-				dynamicObject.put(getName(), value);
-				dynamicObject.put(getGetter(getName()),
-						new StructuredForeignKeyMethod(context, rs, getLdapName(), getForeignKeyClass()));
-			}
+	public String getNameInNamespace() {
+		try {
+			return node.getPath();
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return null;
 	}
-}
 
+	@Override
+	public Object getValue(String name) {
+		try {
+			return node.getProperty(name);
+		} catch (PathNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return name;
+	}
+
+	@Override
+	public List<Object> getValues(String name) {
+		List<Object> list = new ArrayList<Object>();
+		try {
+			for (PropertyIterator it = this.node.getProperties(name); it.hasNext();) {
+				list.add(it.next());
+			}
+		} catch (RepositoryException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+}

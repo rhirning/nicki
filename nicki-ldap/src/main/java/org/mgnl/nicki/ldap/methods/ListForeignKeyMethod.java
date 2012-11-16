@@ -41,7 +41,6 @@ import java.util.List;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.ldap.helper.LdapHelper;
 
 import freemarker.template.TemplateMethodModel;
 
@@ -57,7 +56,7 @@ public class ListForeignKeyMethod implements TemplateMethodModel, Serializable {
 	public ListForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName,
 			Class<? extends DynamicObject> classDefinition) {
 		this.context = context;
-		this.foreignKeys = LdapHelper.getAttributes(rs, ldapName);
+		this.foreignKeys = rs.getValues(ldapName);
 		this.classDefinition = classDefinition;
 	}
 

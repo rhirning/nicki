@@ -1,18 +1,19 @@
 package org.mgnl.nicki.jcr.objects;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.core.objects.DynamicObject.STATUS;
 
 
 public class BaseJcrDynamicObject extends BaseDynamicObject {
@@ -27,6 +28,8 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 	private String namingValue = null;
 	private String path = null;
 	private String parentPath = null;
+	// cached attributes
+	private List<BaseJcrDynamicObject> childObjects = null;
 	
 	@Override
 	public void initDataModel() {
@@ -38,6 +41,8 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 			this.path = node.getPath();
 			this.parentPath = node.getParent().getPath();
 			this.namingValue = node.getName();
+
+			setOriginal((DynamicObject) this.clone());
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -71,8 +76,26 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 
 	@Override
 	public void loadChildren() {
-		// TODO Auto-generated method stub
-		
+		init();
+		if (childObjects == null) {
+			childObjects = new ArrayList<BaseJcrDynamicObject>();
+			@SuppressWarnings("unchecked")
+			List<BaseJcrDynamicObject> list = (List<BaseJcrDynamicObject>) getContext().loadChildObjects(path, "*");
+			if (list != null) {
+				childObjects.addAll(list);
+			}
+		}
+	}
+	
+	private void init() {
+		if (getStatus() == STATUS.EXISTS) {
+			try {
+				getContext().loadObject(this);
+			} catch (DynamicObjectException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@Override
@@ -109,7 +132,7 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 
 	@Override
 	public void unLoadChildren() {
-		// TODO Auto-generated method stub
+		this.childObjects = null;
 		
 	}
 
@@ -123,25 +146,22 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 
 	@Override
 	public List<? extends DynamicObject> getAllChildren() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<? extends DynamicObject> getChildren(String key) {
-		// TODO Auto-generated method stub
-		return null;
+		loadChildren();
+		return childObjects;
 	}
 
 	@Override
 	public String getSlashPath(DynamicObject parent) {
-		// TODO Auto-generated method stub
-		return null;
+		if (parent != null) {
+			return getSlashPath(parent.getPath());
+		} else {
+			return getSlashPath("");
+		}
 	}
 
 	@Override
 	public String getSlashPath(String parentPath) {
-		return null;
+		return PathHelper.getSlashPath(parentPath, getPath());
 	}
 
 }

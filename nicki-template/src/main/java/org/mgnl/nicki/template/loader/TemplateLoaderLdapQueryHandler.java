@@ -32,12 +32,9 @@
  */
 package org.mgnl.nicki.template.loader;
 
-import java.util.Enumeration;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.objects.ContextAttribute;
-import org.mgnl.nicki.core.objects.ContextAttributes;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.context.NickiContext;
@@ -83,19 +80,15 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 	public void handle(ContextSearchResult rs) throws DynamicObjectException {
 		template = new Template(this.name);
 			
-		ContextAttributes attrs = rs.getAttributes();
 		try {
 			template.setData(getAttribute(rs, ATTRIBUTE_DATA));
 		} catch (Exception e) {
 		}
-		ContextAttribute attr = attrs.get(ATTRIBUTE_PART);
-		if (attr != null) {
-			for ( Enumeration<Object> vals = (Enumeration<Object>) attr.getAll(); vals.hasMoreElements();) {
-				String partString = (String) vals.nextElement();
-				String partName = StringUtils.substringBefore(partString, PART_SEPARATOR);
-				String partValue = StringUtils.substringAfter(partString, PART_SEPARATOR);
-				template.putPart(partName, partValue);
-			}
+		for (Object value : rs.getValues(ATTRIBUTE_PART)) {
+			String partString = (String) value;
+			String partName = StringUtils.substringBefore(partString, PART_SEPARATOR);
+			String partValue = StringUtils.substringAfter(partString, PART_SEPARATOR);
+			template.putPart(partName, partValue);
 		}
 	}
 
@@ -105,8 +98,7 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 
 
 	private String getAttribute(ContextSearchResult rs, String attributeName) throws DynamicObjectException {
-		ContextAttributes attributes = rs.getAttributes();
-		String result = attributes.get(attributeName).get().toString();
+		String result = rs.getValue(attributeName).toString();
 		if (StringUtils.isNotEmpty(result)) {
 			return result;
 		}

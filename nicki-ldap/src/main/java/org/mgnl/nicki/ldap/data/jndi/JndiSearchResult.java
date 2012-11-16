@@ -32,6 +32,11 @@
  */
 package org.mgnl.nicki.ldap.data.jndi;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.naming.NamingEnumeration;
+import javax.naming.NamingException;
 import javax.naming.directory.SearchResult;
 
 import org.mgnl.nicki.core.objects.ContextAttributes;
@@ -50,6 +55,31 @@ public class JndiSearchResult implements ContextSearchResult {
 
 	public ContextAttributes getAttributes() {		
 		return new JndiAttributes(rs.getAttributes());
+	}
+
+	@Override
+	public Object getValue(String name) {
+		try {
+			return rs.getAttributes().get(name).get();
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	@Override
+	public List<Object> getValues(String name) {
+		List<Object> list = new ArrayList<Object>();
+		try {
+			for (NamingEnumeration<?> iterator = rs.getAttributes().get(name).getAll(); iterator.hasMoreElements();) {
+				list.add(iterator.next());
+			}
+		} catch (NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return list;
 	}
 
 }
