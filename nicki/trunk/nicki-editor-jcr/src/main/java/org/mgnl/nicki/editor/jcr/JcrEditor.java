@@ -67,6 +67,7 @@ public class JcrEditor extends NickiApplication {
 		editor.configureClass(NodeDynamicObject.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, NodeDynamicObject.class);
 		editor.addAction(new ImportTreeAction(editor, NodeDynamicObject.class, I18n.getText(getI18nBase() + ".action.import"), getI18nBase()));
 		editor.addAction(new ExportTreeAction(getNickiContext(), NodeDynamicObject.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
+		editor.setClassEditor(NodeDynamicObject.class, new NodeViewer());
 		editor.initActions();
 		editor.setHeight("100%");
 		getMainWindow().setHeight("100%");
@@ -82,7 +83,7 @@ public class JcrEditor extends NickiApplication {
 
 	@Override
 	public String getI18nBase() {
-		return "nicki.editor.script";
+		return "nicki.editor.jcr";
 	}
 	
 }

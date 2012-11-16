@@ -88,9 +88,7 @@ public interface DynamicObject {
 	public void loadChildren();
 	
 	public void unLoadChildren();
-	
-	public List<? extends DynamicObject> getChildren(String key);
-	
+		
 	public List<? extends DynamicObject> getAllChildren();
 
 	public <T extends DynamicObject> List<T>  getChildren(Class<T> classDefinition);

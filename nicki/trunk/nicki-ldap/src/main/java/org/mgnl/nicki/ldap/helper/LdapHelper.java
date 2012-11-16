@@ -32,15 +32,10 @@
  */
 package org.mgnl.nicki.ldap.helper;
 
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.objects.ContextAttribute;
-import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.helper.PathHelper;
 
-public class LdapHelper {
+public class LdapHelper extends PathHelper {
 
 	public enum LOGIC {
 
@@ -57,43 +52,6 @@ public class LdapHelper {
 		public String getSign() {
 			return this.sign;
 		}
-	}
-
-	public static boolean isPathEqual(String refPath, String comparePath) {
-		if (StringUtils.equalsIgnoreCase(refPath, comparePath)) {
-			return true;
-		}
-
-		return false;
-	}
-
-	public static List<Object> getAttributes(ContextSearchResult rs, String attributeName) {
-		List<Object> attributeList = new ArrayList<Object>();
-
-		try {
-			ContextAttribute attr = rs.getAttributes().get(attributeName);
-			if (attr != null) {
-				for (Enumeration<Object> vals = (Enumeration<Object>) attr.getAll(); vals.hasMoreElements();) {
-					attributeList.add(vals.nextElement());
-				}
-			}
-		} catch (Exception e) {
-		}
-		return attributeList;
-	}
-
-	public static Object getAttribute(ContextSearchResult rs, String attributeName) {
-		try {
-			ContextAttribute attr = rs.getAttributes().get(attributeName);
-			if (attr != null) {
-				Enumeration<?> vals = attr.getAll();
-				if (vals.hasMoreElements()) {
-					return vals.nextElement();
-				}
-			}
-		} catch (Exception e) {
-		}
-		return null;
 	}
 
 	public static String getPath(String parentPath, String namingLdapAttribute, String namingValue) {
@@ -142,26 +100,6 @@ public class LdapHelper {
 			}
 			sb.append(")");
 		}
-	}
-	
-	public static String getSlashPath(String parentPath, String childPath) {
-		StringBuffer sb = new StringBuffer();
-		if (StringUtils.isNotEmpty(parentPath)) {
-			if (StringUtils.equals(parentPath, childPath)) {
-				return "/";
-			}
-			childPath = StringUtils.substringBeforeLast(childPath, "," + parentPath);
-		}
-		
-		String parts[] = StringUtils.split(childPath, ",");
-		if (parts != null) {
-			for (int i = parts.length - 1; i >=0; i--) {
-				String part = StringUtils.substringAfter(parts[i], "=");
-				sb.append("/");
-				sb.append(part);
-			}
-		}
-		return sb.toString();
 	}
 
 

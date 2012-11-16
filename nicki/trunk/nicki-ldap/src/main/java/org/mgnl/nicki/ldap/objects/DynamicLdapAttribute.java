@@ -39,7 +39,6 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.ldap.data.OctetString;
-import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
@@ -78,14 +77,14 @@ public class DynamicLdapAttribute implements DynamicAttribute, Serializable {
 		}
 		// mandatory
 		if (isMandatory()) {
-			Object attribute = LdapHelper.getAttribute(rs, getLdapName());
+			Object attribute = rs.getValue(getLdapName());
 			if (attribute != null) {
 				dynamicObject.put(name, attribute);
 			}
 		}
 		// optional
 		if (!isMandatory() && !isMultiple() && !isForeignKey()) {
-			Object attribute = LdapHelper.getAttribute(rs, getLdapName());
+			Object attribute = rs.getValue(getLdapName());
 			if (attribute != null) {
 				if (attributeClass == OctetString.class) {
 					dynamicObject.put(name, new OctetString(((byte[])attribute)));
@@ -96,12 +95,12 @@ public class DynamicLdapAttribute implements DynamicAttribute, Serializable {
 		}
 		// optional list
 		if (!isMandatory() && isMultiple() && !isForeignKey()) {
-			List<Object> attributes = LdapHelper.getAttributes(rs, getLdapName());
+			List<Object> attributes = rs.getValues(getLdapName());
 			dynamicObject.put(name, attributes);
 		}
 		// foreign key
 		if (!isMandatory() && !isMultiple() && isForeignKey()) {
-			String value = (String) LdapHelper.getAttribute(rs, ldapName);
+			String value = (String) rs.getValue(getLdapName());
 			if (StringUtils.isNotEmpty(value)) {
 				dynamicObject.put(name, value);
 				dynamicObject.put(getGetter(name),
@@ -110,7 +109,7 @@ public class DynamicLdapAttribute implements DynamicAttribute, Serializable {
 		}
 		// list foreign key
 		if (!isMandatory() && isMultiple() && isForeignKey()) {
-			List<Object> values = LdapHelper.getAttributes(rs, ldapName);
+			List<Object> values = rs.getValues(getLdapName());
 			dynamicObject.put(name, values);
 			dynamicObject.put(getMultipleGetter(name),
 					new ListForeignKeyMethod(context, rs, ldapName, getForeignKeyClass()));

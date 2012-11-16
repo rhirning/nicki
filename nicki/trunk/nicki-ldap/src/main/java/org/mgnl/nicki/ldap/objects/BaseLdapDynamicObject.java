@@ -34,7 +34,6 @@ package org.mgnl.nicki.ldap.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -46,7 +45,6 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
-import org.mgnl.nicki.core.objects.ContextAttribute;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
@@ -156,12 +154,11 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 	private boolean checkAttribute(ContextSearchResult rs, String attribute,
 			String value) {
 		try {
-			ContextAttribute attr = rs.getAttributes().get(attribute);
-			for (Enumeration<Object> vals 
-					= (Enumeration<Object>) attr.getAll(); vals.hasMoreElements();) {
-				if (StringUtils.equalsIgnoreCase(value, (String) vals.nextElement())) {
+			for (Object attributeValue : rs.getValues(attribute)) {
+				if (StringUtils.equalsIgnoreCase(value, (String) attributeValue)) {
 					return true;
-				}
+				
+			}
 		}
 		} catch (Exception e) {
 		}
