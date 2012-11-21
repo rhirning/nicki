@@ -133,7 +133,7 @@ public class Target implements Serializable {
 		if (dynamicObject == null) {
 			try {
 				dynamicObject = classDefinition.newInstance();
-				dynamicObject.initDataModel();
+				TargetFactory.initDataModel(dynamicObject);
 				allDynamicObjectsMap.put(classDefinition, dynamicObject);
 				return dynamicObject;
 			} catch (Exception e) {

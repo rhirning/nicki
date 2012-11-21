@@ -38,7 +38,6 @@ import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 
 @SuppressWarnings("serial")
-@DynamicObject(target="ad")
 public class Person extends DynamicLdapTemplateObject {
 
 	public void initDataModel()

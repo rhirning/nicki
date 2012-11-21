@@ -43,7 +43,6 @@ import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
 public class Selector extends DynamicLdapTemplateObject {
 	public void initDataModel() {
 		addObjectClass("nickiSelector");

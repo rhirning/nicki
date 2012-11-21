@@ -51,7 +51,6 @@ import org.mgnl.nicki.shop.objects.CatalogValueProvider;
 import org.mgnl.nicki.shop.objects.MultipleInstancesCatalogArticle;
 import org.mgnl.nicki.shop.objects.XmlValueProvider;
 
-@DynamicObject(target="edir")
 public class ValuedResourceCatalogArticle extends ResourceCatalogArticle implements MultipleInstancesCatalogArticle {
 
 	private static final long serialVersionUID = -7208705030668378943L;

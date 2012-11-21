@@ -42,11 +42,11 @@ import org.mgnl.nicki.ldap.data.OctetString;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.ldap.methods.ForeignKeyMethod;
-import org.mgnl.nicki.ldap.methods.ListForeignKeyMethod;
+import org.mgnl.nicki.core.methods.ForeignKeyMethod;
+import org.mgnl.nicki.core.methods.ListForeignKeyMethod;
 
 @SuppressWarnings("serial")
-public class DynamicLdapAttribute implements DynamicAttribute, Serializable {
+public class DynamicLdapAttribute extends DynamicAttribute implements Serializable {
 
 	private String name;
 	private String ldapName;
@@ -66,6 +66,7 @@ public class DynamicLdapAttribute implements DynamicAttribute, Serializable {
 	}
 
 	public DynamicLdapAttribute(String name, String ldapName, Class<?> attributeClass) {
+		super(name, ldapName, attributeClass);
 		this.name = name;
 		this.ldapName = ldapName;
 		this.attributeClass = attributeClass;

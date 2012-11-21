@@ -1,5 +1,6 @@
 package org.mgnl.nicki.jcr.objects;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -8,7 +9,12 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-public class DynamicJcrAttribute implements DynamicAttribute {
+public class DynamicJcrAttribute extends DynamicAttribute implements Serializable {
+
+	public DynamicJcrAttribute(String name, String ldapName,
+			Class<?> attributeClass) {
+		super(name, ldapName, attributeClass);
+	}
 
 	@Override
 	public Class<?> getAttributeClass() {

@@ -440,4 +440,16 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		this.parentPath = parentPath;
 	}
 
+	@Override
+	public void initDataModel() {
+	}
+
+	public void init(ContextSearchResult rs) throws DynamicObjectException {
+	}
+
+	@Override
+	public boolean isAnnotated() {
+		return getClass().isAnnotationPresent(org.mgnl.nicki.core.annotation.DynamicObject.class);
+	}
+
 }

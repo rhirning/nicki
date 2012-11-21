@@ -32,12 +32,15 @@
  */
 package org.mgnl.nicki.core.context;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.util.Classes;
@@ -95,7 +98,7 @@ public class TargetFactory {
 				String className = Config.getProperty(base + "." + objects[i]);
 				try {
 					DynamicObject dynamicObject = getDynamicObject(className);
-					dynamicObject.initDataModel();
+					initDataModel(dynamicObject);
 					map.put(objects[i], dynamicObject);
 					
 					dynamicObjects.add(objects[i]);
@@ -106,6 +109,51 @@ public class TargetFactory {
 		}
 		target.setDynamicObjects(dynamicObjects);
 		target.setDynamicObjectsMap(map);
+	}
+	
+	public static void initDataModel(DynamicObject dynamicObject) {
+
+		if (dynamicObject.isAnnotated()) {
+			initAnnotationDataModel(dynamicObject);
+		} else {
+			dynamicObject.initDataModel();
+		}
+	}
+	
+
+
+	public static void initAnnotationDataModel(DynamicObject dynamicObject) {
+		ObjectClass oClass = dynamicObject.getClass().getAnnotation(ObjectClass.class);
+		String objectClasses[] = oClass.value();
+		for (String objectClass : objectClasses) {
+			dynamicObject.addObjectClass(objectClass);
+		}
+
+		for (Field field : dynamicObject.getClass().getDeclaredFields()) {
+			if (field.isAnnotationPresent(DynamicAttribute.class)) {
+				DynamicAttribute dAttribute = field
+						.getAnnotation(DynamicAttribute.class);
+				org.mgnl.nicki.core.objects.DynamicAttribute dynAttribute = new org.mgnl.nicki.core.objects.DynamicAttribute(
+						dAttribute.localName(), dAttribute.externalName(),
+						dAttribute.attributeClass());
+				if (dAttribute.naming()) {
+					dynAttribute.setNaming();
+				}
+				if (dAttribute.multiple()) {
+					dynAttribute.setMultiple();
+				}
+				if (dAttribute.mandatory()) {
+					dynAttribute.setMandatory();
+				}
+				if (dAttribute.fix()) {
+					dynAttribute.setStatic();
+				}
+				if (dAttribute.virtual()) {
+					dynAttribute.setVirtual();
+				}
+				dynamicObject.addAttribute(dynAttribute);
+			}
+		}
 	}
 
 	private DynamicObject getDynamicObject(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {

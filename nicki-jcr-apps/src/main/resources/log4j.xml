@@ -9,7 +9,7 @@
 		</layout>
 	</appender>
 
-	<logger name="org.mgnl.nicki.cache.filter.CacheFilter"
+	<logger name="org.mgnl.nicki.cache"
 		additivity="false">
 		<level value="debug" />
 		<appender-ref ref="ConsoleAppender" />

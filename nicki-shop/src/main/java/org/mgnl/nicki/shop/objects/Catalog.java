@@ -50,7 +50,6 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
 public class Catalog extends DynamicLdapTemplateObject {
 	public static final String PATH_SEPARATOR = "/";
 	private static long lastBuild = 0;

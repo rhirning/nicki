@@ -44,7 +44,6 @@ import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
  * @author cna
  */
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
 public class LdapSearchGroup extends DynamicLdapTemplateObject {
 
 	public enum SEARCHSCOPE {

@@ -47,7 +47,6 @@ import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
 public class LdapPerson extends DynamicLdapTemplateObject {
 	public static final String ATTRIBUTE_SURNAME = "surname";
 	public static final String ATTRIBUTE_GIVENNAME = "givenname";

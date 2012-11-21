@@ -37,7 +37,6 @@ import org.mgnl.nicki.dynamic.objects.objects.Script;
 import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
 public class LdapScript extends Script {
 	public static final String ATTRIBUTE_DATA = "data";
 

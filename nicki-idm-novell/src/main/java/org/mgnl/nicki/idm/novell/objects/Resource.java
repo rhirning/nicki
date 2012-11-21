@@ -41,7 +41,7 @@ import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
+
 public class Resource extends DynamicStructObject {
 
 	@Override

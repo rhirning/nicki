@@ -30,32 +30,31 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.objects;
+package org.mgnl.nicki.core.data;
 
-import org.mgnl.nicki.core.annotation.DynamicAttribute;
-import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.annotation.ObjectClass;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
+public class OctetString {
+	byte octetString[];
 
-@SuppressWarnings("serial")
-@DynamicObject
-@ObjectClass({ "nickiScript" })
-public class Script extends DynamicLdapTemplateObject {
-
-	public static final String ATTRIBUTE_DATA = "data";
-
-	@DynamicAttribute(localName = ATTRIBUTE_NAME, externalName = "cn", naming = true)
-	private String name;
-
-	@DynamicAttribute(localName = ATTRIBUTE_DATA, externalName = "nickiScriptData")
-	private String scriptData;
-
-	public String getData() {
-		return getAttribute(ATTRIBUTE_DATA);
+	public OctetString(byte octet[]) {
+		this.octetString = octet;
 	}
 
-	public void setData(String data) {
-		this.put(ATTRIBUTE_DATA, data);
+	public Object getValue() {
+		return octetString;
+	}
+
+	public String toString() {
+		try {
+			String result = "";
+			for (int i = 0; i < octetString.length; i++) {
+				result += Integer.toString((octetString[i] & 0xff) + 0x100, 16)
+						.substring(1);
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }

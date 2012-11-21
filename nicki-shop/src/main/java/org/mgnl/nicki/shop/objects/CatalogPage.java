@@ -54,7 +54,7 @@ import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
+
 public class CatalogPage extends DynamicLdapTemplateObject {
 	
 	private Provider provider = null;

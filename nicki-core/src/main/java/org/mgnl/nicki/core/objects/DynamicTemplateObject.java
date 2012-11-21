@@ -30,32 +30,44 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.objects;
+package org.mgnl.nicki.core.objects;
 
-import org.mgnl.nicki.core.annotation.DynamicAttribute;
-import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.annotation.ObjectClass;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
+import java.util.Iterator;
+import java.util.List;
+
+import org.mgnl.nicki.core.methods.ChildrenMethod;
+import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicObjectException;
+
+
+import freemarker.template.TemplateMethodModel;
 
 @SuppressWarnings("serial")
-@DynamicObject
-@ObjectClass({ "nickiScript" })
-public class Script extends DynamicLdapTemplateObject {
+public abstract class DynamicTemplateObject extends BaseDynamicObject {
 
-	public static final String ATTRIBUTE_DATA = "data";
-
-	@DynamicAttribute(localName = ATTRIBUTE_NAME, externalName = "cn", naming = true)
-	private String name;
-
-	@DynamicAttribute(localName = ATTRIBUTE_DATA, externalName = "nickiScriptData")
-	private String scriptData;
-
-	public String getData() {
-		return getAttribute(ATTRIBUTE_DATA);
+	@Override
+	public void init(ContextSearchResult rs) throws DynamicObjectException {
+		super.init(rs);
+		
+		for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
+			String key = iterator.next();
+			String filter = getModel().getChildren().get(key);
+			put(DynamicAttribute.getGetter(key), new ChildrenMethod(getContext(), rs, filter));
+		}
+	}
+	
+	public void addMethod(String name, TemplateMethodModel method) {
+		put(DynamicAttribute.getGetter(name), method);
+	};
+	
+	public Object execute(String methodName, @SuppressWarnings("rawtypes") List arguments) throws DynamicObjectException {
+		try {
+			TemplateMethodModel method = (TemplateMethodModel) get(methodName);
+			return method.exec(arguments);
+		} catch (Exception e) {
+			throw new DynamicObjectException(e);
+		}		
 	}
 
-	public void setData(String data) {
-		this.put(ATTRIBUTE_DATA, data);
-	}
 
 }

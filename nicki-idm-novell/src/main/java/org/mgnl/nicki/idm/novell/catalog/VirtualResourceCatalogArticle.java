@@ -42,7 +42,7 @@ import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.objects.CatalogPage;
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
+
 public class VirtualResourceCatalogArticle extends ResourceCatalogArticle {
 	private Resource resource;
 	private CatalogPage page;
