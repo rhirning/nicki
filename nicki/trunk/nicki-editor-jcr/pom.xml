@@ -30,5 +30,10 @@
 			<artifactId>nicki-dynamic-objects</artifactId>
 			<version>2.03-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 </project>
