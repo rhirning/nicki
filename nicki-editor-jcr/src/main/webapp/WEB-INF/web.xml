@@ -7,6 +7,22 @@
 		<param-name>productionMode</param-name>
 		<param-value>false</param-value>
 	</context-param>
+	<filter>
+		<filter-name>Cache Filter</filter-name>
+		<filter-class>org.mgnl.nicki.cache.filter.CacheFilter</filter-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>/config/ehcache.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cacheName</param-name>
+			<param-value>nickiCache</param-value>
+		</init-param>
+		<init-param>
+			<param-name>pattern</param-name>
+			<param-value>.*.jpg</param-value>
+		</init-param>
+	</filter>
 	<servlet>
 		<servlet-name>JCR Editor</servlet-name>
 		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
