@@ -40,7 +40,12 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 		this.node = node;
 		try {
 			setPath(node.getPath());
-			this.setParentPath(node.getParent().getPath());
+			try {
+				this.setParentPath(node.getParent().getPath());
+			} catch (Exception e) {
+				// Root node does not have a parent
+				this.setParentPath("");
+			}
 			this.namingValue = node.getName();
 
 			setOriginal((DynamicObject) this.clone());
