@@ -41,7 +41,7 @@ import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
+
 public class ResourceAssociation extends DynamicLdapTemplateObject {
 	
 	@Override

@@ -49,7 +49,6 @@ import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 import org.mgnl.nicki.shop.objects.Catalog;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 
-@DynamicObject(target="edir")
 public class ResourceCatalogArticle extends CatalogArticle {
 
 	private static final long serialVersionUID = 3397169876567940029L;

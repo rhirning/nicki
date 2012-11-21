@@ -35,12 +35,14 @@ package org.mgnl.nicki.dynamic.objects.objects;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
+@DynamicObject
+@ObjectClass({"nickiTemplate", "organizationalUnit"})
 public class Template extends DynamicLdapTemplateObject {
 
 	public static final String ATTRIBUTE_DATA = "data";
@@ -49,35 +51,27 @@ public class Template extends DynamicLdapTemplateObject {
 	public static final String ATTRIBUTE_PARTS = "parts";
 	public static final String ATTRIBUTE_FILTER = "filter";
 	public static final String ATTRIBUTE_TESTDATA = "testData";
-	public void initDataModel() {
-		addObjectClass("nickiTemplate");
-		addObjectClass("organizationalUnit");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NAME, "ou", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
+	
+	@DynamicAttribute(naming=true, localName=ATTRIBUTE_NAME, externalName="ou")
+	private String name;
+	
+	@DynamicAttribute(localName=ATTRIBUTE_DATA, externalName="nickiTemplateData")
+	private String data;
 
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_DATA, "nickiTemplateData", String.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_PARAMS, "nickiTemplateParams", String.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_HANDLER, "nickiHandler", String.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_PARTS, "nickiTemplatePart", String.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
+	@DynamicAttribute(localName=ATTRIBUTE_PARAMS, externalName="nickiTemplateParams")
+	private String params;
 
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_FILTER, "nickiFilter", String.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
+	@DynamicAttribute(localName=ATTRIBUTE_HANDLER, externalName="nickiHandler")
+	private String handler;
 
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_TESTDATA, "nickiStructuredRef", String.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-		
-	};
+	@DynamicAttribute(localName=ATTRIBUTE_PARTS, externalName="nickiTemplatePart", multiple=true)
+	private String parts;
+
+	@DynamicAttribute(localName=ATTRIBUTE_FILTER, externalName="nickiFilter", multiple=true)
+	private String filter;
+
+	@DynamicAttribute(localName=ATTRIBUTE_TESTDATA, externalName="nickiStructuredRef", multiple=true)
+	private String testData;
 	
 	public String getData() {
 		return getAttribute(ATTRIBUTE_DATA);

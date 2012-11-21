@@ -45,7 +45,7 @@ import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 
-@DynamicObject(target="edir")
+
 public class Role extends DynamicStructObject {
 	
 	private static final long serialVersionUID = 6170300879001415636L;

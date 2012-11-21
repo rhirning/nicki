@@ -121,8 +121,6 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 		}
 		return false;
 	}
-	
-	public abstract void initDataModel();
 
 	public void loadChildren() {
 		init();

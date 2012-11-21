@@ -54,7 +54,7 @@ import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
+
 public class CatalogArticle extends DynamicLdapTemplateObject {
 
 	public static final String TYPE_ARTICLE = "ARTICLE";

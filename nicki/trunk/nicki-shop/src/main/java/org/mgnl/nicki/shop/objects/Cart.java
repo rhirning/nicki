@@ -57,7 +57,6 @@ import org.xml.sax.SAXException;
  * @author cna
  */
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
 public class Cart extends DynamicLdapTemplateObject {
 
     public enum CART_STATUS {

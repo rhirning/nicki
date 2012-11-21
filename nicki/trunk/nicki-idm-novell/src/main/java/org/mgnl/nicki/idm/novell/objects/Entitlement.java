@@ -36,7 +36,7 @@ import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
+
 public class Entitlement extends DynamicStructObject {
 	
 	@Override

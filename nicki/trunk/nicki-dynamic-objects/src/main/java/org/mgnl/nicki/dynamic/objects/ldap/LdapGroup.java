@@ -36,7 +36,6 @@ import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
-@DynamicObject(target="edir")
 public class LdapGroup extends DynamicLdapTemplateObject {
 	public static final String ATTRIBUTE_DESCRIPTION = "description";
 	public static final String ATTRIBUTE_MEMBER = "member";

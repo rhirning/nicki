@@ -32,10 +32,6 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 	// cached attributes
 	private List<DynamicObject> childObjects = null;
 	
-	@Override
-	public void initDataModel() {
-	}
-
 	public void init(Node node) throws DynamicObjectException {
 		this.node = node;
 		try {
@@ -147,5 +143,13 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 		} else {
 			return parentPath + JcrContext.PATH_SEPARATOR + name; 
 		}
+	}
+
+
+
+	@Override
+	public void initDataModel() {
+		// TODO Auto-generated method stub
+		
 	}
 }

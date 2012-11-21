@@ -39,7 +39,6 @@ import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 @SuppressWarnings("serial")
-@DynamicObject(target="edir")
 public class Org extends DynamicLdapTemplateObject implements Serializable {
 	public static final String ATTRIBUTE_CHILD = "child";
 

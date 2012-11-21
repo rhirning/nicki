@@ -39,7 +39,6 @@ import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.ldap.objects.StaticAttribute;
 import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
-@DynamicObject(target="ad")
 public class Group extends DynamicLdapTemplateObject {
 	public enum TYPE {
 		SECURITY_GLOBAL (-2147483646),

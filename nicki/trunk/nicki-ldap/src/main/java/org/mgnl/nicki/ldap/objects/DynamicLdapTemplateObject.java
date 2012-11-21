@@ -35,7 +35,7 @@ package org.mgnl.nicki.ldap.objects;
 import java.util.Iterator;
 import java.util.List;
 
-import org.mgnl.nicki.ldap.methods.ChildrenMethod;
+import org.mgnl.nicki.core.methods.ChildrenMethod;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 

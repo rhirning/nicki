@@ -40,7 +40,6 @@ import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
 
 
 @SuppressWarnings("serial")
-@DynamicObject(target="ad")
 public class Org extends DynamicLdapTemplateObject implements Serializable {
 
 	@Override
