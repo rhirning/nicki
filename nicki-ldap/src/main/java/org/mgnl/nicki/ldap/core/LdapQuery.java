@@ -39,10 +39,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.ldap.data.Query;
+import org.mgnl.nicki.core.data.Query;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
-import org.mgnl.nicki.ldap.objects.DynamicReference;
+import org.mgnl.nicki.core.objects.DynamicReference;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
 public class LdapQuery implements Query {

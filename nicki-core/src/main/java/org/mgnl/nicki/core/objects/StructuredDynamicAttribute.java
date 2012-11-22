@@ -30,41 +30,41 @@
  * intact.
  *
  */
-package org.mgnl.nicki.ldap.methods;
-
+package org.mgnl.nicki.core.objects;
 
 import java.io.Serializable;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.methods.ListStructuredForeignKeyMethod;
+import org.mgnl.nicki.core.methods.StructuredForeignKeyMethod;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.ldap.context.LdapContext;
-import org.mgnl.nicki.ldap.core.LdapQuery;
-import org.mgnl.nicki.ldap.objects.DynamicReference;
 
-import freemarker.template.TemplateMethodModel;
+@SuppressWarnings("serial")
+public class StructuredDynamicAttribute extends DynamicAttribute implements Serializable {
 
-public class ReferenceMethod implements TemplateMethodModel, Serializable {
-
-	private static final long serialVersionUID = -81535049844368520L;
-	List<DynamicObject> objects = null;
-	DynamicReference reference;
-	String path;
-	LdapContext context;
-	
-	public ReferenceMethod(LdapContext context, ContextSearchResult rs, DynamicReference reference) {
-		this.context = context;
-		this.path = rs.getNameInNamespace();
-		this.reference = reference;
+	public StructuredDynamicAttribute(String name, String ldapName,	Class<?> attributeClass) {
+		super(name, ldapName, attributeClass);
 	}
+	@Override
+	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
+		if (isMultiple()) {
+			List<Object> values = rs.getValues(getExternalName());
+			dynamicObject.put(getName(), values);
+			dynamicObject.put(getMultipleGetter(getName()),
+					new ListStructuredForeignKeyMethod(context, rs, getExternalName(), getForeignKeyClass()));
 
-	@SuppressWarnings("unchecked")
-	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
-		if (objects == null) {
-			LdapQuery query = new LdapQuery(path, reference);
-			objects = (List<DynamicObject>) context.loadReferenceObjects(this.reference.getClassDefinition(), query);
+		} else {
+			String value = (String) rs.getValue(getExternalName());
+			if (StringUtils.isNotEmpty(value)) {
+				dynamicObject.put(getName(), value);
+				dynamicObject.put(getGetter(getName()),
+						new StructuredForeignKeyMethod(context, rs, getExternalName(), getForeignKeyClass()));
+			}
 		}
-		return objects;
 	}
-
 }
+

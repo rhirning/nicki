@@ -30,47 +30,46 @@
  * intact.
  *
  */
-package org.mgnl.nicki.ldap.methods;
+package org.mgnl.nicki.core.methods;
 
 
 import java.io.Serializable;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.methods.ForeignKeyMethod;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicReference;
 
 import freemarker.template.TemplateMethodModel;
 
-public class StructuredForeignKeyMethod extends ForeignKeyMethod implements Serializable,TemplateMethodModel {
+public class ReferenceMethod implements TemplateMethodModel, Serializable {
 
-	private static final long serialVersionUID = -5726598490077862331L;
-	private String path;
-	private String flag;
-	private String xml;
+	private static final long serialVersionUID = -81535049844368520L;
+	List<DynamicObject> objects = null;
+	DynamicReference reference;
+	String path;
+	NickiContext context;
 	
-	
-	public StructuredForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName,
-			Class<? extends DynamicObject> classDefinition) {
-		super(context, rs, ldapName,classDefinition);
-		this.path = StringUtils.substringBefore(getForeignKey(), "#");
-		String rest = StringUtils.substringAfter(getForeignKey(), "#");
-		this.flag = StringUtils.substringBefore(rest, "#");
-		this.xml = StringUtils.substringAfter(rest, "#");
-		
+	public ReferenceMethod(NickiContext context, ContextSearchResult rs, DynamicReference reference) {
+		this.context = context;
+		this.path = rs.getNameInNamespace();
+		this.reference = reference;
 	}
 
-	@Override
-	public DynamicObject exec(@SuppressWarnings("rawtypes") List arguments) {
-		if (getObject() == null) {
-			setObject(getContext().loadObject(getClassDefinition(), this.path));
-			getObject().put("struct:flag" , flag);
-			getObject().put("struct:xml" , xml);
-			getObject().put("struct" , new StructuredData(xml));
+	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
+		if (objects == null) {
+			objects = (List<DynamicObject>) context.loadReferenceObjects(this);
 		}
-		return getObject();
+		return objects;
+	}
+
+	public DynamicReference getReference() {
+		return reference;
+	}
+
+	public String getPath() {
+		return path;
 	}
 
 }

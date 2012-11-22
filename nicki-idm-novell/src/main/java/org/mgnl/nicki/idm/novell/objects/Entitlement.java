@@ -32,21 +32,17 @@
  */
 package org.mgnl.nicki.idm.novell.objects;
 
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 
 @SuppressWarnings("serial")
-
+@DynamicObject
+@ObjectClass("DirXML-Entitlement")
 public class Entitlement extends DynamicStructObject {
 	
-	@Override
-	public void initDataModel() {
-		addObjectClass("DirXML-Entitlement");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-	}
+	@DynamicAttribute(externalName="cn", naming=true)
+	private String name;
 	
 	public String getSource() {
 		return getInfo("/ref/src");

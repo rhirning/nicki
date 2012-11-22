@@ -37,24 +37,24 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 @SuppressWarnings("serial")
-public class Selector extends DynamicLdapTemplateObject {
+public class Selector extends BaseLdapDynamicObject {
 	public void initDataModel() {
 		addObjectClass("nickiSelector");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
+		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicLdapAttribute("value", "nickiSelectorValue", String.class);
+		dynAttribute = new DynamicAttribute("value", "nickiSelectorValue", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicLdapAttribute("valueProvider", "nickiSelectorValueProvider", TextArea.class);
+		dynAttribute = new DynamicAttribute("valueProvider", "nickiSelectorValueProvider", TextArea.class);
 		addAttribute(dynAttribute);
 		
 	}

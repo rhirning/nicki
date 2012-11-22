@@ -93,7 +93,7 @@ public interface DynamicObject {
 
 	public <T extends DynamicObject> List<T>  getChildren(Class<T> classDefinition);
 
-	public void addChild(String attribute, String filter);
+	public void addChild(String attribute, Class<? extends DynamicObject> filter);
 	
 	// TODO
 	public String getAttribute(String attributeName);
@@ -183,5 +183,8 @@ public interface DynamicObject {
 	String getPath(String parentPath, String name);
 	
 	boolean isAnnotated();
+	
+	String getObjectClassFilter();
 
+	void init(ContextSearchResult rs) throws DynamicObjectException;
 }

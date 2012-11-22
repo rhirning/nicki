@@ -7,7 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface ObjectClass {
+public @interface AdditionalObjectClass {
 	String[] value();
-	boolean init() default false;
 }

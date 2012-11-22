@@ -9,7 +9,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface DynamicAttribute {
+public @interface StructuredDynamicAttribute {
 	boolean naming() default false;
 	boolean mandatory() default false;
 	boolean virtual() default false;

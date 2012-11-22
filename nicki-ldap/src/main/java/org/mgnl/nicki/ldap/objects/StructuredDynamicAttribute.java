@@ -37,13 +37,14 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.methods.ListStructuredForeignKeyMethod;
+import org.mgnl.nicki.core.methods.StructuredForeignKeyMethod;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.ldap.methods.ListStructuredForeignKeyMethod;
-import org.mgnl.nicki.ldap.methods.StructuredForeignKeyMethod;
 
 @SuppressWarnings("serial")
-public class StructuredDynamicAttribute extends DynamicLdapAttribute implements Serializable {
+public class StructuredDynamicAttribute extends DynamicAttribute implements Serializable {
 
 	public StructuredDynamicAttribute(String name, String ldapName,	Class<String> attributeClass) {
 		super(name, ldapName, attributeClass);

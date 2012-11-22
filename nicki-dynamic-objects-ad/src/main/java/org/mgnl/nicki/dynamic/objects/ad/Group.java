@@ -32,14 +32,28 @@
  */
 package org.mgnl.nicki.dynamic.objects.ad;
 
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.ldap.data.OctetString;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.StaticAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.core.data.OctetString;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
+@DynamicObject
+@ObjectClass("group")
+public class Group extends BaseLdapDynamicObject {
 
-public class Group extends DynamicLdapTemplateObject {
+	private static final long serialVersionUID = 9117516356852100038L;
+	@DynamicAttribute(externalName="cn", naming=true)
+	private String name;
+	@DynamicAttribute(externalName="sAMAccountName")
+	private String sAMAccountName;
+	@DynamicAttribute(externalName="member",foreignKey=Person.class)
+	private String[] member;
+	@DynamicAttribute(externalName="objectGUID", readonly=true)
+	private OctetString guid;
+	@DynamicAttribute(externalName="groupType", mandatory=true)
+	private String groupType;
+	@DynamicAttribute(externalName="instanceType", readonly=true)
+	private String instanceType;
 	public enum TYPE {
 		SECURITY_GLOBAL (-2147483646),
 		SECURITY_LOCAL (-2147483644),
@@ -58,42 +72,6 @@ public class Group extends DynamicLdapTemplateObject {
 		String getValue() {
 			return Integer.toString(value);
 		}
-	};
-
-	private static final long serialVersionUID = 6170300879001415636L;
-	public void initDataModel() {
-		addObjectClass("group");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute("sAMAccountName", "sAMAccountName", String.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicLdapAttribute("member", "member", String.class);
-		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey(Person.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute("guid", "objectGUID", OctetString.class);
-		dynAttribute.setReadonly();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute("groupType", "groupType", String.class);
-		dynAttribute.setMandatory();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute("instanceType", "instanceType", String.class);
-		dynAttribute.setReadonly();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new StaticAttribute("objectCategory", "objectCategory", String.class,
-						Config.getProperty("nicki.target.ad.static.group.objectCategory"));
-		dynAttribute.setForeignKey(org.mgnl.nicki.core.objects.DynamicObject.class);
-		dynAttribute.setMandatory();
-		dynAttribute.setStatic();
-		dynAttribute.setReadonly();
-		addAttribute(dynAttribute);
 	};
 
 	public void setGroupType(TYPE type) {

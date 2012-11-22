@@ -37,6 +37,8 @@ import java.util.List;
 
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.data.Query;
+import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
@@ -48,19 +50,19 @@ public interface NickiContext extends Serializable {
 	List<? extends DynamicObject> loadObjects(String baseDn, String filter);
 	<T extends DynamicObject> List<T> loadObjects(Class<T> classDefinition, String baseDn, String filter);
 
-	List<? extends DynamicObject> loadChildObjects(String parent,	String filter);
+	List<? extends DynamicObject> loadChildObjects(String parent,	Class<? extends DynamicObject> filter);
 	<T extends DynamicObject> T loadChildObject(Class<T> class1, DynamicObject parent, String childKey);
 	<T extends DynamicObject> List<T> loadChildObjects(Class<T> classDefinition, String parent,	String filter);
 	<T extends DynamicObject> List<T> loadChildObjects(Class<T> class1, DynamicObject parent, String filter);
 	
-//	List<DynamicObject> loadReferenceObjects(Query query);
-//	<T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, Query query);
+	List<DynamicObject> loadReferenceObjects(Query query);
+	<T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, Query query);
 
 	boolean isExist(String path);
 	<T extends DynamicObject> T createDynamicObject(Class<T> classDefinition, String parentPath, String namingValue)
 			throws  InstantiateDynamicObjectException, DynamicObjectException;
 	Target getTarget();
-	<T extends DynamicObject> void updateObject(T dynamicObject) throws DynamicObjectException;
+	void updateObject(DynamicObject dynamicObject) throws DynamicObjectException;
 	DynamicObject createObject(DynamicObject dynamicObject) throws DynamicObjectException;
 	void deleteObject(DynamicObject dynamicObject) throws DynamicObjectException;
 	DynamicObject moveObject(DynamicObject dynamicObject, String newPath) throws DynamicObjectException;
@@ -76,4 +78,5 @@ public interface NickiContext extends Serializable {
 	void loadAttributes(DynamicObject dynamicObject, Class<?> requester, String[] attributes) throws DynamicObjectException;
 	void setReadonly(boolean readonly);
 	<T extends DynamicObject> T loadObjectAs(Class<T> classDefinition, DynamicObject dynamicObject);
+	List<DynamicObject> loadReferenceObjects(ReferenceMethod referenceMethod);
 }

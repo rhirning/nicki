@@ -113,13 +113,13 @@ public class DynamicJcrAttribute extends DynamicAttribute implements Serializabl
 	}
 
 	@Override
-	public void setStatic() {
+	public void XXXsetStatic() {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public boolean isStatic() {
+	public boolean XXXisStatic() {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -34,29 +34,20 @@ package org.mgnl.nicki.ldap.objects;
 
 import java.io.Serializable;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.jdom.Element;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
-import org.mgnl.nicki.ldap.methods.StructuredData;
 
 @SuppressWarnings("serial")
 public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
-	public static final String ATTRIBUTE_NAME = "name";
-	public static final String SEPARATOR = "/";
-	
-	private LdapDataModel model = null;
-	
+		
 	protected BaseLdapDynamicObject() {
 		// removed: must be called in TargetObjectFactory
 		//		initDataModel();
@@ -90,15 +81,6 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 		getMap().put(getModel().getNamingAttribute(), LdapHelper.getNamingValue(path));
 	}
 
-	public void init(ContextSearchResult rs) throws DynamicObjectException {
-		if (getStatus() != STATUS.EXISTS) {
-			throw new DynamicObjectException("Invalid call");
-		}
-		this.setStatus(STATUS.LOADED);
-		this.getModel().init(getContext(), this, rs);
-		setOriginal((DynamicObject) this.clone());
-	}
-
 	public boolean accept(ContextSearchResult rs) {
 		boolean accepted = true;
 		for (Iterator<String> iterator = getModel().getObjectClasses().iterator(); iterator.hasNext();) {
@@ -121,22 +103,6 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 		}
 		return false;
 	}
-
-	public void loadChildren() {
-		init();
-		if (getChildObjects() == null) {
-			initChildren();
-			for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
-				String key = iterator.next();
-				String filter = getModel().getChildren().get(key);
-				@SuppressWarnings("unchecked")
-				List<DynamicObject> list = (List<DynamicObject>) getContext().loadChildObjects(getPath(), filter);
-				if (list != null) {
-					getChildObjects().put(key, list);
-				}
-			}
-		}
-	}
 	// Schema
 
 	public void merge(Map<DynamicAttribute, Object> changeAttributes) {
@@ -145,29 +111,6 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 			put(dynamicAttribute.getName(), changeAttributes.get(dynamicAttribute));
 		}
 	};
-
-	public String getInfo(String xml, String infoPath) {
-		String parts[] = StringUtils.split(infoPath, SEPARATOR);
-		if (parts.length < 2) {
-			return null;
-		}
-		// correct xml
-		StringUtils.replace(xml, "&lt;", "<");
-		StringUtils.replace(xml, "&gt;", ">");
-		StructuredData data  = new StructuredData(xml); 
-		try {
-			Element element = data.getDocument().getRootElement();
-			int i = 1;
-			while (i < parts.length - 1) {
-				element = element.getChild(parts[i]);
-				i++;
-			}
-			
-			return element.getChildTextTrim(parts[i]);
-		} catch (Exception e) {
-			return null;
-		}
-	}
 	
 	public String getLocalizedValue(String attributeName, String locale) {
 		Map<String, String> valueMap = DataHelper.getMap(getAttribute(attributeName), "|", "~");
@@ -180,26 +123,14 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 		}
 	}
 	
-	public String toString() {
-		return getDisplayName();
-	}
-
-	@Override
-	public void setModel(DataModel model) {
-		this.model = (LdapDataModel) model;
-	}
-
-	@Override
-	public LdapDataModel getModel() {
-		if (model == null) {
-			model = new LdapDataModel();
-		}
-		return model;
-	}
-	
 	@Override
 	public String getPath(String parentPath, String name) {
 		return LdapHelper.getPath(parentPath, getModel().getNamingLdapAttribute(), name);
+	}
+
+	@Override
+	public String getObjectClassFilter() {
+		return LdapHelper.getObjectClassFilter(getModel());
 	}
 
 }

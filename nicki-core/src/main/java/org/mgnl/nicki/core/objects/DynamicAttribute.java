@@ -194,11 +194,11 @@ public class DynamicAttribute implements Serializable {
 		return readonly;
 	}
 
-	public void setStatic() {
+	public void XXXsetStatic() {
 		staticAttribute = true;
 	}
 
-	public boolean isStatic() {
+	public boolean XXXisStatic() {
 		return staticAttribute;
 	}
 

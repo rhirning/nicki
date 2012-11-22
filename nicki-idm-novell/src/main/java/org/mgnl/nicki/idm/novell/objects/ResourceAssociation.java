@@ -33,34 +33,25 @@
 package org.mgnl.nicki.idm.novell.objects;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
-import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
+import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
+import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 @SuppressWarnings("serial")
-
-public class ResourceAssociation extends DynamicLdapTemplateObject {
-	
-	@Override
-	public void initDataModel() {
-		addObjectClass("nrfResourceAssociation");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new ReferenceDynamicAttribute(Resource.class, "resource", "nrfResource", String.class,
-				Config.getProperty("nicki.system.basedn"));
-		dynAttribute.setForeignKey(Resource.class);
-		addAttribute(dynAttribute);
+@DynamicObject
+@ObjectClass("nrfResourceAssociation")
+public class ResourceAssociation extends BaseLdapDynamicObject {
+	@DynamicAttribute(externalName="cn", naming=true)
+	private String name;
+	@DynamicReferenceAttribute(externalName="nrfResource", foreignKey=Resource.class, reference=Resource.class,
+			baseProperty="nicki.system.basedn")
+	private String resource;
+	@StructuredDynamicAttribute(externalName="nrfDynamicParmVals")
+	private String paramVal;
 		
-		dynAttribute =  new StructuredDynamicAttribute("paramVal", "nrfDynamicParmVals", String.class);
-		addAttribute(dynAttribute);
-
-	}
-	
 	public String toString() {
 		return getAttribute("name");
 	}

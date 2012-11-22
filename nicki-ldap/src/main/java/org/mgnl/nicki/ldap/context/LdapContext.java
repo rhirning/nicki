@@ -19,13 +19,19 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.ObjectFactory;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.helper.AnnotationHelper;
+import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.core.objects.DynamicReference;
 import org.mgnl.nicki.ldap.core.DynamicObjectWrapper;
-import org.mgnl.nicki.ldap.data.Query;
+import org.mgnl.nicki.ldap.core.LdapQuery;
+import org.mgnl.nicki.core.data.Query;
 import org.mgnl.nicki.ldap.data.QueryHandler;
 import org.mgnl.nicki.ldap.data.jndi.JndiSearchResult;
+import org.mgnl.nicki.ldap.helper.LdapHelper;
+import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 import org.mgnl.nicki.ldap.query.AttributeLoaderLdapQueryHandler;
 import org.mgnl.nicki.ldap.query.IsExistLdapQueryHandler;
@@ -159,7 +165,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
-	public <T extends DynamicObject> void updateObject(T dynamicObject) throws DynamicObjectException {
+	public void updateObject(DynamicObject dynamicObject) throws DynamicObjectException {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
 		}
@@ -262,9 +268,17 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 	public List<DynamicObject> loadChildObjects(String parent,
-			String filter) {
+			Class<? extends DynamicObject> filter) {
 		try {
-			SubObjectsLoaderLdapQueryHandler handler = new SubObjectsLoaderLdapQueryHandler(this, parent, filter);
+			StringBuffer sb = new StringBuffer("objectClass=*");
+			if (filter!= null) {
+				sb.setLength(0);
+				for (String objectClass : AnnotationHelper.getObjectClasses(filter)) {
+					LdapHelper.addQuery(sb, "objectClass=" + objectClass, LOGIC.AND);
+				}
+			}
+
+			SubObjectsLoaderLdapQueryHandler handler = new SubObjectsLoaderLdapQueryHandler(this, parent, sb.toString());
 			search(handler);
 			return handler.getList();
 		} catch (DynamicObjectException e) {
@@ -388,6 +402,15 @@ public class LdapContext extends BasicContext implements NickiContext {
 		} catch (DynamicObjectException e) {
 		}
 		return false;
+	}
+
+
+	@Override
+	public List<DynamicObject> loadReferenceObjects(ReferenceMethod ref) {
+		LdapQuery query = new LdapQuery(ref.getPath(), ref.getReference());
+		
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

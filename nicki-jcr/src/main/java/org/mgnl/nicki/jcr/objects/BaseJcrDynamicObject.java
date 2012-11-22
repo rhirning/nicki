@@ -1,8 +1,5 @@
 package org.mgnl.nicki.jcr.objects;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
@@ -11,7 +8,6 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.context.JcrContext;
@@ -19,20 +15,41 @@ import org.mgnl.nicki.jcr.context.JcrContext;
 
 public class BaseJcrDynamicObject extends BaseDynamicObject {
 
+	private static final long serialVersionUID = -2552751504033170225L;
+	private Node node;
+
+	private String namingValue = null;
+
+	@Override
+	public Object get(String key) {
+		try {
+			return node.getProperty(key).toString();
+		} catch (Exception e) {
+		}
+		return null;
+	}
+	
+	
+
+	@Override
+	public String getName() {
+		try {
+			return node.getName();
+		} catch (RepositoryException e) {
+			return null;
+		}
+	}
+
+
 
 	@Override
 	public String getNamingValue() {
 		return namingValue;
 	}
 
-	private static final long serialVersionUID = -2552751504033170225L;
-	private JcrDataModel model = null;
-	private Node node;
-	private String namingValue = null;
-	// cached attributes
-	private List<DynamicObject> childObjects = null;
 	
-	public void init(Node node) throws DynamicObjectException {
+	public void init(NickiContext context, Node node) throws DynamicObjectException {
+		setContext(context);
 		this.node = node;
 		try {
 			setPath(node.getPath());
@@ -46,7 +63,6 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 
 			setOriginal((DynamicObject) this.clone());
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -56,30 +72,9 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 	public Node getNode() {
 		return node;
 	}
-
-	@Override
-	public void setModel(DataModel model) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String getInfo(String xml, String infoPath) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void loadChildren() {
-		init();
-		if (childObjects == null) {
-			childObjects = new ArrayList<DynamicObject>();
-			@SuppressWarnings("unchecked")
-			List<BaseJcrDynamicObject> list = (List<BaseJcrDynamicObject>) getContext().loadChildObjects(getPath(), "*");
-			if (list != null) {
-				childObjects.addAll(list);
-			}
-		}
+	
+	public void setNode(Node node) {
+		this.node = node;
 	}
 
 	@Override
@@ -101,26 +96,6 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 		this.setStatus(STATUS.EXISTS);
 		setContext(context);
 		setPath(path);
-	}
-
-	@Override
-	public void unLoadChildren() {
-		this.childObjects = null;
-		
-	}
-
-	@Override
-	public DataModel getModel() {
-		if (model == null) {
-			model = new JcrDataModel();
-		}
-		return model;
-	}
-
-	@Override
-	public List<? extends DynamicObject> getAllChildren() {
-		loadChildren();
-		return childObjects;
 	}
 
 	@Override
@@ -146,10 +121,9 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 	}
 
 
-
 	@Override
-	public void initDataModel() {
+	public String getObjectClassFilter() {
 		// TODO Auto-generated method stub
-		
+		return null;
 	}
 }

@@ -36,13 +36,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.idm.novell.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.objects.Resource;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 import org.mgnl.nicki.shop.objects.Catalog;
@@ -51,29 +51,24 @@ import org.mgnl.nicki.shop.objects.CatalogValueProvider;
 import org.mgnl.nicki.shop.objects.MultipleInstancesCatalogArticle;
 import org.mgnl.nicki.shop.objects.XmlValueProvider;
 
+@DynamicObject
+@ObjectClass("nickiValuedResourceArticle")
 public class ValuedResourceCatalogArticle extends ResourceCatalogArticle implements MultipleInstancesCatalogArticle {
 
 	private static final long serialVersionUID = -7208705030668378943L;
 	private CatalogValueProvider provider = null;
 
-	@Override
-	public void initDataModel() {
-		super.initDataModel();
-		addObjectClass("nickiValuedResourceArticle");
-		
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("provider", "nickiProvider", String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute("providerData", "nickiProviderData", TextArea.class);
-		addAttribute(dynAttribute);
-	}
+	@DynamicAttribute(externalName="nickiProvider", mandatory=true)
+	private String providerClass;	
+	@DynamicAttribute(externalName="nickiProviderData", mandatory=true)
+	private String providerData;
 
 	public boolean isMultiple() {
 		return true;
 	}
 
 	public String getValueProviderClass() {
-		return getAttribute("provider");
+		return getAttribute("providerClass");
 	}
 
 	public CatalogValueProvider getValueProvider() {

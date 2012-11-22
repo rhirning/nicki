@@ -30,44 +30,27 @@
  * intact.
  *
  */
-package org.mgnl.nicki.ldap.objects;
+package org.mgnl.nicki.core.methods;
 
-import java.util.Iterator;
-import java.util.List;
+import java.io.Serializable;
 
-import org.mgnl.nicki.core.methods.ChildrenMethod;
-import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicObjectException;
-
-
-import freemarker.template.TemplateMethodModel;
+import org.jdom.Document;
+import org.mgnl.nicki.core.helper.XMLHelper;
 
 @SuppressWarnings("serial")
-public abstract class DynamicLdapTemplateObject extends BaseLdapDynamicObject {
+public class StructuredData implements Serializable {
+	Document document = null;
 
-	@Override
-	public void init(ContextSearchResult rs) throws DynamicObjectException {
-		super.init(rs);
-		
-		for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
-			String key = iterator.next();
-			String filter = getModel().getChildren().get(key);
-			put(DynamicLdapAttribute.getGetter(key), new ChildrenMethod(getContext(), rs, filter));
+	public StructuredData(String xml) {
+		try {
+			document = XMLHelper.documentFromString(xml);
+		} catch (Exception e) {
+			document = null;
 		}
 	}
-	
-	public void addMethod(String name, TemplateMethodModel method) {
-		put(DynamicLdapAttribute.getGetter(name), method);
-	};
-	
-	public Object execute(String methodName, @SuppressWarnings("rawtypes") List arguments) throws DynamicObjectException {
-		try {
-			TemplateMethodModel method = (TemplateMethodModel) get(methodName);
-			return method.exec(arguments);
-		} catch (Exception e) {
-			throw new DynamicObjectException(e);
-		}		
-	}
 
+	public Document getDocument() {
+		return document;
+	}	
 
 }

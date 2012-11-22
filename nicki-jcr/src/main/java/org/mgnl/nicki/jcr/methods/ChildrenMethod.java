@@ -49,10 +49,10 @@ public class ChildrenMethod implements Serializable, TemplateMethodModel {
 	private static final long serialVersionUID = -81535049844368520L;
 	private List<? extends DynamicObject> objects = null;
 	private String parent;
-	private String filter;
+	private Class<? extends DynamicObject> filter;
 	private NickiContext context;
 	
-	public ChildrenMethod(NickiContext context, Node node, String filter) {
+	public ChildrenMethod(NickiContext context, Node node, Class<? extends DynamicObject> filter) {
 		this.context = context;
 		try {
 			this.parent = node.getPath();
@@ -65,6 +65,7 @@ public class ChildrenMethod implements Serializable, TemplateMethodModel {
 
 	public List<? extends DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (objects == null) {
+			
 			objects = context.loadChildObjects(parent, filter);
 		}
 		return objects;

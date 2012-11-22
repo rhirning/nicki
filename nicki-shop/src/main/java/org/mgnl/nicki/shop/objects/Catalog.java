@@ -38,19 +38,18 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.ldap.methods.LoadObjectsMethod;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 
 @SuppressWarnings("serial")
-public class Catalog extends DynamicLdapTemplateObject {
+public class Catalog extends BaseLdapDynamicObject {
 	public static final String PATH_SEPARATOR = "/";
 	private static long lastBuild = 0;
 	private static long buildInterval = 10*60*1000; // ms
@@ -66,17 +65,17 @@ public class Catalog extends DynamicLdapTemplateObject {
 	public void initDataModel() {
 		// objectClass
 		addObjectClass("nickiCatalog");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
+		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicLdapAttribute("category", "nickiCategory", String.class);
+		dynAttribute = new DynamicAttribute("category", "nickiCategory", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		
 		addMethod("allArticles", new LoadObjectsMethod(CatalogArticle.class, this, "objectClass=nickiCatalogArticle"));
 
-		addChild("page", "objectClass=nickiCatalogPage");
+		addChild("page", CatalogPage.class);
 	}
 
 	/*

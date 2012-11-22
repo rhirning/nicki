@@ -44,7 +44,7 @@ import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.jcr.objects.NodeDynamicObject;
+import org.mgnl.nicki.jcr.objects.JcrDynamicObject;
 
 public class JcrObjectFactory implements ObjectFactory {
 
@@ -57,16 +57,16 @@ public class JcrObjectFactory implements ObjectFactory {
 		this.target = target;
 	}
 
-	public NodeDynamicObject getObject(Node node) throws InstantiateDynamicObjectException {
-		NodeDynamicObject object =  _getObject(node);
+	public JcrDynamicObject getObject(Node node) throws InstantiateDynamicObjectException {
+		JcrDynamicObject object =  _getObject(node);
 		object.setContext(context);
-		object.setJcrNode(node);
+		object.setNode(node);
 		return object;
 	}
 
 	
 	
-	private synchronized  NodeDynamicObject _getObject(Node node) throws InstantiateDynamicObjectException {
+	private synchronized  JcrDynamicObject _getObject(Node node) throws InstantiateDynamicObjectException {
 		String path;
 		try {
 			path = node.getPath();
@@ -74,9 +74,9 @@ public class JcrObjectFactory implements ObjectFactory {
 			throw new InstantiateDynamicObjectException("Could not getObject " + node);
 		}
 		for (String dynamicObjectName : target.getDynamicObjects()) {
-			NodeDynamicObject dynamicObject = (NodeDynamicObject) target.getDynamicObject(dynamicObjectName);
+			JcrDynamicObject dynamicObject = (JcrDynamicObject) target.getDynamicObject(dynamicObjectName);
 			if (dynamicObject.accept(node)) {
-				NodeDynamicObject result = getExistingDynamicObject(dynamicObject, path);
+				JcrDynamicObject result = getExistingDynamicObject(dynamicObject, path);
 				if (result != null) {
 					return result;
 				}
@@ -85,16 +85,16 @@ public class JcrObjectFactory implements ObjectFactory {
 		throw new InstantiateDynamicObjectException("Could not getObject " + path);
 	}
 
-	public <T extends NodeDynamicObject> T getObject(Node node, Class<T> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException {
+	public <T extends JcrDynamicObject> T getObject(Node node, Class<T> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException {
 		T object =  _getObject(node, classDefinition);
 		object.setContext(context);
-		object.setJcrNode(node);
+		object.setNode(node);
 		return object;
 	}
 
 	
 	
-	private synchronized <T extends NodeDynamicObject> T _getObject(Node node, Class<T> classDefinition) throws InstantiateDynamicObjectException {
+	private synchronized <T extends JcrDynamicObject> T _getObject(Node node, Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		String path;
 		try {
 			path = node.getPath();
@@ -117,14 +117,14 @@ public class JcrObjectFactory implements ObjectFactory {
 	}
 
 	public String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
-		NodeDynamicObject dynamicObject = (NodeDynamicObject) target.getDynamicObject(classDefinition);
-		return dynamicObject.getModel().getObjectClassFilter();
+		DynamicObject dynamicObject = target.getDynamicObject(classDefinition);
+		return dynamicObject.getObjectClassFilter();
 	}
 
 	@SuppressWarnings("unchecked")
 	private <T extends DynamicObject> T findDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		for (String dynamicObjectName : target.getDynamicObjects()) {
-			NodeDynamicObject dynamicObject = (NodeDynamicObject) target.getDynamicObject(dynamicObjectName);
+			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);
 			if (classDefinition.isAssignableFrom(dynamicObject.getClass())){
 				return (T) dynamicObject;
 			}
@@ -136,7 +136,7 @@ public class JcrObjectFactory implements ObjectFactory {
 	public <T extends DynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) {
 		List<T> list = new ArrayList<T>();
 		for (String dynamicObjectName : target.getDynamicObjects()) {
-			NodeDynamicObject dynamicObject = (NodeDynamicObject) target.getDynamicObject(dynamicObjectName);
+			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);
 			if (classDefinition.isAssignableFrom(dynamicObject.getClass())){
 				list.add((T) dynamicObject);
 			}
@@ -145,9 +145,9 @@ public class JcrObjectFactory implements ObjectFactory {
 	}
 	
 	// TODO
-	private NodeDynamicObject findDynamicObject(String className) throws InstantiateDynamicObjectException {
+	private DynamicObject findDynamicObject(String className) throws InstantiateDynamicObjectException {
 		for (String dynamicObjectName : target.getDynamicObjects()) {
-			NodeDynamicObject dynamicObject = (NodeDynamicObject) target.getDynamicObject(dynamicObjectName);
+			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);
 			if (StringUtils.equals(dynamicObject.getClass().getName(), className)) {
 				return dynamicObject;
 			}
@@ -168,9 +168,9 @@ public class JcrObjectFactory implements ObjectFactory {
 		return dynamicObject;
 	}
 	
-	public NodeDynamicObject getDynamicObject(String className) throws InstantiateDynamicObjectException {
-		NodeDynamicObject storedDynamicObject = findDynamicObject(className);
-		NodeDynamicObject dynamicObject = null;
+	public DynamicObject getDynamicObject(String className) throws InstantiateDynamicObjectException {
+		DynamicObject storedDynamicObject = findDynamicObject(className);
+		DynamicObject dynamicObject = null;
 		try {
 			dynamicObject = getDynamicObject(storedDynamicObject);
 			dynamicObject.setContext(context);
@@ -181,7 +181,7 @@ public class JcrObjectFactory implements ObjectFactory {
 	}
 	
 	// TODO
-	private <T extends NodeDynamicObject> T getExistingDynamicObject(T pattern, String path) throws InstantiateDynamicObjectException {
+	private <T extends DynamicObject> T getExistingDynamicObject(T pattern, String path) throws InstantiateDynamicObjectException {
 		try {
 			T object = getDynamicObject(pattern);
 			object.initExisting(context, path);

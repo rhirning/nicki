@@ -34,23 +34,18 @@ package org.mgnl.nicki.dynamic.objects.objects;
 
 import java.io.Serializable;
 
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 @SuppressWarnings("serial")
-public class Org extends DynamicLdapTemplateObject implements Serializable {
+@DynamicObject
+@ObjectClass("organizationalUnit")
+public class Org extends BaseLdapDynamicObject implements Serializable {
 	public static final String ATTRIBUTE_CHILD = "child";
-
-	@Override
-	public void initDataModel() {
-		addObjectClass("organizationalUnit");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NAME, "ou", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		// TODO
-		addChild(ATTRIBUTE_CHILD, "objectClass=*");
-	}
-
+	
+	@DynamicAttribute(externalName="ou", naming=true)
+	private String name;
+	
 }

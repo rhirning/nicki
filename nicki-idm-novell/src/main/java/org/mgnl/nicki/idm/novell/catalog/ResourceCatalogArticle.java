@@ -38,33 +38,27 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.idm.novell.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.objects.Resource;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 import org.mgnl.nicki.shop.objects.Catalog;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 
+@DynamicObject
+@ObjectClass("nickiResourceArticle")
 public class ResourceCatalogArticle extends CatalogArticle {
 
 	private static final long serialVersionUID = 3397169876567940029L;
 
 	public static final String ATTRIBUTE_RESOURCE = "resource";
-	@Override
-	public void initDataModel() {
-		super.initDataModel();
-		addObjectClass("nickiResourceArticle");
-		
-		DynamicAttribute dynAttribute = new ReferenceDynamicAttribute(Resource.class, ATTRIBUTE_RESOURCE, "nickiResourceRef", String.class,
-				Config.getProperty("nicki.resources.basedn"));
-		dynAttribute.setForeignKey(Resource.class);
-		addAttribute(dynAttribute);
-
-	}
+	
+	@DynamicReferenceAttribute(externalName="nickiResourceRef", foreignKey=Resource.class, reference=Resource.class,
+			baseProperty="nicki.resources.basedn")
+	private String resource;
 
 	@Override
 	public List<InventoryArticle> getInventoryArticles(Person person) {
