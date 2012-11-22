@@ -32,37 +32,26 @@
  */
 package org.mgnl.nicki.dynamic.objects.ad;
 
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
-
+import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 @SuppressWarnings("serial")
-public class Person extends DynamicLdapTemplateObject {
+@DynamicObject
+@ObjectClass("Person")
+public class Person extends BaseLdapDynamicObject {
 
-	public void initDataModel()
-	{
-		addObjectClass("person");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute("surname", "sn", String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute("givenname", "givenName", String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute("fullname", "displayName", String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute("group", "memberOf", String.class);
-		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey(Group.class);
-		addAttribute(dynAttribute);
-
-	}
-	
+	@DynamicAttribute(externalName="cn", naming=true)
+	public String name;	
+	@DynamicAttribute(externalName="sn", mandatory=true)
+	private String surname;	
+	@DynamicAttribute(externalName="givenName")
+	private String givenname;
+	@DynamicAttribute(externalName="displayName")
+	private String fullname;
+	@DynamicAttribute(externalName="member", foreignKey=Group.class)
+	private String[] group;
 	
 	public String getFullname() {
 		return getAttribute("fullname");

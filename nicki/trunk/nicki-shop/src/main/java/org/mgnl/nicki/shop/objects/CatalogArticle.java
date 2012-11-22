@@ -45,17 +45,17 @@ import org.jdom.Element;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 
 @SuppressWarnings("serial")
 
-public class CatalogArticle extends DynamicLdapTemplateObject {
+public class CatalogArticle extends BaseLdapDynamicObject {
 
 	public static final String TYPE_ARTICLE = "ARTICLE";
 	public static final String CAPTION_START = "nicki.rights.attribute.dateFrom.label";
@@ -63,29 +63,29 @@ public class CatalogArticle extends DynamicLdapTemplateObject {
 
 	public void initDataModel() {
 		addObjectClass("nickiCatalogArticle");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
+		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicLdapAttribute("displayName", "displayName", String.class);
+		dynAttribute = new DynamicAttribute("displayName", "displayName", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicLdapAttribute("description", "nickiDescription", TextArea.class);
+		dynAttribute = new DynamicAttribute("description", "nickiDescription", TextArea.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicLdapAttribute("approval", "nickiApproval", String.class);
+		dynAttribute = new DynamicAttribute("approval", "nickiApproval", String.class);
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicLdapAttribute("category", "nickiCategory", String.class);
+		dynAttribute = new DynamicAttribute("category", "nickiCategory", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 		
-		dynAttribute = new DynamicLdapAttribute("rule", "nickiRule", String.class);
+		dynAttribute = new DynamicAttribute("rule", "nickiRule", String.class);
 		dynAttribute.setMultiple();
 		dynAttribute.setEditorClass("org.mgnl.nicki.shop.rules.RuleAttributeField");
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicLdapAttribute("attributes", "nickiAttributes", TextArea.class);
+		dynAttribute = new DynamicAttribute("attributes", "nickiAttributes", TextArea.class);
 		addAttribute(dynAttribute);
 	};
 

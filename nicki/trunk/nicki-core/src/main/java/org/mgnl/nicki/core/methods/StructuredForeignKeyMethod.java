@@ -30,44 +30,47 @@
  * intact.
  *
  */
-package org.mgnl.nicki.ldap.objects;
+package org.mgnl.nicki.core.methods;
+
 
 import java.io.Serializable;
+import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.methods.ForeignKeyMethod;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.ldap.context.LdapContext;
-import org.mgnl.nicki.ldap.methods.ReferenceMethod;
 
-@SuppressWarnings("serial")
-public class DynamicReference extends DynamicLdapAttribute implements Serializable {
+import freemarker.template.TemplateMethodModel;
 
-	private String attributeName;
-	private String baseDn;
-	private Class<? extends DynamicObject> classDefinition;
-	public DynamicReference(Class<? extends DynamicObject> classDefinition, String name, String baseDn, String attributeName, Class<?> attributeClass) {
-		super(name, name, attributeClass);
-		this.classDefinition = classDefinition;
-		setVirtual();
-		this.setBaseDn(baseDn);
-		this.attributeName = attributeName;
+public class StructuredForeignKeyMethod extends ForeignKeyMethod implements Serializable,TemplateMethodModel {
+
+	private static final long serialVersionUID = -5726598490077862331L;
+	private String path;
+	private String flag;
+	private String xml;
+	
+	
+	public StructuredForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName,
+			Class<? extends DynamicObject> classDefinition) {
+		super(context, rs, ldapName,classDefinition);
+		this.path = StringUtils.substringBefore(getForeignKey(), "#");
+		String rest = StringUtils.substringAfter(getForeignKey(), "#");
+		this.flag = StringUtils.substringBefore(rest, "#");
+		this.xml = StringUtils.substringAfter(rest, "#");
+		
 	}
-	public String getAttributeName() {
-		return attributeName;
-	}
-	public void setBaseDn(String baseDn) {
-		this.baseDn = baseDn;
-	}
-	public String getBaseDn() {
-		return baseDn;
-	}
+
 	@Override
-	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
-		dynamicObject.put(getGetter(getName()), new ReferenceMethod((LdapContext) context, rs, this));
+	public DynamicObject exec(@SuppressWarnings("rawtypes") List arguments) {
+		if (getObject() == null) {
+			setObject(getContext().loadObject(getClassDefinition(), this.path));
+			getObject().put("struct:flag" , flag);
+			getObject().put("struct:xml" , xml);
+			getObject().put("struct" , new StructuredData(xml));
+		}
+		return getObject();
 	}
-	public Class<? extends DynamicObject> getClassDefinition() {
-		return classDefinition;
-	}
-}
 
+}

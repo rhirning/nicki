@@ -1,15 +1,17 @@
 package org.mgnl.nicki.jcr.objects;
 
+import java.io.Serializable;
+
 import javax.jcr.Node;
 
-public class NodeDynamicObject extends NodeDynamicTemplateObject {
+
+public class GenericNodeDynamicObject extends NodeDynamicTemplateObject implements JcrDynamicObject, Serializable {
 	private static final long serialVersionUID = -2438906061486993342L;
 	public static final String ATTRIBUTE_SURNAME = "surname";
 	public static final String ATTRIBUTE_GIVENNAME = "givenname";
 	public static final String ATTRIBUTE_FULLNAME = "fullname";
 	public static final String ATTRIBUTE_PASSWORD = "password";
 	public static final String ATTRIBUTE_LANGUAGE = "language";
-	
 	
 	@Override
 	public void initDataModel() {
@@ -43,14 +45,10 @@ public class NodeDynamicObject extends NodeDynamicTemplateObject {
 
 	}
 
-	public boolean accept(Node node2) {
+	@Override
+	public boolean accept(Node node) {
 		// TODO Auto-generated method stub
 		return true;
-	}
-
-	public void setJcrNode(Node node2) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

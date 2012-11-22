@@ -36,12 +36,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicReference;
-import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
-import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
+import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
+import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 
@@ -49,38 +46,21 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 public class Role extends DynamicStructObject {
 	
 	private static final long serialVersionUID = 6170300879001415636L;
-
-	public void initDataModel() {
-		addObjectClass("nrfRole");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicReference(ResourceAssociation.class, "resourceAssociation", Config.getProperty("nicki.system.basedn"), "nrfRole", String.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-		
-		dynAttribute =  new StructuredDynamicAttribute("childRole", "nrfChildRoles", String.class);
-		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey(Role.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new StructuredDynamicReference(Person.class, "member", Config.getProperty("nicki.data.basedn"), "nrfAssignedRoles", String.class);
-		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey(Person.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new StructuredDynamicAttribute("approver", "nrfApprovers", String.class);
-		dynAttribute.setForeignKey(Person.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute("localizedName", "nrfLocalizedNames", String.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicLdapAttribute("localizedDescription", "nrfLocalizedDescrs", String.class);
-		addAttribute(dynAttribute);
-	};
+	@DynamicAttribute(externalName="cn", naming=true)
+	private String name;
+	@DynamicReferenceAttribute(externalName="nrfRole", reference=ResourceAssociation.class, baseProperty="nicki.system.basedn")
+	private String[] resourceAssociation;
+	@StructuredDynamicAttribute(externalName="nrfChildRoles", foreignKey=Role.class)
+	private String[] childRole;
+	@DynamicReferenceAttribute(externalName="nrfAssignedRoles", reference=Person.class, 
+			foreignKey=Person.class, baseProperty="nicki.data.basedn")
+	private String[] member;
+	@StructuredDynamicAttribute(externalName="nrfApprovers", foreignKey=Person.class)
+	private String[] approver;
+	@DynamicAttribute(externalName="nrfLocalizedNames")
+	private String localizedName;
+	@DynamicAttribute(externalName="nrfLocalizedDescrs")
+	private String localizedDescription;
 	
 	public Date getStartTime() {
 		return getDateInfo("/assignment/start_tm");

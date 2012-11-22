@@ -39,15 +39,17 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.annotation.AdditionalObjectClass;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
+import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.core.annotation.RemoveDynamicAttribute;
+import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.objects.Group;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.idm.novell.catalog.ResourceCatalogArticle;
 import org.mgnl.nicki.idm.novell.catalog.RoleCatalogArticle;
@@ -60,7 +62,10 @@ import org.mgnl.nicki.shop.objects.CatalogArticle;
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
-
+@DynamicObject
+@ObjectClass(value="inetOrgPerson", init=true)
+@RemoveDynamicAttribute("memberOf")
+@AdditionalObjectClass({"DirXML-EntitlementRecipient", "DirXML-EmployeeAux"})
 public class IdmPerson extends Person implements Serializable {
 
 	private static final long serialVersionUID = -6791692458041112275L;
@@ -92,119 +97,56 @@ public class IdmPerson extends Person implements Serializable {
 	private List<Role> assignedRoles = null;
 	private List<Resource> assignedResources = null;
 	
-	@Override
-	public void initDataModel() {
-		super.initDataModel();
-
-		getModel().getObjectClasses().clear();
-		getModel().getAttributes().remove(ATTRIBUTE_MEMBEROF);
-		addObjectClass("inetOrgPerson");
-		addAdditionalObjectClass("DirXML-EntitlementRecipient");
-		addAdditionalObjectClass("DirXML-EmployeeAux");
-
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_LASTWORKINGDAY,
-				"nickiLastWorkingDay", String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_QUITDATE,
-				"nickiQuitDate", String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_ACTIVATIONDATE,
-				"nickiActivationDate", String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new ReferenceDynamicAttribute(Person.class, ATTRIBUTE_MANAGER,
-				"manager", String.class,
-				Config.getProperty("nicki.users.basedn"));
-		dynAttribute.setForeignKey(Person.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_TYPE, "employeeType",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_COSTCENTER, "costCenter",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_GENDER, "nickiGender",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new StructuredDynamicAttribute(ATTRIBUTE_ENTITLEMENT,
-				"DirXML-EntitlementRef", String.class);
-		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey(Entitlement.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new StructuredDynamicAttribute(ATTRIBUTE_ROLE,
-				"nrfAssignedRoles", String.class);
-		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey(Role.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new StructuredDynamicAttribute(ATTRIBUTE_RESOURCE,
-				"nrfAssignedResources", String.class);
-		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey(Resource.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_BIRTHDATE, "nickiBirthDate",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_ENTRYDATE, "nickiEntryDate",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_OUCHANGEDATE, "nickiOuChangeDate",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NEXTOU, "nickiNextOu",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NEXTCOSTCENTER, "nickiNextOu",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_OUTRANSFERDATE, "nickiOuTransferDate",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_OWNER, "nickiOwner", String.class);
-		dynAttribute.setForeignKey(Person.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_COMPANY, "company", String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_OCCUPATION, "nickiOccupation",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_MEMBEROF, "groupMembership", String.class);
-		dynAttribute.setForeignKey(Group.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_OU, "ou", String.class);
-		dynAttribute.setForeignKey(Org.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_WORKFORCEID, "workforceID", String.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_MAIL, "mail", String.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_PHONENUMBER, "telephoneNumber", String.class);
-		addAttribute(dynAttribute);
-	}
-
-
+	@DynamicAttribute(externalName="nickiLastWorkingDay")
+	private String lastWorkingDay;
+	@DynamicAttribute(externalName="nickiQuitDate")
+	private String quitDate;
+	@DynamicAttribute(externalName="nickiActivationDate")
+	private String activationDate;
+	@DynamicReferenceAttribute(externalName="manager", foreignKey=Person.class, reference=Person.class,
+			baseProperty="nicki.users.basedn")
+	private String manager;
+	@DynamicAttribute(externalName="employeeType")
+	private String type;
+	@DynamicAttribute(externalName="costCenter")
+	private String costCenter;
+	@DynamicAttribute(externalName="nickiGender")
+	private String gender;
+	@StructuredDynamicAttribute(externalName="DirXML-EntitlementRef", foreignKey=Entitlement.class)
+	private String[] entitlement;
+	@StructuredDynamicAttribute(externalName="nrfAssignedRoles", foreignKey=Role.class)
+	private String[] role;
+	@StructuredDynamicAttribute(externalName="nrfAssignedResources", foreignKey=Resource.class)
+	private String[] resource;
+	@DynamicAttribute(externalName="nickiBirthDate")
+	private String birthDate;
+	@DynamicAttribute(externalName="nickiEntryDate")
+	private String entryDate;
+	@DynamicAttribute(externalName="nickiOuChangeDate")
+	private String ouChangeDate;
+	@DynamicAttribute(externalName="nickiNextOu")
+	private String nextOU;
+	@DynamicAttribute(externalName="nickiNextCostCenter")
+	private String nextCostCenter;
+	@DynamicAttribute(externalName="nickiOuTransferDate")
+	private String ouTransferDate;
+	@DynamicAttribute(externalName="nickiOwner", foreignKey=Person.class)
+	private String owner;
+	@DynamicAttribute(externalName="company")
+	private String company;
+	@DynamicAttribute(externalName="nickiOccupation")
+	private String occupation;
+	@DynamicAttribute(externalName="groupMembership", foreignKey=Group.class)
+	private String[] memberOf;
+	@DynamicAttribute(externalName="ou", foreignKey=Org.class)
+	private String ou;
+	@DynamicAttribute(externalName="workforceID")
+	private String workforceId;
+	@DynamicAttribute(externalName="mail")
+	private String mail;
+	@DynamicAttribute(externalName="telephoneNumber")
+	private String phoneNumber;
+	
 	public boolean hasRole(Role role2) {
 		for (Iterator<Role> iterator = getRoles().iterator(); iterator.hasNext();) {
 			Role role = (Role) iterator.next();

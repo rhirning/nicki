@@ -9,11 +9,13 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
-public @interface DynamicAttribute {
+public @interface DynamicReferenceAttribute {
 	boolean naming() default false;
 	boolean mandatory() default false;
 	boolean virtual() default false;
 	boolean readonly() default false;
 	String externalName();
 	Class<? extends DynamicObject>[] foreignKey() default {};
+	Class<? extends DynamicObject> reference();
+	String baseProperty();
 }

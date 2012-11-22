@@ -30,34 +30,31 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.ldap;
+package org.mgnl.nicki.core.data;
 
-import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.dynamic.objects.objects.Script;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-
-@SuppressWarnings("serial")
-public class LdapScript extends Script {
-	public static final String ATTRIBUTE_DATA = "data";
+import java.util.List;
+import java.util.Map;
 
 
-	public void initDataModel() {
-		addObjectClass("nickiScript");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NAME, "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
+public interface Query {
 
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_DATA, "nickiScriptData", String.class);
-		addAttribute(dynAttribute);
-	};
+	void addFilter(String filter);
 	
-	public String getData() {
-		return getAttribute(ATTRIBUTE_DATA);
-	}
+	void addSearchValue(String key, String value);
+	
+	public List<String> getSearchValue(String key);
 
-	public void setData(String data) {
-		this.put(ATTRIBUTE_DATA, data);
-	}
+	public Map<String, List<String>> getSearchValues();
+	
+	public String getFilter();
+	
+	public String getBaseDN();
+
+	public Map<String, String> getResultAttributes();
+
+	public void setResultAttributes(Map<String, String> resultAttributes);
+	
+	public void addResultAttribute(String targetName, String displayName);
 
 
 }

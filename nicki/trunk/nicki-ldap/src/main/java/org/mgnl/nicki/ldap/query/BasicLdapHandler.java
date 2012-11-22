@@ -67,10 +67,10 @@ public abstract class BasicLdapHandler implements QueryHandler {
 	
 	public String getFilter() {
 		StringBuffer sb = new StringBuffer();
-		if (StringUtils.isNotEmpty(filter)) {
+		if (StringUtils.isNotBlank(filter)) {
 			LdapHelper.addQuery(sb, filter, LOGIC.AND);
 		}
-
+		
 		if (getClassDefinition() == null) {
 			if (sb.length() == 0) {
 				LdapHelper.addQuery(sb, "objectClass=*", LOGIC.AND);

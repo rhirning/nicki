@@ -19,9 +19,11 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.data.Query;
+import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.jcr.objects.NodeDynamicObject;
+import org.mgnl.nicki.jcr.objects.JcrDynamicObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -162,7 +164,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
 		}
 		try {
-			((NodeDynamicObject)dynamicObject).getNode().getSession().save();
+			((JcrDynamicObject)dynamicObject).getNode().getSession().save();
 			/*
 			Node node = session.getNode(dynamicObject.getPath());
 			updateNode(node, dynamicObject);
@@ -237,7 +239,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	// TODO: implement
 	@SuppressWarnings("unchecked")
-	private <T extends NodeDynamicObject> T getDynamicObject(Class<T> classDefinition, Node node) {
+	private <T extends JcrDynamicObject> T getDynamicObject(Class<T> classDefinition, Node node) {
 		T dynamicObject = null;
 		try {
 			if (node != null) {
@@ -246,7 +248,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 				} else {
 					dynamicObject = (T) getJcrObjectFactory().getObject(node);
 				}
-				dynamicObject.init(node);
+				dynamicObject.init(this, node);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -288,7 +290,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	@Override
 	public List<DynamicObject> loadChildObjects(String parentPath,
-			String filter) {
+			Class<? extends DynamicObject> filter) {
 		List<DynamicObject> list = new ArrayList<DynamicObject>();
 		try {
 			Node parent = session.getNode(parentPath);
@@ -388,6 +390,26 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	public Session getSession() {
 		return this.session;
+	}
+
+	@Override
+	public List<DynamicObject> loadReferenceObjects(Query query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T extends DynamicObject> List<T> loadReferenceObjects(
+			Class<T> classDefinition, Query query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DynamicObject> loadReferenceObjects(
+			ReferenceMethod referenceMethod) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 

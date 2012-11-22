@@ -38,12 +38,12 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass({"nickiTemplate", "organizationalUnit"})
-public class Template extends DynamicLdapTemplateObject {
+public class Template extends BaseLdapDynamicObject {
 
 	public static final String ATTRIBUTE_DATA = "data";
 	public static final String ATTRIBUTE_PARAMS = "params";
@@ -52,26 +52,26 @@ public class Template extends DynamicLdapTemplateObject {
 	public static final String ATTRIBUTE_FILTER = "filter";
 	public static final String ATTRIBUTE_TESTDATA = "testData";
 	
-	@DynamicAttribute(naming=true, localName=ATTRIBUTE_NAME, externalName="ou")
+	@DynamicAttribute(naming=true, externalName="ou")
 	private String name;
 	
-	@DynamicAttribute(localName=ATTRIBUTE_DATA, externalName="nickiTemplateData")
+	@DynamicAttribute(externalName="nickiTemplateData")
 	private String data;
 
-	@DynamicAttribute(localName=ATTRIBUTE_PARAMS, externalName="nickiTemplateParams")
+	@DynamicAttribute(externalName="nickiTemplateParams")
 	private String params;
 
-	@DynamicAttribute(localName=ATTRIBUTE_HANDLER, externalName="nickiHandler")
+	@DynamicAttribute(externalName="nickiHandler")
 	private String handler;
 
-	@DynamicAttribute(localName=ATTRIBUTE_PARTS, externalName="nickiTemplatePart", multiple=true)
-	private String parts;
+	@DynamicAttribute(externalName="nickiTemplatePart")
+	private String[] parts;
 
-	@DynamicAttribute(localName=ATTRIBUTE_FILTER, externalName="nickiFilter", multiple=true)
-	private String filter;
+	@DynamicAttribute(externalName="nickiFilter")
+	private String[] filter;
 
-	@DynamicAttribute(localName=ATTRIBUTE_TESTDATA, externalName="nickiStructuredRef", multiple=true)
-	private String testData;
+	@DynamicAttribute(externalName="nickiStructuredRef")
+	private String[] testData;
 	
 	public String getData() {
 		return getAttribute(ATTRIBUTE_DATA);

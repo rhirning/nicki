@@ -38,10 +38,9 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.dynamic.objects.reference.ReferenceDynamicAttribute;
 import org.mgnl.nicki.idm.novell.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.objects.Role;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
@@ -49,23 +48,17 @@ import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 import org.mgnl.nicki.shop.objects.Catalog;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 
-
+@DynamicObject
+@ObjectClass("nickiRoleArticle")
 public class RoleCatalogArticle extends CatalogArticle {
 
 	private static final long serialVersionUID = -5530389061310235734L;
 	public static final String ATTRIBUTE_ROLE = "role";
-	@Override
-	public void initDataModel() {
-		super.initDataModel();
-		addObjectClass("nickiRoleArticle");
 
-		DynamicAttribute dynAttribute = new ReferenceDynamicAttribute(Role.class, ATTRIBUTE_ROLE, "nickiRoleRef", String.class,
-				Config.getProperty("nicki.roles.basedn"));
-		dynAttribute.setForeignKey(Role.class);
-		addAttribute(dynAttribute);
-
-	}
-
+	
+	@DynamicReferenceAttribute(externalName="nickiRoleRef", foreignKey=Role.class, reference=Role.class,
+			baseProperty="nicki.roles.basedn")
+	private String role;
 
 	@Override
 	public List<InventoryArticle> getInventoryArticles(Person person) {

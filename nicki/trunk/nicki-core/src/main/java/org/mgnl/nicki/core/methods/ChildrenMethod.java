@@ -47,10 +47,10 @@ public class ChildrenMethod implements Serializable, TemplateMethodModel {
 	private static final long serialVersionUID = -81535049844368520L;
 	private List<? extends DynamicObject> objects = null;
 	private String parent;
-	private String filter;
+	private Class<? extends DynamicObject> filter;
 	private NickiContext context;
 	
-	public ChildrenMethod(NickiContext context, ContextSearchResult rs, String filter) {
+	public ChildrenMethod(NickiContext context, ContextSearchResult rs, Class<? extends DynamicObject> filter) {
 		this.context = context;
 		this.parent = rs.getNameInNamespace();
 		this.filter = filter;

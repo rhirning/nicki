@@ -32,34 +32,30 @@
  */
 package org.mgnl.nicki.dynamic.objects.objects;
 
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
-public class Group extends DynamicLdapTemplateObject {
+@DynamicObject
+@ObjectClass("groupOfNames")
+public class Group extends BaseLdapDynamicObject {
 	public static final String ATTRIBUTE_DESCRIPTION = "description";
 	public static final String ATTRIBUTE_MEMBER = "member";
 	public static final String ATTRIBUTE_OWNER = "owner";
 
+	@DynamicAttribute(externalName="cn", naming=true)
+	private String name;
+	
+	@DynamicAttribute(externalName="description")
+	private String description;
+	
+	@DynamicAttribute(externalName="member", foreignKey=Person.class)
+	private String[] member;
+	
+	@DynamicAttribute(externalName="owner", foreignKey=Person.class)
+	private String owner;
+	
 	private static final long serialVersionUID = 6170300879001415636L;
-	public void initDataModel() {
-		addObjectClass("groupOfNames");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NAME, "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_DESCRIPTION, "description", String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_MEMBER, "member", String.class);
-		dynAttribute.setForeignKey(Person.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_OWNER, "owner", String.class);
-		dynAttribute.setForeignKey(Person.class);
-		addAttribute(dynAttribute);
-
-	};
 
 }

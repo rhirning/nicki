@@ -34,43 +34,29 @@ package org.mgnl.nicki.idm.novell.objects;
 
 import java.util.Date;
 
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.StructuredDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 @SuppressWarnings("serial")
-
+@DynamicObject
+@ObjectClass("nrfResource")
 public class Resource extends DynamicStructObject {
-
-	@Override
-	public void initDataModel() {
-		addObjectClass("nrfResource");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		dynAttribute =  new StructuredDynamicAttribute("entitlement", "nrfEntitlementRef", String.class);
-		dynAttribute.setForeignKey(Entitlement.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute =  new StructuredDynamicAttribute("approver", "nrfApprovers", String.class);
-		dynAttribute.setForeignKey(Person.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-		
-		dynAttribute =  new StructuredDynamicAttribute("revokeApprover", "nrfRevokeApprovers", String.class);
-		dynAttribute.setForeignKey(Person.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicLdapAttribute("localizedName", "nrfLocalizedNames", String.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicLdapAttribute("localizedDescription", "nrfLocalizedDescrs", String.class);
-		addAttribute(dynAttribute);
-}
+	@DynamicAttribute(externalName="cn", naming=true)
+	private String name;
+	@StructuredDynamicAttribute(externalName="nrfEntitlementRef", foreignKey=Entitlement.class)
+	private String entitlement;
+	@StructuredDynamicAttribute(externalName="nrfApprovers", foreignKey=Person.class)
+	private String[] approver;
+	@StructuredDynamicAttribute(externalName="nrfRevokeApprovers", foreignKey=Person.class)
+	private String[] revokeApprover;
+	@DynamicAttribute(externalName="nrfLocalizedNames")
+	private String localizedName;
+	@DynamicAttribute(externalName="nrfLocalizedDescrs")
+	private String localizedDescription;
 	
 	public Entitlement getEntitlement() throws DynamicObjectException {
 		try {

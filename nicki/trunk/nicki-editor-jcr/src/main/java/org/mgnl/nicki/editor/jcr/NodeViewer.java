@@ -46,7 +46,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.editor.jcr.PropertyWrapper.PROPERTY_TYPE;
-import org.mgnl.nicki.jcr.objects.NodeDynamicObject;
+import org.mgnl.nicki.jcr.objects.JcrDynamicObject;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
@@ -83,7 +83,7 @@ public class NodeViewer extends CustomComponent implements ClassEditor {
 
 	private HttpServletRequest request;
 	private HttpServletResponse response;
-	private NodeDynamicObject node;
+	private JcrDynamicObject node;
 
 	/**
 	 * The constructor should first build the main layout, set the composition
@@ -97,7 +97,7 @@ public class NodeViewer extends CustomComponent implements ClassEditor {
 
 	public void setDynamicObject(NickiTreeEditor nickiEditor,
 			DynamicObject dynamicObject) {
-		this.node = (NodeDynamicObject) dynamicObject;
+		this.node = (JcrDynamicObject) dynamicObject;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 		initTable();
@@ -166,7 +166,7 @@ public class NodeViewer extends CustomComponent implements ClassEditor {
 		
 	}
 
-	private Container getBeanItems(NodeDynamicObject dynamicObject) throws RepositoryException {
+	private Container getBeanItems(JcrDynamicObject dynamicObject) throws RepositoryException {
 	    // Create a container for such beans
 	    BeanItemContainer<PropertyWrapper> properties =
 	        new BeanItemContainer<PropertyWrapper>(PropertyWrapper.class);

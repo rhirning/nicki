@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.ldap.methods;
+package org.mgnl.nicki.core.methods;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -39,6 +39,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.methods.ListForeignKeyMethod;
+import org.mgnl.nicki.core.methods.StructuredData;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 

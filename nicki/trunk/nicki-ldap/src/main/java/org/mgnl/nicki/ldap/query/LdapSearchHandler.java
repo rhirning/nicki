@@ -41,7 +41,7 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.objects.SearchResultEntry;
 import org.mgnl.nicki.ldap.context.LdapContext;
-import org.mgnl.nicki.ldap.data.Query;
+import org.mgnl.nicki.core.data.Query;
 import org.mgnl.nicki.ldap.data.QueryHandler;
 
 public class LdapSearchHandler extends BasicLdapHandler implements QueryHandler {

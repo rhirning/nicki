@@ -36,12 +36,13 @@ import java.io.Serializable;
 
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.ldap.context.LdapContext;
 import org.mgnl.nicki.ldap.methods.StructuredReferenceMethod;
 
 @SuppressWarnings("serial")
-public class StructuredDynamicReference extends DynamicLdapAttribute implements Serializable {
+public class StructuredDynamicReference extends DynamicAttribute implements Serializable {
 
 	private String attributeName;
 	private String baseDn;

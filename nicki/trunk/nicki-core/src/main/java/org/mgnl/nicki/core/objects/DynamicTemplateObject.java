@@ -51,7 +51,7 @@ public abstract class DynamicTemplateObject extends BaseDynamicObject {
 		
 		for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
 			String key = iterator.next();
-			String filter = getModel().getChildren().get(key);
+			Class<? extends DynamicObject> filter = getModel().getChildren().get(key);
 			put(DynamicAttribute.getGetter(key), new ChildrenMethod(getContext(), rs, filter));
 		}
 	}

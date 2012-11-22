@@ -32,8 +32,10 @@
  */
 package org.mgnl.nicki.ldap.objects;
 
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+
 @SuppressWarnings("serial")
-public class StaticAttribute extends DynamicLdapAttribute {
+public class StaticAttribute extends DynamicAttribute {
 	private String value;
 
 	public StaticAttribute(String name, String ldapName, Class<?> attributeClass, String value) {

@@ -40,11 +40,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.jdom.Element;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.PathHelper;
+import org.mgnl.nicki.core.methods.ChildrenMethod;
+import org.mgnl.nicki.core.methods.StructuredData;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+
+import freemarker.template.TemplateMethodModel;
 
 @SuppressWarnings("serial")
 public abstract class BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
@@ -57,6 +62,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	private DynamicObject parent = null;
 	private STATUS status;
 	private boolean modified = false;
+	private DataModel model = null;
 	
 	// cached attributes
 	private Map<String, List<DynamicObject>> childObjects = null;
@@ -71,8 +77,6 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		//		initDataModel();
 	}
 	
-	public abstract DataModel getModel();
-
 	public void init() {
 		if (status == STATUS.EXISTS) {
 			try {
@@ -155,7 +159,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return getContext().loadChildObjects(classDefinition, this, "");
 	}
 
-	public void addChild(String attribute, String filter) {
+	public void addChild(String attribute, Class<? extends DynamicObject> filter) {
 		getModel().addChild(attribute, filter);
 	}
 	
@@ -205,6 +209,20 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	
 	public void addAttribute(DynamicAttribute dynAttribute) {
 		this.getModel().addAttribute(dynAttribute);
+	}
+
+	
+	public void addMethod(String name, TemplateMethodModel method) {
+		put(DynamicAttribute.getGetter(name), method);
+	}
+	
+	public Object execute(String methodName, @SuppressWarnings("rawtypes") List arguments) throws DynamicObjectException {
+		try {
+			TemplateMethodModel method = (TemplateMethodModel) get(methodName);
+			return method.exec(arguments);
+		} catch (Exception e) {
+			throw new DynamicObjectException(e);
+		}		
 	}
 	
 	public void setOriginal(DynamicObject original) {
@@ -353,7 +371,29 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return getPath().hashCode();
 	}
 
-	public abstract String getInfo(String xml, String infoPath);
+
+	public String getInfo(String xml, String infoPath) {
+		String parts[] = StringUtils.split(infoPath, SEPARATOR);
+		if (parts.length < 2) {
+			return null;
+		}
+		// correct xml
+		StringUtils.replace(xml, "&lt;", "<");
+		StringUtils.replace(xml, "&gt;", ">");
+		StructuredData data  = new StructuredData(xml); 
+		try {
+			Element element = data.getDocument().getRootElement();
+			int i = 1;
+			while (i < parts.length - 1) {
+				element = element.getChild(parts[i]);
+				i++;
+			}
+			
+			return element.getChildTextTrim(parts[i]);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 	
 	public String getLocalizedValue(String attributeName, String locale) {
 		Map<String, String> valueMap = DataHelper.getMap(getAttribute(attributeName), "|", "~");
@@ -414,6 +454,22 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		childObjects = new HashMap<String, List<DynamicObject>>();
 	}
 
+	public void loadChildren() {
+		init();
+		if (getChildObjects() == null) {
+			initChildren();
+			for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
+				String key = iterator.next();
+				Class<? extends DynamicObject> filter = getModel().getChildren().get(key);
+				@SuppressWarnings("unchecked")
+				List<DynamicObject> list = (List<DynamicObject>) getContext().loadChildObjects(getPath(), filter);
+				if (list != null) {
+					getChildObjects().put(key, list);
+				}
+			}
+		}
+	}
+
 	public void unLoadChildren() {
 		this.childObjects = null;
 	}
@@ -443,13 +499,39 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	@Override
 	public void initDataModel() {
 	}
-
+	
+	@Override
 	public void init(ContextSearchResult rs) throws DynamicObjectException {
+		if (getStatus() != STATUS.EXISTS) {
+			throw new DynamicObjectException("Invalid call");
+		}
+		this.setStatus(STATUS.LOADED);
+		this.getModel().init(getContext(), this, rs);
+		setOriginal((DynamicObject) this.clone());
+
+		for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
+			String key = iterator.next();
+			Class<? extends DynamicObject> filter = getModel().getChildren().get(key);
+			put(DynamicAttribute.getGetter(key), new ChildrenMethod(getContext(), rs, filter));
+		}
 	}
 
 	@Override
 	public boolean isAnnotated() {
 		return getClass().isAnnotationPresent(org.mgnl.nicki.core.annotation.DynamicObject.class);
+	}
+
+	@Override
+	public void setModel(DataModel model) {
+		this.model = model;
+	}
+
+	@Override
+	public DataModel getModel() {
+		if (model == null) {
+			model = new DataModel();
+		}
+		return model;
 	}
 
 }

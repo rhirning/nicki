@@ -30,27 +30,43 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.ad;
+package org.mgnl.nicki.core.objects;
 
 import java.io.Serializable;
 
-import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
-
+import org.mgnl.nicki.core.methods.ReferenceMethod;
+import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.context.NickiContext;
 
 @SuppressWarnings("serial")
-public class Org extends DynamicLdapTemplateObject implements Serializable {
+public class DynamicReference extends DynamicAttribute implements Serializable {
 
-	@Override
-	public void initDataModel() {
-		addObjectClass("organizationalUnit");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "ou", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		// TODO
-		addChild("child", "objectClass=*");
+	private String attributeName;
+	private String baseDn;
+	private Class<? extends DynamicObject> classDefinition;
+	public DynamicReference(Class<? extends DynamicObject> classDefinition, String name, String baseDn, String attributeName, Class<?> attributeClass) {
+		super(name, name, attributeClass);
+		this.classDefinition = classDefinition;
+		setVirtual();
+		this.setBaseDn(baseDn);
+		this.attributeName = attributeName;
 	}
-
+	public String getAttributeName() {
+		return attributeName;
+	}
+	public void setBaseDn(String baseDn) {
+		this.baseDn = baseDn;
+	}
+	public String getBaseDn() {
+		return baseDn;
+	}
+	@Override
+	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
+		dynamicObject.put(getGetter(getName()), new ReferenceMethod(context, rs, this));
+	}
+	public Class<? extends DynamicObject> getClassDefinition() {
+		return classDefinition;
+	}
 }
+

@@ -38,16 +38,20 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.annotation.AdditionalObjectClass;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
-import org.mgnl.nicki.ldap.objects.DynamicReference;
+import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
+import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 
 
 @SuppressWarnings("serial")
-public class Person extends DynamicLdapTemplateObject {
+@DynamicObject
+@ObjectClass("Person")
+@AdditionalObjectClass("nickiUserAux")
+public class Person extends BaseLdapDynamicObject {
 	public static final String ATTRIBUTE_SURNAME = "surname";
 	public static final String ATTRIBUTE_GIVENNAME = "givenname";
 	public static final String ATTRIBUTE_FULLNAME = "fullname";
@@ -65,51 +69,24 @@ public class Person extends DynamicLdapTemplateObject {
 	private List<String> attributeValues = null;
 	private Map<String, String> catalogAttributes = new HashMap<String, String>();
 	
-	public void initDataModel() {
-		addObjectClass("Person");
-		addAdditionalObjectClass("nickiUserAux");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_NAME, "cn",
-				String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_SURNAME, "sn", String.class);
-		dynAttribute.setMandatory();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_GIVENNAME, "givenName",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_FULLNAME, "fullName",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_LANGUAGE, "Language",
-				String.class);
-		addAttribute(dynAttribute);
-
-		
-		dynAttribute = new DynamicReference(Group.class, ATTRIBUTE_MEMBEROF, Config.getProperty("nicki.data.basedn"), 
-				"member", String.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_LOCATION, "nickiLocation",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_ASSIGNEDARTICLE, "nickiCatalogArticle",
-				String.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute(ATTRIBUTE_ATTRIBUTEVALUE,
-				"nickiCatalogAttribute", String.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-
-	}
+	@DynamicAttribute(externalName="cn", naming=true)
+	public String name;	
+	@DynamicAttribute(externalName="sn", mandatory=true)
+	private String surname;	
+	@DynamicAttribute(externalName="givenName")
+	private String givenname;
+	@DynamicAttribute(externalName="fullName")
+	private String fullname;
+	@DynamicAttribute(externalName="Language")
+	private String language;
+	@DynamicReferenceAttribute(externalName="member", reference=Group.class, baseProperty="nicki.data.basedn")
+	private String[] memberOf;
+	@DynamicAttribute(externalName="nickiLocation")
+	private String location;
+	@DynamicAttribute(externalName="nickiCatalogArticle")
+	private String[] assignedArticle;
+	@DynamicAttribute(externalName="nickiCatalogAttribute")
+	private String[] attributeValue;
 
 	@Override
 	public String getDisplayName() {

@@ -32,8 +32,20 @@
  */
 package org.mgnl.nicki.ldap.helper;
 
+import java.util.Iterator;
+import java.util.List;
+
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
+import javax.naming.directory.BasicAttribute;
+import javax.naming.directory.BasicAttributes;
+
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.PathHelper;
+import org.mgnl.nicki.core.objects.DataModel;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 public class LdapHelper extends PathHelper {
 
@@ -100,6 +112,83 @@ public class LdapHelper extends PathHelper {
 			}
 			sb.append(")");
 		}
+	}
+
+
+	
+	public static Attributes getLdapAttributesForCreate(BaseLdapDynamicObject dynamicObject) {
+		Attributes myAttrs = new BasicAttributes(true);
+		addBasicLdapAttributes(myAttrs, dynamicObject);
+		addLdapAttributes(myAttrs, dynamicObject, false);
+		return myAttrs;
+	}
+	
+	// objectClass + naming
+	public static void addBasicLdapAttributes(Attributes myAttrs, BaseLdapDynamicObject dynamicObject) {
+		Attribute oc = new BasicAttribute("objectClass");
+		for (Iterator<String> iterator = dynamicObject.getModel().getObjectClasses().iterator(); iterator.hasNext();) {
+			String objectClass = iterator.next();
+			oc.add(objectClass);
+		}
+		for (Iterator<String> iterator = dynamicObject.getModel().getAdditionalObjectClasses().iterator(); iterator.hasNext();) {
+			String objectClass = iterator.next();
+			oc.add(objectClass);
+		}
+		myAttrs.put(oc);
+		for (Iterator<DynamicAttribute> iterator = dynamicObject.getModel().getMandatoryAttributes().iterator(); iterator.hasNext();) {
+			DynamicAttribute dynAttribute =  iterator.next();
+			if (dynAttribute.isNaming()) {
+				myAttrs.put(dynAttribute.getExternalName(), dynamicObject.getAttribute(dynAttribute.getName()));
+			}			
+		}
+	}
+	
+	public static void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject, boolean nullable) {
+
+		// single attributes (except namingAttribute)
+		for (Iterator<DynamicAttribute> iterator = dynamicObject.getModel().getAttributes().values().iterator(); iterator.hasNext();) {
+			DynamicAttribute dynAttribute = iterator.next();
+			if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
+				String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
+				if (nullable || value != null) {
+					Attribute attribute = new BasicAttribute(dynAttribute.getExternalName(), value);
+					myAttrs.put(attribute);
+				}
+			}
+		}
+		
+		// multi attributes
+		for (Iterator<DynamicAttribute> iterator = dynamicObject.getModel().getAttributes().values().iterator(); iterator.hasNext();) {
+			DynamicAttribute dynAttribute = iterator.next();
+			if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
+				Attribute attribute = new BasicAttribute(dynAttribute.getExternalName());
+				@SuppressWarnings("unchecked")
+				List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
+				if (list != null) {
+					for (Iterator<String> iterator2 = list.iterator(); iterator2.hasNext();) {
+						String value = iterator2.next();
+						if (StringUtils.isNotEmpty(value)) {
+							attribute.add(value);
+						}
+					}
+				}
+				if (nullable || attribute.size() > 0) {
+					myAttrs.put(attribute);
+				}
+			}
+		}
+		
+	}
+	
+
+	public static String getObjectClassFilter(DataModel model) {
+		StringBuffer sb = new StringBuffer();
+		for (Iterator<String> iterator = model.getObjectClasses().iterator(); iterator.hasNext();) {
+			String objectClass = iterator.next();
+			LdapHelper.addQuery(sb, "objectClass=" + objectClass, LOGIC.AND);
+		}
+
+		return sb.toString();
 	}
 
 

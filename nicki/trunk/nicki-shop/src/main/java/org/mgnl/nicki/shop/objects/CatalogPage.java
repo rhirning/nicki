@@ -41,43 +41,42 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
-import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
 @SuppressWarnings("serial")
 
-public class CatalogPage extends DynamicLdapTemplateObject {
+public class CatalogPage extends BaseLdapDynamicObject {
 	
 	private Provider provider = null;
 
 	public void initDataModel() {
 		addObjectClass("nickiCatalogPage");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
+		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
 		dynAttribute.setNaming();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicLdapAttribute("category", "nickiCategory", String.class);
+		dynAttribute = new DynamicAttribute("category", "nickiCategory", String.class);
 		dynAttribute.setMultiple();
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicLdapAttribute("provider", "nickiProvider", String.class);
+		dynAttribute = new DynamicAttribute("provider", "nickiProvider", String.class);
 		addAttribute(dynAttribute);
 
-		dynAttribute = new DynamicLdapAttribute("attributes", "nickiAttributes", TextArea.class);
+		dynAttribute = new DynamicAttribute("attributes", "nickiAttributes", TextArea.class);
 		addAttribute(dynAttribute);
 		
 		// TODO
-		addChild("page", "objectClass=nickiCatalogPage");
-		addChild("article", "objectClass=nickiCatalogArticle");
+		addChild("page", CatalogPage.class);
+		addChild("article", CatalogArticle.class);
 
 	};
 	

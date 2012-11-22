@@ -37,6 +37,8 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.methods.ChildrenMethod;
 
@@ -44,15 +46,15 @@ import org.mgnl.nicki.jcr.methods.ChildrenMethod;
 import freemarker.template.TemplateMethodModel;
 
 @SuppressWarnings("serial")
-public abstract class NodeDynamicTemplateObject extends BaseJcrDynamicObject {
+public class NodeDynamicTemplateObject extends BaseJcrDynamicObject {
 
 	@Override
-	public void init(Node node) throws DynamicObjectException {
-		super.init(node);
+	public void init(NickiContext context, Node node) throws DynamicObjectException {
+		super.init(context, node);
 		
 		for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
 			String key = iterator.next();
-			String filter = getModel().getChildren().get(key);
+			Class<? extends DynamicObject> filter = getModel().getChildren().get(key);
 			put(DynamicJcrAttribute.getGetter(key), new ChildrenMethod(getContext(),node, filter));
 		}
 	}

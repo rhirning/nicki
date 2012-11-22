@@ -34,17 +34,29 @@ package org.mgnl.nicki.dynamic.objects.objects;
 
 import java.util.HashMap;
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.ldap.objects.DynamicLdapAttribute;
-import org.mgnl.nicki.ldap.objects.DynamicLdapTemplateObject;
+import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 /**
  *
  * @author cna
  */
 @SuppressWarnings("serial")
-public class LdapSearchGroup extends DynamicLdapTemplateObject {
+@DynamicObject
+@ObjectClass("dynamicGroup")
+public class LdapSearchGroup extends BaseLdapDynamicObject {
+
+	@DynamicAttribute(externalName="cn", naming=true)
+	private String name;
+	
+	@DynamicAttribute(externalName="member", readonly=true, foreignKey=Person.class)
+	private String[] member;
+	
+	@DynamicAttribute(externalName="memberQueryURL")
+	private String query;
 
 	public enum SEARCHSCOPE {
 
@@ -79,22 +91,6 @@ public class LdapSearchGroup extends DynamicLdapTemplateObject {
 	private String searchRoot = "";
 	private boolean initialized;
 
-	@Override
-	public void initDataModel() {
-		addObjectClass("dynamicGroup");
-		DynamicLdapAttribute dynAttribute = new DynamicLdapAttribute("name", "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute("member", "member", String.class);
-		dynAttribute.setMultiple();
-		dynAttribute.setForeignKey(Person.class);
-		dynAttribute.setReadonly();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicLdapAttribute("query", "memberQueryURL", String.class);
-		addAttribute(dynAttribute);
-	}
 
 	private void load() {
 		if (initialized != true && StringUtils.isNotEmpty((String) get("query"))) {

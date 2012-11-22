@@ -36,9 +36,9 @@ package org.mgnl.nicki.ldap.methods;
 import java.io.Serializable;
 import java.util.List;
 
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.ldap.context.LdapContext;
 import org.mgnl.nicki.ldap.core.LdapQuery;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
@@ -50,9 +50,9 @@ public class StructuredReferenceMethod implements TemplateMethodModel, Serializa
 	List<DynamicObject> objects = null;
 	StructuredDynamicReference reference;
 	String path;
-	LdapContext context;
+	NickiContext context;
 	
-	public StructuredReferenceMethod(LdapContext context, ContextSearchResult rs, StructuredDynamicReference structuredDynamicReference) {
+	public StructuredReferenceMethod(NickiContext context, ContextSearchResult rs, StructuredDynamicReference structuredDynamicReference) {
 		this.context = context;
 		this.path = rs.getNameInNamespace();
 		this.reference = structuredDynamicReference;
