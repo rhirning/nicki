@@ -36,6 +36,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.objects.DynamicObject.STATUS;
 
 public interface DynamicObject {
 	public static final String ATTRIBUTE_NAME = "name";
@@ -47,13 +48,13 @@ public interface DynamicObject {
 		LOADED	// exists in target and is loaded
 	}; 
 
-	public void initNew(String parentPath, String namingValue);
+//	public void initNew(String parentPath, String namingValue);
 	
 	public String getNamingValue();
 
 	public String getParentPath();
 
-	public void initExisting(NickiContext context, String path);
+//	public void initExisting(NickiContext context, String path);
 	
 //	public void init(ContextSearchResult rs) throws DynamicObjectException;
 	
@@ -72,8 +73,6 @@ public interface DynamicObject {
 	public DataModel getModel();
 
 	public void setModel(DataModel model);
-
-	public boolean accept(ContextSearchResult rs);
 
 	/*
 	private boolean checkAttribute(ContextSearchResult rs, String attribute,
@@ -187,4 +186,10 @@ public interface DynamicObject {
 	String getObjectClassFilter();
 
 	void init(ContextSearchResult rs) throws DynamicObjectException;
+
+	public void setStatus(STATUS new1);
+
+	public void setParentPath(String parentPath);
+
+	public void setPath(String path);
 }

@@ -30,19 +30,25 @@
  * intact.
  *
  */
-package org.mgnl.nicki.ldap.query;
+package org.mgnl.nicki.core.objects;
+
+import java.io.Serializable;
+import java.util.Map;
 
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.DynamicObject;
 
-public class SubObjectsLoaderLdapQueryHandler extends ObjectsLoaderLdapQueryHandler {
-
-	public SubObjectsLoaderLdapQueryHandler(NickiContext context, String parent, String filter) {
-		super(context, parent, filter);
-	}
+public interface DynamicObjectAdapter extends Serializable {
 	
-	@Override
-	public SCOPE getScope() {
-		return SCOPE.ONELEVEL;
-	}
-
+	void initNew(DynamicObject dynamicObject, String parentPath, String namingValue);
+	String getParentPath(DynamicObject dynamicObject);
+	void initExisting(DynamicObject dynamicObject, NickiContext context, String path);
+	boolean accept(DynamicObject dynamicObject, ContextSearchResult rs);
+	boolean checkAttribute(ContextSearchResult rs, String attribute, String value);
+	void merge(DynamicObject dynamicObject, Map<DynamicAttribute, Object> changeAttributes);
+	String getLocalizedValue(DynamicObject dynamicObject, String attributeName, String locale);
+	String getPath(DynamicObject dynamicObject, String parentPath, String name);
+	String getObjectClassFilter(DynamicObject dynamicObject);
 }

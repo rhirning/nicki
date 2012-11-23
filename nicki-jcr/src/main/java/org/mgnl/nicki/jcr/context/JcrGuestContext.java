@@ -34,12 +34,13 @@ package org.mgnl.nicki.jcr.context;
 
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
+import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 
 @SuppressWarnings("serial")
 public class JcrGuestContext extends JcrContext implements NickiContext {
 
-	public JcrGuestContext(Target target) {
-		super(target, READONLY.TRUE);
+	public JcrGuestContext(DynamicObjectAdapter adapter, Target target) {
+		super(adapter, target, READONLY.TRUE);
 	}
 
 }

@@ -38,18 +38,21 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
+import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.ldap.methods.LoadObjectsMethod;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 
-@SuppressWarnings("serial")
-public class Catalog extends BaseLdapDynamicObject {
+@DynamicObject
+@ObjectClass("nickiCatalog")
+public class Catalog extends BaseDynamicObject {
+	private static final long serialVersionUID = 1114608130611536361L;
 	public static final String PATH_SEPARATOR = "/";
 	private static long lastBuild = 0;
 	private static long buildInterval = 10*60*1000; // ms
@@ -58,24 +61,14 @@ public class Catalog extends BaseLdapDynamicObject {
 	private List<CatalogPage> pages = null;
 	private List<CatalogArticle> articles = null;
 
+	@DynamicAttribute(externalName="cn", naming=true)
+	private String name;
+	
+	@DynamicAttribute(externalName="nickiCategory")
+	private String[] category;
+	
 	public Catalog() {
 		
-	}
-
-	public void initDataModel() {
-		// objectClass
-		addObjectClass("nickiCatalog");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicAttribute("category", "nickiCategory", String.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-		
-		addMethod("allArticles", new LoadObjectsMethod(CatalogArticle.class, this, "objectClass=nickiCatalogArticle"));
-
-		addChild("page", CatalogPage.class);
 	}
 
 	/*

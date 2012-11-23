@@ -38,8 +38,11 @@ import java.util.List;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.data.Query;
+import org.mgnl.nicki.core.data.QueryHandler;
+import org.mgnl.nicki.core.data.SearchQueryHandler;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 public interface NickiContext extends Serializable {
@@ -79,4 +82,8 @@ public interface NickiContext extends Serializable {
 	void setReadonly(boolean readonly);
 	<T extends DynamicObject> T loadObjectAs(Class<T> classDefinition, DynamicObject dynamicObject);
 	List<DynamicObject> loadReferenceObjects(ReferenceMethod referenceMethod);
+	DynamicObjectAdapter getAdapter();
+	void search(QueryHandler handler) throws DynamicObjectException;
+	SearchQueryHandler getSearchHandler(Query query);
+	Query getQuery(String base);
 }

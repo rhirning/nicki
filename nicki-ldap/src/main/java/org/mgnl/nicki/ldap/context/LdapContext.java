@@ -19,25 +19,26 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.ObjectFactory;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.data.QueryHandler;
+import org.mgnl.nicki.core.data.SearchQueryHandler;
 import org.mgnl.nicki.core.helper.AnnotationHelper;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.core.objects.DynamicReference;
 import org.mgnl.nicki.ldap.core.DynamicObjectWrapper;
 import org.mgnl.nicki.ldap.core.LdapQuery;
 import org.mgnl.nicki.core.data.Query;
-import org.mgnl.nicki.ldap.data.QueryHandler;
 import org.mgnl.nicki.ldap.data.jndi.JndiSearchResult;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 import org.mgnl.nicki.ldap.query.AttributeLoaderLdapQueryHandler;
 import org.mgnl.nicki.ldap.query.IsExistLdapQueryHandler;
+import org.mgnl.nicki.ldap.query.LdapSearchHandler;
 import org.mgnl.nicki.ldap.query.ObjectLoaderLdapQueryHandler;
-import org.mgnl.nicki.ldap.query.ObjectsLoaderLdapQueryHandler;
-import org.mgnl.nicki.ldap.query.SubObjectsLoaderLdapQueryHandler;
+import org.mgnl.nicki.ldap.query.ObjectsLoaderQueryHandler;
+import org.mgnl.nicki.ldap.query.SubObjectsLoaderQueryHandler;
 
 public class LdapContext extends BasicContext implements NickiContext {
 
@@ -45,9 +46,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 
 	private TargetObjectFactory objectFactory = null;
 
-	public LdapContext(Target target, READONLY readonly) {
-		super(target, readonly);
-		// TODO Auto-generated constructor stub
+	public LdapContext(DynamicObjectAdapter adapter, Target target, READONLY readonly) {
+		super(adapter, target, readonly);
 	}
 	
 	
@@ -103,7 +103,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		DirContext ctx = null;
 		try {
 			ctx = getDirContext();
-			ctx.bind(dynamicObject.getPath(), new DynamicObjectWrapper((BaseLdapDynamicObject) dynamicObject));
+			ctx.bind(dynamicObject.getPath(), new DynamicObjectWrapper(dynamicObject));
 			// load new object
 			DynamicObject newObject = loadObject(dynamicObject.getPath());
 			/*
@@ -169,11 +169,10 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
 		}
-		BaseLdapDynamicObject ldapDynamicObject = (BaseLdapDynamicObject) dynamicObject;
 		DirContext ctx = null;
 		try {
 			ctx = getDirContext();
-			ctx.modifyAttributes(dynamicObject.getPath(),DirContext.REPLACE_ATTRIBUTE,ldapDynamicObject.getModel().getLdapAttributes(dynamicObject));
+			ctx.modifyAttributes(dynamicObject.getPath(),DirContext.REPLACE_ATTRIBUTE, dynamicObject.getModel().getLdapAttributes(dynamicObject));
 		} catch (NamingException e) {
 			throw new DynamicObjectException(e);
 		} finally {
@@ -259,7 +258,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 
 	public List<DynamicObject> loadObjects(String baseDn, String filter) {
 		try {
-			ObjectsLoaderLdapQueryHandler handler = new ObjectsLoaderLdapQueryHandler(this, baseDn, filter);
+			ObjectsLoaderQueryHandler handler = new ObjectsLoaderQueryHandler(this, baseDn, filter);
 			search(handler);
 			return handler.getList();
 		} catch (DynamicObjectException e) {
@@ -278,7 +277,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 				}
 			}
 
-			SubObjectsLoaderLdapQueryHandler handler = new SubObjectsLoaderLdapQueryHandler(this, parent, sb.toString());
+			SubObjectsLoaderQueryHandler handler = new SubObjectsLoaderQueryHandler(this, parent, sb.toString());
 			search(handler);
 			return handler.getList();
 		} catch (DynamicObjectException e) {
@@ -288,7 +287,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 
 	public List<DynamicObject> loadReferenceObjects(Query query) {
 		try {
-			ObjectsLoaderLdapQueryHandler handler = new ObjectsLoaderLdapQueryHandler(this, query);
+			ObjectsLoaderQueryHandler handler = new ObjectsLoaderQueryHandler(this, query);
 			search(handler);
 			return handler.getList();
 		} catch (DynamicObjectException e) {
@@ -309,14 +308,14 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 	public void loadObject(DynamicObject dynamicObject) throws DynamicObjectException {
-		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler((BaseLdapDynamicObject) dynamicObject);
+		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler(dynamicObject);
 		search(handler);
 	}
 
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadObjects(Class<T> classDefinition, String baseDn, String filter) {
 		try {
-			ObjectsLoaderLdapQueryHandler handler = new ObjectsLoaderLdapQueryHandler(this, baseDn, filter);
+			ObjectsLoaderQueryHandler handler = new ObjectsLoaderQueryHandler(this, baseDn, filter);
 			handler.setClassDefinition(classDefinition);
 			search(handler);
 			return (List<T>) handler.getList();
@@ -328,7 +327,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadChildObjects(Class<T> classDefinition, String parent,	String filter) {
 		try {
-			SubObjectsLoaderLdapQueryHandler handler = new SubObjectsLoaderLdapQueryHandler(this, parent, filter);
+			SubObjectsLoaderQueryHandler handler = new SubObjectsLoaderQueryHandler(this, parent, filter);
 			handler.setClassDefinition(classDefinition);
 			search(handler);
 			return (List<T>) handler.getList();
@@ -382,7 +381,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, Query query) {
 		try {
-			ObjectsLoaderLdapQueryHandler handler = new ObjectsLoaderLdapQueryHandler(this, query);
+			ObjectsLoaderQueryHandler handler = new ObjectsLoaderQueryHandler(this, query);
 			handler.setClassDefinition(classDefinition);
 			search(handler);
 			return (List<T>) handler.getList();
@@ -411,6 +410,18 @@ public class LdapContext extends BasicContext implements NickiContext {
 		
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	public SearchQueryHandler getSearchHandler(Query query) {
+		return new LdapSearchHandler(this, query);
+	}
+
+
+	@Override
+	public Query getQuery(String base) {
+		return new LdapQuery(base);
 	}
 
 

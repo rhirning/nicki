@@ -42,6 +42,7 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.ObjectFactory;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.objects.JcrDynamicObject;
@@ -184,7 +185,7 @@ public class JcrObjectFactory implements ObjectFactory {
 	private <T extends DynamicObject> T getExistingDynamicObject(T pattern, String path) throws InstantiateDynamicObjectException {
 		try {
 			T object = getDynamicObject(pattern);
-			object.initExisting(context, path);
+			context.getAdapter().initExisting(object, context, path);
 			return object;
 		} catch (Exception e) {
 			throw new InstantiateDynamicObjectException(e);
@@ -212,7 +213,7 @@ public class JcrObjectFactory implements ObjectFactory {
 		try {
 			T object = getDynamicObject(classDefinition);
 			object.setContext(context);
-			object.initNew(parentPath, namingValue);
+			context.getAdapter().initNew(object, parentPath, namingValue);
 			return object;
 		} catch (Exception e) {
 			throw new InstantiateDynamicObjectException(e);
@@ -232,6 +233,21 @@ public class JcrObjectFactory implements ObjectFactory {
 		} catch (Exception e) {
 			throw new InstantiateDynamicObjectException(e);
 		}
+	}
+
+	@Override
+	public DynamicObject getObject(ContextSearchResult contextSearchResult)
+			throws InstantiateDynamicObjectException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T extends DynamicObject> T getObject(ContextSearchResult rs,
+			Class<T> classDefinition) throws InstantiateDynamicObjectException,
+			DynamicObjectException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

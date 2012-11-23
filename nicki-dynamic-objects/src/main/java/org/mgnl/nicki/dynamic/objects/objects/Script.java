@@ -35,12 +35,12 @@ package org.mgnl.nicki.dynamic.objects.objects;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass({ "nickiScript" })
-public class Script extends BaseLdapDynamicObject {
+public class Script extends BaseDynamicObject {
 
 	public static final String ATTRIBUTE_DATA = "data";
 
@@ -48,7 +48,7 @@ public class Script extends BaseLdapDynamicObject {
 	private String name;
 
 	@DynamicAttribute(externalName = "nickiScriptData")
-	private String scriptData;
+	private String data;
 
 	public String getData() {
 		return getAttribute(ATTRIBUTE_DATA);

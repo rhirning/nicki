@@ -16,4 +16,5 @@ public @interface StructuredDynamicAttribute {
 	boolean readonly() default false;
 	String externalName();
 	Class<? extends DynamicObject>[] foreignKey() default {};
+	String editorClass() default "";
 }

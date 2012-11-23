@@ -41,10 +41,11 @@ import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
-@SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("nrfResource")
 public class Resource extends DynamicStructObject {
+	private static final long serialVersionUID = 3550648745922369437L;
+	
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;
 	@StructuredDynamicAttribute(externalName="nrfEntitlementRef", foreignKey=Entitlement.class)

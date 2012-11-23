@@ -36,10 +36,10 @@ import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.data.OctetString;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 @DynamicObject
 @ObjectClass("group")
-public class Group extends BaseLdapDynamicObject {
+public class Group extends BaseDynamicObject {
 
 	private static final long serialVersionUID = 9117516356852100038L;
 	@DynamicAttribute(externalName="cn", naming=true)

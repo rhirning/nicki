@@ -41,44 +41,35 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
+import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.helper.XMLHelper;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
 
 @SuppressWarnings("serial")
 
-public class CatalogPage extends BaseLdapDynamicObject {
+@DynamicObject
+@ObjectClass("nickiCatalogPage")
+public class CatalogPage extends BaseDynamicObject {
 	
 	private Provider provider = null;
 
-	public void initDataModel() {
-		addObjectClass("nickiCatalogPage");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicAttribute("category", "nickiCategory", String.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicAttribute("provider", "nickiProvider", String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicAttribute("attributes", "nickiAttributes", TextArea.class);
-		addAttribute(dynAttribute);
-		
-		// TODO
-		addChild("page", CatalogPage.class);
-		addChild("article", CatalogArticle.class);
-
-	};
+	@DynamicAttribute(externalName="cn", naming=true)
+	private String name;
+	@DynamicAttribute(externalName="nickiCategory")
+	private String[] category;
+	@DynamicAttribute(externalName="nickiProvider")
+	private String providerClass;
+	@DynamicAttribute(externalName="nickiAttributes")
+	private TextArea attributes;
 	
 	public List<CatalogArticleAttribute> getAttributes() {
 		List<CatalogArticleAttribute> list = new ArrayList<CatalogArticleAttribute>();
@@ -188,7 +179,7 @@ public class CatalogPage extends BaseLdapDynamicObject {
 	@Override
 	public void init(ContextSearchResult rs) throws DynamicObjectException {
 		super.init(rs);
-		String providerClass = getAttribute("provider");
+		String providerClass = getAttribute("providerClass");
 		if (StringUtils.isNotEmpty(providerClass)) {
 			try {
 				this.provider = (Provider) Classes.newInstance(providerClass);

@@ -32,88 +32,82 @@
  */
 package org.mgnl.nicki.ldap.objects;
 
-import java.io.Serializable;
 import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 
 @SuppressWarnings("serial")
-public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
+public class DynamicObjectLdapAdapter implements DynamicObjectAdapter {
 		
-	protected BaseLdapDynamicObject() {
-		// removed: must be called in TargetObjectFactory
-		//		initDataModel();
+	public DynamicObjectLdapAdapter() {
 	}
 	
 	@Override
-	public void initNew(String parentPath, String namingValue) {
-		this.setStatus(STATUS.NEW);
-		setParentPath(parentPath);
-		setPath(LdapHelper.getPath(parentPath, getModel().getNamingLdapAttribute(), namingValue));
-		put(getModel().getNamingAttribute(), namingValue);
+	public void initNew(DynamicObject dynamicObject, String parentPath, String namingValue) {
+		dynamicObject.setStatus(DynamicObject.STATUS.NEW);
+		dynamicObject.setParentPath(parentPath);
+		dynamicObject.setPath(LdapHelper.getPath(parentPath, dynamicObject.getModel().getNamingLdapAttribute(), namingValue));
+		dynamicObject.put(dynamicObject.getModel().getNamingAttribute(), namingValue);
 	}
 
 	@Override
-	public String getNamingValue() {
-		return getAttribute(getModel().getNamingAttribute());
+	public String getParentPath(DynamicObject dynamicObject) {
+		return LdapHelper.getParentPath(dynamicObject.getPath());
 	}
 
 	@Override
-	public String getParentPath() {
-		return LdapHelper.getParentPath(getPath());
+	public void initExisting(DynamicObject dynamicObject, NickiContext context, String path) {
+		dynamicObject.setStatus(DynamicObject.STATUS.EXISTS);
+		dynamicObject.setContext(context);
+		dynamicObject.setPath(path);
+		dynamicObject.setParentPath(LdapHelper.getParentPath(dynamicObject.getPath()));
+
+		dynamicObject.getMap().put(dynamicObject.getModel().getNamingAttribute(), LdapHelper.getNamingValue(path));
 	}
 
 	@Override
-	public void initExisting(NickiContext context, String path) {
-		this.setStatus(STATUS.EXISTS);
-		setContext(context);
-		setPath(path);
-		setParentPath(LdapHelper.getParentPath(getPath()));
-
-		getMap().put(getModel().getNamingAttribute(), LdapHelper.getNamingValue(path));
-	}
-
-	public boolean accept(ContextSearchResult rs) {
+	public boolean accept(DynamicObject dynamicObject, ContextSearchResult rs) {
 		boolean accepted = true;
-		for (Iterator<String> iterator = getModel().getObjectClasses().iterator(); iterator.hasNext();) {
+		for (Iterator<String> iterator = dynamicObject.getModel().getObjectClasses().iterator(); iterator.hasNext();) {
 			String objectClass = iterator.next();
 			accepted &= checkAttribute(rs,"objectClass", objectClass);
 		}
 		return accepted;
 	}
 
-	private boolean checkAttribute(ContextSearchResult rs, String attribute,
+	@Override
+	public boolean checkAttribute(ContextSearchResult rs, String attribute,
 			String value) {
 		try {
 			for (Object attributeValue : rs.getValues(attribute)) {
 				if (StringUtils.equalsIgnoreCase(value, (String) attributeValue)) {
 					return true;
-				
 			}
 		}
 		} catch (Exception e) {
 		}
 		return false;
 	}
-	// Schema
 
-	public void merge(Map<DynamicAttribute, Object> changeAttributes) {
+	@Override
+	public void merge(DynamicObject dynamicObject, Map<DynamicAttribute, Object> changeAttributes) {
 		for (Iterator<DynamicAttribute> iterator = changeAttributes.keySet().iterator(); iterator.hasNext();) {
 			DynamicAttribute dynamicAttribute = iterator.next();
-			put(dynamicAttribute.getName(), changeAttributes.get(dynamicAttribute));
+			dynamicObject.put(dynamicAttribute.getName(), changeAttributes.get(dynamicAttribute));
 		}
 	};
-	
-	public String getLocalizedValue(String attributeName, String locale) {
-		Map<String, String> valueMap = DataHelper.getMap(getAttribute(attributeName), "|", "~");
+
+	@Override
+	public String getLocalizedValue(DynamicObject dynamicObject, String attributeName, String locale) {
+		Map<String, String> valueMap = DataHelper.getMap(dynamicObject.getAttribute(attributeName), "|", "~");
 		if (valueMap.size() == 0) {
 			return null;
 		} else if (valueMap.containsKey(locale)) {
@@ -122,15 +116,15 @@ public abstract class BaseLdapDynamicObject extends BaseDynamicObject implements
 			return valueMap.values().iterator().next();
 		}
 	}
-	
+
 	@Override
-	public String getPath(String parentPath, String name) {
-		return LdapHelper.getPath(parentPath, getModel().getNamingLdapAttribute(), name);
+	public String getPath(DynamicObject dynamicObject, String parentPath, String name) {
+		return LdapHelper.getPath(parentPath, dynamicObject.getModel().getNamingLdapAttribute(), name);
 	}
 
 	@Override
-	public String getObjectClassFilter() {
-		return LdapHelper.getObjectClassFilter(getModel());
+	public String getObjectClassFilter(DynamicObject dynamicObject) {
+		return LdapHelper.getObjectClassFilter(dynamicObject.getModel());
 	}
 
 }

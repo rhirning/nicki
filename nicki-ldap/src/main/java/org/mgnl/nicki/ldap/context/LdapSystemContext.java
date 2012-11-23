@@ -39,12 +39,13 @@ import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 
 @SuppressWarnings("serial")
 public final class LdapSystemContext extends LdapContext implements NickiContext, Serializable {
 
-	protected LdapSystemContext(Target target, DynamicObject user) throws InvalidPrincipalException {
-		super(target, READONLY.FALSE);
+	protected LdapSystemContext(DynamicObjectAdapter adapter, Target target, DynamicObject user) throws InvalidPrincipalException {
+		super(adapter, target, READONLY.FALSE);
 		setPrincipal(new NickiPrincipal(getTarget().getProperty("securityPrincipal"),
 				getTarget().getProperty("securityCredentials")));
 		setUser(user);

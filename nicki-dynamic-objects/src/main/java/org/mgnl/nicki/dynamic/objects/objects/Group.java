@@ -35,11 +35,11 @@ package org.mgnl.nicki.dynamic.objects.objects;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
 @DynamicObject
 @ObjectClass("groupOfNames")
-public class Group extends BaseLdapDynamicObject {
+public class Group extends BaseDynamicObject {
 	public static final String ATTRIBUTE_DESCRIPTION = "description";
 	public static final String ATTRIBUTE_MEMBER = "member";
 	public static final String ATTRIBUTE_OWNER = "owner";

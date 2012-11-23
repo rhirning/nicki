@@ -40,11 +40,10 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.objects.SearchResultEntry;
-import org.mgnl.nicki.ldap.context.LdapContext;
 import org.mgnl.nicki.core.data.Query;
-import org.mgnl.nicki.ldap.data.QueryHandler;
+import org.mgnl.nicki.core.data.SearchQueryHandler;
 
-public class LdapSearchHandler extends BasicLdapHandler implements QueryHandler {
+public class LdapSearchHandler extends BasicLdapHandler implements SearchQueryHandler {
 	public static final String SEPARATOR = "=";
 	public static final int NO_SCOPE = -999;
 
@@ -53,7 +52,7 @@ public class LdapSearchHandler extends BasicLdapHandler implements QueryHandler 
 	private SCOPE scope = SCOPE.SUBTREE;
 
 	public LdapSearchHandler(NickiContext context, Query query) {
-		super((LdapContext) context);
+		super(context);
 		this.query = query;
 		this.setFilter(query.getFilter());
 	}

@@ -33,14 +33,12 @@
 package org.mgnl.nicki.shop.rules;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 import org.mgnl.nicki.vaadin.base.editor.EntryFilter;
 
 public class OrgOnlyFilter implements EntryFilter {
 
 	@Override
-	public <T extends DynamicObject> boolean accepts(T object) {
-		BaseLdapDynamicObject dynamicObject = (BaseLdapDynamicObject) object;
+	public <T extends DynamicObject> boolean accepts(T dynamicObject) {
 		if (dynamicObject.getModel().getObjectClasses().contains("organizationalUnit")) {
 			return true;
 		}

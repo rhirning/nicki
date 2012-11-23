@@ -33,16 +33,18 @@
 package org.mgnl.nicki.jcr.context;
 
 import org.mgnl.nicki.core.auth.NickiPrincipal;
+import org.mgnl.nicki.core.context.BasicContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.ObjectFactory;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 
 @SuppressWarnings("serial")
-public abstract class BasicJcrContext implements NickiContext {
+public abstract class BasicJcrContext extends BasicContext implements NickiContext {
 	public static final String PROPERTY_BASE = "nicki.ldap.";
 	public static final String TARGET_DEFAULT = "edir";
 	private Target target = null;
@@ -50,7 +52,9 @@ public abstract class BasicJcrContext implements NickiContext {
 	private DynamicObject user;
 	private READONLY readonly;
 
-	protected BasicJcrContext(Target target, READONLY readonly) {
+	protected BasicJcrContext(DynamicObjectAdapter adapter, Target target, READONLY readonly) {
+		super(adapter, target, readonly);
+		setAdapter(adapter);
 		this.target = target;
 		this.readonly = readonly;
 	}	
@@ -106,5 +110,6 @@ public abstract class BasicJcrContext implements NickiContext {
 	public void setReadonly(boolean readonly) {
 		this.readonly = readonly?READONLY.TRUE:READONLY.FALSE;
 	}
+
 	
 }

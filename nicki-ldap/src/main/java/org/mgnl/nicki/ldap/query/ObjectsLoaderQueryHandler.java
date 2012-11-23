@@ -43,10 +43,9 @@ import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.ldap.context.LdapContext;
 import org.mgnl.nicki.core.data.Query;
 
-public class ObjectsLoaderLdapQueryHandler extends ObjectLoaderLdapQueryHandler {
+public class ObjectsLoaderQueryHandler extends ObjectLoaderLdapQueryHandler {
 
 	private List<DynamicObject> list = new ArrayList<DynamicObject>();
 	
@@ -54,33 +53,38 @@ public class ObjectsLoaderLdapQueryHandler extends ObjectLoaderLdapQueryHandler 
 		return list;
 	}
 
-	public ObjectsLoaderLdapQueryHandler(NickiContext context, String dn, String filter) {
-		super((LdapContext) context, dn);
+	public ObjectsLoaderQueryHandler(NickiContext context, String dn, String filter) {
+		super(context, dn);
 		setFilter(filter);
 	}
 
-	public ObjectsLoaderLdapQueryHandler(NickiContext context, Query query) {
-		super((LdapContext) context, query.getBaseDN());
+	public ObjectsLoaderQueryHandler(NickiContext context, Query query) {
+		super(context, query.getBaseDN());
 		setFilter(query.getFilter());
 	}
 
 	@Override
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
 		for (Iterator<ContextSearchResult> iterator = results.iterator(); iterator.hasNext();) {
+			ContextSearchResult rs = iterator.next();
+			DynamicObject dynamicObject = null;
 			if (getClassDefinition() != null) {
 				try {
-					ContextSearchResult rs = iterator.next();
-					DynamicObject dynamicObject = getContext().getLdapObjectFactory().getObject(rs, getClassDefinition());
-					list.add(dynamicObject);
+					dynamicObject = getContext().getObjectFactory().getObject(rs, getClassDefinition());
 				} catch (InstantiateDynamicObjectException e) {
+					dynamicObject = null;
 					System.out.println(e.getMessage());
 				}
 			} else {
 				try {
-					list.add(getContext().getLdapObjectFactory().getObject(iterator.next()));
+					dynamicObject = getContext().getObjectFactory().getObject(rs);
 				} catch (InstantiateDynamicObjectException e) {
+					dynamicObject = null;
 					throw new DynamicObjectException(e);
 				}
+			}
+			if (dynamicObject != null) {
+				list.add(dynamicObject);
 			}
 		}
 	}

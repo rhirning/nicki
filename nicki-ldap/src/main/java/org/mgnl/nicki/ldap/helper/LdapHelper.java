@@ -45,7 +45,6 @@ import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 public class LdapHelper extends PathHelper {
 
@@ -116,7 +115,7 @@ public class LdapHelper extends PathHelper {
 
 
 	
-	public static Attributes getLdapAttributesForCreate(BaseLdapDynamicObject dynamicObject) {
+	public static Attributes getLdapAttributesForCreate(DynamicObject dynamicObject) {
 		Attributes myAttrs = new BasicAttributes(true);
 		addBasicLdapAttributes(myAttrs, dynamicObject);
 		addLdapAttributes(myAttrs, dynamicObject, false);
@@ -124,7 +123,7 @@ public class LdapHelper extends PathHelper {
 	}
 	
 	// objectClass + naming
-	public static void addBasicLdapAttributes(Attributes myAttrs, BaseLdapDynamicObject dynamicObject) {
+	public static void addBasicLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject) {
 		Attribute oc = new BasicAttribute("objectClass");
 		for (Iterator<String> iterator = dynamicObject.getModel().getObjectClasses().iterator(); iterator.hasNext();) {
 			String objectClass = iterator.next();

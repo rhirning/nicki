@@ -38,8 +38,8 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.ldap.context.LdapContext;
-import org.mgnl.nicki.ldap.data.QueryHandler;
 import org.mgnl.nicki.ldap.query.BasicLdapHandler;
 import org.mgnl.nicki.template.engine.Template;
 

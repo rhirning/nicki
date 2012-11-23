@@ -35,12 +35,12 @@ package org.mgnl.nicki.dynamic.objects.ad;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("Person")
-public class Person extends BaseLdapDynamicObject {
+public class Person extends BaseDynamicObject {
 
 	@DynamicAttribute(externalName="cn", naming=true)
 	public String name;	

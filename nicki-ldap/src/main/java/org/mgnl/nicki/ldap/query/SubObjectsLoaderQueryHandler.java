@@ -30,24 +30,19 @@
  * intact.
  *
  */
-package org.mgnl.nicki.ldap.data;
+package org.mgnl.nicki.ldap.query;
 
-import java.util.List;
+import org.mgnl.nicki.core.context.NickiContext;
 
-import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicObjectException;
+public class SubObjectsLoaderQueryHandler extends ObjectsLoaderQueryHandler {
 
-public interface QueryHandler {
-	public static enum SCOPE {OBJECT, ONELEVEL, SUBTREE};
-
-	String getBaseDN();
-
-	String getFilter();
-
-	Object getConstraints();
-
-	SCOPE getScope();
-
-	void handle(List<ContextSearchResult> results) throws DynamicObjectException;
+	public SubObjectsLoaderQueryHandler(NickiContext context, String parent, String filter) {
+		super(context, parent, filter);
+	}
+	
+	@Override
+	public SCOPE getScope() {
+		return SCOPE.ONELEVEL;
+	}
 
 }

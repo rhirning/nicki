@@ -37,12 +37,13 @@ import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 
 @SuppressWarnings("serial")
 public class JcrNamedUserContext extends JcrContext implements NickiContext {
 
-	public JcrNamedUserContext(Target target, DynamicObject user, String password) throws InvalidPrincipalException {
-		super(target, READONLY.FALSE);
+	public JcrNamedUserContext(DynamicObjectAdapter adapter, Target target, DynamicObject user, String password) throws InvalidPrincipalException {
+		super(adapter, target, READONLY.FALSE);
 		setPrincipal(new NickiPrincipal(user.getPath(), password));
 		setUser(user);
 	}

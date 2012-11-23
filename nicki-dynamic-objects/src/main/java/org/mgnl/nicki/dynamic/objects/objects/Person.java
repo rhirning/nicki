@@ -43,7 +43,7 @@ import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
 import org.mgnl.nicki.core.annotation.ObjectClass;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 
 
@@ -51,7 +51,7 @@ import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 @DynamicObject
 @ObjectClass("Person")
 @AdditionalObjectClass("nickiUserAux")
-public class Person extends BaseLdapDynamicObject {
+public class Person extends BaseDynamicObject {
 	public static final String ATTRIBUTE_SURNAME = "surname";
 	public static final String ATTRIBUTE_GIVENNAME = "givenname";
 	public static final String ATTRIBUTE_FULLNAME = "fullname";

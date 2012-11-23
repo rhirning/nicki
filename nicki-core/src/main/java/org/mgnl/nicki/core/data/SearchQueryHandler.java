@@ -30,40 +30,14 @@
  * intact.
  *
  */
-package org.mgnl.nicki.ldap.context;
+package org.mgnl.nicki.core.data;
 
-import java.util.Hashtable;
+import java.util.List;
 
-import javax.naming.Context;
-import javax.naming.NamingException;
-import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
+import org.mgnl.nicki.core.objects.SearchResultEntry;
 
-import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.context.Target;
-import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
-import org.mgnl.nicki.core.objects.DynamicObjectException;
-
-@SuppressWarnings("serial")
-public class LdapGuestContext extends LdapContext implements NickiContext {
-
-	public LdapGuestContext(DynamicObjectAdapter adapter, Target target) {
-		super(adapter, target, READONLY.TRUE);
-	}
-
-	@Override
-	public DirContext getDirContext() throws DynamicObjectException {
-		Hashtable<String, String> env = new Hashtable<String, String>();
-		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-		env.put(Context.PROVIDER_URL, getTarget().getProperty("providerUrl"));
-		// Enable connection pooling
-		env.put("com.sun.jndi.ldap.connect.pool", "true");
-
-		try {
-			return new InitialDirContext(env);
-		} catch (NamingException e) {
-			throw new DynamicObjectException(e);
-		}
-	}
+public interface SearchQueryHandler extends QueryHandler{
+	
+	List<SearchResultEntry> getResult();
 
 }

@@ -67,7 +67,7 @@ public class TargetObjectFactory implements ObjectFactory {
 		String dn = rs.getNameInNamespace();
 		for (String dynamicObjectName : target.getDynamicObjects()) {
 			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);
-			if (dynamicObject.accept(rs)) {
+			if (context.getAdapter().accept(dynamicObject, rs)) {
 				DynamicObject result = getExistingDynamicObject(dynamicObject, dn);
 				if (result != null) {
 					return result;
@@ -77,6 +77,7 @@ public class TargetObjectFactory implements ObjectFactory {
 		throw new InstantiateDynamicObjectException("Could not getObject " + dn);
 	}
 
+	@Override
 	public <T extends DynamicObject> T getObject(ContextSearchResult rs, Class<T> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException {
 		T object =  _getObject(rs, classDefinition);
 		object.setContext(context);
@@ -91,7 +92,7 @@ public class TargetObjectFactory implements ObjectFactory {
 			@SuppressWarnings("unchecked")
 			T dynamicObject = (T) target.getDynamicObject(dynamicObjectName);
 			if (classDefinition == null || classDefinition.isAssignableFrom(dynamicObject.getClass())) {
-				if (dynamicObject.accept(rs)) {
+				if (context.getAdapter().accept(dynamicObject, rs)) {
 					T result = getExistingDynamicObject(dynamicObject, dn);
 					if (result != null) {
 						return result;
@@ -171,11 +172,10 @@ public class TargetObjectFactory implements ObjectFactory {
 		return dynamicObject;
 	}
 	
-	// TODO
 	private <T extends DynamicObject> T getExistingDynamicObject(T pattern, String path) throws InstantiateDynamicObjectException {
 		try {
 			T object = getDynamicObject(pattern);
-			object.initExisting(context, path);
+			context.getAdapter().initExisting(object, context, path);
 			return object;
 		} catch (Exception e) {
 			throw new InstantiateDynamicObjectException(e);
@@ -203,7 +203,7 @@ public class TargetObjectFactory implements ObjectFactory {
 		try {
 			T object = getDynamicObject(classDefinition);
 			object.setContext(context);
-			object.initNew(parentPath, namingValue);
+			context.getAdapter().initNew(object, parentPath, namingValue);
 			return object;
 		} catch (Exception e) {
 			throw new InstantiateDynamicObjectException(e);

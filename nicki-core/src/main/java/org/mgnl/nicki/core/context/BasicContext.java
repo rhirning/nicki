@@ -35,6 +35,7 @@ package org.mgnl.nicki.core.context;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 
@@ -46,8 +47,10 @@ public abstract class BasicContext implements NickiContext {
 	private NickiPrincipal principal;
 	private DynamicObject user;
 	private READONLY readonly;
+	private DynamicObjectAdapter adapter; 
 
-	protected BasicContext(Target target, READONLY readonly) {
+	protected BasicContext(DynamicObjectAdapter adapter, Target target, READONLY readonly) {
+		this.adapter = adapter;
 		this.target = target;
 		this.readonly = readonly;
 	}	
@@ -95,6 +98,14 @@ public abstract class BasicContext implements NickiContext {
 
 	public void setReadonly(boolean readonly) {
 		this.readonly = readonly?READONLY.TRUE:READONLY.FALSE;
+	}
+
+	public DynamicObjectAdapter getAdapter() {
+		return adapter;
+	}
+
+	public void setAdapter(DynamicObjectAdapter adapter) {
+		this.adapter = adapter;
 	}
 	
 }

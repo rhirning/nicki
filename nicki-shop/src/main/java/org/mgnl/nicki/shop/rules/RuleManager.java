@@ -269,7 +269,9 @@ public class RuleManager {
 		ChangeSet changeSet = getChangeSet(person);
 		if (changeSet != null && changeSet.isNotEmpty()) {
 			Cart cart = user.getContext().getObjectFactory().getDynamicObject(Cart.class);
-			cart.initNew(Config.getProperty("nicki.carts.basedn"), Long.toString(new Date().getTime()));
+
+			cart.getContext().getAdapter().initNew(cart, Config.getProperty("nicki.carts.basedn"),
+					Long.toString(new Date().getTime()));
 			cart.setInitiator(user);
 			cart.setRecipient(person);
 			cart.setRequestDate(new Date());
@@ -291,7 +293,8 @@ public class RuleManager {
 		if (changeSet != null && changeSet.isNotEmpty()) {
 			for (ArticleChange article : changeSet.getChanges()) {
 				Cart cart = user.getContext().getObjectFactory().getDynamicObject(Cart.class);
-				cart.initNew(Config.getProperty("nicki.carts.basedn"), Long.toString(new Date().getTime()));
+				cart.getContext().getAdapter().initNew(cart, Config.getProperty("nicki.carts.basedn"),
+						Long.toString(new Date().getTime()));
 				cart.setInitiator(user);
 				cart.setRecipient(article.getPerson());
 				cart.setRequestDate(new Date());

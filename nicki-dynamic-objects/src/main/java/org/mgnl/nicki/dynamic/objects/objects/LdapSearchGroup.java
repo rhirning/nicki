@@ -37,8 +37,8 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 /**
  *
@@ -47,7 +47,7 @@ import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("dynamicGroup")
-public class LdapSearchGroup extends BaseLdapDynamicObject {
+public class LdapSearchGroup extends BaseDynamicObject {
 
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;
