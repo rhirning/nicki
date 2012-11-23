@@ -37,7 +37,6 @@ import java.util.Map;
 
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.context.AppContext;
-import org.mgnl.nicki.ldap.context.LdapContext;
 import org.mgnl.nicki.template.loader.JndiTemplateLoader;
 
 import freemarker.template.Configuration;
@@ -49,7 +48,7 @@ public class ConfigurationFactory {
 	private Map<String, Configuration> configurations = new HashMap<String, Configuration>();
 	public Configuration getConfiguration(String baseDn) throws InvalidPrincipalException {
 		if (!configurations.containsKey(baseDn)) {
-			JndiTemplateLoader loader = new JndiTemplateLoader((LdapContext) AppContext.getSystemContext(), baseDn);
+			JndiTemplateLoader loader = new JndiTemplateLoader(AppContext.getSystemContext(), baseDn);
 			Configuration cfg = new Configuration();
 			cfg.setTemplateLoader(loader);
 			cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
