@@ -72,21 +72,21 @@ public class Person extends BaseDynamicObject {
 	@DynamicAttribute(externalName="cn", naming=true)
 	public String name;	
 	@DynamicAttribute(externalName="sn", mandatory=true)
-	private String surname;	
+	public String surname;	
 	@DynamicAttribute(externalName="givenName")
-	private String givenname;
+	public String givenname;
 	@DynamicAttribute(externalName="fullName")
-	private String fullname;
+	public String fullname;
 	@DynamicAttribute(externalName="Language")
-	private String language;
+	public String language;
 	@DynamicReferenceAttribute(externalName="member", reference=Group.class, baseProperty="nicki.data.basedn")
-	private String[] memberOf;
+	public String[] memberOf;
 	@DynamicAttribute(externalName="nickiLocation")
-	private String location;
+	public String location;
 	@DynamicAttribute(externalName="nickiCatalogArticle")
-	private String[] assignedArticle;
+	public String[] assignedArticle;
 	@DynamicAttribute(externalName="nickiCatalogAttribute")
-	private String[] attributeValue;
+	public String[] attributeValue;
 
 	@Override
 	public String getDisplayName() {

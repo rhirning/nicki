@@ -33,6 +33,7 @@
 package org.mgnl.nicki.core.objects;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,9 +45,12 @@ import org.mgnl.nicki.core.methods.ListForeignKeyMethod;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public class DynamicAttribute implements Serializable {
+	private static final Logger LOG = LoggerFactory.getLogger(DynamicAttribute.class);
 
 	private String name;
 	private String ldapName;
@@ -80,6 +84,7 @@ public class DynamicAttribute implements Serializable {
 			Object attribute = rs.getValue(getExternalName());
 			if (attribute != null) {
 				dynamicObject.put(name, attribute);
+				setPropertyValue(dynamicObject, attribute);
 			}
 		}
 		// optional
@@ -91,18 +96,21 @@ public class DynamicAttribute implements Serializable {
 				} else {
 					dynamicObject.put(name, attribute);
 				}
+				setPropertyValue(dynamicObject, attribute);
 			}
 		}
 		// optional list
 		if (!isMandatory() && isMultiple() && !isForeignKey()) {
 			List<Object> attributes = rs.getValues(getExternalName());
 			dynamicObject.put(name, attributes);
+			setPropertyValue(dynamicObject, attributes.toArray(new String[0]));
 		}
 		// foreign key
 		if (!isMandatory() && !isMultiple() && isForeignKey()) {
 			String value = (String) rs.getValue(getExternalName());
 			if (StringUtils.isNotEmpty(value)) {
 				dynamicObject.put(name, value);
+				setPropertyValue(dynamicObject, value);
 				dynamicObject.put(getGetter(name),
 						new ForeignKeyMethod(context, rs, ldapName, getForeignKeyClass()));
 			}
@@ -111,10 +119,33 @@ public class DynamicAttribute implements Serializable {
 		if (!isMandatory() && isMultiple() && isForeignKey()) {
 			List<Object> values = rs.getValues(getExternalName());
 			dynamicObject.put(name, values);
+			setPropertyValue(dynamicObject, values.toArray(new String[0]));
 			dynamicObject.put(getMultipleGetter(name),
 					new ListForeignKeyMethod(context, rs, ldapName, getForeignKeyClass()));
 		}
 
+	}
+	
+	
+
+	private void setPropertyValue(DynamicObject dynamicObject, Object value) {
+		Class<?> clazz = dynamicObject.getClass();
+		while (clazz.getSuperclass() != null) {
+			try {
+				setPropertyValue(clazz, dynamicObject, value);
+				return;
+			} catch (Exception e) {
+				clazz = clazz.getSuperclass();
+			}
+		}
+		LOG.error("Class: " + dynamicObject.getClass() + ". Could not set Property " + name + " with value " + value);
+
+	}
+
+	private void setPropertyValue(Class<?> clazz, Object object, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		Field field = clazz.getField(name);
+		field.setAccessible(true);
+		field.set(object, value);
 	}
 
 	public static String getGetter(String name) {

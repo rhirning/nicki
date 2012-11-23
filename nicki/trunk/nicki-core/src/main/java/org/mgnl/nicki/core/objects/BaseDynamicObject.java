@@ -33,6 +33,7 @@
 package org.mgnl.nicki.core.objects;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -48,11 +49,14 @@ import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.methods.ChildrenMethod;
 import org.mgnl.nicki.core.methods.StructuredData;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import freemarker.template.TemplateMethodModel;
 
 @SuppressWarnings("serial")
 public abstract class BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
+	private static final Logger LOG = LoggerFactory.getLogger(BaseDynamicObject.class);
 	public static final String ATTRIBUTE_NAME = "name";
 	public static final String SEPARATOR = "/";
 
@@ -548,5 +552,6 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	public String getObjectClassFilter() {
 		return getContext().getAdapter().getObjectClassFilter(this);
 	}
+
 
 }
