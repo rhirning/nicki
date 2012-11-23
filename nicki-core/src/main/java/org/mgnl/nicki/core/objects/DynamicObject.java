@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.objects.DynamicObject.STATUS;
 
 public interface DynamicObject {
 	public static final String ATTRIBUTE_NAME = "name";
@@ -192,4 +191,5 @@ public interface DynamicObject {
 	public void setParentPath(String parentPath);
 
 	public void setPath(String path);
+
 }

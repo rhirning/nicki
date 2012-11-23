@@ -68,8 +68,8 @@ public class AnnotationHelper {
 						.getAnnotation(DynamicAttribute.class);
 				org.mgnl.nicki.core.objects.DynamicAttribute dynAttribute = new org.mgnl.nicki.core.objects.DynamicAttribute(
 						field.getName(), dAttribute.externalName(),
-						field.getClass());
-				if (field.getClass().isArray()) {
+						field.getType());
+				if (field.getType().isArray()) {
 					dynAttribute.setMultiple();
 				}
 				if (dAttribute.naming()) {
@@ -102,11 +102,11 @@ public class AnnotationHelper {
 				try {
 					dynAttribute = new org.mgnl.nicki.core.objects.StructuredDynamicAttribute(
 						field.getName(), dAttribute.externalName(),
-						field.getClass());
+						field.getType());
 				} catch (Exception e) {
 					LOG.error("Field=" + field.getName(), e);
 				}
-				if (field.getClass().isArray()) {
+				if (field.getType().isArray()) {
 					dynAttribute.setMultiple();
 				}
 				if (dAttribute.naming()) {
@@ -132,15 +132,15 @@ public class AnnotationHelper {
 				
 				dynamicObject.addAttribute(dynAttribute);
 			} else if (field.isAnnotationPresent(DynamicReferenceAttribute.class)) {
-				LOG.debug("DynamicReferenceAttribute: " + field.getName());
+				LOG.debug("DynamicReferenceAttribute: " + field.getName() + "(" + field.getType() + ")");
 				DynamicReferenceAttribute dAttribute = field
 						.getAnnotation(DynamicReferenceAttribute.class);
 				DynamicReference dynAttribute = new DynamicReference(dAttribute.reference(),
 						field.getName(),
 						Config.getProperty(dAttribute.baseProperty()),
 						dAttribute.externalName(),
-						field.getClass());
-				if (field.getClass().isArray()) {
+						field.getType());
+				if (field.getType().isArray()) {
 					dynAttribute.setMultiple();
 				}
 				if (dAttribute.naming()) {
