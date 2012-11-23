@@ -210,7 +210,7 @@ public class Inventory implements Serializable {
 			try {
 				cart = person.getContext().getObjectFactory()
 						.getDynamicObject(Cart.class);
-				cart.initNew(Config.getProperty("nicki.carts.basedn"),
+				cart.getContext().getAdapter().initNew(cart, Config.getProperty("nicki.carts.basedn"),
 						Long.toString(new Date().getTime()));
 				cart.setInitiator(user);
 				cart.setRecipient(person);

@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.ldap.xml;
+package org.mgnl.nicki.core.util;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -47,7 +47,6 @@ import org.jdom.output.XMLOutputter;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 
 public class XMLBuilder {
@@ -58,7 +57,7 @@ public class XMLBuilder {
 	public XMLBuilder(NickiContext context, String path, boolean selfOnly)  {
 		this.context = context;
 		this.path = path;
-		BaseLdapDynamicObject root = (BaseLdapDynamicObject) context.loadObject(path);
+		DynamicObject root = context.loadObject(path);
 		Element rootNode = getElement(root);
 		document = new Document(rootNode);
 		if (!selfOnly) {
@@ -70,13 +69,13 @@ public class XMLBuilder {
 		List<? extends DynamicObject> children = parent.getAllChildren();
 		for (Iterator<? extends DynamicObject> iterator = children.iterator(); iterator.hasNext();) {
 			DynamicObject child = iterator.next();
-			Element childNode = getElement((BaseLdapDynamicObject) child);
+			Element childNode = getElement(child);
 			parentNode.addContent(childNode);
 			addChildren(childNode, child);
 		}
 	}
 
-	private Element getElement(BaseLdapDynamicObject dynamicObject) {
+	private Element getElement(DynamicObject dynamicObject) {
 		Element newNode = new Element("dynamicObject");
 		String nodePath = StringUtils.substringBeforeLast(dynamicObject.getPath(), this.path);
 		if (StringUtils.endsWith(nodePath, ",")) {

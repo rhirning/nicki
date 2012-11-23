@@ -37,12 +37,12 @@ import java.io.Serializable;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("organizationalUnit")
-public class Org extends BaseLdapDynamicObject implements Serializable {
+public class Org extends BaseDynamicObject implements Serializable {
 	public static final String ATTRIBUTE_CHILD = "child";
 	
 	@DynamicAttribute(externalName="ou", naming=true)

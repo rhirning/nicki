@@ -20,8 +20,11 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.data.Query;
+import org.mgnl.nicki.core.data.QueryHandler;
+import org.mgnl.nicki.core.data.SearchQueryHandler;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.objects.JcrDynamicObject;
 import org.slf4j.Logger;
@@ -46,8 +49,8 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 	private Node root = null;
 	private static boolean hasAdminUser = false;
 
-	public JcrContext(Target target, READONLY readonly) {
-		super(target, readonly);
+	public JcrContext(DynamicObjectAdapter adapter, Target target, READONLY readonly) {
+		super(adapter, target, readonly);
 		
 		try {
 			Properties env = new Properties();
@@ -408,6 +411,24 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 	@Override
 	public List<DynamicObject> loadReferenceObjects(
 			ReferenceMethod referenceMethod) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void search(QueryHandler handler) throws DynamicObjectException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public SearchQueryHandler getSearchHandler(Query query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Query getQuery(String base) {
 		// TODO Auto-generated method stub
 		return null;
 	}

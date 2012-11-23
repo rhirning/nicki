@@ -37,12 +37,15 @@ import java.util.Date;
 import java.util.List;
 
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
+import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 
-
+@DynamicObject
+@ObjectClass("nrfRole")
 public class Role extends DynamicStructObject {
 	
 	private static final long serialVersionUID = 6170300879001415636L;

@@ -42,52 +42,40 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.InventoryAttribute;
 
-@SuppressWarnings("serial")
-
-public class CatalogArticle extends BaseLdapDynamicObject {
-
+@DynamicObject
+@ObjectClass("nickiCatalogArticle")
+public class CatalogArticle extends BaseDynamicObject {
+	private static final long serialVersionUID = 2340086861870174607L;
 	public static final String TYPE_ARTICLE = "ARTICLE";
 	public static final String CAPTION_START = "nicki.rights.attribute.dateFrom.label";
 	public static final String CAPTION_END = "nicki.rights.attribute.dateTo.label";
 
-	public void initDataModel() {
-		addObjectClass("nickiCatalogArticle");
-		DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicAttribute("displayName", "displayName", String.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicAttribute("description", "nickiDescription", TextArea.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicAttribute("approval", "nickiApproval", String.class);
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicAttribute("category", "nickiCategory", String.class);
-		dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicAttribute("rule", "nickiRule", String.class);
-		dynAttribute.setMultiple();
-		dynAttribute.setEditorClass("org.mgnl.nicki.shop.rules.RuleAttributeField");
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicAttribute("attributes", "nickiAttributes", TextArea.class);
-		addAttribute(dynAttribute);
-	};
+	@DynamicAttribute(externalName="cn", naming=true)
+	private String name;
+	@DynamicAttribute(externalName="displayName")
+	private String displayName;
+	@DynamicAttribute(externalName="nickiDescription")
+	private TextArea description;
+	@DynamicAttribute(externalName="nickiApproval")
+	private String approval;
+	@DynamicAttribute(externalName="nickiCategory")
+	private String[] category;
+	@DynamicAttribute(externalName="nickiRule", editorClass="org.mgnl.nicki.shop.rules.RuleAttributeField")
+	private String[] rule;
+	@DynamicAttribute(externalName="nickiAttributes")
+	private TextArea attributes;
 
 	public boolean hasArticle(Person person, CatalogArticle article) {
 		for (InventoryArticle inventoryArticle : getInventoryArticles(person)) {

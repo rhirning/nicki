@@ -78,27 +78,6 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 	}
 
 	@Override
-	public boolean accept(ContextSearchResult rs) {
-		// TODO Auto-generated method stub
-		return true;
-	}
-
-	@Override
-	public void initNew(String parentPath, String namingValue) {
-		this.setStatus(STATUS.NEW);
-		this.setParentPath(parentPath);
-		setPath(parentPath + SEPARATOR + namingValue);
-		this.namingValue = namingValue;
-	}
-
-	@Override
-	public void initExisting(NickiContext context, String path) {
-		this.setStatus(STATUS.EXISTS);
-		setContext(context);
-		setPath(path);
-	}
-
-	@Override
 	public String getSlashPath(DynamicObject parent) {
 		if (parent != null) {
 			return getSlashPath(parent.getPath());

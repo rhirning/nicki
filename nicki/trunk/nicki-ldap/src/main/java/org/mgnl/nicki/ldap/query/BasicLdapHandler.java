@@ -35,25 +35,25 @@ package org.mgnl.nicki.ldap.query;
 import javax.naming.directory.SearchControls;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.ldap.context.LdapContext;
-import org.mgnl.nicki.ldap.data.QueryHandler;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 
 public abstract class BasicLdapHandler implements QueryHandler {
-	private LdapContext context;
+	private NickiContext context;
 	private Class<? extends DynamicObject> classDefinition = null;
 	private String filter;
 
 
-	public BasicLdapHandler(LdapContext context) {
+	public BasicLdapHandler(NickiContext context) {
 		super();
 		this.context = context;
 	}
 
-	public LdapContext getContext() {
+	public NickiContext getContext() {
 		return context;
 	}
 

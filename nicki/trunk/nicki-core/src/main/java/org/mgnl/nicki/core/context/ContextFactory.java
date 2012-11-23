@@ -2,6 +2,7 @@ package org.mgnl.nicki.core.context;
 
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 
 public interface ContextFactory {
 	
@@ -10,5 +11,7 @@ public interface ContextFactory {
 	NickiContext getNamedUserContext(Target target, DynamicObject user, String password) throws InvalidPrincipalException;
 
 	NickiContext getSystemContext(Target target, DynamicObject user) throws InvalidPrincipalException;
+	
+	DynamicObjectAdapter getAdapter();
 
 }

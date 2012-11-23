@@ -18,4 +18,5 @@ public @interface DynamicReferenceAttribute {
 	Class<? extends DynamicObject>[] foreignKey() default {};
 	Class<? extends DynamicObject> reference();
 	String baseProperty();
+	String editorClass() default "";
 }

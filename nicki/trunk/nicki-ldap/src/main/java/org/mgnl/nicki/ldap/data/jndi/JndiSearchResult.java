@@ -41,8 +41,11 @@ import javax.naming.directory.SearchResult;
 
 import org.mgnl.nicki.core.objects.ContextAttributes;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JndiSearchResult implements ContextSearchResult {
+	Logger LOG = LoggerFactory.getLogger(JndiSearchResult.class);
 	private SearchResult rs;
 
 	public JndiSearchResult(SearchResult rs) {
@@ -61,9 +64,7 @@ public class JndiSearchResult implements ContextSearchResult {
 	public Object getValue(String name) {
 		try {
 			return rs.getAttributes().get(name).get();
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
 		}
 		return null;
 	}

@@ -2,6 +2,7 @@ package org.mgnl.nicki.core.helper;
 
 import java.lang.reflect.Field;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.AdditionalObjectClass;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
@@ -83,6 +84,9 @@ public class AnnotationHelper {
 				if (dAttribute.readonly()) {
 					dynAttribute.setReadonly();
 				}
+				if (StringUtils.isNotBlank(dAttribute.editorClass())) {
+					dynAttribute.setEditorClass(dAttribute.editorClass());
+				}
 				if (dAttribute.foreignKey() != null && dAttribute.foreignKey().length > 0) {
 					for (Class<? extends DynamicObject> clazz : dAttribute.foreignKey()) {
 						dynAttribute.setForeignKey(clazz);
@@ -92,12 +96,16 @@ public class AnnotationHelper {
 				dynamicObject.addAttribute(dynAttribute);
 			} else if (field.isAnnotationPresent(StructuredDynamicAttribute.class)) {
 				LOG.debug("StructuredDynamicAttribute: " + field.getName());
-				DynamicAttribute dAttribute = field
-						.getAnnotation(DynamicAttribute.class);
-				org.mgnl.nicki.core.objects.StructuredDynamicAttribute dynAttribute
-					= new org.mgnl.nicki.core.objects.StructuredDynamicAttribute(
+				StructuredDynamicAttribute dAttribute = field
+						.getAnnotation(StructuredDynamicAttribute.class);
+				org.mgnl.nicki.core.objects.StructuredDynamicAttribute dynAttribute = null;
+				try {
+					dynAttribute = new org.mgnl.nicki.core.objects.StructuredDynamicAttribute(
 						field.getName(), dAttribute.externalName(),
 						field.getClass());
+				} catch (Exception e) {
+					LOG.error("Field=" + field.getName(), e);
+				}
 				if (field.getClass().isArray()) {
 					dynAttribute.setMultiple();
 				}
@@ -112,6 +120,9 @@ public class AnnotationHelper {
 				}
 				if (dAttribute.readonly()) {
 					dynAttribute.setReadonly();
+				}
+				if (StringUtils.isNotBlank(dAttribute.editorClass())) {
+					dynAttribute.setEditorClass(dAttribute.editorClass());
 				}
 				if (dAttribute.foreignKey() != null && dAttribute.foreignKey().length > 0) {
 					for (Class<? extends DynamicObject> clazz : dAttribute.foreignKey()) {
@@ -143,6 +154,9 @@ public class AnnotationHelper {
 				}
 				if (dAttribute.readonly()) {
 					dynAttribute.setReadonly();
+				}
+				if (StringUtils.isNotBlank(dAttribute.editorClass())) {
+					dynAttribute.setEditorClass(dAttribute.editorClass());
 				}
 				if (dAttribute.foreignKey() != null && dAttribute.foreignKey().length > 0) {
 					for (Class<? extends DynamicObject> clazz : dAttribute.foreignKey()) {

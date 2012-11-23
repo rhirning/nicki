@@ -533,5 +533,20 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		}
 		return model;
 	}
+	
+	@Override
+	public String getNamingValue() {
+		return getAttribute(getModel().getNamingAttribute());
+	}
+
+	@Override
+	public String getPath(String parentPath, String name) {
+		return getContext().getAdapter().getPath(this, parentPath, name);
+	}
+
+	@Override
+	public String getObjectClassFilter() {
+		return getContext().getAdapter().getObjectClassFilter(this);
+	}
 
 }

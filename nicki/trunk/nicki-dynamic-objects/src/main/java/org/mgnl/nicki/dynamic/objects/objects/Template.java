@@ -38,12 +38,12 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass({"nickiTemplate", "organizationalUnit"})
-public class Template extends BaseLdapDynamicObject {
+public class Template extends BaseDynamicObject {
 
 	public static final String ATTRIBUTE_DATA = "data";
 	public static final String ATTRIBUTE_PARAMS = "params";

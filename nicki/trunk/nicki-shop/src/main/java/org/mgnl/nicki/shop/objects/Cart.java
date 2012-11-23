@@ -36,17 +36,18 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 import java.util.Date;
 import java.util.List;
 import org.w3c.dom.Document;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.util.XmlHelper;
 import org.w3c.dom.Element;
@@ -56,10 +57,13 @@ import org.xml.sax.SAXException;
  *
  * @author cna
  */
-@SuppressWarnings("serial")
-public class Cart extends BaseLdapDynamicObject {
+@DynamicObject
+@ObjectClass("nickiCart")
+public class Cart extends BaseDynamicObject {
 
-    public enum CART_STATUS {
+	private static final long serialVersionUID = 3099728171406117766L;
+
+	public enum CART_STATUS {
 
         NEW,
         REQUESTED,
@@ -79,44 +83,28 @@ public class Cart extends BaseLdapDynamicObject {
     private final static String ELEM_CARTENTRY = "entry";
     private final static String ELEM_CART = "cart";
     private final static String ATTR_CATALOG = "catalog";
-
-    @Override
-    public void initDataModel() {
-        addObjectClass("nickiCart");
-        DynamicAttribute dynAttribute = new DynamicAttribute("name", "cn", String.class);
-        dynAttribute.setNaming();
-        addAttribute(dynAttribute);
-
-        dynAttribute = new DynamicAttribute("data", "nickiData", String.class);
-        addAttribute(dynAttribute);
-
-        dynAttribute = new DynamicAttribute("initiator", "nickiInitiator", String.class);
-        dynAttribute.setForeignKey(Person.class);
-        addAttribute(dynAttribute);
-
-        dynAttribute = new DynamicAttribute("processdate", "nickiProcessDate", String.class);
-        addAttribute(dynAttribute);
-
-        dynAttribute = new DynamicAttribute("processresult", "nickiProcessResult", String.class);
-        addAttribute(dynAttribute);
-
-        dynAttribute = new DynamicAttribute("recipient", "nickiRecipient", String.class);
-        dynAttribute.setForeignKey(Person.class);
-        addAttribute(dynAttribute);
-
-        dynAttribute = new DynamicAttribute("requestdate", "nickiRequestDate", String.class);
-        addAttribute(dynAttribute);
-
-        dynAttribute = new DynamicAttribute("status", "nickiStatus", String.class);
-        addAttribute(dynAttribute);
-        
-		dynAttribute = new DynamicAttribute("statusFlag", "nickiStatusFlag", String.class);
-        dynAttribute.setMultiple();
-		addAttribute(dynAttribute);
-		
-		dynAttribute = new DynamicAttribute("source", "nickiSource", String.class);
-        addAttribute(dynAttribute);
-    }
+    
+    @DynamicAttribute(externalName="cn", naming=true)
+    private String name;
+    @DynamicAttribute(externalName="nickiData")
+    private String data;
+    @DynamicAttribute(externalName="nickiInitiator", foreignKey=Person.class)
+    private String initiator;
+    @DynamicAttribute(externalName="nickiProcessDate")
+    private String processdate;
+    @DynamicAttribute(externalName="nickiProcessResult")
+    private String processresult;
+    @DynamicAttribute(externalName="nickiRecipient", foreignKey=Person.class)
+    private String recipient;
+    @DynamicAttribute(externalName="nickiRequestDate")
+    private String requestdate;
+    @DynamicAttribute(externalName="nickiStatus")
+    private String status;
+    @DynamicAttribute(externalName="nickiStatusFlag")
+    private String[] statusFlag;
+    @DynamicAttribute(externalName="nickiSource")
+    private String source;
+	
 
     @Override
     public void init(ContextSearchResult rs) throws DynamicObjectException {

@@ -34,31 +34,30 @@ package org.mgnl.nicki.ldap.query;
 
 import java.util.List;
 
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.ldap.context.LdapContext;
-import org.mgnl.nicki.ldap.data.QueryHandler;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
 
 public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
 	
 	private String dn = null;
-	protected BaseLdapDynamicObject dynamicObject;
+	protected DynamicObject dynamicObject;
 
 	public DynamicObject getDynamicObject() {
 		return dynamicObject;
 	}
 
-	public ObjectLoaderLdapQueryHandler(BaseLdapDynamicObject dynamicObject) {
-		super((LdapContext) dynamicObject.getContext());
+	public ObjectLoaderLdapQueryHandler(DynamicObject dynamicObject) {
+		super(dynamicObject.getContext());
 		this.dynamicObject = dynamicObject;
 		this.dn = dynamicObject.getPath();
 	}
 
 
-	public ObjectLoaderLdapQueryHandler(LdapContext context, String dn) {
+	public ObjectLoaderLdapQueryHandler(NickiContext context, String dn) {
 		super(context);
 		this.dynamicObject = null;
 		this.dn = dn;
@@ -75,14 +74,14 @@ public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements Qu
 				if (this.dynamicObject == null) {
 					try {
 						if (getClassDefinition() != null) {
-							dynamicObject = (BaseLdapDynamicObject) getContext().getLdapObjectFactory().getObject(results.get(0), getClassDefinition());
+							dynamicObject = getContext().getObjectFactory().getObject(results.get(0), getClassDefinition());
 						} else {
-							dynamicObject = (BaseLdapDynamicObject) getContext().getLdapObjectFactory().getObject(results.get(0));
+							dynamicObject = getContext().getObjectFactory().getObject(results.get(0));
 						}
 					} catch (InstantiateDynamicObjectException e) {
 						throw new DynamicObjectException(e);
 					}
-					dynamicObject.initExisting(getContext(), dn);
+					getContext().getAdapter().initExisting(dynamicObject, getContext(), getBaseDN());
 				}
 				this.dynamicObject.init(results.get(0));
 			}

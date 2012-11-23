@@ -38,12 +38,12 @@ import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
-import org.mgnl.nicki.ldap.objects.BaseLdapDynamicObject;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("nrfResourceAssociation")
-public class ResourceAssociation extends BaseLdapDynamicObject {
+public class ResourceAssociation extends BaseDynamicObject {
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;
 	@DynamicReferenceAttribute(externalName="nrfResource", foreignKey=Resource.class, reference=Resource.class,

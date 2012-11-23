@@ -41,7 +41,6 @@ import java.util.Map;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.vaadin.base.editor.EntryFilter;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 import org.mgnl.nicki.vaadin.base.editor.DataProvider;
@@ -169,7 +168,7 @@ public class TreeContainer implements Serializable {
 
 	public void setParent(DynamicObject object, DynamicObject parent) throws DynamicObjectException {
 		container.setParent(object, parent);
-		String newPath = LdapHelper.getPath(parent.getPath(), object.getModel().getNamingLdapAttribute(), object.getNamingValue());
+		String newPath = object.getContext().getAdapter().getPath(object, parent.getPath(), object.getNamingValue());
 		object.move(newPath);
 	}
 

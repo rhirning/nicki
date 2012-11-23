@@ -51,6 +51,10 @@ public class LdapQuery implements Query {
 	private String baseDN;
 	private Map<String,String> resultAttributes = new HashMap<String, String>();
 
+	public LdapQuery() {
+		super();
+	}
+
 	public LdapQuery(String baseDN) {
 		super();
 		this.baseDN = baseDN;
@@ -128,7 +132,5 @@ public class LdapQuery implements Query {
 	public void addResultAttribute(String ldapName, String displayName) {
 		resultAttributes.put(ldapName, displayName);
 	}
-
-
 
 }
