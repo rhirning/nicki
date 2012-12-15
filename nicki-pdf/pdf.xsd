@@ -1,0 +1,22 @@
+<xs:schema attributeFormDefault="unqualified"
+	elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:element name="pdf">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="box" maxOccurs="unbounded" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element type="xs:string" name="position" />
+							<xs:element type="xs:string" name="text" maxOccurs="1"
+								minOccurs="0" />
+						</xs:sequence>
+						<xs:attribute type="xs:int" name="x" />
+						<xs:attribute type="xs:int" name="y" />
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute type="xs:int" name="x" />
+			<xs:attribute type="xs:int" name="y" />
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
