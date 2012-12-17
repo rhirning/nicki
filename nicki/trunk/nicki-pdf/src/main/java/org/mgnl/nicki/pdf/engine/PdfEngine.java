@@ -1,9 +1,5 @@
 package org.mgnl.nicki.pdf.engine;
 
-import com.lowagie.text.BadElementException;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-
 import org.mgnl.nicki.pdf.template.PdfTemplate;
 
 import com.lowagie.text.DocumentException;
@@ -17,7 +13,6 @@ import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 import org.mgnl.nicki.pdf.model.Box;
