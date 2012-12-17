@@ -19,7 +19,7 @@ import com.lowagie.text.pdf.PdfWriter;
 public class PdfTest {
  
     public static final String RESULT
-        = "output/pdfTest.pdf";
+        = "src/main/resources/output/pdfTest.pdf";
  
     /**
      * Main method.
@@ -47,6 +47,7 @@ public class PdfTest {
         Font times = new Font(bf_times, 12);
         float width_times = bf_times.getWidthPoint(foobar, 12);
         c = new Chunk(foobar + ": " + width_times, times);
+		
         document.add(new Paragraph(c));
         document.add(new Paragraph(String.format("Chunk width: %f", c.getWidthPoint())));
         document.add(Chunk.NEWLINE);
