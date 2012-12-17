@@ -28,7 +28,7 @@ public class PdfEngine {
 	private static final Logger log = LoggerFactory.getLogger(PdfEngine.class);
 	private static float CM_PER_INCH = 2.54f;
 	private static float MM_PER_USER_UNIT = CM_PER_INCH * 10.0f / 72.0f;
-	private Map<String, BaseFont> fonts = new HashMap<>();
+	private Map<String, BaseFont> fonts = new HashMap<String, BaseFont>();
 	private PdfTemplate template;
 
 
