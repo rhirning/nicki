@@ -11,6 +11,8 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 public class DynamicJcrAttribute extends DynamicAttribute implements Serializable {
 
+	private static final long serialVersionUID = -8882067850828962053L;
+
 	public DynamicJcrAttribute(String name, String ldapName,
 			Class<?> attributeClass) {
 		super(name, ldapName, attributeClass);
