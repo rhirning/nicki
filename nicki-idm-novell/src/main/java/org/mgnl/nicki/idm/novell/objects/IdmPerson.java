@@ -35,7 +35,6 @@ package org.mgnl.nicki.idm.novell.objects;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -148,8 +147,7 @@ public class IdmPerson extends Person implements Serializable {
 	public String phoneNumber;
 	
 	public boolean hasRole(Role role2) {
-		for (Iterator<Role> iterator = getRoles().iterator(); iterator.hasNext();) {
-			Role role = (Role) iterator.next();
+		for (Role role : getRoles()) {
 			if (StringUtils.equals(role.getPath(), role2.getPath())) {
 				return true;
 			}
@@ -158,8 +156,7 @@ public class IdmPerson extends Person implements Serializable {
 	}
 
 	public boolean hasResource(Resource resource2) {
-		for (Iterator<Resource> iterator = getResources().iterator(); iterator.hasNext();) {
-			Resource resource = iterator.next();
+		for (Resource resource : getResources()) {
 			if (StringUtils.equals(resource.getPath(), resource2.getPath())) {
 				return true;
 			}

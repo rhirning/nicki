@@ -51,7 +51,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 public class ConnectionManager implements ConfigListener{
@@ -79,9 +78,7 @@ public class ConnectionManager implements ConfigListener{
     	this.dataSources.clear();
     	this.pools.clear();
     	ConfigurationManager.getInstance().configChanged();
-    	for (Iterator<String> iterator
-    			= ConfigurationManager.getInstance().getConfigurations().keySet().iterator(); iterator.hasNext();) {
-			String id = iterator.next();
+    	for (String id : ConfigurationManager.getInstance().getConfigurations().keySet()) {
             connectToDB(id,
             		ConfigurationManager.getInstance().getConfiguration(id) );
 			
@@ -190,8 +187,7 @@ public class ConnectionManager implements ConfigListener{
     }
 
     public void printDriverStats() throws Exception {
-    	for (Iterator<String> iterator = this.pools.keySet().iterator(); iterator.hasNext();) {
-			String id = iterator.next();
+    	for (String id : this.pools.keySet()) {
 	        ObjectPool connectionPool = this.pools.get(id);
 	        LOG.info("NumActive: " + connectionPool.getNumActive());
 	        LOG.info("NumIdle: " + connectionPool.getNumIdle());

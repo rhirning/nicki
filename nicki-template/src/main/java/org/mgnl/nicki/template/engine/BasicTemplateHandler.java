@@ -34,7 +34,6 @@ package org.mgnl.nicki.template.engine;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -107,8 +106,7 @@ public class BasicTemplateHandler implements TemplateHandler{
 					@SuppressWarnings("unchecked")
 					List<Element> params = document.getRootElement().getChildren("parameter");
 					if (params != null) {
-						for (Iterator<Element> iterator = params.iterator(); iterator.hasNext();) {
-							Element attributeElement = iterator.next();
+						for (Element attributeElement : params) {
 							list.add(new TemplateParameter(attributeElement));
 						}
 					}

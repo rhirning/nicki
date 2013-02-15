@@ -32,7 +32,6 @@
  */
 package org.mgnl.nicki.core.objects;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.methods.ChildrenMethod;
@@ -49,8 +48,7 @@ public abstract class DynamicTemplateObject extends BaseDynamicObject {
 	public void init(ContextSearchResult rs) throws DynamicObjectException {
 		super.init(rs);
 		
-		for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
-			String key = iterator.next();
+		for (String key :  getModel().getChildren().keySet()) {
 			Class<? extends DynamicObject> filter = getModel().getChildren().get(key);
 			put(DynamicAttribute.getGetter(key), new ChildrenMethod(getContext(), rs, filter));
 		}

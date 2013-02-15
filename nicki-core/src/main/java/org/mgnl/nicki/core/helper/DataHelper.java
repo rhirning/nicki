@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -115,8 +114,7 @@ public class DataHelper {
 
 	public static Map<String, String> getSimpleMap(Map<String, String[]> pMap) {
 		Map<String, String> map = new HashMap<String, String>();
-		for (Iterator<String> iterator = pMap.keySet().iterator(); iterator.hasNext();) {
-			String key = iterator.next();
+		for (String key : pMap.keySet()) {
 			if (isNotEmpty(pMap.get(key))) {
 				map.put(key, getValue(pMap.get(key)));
 			}
@@ -139,8 +137,7 @@ public class DataHelper {
 		}
 		List<String> list = getList(data, entrySeparator);
 		Map<String, String> map = new HashMap<String, String>();
-		for (Iterator<String> iterator = list.iterator(); iterator.hasNext();) {
-			String string = iterator.next();
+		for (String string : list) {
 			try {
 				String entry[] = StringUtils.split(string, valueSeparator);
 				map.put(entry[0], entry[1]);

@@ -33,7 +33,6 @@
 package org.mgnl.nicki.vaadin.base.editor;
 
 import java.io.Serializable;
-import java.util.Iterator;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.objects.DataModel;
@@ -92,8 +91,7 @@ public class DynamicObjectFieldFactory implements Serializable {
 	
 	public void addFields(AbstractOrderedLayout layout, DynamicObject dynamicObject, boolean create) {
 		DataModel model = dynamicObject.getModel();
-		for (Iterator<DynamicAttribute> iterator = model.getAttributes().values().iterator(); iterator.hasNext();) {
-			DynamicAttribute dynAttribute = iterator.next();
+		for (DynamicAttribute dynAttribute : model.getAttributes().values()) {
 			if (!dynAttribute.isNaming()) {
 				if (objectListener == null || objectListener.acceptAttribute(dynAttribute.getName())) {
 					layout.addComponent(createField(layout, dynamicObject, dynAttribute.getName(), create));

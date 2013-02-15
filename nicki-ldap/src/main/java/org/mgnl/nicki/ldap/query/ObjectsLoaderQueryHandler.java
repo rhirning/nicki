@@ -33,7 +33,6 @@
 package org.mgnl.nicki.ldap.query;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.naming.directory.SearchControls;
@@ -65,8 +64,7 @@ public class ObjectsLoaderQueryHandler extends ObjectLoaderLdapQueryHandler {
 
 	@Override
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
-		for (Iterator<ContextSearchResult> iterator = results.iterator(); iterator.hasNext();) {
-			ContextSearchResult rs = iterator.next();
+		for (ContextSearchResult rs : results) {
 			DynamicObject dynamicObject = null;
 			if (getClassDefinition() != null) {
 				try {

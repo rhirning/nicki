@@ -32,7 +32,6 @@
  */
 package org.mgnl.nicki.jcr.objects;
 
-import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -52,8 +51,7 @@ public class NodeDynamicTemplateObject extends BaseJcrDynamicObject {
 	public void init(NickiContext context, Node node) throws DynamicObjectException {
 		super.init(context, node);
 		
-		for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
-			String key = iterator.next();
+		for (String key : getModel().getChildren().keySet()) {
 			Class<? extends DynamicObject> filter = getModel().getChildren().get(key);
 			put(DynamicJcrAttribute.getGetter(key), new ChildrenMethod(getContext(),node, filter));
 		}

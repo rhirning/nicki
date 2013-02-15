@@ -3,7 +3,6 @@ package org.mgnl.nicki.cache.filter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Iterator;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -42,9 +41,8 @@ public class CachedEntry implements Serializable {
 	protected void addHeaders(final HttpServletResponse response) {
         final MultiMap headers = getHeaders();
 
-        final Iterator it = headers.keySet().iterator();
-        while (it.hasNext()) {
-	        final String header = (String) it.next();
+        for (Object key : headers.keySet()) {
+	        final String header = (String) key;
 
 	        if ("Content-Encoding".equals(header) || "Vary".equals(header)) {
                 continue;
@@ -56,9 +54,7 @@ public class CachedEntry implements Serializable {
             }
 
             final Collection values = (Collection) headers.get(header);
-            final Iterator valIt = values.iterator();
-            while (valIt.hasNext()) {
-                final Object val = valIt.next();
+            for(Object val :  values) {
                 setHeader(response, header, val);
             }
         }

@@ -35,7 +35,6 @@ package org.mgnl.nicki.shop.core;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -70,8 +69,7 @@ public class Shop implements ShopViewerComponent, Serializable {
 		@SuppressWarnings("unchecked")
 		List<Element> pages = root.getChildren("page");
 		if (pages != null && pages.size() > 0) {
-			for (Iterator<Element> iterator = pages.iterator(); iterator.hasNext();) {
-				Element pageElement = iterator.next();
+			for (Element pageElement : pages) {
 				pageList.add(new ShopPage(this, pageElement));
 			}
 		}
@@ -84,8 +82,7 @@ public class Shop implements ShopViewerComponent, Serializable {
 	
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		for (Iterator<ShopPage> iterator = pageList.iterator(); iterator.hasNext();) {
-			ShopPage page = iterator.next();
+		for (ShopPage page : pageList) {
 			sb.append(page.toString()).append("\n");
 		}
 		return sb.toString();
@@ -118,8 +115,7 @@ public class Shop implements ShopViewerComponent, Serializable {
 	public List<CatalogArticle> getAllArticles() {
 		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
 		if (hasPages()) {
-			for (Iterator<ShopPage> iterator = getPageList().iterator(); iterator.hasNext();) {
-				ShopPage page = iterator.next();
+			for (ShopPage page : getPageList()) {
 				articles.addAll(page.getArticles());
 			}
 		}

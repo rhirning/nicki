@@ -32,7 +32,6 @@
  */
 package org.mgnl.nicki.ldap.objects;
 
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -76,8 +75,7 @@ public class DynamicObjectLdapAdapter implements DynamicObjectAdapter {
 	@Override
 	public boolean accept(DynamicObject dynamicObject, ContextSearchResult rs) {
 		boolean accepted = true;
-		for (Iterator<String> iterator = dynamicObject.getModel().getObjectClasses().iterator(); iterator.hasNext();) {
-			String objectClass = iterator.next();
+		for (String objectClass : dynamicObject.getModel().getObjectClasses()) {
 			accepted &= checkAttribute(rs,"objectClass", objectClass);
 		}
 		return accepted;
@@ -99,8 +97,7 @@ public class DynamicObjectLdapAdapter implements DynamicObjectAdapter {
 
 	@Override
 	public void merge(DynamicObject dynamicObject, Map<DynamicAttribute, Object> changeAttributes) {
-		for (Iterator<DynamicAttribute> iterator = changeAttributes.keySet().iterator(); iterator.hasNext();) {
-			DynamicAttribute dynamicAttribute = iterator.next();
+		for (DynamicAttribute dynamicAttribute : changeAttributes.keySet()) {
 			dynamicObject.put(dynamicAttribute.getName(), changeAttributes.get(dynamicAttribute));
 		}
 	};

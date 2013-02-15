@@ -32,7 +32,6 @@
  */
 package org.mgnl.nicki.shop.attributes;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
@@ -58,8 +57,8 @@ public class SelectComponent extends BasicAttributeComponent implements Attribut
 		@SuppressWarnings("unchecked")
 		List<String> content = getContent(List.class, user, person);
 		if (content != null) {
-			for (Iterator<String> iterator = content.iterator(); iterator.hasNext();) {
-				field.addItem(iterator.next());
+			for (String entry : content) {
+				field.addItem(entry);
 			}
 		}
 		getField().setValue((String) getArticle().getValue(getAttribute()));

@@ -32,8 +32,6 @@
  */
 package org.mgnl.nicki.shop.core;
 
-
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -85,8 +83,7 @@ public class ArticleShopContainer implements ShopContainer{
 		List<CatalogArticle> loadedArticles = catalog.getContext().loadObjects(CatalogArticle.class, catalog.getPath(), "objectClass=nickiShopArticle");
 
 	    if (loadedArticles != null) {
-		    for (Iterator<CatalogArticle> iterator = loadedArticles.iterator(); iterator.hasNext();) {
-		    	CatalogArticle article = iterator.next();
+		    for (CatalogArticle article : loadedArticles) {
 				Item item = container.addItem(article);
 				item.getItemProperty(PROPERTY_NAME).setValue(article.getDisplayName());
 				item.getItemProperty(PROPERTY_PATH).setValue(article.getCatalogPath());
@@ -123,8 +120,8 @@ public class ArticleShopContainer implements ShopContainer{
 	public void setCategoryFilter(List<Object> values) {
 		this.container.removeAllContainerFilters();
 		if (values != null && values.size() > 0) {
-			for (Iterator<Object> iterator = values.iterator(); iterator.hasNext();) {
-				String filterString = (String) iterator.next();
+			for (Object object : values) {
+				String filterString = (String) object;
 				this.container.addContainerFilter(PROPERTY_CATEGORY, filterString, true, false);
 			}
 		}

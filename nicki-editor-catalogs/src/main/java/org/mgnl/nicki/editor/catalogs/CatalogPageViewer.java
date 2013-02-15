@@ -32,8 +32,6 @@
  */
 package org.mgnl.nicki.editor.catalogs;
 
-import java.util.Iterator;
-
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
@@ -92,9 +90,7 @@ public class CatalogPageViewer extends CustomComponent implements ClassEditor {
 		categories.setSelectable(true);
 		categories.addContainerProperty("category", String.class, null);
 		if (page.hasCategories()) {
-			for (Iterator<String> iterator = page.getCategories().iterator(); iterator
-					.hasNext();) {
-				String value = iterator.next();
+			for (String value : page.getCategories()) {
 				categories.addItem(new Object[] { value }, value);
 			}
 		}
@@ -134,9 +130,7 @@ public class CatalogPageViewer extends CustomComponent implements ClassEditor {
 		attributes.setSelectable(true);
 		attributes.addContainerProperty("attribute", String.class, null);
 		if (page.hasAttributes()) {
-			for (Iterator<String> iterator = page.getCategories().iterator(); iterator
-					.hasNext();) {
-				String value = iterator.next();
+			for (String value : page.getCategories()) {
 				attributes.addItem(new Object[] { value }, value);
 			}
 		}

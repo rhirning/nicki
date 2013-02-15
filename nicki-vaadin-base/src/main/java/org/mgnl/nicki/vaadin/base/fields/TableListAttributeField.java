@@ -33,7 +33,6 @@
 package org.mgnl.nicki.vaadin.base.fields;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.i18n.I18n;
@@ -74,8 +73,8 @@ public class TableListAttributeField extends BaseDynamicAttributeField implement
 		
 		@SuppressWarnings("unchecked")
 		List<Object> values = (List<Object>) dynamicObject.get(attributeName);
-		for (Iterator<Object> iterator = values.iterator(); iterator.hasNext();) {
-			String value = (String) iterator.next();
+		for (Object valueObject : values) {
+			String value = (String) valueObject;
 			addItem(value);
 		}
 		newEntryButton.addListener(new Button.ClickListener() {

@@ -33,7 +33,6 @@
 package org.mgnl.nicki.vaadin.base.fields;
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.i18n.I18n;
@@ -71,8 +70,8 @@ public class ListAttributeField extends BaseDynamicAttributeField implements Dyn
 		hL.addComponent(newButton);
 		container.addComponent(hL);
 		if (values != null) {
-			for (Iterator<Object> iterator = values.iterator(); iterator.hasNext();) {
-				String value = (String) iterator.next();
+			for (Object valueObject : values) {
+				String value = (String) valueObject;
 				TextField input = new TextField(null, value);
 				input.setImmediate(true);
 				input.addListener(listener);

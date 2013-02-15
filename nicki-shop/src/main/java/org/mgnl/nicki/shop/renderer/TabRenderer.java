@@ -32,8 +32,6 @@
  */
 package org.mgnl.nicki.shop.renderer;
 
-import java.util.Iterator;
-
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.shop.core.ShopArticle;
@@ -70,12 +68,10 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 	}
 	
 	private void addTabs(TabSheet tabSheet) {
-		for (Iterator<CatalogArticle> iterator = shopViewerComponent.getArticles().iterator(); iterator.hasNext();) {
-			CatalogArticle article = iterator.next();
+		for (CatalogArticle article : shopViewerComponent.getArticles()) {
 			addArticleTab(tabSheet, article);
 		}
-		for (Iterator<ShopPage> iterator = shopViewerComponent.getPageList().iterator(); iterator.hasNext();) {
-			ShopPage page = iterator.next();
+		for (ShopPage page : shopViewerComponent.getPageList()) {
 			addPageTab(tabSheet, page);
 		}
 	}

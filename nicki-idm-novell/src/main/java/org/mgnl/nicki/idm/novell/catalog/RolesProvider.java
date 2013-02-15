@@ -34,7 +34,6 @@ package org.mgnl.nicki.idm.novell.catalog;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.config.Config;
@@ -51,8 +50,7 @@ public class RolesProvider implements Provider, Serializable {
 		List<Role> roles = catalogPage.getContext().loadObjects(Role.class,
 				Config.getProperty("nicki.roles.basedn"), null);
 		if (roles != null && roles.size() > 0) {
-			for (Iterator<Role> iterator = roles.iterator(); iterator.hasNext();) {
-				Role role = iterator.next();
+			for (Role role : roles) {
 				articles.add(new VirtualRoleCatalogArticle(role, catalogPage));
 			}
 		}

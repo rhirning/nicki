@@ -35,7 +35,6 @@ package org.mgnl.nicki.core.methods;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.context.NickiContext;
@@ -63,8 +62,8 @@ public class ListForeignKeyMethod implements TemplateMethodModel, Serializable {
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (objects == null) {
 			objects = new ArrayList<DynamicObject>();
-			for (Iterator<Object> iterator = this.foreignKeys.iterator(); iterator.hasNext();) {
-				String path = (String) iterator.next();
+			for (Object key : this.foreignKeys) {
+				String path = (String) key;
 				DynamicObject object = context.loadObject(classDefinition, path);
 				if (object != null) {
 					objects.add(context.loadObject(classDefinition, path));

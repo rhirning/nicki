@@ -35,7 +35,6 @@ package org.mgnl.nicki.shop.inventory;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -196,9 +195,7 @@ public class Inventory implements Serializable {
 		StringBuffer sb = new StringBuffer();
 		sb.append("Inventory for ").append(person.getDisplayName())
 				.append("\n");
-		for (Iterator<String> iterator = articles.keySet().iterator(); iterator
-				.hasNext();) {
-			String key = iterator.next();
+		for (String key : articles.keySet()) {
 			sb.append(articles.get(key).toString()).append("\n");
 		}
 		return sb.toString();
@@ -228,10 +225,7 @@ public class Inventory implements Serializable {
 									InventoryArticle.getAction(iArticle.getStatus()));
 							entry.setStart(iArticle.getStart());
 							entry.setEnd(iArticle.getEnd());
-							for (Iterator<InventoryAttribute> iterator2 = iArticle
-									.getAttributes().values().iterator(); iterator2
-									.hasNext();) {
-								InventoryAttribute iAttribute = iterator2.next();
+							for (InventoryAttribute iAttribute : iArticle.getAttributes().values()) {
 								if (iAttribute.hasChanged()) {
 									entry.addAttribute(iAttribute.getName(),
 											iAttribute.getValue());
@@ -247,10 +241,7 @@ public class Inventory implements Serializable {
 						CartEntry entry = new CartEntry(
 								iArticle.getArticle().getCatalogPath(),
 								InventoryArticle.getAction(iArticle.getStatus()));
-						for (Iterator<InventoryAttribute> iterator2 = iArticle
-								.getAttributes().values().iterator(); iterator2
-								.hasNext();) {
-							InventoryAttribute iAttribute = iterator2.next();
+						for (InventoryAttribute iAttribute : iArticle.getAttributes().values()) {
 							if (iAttribute.hasChanged()) {
 								entry.addAttribute(iAttribute.getName(),
 										iAttribute.getValue());

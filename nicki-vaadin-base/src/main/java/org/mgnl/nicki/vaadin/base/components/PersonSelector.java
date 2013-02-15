@@ -33,7 +33,6 @@
 package org.mgnl.nicki.vaadin.base.components;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -137,8 +136,7 @@ public class PersonSelector extends CustomComponent {
 	    BeanItemContainer<Person> persons =
 	        new BeanItemContainer<Person>(Person.class);
 	    
-	    for (Iterator<SearchResultEntry> iterator = resultSet.iterator(); iterator.hasNext();) {
-	    	SearchResultEntry entry = iterator.next();
+	    for (SearchResultEntry entry : resultSet) {
 	    	Person person = context.loadObject(Person.class, entry.getDn());
 			persons.addBean(person);
 		}

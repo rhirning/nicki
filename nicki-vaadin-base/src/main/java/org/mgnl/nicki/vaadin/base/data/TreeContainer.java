@@ -34,7 +34,6 @@ package org.mgnl.nicki.vaadin.base.data;
 
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -111,8 +110,7 @@ public class TreeContainer implements Serializable {
 			if (object == this.root) {
 			    List<? extends DynamicObject> objects = this.treeDataProvider.getChildren(context);
 			    if (objects != null) {
-				    for (Iterator<? extends DynamicObject> iterator = objects.iterator(); iterator.hasNext();) {
-						DynamicObject p = iterator.next();
+				    for (DynamicObject p : objects) {
 						if (this.entryFilter.accepts(p)) {
 							addItem(p, root, true);
 							boolean childrenAllowed = p.getModel().childrenAllowed();
@@ -130,8 +128,7 @@ public class TreeContainer implements Serializable {
 	
 	public void addChildren(Object parent,
 			List<? extends DynamicObject> children) {
-		for (Iterator<? extends DynamicObject> iterator = children.iterator(); iterator.hasNext();) {
-			DynamicObject p = iterator.next();
+		for (DynamicObject p : children) {
 			if (this.entryFilter.accepts(p)) {
 				addChild(parent, p);
 			}
