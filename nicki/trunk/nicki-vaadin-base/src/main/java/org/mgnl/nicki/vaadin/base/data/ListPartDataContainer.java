@@ -34,7 +34,6 @@ package org.mgnl.nicki.vaadin.base.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -56,8 +55,7 @@ public class ListPartDataContainer extends AttributeDataContainer implements Dat
 		Map<String, String> values = new HashMap<String, String>();
 		@SuppressWarnings("unchecked")
 		List<String> list = (List<String>) getDynamicObject().get(getAttributeName());
-		for (Iterator<String> iterator = list.iterator(); iterator.hasNext();) {
-			String value = iterator.next();
+		for (String value : list) {
 			String name = StringUtils.substringBefore(value, this.separator);
 			String data = StringUtils.substringAfter(value, this.separator);
 			values.put(name, data);
@@ -68,8 +66,7 @@ public class ListPartDataContainer extends AttributeDataContainer implements Dat
 
 	public void setValue(Map<String, String> values) {
 		List<String> listvalues = new ArrayList<String>();
-		for (Iterator<String> iterator = values.keySet().iterator(); iterator.hasNext();) {
-			String  name = iterator.next();
+		for (String name : values.keySet()) {
 			listvalues.add(name + this.separator + values.get(name));
 		}
 		getDynamicObject().put(getAttributeName(), listvalues);

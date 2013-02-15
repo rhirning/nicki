@@ -33,7 +33,6 @@
 package org.mgnl.nicki.shop.renderer;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -107,8 +106,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		table.setColumnHeader("attributes", I18n.getText("nicki.rights.attributes.label"));
 
 		// add articles to table
-		for (Iterator<CatalogArticle> iterator = articles.iterator(); iterator.hasNext();) {
-			CatalogArticle article = (CatalogArticle) iterator.next();
+		for (CatalogArticle article : articles) {
 			if (!article.isMultiple()) {
 				addArticle(article, getInventory().getArticle(article));
 			} else {
@@ -272,8 +270,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 	private AbstractOrderedLayout getVerticalArticleAttributes(CatalogArticle article, InventoryArticle inventoryArticle, boolean provisioned, SOURCE source) {
 		AbstractOrderedLayout attrLayout = new VerticalLayout();
 		if (article.hasAttributes()) {
-			for (Iterator<CatalogArticleAttribute> iterator = article.getAllAttributes().iterator(); iterator.hasNext();) {
-				CatalogArticleAttribute pageAttribute = iterator.next();
+			for (CatalogArticleAttribute pageAttribute : article.getAllAttributes()) {
 				boolean enabled = true;
 				attrLayout.addComponent(getAttributeComponent(article, inventoryArticle, pageAttribute, enabled));
 			}

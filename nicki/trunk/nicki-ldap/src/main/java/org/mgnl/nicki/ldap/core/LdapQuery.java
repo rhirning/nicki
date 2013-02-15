@@ -34,7 +34,6 @@ package org.mgnl.nicki.ldap.core;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -98,17 +97,13 @@ public class LdapQuery implements Query {
 	public String getFilter() {
 		StringBuffer outerSb = new StringBuffer();
 
-		for (Iterator<String> iterator = filters.iterator(); iterator.hasNext();) {
-			String filter =  iterator.next();
+		for (String filter : filters) {
 			LdapHelper.addQuery(outerSb, filter, LOGIC.AND);
 		}
 
-		for (Iterator<String> iterator = searchValues.keySet().iterator(); iterator.hasNext();) {
+		for (String key : searchValues.keySet()) {
 			StringBuffer sb = new StringBuffer();
-			String key =  iterator.next();
-			List<String> list = searchValues.get(key);
-			for (Iterator<String> iterator2 = list.iterator(); iterator2.hasNext();) {
-				String value = iterator2.next();
+			for (String value : searchValues.get(key)) {
 				LdapHelper.addQuery(sb, key + "=" + value, LOGIC.OR);
 			}
 			LdapHelper.addQuery(outerSb, sb.toString(), LOGIC.AND);

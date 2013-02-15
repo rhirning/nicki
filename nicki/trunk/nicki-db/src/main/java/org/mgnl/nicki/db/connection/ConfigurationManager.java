@@ -33,7 +33,6 @@
 package org.mgnl.nicki.db.connection;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -86,8 +85,8 @@ public class ConfigurationManager {
 		this.configurations.clear();
 		String connections = Config.getProperty(PROPERTY_CONNECTIONS);
 		if (StringUtils.isNotEmpty(connections)) {
-			for (Iterator<String> iterator = DataHelper.getList(connections, SEPARATOR).iterator(); iterator.hasNext();) {
-				addConfiguration(iterator.next());
+			for (String configuration : DataHelper.getList(connections, SEPARATOR)) {
+				addConfiguration(configuration);
 				
 			}
 		}

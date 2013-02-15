@@ -34,7 +34,6 @@ package org.mgnl.nicki.shop.objects;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -80,8 +79,7 @@ public class CatalogPage extends BaseDynamicObject {
 				@SuppressWarnings("unchecked")
 				List<Element> attrs = document.getRootElement().getChildren("attribute");
 				if (attrs != null) {
-					for (Iterator<Element> iterator = attrs.iterator(); iterator.hasNext();) {
-						Element attributeElement = iterator.next();
+					for (Element attributeElement : attrs) {
 						list.add(new CatalogArticleAttribute(attributeElement));
 					}
 				}
@@ -164,9 +162,8 @@ public class CatalogPage extends BaseDynamicObject {
 			if (method != null) {
 				@SuppressWarnings("unchecked")
 				List<Object> pages = (List<Object>) method.exec(null);
-				for (Iterator<Object> iterator = pages.iterator(); iterator
-						.hasNext();) {
-					CatalogPage page= (CatalogPage) iterator.next();
+				for (Object entry : pages) {
+					CatalogPage page= (CatalogPage) entry;
 					articles.addAll(page.getAllArticles()); 
 				}
 			}

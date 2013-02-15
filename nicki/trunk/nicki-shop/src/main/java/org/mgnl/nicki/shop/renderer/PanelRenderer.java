@@ -32,7 +32,6 @@
  */
 package org.mgnl.nicki.shop.renderer;
 
-import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.shop.core.ShopArticle;
@@ -67,8 +66,7 @@ public class PanelRenderer extends BaseShopRenderer implements ShopRenderer{
 		List<CatalogArticle> articles = shopViewerComponent.getAllArticles();
 		panel.removeAllComponents();
 		// add articles to panel
-		for (Iterator<CatalogArticle> iterator = articles.iterator(); iterator.hasNext();) {
-			CatalogArticle article = (CatalogArticle) iterator.next();
+		for (CatalogArticle article : articles) {
 			panel.addComponent(articleRenderer.render(new ShopArticle(article), getInventory()));
 		}
 	}

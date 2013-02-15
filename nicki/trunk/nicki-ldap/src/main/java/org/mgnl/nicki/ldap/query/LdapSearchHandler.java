@@ -33,7 +33,6 @@
 package org.mgnl.nicki.ldap.query;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.context.NickiContext;
@@ -64,14 +63,12 @@ public class LdapSearchHandler extends BasicLdapHandler implements SearchQueryHa
 	}
 
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
-		for (Iterator<ContextSearchResult> resultsIterator = results.iterator(); resultsIterator.hasNext();) {
-			ContextSearchResult rs = resultsIterator.next();
+		for (ContextSearchResult rs : results) {
 			SearchResultEntry entry = new SearchResultEntry();
 			String dn = rs.getNameInNamespace();
 			entry.setDn(dn);
 			entry.addValue("dn", dn);
-			for (Iterator<String> iterator = query.getResultAttributes().keySet().iterator(); iterator.hasNext();) {
-				String attributeName = iterator.next();
+			for (String attributeName :query.getResultAttributes().keySet()) {
 				Object value = rs.getValue(attributeName);
 				entry.addValue(query.getResultAttributes().get(attributeName), value);
 			}

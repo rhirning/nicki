@@ -34,7 +34,6 @@ package org.mgnl.nicki.idm.novell.jaas;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -64,8 +63,8 @@ public class UserAppAdapter implements SSOAdapter {
 		try {
 			EbiRealmUser user = EboDirectoryHelper.getEbiRealmUser(getContext(request));
 			Set<EbiRealmGroup> groups = user.getGroups();
-			for (Iterator<EbiRealmGroup> iterator = groups.iterator(); iterator.hasNext();) {
-				list.add(iterator.next().getName());
+			for (EbiRealmGroup group : groups) {
+				list.add(group.getName());
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

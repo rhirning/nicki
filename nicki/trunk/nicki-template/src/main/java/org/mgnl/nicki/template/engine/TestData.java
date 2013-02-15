@@ -34,7 +34,6 @@ package org.mgnl.nicki.template.engine;
 
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -58,8 +57,7 @@ public class TestData {
 		@SuppressWarnings("unchecked")
 		List<String> testData = (List<String>) dynamicObject.get("testData");
 		if (testData != null) {
-			for (Iterator<String> iterator = testData.iterator(); iterator.hasNext();) {
-				String value = iterator.next();
+			for (String value : testData) {
 				String name = StringUtils.substringBefore(value, SEPARATOR);
 				String data = StringUtils.substringAfter(value, SEPARATOR);
 				if (StringUtils.equals(name, "target")) {
@@ -92,8 +90,7 @@ public class TestData {
 		@SuppressWarnings("unchecked")
 		List<String> testData = (List<String>) dynamicObject.get("testData");
 		if (testData != null) {
-			for (Iterator<String> iterator = testData.iterator(); iterator.hasNext();) {
-				String value = iterator.next();
+			for (String value : testData) {
 				String name = StringUtils.substringBefore(value, SEPARATOR);
 				String data = StringUtils.substringAfter(value, SEPARATOR);
 				if (StringUtils.isNotEmpty(data)) {

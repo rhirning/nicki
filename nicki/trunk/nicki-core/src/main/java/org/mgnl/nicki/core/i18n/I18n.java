@@ -33,7 +33,6 @@
 package org.mgnl.nicki.core.i18n;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -50,8 +49,7 @@ public class I18n {
 	
 	private String getTranslatedText(String key) {
 		Config.isInitPerformed();
-		for (Iterator<String> iterator = messageBases.iterator(); iterator.hasNext();) {
-			String base = iterator.next();
+		for (String base : messageBases) {
 			try {
 				ResourceBundle texts = ResourceBundle.getBundle(base, ThreadContext.getLocale());
 				if (texts.containsKey(key)) {

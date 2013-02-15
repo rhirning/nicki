@@ -34,7 +34,6 @@ package org.mgnl.nicki.idm.novell.catalog;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.config.Config;
@@ -52,8 +51,7 @@ public class ResourcesProvider implements Provider, Serializable {
 		List<Resource> resources = catalogPage.getContext().loadObjects(Resource.class,
 				Config.getProperty("nicki.resources.basedn"), null);
 		if (resources != null && resources.size() > 0) {
-			for (Iterator<Resource> iterator = resources.iterator(); iterator.hasNext();) {
-				Resource resource = iterator.next();
+			for (Resource resource : resources) {
 				articles.add(new VirtualResourceCatalogArticle(resource, catalogPage));
 			}
 		}

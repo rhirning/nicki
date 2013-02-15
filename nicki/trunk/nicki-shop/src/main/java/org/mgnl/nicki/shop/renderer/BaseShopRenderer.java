@@ -122,8 +122,7 @@ public class BaseShopRenderer {
 				toBeRemoved.add(component);
 			}
 		}
-		for (Iterator<Component> iterator = toBeRemoved.iterator(); iterator.hasNext();) {
-			Component component = iterator.next();
+		for (Component component : toBeRemoved) {
 			parent.removeComponent(component);
 		}
 	}

@@ -35,7 +35,6 @@ package org.mgnl.nicki.core.objects;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -81,8 +80,7 @@ public class DataModel implements Serializable {
 	public  List<DynamicAttribute> getMandatoryAttributes() {
 		if (this.mandatoryAttributes == null) {
 			this.mandatoryAttributes = new ArrayList<DynamicAttribute>();
-			for (Iterator<DynamicAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
-				DynamicAttribute dynAttribute  = iterator.next();
+			for (DynamicAttribute dynAttribute : this.attributes.values()) {
 				if (dynAttribute.isMandatory()) {
 					this.mandatoryAttributes.add(dynAttribute);
 				}
@@ -93,8 +91,7 @@ public class DataModel implements Serializable {
 	public List<DynamicAttribute> getOptionalAttributes() {
 		if (this.optionalAttributes == null) {
 			this.optionalAttributes = new ArrayList<DynamicAttribute>();
-			for (Iterator<DynamicAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
-				DynamicAttribute dynAttribute  = iterator.next();
+			for (DynamicAttribute dynAttribute : this.attributes.values()) {
 				if (!dynAttribute.isMandatory()) {
 					this.optionalAttributes.add(dynAttribute);
 				}
@@ -105,8 +102,7 @@ public class DataModel implements Serializable {
 	public List<DynamicAttribute> getListOptionalAttributes() {
 		if (this.listOptionalAttributes == null) {
 			this.listOptionalAttributes = new ArrayList<DynamicAttribute>();
-			for (Iterator<DynamicAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
-				DynamicAttribute dynAttribute  = iterator.next();
+			for (DynamicAttribute dynAttribute : this.attributes.values()) {
 				if (dynAttribute.isMultiple()) {
 					this.listOptionalAttributes.add(dynAttribute);
 				}
@@ -117,8 +113,7 @@ public class DataModel implements Serializable {
 	public List<DynamicAttribute> getForeignKeys() {
 		if (this.foreignKeys == null) {
 			this.foreignKeys = new ArrayList<DynamicAttribute>();
-			for (Iterator<DynamicAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
-				DynamicAttribute dynAttribute  = iterator.next();
+			for (DynamicAttribute dynAttribute : this.attributes.values()) {
 				if (dynAttribute.isForeignKey() && !dynAttribute.isMultiple()) {
 					this.foreignKeys.add(dynAttribute);
 				}
@@ -129,8 +124,7 @@ public class DataModel implements Serializable {
 	public List<DynamicAttribute> getListForeignKeys() {
 		if (this.listForeignKeys == null) {
 			this.listForeignKeys = new ArrayList<DynamicAttribute>();
-			for (Iterator<DynamicAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
-				DynamicAttribute dynAttribute  = iterator.next();
+			for (DynamicAttribute dynAttribute : this.attributes.values()) {
 				if (dynAttribute.isForeignKey() && dynAttribute.isMultiple()) {
 					this.listForeignKeys.add(dynAttribute);
 				}
@@ -164,8 +158,7 @@ public class DataModel implements Serializable {
 	public void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject, boolean nullable) {
 
 		// single attributes (except namingAttribute)
-		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
-			DynamicAttribute dynAttribute = iterator.next();
+		for (DynamicAttribute dynAttribute : getAttributes().values()) {
 			if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
 				String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
 				if (nullable || value != null) {
@@ -176,15 +169,13 @@ public class DataModel implements Serializable {
 		}
 		
 		// multi attributes
-		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
-			DynamicAttribute dynAttribute = iterator.next();
+		for (DynamicAttribute dynAttribute : getAttributes().values()) {
 			if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
 				Attribute attribute = new BasicAttribute(dynAttribute.getExternalName());
 				@SuppressWarnings("unchecked")
 				List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
 				if (list != null) {
-					for (Iterator<String> iterator2 = list.iterator(); iterator2.hasNext();) {
-						String value = iterator2.next();
+					for (String value : list) {
 						if (StringUtils.isNotEmpty(value)) {
 							attribute.add(value);
 						}
@@ -201,8 +192,7 @@ public class DataModel implements Serializable {
 	public Map<DynamicAttribute, Object> getNonMandatoryAttributes(DynamicObject dynamicObject) {
 		Map<DynamicAttribute, Object> map = new HashMap<DynamicAttribute, Object>();
 		// single attributes (except namingAttribute)
-		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
-			DynamicAttribute dynAttribute = iterator.next();
+		for (DynamicAttribute dynAttribute : getAttributes().values()) {
 			if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple()
 					&& !dynAttribute.isReadonly() && !dynAttribute.isMandatory()) {
 				String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
@@ -213,8 +203,7 @@ public class DataModel implements Serializable {
 		}
 		
 		// multi attributes
-		for (Iterator<DynamicAttribute> iterator = getAttributes().values().iterator(); iterator.hasNext();) {
-			DynamicAttribute dynAttribute = iterator.next();
+		for (DynamicAttribute dynAttribute : getAttributes().values()) {
 			if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()
 					&& !dynAttribute.isMandatory()) {
 				@SuppressWarnings("unchecked")
@@ -253,8 +242,8 @@ public class DataModel implements Serializable {
 		}
 	}
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
-		for (Iterator<DynamicAttribute> iterator = this.attributes.values().iterator(); iterator.hasNext();) {
-			iterator.next().init(context, dynamicObject, rs);
+		for (DynamicAttribute dynamicAttribute : this.attributes.values()) {
+			dynamicAttribute.init(context, dynamicObject, rs);
 		}
 	}
 	public boolean isComplete(DynamicObject dynamicObject) {
@@ -263,8 +252,7 @@ public class DataModel implements Serializable {
 		complete &= dynamicObject.attributeIsNotEmpty(getNamingAttribute());
 		
 		// check mandatory attributes
-		for (Iterator<DynamicAttribute> iterator = getMandatoryAttributes().iterator(); iterator.hasNext();) {
-			DynamicAttribute dynAttribute = iterator.next();
+		for (DynamicAttribute dynAttribute : getMandatoryAttributes()) {
 			complete &= dynamicObject.attributeIsNotEmpty(dynAttribute.getName());
 		}
 		

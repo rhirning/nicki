@@ -33,7 +33,6 @@
 package org.mgnl.nicki.vaadin.base.fields;
 
 import java.io.Serializable;
-import java.util.Iterator;
 
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
@@ -79,8 +78,7 @@ public class AttributeSelectObjectField extends BaseDynamicAttributeField implem
 		Container container = new IndexedContainer();
 		container.addContainerProperty("name", String.class, null);
 		container.addContainerProperty("dynamicObject", DynamicObject.class, null);
-		for (Iterator<? extends DynamicObject> iterator = dynamicAttribute.getOptions(dynamicObject).iterator(); iterator.hasNext();) {
-			DynamicObject option = iterator.next();
+		for (DynamicObject option : dynamicAttribute.getOptions(dynamicObject)) {
 			Item item = container.addItem(option.getPath());
 			item.getItemProperty("dynamicObject").setValue(option);
 			item.getItemProperty("name").setValue(option.getDisplayName());

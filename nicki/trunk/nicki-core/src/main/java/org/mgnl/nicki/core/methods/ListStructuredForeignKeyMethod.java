@@ -33,7 +33,6 @@
 package org.mgnl.nicki.core.methods;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -55,8 +54,8 @@ public class ListStructuredForeignKeyMethod extends ListForeignKeyMethod {
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (getObjects() == null) {
 			setObjects(new ArrayList<DynamicObject>());
-			for (Iterator<Object> iterator = this.getForeignKeys().iterator(); iterator.hasNext();) {
-				String structuredForeignKey = (String) iterator.next();
+			for (Object key : this.getForeignKeys()) {
+				String structuredForeignKey = (String) key;
 				String path = StringUtils.substringBefore(structuredForeignKey, "#");
 				String rest = StringUtils.substringAfter(structuredForeignKey, "#");
 				String flag = StringUtils.substringBefore(rest, "#");

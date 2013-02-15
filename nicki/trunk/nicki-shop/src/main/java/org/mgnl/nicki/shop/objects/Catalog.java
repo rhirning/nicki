@@ -34,7 +34,6 @@ package org.mgnl.nicki.shop.objects;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -96,9 +95,7 @@ public class Catalog extends BaseDynamicObject {
 	private List<CatalogArticle> getArticles() {
 		if (articles == null) {
 			articles = new ArrayList<CatalogArticle>();
-			for (Iterator<CatalogPage> iterator = getPages().iterator(); iterator
-					.hasNext();) {
-				CatalogPage page= iterator.next();
+			for (CatalogPage page : getPages()) {
 				articles.addAll(page.getAllArticles()); 
 			}
 		}
@@ -143,8 +140,7 @@ public class Catalog extends BaseDynamicObject {
 
 	public List<CatalogArticle> getArticlesForPath(String path) {
 		List<CatalogArticle> catalogArticles = new ArrayList<CatalogArticle>();
-		for (Iterator<CatalogArticle> iterator = getAllArticles().iterator(); iterator.hasNext();) {
-			CatalogArticle article = iterator.next();
+		for (CatalogArticle article : getAllArticles()) {
 			if (StringUtils.equalsIgnoreCase(article.getArticlePath(), path)) {
 				catalogArticles.add(article);
 			}
@@ -168,8 +164,7 @@ public class Catalog extends BaseDynamicObject {
 	
 	public List<CatalogArticle> getAllArticles(Person person) {
 		List<CatalogArticle> catalogArticles = new ArrayList<CatalogArticle>();
-		for (Iterator<CatalogArticle> iterator = getAllArticles().iterator(); iterator.hasNext();) {
-			CatalogArticle catalogArticle = iterator.next();
+		for (CatalogArticle catalogArticle : getAllArticles()) {
 			if (hasArticle(person, catalogArticle)) {
 				catalogArticles.add(catalogArticle);
 			}
@@ -179,8 +174,7 @@ public class Catalog extends BaseDynamicObject {
 
 	public List<CatalogArticle> getAllArticles() {
 		List<CatalogArticle> catalogArticles = new ArrayList<CatalogArticle>();
-		for (Iterator<CatalogArticle> iterator = getArticles().iterator(); iterator.hasNext();) {
-			CatalogArticle catalogArticle = iterator.next();
+		for (CatalogArticle catalogArticle : getArticles()) {
 			catalogArticles.add(catalogArticle);
 		}
 		return catalogArticles;

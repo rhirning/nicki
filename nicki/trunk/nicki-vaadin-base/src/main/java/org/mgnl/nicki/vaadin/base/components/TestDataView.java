@@ -34,7 +34,6 @@ package org.mgnl.nicki.vaadin.base.components;
 
 
 import java.io.Serializable;
-import java.util.Iterator;
 import java.util.Map;
 
 import org.mgnl.nicki.core.i18n.I18n;
@@ -89,8 +88,7 @@ public class TestDataView extends CustomComponent {
 		listener = new TestDataValueChangeListener(dataContainer, testData, SEPARATOR);
 		@SuppressWarnings("unchecked")
 		Map<String, String> values = (Map<String, String>) data.getValue();
-		for (Iterator<String> iterator = values.keySet().iterator(); iterator.hasNext();) {
-			String name = iterator.next();
+		for (String name : values.keySet()) {
 			addField(name, values.get(name));
 		}
 		newButton.addListener(new Button.ClickListener() {

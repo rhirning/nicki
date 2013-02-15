@@ -35,7 +35,6 @@ package org.mgnl.nicki.core.objects;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -129,8 +128,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		List<T> objects = new ArrayList<T>();
 		@SuppressWarnings("unchecked")
 		List<String> foreignKeys = (List<String>) get(key);
-		for (Iterator<String> iterator = foreignKeys.iterator(); iterator.hasNext();) {
-			String path = (String) iterator.next();
+		for (String path : foreignKeys) {
 			DynamicObject object = context.loadObject(classDefinition, path);
 			if (object != null) {
 				objects.add(context.loadObject(classDefinition, path));
@@ -141,22 +139,6 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return objects;
 	}
 	
-	/*
-	public List<DynamicObject> getChildren(String key) {
-		loadChildren();
-		return childObjects.get(key);
-	}
-	*/
-	/*
-	public List<DynamicObject> getAllChildren() {
-		loadChildren();
-		List<DynamicObject> list = new ArrayList<DynamicObject>();
-		for (Iterator<String> iterator = childObjects.keySet().iterator(); iterator.hasNext();) {
-			list.addAll(getChildren(iterator.next()));
-		}
-		return list;
-	}
-*/
 	public <T extends DynamicObject> List<T>  getChildren(Class<T> classDefinition) {
 		init();
 		return getContext().loadChildObjects(classDefinition, this, "");
@@ -347,8 +329,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	}
 
 	public void merge(Map<DynamicAttribute, Object> changeAttributes) {
-		for (Iterator<DynamicAttribute> iterator = changeAttributes.keySet().iterator(); iterator.hasNext();) {
-			DynamicAttribute dynamicAttribute = iterator.next();
+		for (DynamicAttribute dynamicAttribute : changeAttributes.keySet()) {
 			put(dynamicAttribute.getName(), changeAttributes.get(dynamicAttribute));
 		}
 	};
@@ -461,8 +442,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		init();
 		if (getChildObjects() == null) {
 			initChildren();
-			for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
-				String key = iterator.next();
+			for (String key : getModel().getChildren().keySet()) {
 				Class<? extends DynamicObject> filter = getModel().getChildren().get(key);
 				@SuppressWarnings("unchecked")
 				List<DynamicObject> list = (List<DynamicObject>) getContext().loadChildObjects(getPath(), filter);
@@ -485,8 +465,8 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	public List<? extends DynamicObject> getAllChildren() {
 		loadChildren();
 		List<DynamicObject> list = new ArrayList<DynamicObject>();
-		for (Iterator<String> iterator = childObjects.keySet().iterator(); iterator.hasNext();) {
-			list.addAll(getChildren(iterator.next()));
+		for (String key : childObjects.keySet()) {
+			list.addAll(getChildren(key));
 		}
 		return list;
 	}
@@ -512,8 +492,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		this.getModel().init(getContext(), this, rs);
 		setOriginal((DynamicObject) this.clone());
 
-		for (Iterator<String> iterator = getModel().getChildren().keySet().iterator(); iterator.hasNext();) {
-			String key = iterator.next();
+		for (String key : getModel().getChildren().keySet()) {
 			Class<? extends DynamicObject> filter = getModel().getChildren().get(key);
 			put(DynamicAttribute.getGetter(key), new ChildrenMethod(getContext(), rs, filter));
 		}

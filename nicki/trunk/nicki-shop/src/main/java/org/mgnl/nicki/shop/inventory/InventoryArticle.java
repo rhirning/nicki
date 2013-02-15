@@ -35,7 +35,6 @@ package org.mgnl.nicki.shop.inventory;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -77,8 +76,7 @@ public class InventoryArticle implements Serializable{
 	}
 
 	private void addEmptyAttributes() {
-		for (Iterator<CatalogArticleAttribute> iterator = getArticle().getAllAttributes().iterator(); iterator.hasNext();) {
-			CatalogArticleAttribute attribute =  iterator.next();
+		for (CatalogArticleAttribute attribute : getArticle().getAllAttributes()) {
 			this.attributes.put(attribute.getName(), new InventoryAttribute(getArticle(), attribute, ""));
 		}
 	}
@@ -88,8 +86,7 @@ public class InventoryArticle implements Serializable{
 		this.catalogArticle = catalogArticle;
 		addEmptyAttributes();
 		if (attributes != null) {
-			for (Iterator<InventoryAttribute> iterator = attributes.iterator(); iterator.hasNext();) {
-				InventoryAttribute attribute = iterator.next();
+			for (InventoryAttribute attribute : attributes) {
 				this.attributes.put(attribute.getName(), attribute);
 			}
 		}
@@ -106,8 +103,7 @@ public class InventoryArticle implements Serializable{
 		this.setSpecifier(specifier);
 		addEmptyAttributes();
 		if (attributes != null) {
-			for (Iterator<InventoryAttribute> iterator = attributes.iterator(); iterator.hasNext();) {
-				InventoryAttribute attribute = iterator.next();
+			for (InventoryAttribute attribute : attributes) {
 				this.attributes.put(attribute.getName(), attribute);
 			}
 		}
@@ -125,8 +121,7 @@ public class InventoryArticle implements Serializable{
 		this.setSpecifier(assignedArticle.getSpecifier());
 		addEmptyAttributes();
 		if (attributes != null) {
-			for (Iterator<InventoryAttribute> iterator = attributes.iterator(); iterator.hasNext();) {
-				InventoryAttribute attribute = iterator.next();
+			for (InventoryAttribute attribute : attributes) {
 				this.attributes.put(attribute.getName(), attribute);
 			}
 		}
@@ -161,8 +156,8 @@ public class InventoryArticle implements Serializable{
 		sb.append(" start=").append(start);
 		sb.append(" end=").append(end);
 		sb.append(" status=").append(getStatus()).append("]");
-		for (Iterator<String> iterator = attributes.keySet().iterator(); iterator.hasNext();) {
-			sb.append("\n").append(attributes.get(iterator.next()).toString());
+		for (String key : attributes.keySet()) {
+			sb.append("\n").append(attributes.get(key).toString());
 		}
 		return sb.toString();
 	}

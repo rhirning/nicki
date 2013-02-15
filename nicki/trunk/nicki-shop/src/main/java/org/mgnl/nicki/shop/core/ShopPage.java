@@ -34,7 +34,6 @@ package org.mgnl.nicki.shop.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -78,16 +77,14 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 			@SuppressWarnings("unchecked")
 			List<Element> pages = pageElement.getChildren("page");
 			if (pages != null && pages.size() > 0) {
-				for (Iterator<Element> iterator = pages.iterator(); iterator.hasNext();) {
-					Element pElement = iterator.next();
+				for (Element pElement : pages) {
 					this.pageList.add(new ShopPage(shop, pElement));
 				}
 			}
 			@SuppressWarnings("unchecked")
 			List<Element> articles = pageElement.getChildren("article");
 			if (articles != null && articles.size() > 0) {
-				for (Iterator<Element> iterator = articles.iterator(); iterator.hasNext();) {
-					Element articleElement = iterator.next();
+				for (Element articleElement : articles) {
 					String catalogArticleId = articleElement.getAttributeValue("article");
 					if (StringUtils.isNotEmpty(catalogArticleId)) {
 						CatalogArticle article = this.shop.getArticle(catalogArticleId);
@@ -104,8 +101,7 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 			@SuppressWarnings("unchecked")
 			List<Element> articles = pageElement.getChildren("article");
 			if (articles != null && articles.size() > 0) {
-				for (Iterator<Element> iterator = articles.iterator(); iterator.hasNext();) {
-					Element articleElement = iterator.next();
+				for (Element articleElement : articles) {
 					String catalogArticleId = articleElement.getAttributeValue("article");
 					if (StringUtils.isNotEmpty(catalogArticleId)) {
 						CatalogArticle article = this.shop.getArticle(catalogArticleId);
@@ -215,20 +211,17 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 		sb.append("' renderer='").append(getRenderer());
 		sb.append("']\n");
 		if (hasPages()) {
-			for (Iterator<ShopPage> iterator = pageList.iterator(); iterator.hasNext();) {
-				ShopPage page = iterator.next();
+			for (ShopPage page : pageList) {
 				sb.append(page.toString()).append("\n");
 			}
 		}
 		if (hasArticles()) {
-			for (Iterator<CatalogArticle> iterator = articleList.iterator(); iterator.hasNext();) {
-				CatalogArticle article = iterator.next();
+			for (CatalogArticle article : articleList) {
 				sb.append(article.toString()).append("\n");
 			}
 		}
 		if (hasAttributes()) {
-			for (Iterator<CatalogArticleAttribute> iterator = attributeList.iterator(); iterator.hasNext();) {
-				CatalogArticleAttribute attribute = iterator.next();
+			for (CatalogArticleAttribute attribute : attributeList) {
 				sb.append(attribute.toString()).append("\n");
 			}
 		}
@@ -241,8 +234,7 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 			articles.addAll(articleList);
 		}
 		if (hasPages()) {
-			for (Iterator<ShopPage> iterator = pageList.iterator(); iterator.hasNext();) {
-				ShopPage page = iterator.next();
+			for (ShopPage page : pageList) {
 				articles.addAll(page.getArticles());
 			}
 		}

@@ -34,7 +34,6 @@ package org.mgnl.nicki.core.util;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -67,8 +66,7 @@ public class XMLBuilder {
 
 	private void addChildren(Element parentNode, DynamicObject parent) {
 		List<? extends DynamicObject> children = parent.getAllChildren();
-		for (Iterator<? extends DynamicObject> iterator = children.iterator(); iterator.hasNext();) {
-			DynamicObject child = iterator.next();
+		for (DynamicObject child : children) {
 			Element childNode = getElement(child);
 			parentNode.addContent(childNode);
 			addChildren(childNode, child);
@@ -83,8 +81,7 @@ public class XMLBuilder {
 		}
 		newNode.setAttribute("path", nodePath);
 		newNode.setAttribute("class", dynamicObject.getClass().getName());
-		for (Iterator<String> iterator = dynamicObject.getModel().getAttributes().keySet().iterator(); iterator.hasNext();) {
-			String attributeName = iterator.next();
+		for (String attributeName : dynamicObject.getModel().getAttributes().keySet()) {
 			DynamicAttribute dynamicAttribute = dynamicObject.getModel().getDynamicAttribute(attributeName);
 			if (!dynamicAttribute.isVirtual() && dynamicObject.get(attributeName) != null) {
 				Element attributeNode = new Element("attribute");
@@ -97,9 +94,8 @@ public class XMLBuilder {
 						newNode.addContent(attributeNode);
 						Element valuesNode = new Element("values");
 						attributeNode.addContent(valuesNode);
-						for (Iterator<Object> iterator2 = values.iterator(); iterator2
-								.hasNext();) {
-							String value =  (String) iterator2.next();
+						for (Object objectValue : values) {
+							String value =  (String) objectValue;
 							Element valueNode = new Element("value");
 							if (dynamicAttribute.isForeignKey()) {
 								if (StringUtils.endsWith(value, this.path)) {

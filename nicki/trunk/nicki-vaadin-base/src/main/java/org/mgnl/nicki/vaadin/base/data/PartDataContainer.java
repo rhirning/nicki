@@ -33,7 +33,6 @@
 package org.mgnl.nicki.vaadin.base.data;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -55,8 +54,7 @@ public class PartDataContainer extends AttributeDataContainer implements DataCon
 	public String getValue() {
 		@SuppressWarnings("unchecked")
 		List<String> list = (List<String>) getDynamicObject().get(getAttributeName());
-		for (Iterator<String> iterator = list.iterator(); iterator.hasNext();) {
-			String value = iterator.next();
+		for (String value : list) {
 			String name = StringUtils.substringBefore(value, this.separator);
 			if (StringUtils.equals(name, this.name)) {
 				String data = StringUtils.substringAfter(value, this.separator);
@@ -72,15 +70,13 @@ public class PartDataContainer extends AttributeDataContainer implements DataCon
 		@SuppressWarnings("unchecked")
 		List<String> list = (List<String>) getDynamicObject().get(getAttributeName());
 		List<String> remover = new ArrayList<String>();
-		for (Iterator<String> iterator = list.iterator(); iterator.hasNext();) {
-			String oldValue = iterator.next();
+		for (String oldValue : list) {
 			String name = StringUtils.substringBefore(oldValue, "=");
 			if (StringUtils.equals(name, this.name)) {
 				remover.add(oldValue);
 			}
 		}
-		for (Iterator<String> iterator = remover.iterator(); iterator.hasNext();) {
-			String toBeRemoved = iterator.next();
+		for (String toBeRemoved : remover) {
 			list.remove(toBeRemoved);			
 		}
 		if (StringUtils.isNotEmpty(value)) {

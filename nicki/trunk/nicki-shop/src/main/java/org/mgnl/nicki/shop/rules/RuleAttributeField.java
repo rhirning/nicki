@@ -34,7 +34,6 @@ package org.mgnl.nicki.shop.rules;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.core.i18n.I18n;
@@ -80,8 +79,8 @@ public class RuleAttributeField extends BaseDynamicAttributeField implements Dyn
 		
 		@SuppressWarnings("unchecked")
 		List<Object> values = (List<Object>) dynamicObject.get(attributeName);
-		for (Iterator<Object> iterator = values.iterator(); iterator.hasNext();) {
-			String value = (String) iterator.next();
+		for (Object valueObject : values) {
+			String value = (String) valueObject;
 			addItem(value);
 		}
 		newEntryButton.addListener(new Button.ClickListener() {

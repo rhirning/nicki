@@ -34,7 +34,6 @@ package org.mgnl.nicki.core.config;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -74,9 +73,7 @@ public class Config {
 		if (mainConfig != null) {
 			String configList = mainConfig.getProperty(CONFIG_BASE, null);
 			if (configList != null) {
-				for (Iterator<String> iterator = DataHelper.getList(configList, SEPARATOR).iterator(); iterator
-						.hasNext();) {
-					String configName = iterator.next();
+				for(String configName : DataHelper.getList(configList, SEPARATOR)) {
 					String configPath = mainConfig.getProperty(CONFIG_BASE + "." + configName, null);
 					if (StringUtils.isNotEmpty(configPath)) {
 						instance.addProperties(configPath);
@@ -110,9 +107,7 @@ public class Config {
 		if (mainConfig != null) {
 			String messageBaseList = mainConfig.getProperty(I18N_BASE, null);
 			if (messageBaseList != null) {
-				for (Iterator<String> iterator = DataHelper.getList(messageBaseList, SEPARATOR).iterator(); iterator
-						.hasNext();) {
-					String name = iterator.next();
+				for (String name : DataHelper.getList(messageBaseList, SEPARATOR)) {
 					String messageBase = mainConfig.getProperty(I18N_BASE + "." + name, null);
 					if (StringUtils.isNotEmpty(messageBase)) {
 						try {
@@ -140,8 +135,7 @@ public class Config {
 	}
 	
 	private String _getProperty(String key) {
-		for (Iterator<Properties> iterator = this.properties.iterator(); iterator.hasNext();) {
-			Properties props = iterator.next();
+		for (Properties props : this.properties) {
 			String value = props.getProperty(key);
 			if (value != null) {
 				return DataHelper.getPassword(value);
@@ -152,8 +146,7 @@ public class Config {
 
 	private void addOpenProperties() {
 		List<String> toRemove = new ArrayList<String>();
-		for (Iterator<String> iterator = this.openProperties.iterator(); iterator.hasNext();) {
-			String configPath = iterator.next();
+		for (String configPath : this.openProperties) {
 			try {
 				Properties props = getPropertiesFromClasspath(configPath);
 				if (props != null && props.size() > 0) {
@@ -164,8 +157,8 @@ public class Config {
 			} catch (Exception e) {
 			}
 		}
-		for (Iterator<String> iterator = toRemove.iterator(); iterator.hasNext();) {
-			this.openProperties.remove(iterator.next());
+		for (String name : toRemove) {
+			this.openProperties.remove(name);
 		}
 	}
 
@@ -185,8 +178,8 @@ public class Config {
 	}
 
 	private void configChanged() {
-		for (Iterator<ConfigListener> iterator = this.configListener.iterator(); iterator.hasNext();) {
-			iterator.next().configChanged();
+		for (ConfigListener listener :  this.configListener) {
+			listener.configChanged();
 		}
 	}
 

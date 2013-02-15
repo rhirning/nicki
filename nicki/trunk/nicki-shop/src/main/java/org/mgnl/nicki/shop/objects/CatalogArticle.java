@@ -35,7 +35,6 @@ package org.mgnl.nicki.shop.objects;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -107,8 +106,7 @@ public class CatalogArticle extends BaseDynamicObject {
 				@SuppressWarnings("unchecked")
 				List<Element> attrs = document.getRootElement().getChildren("attribute");
 				if (attrs != null) {
-					for (Iterator<Element> iterator = attrs.iterator(); iterator.hasNext();) {
-						Element attributeElement = iterator.next();
+					for (Element attributeElement : attrs) {
 						map.put(attributeElement.getAttributeValue("name"), new CatalogArticleAttribute(attributeElement));
 					}
 				}
@@ -128,8 +126,7 @@ public class CatalogArticle extends BaseDynamicObject {
 				@SuppressWarnings("unchecked")
 				List<Element> attrs = document.getRootElement().getChildren("attribute");
 				if (attrs != null) {
-					for (Iterator<Element> iterator = attrs.iterator(); iterator.hasNext();) {
-						Element attributeElement = iterator.next();
+					for (Element attributeElement : attrs) {
 						list.add(new CatalogArticleAttribute(attributeElement));
 					}
 				}
@@ -165,8 +162,8 @@ public class CatalogArticle extends BaseDynamicObject {
 		sb.append("' displayName='").append(getDisplayName());
 		sb.append("']\n");
 		if (hasAttributes()) {
-			for (Iterator<CatalogArticleAttribute> iterator = getAllAttributes().iterator(); iterator.hasNext();) {
-				sb.append(iterator.next().toString());
+			for (CatalogArticleAttribute catalogArticleAttribute : getAllAttributes()) {
+				sb.append(catalogArticleAttribute.toString());
 			}
 		}
 		return sb.toString();
