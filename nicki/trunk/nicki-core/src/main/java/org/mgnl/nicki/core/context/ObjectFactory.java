@@ -50,7 +50,7 @@ public interface ObjectFactory {
 	
 	DynamicObject getDynamicObject(String className) throws InstantiateDynamicObjectException;
 
-	String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException;
+	String getObjectClassFilter(NickiContext nickiContext, Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException;
 
 	<T extends DynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) throws InstantiateDynamicObjectException;
 

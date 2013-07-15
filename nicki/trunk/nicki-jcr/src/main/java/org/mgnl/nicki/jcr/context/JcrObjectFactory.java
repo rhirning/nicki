@@ -39,6 +39,7 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.ObjectFactory;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
@@ -117,9 +118,9 @@ public class JcrObjectFactory implements ObjectFactory {
 		throw new InstantiateDynamicObjectException("Could not getObject " + path);
 	}
 
-	public String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
+	public String getObjectClassFilter(NickiContext nickiContext, Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
 		DynamicObject dynamicObject = target.getDynamicObject(classDefinition);
-		return dynamicObject.getObjectClassFilter();
+		return dynamicObject.getObjectClassFilter(nickiContext);
 	}
 
 	@SuppressWarnings("unchecked")

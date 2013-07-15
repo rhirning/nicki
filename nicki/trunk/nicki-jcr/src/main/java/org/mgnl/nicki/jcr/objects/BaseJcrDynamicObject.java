@@ -100,7 +100,7 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 
 
 	@Override
-	public String getObjectClassFilter() {
+	public String getObjectClassFilter(NickiContext nickiContext) {
 		// TODO Auto-generated method stub
 		return null;
 	}

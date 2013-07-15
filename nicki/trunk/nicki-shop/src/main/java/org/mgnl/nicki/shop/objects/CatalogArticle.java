@@ -62,19 +62,19 @@ public class CatalogArticle extends BaseDynamicObject {
 	public static final String CAPTION_END = "nicki.rights.attribute.dateTo.label";
 
 	@DynamicAttribute(externalName="cn", naming=true)
-	private String name;
+	public String name;
 	@DynamicAttribute(externalName="displayName")
-	private String displayName;
+	public String displayName;
 	@DynamicAttribute(externalName="nickiDescription")
-	private TextArea description;
+	public TextArea description;
 	@DynamicAttribute(externalName="nickiApproval")
-	private String approval;
+	public String approval;
 	@DynamicAttribute(externalName="nickiCategory")
-	private String[] category;
+	public String[] category;
 	@DynamicAttribute(externalName="nickiRule", editorClass="org.mgnl.nicki.shop.rules.RuleAttributeField")
-	private String[] rule;
+	public String[] rule;
 	@DynamicAttribute(externalName="nickiAttributes")
-	private TextArea attributes;
+	public TextArea attributesField;
 
 	public boolean hasArticle(Person person, CatalogArticle article) {
 		for (InventoryArticle inventoryArticle : getInventoryArticles(person)) {
@@ -95,6 +95,14 @@ public class CatalogArticle extends BaseDynamicObject {
 	
 	public void setAttributes(List<CatalogArticleAttribute> attributes) {
 		put("attribute", attributes);
+	}
+	
+	public void setAttributesField(String attributes) {
+		put("attributes", attributes);
+	}
+	
+	public String getAttributesField() {
+		return getAttribute("attributes");
 	}
 
 	public Map<String, CatalogArticleAttribute> getAttributeMap() {
@@ -247,5 +255,10 @@ public class CatalogArticle extends BaseDynamicObject {
 			}
 		}
 		return attributes;
+	}
+
+	public void setDescription(String description) {
+
+		put("description", description);
 	}
 }

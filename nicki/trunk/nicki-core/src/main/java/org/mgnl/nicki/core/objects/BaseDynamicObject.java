@@ -527,8 +527,8 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	}
 
 	@Override
-	public String getObjectClassFilter() {
-		return getContext().getAdapter().getObjectClassFilter(this);
+	public String getObjectClassFilter(NickiContext nickiContext) {
+		return nickiContext.getAdapter().getObjectClassFilter(this);
 	}
 
 

@@ -42,7 +42,7 @@ import org.mgnl.nicki.core.annotation.ObjectClass;
 public class Entitlement extends DynamicStructObject {
 	
 	@DynamicAttribute(externalName="cn", naming=true)
-	private String name;
+	public String name;
 	
 	public String getSource() {
 		return getInfo("/ref/src");
