@@ -76,9 +76,8 @@ public class JndiSearchResult implements ContextSearchResult {
 			for (NamingEnumeration<?> iterator = rs.getAttributes().get(name).getAll(); iterator.hasMoreElements();) {
 				list.add(iterator.next());
 			}
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			// nothing to do
 		}
 		return list;
 	}

@@ -77,7 +77,7 @@ public abstract class BasicJcrContext extends BasicContext implements NickiConte
 	}
 	
 	public String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
-		return getJcrObjectFactory().getObjectClassFilter(classDefinition);
+		return getJcrObjectFactory().getObjectClassFilter(this, classDefinition);
 	}
 
 

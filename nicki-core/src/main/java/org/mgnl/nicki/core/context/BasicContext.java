@@ -46,6 +46,7 @@ public abstract class BasicContext implements NickiContext {
 	private Target target = null;
 	private NickiPrincipal principal;
 	private DynamicObject user;
+	private DynamicObject principalUser;
 	private READONLY readonly;
 	private DynamicObjectAdapter adapter; 
 
@@ -72,8 +73,8 @@ public abstract class BasicContext implements NickiContext {
 		return target;
 	}
 	
-	public String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
-		return getObjectFactory().getObjectClassFilter(classDefinition);
+	public String getObjectClassFilter(NickiContext nickiContext, Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
+		return getObjectFactory().getObjectClassFilter(nickiContext, classDefinition);
 	}
 
 	public NickiPrincipal getPrincipal() throws DynamicObjectException {
@@ -90,6 +91,9 @@ public abstract class BasicContext implements NickiContext {
 
 	public void setUser(DynamicObject user) {
 		this.user = user;
+		if (this.principalUser == null) {
+			this.principalUser = user;
+		}
 	}
 
 	public boolean isReadonly() {
@@ -106,6 +110,17 @@ public abstract class BasicContext implements NickiContext {
 
 	public void setAdapter(DynamicObjectAdapter adapter) {
 		this.adapter = adapter;
+	}
+
+	public DynamicObject getPrincipalUser() {
+		return principalUser;
+	}
+
+	public void setPrincipalUser(DynamicObject principalUser) {
+		this.principalUser = principalUser;
+		if (principalUser == null) {
+			this.principalUser = this.user;
+		}
 	}
 	
 }

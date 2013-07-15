@@ -45,12 +45,12 @@ import org.mgnl.nicki.core.objects.BaseDynamicObject;
 @ObjectClass("nrfResourceAssociation")
 public class ResourceAssociation extends BaseDynamicObject {
 	@DynamicAttribute(externalName="cn", naming=true)
-	private String name;
+	public String name;
 	@DynamicReferenceAttribute(externalName="nrfResource", foreignKey=Resource.class, reference=Resource.class,
 			baseProperty="nicki.system.basedn")
-	private String resource;
+	public String resource;
 	@StructuredDynamicAttribute(externalName="nrfDynamicParmVals")
-	private String paramVal;
+	public String paramVal;
 		
 	public String toString() {
 		return getAttribute("name");

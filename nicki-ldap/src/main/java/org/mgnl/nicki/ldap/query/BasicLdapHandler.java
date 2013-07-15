@@ -77,7 +77,7 @@ public abstract class BasicLdapHandler implements QueryHandler {
 			}
 		} else {
 			try {
-				LdapHelper.addQuery(sb, getContext().getObjectClassFilter(getClassDefinition()), LOGIC.AND);
+				LdapHelper.addQuery(sb, getContext().getObjectClassFilter(getContext(), getClassDefinition()), LOGIC.AND);
 			} catch (InstantiateDynamicObjectException e) {
 				e.printStackTrace();
 			}

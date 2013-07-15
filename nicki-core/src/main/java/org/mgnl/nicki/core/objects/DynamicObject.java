@@ -182,7 +182,7 @@ public interface DynamicObject {
 	
 	boolean isAnnotated();
 	
-	String getObjectClassFilter();
+	String getObjectClassFilter(NickiContext nickiContext);
 
 	void init(ContextSearchResult rs) throws DynamicObjectException;
 

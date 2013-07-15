@@ -103,9 +103,9 @@ public class TargetObjectFactory implements ObjectFactory {
 		throw new InstantiateDynamicObjectException("Could not getObject " + dn);
 	}
 
-	public String getObjectClassFilter(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
+	public String getObjectClassFilter(NickiContext nickiContext, Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
 		DynamicObject dynamicObject = target.getDynamicObject(classDefinition);
-		return dynamicObject.getObjectClassFilter();
+		return dynamicObject.getObjectClassFilter(nickiContext);
 	}
 
 	public String getNamingLdapAttribute(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {

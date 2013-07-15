@@ -47,17 +47,17 @@ public class Resource extends DynamicStructObject {
 	private static final long serialVersionUID = 3550648745922369437L;
 	
 	@DynamicAttribute(externalName="cn", naming=true)
-	private String name;
+	public String name;
 	@StructuredDynamicAttribute(externalName="nrfEntitlementRef", foreignKey=Entitlement.class)
-	private String entitlement;
+	public String entitlement;
 	@StructuredDynamicAttribute(externalName="nrfApprovers", foreignKey=Person.class)
-	private String[] approver;
+	public String[] approver;
 	@StructuredDynamicAttribute(externalName="nrfRevokeApprovers", foreignKey=Person.class)
-	private String[] revokeApprover;
+	public String[] revokeApprover;
 	@DynamicAttribute(externalName="nrfLocalizedNames")
-	private String localizedName;
+	public String localizedName;
 	@DynamicAttribute(externalName="nrfLocalizedDescrs")
-	private String localizedDescription;
+	public String localizedDescription;
 	
 	public Entitlement getEntitlement() throws DynamicObjectException {
 		try {

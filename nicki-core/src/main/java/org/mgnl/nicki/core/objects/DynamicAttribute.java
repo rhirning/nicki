@@ -33,10 +33,11 @@
 package org.mgnl.nicki.core.objects;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.OctetString;
@@ -142,10 +143,14 @@ public class DynamicAttribute implements Serializable {
 
 	}
 
-	private void setPropertyValue(Class<?> clazz, Object object, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+	private void setPropertyValue(Class<?> clazz, DynamicObject object, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
+		//object.put(name, value);
+		BeanUtils.setProperty(object, name, value);
+		/*
 		Field field = clazz.getField(name);
 		field.setAccessible(true);
 		field.set(object, value);
+		*/
 	}
 
 	public static String getGetter(String name) {
@@ -154,6 +159,14 @@ public class DynamicAttribute implements Serializable {
 
 	public static String getMultipleGetter(String name) {
 		return "get" + StringUtils.capitalize(name) + "s";
+	}
+
+	public static String getSetter(String name) {
+		return "set" + StringUtils.capitalize(name);
+	}
+
+	public static String getsultipleGetter(String name) {
+		return "set" + StringUtils.capitalize(name) + "s";
 	}
 
 	public Class<?> getAttributeClass() {
@@ -244,4 +257,11 @@ public class DynamicAttribute implements Serializable {
 	public String getEditorClass() {
 		return editorClass;
 	}
+
+	@Override
+	public String toString() {
+		return name + "(" + ldapName + ")";
+	}
+	
+	
 }

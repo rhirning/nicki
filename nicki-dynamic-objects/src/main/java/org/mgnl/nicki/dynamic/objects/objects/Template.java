@@ -53,25 +53,25 @@ public class Template extends BaseDynamicObject {
 	public static final String ATTRIBUTE_TESTDATA = "testData";
 	
 	@DynamicAttribute(naming=true, externalName="ou")
-	private String name;
+	public String name;
 	
 	@DynamicAttribute(externalName="nickiTemplateData")
-	private String data;
+	public String data;
 
 	@DynamicAttribute(externalName="nickiTemplateParams")
-	private String params;
+	public String params;
 
 	@DynamicAttribute(externalName="nickiHandler")
-	private String handler;
+	public String handler;
 
 	@DynamicAttribute(externalName="nickiTemplatePart")
-	private String[] parts;
+	public String[] parts;
 
 	@DynamicAttribute(externalName="nickiFilter")
-	private String[] filter;
+	public String[] filter;
 
 	@DynamicAttribute(externalName="nickiStructuredRef")
-	private String[] testData;
+	public String[] testData;
 	
 	public String getData() {
 		return getAttribute(ATTRIBUTE_DATA);

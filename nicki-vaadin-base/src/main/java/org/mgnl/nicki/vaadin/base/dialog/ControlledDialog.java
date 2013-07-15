@@ -1,6 +1,8 @@
 package org.mgnl.nicki.vaadin.base.dialog;
 
-public interface ControlledDialog {
+import com.vaadin.ui.Component;
+
+public interface ControlledDialog extends Component {
 	boolean validate();
 	void save();
 	boolean hasChanges();
