@@ -64,6 +64,8 @@ public class DynamicReference extends DynamicAttribute implements Serializable {
 	@Override
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
 		dynamicObject.put(getGetter(getName()), new ReferenceMethod(context, rs, this));
+		String value = (String) rs.getValue(getExternalName());
+		dynamicObject.put(getName(), value);
 	}
 	public Class<? extends DynamicObject> getClassDefinition() {
 		return classDefinition;

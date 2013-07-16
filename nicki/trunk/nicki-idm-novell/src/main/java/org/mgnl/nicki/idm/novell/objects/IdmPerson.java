@@ -447,4 +447,12 @@ public class IdmPerson extends Person implements Serializable {
 			return type;
 		}
 	}
+
+	public Person getManager() {
+		return getForeignKeyObject(Person.class, ATTRIBUTE_MANAGER);
+	}
+
+	public void setManager(IdmPerson manager) {
+		put(ATTRIBUTE_MANAGER, manager.getId());
+	}
 }
