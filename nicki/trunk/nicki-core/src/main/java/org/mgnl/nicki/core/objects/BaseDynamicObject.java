@@ -144,7 +144,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return getContext().loadChildObjects(classDefinition, this, "");
 	}
 
-	public void addChild(String attribute, Class<? extends DynamicObject> filter) {
+	public void addChild(String attribute, ChildFilter filter) {
 		getModel().addChild(attribute, filter);
 	}
 	
@@ -443,7 +443,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		if (getChildObjects() == null) {
 			initChildren();
 			for (String key : getModel().getChildren().keySet()) {
-				Class<? extends DynamicObject> filter = getModel().getChildren().get(key);
+				ChildFilter filter = getModel().getChildren().get(key);
 				@SuppressWarnings("unchecked")
 				List<DynamicObject> list = (List<DynamicObject>) getContext().loadChildObjects(getPath(), filter);
 				if (list != null) {
@@ -493,7 +493,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		setOriginal((DynamicObject) this.clone());
 
 		for (String key : getModel().getChildren().keySet()) {
-			Class<? extends DynamicObject> filter = getModel().getChildren().get(key);
+			ChildFilter filter = getModel().getChildren().get(key);
 			put(DynamicAttribute.getGetter(key), new ChildrenMethod(getContext(), rs, filter));
 		}
 	}

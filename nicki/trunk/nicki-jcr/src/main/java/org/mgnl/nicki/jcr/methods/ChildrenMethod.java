@@ -40,6 +40,7 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
 import freemarker.template.TemplateMethodModel;
@@ -49,10 +50,10 @@ public class ChildrenMethod implements Serializable, TemplateMethodModel {
 	private static final long serialVersionUID = -81535049844368520L;
 	private List<? extends DynamicObject> objects = null;
 	private String parent;
-	private Class<? extends DynamicObject> filter;
+	private ChildFilter filter;
 	private NickiContext context;
 	
-	public ChildrenMethod(NickiContext context, Node node, Class<? extends DynamicObject> filter) {
+	public ChildrenMethod(NickiContext context, Node node, ChildFilter filter) {
 		this.context = context;
 		try {
 			this.parent = node.getPath();

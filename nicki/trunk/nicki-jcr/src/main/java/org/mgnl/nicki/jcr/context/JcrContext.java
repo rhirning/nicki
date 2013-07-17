@@ -23,6 +23,7 @@ import org.mgnl.nicki.core.data.Query;
 import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.data.SearchQueryHandler;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
+import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
@@ -293,7 +294,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	@Override
 	public List<DynamicObject> loadChildObjects(String parentPath,
-			Class<? extends DynamicObject> filter) {
+			ChildFilter filter) {
 		List<DynamicObject> list = new ArrayList<DynamicObject>();
 		try {
 			Node parent = session.getNode(parentPath);
