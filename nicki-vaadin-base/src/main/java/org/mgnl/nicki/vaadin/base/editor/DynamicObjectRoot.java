@@ -36,6 +36,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
 
@@ -51,7 +52,7 @@ public class DynamicObjectRoot implements DataProvider, Serializable {
 	}
 
 	public List<? extends DynamicObject> getChildren(NickiContext context) {
-		return context.loadChildObjects(baseDn, null);
+		return context.loadChildObjects(baseDn, new ChildFilter());
 	}
 
 	public DynamicObject getRoot(NickiContext context) {

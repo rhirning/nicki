@@ -37,7 +37,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.methods.ChildrenMethod;
 
@@ -52,7 +52,7 @@ public class NodeDynamicTemplateObject extends BaseJcrDynamicObject {
 		super.init(context, node);
 		
 		for (String key : getModel().getChildren().keySet()) {
-			Class<? extends DynamicObject> filter = getModel().getChildren().get(key);
+			ChildFilter filter = getModel().getChildren().get(key);
 			put(DynamicJcrAttribute.getGetter(key), new ChildrenMethod(getContext(),node, filter));
 		}
 	}

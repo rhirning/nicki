@@ -37,6 +37,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
@@ -47,10 +48,10 @@ public class ChildrenMethod implements Serializable, TemplateMethodModel {
 	private static final long serialVersionUID = -81535049844368520L;
 	private List<? extends DynamicObject> objects = null;
 	private String parent;
-	private Class<? extends DynamicObject> filter;
+	private ChildFilter filter;
 	private NickiContext context;
 	
-	public ChildrenMethod(NickiContext context, ContextSearchResult rs, Class<? extends DynamicObject> filter) {
+	public ChildrenMethod(NickiContext context, ContextSearchResult rs, ChildFilter filter) {
 		this.context = context;
 		this.parent = rs.getNameInNamespace();
 		this.filter = filter;

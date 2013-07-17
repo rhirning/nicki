@@ -34,6 +34,7 @@ package org.mgnl.nicki.dynamic.objects.objects;
 
 import java.io.Serializable;
 
+import org.mgnl.nicki.core.annotation.Child;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
@@ -42,10 +43,11 @@ import org.mgnl.nicki.core.objects.BaseDynamicObject;
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("organizationalUnit")
+@Child(name="child")
 public class Org extends BaseDynamicObject implements Serializable {
 	public static final String ATTRIBUTE_CHILD = "child";
 	
 	@DynamicAttribute(externalName="ou", naming=true)
 	public String name;
-	
+		
 }

@@ -91,7 +91,7 @@ public interface DynamicObject {
 
 	public <T extends DynamicObject> List<T>  getChildren(Class<T> classDefinition);
 
-	public void addChild(String attribute, Class<? extends DynamicObject> filter);
+	public void addChild(String attribute, ChildFilter filter);
 	
 	// TODO
 	public String getAttribute(String attributeName);

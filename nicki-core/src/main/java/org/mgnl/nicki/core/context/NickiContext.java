@@ -41,6 +41,7 @@ import org.mgnl.nicki.core.data.Query;
 import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.data.SearchQueryHandler;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
+import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
@@ -53,7 +54,7 @@ public interface NickiContext extends Serializable {
 	List<? extends DynamicObject> loadObjects(String baseDn, String filter);
 	<T extends DynamicObject> List<T> loadObjects(Class<T> classDefinition, String baseDn, String filter);
 
-	List<? extends DynamicObject> loadChildObjects(String parent,	Class<? extends DynamicObject> filter);
+	List<? extends DynamicObject> loadChildObjects(String parent,	ChildFilter filter);
 	<T extends DynamicObject> T loadChildObject(Class<T> class1, DynamicObject parent, String childKey);
 	<T extends DynamicObject> List<T> loadChildObjects(Class<T> classDefinition, String parent,	String filter);
 	<T extends DynamicObject> List<T> loadChildObjects(Class<T> class1, DynamicObject parent, String filter);

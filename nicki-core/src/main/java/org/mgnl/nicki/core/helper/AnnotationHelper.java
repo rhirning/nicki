@@ -1,14 +1,17 @@
 package org.mgnl.nicki.core.helper;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.AdditionalObjectClass;
+import org.mgnl.nicki.core.annotation.Child;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicReference;
 import org.slf4j.Logger;
@@ -60,6 +63,24 @@ public class AnnotationHelper {
 		for (String objectClass : getAdditionalObjectClasses(modelClass)) {
 			dynamicObject.addAdditionalObjectClass(objectClass);
 		}
+		
+		Annotation[] annotations = modelClass.getAnnotations();
+		for (Annotation annotation : annotations) {
+			if (annotation instanceof Child) {
+				Child childAnnotation = (Child) annotation;
+				ChildFilter childFilter = new ChildFilter();
+				if (StringUtils.isNotBlank(childAnnotation.filter())) {
+					childFilter.setFilter(childAnnotation.filter());
+				}
+				if (childAnnotation.objectFilter() != null && childAnnotation.objectFilter().length > 0) {
+					for (Class<? extends DynamicObject> objectFilter : childAnnotation.objectFilter()) {
+						childFilter.addObjectFilter(objectFilter);
+					}
+				}
+				dynamicObject.addChild(childAnnotation.name(), childFilter);
+			}
+		}
+
 	
 		for (Field field : modelClass.getDeclaredFields()) {
 			if (field.isAnnotationPresent(DynamicAttribute.class)) {

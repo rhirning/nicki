@@ -64,7 +64,7 @@ public class DataModel implements Serializable {
 	private List<DynamicAttribute> foreignKeys = null;
 	private List<DynamicAttribute> listForeignKeys = null;
 
-	private Map<String, Class<? extends DynamicObject>> children = new HashMap<String, Class<? extends DynamicObject>>();
+	private Map<String, ChildFilter> children = new HashMap<String, ChildFilter>();
 	private Map<String, DynamicReference> references = new HashMap<String, DynamicReference>();
 	
 
@@ -132,14 +132,14 @@ public class DataModel implements Serializable {
 		}
 		return listForeignKeys;
 	}
-	public Map<String, Class<? extends DynamicObject>> getChildren() {
+	public Map<String, ChildFilter> getChildren() {
 		return children;
 	}
 	public Map<String, DynamicReference> getReferences() {
 		return references;
 	}
 
-	public void addChild(String attribute, Class<? extends DynamicObject> filter) {
+	public void addChild(String attribute, ChildFilter filter) {
 		children.put(attribute, filter);		
 	}
 	public void addObjectClasses(String objectClass) {

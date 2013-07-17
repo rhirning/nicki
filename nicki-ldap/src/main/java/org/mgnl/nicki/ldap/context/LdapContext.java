@@ -23,6 +23,7 @@ import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.data.SearchQueryHandler;
 import org.mgnl.nicki.core.helper.AnnotationHelper;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
+import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
@@ -267,14 +268,21 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 	public List<DynamicObject> loadChildObjects(String parent,
-			Class<? extends DynamicObject> filter) {
+			ChildFilter filter) {
 		try {
-			StringBuffer sb = new StringBuffer("objectClass=*");
-			if (filter!= null) {
-				sb.setLength(0);
-				for (String objectClass : AnnotationHelper.getObjectClasses(filter)) {
-					LdapHelper.addQuery(sb, "objectClass=" + objectClass, LOGIC.AND);
+			StringBuffer sb = new StringBuffer();
+			if (filter.hasObjectFilters()) {
+				for (Class<? extends DynamicObject> objecFilter : filter.getObjectFilters()) {
+					StringBuffer sb2 = new StringBuffer();
+					for (String objectClass : AnnotationHelper.getObjectClasses(objecFilter)) {
+						LdapHelper.addQuery(sb2, "objectClass=" + objectClass, LOGIC.AND);
+					}
+					LdapHelper.addQuery(sb, sb2.toString(), LOGIC.OR);
 				}
+			} else if (filter.hasFilter()) {
+				sb.append(filter.getFilter());
+			} else {
+				sb.append("objectClass=*");
 			}
 
 			SubObjectsLoaderQueryHandler handler = new SubObjectsLoaderQueryHandler(this, parent, sb.toString());
