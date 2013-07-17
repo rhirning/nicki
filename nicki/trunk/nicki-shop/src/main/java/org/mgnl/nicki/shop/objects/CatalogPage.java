@@ -40,6 +40,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
+import org.mgnl.nicki.core.annotation.Child;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
@@ -57,6 +58,7 @@ import freemarker.template.TemplateModelException;
 
 @DynamicObject
 @ObjectClass("nickiCatalogPage")
+@Child(name="child", objectFilter={CatalogPage.class, CatalogArticle.class})
 public class CatalogPage extends BaseDynamicObject {
 	
 	private Provider provider = null;

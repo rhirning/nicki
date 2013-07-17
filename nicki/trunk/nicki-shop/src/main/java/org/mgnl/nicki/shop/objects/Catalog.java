@@ -37,6 +37,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.annotation.Child;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
@@ -50,6 +51,7 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 @DynamicObject
 @ObjectClass("nickiCatalog")
+@Child(name="child", objectFilter={CatalogPage.class})
 public class Catalog extends BaseDynamicObject {
 	private static final long serialVersionUID = 1114608130611536361L;
 	public static final String PATH_SEPARATOR = "/";
