@@ -422,8 +422,9 @@ public class IdmPerson extends Person implements Serializable {
 
 	public enum PERSONTYPE {
 
-		INTERNAL_USER("INTERNAL"), EXTERNAL_USER("EXTERNAL"), TECHNICAL_USER(
-		"TECHNICAL"), NOT_SET("");
+		INTERNAL_USER("INTERNAL"), EXTERNAL_USER("EXTERNAL"), FUNCTIONAL_USER(
+				"FUNCTIONAL"), SECONDARY_USER(
+						"SECONDARY"), NOT_SET("");
 		private final String type;
 
 		private PERSONTYPE(String type) {
@@ -435,8 +436,10 @@ public class IdmPerson extends Person implements Serializable {
 				return INTERNAL_USER;
 			} else if (EXTERNAL_USER.getValue().equals(type)) {
 				return EXTERNAL_USER;
-			} else if (TECHNICAL_USER.getValue().equals(type)) {
-				return TECHNICAL_USER;
+			} else if (FUNCTIONAL_USER.getValue().equals(type)) {
+				return FUNCTIONAL_USER;
+			} else if (SECONDARY_USER.getValue().equals(type)) {
+				return SECONDARY_USER;
 			}
 
 			return NOT_SET;

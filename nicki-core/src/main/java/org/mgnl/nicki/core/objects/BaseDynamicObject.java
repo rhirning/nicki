@@ -395,10 +395,10 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T extends DynamicObject> T getWritable(T dynamicObject) {
-		NickiContext ctx = dynamicObject.getContext();
+	public <T extends DynamicObject> T getWritable() {
+		NickiContext ctx = this.getContext();
 		ctx.setReadonly(false);
-		return (T) ctx.loadObject(dynamicObject.getClass(), dynamicObject.getPath());
+		return (T) ctx.loadObject(this.getClass(), this.getPath());
 	}
 
 	public <T extends DynamicObject> T getAs(Class<T> classDefinition,
