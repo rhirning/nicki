@@ -275,7 +275,7 @@ public class RuleManager {
 			cart.setInitiator(user);
 			cart.setRecipient(person);
 			cart.setRequestDate(new Date());
-			cart.setCartStatus(Cart.CART_STATUS.REQUESTED);
+			cart.setCartStatus(Cart.CART_STATUS.NEW);
 			cart.setSource(Inventory.SOURCE.RULE.getValue());
 			cart.setCatalog(Catalog.getCatalog());
 			for (ArticleChange article : changeSet.getChanges()) {
@@ -298,7 +298,7 @@ public class RuleManager {
 				cart.setInitiator(user);
 				cart.setRecipient(article.getPerson());
 				cart.setRequestDate(new Date());
-				cart.setCartStatus(Cart.CART_STATUS.REQUESTED);
+				cart.setCartStatus(Cart.CART_STATUS.NEW);
 				cart.setSource(Inventory.SOURCE.RULE.getValue());
 				cart.setCatalog(Catalog.getCatalog());
 	

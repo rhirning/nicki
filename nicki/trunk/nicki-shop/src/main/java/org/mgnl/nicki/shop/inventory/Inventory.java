@@ -201,7 +201,7 @@ public class Inventory implements Serializable {
 		return sb.toString();
 	}
 
-	public Cart getCart(String source) {
+	public Cart getCart(String source, Cart.CART_STATUS cartStatus) {
 		if (hasChanged()) {
 			Cart cart;
 			try {
@@ -212,7 +212,7 @@ public class Inventory implements Serializable {
 				cart.setInitiator(user);
 				cart.setRecipient(person);
 				cart.setRequestDate(new Date());
-				cart.setCartStatus(Cart.CART_STATUS.REQUESTED);
+				cart.setCartStatus(cartStatus);
 				cart.setSource(source);
 				cart.setCatalog(Catalog.getCatalog());
 				for (String key : mulitArticles.keySet()) {
@@ -261,7 +261,17 @@ public class Inventory implements Serializable {
 	public Cart save(String source) throws InstantiateDynamicObjectException,
 			DynamicObjectException {
 		if (hasChanged()) {
-			Cart cart = getCart(source);
+			Cart cart = getCart(source, Cart.CART_STATUS.NEW);
+			cart.create();
+			return cart;
+		}
+		return null;
+	}
+
+	public Cart remember(String source) throws InstantiateDynamicObjectException,
+			DynamicObjectException {
+		if (hasChanged()) {
+			Cart cart = getCart(source, Cart.CART_STATUS.TEMP);
 			cart.create();
 			return cart;
 		}

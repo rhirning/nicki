@@ -91,8 +91,8 @@ public class Cart extends BaseDynamicObject {
     private String data;
     @DynamicAttribute(externalName="nickiInitiator", foreignKey=Person.class)
     private String initiator;
-    @DynamicAttribute(externalName="nickiPrincipal", foreignKey=Person.class)
-    private String principal;
+    @DynamicAttribute(externalName="nickiManager", foreignKey=Person.class)
+    private String manager;
     @DynamicAttribute(externalName="nickiProcessDate")
     private String processdate;
     @DynamicAttribute(externalName="nickiProcessResult")
@@ -102,7 +102,7 @@ public class Cart extends BaseDynamicObject {
     @DynamicAttribute(externalName="nickiRequestDate")
     private String requestdate;
     @DynamicAttribute(externalName="nickiStatus")
-    private String status;
+    private String cartStatus;
     @DynamicAttribute(externalName="nickiStatusFlag")
     private String[] statusFlag;
     @DynamicAttribute(externalName="nickiSource")
@@ -189,7 +189,11 @@ public class Cart extends BaseDynamicObject {
     }
 
     public Date getProcessDate() throws ParseException {
-        return DataHelper.formatMilli.parse((String) get("processdate"));
+    	if (get("processdate")!= null) {
+    		return DataHelper.formatMilli.parse((String) get("processdate"));
+    	} else {
+    		return null;
+    	}
     }
 
     public void setCatalog(Catalog catalog) {
@@ -200,8 +204,12 @@ public class Cart extends BaseDynamicObject {
         return catalog;
     }
 
+    public void setCartStatus(String status) {
+        put("cartStatus", status);
+    }
+
     public void setCartStatus(CART_STATUS status) {
-        put("status", status.getValue());
+        put("cartStatus", status.getValue());
     }
 	
 	public void setStatusFlag(List<String> statusFlags) {
@@ -222,7 +230,7 @@ public class Cart extends BaseDynamicObject {
     }
 
     public CART_STATUS getCartStatus() {
-        return CART_STATUS.fromString((String) get("status"));
+        return CART_STATUS.fromString((String) get("cartStatus"));
     }
     
 	@SuppressWarnings("unchecked")
@@ -248,7 +256,7 @@ public class Cart extends BaseDynamicObject {
     }
 
     public void setRecipient(Person person) {
-        put("recipient", person.getPath());
+        put("recipient", person!=null?person.getPath():null);
     }
 
     public Person getRecipient() {
@@ -256,7 +264,7 @@ public class Cart extends BaseDynamicObject {
     }
 
     public void setInitiator(Person person) {
-        put("initiator", person.getPath());
+        put("initiator", person!=null?person.getPath():null);
     }
 
     public Person getInitiator() {
@@ -281,4 +289,12 @@ public class Cart extends BaseDynamicObject {
 
         return sb.toString();
     }
+
+	public Person getManager() {
+		return getContext().loadObject(Person.class, (String) get("manager"));
+	}
+
+	public void setManager(Person person) {
+		put("manager", person!=null?person.getPath():null);
+	}
 }

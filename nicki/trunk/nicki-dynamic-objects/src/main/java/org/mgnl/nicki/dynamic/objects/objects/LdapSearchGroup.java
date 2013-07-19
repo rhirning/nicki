@@ -50,13 +50,13 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 public class LdapSearchGroup extends BaseDynamicObject {
 
 	@DynamicAttribute(externalName="cn", naming=true)
-	public String name;
+	private String name;
 	
 	@DynamicAttribute(externalName="member", readonly=true, foreignKey=Person.class)
-	public String[] member;
+	private String[] member;
 	
 	@DynamicAttribute(externalName="memberQueryURL")
-	public String query;
+	private String query;
 
 	public enum SEARCHSCOPE {
 

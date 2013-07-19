@@ -42,16 +42,16 @@ public class Action extends BaseDynamicObject {
 	private static final long serialVersionUID = 650085730365865573L;
 
 	@DynamicAttribute(externalName="cn", naming=true)
-	public String name;
+	private String name;
 
 	@DynamicAttribute(externalName="nickiParameter")
-	public String parameter;
+	private String parameter;
 
 	@DynamicAttribute(externalName="nickiActionName", mandatory=true)
-	public String action;
+	private String action;
 
 	@DynamicAttribute(externalName="nickiTarget", foreignKey=DynamicObject.class)
-	public String target;
+	private String target;
 
 	public void setParameter(String parameter) {
 		put("parameter", parameter);

@@ -62,19 +62,19 @@ public class CatalogArticle extends BaseDynamicObject {
 	public static final String CAPTION_END = "nicki.rights.attribute.dateTo.label";
 
 	@DynamicAttribute(externalName="cn", naming=true)
-	public String name;
+	private String name;
 	@DynamicAttribute(externalName="displayName")
-	public String displayName;
+	private String displayName;
 	@DynamicAttribute(externalName="nickiDescription")
-	public TextArea description;
+	private TextArea description;
 	@DynamicAttribute(externalName="nickiApproval")
-	public String approval;
+	private String approval;
 	@DynamicAttribute(externalName="nickiCategory")
-	public String[] category;
+	private String[] category;
 	@DynamicAttribute(externalName="nickiRule", editorClass="org.mgnl.nicki.shop.rules.RuleAttributeField")
-	public String[] rule;
+	private String[] rule;
 	@DynamicAttribute(externalName="nickiAttributes")
-	public TextArea attributesField;
+	private TextArea attributesField;
 
 	public boolean hasArticle(Person person, CatalogArticle article) {
 		for (InventoryArticle inventoryArticle : getInventoryArticles(person)) {

@@ -50,20 +50,20 @@ public class Role extends DynamicStructObject {
 	
 	private static final long serialVersionUID = 6170300879001415636L;
 	@DynamicAttribute(externalName="cn", naming=true)
-	public String name;
+	private String name;
 	@DynamicReferenceAttribute(externalName="nrfRole", reference=ResourceAssociation.class, baseProperty="nicki.system.basedn")
-	public String[] resourceAssociation;
+	private String[] resourceAssociation;
 	@StructuredDynamicAttribute(externalName="nrfChildRoles", foreignKey=Role.class)
-	public String[] childRole;
+	private String[] childRole;
 	@DynamicReferenceAttribute(externalName="nrfAssignedRoles", reference=Person.class, 
 			foreignKey=Person.class, baseProperty="nicki.data.basedn")
-	public String[] member;
+	private String[] member;
 	@StructuredDynamicAttribute(externalName="nrfApprovers", foreignKey=Person.class)
-	public String[] approver;
+	private String[] approver;
 	@DynamicAttribute(externalName="nrfLocalizedNames")
-	public String localizedName;
+	private String localizedName;
 	@DynamicAttribute(externalName="nrfLocalizedDescrs")
-	public String localizedDescription;
+	private String localizedDescription;
 	
 	public Date getStartTime() {
 		return getDateInfo("/assignment/start_tm");
