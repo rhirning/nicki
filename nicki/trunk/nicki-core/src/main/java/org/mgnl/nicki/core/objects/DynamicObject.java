@@ -163,7 +163,7 @@ public interface DynamicObject {
 	
 	public String toString();
 
-	public <T extends DynamicObject> T getWritable(T dynamicObject);
+	public <T extends DynamicObject> T getWritable();
 
 	public <T extends DynamicObject> T getAs(Class<T> classDefinition,
 			DynamicObject dynamicObject);

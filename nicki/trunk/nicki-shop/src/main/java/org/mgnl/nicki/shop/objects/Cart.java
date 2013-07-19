@@ -65,6 +65,7 @@ public class Cart extends BaseDynamicObject {
 
 	public enum CART_STATUS {
 
+		TEMP,
         NEW,
         REQUESTED,
         FINISHED;
@@ -90,6 +91,8 @@ public class Cart extends BaseDynamicObject {
     private String data;
     @DynamicAttribute(externalName="nickiInitiator", foreignKey=Person.class)
     private String initiator;
+    @DynamicAttribute(externalName="nickiPrincipal", foreignKey=Person.class)
+    private String principal;
     @DynamicAttribute(externalName="nickiProcessDate")
     private String processdate;
     @DynamicAttribute(externalName="nickiProcessResult")
