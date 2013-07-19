@@ -45,16 +45,16 @@ public class Group extends BaseDynamicObject {
 	public static final String ATTRIBUTE_OWNER = "owner";
 
 	@DynamicAttribute(externalName="cn", naming=true)
-	public String name;
+	private String name;
 	
 	@DynamicAttribute(externalName="description")
-	public String description;
+	private String description;
 	
 	@DynamicAttribute(externalName="member", foreignKey=Person.class)
-	public String[] member;
+	private String[] member;
 	
 	@DynamicAttribute(externalName="owner", foreignKey=Person.class)
-	public String owner;
+	private String owner;
 	
 	private static final long serialVersionUID = 6170300879001415636L;
 

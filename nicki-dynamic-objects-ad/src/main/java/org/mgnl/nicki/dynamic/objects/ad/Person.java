@@ -43,7 +43,7 @@ import org.mgnl.nicki.core.objects.BaseDynamicObject;
 public class Person extends BaseDynamicObject {
 
 	@DynamicAttribute(externalName="cn", naming=true)
-	public String name;	
+	private String name;	
 	@DynamicAttribute(externalName="sn", mandatory=true)
 	private String surname;	
 	@DynamicAttribute(externalName="givenName")

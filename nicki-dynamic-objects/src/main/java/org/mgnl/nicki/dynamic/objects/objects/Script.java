@@ -45,10 +45,10 @@ public class Script extends BaseDynamicObject {
 	public static final String ATTRIBUTE_DATA = "data";
 
 	@DynamicAttribute(externalName = "cn", naming = true)
-	public String name;
+	private String name;
 
 	@DynamicAttribute(externalName = "nickiScriptData")
-	public String data;
+	private String data;
 
 	public String getData() {
 		return getAttribute(ATTRIBUTE_DATA);

@@ -97,54 +97,54 @@ public class IdmPerson extends Person implements Serializable {
 	private List<Resource> assignedResources = null;
 	
 	@DynamicAttribute(externalName="nickiLastWorkingDay")
-	public String lastWorkingDay;
+	private String lastWorkingDay;
 	@DynamicAttribute(externalName="nickiQuitDate")
-	public String quitDate;
+	private String quitDate;
 	@DynamicAttribute(externalName="nickiActivationDate")
-	public String activationDate;
+	private String activationDate;
 	@DynamicReferenceAttribute(externalName="manager", foreignKey=Person.class, reference=Person.class,
 			baseProperty="nicki.users.basedn")
-	public String manager;
+	private String manager;
 	@DynamicAttribute(externalName="employeeType")
-	public String type;
+	private String type;
 	@DynamicAttribute(externalName="costCenter")
-	public String costCenter;
+	private String costCenter;
 	@DynamicAttribute(externalName="nickiGender")
-	public String gender;
+	private String gender;
 	@StructuredDynamicAttribute(externalName="DirXML-EntitlementRef", foreignKey=Entitlement.class)
-	public String[] entitlement;
+	private String[] entitlement;
 	@StructuredDynamicAttribute(externalName="nrfAssignedRoles", foreignKey=Role.class)
-	public String[] role;
+	private String[] role;
 	@StructuredDynamicAttribute(externalName="nrfAssignedResources", foreignKey=Resource.class)
-	public String[] resource;
+	private String[] resource;
 	@DynamicAttribute(externalName="nickiBirthDate")
-	public String birthDate;
+	private String birthDate;
 	@DynamicAttribute(externalName="nickiEntryDate")
-	public String entryDate;
+	private String entryDate;
 	@DynamicAttribute(externalName="nickiOuChangeDate")
-	public String ouChangeDate;
+	private String ouChangeDate;
 	@DynamicAttribute(externalName="nickiNextOu")
-	public String nextOU;
+	private String nextOU;
 	@DynamicAttribute(externalName="nickiNextCostCenter")
-	public String nextCostCenter;
+	private String nextCostCenter;
 	@DynamicAttribute(externalName="nickiOuTransferDate")
-	public String ouTransferDate;
+	private String ouTransferDate;
 	@DynamicAttribute(externalName="nickiOwner", foreignKey=Person.class)
-	public String owner;
+	private String owner;
 	@DynamicAttribute(externalName="company")
-	public String company;
+	private String company;
 	@DynamicAttribute(externalName="nickiOccupation")
-	public String occupation;
+	private String occupation;
 	@DynamicAttribute(externalName="groupMembership", foreignKey=Group.class)
-	public String[] memberOf;
+	private String[] memberOf;
 	@DynamicAttribute(externalName="ou", foreignKey=Org.class)
-	public String ou;
+	private String ou;
 	@DynamicAttribute(externalName="workforceID")
-	public String workforceId;
+	private String workforceId;
 	@DynamicAttribute(externalName="mail")
-	public String mail;
+	private String mail;
 	@DynamicAttribute(externalName="telephoneNumber")
-	public String phoneNumber;
+	private String phoneNumber;
 	
 	public boolean hasRole(Role role2) {
 		for (Role role : getRoles()) {

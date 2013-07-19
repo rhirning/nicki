@@ -48,6 +48,6 @@ public class Org extends BaseDynamicObject implements Serializable {
 	public static final String ATTRIBUTE_CHILD = "child";
 	
 	@DynamicAttribute(externalName="ou", naming=true)
-	public String name;
+	private String name;
 		
 }

@@ -85,7 +85,6 @@ public class DynamicAttribute implements Serializable {
 			Object attribute = rs.getValue(getExternalName());
 			if (attribute != null) {
 				dynamicObject.put(name, attribute);
-				setPropertyValue(dynamicObject, attribute);
 			}
 		}
 		// optional
@@ -97,21 +96,18 @@ public class DynamicAttribute implements Serializable {
 				} else {
 					dynamicObject.put(name, attribute);
 				}
-				setPropertyValue(dynamicObject, attribute);
 			}
 		}
 		// optional list
 		if (!isMandatory() && isMultiple() && !isForeignKey()) {
 			List<Object> attributes = rs.getValues(getExternalName());
 			dynamicObject.put(name, attributes);
-			setPropertyValue(dynamicObject, attributes.toArray(new String[0]));
 		}
 		// foreign key
 		if (!isMandatory() && !isMultiple() && isForeignKey()) {
 			String value = (String) rs.getValue(getExternalName());
 			if (StringUtils.isNotEmpty(value)) {
 				dynamicObject.put(name, value);
-				setPropertyValue(dynamicObject, value);
 				dynamicObject.put(getGetter(name),
 						new ForeignKeyMethod(context, rs, ldapName, getForeignKeyClass()));
 			}
@@ -120,7 +116,6 @@ public class DynamicAttribute implements Serializable {
 		if (!isMandatory() && isMultiple() && isForeignKey()) {
 			List<Object> values = rs.getValues(getExternalName());
 			dynamicObject.put(name, values);
-			setPropertyValue(dynamicObject, values.toArray(new String[0]));
 			dynamicObject.put(getMultipleGetter(name),
 					new ListForeignKeyMethod(context, rs, ldapName, getForeignKeyClass()));
 		}
@@ -136,6 +131,7 @@ public class DynamicAttribute implements Serializable {
 				setPropertyValue(clazz, dynamicObject, value);
 				return;
 			} catch (Exception e) {
+				System.out.println(value.getClass());
 				clazz = clazz.getSuperclass();
 			}
 		}

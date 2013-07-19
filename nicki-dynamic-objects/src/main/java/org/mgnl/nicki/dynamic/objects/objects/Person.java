@@ -70,23 +70,23 @@ public class Person extends BaseDynamicObject {
 	private Map<String, String> catalogAttributes = new HashMap<String, String>();
 	
 	@DynamicAttribute(externalName="cn", naming=true)
-	public String name;	
+	private String name;	
 	@DynamicAttribute(externalName="sn", mandatory=true)
-	public String surname;	
+	private String surname;	
 	@DynamicAttribute(externalName="givenName")
-	public String givenname;
+	private String givenname;
 	@DynamicAttribute(externalName="fullName")
-	public String fullname;
+	private String fullname;
 	@DynamicAttribute(externalName="Language")
-	public String language;
+	private String language;
 	@DynamicReferenceAttribute(externalName="member", reference=Group.class, baseProperty="nicki.data.basedn")
-	public String[] memberOf;
+	private String[] memberOf;
 	@DynamicAttribute(externalName="nickiLocation")
-	public String location;
+	private String location;
 	@DynamicAttribute(externalName="nickiCatalogArticle")
-	public String[] assignedArticle;
+	private String[] assignedArticle;
 	@DynamicAttribute(externalName="nickiCatalogAttribute")
-	public String[] attributeValue;
+	private String[] attributeValue;
 
 	@Override
 	public String getDisplayName() {

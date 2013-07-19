@@ -42,6 +42,7 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.inventory.Inventory;
+import org.mgnl.nicki.shop.objects.Cart.CART_STATUS;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 import org.mgnl.nicki.shop.renderer.ShopRenderer;
 import org.mgnl.nicki.shop.renderer.TabRenderer;
@@ -65,6 +66,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	private Inventory inventory = null;
 	private Shop shop;
 	private Button saveButton;
+	private Button rememberButton;
 	private Button showInventoryButton;
 	private Button showCartButton;
 	private PersonSelector personSelector;
@@ -203,6 +205,33 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		});
 		
 
+		rememberButton = new Button(I18n.getText("nicki.editor.generic.button.remember"));
+		rememberButton.addListener(new Button.ClickListener() {
+			
+			public void buttonClick(ClickEvent event) {
+				if (getInventory() != null) {
+					// System.out.println(getInventory().toString());
+					try {
+						if (!getInventory().hasChanged()) {
+							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".remember.empty"),
+									Notification.TYPE_HUMANIZED_MESSAGE);
+						} else {
+							getInventory().remember("shop");
+							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".remember.success"),
+									Notification.TYPE_HUMANIZED_MESSAGE);
+							parent.closeShop();
+						}
+					} catch (Exception e) {
+						getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".remember.error"),
+								e.getMessage(),
+								Notification.TYPE_ERROR_MESSAGE);
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+		
+
 		showInventoryButton = new Button(I18n.getText("nicki.editor.generic.button.showInventory"));
 		showInventoryButton.addListener(new Button.ClickListener() {
 			
@@ -230,7 +259,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 						getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".showCart.empty"),
 								Notification.TYPE_HUMANIZED_MESSAGE);
 					} else {
-						CartViewer cartViewer = new CartViewer(getInventory().getCart("shop"));
+						CartViewer cartViewer = new CartViewer(getInventory().getCart("shop", CART_STATUS.NEW));
 						Window newWindow = new Window(I18n.getText(parent.getI18nBase() + ".cart.window.title"), cartViewer);
 						newWindow.setWidth(1000, Sizeable.UNITS_PIXELS);
 						newWindow.setHeight(600, Sizeable.UNITS_PIXELS);
@@ -249,6 +278,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		});
 
 		layout.addComponent(saveButton, "top:0.0px;left:20.0px;");
+		layout.addComponent(rememberButton, "top:0.0px;left:220.0px;");
 		layout.addComponent(showInventoryButton, "top:0.0px;right:200.0px;");
 		layout.addComponent(showCartButton, "top:0.0px;right:20.0px;");
 		layout.addComponent(renderer.render(getShopViewerComponent(), getInventory()), "top:30.0px;;left:0.0px;");
