@@ -47,6 +47,7 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.shop.inventory.InventoryArticle.STATUS;
 import org.mgnl.nicki.shop.objects.Cart;
 import org.mgnl.nicki.shop.objects.CartEntry;
+import org.mgnl.nicki.shop.objects.CartEntry.ACTION;
 import org.mgnl.nicki.shop.objects.Catalog;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 import org.mgnl.nicki.shop.objects.CatalogArticleFactory;
@@ -71,6 +72,8 @@ public class Inventory implements Serializable {
 
 	private Person user;
 	private Person person;
+	
+	private String cartPath = null;
 
 	private Map<String, InventoryArticle> articles = new HashMap<String, InventoryArticle>();
 	
@@ -91,10 +94,10 @@ public class Inventory implements Serializable {
 	private void init() throws InvalidPrincipalException, InstantiateDynamicObjectException {
 
 		List<CatalogArticle> availableArticles = CatalogArticleFactory.getInstance().getArticles();
-		for (CatalogArticle catalogArticleType : availableArticles) {
-			List<InventoryArticle> inventoryArticles = catalogArticleType.getInventoryArticles(getPerson());
+		for (CatalogArticle catalogArticle : availableArticles) {
+			List<InventoryArticle> inventoryArticles = catalogArticle.getInventoryArticles(getPerson());
 			for (InventoryArticle inventoryArticle : inventoryArticles) {
-				if (catalogArticleType.isMultiple()) {
+				if (catalogArticle.isMultiple()) {
 					addArticle(inventoryArticle.getArticle(), inventoryArticle.getSpecifier(), inventoryArticle);
 				} else {
 					addArticle(inventoryArticle.getArticle(), inventoryArticle);
@@ -112,7 +115,16 @@ public class Inventory implements Serializable {
 			return this.articles.get(catalogArticle.getPath());
 		}
 	}
+	
+	public void addArticle(InventoryArticle inventoryArticle) {
+		if (inventoryArticle.getArticle().isMultiple()) {
+			addArticle(inventoryArticle.getArticle(), inventoryArticle.getSpecifier(), inventoryArticle);
+		} else {
+			addArticle(inventoryArticle.getArticle(), inventoryArticle);
+		}
+	}
 
+	
 	private void addArticle(CatalogArticle catalogArticle, String specifier, InventoryArticle inventoryArticle) {
 		Map<String, InventoryArticle> map = this.mulitArticles.get(catalogArticle.getPath());
 		if (map == null) {
@@ -258,8 +270,11 @@ public class Inventory implements Serializable {
 		return null;
 	}
 
-	public Cart save(String source) throws InstantiateDynamicObjectException,
+	public Cart save(String source, Cart oldCart) throws InstantiateDynamicObjectException,
 			DynamicObjectException {
+		if (oldCart != null) {
+			oldCart.delete();
+		}
 		if (hasChanged()) {
 			Cart cart = getCart(source, Cart.CART_STATUS.NEW);
 			cart.create();
@@ -268,8 +283,11 @@ public class Inventory implements Serializable {
 		return null;
 	}
 
-	public Cart remember(String source) throws InstantiateDynamicObjectException,
+	public Cart remember(String source, Cart oldCart) throws InstantiateDynamicObjectException,
 			DynamicObjectException {
+		if (oldCart != null) {
+			oldCart.delete();
+		}
 		if (hasChanged()) {
 			Cart cart = getCart(source, Cart.CART_STATUS.TEMP);
 			cart.create();
@@ -332,6 +350,57 @@ public class Inventory implements Serializable {
 
 	public Map<String, Map<String, InventoryArticle>> getMulitArticles() {
 		return mulitArticles;
+	}
+
+	public static Inventory fromCart(Person user, Person recipient, Cart cart) throws InvalidPrincipalException, InstantiateDynamicObjectException {
+		Inventory inventory = new Inventory(user, recipient);
+		inventory.setCartPath(cart.getPath());
+		for (CartEntry entry : cart.getCartEntries()) {
+			inventory.addCartEntry(entry);
+		}
+		return inventory;
+	}
+
+	private void addCartEntry(CartEntry entry) throws InvalidPrincipalException, InstantiateDynamicObjectException {
+		InventoryArticle iArticle = getInventoryArticleFrom(entry);
+		if (iArticle!= null) {
+			if (entry.getAction() == ACTION.ADD && !hasArticle(iArticle.getArticle()) ||
+				(entry.getAction() == ACTION.DELETE || entry.getAction() == ACTION.MODIFY) &&
+					hasArticle(iArticle.getArticle())) {
+				addArticle(iArticle);
+			}
+		}
+	}
+
+	private InventoryArticle getInventoryArticleFrom(CartEntry entry) throws InvalidPrincipalException, InstantiateDynamicObjectException {
+		List<CatalogArticle> availableArticles = Catalog.getCatalog().getAllArticles();
+		for (CatalogArticle catalogArticle : availableArticles) {
+			if (StringUtils.equals(entry.getId(), catalogArticle.getCatalogPath())) {
+				InventoryArticle iArticle = new InventoryArticle(catalogArticle);
+				iArticle.setSpecifier(entry.getSpecifier());
+				iArticle.setStart(entry.getStart());
+				iArticle.setEnd(entry.getEnd());
+				iArticle.setStatus(InventoryArticle.getStatus(entry.getAction()));
+				if (entry.getAttributes() != null) {
+					List<InventoryAttribute> iAttributes = catalogArticle.getInventoryAttributes(catalogArticle, entry.getAttributes());
+					if (iAttributes != null) {
+						for (InventoryAttribute inventoryAttribute : iAttributes) {
+							iArticle.setValue(inventoryAttribute.getAttribute(), inventoryAttribute.getValue());
+						}
+					}
+				}
+				return iArticle;
+			}
+		}
+		return null;
+	}
+
+	public String getCartPath() {
+		return cartPath;
+	}
+
+	public void setCartPath(String cartPath) {
+		this.cartPath = cartPath;
 	}
 
 }
