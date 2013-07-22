@@ -42,6 +42,7 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.inventory.Inventory;
+import org.mgnl.nicki.shop.objects.Cart;
 import org.mgnl.nicki.shop.objects.Cart.CART_STATUS;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 import org.mgnl.nicki.shop.renderer.ShopRenderer;
@@ -72,6 +73,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	private PersonSelector personSelector;
 	private ShopRenderer renderer = null;
 	private ShopParent parent;
+	private Cart cart = null;
 	
 	public ShopViewer(Person shopper, Shop shop, PersonSelector personSelector, ShopParent parent) {
 		this.shopper = shopper;
@@ -82,12 +84,17 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	}
 
 
-	public ShopViewer(Person user, Shop shop, Person recipient, ShopParent parent) throws InvalidPrincipalException, InstantiateDynamicObjectException {
+	public ShopViewer(Person user, Shop shop, Person recipient, ShopParent parent, Cart cart) throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		this.shopper = user;
 		this.shop = shop;
 		this.recipient = recipient;
 		this.parent = parent;
-		this.inventory = new Inventory(user, recipient);
+		this.setCart(cart);
+		if (cart != null) {
+			this.inventory = Inventory.fromCart(user, recipient, cart);
+		} else {
+			this.inventory = new Inventory(user, recipient);
+		}
 		init();
 	}
 	
@@ -189,7 +196,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".save.empty"),
 									Notification.TYPE_HUMANIZED_MESSAGE);
 						} else {
-							getInventory().save("shop");
+							getInventory().save("shop", getCart());
 							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".save.success"),
 									Notification.TYPE_HUMANIZED_MESSAGE);
 							parent.closeShop();
@@ -216,7 +223,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".remember.empty"),
 									Notification.TYPE_HUMANIZED_MESSAGE);
 						} else {
-							getInventory().remember("shop");
+							getInventory().remember("shop", getCart());
 							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".remember.success"),
 									Notification.TYPE_HUMANIZED_MESSAGE);
 							parent.closeShop();
@@ -306,6 +313,16 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 
 	public Inventory getInventory() {
 		return inventory;
+	}
+
+
+	public Cart getCart() {
+		return cart;
+	}
+
+
+	public void setCart(Cart cart) {
+		this.cart = cart;
 	}
 
 

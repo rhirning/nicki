@@ -213,6 +213,19 @@ public class InventoryArticle implements Serializable{
 		return null;
 	}
 
+	public static STATUS getStatus(ACTION action) {
+		if (action == ACTION.DELETE) {
+			return STATUS.DELETED;
+		}
+		else if (action == ACTION.MODIFY) {
+			return STATUS.MODIFIED;
+		}
+		else if (action == ACTION.ADD) {
+			return STATUS.NEW;
+		}
+		return null;
+	}
+
 	public Map<String, InventoryAttribute> getAttributes() {
 		return attributes;
 	}
