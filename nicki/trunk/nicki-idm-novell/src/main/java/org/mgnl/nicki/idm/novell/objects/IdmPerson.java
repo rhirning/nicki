@@ -81,7 +81,7 @@ public class IdmPerson extends Person implements Serializable {
 	public static final String ATTRIBUTE_BIRTHDATE = "birthDate";
 	public static final String ATTRIBUTE_ENTRYDATE = "entryDate";
 	public static final String ATTRIBUTE_OUCHANGEDATE = "ouChangeDate";
-	public static final String ATTRIBUTE_NEXTOU = "nextOU";
+	public static final String ATTRIBUTE_NEXTOU = "nextOu";
 	public static final String ATTRIBUTE_NEXTCOSTCENTER = "nextCostCenter";
 	public static final String ATTRIBUTE_OUTRANSFERDATE = "ouTransferDate";
 	public static final String ATTRIBUTE_OWNER = "owner";
@@ -124,7 +124,7 @@ public class IdmPerson extends Person implements Serializable {
 	@DynamicAttribute(externalName="nickiOuChangeDate")
 	private String ouChangeDate;
 	@DynamicAttribute(externalName="nickiNextOu")
-	private String nextOU;
+	private String nextOu;
 	@DynamicAttribute(externalName="nickiNextCostCenter")
 	private String nextCostCenter;
 	@DynamicAttribute(externalName="nickiOuTransferDate")
@@ -300,8 +300,8 @@ public class IdmPerson extends Person implements Serializable {
 		}
 	}
 
-	public Org getNextOu() {
-		return getForeignKeyObject(Org.class, ATTRIBUTE_NEXTOU);
+	public String getNextOu() {
+		return getAttribute(ATTRIBUTE_NEXTOU);
 	}
 
 
@@ -457,5 +457,13 @@ public class IdmPerson extends Person implements Serializable {
 
 	public void setManager(IdmPerson manager) {
 		put(ATTRIBUTE_MANAGER, manager.getId());
+	}
+
+	public Person getOwner() {
+		return getForeignKeyObject(Person.class, ATTRIBUTE_OWNER);
+	}
+
+	public void setOwner(IdmPerson owner) {
+		put(ATTRIBUTE_OWNER, owner.getId());
 	}
 }

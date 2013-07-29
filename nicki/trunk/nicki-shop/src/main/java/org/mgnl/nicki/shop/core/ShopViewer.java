@@ -196,7 +196,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".save.empty"),
 									Notification.TYPE_HUMANIZED_MESSAGE);
 						} else {
-							getInventory().save("shop", getCart());
+							setCart(getInventory().save("shop", getCart()));
 							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".save.success"),
 									Notification.TYPE_HUMANIZED_MESSAGE);
 							parent.closeShop();
@@ -223,7 +223,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".remember.empty"),
 									Notification.TYPE_HUMANIZED_MESSAGE);
 						} else {
-							getInventory().remember("shop", getCart());
+							setCart(getInventory().remember("shop", getCart()));
 							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".remember.success"),
 									Notification.TYPE_HUMANIZED_MESSAGE);
 							parent.closeShop();
