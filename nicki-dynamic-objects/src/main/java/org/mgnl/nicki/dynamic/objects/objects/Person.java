@@ -52,6 +52,7 @@ import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 @ObjectClass("Person")
 @AdditionalObjectClass("nickiUserAux")
 public class Person extends BaseDynamicObject {
+	public static final String ATTRIBUTE_DISPLAYNAME = "displayName";
 	public static final String ATTRIBUTE_SURNAME = "surname";
 	public static final String ATTRIBUTE_GIVENNAME = "givenname";
 	public static final String ATTRIBUTE_FULLNAME = "fullname";
