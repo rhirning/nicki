@@ -124,6 +124,7 @@ public class DynamicAttribute implements Serializable {
 	
 	
 
+	@SuppressWarnings("unused")
 	private void setPropertyValue(DynamicObject dynamicObject, Object value) {
 		Class<?> clazz = dynamicObject.getClass();
 		while (clazz.getSuperclass() != null) {

@@ -38,11 +38,11 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 import com.vaadin.ui.Component;
 
-public interface DynamicObjectValueChangeListener {
+public interface DynamicObjectValueChangeListener<T> {
 
-	void valueChange(DynamicObject dynamicObject, String name, List<Object> values);
+	void valueChange(DynamicObject dynamicObject, String name, List<T> values);
 
-	void valueChange(DynamicObject dynamicObject, String attributeName, String value);
+	void valueChange(DynamicObject dynamicObject, String attributeName, T value);
 
 	boolean acceptAttribute(String name);
 

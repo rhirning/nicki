@@ -35,9 +35,9 @@ package org.mgnl.nicki.shop.core;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.vaadin.base.command.SelectPersonCommand;
 
-import com.vaadin.ui.ComponentContainer;
+import com.vaadin.ui.Component;
 
-public interface PersonSelector extends ComponentContainer {
+public interface PersonSelector extends Component {
 
 	void init(NickiContext context, boolean useInternExtern, boolean useActiveInactive, SelectPersonCommand selectPersonCommand);
 

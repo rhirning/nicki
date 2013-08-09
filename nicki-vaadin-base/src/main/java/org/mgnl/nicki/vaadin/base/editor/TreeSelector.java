@@ -65,7 +65,7 @@ public class TreeSelector extends BasicNickiSelector implements NickiSelect {
 
 	@Override
 	public void addListener(ExpandListener listener) {
-		component.addListener(listener);
+		component.addExpandListener(listener);
 	}
 
 	@Override

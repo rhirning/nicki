@@ -42,10 +42,10 @@ import com.vaadin.data.Property.ValueChangeListener;
 @SuppressWarnings("serial")
 public class AttributeInputListener implements ValueChangeListener {
 
-	DataContainer property = null;
-	private DynamicObjectValueChangeListener objectListener = null;
+	DataContainer<String> property = null;
+	private DynamicObjectValueChangeListener<String> objectListener = null;
 
-	public AttributeInputListener(DataContainer property, DynamicObjectValueChangeListener objectListener) {
+	public AttributeInputListener(DataContainer<String> property, DynamicObjectValueChangeListener<String> objectListener) {
 		this.property = property;
 		this.objectListener = objectListener;
 	}

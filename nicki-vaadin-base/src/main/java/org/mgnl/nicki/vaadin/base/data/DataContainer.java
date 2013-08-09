@@ -38,7 +38,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 import com.vaadin.data.Property;
 
-public interface DataContainer extends Property, Serializable{
+public interface DataContainer<T> extends Property<T>, Serializable{
 
 	DynamicObject getDynamicObject();
 	String getAttributeName();

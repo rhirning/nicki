@@ -78,7 +78,7 @@ public class OrgValueProvider extends BasicValueProvider implements ValueProvide
 		treeContainer = new TreeContainer(getSelector().getContext(), treeDataProvider, I18n.getText(getI18nBase() + ".org.title"));
 		treeSelector.setContainerDataSource(treeContainer.getTree());
 		treeSelector.setItemCaptionPropertyId(TreeContainer.PROPERTY_NAME);
-		treeSelector.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
+		treeSelector.setItemCaptionMode(AbstractSelect.ItemCaptionMode.PROPERTY);
 		treeSelector.setItemIconPropertyId(TreeContainer.PROPERTY_ICON);
 
 		treeSelector.addListener(new Tree.ExpandListener() {

@@ -81,7 +81,7 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 		ShopArticle shopArticle = new ShopArticle(article);
 		Tab tab = tabSheet.addTab(renderer.render(shopArticle, getInventory()), article.getDisplayName(), Icon.SETTINGS.getResource());
 		((AbstractComponent)tab.getComponent()).setData(renderer);
-		tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
+		tabSheet.addSelectedTabChangeListener(new TabSheet.SelectedTabChangeListener() {
 			
 			@Override
 			public void selectedTabChange(SelectedTabChangeEvent event) {
@@ -110,7 +110,7 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 		
 		Tab tab = tabSheet.addTab(renderer.render(page, getInventory()), page.getLabel(), Icon.SETTINGS.getResource());
 		((AbstractComponent)tab.getComponent()).setData(renderer);
-		tabSheet.addListener(new TabSheet.SelectedTabChangeListener() {
+		tabSheet.addSelectedTabChangeListener(new TabSheet.SelectedTabChangeListener() {
 			
 			@Override
 			public void selectedTabChange(SelectedTabChangeEvent event) {

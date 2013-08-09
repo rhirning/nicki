@@ -34,8 +34,9 @@ package org.mgnl.nicki.vaadin.base.editor;
 
 import java.io.Serializable;
 
-import com.vaadin.terminal.Resource;
-import com.vaadin.terminal.ThemeResource;
+import com.vaadin.server.Resource;
+import com.vaadin.server.ThemeResource;
+
 
 @SuppressWarnings("serial")
 public class Icon implements Serializable {

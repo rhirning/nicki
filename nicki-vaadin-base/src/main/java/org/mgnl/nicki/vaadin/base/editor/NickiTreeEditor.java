@@ -55,19 +55,18 @@ import org.mgnl.nicki.vaadin.base.editor.DynamicObjectViewer;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.Action;
-import com.vaadin.terminal.Sizeable;
-import com.vaadin.ui.AbsoluteLayout;
-import com.vaadin.ui.AbstractSelect;
+import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalSplitPanel;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.Slider;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Tree;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Tree.ExpandEvent;
 
 @SuppressWarnings("serial")
-public class NickiTreeEditor extends AbsoluteLayout {
+public class NickiTreeEditor extends CustomComponent {
 
 	public enum CREATE {
 		ALLOW, DENY
@@ -82,11 +81,8 @@ public class NickiTreeEditor extends AbsoluteLayout {
 	};
 
 	private NickiSelect selector;
-	private Panel panel;
-	private VerticalLayout selectorLayout;
 	private DynamicObject selectedObject = null;
 	private ClassEditor viewer;
-	private Window newWindow;
 	private TreeContainer treeContainer;
 	private String messageKeyBase;
 	private DataProvider treeDataProvider;
@@ -115,13 +111,14 @@ public class NickiTreeEditor extends AbsoluteLayout {
 	private NickiApplication application;
 	private HorizontalSplitPanel hsplit;
 	private NickiTreeEditor nickiEditor;
-	private float viewerHeight = 800;
-	private Slider changeSize;
 
 	public NickiTreeEditor(NickiApplication application, NickiContext ctx) {
 		this.nickiEditor = this;
 		this.application = application;
 		this.context = ctx;
+		this.hsplit = new HorizontalSplitPanel();
+		hsplit.setSplitPosition(200, Unit.PIXELS);
+		setCompositionRoot(hsplit);
 	}
 
 	public void init(NickiSelect select, DataProvider treeDataProvider,
@@ -132,55 +129,13 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		this.treeTitle = I18n.getText(this.messageKeyBase + ".tree.title");
 		this.treeContainer = new TreeContainer(this.context,
 				this.treeDataProvider, this.treeTitle);
-		this.hsplit = new HorizontalSplitPanel();
-		hsplit.setSplitPosition(200, Sizeable.UNITS_PIXELS);
-		hsplit.setHeight("100%");
-		// setHeight(900, UNITS_PIXELS);
-
 		selector = select;
 		loadTree();
-		selector.setHeight("100%");
-		selector.setWidth("100%");
-		// selector.setDragMode(TreeDragMode.NODE);
-		// selector.setDropHandler(new TreeDropHandler(this));
+		
+		Component selectorComponent = selector.getComponent();
+		selectorComponent.setSizeFull();
 
-		addComponent(hsplit, "top:0.0px;left:0.0px;");
-
-		selectorLayout = new VerticalLayout();
-
-		changeSize = new Slider();
-		changeSize.setImmediate(true);
-		changeSize.setMin(800);
-		changeSize.setMax(2000);
-		changeSize.setWidth("100%");
-		changeSize.addListener(new Property.ValueChangeListener() {
-
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				Object value = event.getProperty().getValue();
-				viewerHeight = Float.parseFloat(value.toString());
-				if (viewer != null) {
-					viewer.setHeight(viewerHeight, UNITS_PIXELS);
-				}
-
-			}
-		});
-		/*
-		 * changeSize.addListener(new Button.ClickListener() {
-		 * 
-		 * @Override public void buttonClick(ClickEvent event) { viewerHeight +=
-		 * 100; if (viewer != null) { viewer.setHeight(viewerHeight,
-		 * UNITS_PIXELS); } } });
-		 */
-		selectorLayout.addComponent(selector.getComponent());
-
-		hsplit.setFirstComponent(selectorLayout);
-		this.panel = new Panel();
-		VerticalLayout panelLayout = new VerticalLayout();
-		panelLayout.setMargin(false);
-		panel.setContent(panelLayout);
-		panel.setHeight("100%");
-		hsplit.setSecondComponent(panel);
+		hsplit.setFirstComponent(selectorComponent);
 
 		selector.setImmediate(true);
 		selector.setSelectable(true);
@@ -196,8 +151,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 							e.printStackTrace();
 						}
 					}
-					panel.removeComponent(viewer);
-					viewer = null;
+					hideClassEditor();
 					return;
 
 				}
@@ -211,25 +165,15 @@ public class NickiTreeEditor extends AbsoluteLayout {
 				}
 				setSelectedObject(selected);
 				if (selected == null || isRoot(selected)) {
-					if (viewer != null) {
-						removeComponent(viewer);
-						viewer = null;
-					}
+					hideClassEditor();
 				} else {
 					if (classEditors.containsKey(selected.getClass())) {
 						ClassEditor classEditor = classEditors.get(selected
 								.getClass());
-						classEditor.setDynamicObject(getEditor(), selected);
-						viewer = classEditor;
-						viewer.setHeight(viewerHeight, UNITS_PIXELS);
+						showClassEditor(classEditor, selected);
 					} else {
-						viewer = new DynamicObjectViewer();
-						viewer.setDynamicObject(getEditor(), selected);
-						viewer.setHeight(viewerHeight, UNITS_PIXELS);
+						showClassEditor(new DynamicObjectViewer(), selected);
 					}
-					panel.removeAllComponents();
-					panel.addComponent(changeSize);
-					panel.addComponent(viewer);
 				}
 			}
 		});
@@ -257,8 +201,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 						}
 					}
 				} else if (treeActionMap.containsKey(action)) {
-					treeActionMap.get(action).execute(getWindow(),
-							(DynamicObject) target);
+					treeActionMap.get(action).execute((DynamicObject) target);
 				} else if (actions.containsKey(target.getClass())) {
 					Map<Action, Class<? extends DynamicObject>> map = actions
 							.get(target.getClass());
@@ -289,6 +232,21 @@ public class NickiTreeEditor extends AbsoluteLayout {
 			}
 		});
 	}
+	
+	public void showClassEditor(ClassEditor classEditor, DynamicObject selected) {
+
+		classEditor.setDynamicObject(getEditor(), selected);
+		viewer = classEditor;
+		hsplit.setSecondComponent(viewer);
+		
+	}
+	
+	public void hideClassEditor() {
+		if  (viewer != null) {
+			hsplit.removeComponent(viewer);
+			viewer = null;
+		}
+	}
 
 	protected NickiTreeEditor getEditor() {
 		return this;
@@ -300,8 +258,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 			setSelectedObject(null);
 		}
 
-		panel.removeAllComponents();
-		hsplit.setFirstComponent(selectorLayout);
+		hideClassEditor();
 		viewer = null;
 
 		collapse(object);
@@ -383,14 +340,14 @@ public class NickiTreeEditor extends AbsoluteLayout {
 	protected void renameItem(DynamicObject target) {
 		EnterNameHandler handler = new RenameObjecttEnterNameHandler(this,
 				target);
-		EnterNameDialog dialog = new EnterNameDialog(messageKeyBase + ".rename");
+		EnterNameDialog dialog = new EnterNameDialog(messageKeyBase + ".rename",
+				I18n.getText(messageKeyBase
+						+ ".rename.window.title"));
 		dialog.setHandler(handler);
-		newWindow = new Window(I18n.getText(messageKeyBase
-				+ ".rename.window.title"), dialog);
-		newWindow.setWidth(440, Sizeable.UNITS_PIXELS);
-		newWindow.setHeight(500, Sizeable.UNITS_PIXELS);
-		newWindow.setModal(true);
-		this.getWindow().addWindow(newWindow);
+		dialog.setWidth(440, Unit.PIXELS);
+		dialog.setHeight(500, Unit.PIXELS);
+		dialog.setModal(true);
+		getUI().addWindow(dialog);
 	}
 
 	protected void create(DynamicObject parent,
@@ -399,17 +356,15 @@ public class NickiTreeEditor extends AbsoluteLayout {
 		try {
 			addDynamicObject(parent, classDefinition);
 		} catch (Exception e) {
-			getWindow().showNotification(
-					I18n.getText("nicki.editor.create.error", parent.getName(),
-							classDefinition.getSimpleName()), e.getMessage(),
-					Window.Notification.TYPE_ERROR_MESSAGE);
+			Notification.show(I18n.getText("nicki.editor.create.error", parent.getName(),
+							classDefinition.getSimpleName()), e.getMessage(), Type.ERROR_MESSAGE);
 		}
 	}
 
 	public void loadTree() {
 		selector.setContainerDataSource(treeContainer.getTree());
 		selector.setItemCaptionPropertyId(TreeContainer.PROPERTY_NAME);
-		selector.setItemCaptionMode(AbstractSelect.ITEM_CAPTION_MODE_PROPERTY);
+		selector.setItemCaptionMode(ItemCaptionMode.PROPERTY);
 		selector.setItemIconPropertyId(TreeContainer.PROPERTY_ICON);
 	}
 
@@ -422,18 +377,21 @@ public class NickiTreeEditor extends AbsoluteLayout {
 			editor.init(parent, classDefinition);
 		} else {
 			editor = new SimpleNewClassEditor(this, messageKeyBase + "."
-					+ getClassName(classDefinition) + ".create");
+					+ getClassName(classDefinition) + ".create",
+					I18n.getText(messageKeyBase + "."
+							+ getClassName(classDefinition) + ".create.window.title"));
 			editor.init(parent, classDefinition);
 		}
-		editor.setParent(null);
+		if (editor instanceof Window) {
+			Window window = (Window) editor;
+			window.setWidth(440, Unit.PIXELS);
+			window.setHeight(500, Unit.PIXELS);
+			window.setModal(true);
+			getUI().addWindow(window);
+		} else {
+			// TODO: error!!
+		}
 
-		newWindow = new Window(I18n.getText(messageKeyBase + "."
-				+ getClassName(classDefinition) + ".create.window.title"),
-				editor);
-		newWindow.setWidth(440, Sizeable.UNITS_PIXELS);
-		newWindow.setHeight(500, Sizeable.UNITS_PIXELS);
-		newWindow.setModal(true);
-		this.getWindow().addWindow(newWindow);
 	}
 
 	public void setNewClassEditor(
@@ -538,10 +496,7 @@ public class NickiTreeEditor extends AbsoluteLayout {
 	}
 
 	public void reloadChildren(DynamicObject parent) {
-		if (viewer != null) {
-			removeComponent(viewer);
-			viewer = null;
-		}
+		hideClassEditor();
 		parent.unLoadChildren();
 		this.treeContainer.removeChildren(parent);
 		this.treeContainer.loadChildren(parent);

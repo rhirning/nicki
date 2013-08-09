@@ -40,14 +40,14 @@ import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
+import org.mgnl.nicki.vaadin.base.fields.NickiField;
 
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Field;
 
 @SuppressWarnings("serial")
-public abstract class BasicAttributeComponent implements AttributeComponent, Serializable {
-	private Field field;
+public abstract class BasicAttributeComponent<F> implements AttributeComponent<F>, Serializable {
+	private NickiField<F> field;
 	private boolean enabled;
 	private InventoryArticle article;
 	private CatalogArticleAttribute attribute;
@@ -56,7 +56,7 @@ public abstract class BasicAttributeComponent implements AttributeComponent, Ser
 		if (StringUtils.isNotEmpty(attribute.getContentClass())) {
 			try {
 				AttributeContent contentProvider = (AttributeContent) Classes.newInstance(attribute.getContentClass());
-				return contentProvider.getContent(classDefinition, user, person);
+				return (T) contentProvider.getContent(classDefinition, user, person);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -65,34 +65,34 @@ public abstract class BasicAttributeComponent implements AttributeComponent, Ser
 	}
 
 	@Override
-	public Component getInstance(String caption, Object date, ValueChangeListener listener) {
+	public Component getInstance(String caption, F date, ValueChangeListener listener) {
 		setCaption(caption);
 		try {
 			getField().setValue(date);
 		} catch (Exception e) {
 		}
 		if (isEnabled()) {
-			getField().addListener(listener);
+			getField().addValueChangeListener(listener);
 		}
-		return getField();
+		return getField().getComponent();
 	}
 
 
 	
-	public void setValue(Object value) {
+	public void setValue(F value) {
 		field.setValue(value);
 	}
 
-	public Object getValue() {
+	public F getValue() {
 		return field.getValue();
 	}
 
 
-	public void setField(Field field) {
+	public void setField(NickiField<F> field) {
 		this.field = field;
 	}
 
-	public Field getField() {
+	public NickiField<F> getField() {
 		return field;
 	}
 	

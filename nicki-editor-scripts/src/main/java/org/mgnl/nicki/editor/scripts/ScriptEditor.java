@@ -63,8 +63,8 @@ public class ScriptEditor extends NickiApplication {
 	@Override
 	public Component getEditor() {
 		ScriptViewer scriptViewer = new ScriptViewer();
-		scriptViewer.setRequest(getRequest());
-		scriptViewer.setResponse(getResponse());
+		//scriptViewer.setRequest(getRequest());
+		//scriptViewer.setResponse(getResponse());
 
 		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.scripts.basedn"), new ShowAllFilter());
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), treeDataProvider, getI18nBase());
@@ -75,10 +75,6 @@ public class ScriptEditor extends NickiApplication {
 		editor.addAction(new ExportTreeAction(getNickiContext(), Org.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
 		editor.addAction(new ExportTreeAction(getNickiContext(), Script.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
 		editor.initActions();
-		editor.setHeight("100%");
-		getMainWindow().setHeight("100%");
-		getMainWindow().getContent().setHeight("100%");
-
 		return editor;
 	}
 

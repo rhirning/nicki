@@ -50,7 +50,7 @@ public class RenameObjecttEnterNameHandler extends EnterNameHandler implements S
 	}
 
 	public void closeEnterNameDialog() {
-		editor.getWindow().removeWindow(getDialog().getWindow());
+		editor.getUI().removeWindow(getDialog());
 	}
 
 	public void setName(String name) throws DynamicObjectException {

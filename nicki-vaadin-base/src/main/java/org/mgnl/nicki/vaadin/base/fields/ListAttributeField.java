@@ -51,22 +51,22 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-public class ListAttributeField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
+public class ListAttributeField extends BaseDynamicAttributeField implements DynamicAttributeField<String>, Serializable {
 
 	private ComponentContainer container;
-	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener<String> objectListener) {
 
 		@SuppressWarnings("unchecked")
 		List<Object> values = (List<Object>) dynamicObject.get(attributeName);
 		container = new VerticalLayout();
 		VerticalLayout dataLayout = new VerticalLayout();
-		DataContainer property = new ListAttributeDataContainer(dynamicObject, attributeName);
+		DataContainer<List<String>> property = new ListAttributeDataContainer<List<String>>(dynamicObject, attributeName);
 		ListAttributeListener listener = new ListAttributeListener(dynamicObject, attributeName, property, dataLayout, objectListener);
 		HorizontalLayout hL= new HorizontalLayout();
 		Label label = new Label(getName(dynamicObject, attributeName));
 		hL.addComponent(label);
 		Button newButton =new Button(I18n.getText("nicki.editor.generic.button.add"));
-		newButton.addListener(new AddAttributeListener(dataLayout, listener));
+		newButton.addClickListener(new AddAttributeListener(dataLayout, listener));
 		hL.addComponent(newButton);
 		container.addComponent(hL);
 		if (values != null) {
@@ -74,7 +74,7 @@ public class ListAttributeField extends BaseDynamicAttributeField implements Dyn
 				String value = (String) valueObject;
 				TextField input = new TextField(null, value);
 				input.setImmediate(true);
-				input.addListener(listener);
+				input.addValueChangeListener(listener);
 				dataLayout.addComponent(input);
 			}
 		}

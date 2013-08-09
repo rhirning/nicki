@@ -34,10 +34,8 @@ package org.mgnl.nicki.vaadin.base.editor;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-import com.vaadin.ui.Window;
-
 public interface TreeAction {
-	public void execute(Window parentWindow, DynamicObject dynamicObject);
+	public void execute(DynamicObject dynamicObject);
 
 	public String getName();
 

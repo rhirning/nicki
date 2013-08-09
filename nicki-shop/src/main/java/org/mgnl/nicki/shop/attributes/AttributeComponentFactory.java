@@ -32,41 +32,40 @@
  */
 package org.mgnl.nicki.shop.attributes;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.mgnl.nicki.core.util.Classes;
 
 
 public class AttributeComponentFactory {
-	public static final String TYPE_DATE = "date";
-	public static final String TYPE_TEXT = "text";
-	public static final String TYPE_CHECKBOX = "checkboc";
-	public static final String TYPE_SELECT = "select";
-	public static final String TYPE_FREESELECT = "freeselect";
-	public static final String TYPE_STATIC = "static";
-	public static final String TYPE_DEFAULT = "default";
+	public enum Component {
+		DATE("org.mgnl.nicki.shop.attributes.DateComponent"),
+		TEXT("org.mgnl.nicki.shop.attributes.TextComponent"),
+		CHECKBOX("org.mgnl.nicki.shop.attributes.CheckboxComponent"),
+		SELECT("org.mgnl.nicki.shop.attributes.SelectComponent"),
+		FREESELECT("org.mgnl.nicki.shop.attributes.FreeSelectComponent"),
+		STATIC("org.mgnl.nicki.shop.attributes.LabelComponent"),
+		DEFAULT("org.mgnl.nicki.shop.attributes.LabelComponent")
+		;
+		
+		private String className;
 
-	protected static Map<String, String> attributeComponents = new HashMap<String, String>();
-	static {
-		attributeComponents.put(TYPE_DATE, "org.mgnl.nicki.shop.attributes.DateComponent");
-		attributeComponents.put(TYPE_TEXT, "org.mgnl.nicki.shop.attributes.TextComponent");
-		attributeComponents.put(TYPE_CHECKBOX, "org.mgnl.nicki.shop.attributes.CheckboxComponent");
-		attributeComponents.put(TYPE_SELECT, "org.mgnl.nicki.shop.attributes.SelectComponent");
-		attributeComponents.put(TYPE_FREESELECT, "org.mgnl.nicki.shop.attributes.FreeSelectComponent");
-		attributeComponents.put(TYPE_STATIC, "org.mgnl.nicki.shop.attributes.LabelComponent");
-		attributeComponents.put(TYPE_DEFAULT, "org.mgnl.nicki.shop.attributes.LabelComponent");
+		Component(String className) {
+			this.className = className;
+		}
+
+		@SuppressWarnings("unchecked")
+		public <T extends Object> AttributeComponent<T> getInstance() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+			return (AttributeComponent<T>) Classes.newInstance(className);
+		}
 	}
 
-	static public AttributeComponent getAttributeComponent(String type) {
+
+	static public <T extends Object> AttributeComponent<T> getAttributeComponent(String type) {
 		try {
-			if (attributeComponents.containsKey(type)) {
-				return (AttributeComponent) Classes
-						.newInstance(attributeComponents.get(type));
-			} else {
-				return (AttributeComponent) Classes
-						.newInstance(attributeComponents.get(TYPE_DEFAULT));
+			Component component = Component.valueOf(type);
+			if (component == null) {
+				component = Component.DEFAULT;
 			}
+			return component.getInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

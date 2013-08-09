@@ -35,7 +35,7 @@ package org.mgnl.nicki.shop.renderer;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 
-import com.vaadin.ui.Window;
+import com.vaadin.ui.Notification;
 
 public class NewSpecifiedArticleHandler implements CreateInstanceHandler {
 
@@ -52,8 +52,8 @@ public class NewSpecifiedArticleHandler implements CreateInstanceHandler {
 	@Override
 	public void setName(String value) {
 		if (tableRenderer.getInventory().hasArticle(catalogArticle, value)) {
-			tableRenderer.getWindow().showNotification(I18n.getText("nicki.rights.specifier.exists"),
-					Window.Notification.TYPE_ERROR_MESSAGE);
+			Notification.show(I18n.getText("nicki.rights.specifier.exists"),
+					Notification.Type.ERROR_MESSAGE);
 		} else {
 			tableRenderer.getInventory().addArticle(catalogArticle, value);
 			tableRenderer.render();

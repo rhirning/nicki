@@ -32,9 +32,6 @@
  */
 package org.mgnl.nicki.vaadin.base.application;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.auth.SSOAdapter;
@@ -51,15 +48,14 @@ import org.mgnl.nicki.vaadin.base.command.Command;
 import org.mgnl.nicki.vaadin.base.components.ConfirmDialog;
 import org.mgnl.nicki.vaadin.base.components.WelcomeDialog;
 
-import com.vaadin.Application;
-import com.vaadin.terminal.gwt.server.HttpServletRequestListener;
-import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.server.Page;
+import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 
 @SuppressWarnings("serial")
-public abstract class NickiApplication extends Application  implements HttpServletRequestListener{
+public abstract class NickiApplication extends UI {
 	public static final String JAAS_SSO_ENTRY = "NickiSSO";
 	public static final String JAAS_ENTRY = "Nicki";
 	public static final String ATTR_NICKI_CONTEXT = "NICKI_CONTEXT";
@@ -68,18 +64,21 @@ public abstract class NickiApplication extends Application  implements HttpServl
 	private boolean useSystemContext = false;
 	private boolean useWelcomeDialog = false;
 
+	VerticalLayout view;
 
 	@Override
-	public void init() {
-		setTheme(Config.getProperty("nicki.application.theme", "reindeer"));
-		Window mainWindow = new Window(I18n.getText(getI18nBase() + ".main.title"));
-//		mainWindow.setHeight(800, Sizeable.UNITS_PIXELS);
-		mainWindow.setWidth("100%");
-		setMainWindow(mainWindow);
+	public void init(VaadinRequest vaadinRequest) {
+		AppContext.setRequest(vaadinRequest);
+
+		view = new VerticalLayout();
+		view.setHeight("100%");
+		view.setWidth("100%");
+		setContent(view);
+		Page.getCurrent().setTitle(I18n.getText(getI18nBase() + ".main.title"));
 
 		// try getting context from session
 		try {
-			this.nickiContext = (NickiContext) getRequest().getSession(false).getAttribute(ATTR_NICKI_CONTEXT);
+			//this.nickiContext = (NickiContext) getRequest().getSession(false).getAttribute(ATTR_NICKI_CONTEXT);
 		} catch (Exception e) {
 		}
 		
@@ -97,25 +96,14 @@ public abstract class NickiApplication extends Application  implements HttpServl
 		}
 
 		Component loginDialog = new LoginDialog(this);
-		getMainWindow().addComponent(loginDialog);
+		getView().addComponent(loginDialog);
 	}
 	
 	public void logout() {
 		setNickiContext(null);
 		Component loginDialog = new LoginDialog(this);
-		getMainWindow().removeAllComponents();
-		getMainWindow().addComponent(loginDialog);
-	}
-	
-	public void onRequestStart(HttpServletRequest request,
-			HttpServletResponse response) {
-		AppContext.setRequest(request);
-		AppContext.setResponse(response);
-	}
-
-	public void onRequestEnd(HttpServletRequest request,
-			HttpServletResponse response) {
-		// nothing to do
+		getView().removeAllComponents();
+		getView().addComponent(loginDialog);
 	}
 
 	/*
@@ -157,12 +145,8 @@ public abstract class NickiApplication extends Application  implements HttpServl
 		return null;
 	}
 
-	public HttpServletRequest getRequest() {
-		return (HttpServletRequest) AppContext.getRequest();
-	}
-
-	public HttpServletResponse getResponse() {
-		return (HttpServletResponse) AppContext.getResponse();
+	public VaadinRequest getRequest() {
+		return (VaadinRequest) AppContext.getRequest();
 	}
 
 	public boolean login(String name, String password) {
@@ -188,16 +172,22 @@ public abstract class NickiApplication extends Application  implements HttpServl
 	}
 
 	public void start() throws DynamicObjectException {
-		getMainWindow().removeAllComponents();
+		getView().removeAllComponents();
 		if (isUseWelcomeDialog()) {
-			AbsoluteLayout layout = new AbsoluteLayout();
-			layout.setHeight("100%");
-			layout.addComponent(new WelcomeDialog(this), "top:0.0px;left:20.0px;");
-			layout.addComponent(getEditor(), "top:30.0px;left:20.0px;");
-			getMainWindow().addComponent(layout);
-		} else {
-			getMainWindow().addComponent(getEditor());
+			getView().addComponent(new WelcomeDialog(this));
 		}
+		Component editor = getEditor();
+		getView().addComponent(editor);
+		editor.setSizeFull();
+		getView().setExpandRatio(editor, 1);
+	}
+	
+	public String getEditorHeight() {
+		return "100%";
+	}
+	
+	public String getEditorWidth() {
+		return "100%";
 	}
 	
 
@@ -208,7 +198,7 @@ public abstract class NickiApplication extends Application  implements HttpServl
 		this.nickiContext = context;
 		if (getRequest() != null) {
 			try {
-				getRequest().getSession(true).setAttribute(ATTR_NICKI_CONTEXT, this.nickiContext);
+				//getRequest().getSession(true).setAttribute(ATTR_NICKI_CONTEXT, this.nickiContext);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -240,16 +230,15 @@ public abstract class NickiApplication extends Application  implements HttpServl
 	}
 
 	public void confirm(Command command) {
-		Window confirmWindow = new Window(command.getTitle());
-		confirmWindow.setModal(true);
-	       // Configure the windws layout; by default a VerticalLayout
-        VerticalLayout layout = (VerticalLayout) confirmWindow.getContent();
-        layout.setMargin(true);
-        layout.setSpacing(true);
-        // make it undefined for auto-sizing window
-        layout.setSizeUndefined();
+		addWindow(new ConfirmDialog(command));
+	}
 
-		confirmWindow.addComponent(new ConfirmDialog(command));
-		getMainWindow().addWindow(confirmWindow);
+	public VerticalLayout getView() {
+		return view;
+	}
+
+	@Override
+	public String getTheme() {
+		return Config.getProperty("nicki.application.theme", "reindeer");
 	}
 }

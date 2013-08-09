@@ -39,7 +39,8 @@ import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.template.engine.BasicTemplateStreamSource;
 
-import com.vaadin.terminal.StreamResource.StreamSource;
+import com.vaadin.server.StreamResource.StreamSource;
+
 
 public class StringStreamSource extends BasicTemplateStreamSource implements StreamSource {
 	private static final long serialVersionUID = 4222973194514516918L;

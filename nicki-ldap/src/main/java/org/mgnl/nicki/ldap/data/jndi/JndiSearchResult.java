@@ -36,7 +36,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingEnumeration;
-import javax.naming.NamingException;
 import javax.naming.directory.SearchResult;
 
 import org.mgnl.nicki.core.objects.ContextAttributes;

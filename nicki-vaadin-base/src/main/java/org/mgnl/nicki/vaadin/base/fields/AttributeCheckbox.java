@@ -41,27 +41,26 @@ import org.mgnl.nicki.vaadin.base.data.DataContainer;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectValueChangeListener;
 import org.mgnl.nicki.vaadin.base.listener.BooleanAttributeInputListener;
 
-import com.vaadin.terminal.Sizeable;
-import com.vaadin.ui.AbstractField;
+import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Field;
 
 @SuppressWarnings("serial")
-public class AttributeCheckbox extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
+public class AttributeCheckbox extends BaseDynamicAttributeField implements DynamicAttributeField<String>, Serializable {
 
-	private AbstractField field;
-	private DataContainer property;
-	public void init (String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	private CheckBox field;
+	private DataContainer<String> property;
+	public void init (String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener<String> objectListener) {
 
-		property = new AttributeDataContainer(dynamicObject, attributeName);
+		property = new AttributeDataContainer<String>(dynamicObject, attributeName);
 		field = new CheckBox(getName(dynamicObject, attributeName));
-		field.setHeight(1.5f, Sizeable.UNITS_EM);
-		field.setValue(DataHelper.booleanOf((String) property.getValue()));
+		field.setHeight(1.5f, Unit.EM);
+		field.setValue(DataHelper.booleanOf(property.getValue()));
 		field.setImmediate(false);
-		field.addListener(new BooleanAttributeInputListener(property, objectListener));
+		field.addValueChangeListener(new BooleanAttributeInputListener(property, objectListener));
 	}
 
-	public Field getComponent(boolean readOnly) {
+	public Field<Boolean> getComponent(boolean readOnly) {
 		field.setReadOnly(readOnly);
 		return field;
 	}

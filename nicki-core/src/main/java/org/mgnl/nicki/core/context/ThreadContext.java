@@ -55,14 +55,6 @@ public class ThreadContext {
 		getInstance().setRequest(request);
 	}
 
-	public static Object getResponse() {
-		return getInstance().getResponse();
-	}
-
-	public static void setResponse(Object response) {
-		getInstance().setResponse(response);
-	}
-
 	public static Locale getLocale() {
 		return getInstance().getLocale();
 	}

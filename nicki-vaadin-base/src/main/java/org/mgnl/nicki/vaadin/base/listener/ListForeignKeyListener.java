@@ -53,7 +53,7 @@ public class ListForeignKeyListener extends BaseAttributeListener implements Val
 	public void textChange(TextChangeEvent event) {
 	}
 	public void valueChange(ValueChangeEvent event) {
-		List<Object> values = collectValues(this.container);
+		List<String> values = collectValues(this.container);
 		if (values.size() > 0) {
 			getDynamicObject().put(getName(), values);
 		} else {

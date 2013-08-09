@@ -41,6 +41,7 @@ import com.vaadin.data.Container;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.Tree.ExpandListener;
 
 @SuppressWarnings("serial")
@@ -68,7 +69,7 @@ public abstract class BasicNickiSelector implements NickiSelect {
 	}
 
 	public void addListener(ValueChangeListener listener) {
-		component.addListener(listener);
+		component.addValueChangeListener(listener);
 	}
 
 	public void unselect(DynamicObject object) {
@@ -79,8 +80,8 @@ public abstract class BasicNickiSelector implements NickiSelect {
 		component.setItemCaptionPropertyId(propertyName);
 	}
 
-	public void setItemCaptionMode(int itemCaptionModeProperty) {
-		component.setItemCaptionMode(itemCaptionModeProperty);
+	public void setItemCaptionMode(ItemCaptionMode itemCaptionMode) {
+		component.setItemCaptionMode(itemCaptionMode);
 	}
 
 	public void setItemIconPropertyId(String propertyIcon) {

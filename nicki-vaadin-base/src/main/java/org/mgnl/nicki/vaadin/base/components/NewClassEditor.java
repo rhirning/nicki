@@ -36,9 +36,8 @@ import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-import com.vaadin.ui.ComponentContainer;
 
-public interface NewClassEditor extends ComponentContainer{
+public interface NewClassEditor {
 
 	void init(DynamicObject parent, Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException;
 

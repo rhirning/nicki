@@ -36,7 +36,6 @@ import java.util.Locale;
 
 public class Context {
 	private Object request = null;
-	private Object response = null;
 	private Locale locale = Locale.GERMAN;
 
 	public Object getRequest() {
@@ -55,14 +54,6 @@ public class Context {
 		if (locale != null) {
 			this.locale = locale;
 		}
-	}
-
-	public void setResponse(Object response) {
-		this.response = response;
-	}
-
-	public Object getResponse() {
-		return response;
 	}
 
 }

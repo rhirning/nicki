@@ -37,7 +37,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import com.vaadin.data.Property;
 
 @SuppressWarnings("serial")
-public class ListAttributeDataContainer implements DataContainer, Property {
+public class ListAttributeDataContainer<T> implements DataContainer<T>, Property<T> {
 
 	public DynamicObject getDynamicObject() {
 		return dynamicObject;
@@ -56,17 +56,16 @@ public class ListAttributeDataContainer implements DataContainer, Property {
 		this.attributeName = attributeName;
 	}
 
-	public Object getValue() {
-		return dynamicObject.get(attributeName);
+	public T getValue() {
+		return (T) dynamicObject.get(attributeName);
 	}
 
-	public void setValue(Object newValue) throws ReadOnlyException,
-			ConversionException {
+	public void setValue(Object newValue) throws ReadOnlyException {
 		dynamicObject.put(attributeName, newValue);
 	}
 
-	public Class<?> getType() {
-		return dynamicObject.getModel().getDynamicAttribute(attributeName).getClass();
+	public Class<? extends T> getType() {
+		return (Class<? extends T>) dynamicObject.getModel().getDynamicAttribute(attributeName).getClass();
 	}
 
 	public boolean isReadOnly() {

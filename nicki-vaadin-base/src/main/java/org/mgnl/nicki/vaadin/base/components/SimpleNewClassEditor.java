@@ -41,8 +41,8 @@ import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 public class SimpleNewClassEditor extends EnterNameDialog implements NewClassEditor {
 	private NickiTreeEditor treeEditor;
 
-	public SimpleNewClassEditor(NickiTreeEditor nickiEditor, String messageBase) {
-		super(messageBase);
+	public SimpleNewClassEditor(NickiTreeEditor nickiEditor, String messageBase, String title) {
+		super(messageBase, title);
 		this.treeEditor = nickiEditor;
 	}
 
