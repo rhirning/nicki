@@ -70,9 +70,6 @@ public class JcrEditor extends NickiApplication {
 		editor.addAction(new ExportTreeAction(getNickiContext(), GenericNodeDynamicObject.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
 		editor.setClassEditor(GenericNodeDynamicObject.class, new NodeViewer());
 		editor.initActions();
-		editor.setHeight("100%");
-		getMainWindow().setHeight("100%");
-		getMainWindow().getContent().setHeight("100%");
 
 		return editor;
 	}
