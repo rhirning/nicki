@@ -9,41 +9,41 @@
 	</context-param>
 	<servlet>
 		<servlet-name>Report Application</servlet-name>
-		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
+		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
 		<init-param>
 			<description>
-			Vaadin application class to start</description>
-			<param-name>application</param-name>
+			Vaadin UI class to start</description>
+			<param-name>UI</param-name>
 			<param-value>org.mgnl.nicki.report.ReportApplication</param-value>
 		</init-param>
 	</servlet>
 	<servlet>
 		<servlet-name>Template Editor</servlet-name>
-		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
+		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
 		<init-param>
 			<description>
-			Vaadin application class to start</description>
-			<param-name>application</param-name>
+			Vaadin UI class to start</description>
+			<param-name>UI</param-name>
 			<param-value>org.mgnl.nicki.editor.templates.TemplateEditor</param-value>
 		</init-param>
 	</servlet>
 	<servlet>
 		<servlet-name>Script Editor</servlet-name>
-		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
+		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
 		<init-param>
 			<description>
-			Vaadin application class to start</description>
-			<param-name>application</param-name>
+			Vaadin UI class to start</description>
+			<param-name>UI</param-name>
 			<param-value>org.mgnl.nicki.editor.scripts.ScriptEditor</param-value>
 		</init-param>
 	</servlet>
 	<servlet>
 		<servlet-name>Catalog Editor</servlet-name>
-		<servlet-class>com.vaadin.terminal.gwt.server.ApplicationServlet</servlet-class>
+		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
 		<init-param>
 			<description>
-			Vaadin application class to start</description>
-			<param-name>application</param-name>
+			Vaadin UI class to start</description>
+			<param-name>UI</param-name>
 			<param-value>org.mgnl.nicki.editor.catalogs.CatalogEditor</param-value>
 		</init-param>
 	</servlet>

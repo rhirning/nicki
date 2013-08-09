@@ -32,14 +32,13 @@
  */
 package org.mgnl.nicki.vaadin.base.editor;
 
-import com.vaadin.Application;
-import com.vaadin.terminal.StreamResource;
+import com.vaadin.server.StreamResource;
+
 
 public class LinkResource extends StreamResource {
 	private String mimeType = "";
-	public LinkResource(StreamSource streamSource, String filename,
-			Application application, String mimeType) {
-		super(streamSource, filename, application);
+	public LinkResource(StreamSource streamSource, String filename, String mimeType) {
+		super(streamSource, filename);
 		this.mimeType = mimeType;
 		setCacheTime(1);
 	}

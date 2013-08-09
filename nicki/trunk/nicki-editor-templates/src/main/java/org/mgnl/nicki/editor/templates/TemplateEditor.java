@@ -71,9 +71,6 @@ public class TemplateEditor extends NickiApplication {
 		editor.addAction(new ExportTreeAction(getNickiContext(), Org.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
 		editor.addAction(new ExportTreeAction(getNickiContext(), Template.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
 		editor.initActions();
-		editor.setHeight("100%");
-		getMainWindow().setHeight("100%");
-		getMainWindow().getContent().setHeight("100%");
 
 		return editor;
 	}

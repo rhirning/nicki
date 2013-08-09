@@ -35,27 +35,28 @@ package org.mgnl.nicki.shop.attributes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
+import org.mgnl.nicki.vaadin.base.fields.SelectField;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.NativeSelect;
 
 @SuppressWarnings("serial")
-public class CostCenterComponent extends BasicAttributeComponent implements AttributeComponent {
+public class CostCenterComponent extends BasicAttributeComponent<String> implements AttributeComponent<String> {
 
 	public CostCenterComponent() {
 		NativeSelect field = new NativeSelect();
 		field.addItem("12345");
 		field.setImmediate(false);
-		setField(field);
+		setField(new SelectField(field));
 	}
 	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
 		setAttribute(attribute);
 		setCaption(attribute.getLabel());
 		if (isEnabled()) {
-			getField().addListener(new CatalogAttributeInputListener(getArticle(), getAttribute()));
+			getField().addValueChangeListener(new CatalogAttributeInputListener(getArticle(), getAttribute()));
 		}
-		return getField();
+		return getField().getComponent();
 	}
 	
 }

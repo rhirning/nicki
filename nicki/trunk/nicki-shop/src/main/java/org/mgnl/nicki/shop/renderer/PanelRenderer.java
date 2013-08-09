@@ -41,19 +41,20 @@ import org.mgnl.nicki.shop.objects.CatalogArticle;
 
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class PanelRenderer extends BaseShopRenderer implements ShopRenderer{
 
 	private ShopViewerComponent shopViewerComponent;
-	private Panel panel;
+	private VerticalLayout panelLayout;
 	
 	public AbstractComponent render(ShopViewerComponent shopViewerComponent, Inventory inventory) {
 		this.shopViewerComponent = shopViewerComponent;
 		setInventory(inventory);
 		// create Panel
 		Panel panel = new Panel();
-		panel.setScrollable(true);
+		panelLayout = new VerticalLayout();
 		render();
 		return panel;
 	}
@@ -64,10 +65,10 @@ public class PanelRenderer extends BaseShopRenderer implements ShopRenderer{
 		ShopRenderer articleRenderer = new TableRenderer();
 		// collect all articles
 		List<CatalogArticle> articles = shopViewerComponent.getAllArticles();
-		panel.removeAllComponents();
+		panelLayout.removeAllComponents();
 		// add articles to panel
 		for (CatalogArticle article : articles) {
-			panel.addComponent(articleRenderer.render(new ShopArticle(article), getInventory()));
+			panelLayout.addComponent(articleRenderer.render(new ShopArticle(article), getInventory()));
 		}
 	}
 

@@ -41,7 +41,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 
 @SuppressWarnings("serial")
-public class LabelComponent extends BasicAttributeComponent implements AttributeComponent {
+public class LabelComponent extends BasicAttributeComponent<String> implements AttributeComponent<String> {
 
 	private Label label;
 
@@ -71,11 +71,11 @@ public class LabelComponent extends BasicAttributeComponent implements Attribute
 	}
 
 	@Override
-	public void setValue(Object value) {
+	public void setValue(String value) {
 	}
 
 	@Override
-	public Object getValue() {
+	public String getValue() {
 		return null;
 	}
 	@Override
@@ -90,7 +90,7 @@ public class LabelComponent extends BasicAttributeComponent implements Attribute
 		return false;
 	}
 	@Override
-	public String getStringValue(Object value) {
+	public String getStringValue(String value) {
 		return (String) value;
 	}
 }

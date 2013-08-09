@@ -34,8 +34,8 @@ package org.mgnl.nicki.shop.attributes;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
-public interface AttributeContent {
+public interface AttributeContent<T> {
 
-	<T extends Object > T getContent(Class<T> classDefinition, Person user, Person person);
+	T getContent(Class<T> classDefinition, Person user, Person person);
 
 }

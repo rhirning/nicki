@@ -37,6 +37,8 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
+import com.vaadin.ui.Notification;
+
 public class DeleteCommand implements Command {
 	private DynamicObject target;
 	private NickiTreeEditor nickiEditor;
@@ -54,7 +56,7 @@ public class DeleteCommand implements Command {
 			throw new CommandException(e);
 		}
 		nickiEditor.getSelector().removeItem(target);
-		this.nickiEditor.getWindow().showNotification(I18n.getText("nicki.editor.delete.info"));
+		Notification.show(I18n.getText("nicki.editor.delete.info"));
 		if (parent != null) {
 			this.nickiEditor.refresh(parent);
 		}

@@ -37,18 +37,19 @@ import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
+import org.mgnl.nicki.vaadin.base.fields.SimpleField;
 
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 
 @SuppressWarnings("serial")
-public class CheckboxComponent extends BasicAttributeComponent implements AttributeComponent {
+public class CheckboxComponent extends BasicAttributeComponent<Boolean> implements AttributeComponent<Boolean> {
 
 	public CheckboxComponent() {
 		CheckBox field = new CheckBox();
 		field.setWidth("200px");
 		field.setImmediate(false);
-		setField(field);
+		setField(new SimpleField<Boolean>(field));
 	}
 	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
@@ -56,13 +57,13 @@ public class CheckboxComponent extends BasicAttributeComponent implements Attrib
 		setCaption(attribute.getLabel());
 		getField().setValue(DataHelper.booleanOf((String) getArticle().getValue(getAttribute())));
 		if (isEnabled()) {
-			getField().addListener(new CatalogAttributeInputListener(getArticle(), getAttribute()));
+			getField().addValueChangeListener(new CatalogAttributeInputListener(getArticle(), getAttribute()));
 		}
-		return getField();
+		return getField().getComponent();
 	}
 	@Override
-	public String getStringValue(Object value) {
-		return ((Boolean) value)?"1":"0";
+	public String getStringValue(Boolean value) {
+		return value?"1":"0";
 	}
 
 }

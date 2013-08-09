@@ -71,7 +71,7 @@ public class PersonSelector extends CustomComponent {
 	private TextField filter;
 	public static final String USER_BASE = "nicki.users.basedn";
 	public static final String USER_BASE_DEFAULT = "ou=users,o=utopia";
-    private static String[] visibleCols = new String[] { "name"};
+    private static Object[] visibleCols = new Object[] { "name"};
 
 	PersonSelectHandler personSelectHandler;
 	
@@ -82,13 +82,13 @@ public class PersonSelector extends CustomComponent {
 		filter.focus();
 		setCompositionRoot(mainLayout);
 
-		closeButton.addListener(new Button.ClickListener() {
+		closeButton.addClickListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				personSelectHandler.closePersonSelector();
 			}
 		});
 
-		filter.addListener(new FieldEvents.TextChangeListener() {
+		filter.addTextChangeListener(new FieldEvents.TextChangeListener() {
 			
 			public void textChange(TextChangeEvent event) {
 				searchResult.setContainerDataSource(getBeanItems(searchPerson((String) event.getText())));
@@ -96,14 +96,14 @@ public class PersonSelector extends CustomComponent {
 			}
 		});
 		
-		searchButton.addListener(new Button.ClickListener() {
+		searchButton.addClickListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				searchResult.setContainerDataSource(getBeanItems(searchPerson((String) filter.getValue())));
 				searchResult.setVisibleColumns(visibleCols);
 			}
 		});
 
-		selectButton.addListener(new Button.ClickListener() {
+		selectButton.addClickListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {
 				select();
 			}

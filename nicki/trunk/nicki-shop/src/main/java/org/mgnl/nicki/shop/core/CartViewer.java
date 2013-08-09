@@ -84,7 +84,6 @@ public class CartViewer extends CustomComponent {
 		mainLayout.setImmediate(false);
 		mainLayout.setWidth("100%");
 		mainLayout.setHeight("100%");
-		mainLayout.setMargin(false);
 		
 		// top-level component properties
 		setWidth("100.0%");

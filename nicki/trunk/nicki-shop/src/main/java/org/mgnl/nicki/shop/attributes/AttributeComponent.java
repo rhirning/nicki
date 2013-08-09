@@ -39,15 +39,15 @@ import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Component;
 
-public interface AttributeComponent {
+public interface AttributeComponent<F> {
 
-	void setValue(Object value);
-	Object getValue();
+	void setValue(F value);
+	F getValue();
 	void setCaption(String caption);
 	void setEnabled(boolean enabled);
 	boolean isEnabled();
-	String getStringValue(Object value);
+	String getStringValue(F value);
 	Component getInstance(Person user, Person person, InventoryArticle article,
 			CatalogArticleAttribute attribute);
-	Component getInstance(String caption, Object value, ValueChangeListener listener);
+	Component getInstance(String caption, F value, ValueChangeListener listener);
 }

@@ -32,7 +32,6 @@
  */
 package org.mgnl.nicki.editor.templates;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,7 +42,6 @@ import org.mgnl.nicki.template.engine.TemplateParameter;
 import org.mgnl.nicki.vaadin.base.data.DateHelper;
 
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Field;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
@@ -55,7 +53,6 @@ public class ConfiguredTemplateConfigDialog extends CustomComponent implements T
 	private FormLayout mainLayout;
 	
 	private Template template;
-	private Map<TemplateParameter, Field> fields = new HashMap<TemplateParameter, Field>();
 	private Map<String, Object> params;
 	private TemplateConfig templateConfig;
 
@@ -92,8 +89,7 @@ public class ConfiguredTemplateConfigDialog extends CustomComponent implements T
 					field.setInvalidAllowed(false);
 					mainLayout.addComponent(field);
 					DateHelper.init(field);
-					field.addListener(new ParamInputListener(field, templateParameter.getName(), params, templateConfig));
-					fields.put(templateParameter, field);
+					field.addValueChangeListener(new ParamInputListener(field, templateParameter.getName(), params, templateConfig));
 				} else if (StringUtils.equalsIgnoreCase("string", templateParameter.getDataType())) {
 					TextField field = new TextField();
 					field.setCaption(templateParameter.getDisplayName());
@@ -102,8 +98,7 @@ public class ConfiguredTemplateConfigDialog extends CustomComponent implements T
 					field.setHeight("-1px");
 					field.setInvalidAllowed(false);
 					mainLayout.addComponent(field);
-					field.addListener(new ParamInputListener(field, templateParameter.getName(), params, templateConfig));
-					fields.put(templateParameter, field);
+					field.addValueChangeListener(new ParamInputListener(field, templateParameter.getName(), params, templateConfig));
 				} else if (StringUtils.equalsIgnoreCase("static", templateParameter.getDataType())) {
 					params.put(templateParameter.getName(), templateParameter.getValue());
 				}

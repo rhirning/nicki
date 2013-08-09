@@ -51,7 +51,7 @@ public class AddAttributeListener implements ClickListener {
 		String value = "";
 		TextField input = new TextField(null, value);
 		input.setImmediate(true);
-		input.addListener(listener);
+		input.addValueChangeListener(listener);
 		container.addComponent(input);
 	}
 

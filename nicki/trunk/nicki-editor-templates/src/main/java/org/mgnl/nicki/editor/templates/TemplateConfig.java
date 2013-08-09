@@ -43,6 +43,7 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
+import org.mgnl.nicki.vaadin.base.editor.LinkResource;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
 import com.vaadin.ui.AbsoluteLayout;
@@ -51,6 +52,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
@@ -89,7 +91,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		initI18n();
 		
 		if (usePreview) {
-			previewButton.addListener(new Button.ClickListener() {
+			previewButton.addClickListener(new Button.ClickListener() {
 				
 				public void buttonClick(ClickEvent event) {
 					try {
@@ -101,7 +103,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 			});
 		}
 		
-		htmlPreviewButton.addListener(new Button.ClickListener() {
+		htmlPreviewButton.addClickListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
 				try {
@@ -116,13 +118,12 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		pdfLink.setTargetName("_blank");
 		PdfStreamSource pdfStreamSource = new PdfStreamSource(template, template.getContext(), params);
 		pdfLink.setResource(new LinkResource(pdfStreamSource, template.getName() + ".pdf",
-				nickiEditor.getApplication(), "application/pdf"));
+				"application/pdf"));
 
 		csvLink.setCaption("CSV");
 		csvLink.setTargetName("_blank");
 		CsvStreamSource csvStreamSource = new CsvStreamSource(template, template.getContext(), params);
 		csvLink.setResource(new LinkResource(csvStreamSource, template.getName() + ".csv",
-				nickiEditor.getApplication(),
 				"text/comma-separated-values"));
 		
 		paramsChanged();
@@ -136,13 +137,13 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	}
 
 	protected void close() {
-		getWindow().getParent().removeWindow(getWindow());
+		// TODO:
 	}
 
 	protected void preview() throws DynamicObjectException, NamingException {
 		if (isComplete()) {
 			PreviewTemplate preview = new PreviewTemplate(editor.getNickiContext(), editor.getMessageKeyBase(), params);
-			preview.execute(editor.getWindow(), template);
+			preview.execute(template);
 		}
 	}
 	
@@ -150,13 +151,13 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	protected void htmlPreview() throws DynamicObjectException, NamingException {
 		if (isComplete()) {
 			HtmlPreviewTemplate preview = new HtmlPreviewTemplate(editor.getNickiContext(), editor.getMessageKeyBase(), params);
-			preview.execute(editor.getWindow(), template);
+			preview.execute(template);
 		}
 	}
 
 	protected boolean isComplete() {
 		if (!GuiTemplateHelper.isComplete(template, params)) {
-			getWindow().showNotification(I18n.getText(editor.getMessageKeyBase()+ ".error.params.incomplete"));
+			Notification.show(I18n.getText(editor.getMessageKeyBase()+ ".error.params.incomplete"));
 			return false;
 		} else {
 			return true;
@@ -182,7 +183,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		horizontalLayout.setSpacing(true);
-		horizontalLayout.setHeight(40, UNITS_PIXELS);
+		horizontalLayout.setHeight(40, Unit.PIXELS);
 		verticalLayout.addComponent(horizontalLayout);
 		
 		previewButton = new Button();

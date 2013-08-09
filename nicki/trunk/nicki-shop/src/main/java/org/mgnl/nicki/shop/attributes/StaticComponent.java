@@ -41,7 +41,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Label;
 
 @SuppressWarnings("serial")
-public class StaticComponent extends BasicAttributeComponent implements AttributeComponent {
+public class StaticComponent extends BasicAttributeComponent<String> implements AttributeComponent<String> {
 
 	private Label field;
 

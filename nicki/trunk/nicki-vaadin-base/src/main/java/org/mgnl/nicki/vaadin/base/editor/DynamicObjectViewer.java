@@ -39,21 +39,20 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.components.NewClassEditor;
 
-import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Layout;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class DynamicObjectViewer extends CustomComponent implements NewClassEditor, ClassEditor {
 
-	private AbsoluteLayout mainLayout;
+	private VerticalLayout mainLayout;
 	private DynamicObject dynamicObject;
 	private Button saveButton;
 	private boolean create;
-	private DynamicObjectValueChangeListener listener = null;
+	private DynamicObjectValueChangeListener<String> listener = null;
 	private DynamicObject parent = null;
 
 	@Deprecated
@@ -74,7 +73,7 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 		setCompositionRoot(mainLayout);
 	}
 	
-	public DynamicObjectViewer(DynamicObjectValueChangeListener listener) {
+	public DynamicObjectViewer(DynamicObjectValueChangeListener<String> listener) {
 		this.listener = listener;
 	}
 	
@@ -87,35 +86,23 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 	}
 
 
-	private AbsoluteLayout buildMainLayout() {
-		// common part: create layout
-		mainLayout = new AbsoluteLayout();
+	private VerticalLayout buildMainLayout() {
 		
-		// top-level component properties
-		setWidth("100.0%");
-		setHeight("100.0%");
-		VerticalLayout layout = new VerticalLayout();
-		mainLayout.addComponent(layout, "top:20.0px;left:20.0px;");
-		
-		layout.addComponent(getLayout());
+		mainLayout = new VerticalLayout();
+		mainLayout.setWidth("100%");
+		DynamicObjectFieldFactory factory = new DynamicObjectFieldFactory(listener);
+		factory.addFields(mainLayout, dynamicObject, create);
 		
 		saveButton = new Button(I18n.getText("nicki.editor.generic.button.save"));
-		saveButton.addListener(new Button.ClickListener() {
+		saveButton.addClickListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
 				save();
 			}
 		});
 
-		layout.addComponent(saveButton);
+		mainLayout.addComponent(saveButton);
 		return mainLayout;
-	}
-	
-	protected Layout getLayout() {
-		VerticalLayout layout = new VerticalLayout();
-		DynamicObjectFieldFactory factory = new DynamicObjectFieldFactory(listener);
-		factory.addFields(layout, dynamicObject, create);
-		return layout;
 	}
 
 	public void save() {
@@ -123,7 +110,7 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 			if (create) {
 				dynamicObject.create();
 			} else {
-				getWindow().showNotification(I18n.getText("nicki.editor.save.info"));
+				Notification.show(I18n.getText("nicki.editor.save.info"));
 				dynamicObject.update();
 			}
 			if (listener != null) {

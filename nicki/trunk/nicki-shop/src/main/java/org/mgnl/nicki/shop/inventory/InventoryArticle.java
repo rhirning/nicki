@@ -166,11 +166,11 @@ public class InventoryArticle implements Serializable{
 		return catalogArticle;
 	}
 
-	public Object getValue(CatalogArticleAttribute attribute) {
+	public String getValue(CatalogArticleAttribute attribute) {
 		return getValue(attribute.getName());
 	}
 
-	public Object getValue(String attributeName) {
+	public String getValue(String attributeName) {
 		InventoryAttribute iAttribute = attributes.get(attributeName);
 		return iAttribute.getValue();
 	}

@@ -61,7 +61,7 @@ public class BaseShopRenderer {
 	
 	protected Component getAttributeComponent(CatalogArticle article, InventoryArticle inventoryArticle, CatalogArticleAttribute articleAttribute, boolean enabled) {
 		try {
-			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
+			AttributeComponent<?> attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
 			attributeComponent.setEnabled(enabled);
 			return attributeComponent.getInstance(inventory.getUser(), inventory.getPerson(),
 					inventoryArticle, articleAttribute);
@@ -71,10 +71,15 @@ public class BaseShopRenderer {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	protected Component getAttributeComponent(CatalogArticle article, CatalogArticleAttribute articleAttribute, boolean enabled, Object value) {
 		try {
-			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
-			attributeComponent.setValue(value);
+			AttributeComponent<?> attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
+			try {
+				((AttributeComponent<Date>)attributeComponent).setValue((Date)value);
+			} catch (Exception e) {
+				((AttributeComponent<String>)attributeComponent).setValue((String)value);
+			}
 			inventory.getInventoryArticle(article).setValue(articleAttribute, value);
 			attributeComponent.setEnabled(enabled);
 			return attributeComponent.getInstance(getInventory().getUser(), getInventory().getPerson(),
@@ -88,7 +93,7 @@ public class BaseShopRenderer {
 
 	protected Component getStartDateComponent(InventoryArticle inventoryArticle, boolean enabled, Date start) {
 		try {
-			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(AttributeComponentFactory.TYPE_DATE);
+			AttributeComponent<Date> attributeComponent = AttributeComponentFactory.getAttributeComponent("DATE");
 			attributeComponent.setValue(start);
 			inventoryArticle.setStart(start);
 			attributeComponent.setEnabled(enabled);
@@ -96,13 +101,14 @@ public class BaseShopRenderer {
 			return attributeComponent.getInstance(I18n.getText(CatalogArticle.CAPTION_START), start, listener);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new LabelComponent().getInstance(I18n.getText(CatalogArticle.CAPTION_START), start, null);
+			// TODO: convert date
+			return new LabelComponent().getInstance(I18n.getText(CatalogArticle.CAPTION_START), start.toString(), null);
 		}
 	}
 
 	protected Component getEndDateComponent(InventoryArticle inventoryArticle, boolean enabled, Date end) {
 		try {
-			AttributeComponent attributeComponent = AttributeComponentFactory.getAttributeComponent(AttributeComponentFactory.TYPE_DATE);
+			AttributeComponent<Date> attributeComponent = AttributeComponentFactory.getAttributeComponent("DATE");
 			attributeComponent.setValue(end);
 			inventoryArticle.setEnd(end);
 			attributeComponent.setEnabled(enabled);
@@ -110,13 +116,14 @@ public class BaseShopRenderer {
 			return attributeComponent.getInstance(I18n.getText(CatalogArticle.CAPTION_END), end, listener);
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new LabelComponent().getInstance(I18n.getText(CatalogArticle.CAPTION_END), end, null);
+			// TODO: convert date
+			return new LabelComponent().getInstance(I18n.getText(CatalogArticle.CAPTION_END), end.toString(), null);
 		}
 	}
 
 	protected void removeExcept(Layout parent, Component button) {
 		List<Component> toBeRemoved = new ArrayList<Component>();
-		for (Iterator<Component> iterator = parent.getComponentIterator(); iterator.hasNext();) {
+		for (Iterator<Component> iterator = parent.iterator(); iterator.hasNext();) {
 			Component component = iterator.next();
 			if (component != button) {
 				toBeRemoved.add(component);

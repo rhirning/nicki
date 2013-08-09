@@ -39,9 +39,9 @@ import com.vaadin.event.dd.DragAndDropEvent;
 import com.vaadin.event.dd.DropHandler;
 import com.vaadin.event.dd.acceptcriteria.AcceptAll;
 import com.vaadin.event.dd.acceptcriteria.AcceptCriterion;
-import com.vaadin.terminal.gwt.client.ui.dd.VerticalDropLocation;
+import com.vaadin.shared.ui.dd.VerticalDropLocation;
 import com.vaadin.ui.AbstractSelect.AbstractSelectTargetDetails;
-import com.vaadin.ui.Window.Notification;
+import com.vaadin.ui.Notification;
 
 @SuppressWarnings("serial")
 public class TreeDropHandler implements DropHandler {
@@ -72,7 +72,7 @@ public class TreeDropHandler implements DropHandler {
 					|| editor.isParent(sourceItemId, targetItemId)
 			) {
 			    String errorMessage = "Bad target";
-				editor.getWindow().showNotification(errorMessage, Notification.TYPE_WARNING_MESSAGE);
+				Notification.show(errorMessage, Notification.Type.WARNING_MESSAGE);
 				return;
 			}
 			

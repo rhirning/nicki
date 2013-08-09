@@ -45,8 +45,6 @@ import org.mgnl.nicki.vaadin.base.data.ListPartDataContainer;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
-import com.vaadin.terminal.Sizeable;
-import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
@@ -58,7 +56,7 @@ import com.vaadin.ui.Button.ClickEvent;
 @SuppressWarnings("serial")
 public class TemplateViewer extends CustomComponent implements ClassEditor {
 
-	private AbsoluteLayout mainLayout;
+	private VerticalLayout mainLayout;
 	
 	private TabSheet tab;
 	private Template template;
@@ -82,11 +80,12 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 		this.template = (Template) dynamicObject;
 		buildEditor();
 		setCompositionRoot(mainLayout);
+		setSizeFull();
 		initI18n();
 		
 		createSheets();
 		
-		saveButton.addListener(new Button.ClickListener() {
+		saveButton.addClickListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
 				try {
@@ -96,7 +95,7 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 				}
 			}
 		});
-		executeButton.addListener(new Button.ClickListener() {
+		executeButton.addClickListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
 				try {
@@ -120,39 +119,33 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 		configDialog.setDynamicObject(editor, template);
 		previewWindow = new Window(I18n.getText(editor.getMessageKeyBase() + ".config.window.title"), configDialog);
 		previewWindow.setModal(true);
-		previewWindow.setWidth(480, Sizeable.UNITS_PIXELS);
-		previewWindow.setHeight(520, Sizeable.UNITS_PIXELS);
-		this.getWindow().addWindow(previewWindow);
+		previewWindow.setWidth(480, Unit.PIXELS);
+		previewWindow.setHeight(520, Unit.PIXELS);
+		getUI().addWindow(previewWindow);
 	}
 
 	private void createSheets() {
-		tab.addTab(new SimpleEditor(new AttributeDataContainer(template, "data")), I18n.getText(editor.getMessageKeyBase() +".tab.data"), null);
+		tab.addTab(new SimpleEditor(new AttributeDataContainer<String>(template, "data")), I18n.getText(editor.getMessageKeyBase() +".tab.data"), null);
 		tab.addTab(new TestDataView(new ListPartDataContainer(template, "testData", "="), editor.getMessageKeyBase()),
 				I18n.getText(editor.getMessageKeyBase() +".tab.testdata"), null);
-		tab.addTab(new SimpleEditor(new AttributeDataContainer(template, "params")), I18n.getText(editor.getMessageKeyBase() +".tab.params"), null);
+		tab.addTab(new SimpleEditor(new AttributeDataContainer<String>(template, "params")), I18n.getText(editor.getMessageKeyBase() +".tab.params"), null);
 	}
 	
-	private AbsoluteLayout buildEditor() {
+	private VerticalLayout buildEditor() {
 		// common part: create layout
-		mainLayout = new AbsoluteLayout();
-		VerticalLayout verticalLayout = new VerticalLayout();
-		verticalLayout.setHeight("100%");
-		mainLayout.addComponent(verticalLayout, "top:20.0px;left:20.0px;");
-
-		// top-level component properties
-		setWidth("100.0%");
-		setHeight("100.0%");
+		mainLayout = new VerticalLayout();
+		mainLayout.setSizeFull();
 		
 		tab = new TabSheet();
-		tab.setWidth("640px");
-		tab.setHeight("640px");
+		tab.setSizeFull();
 		tab.setImmediate(false);
-		verticalLayout.addComponent(tab);
+		mainLayout.addComponent(tab);
+		mainLayout.setExpandRatio(tab, 1);
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		horizontalLayout.setSpacing(true);
-		horizontalLayout.setHeight(40, UNITS_PIXELS);
-		verticalLayout.addComponent(horizontalLayout);
+		horizontalLayout.setHeight(40, Unit.PIXELS);
+		mainLayout.addComponent(horizontalLayout);
 		saveButton = new Button();
 		saveButton.setWidth("-1px");
 		saveButton.setHeight("-1px");

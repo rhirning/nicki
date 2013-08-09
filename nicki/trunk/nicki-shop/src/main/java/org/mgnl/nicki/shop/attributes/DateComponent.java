@@ -39,13 +39,14 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.vaadin.base.data.DateHelper;
+import org.mgnl.nicki.vaadin.base.fields.SimpleField;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.PopupDateField;
 
 
 @SuppressWarnings("serial")
-public class DateComponent extends BasicAttributeComponent implements AttributeComponent {
+public class DateComponent extends BasicAttributeComponent<Date> implements AttributeComponent<Date> {
 
 	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
@@ -56,24 +57,23 @@ public class DateComponent extends BasicAttributeComponent implements AttributeC
 		} catch (Exception e) {
 		}
 		if (isEnabled()) {
-			getField().addListener(new CatalogAttributeInputListener(getArticle(), getAttribute()));
+			getField().addValueChangeListener(new CatalogAttributeInputListener(getArticle(), getAttribute()));
 		}
-		return getField();
+		return getField().getComponent();
 	}
 
 	public DateComponent() {
 		PopupDateField field = new PopupDateField();
 		field.setImmediate(false);
 		DateHelper.init(field);
-		setField(field);
+		setField(new SimpleField<Date>(field));
 
 	}
 
 	@Override
-	public String getStringValue(Object value) {
+	public String getStringValue(Date value) {
 		try {
-			Date newValue =(Date) value;
-			return DataHelper.getDay(newValue);
+			return DataHelper.getDay(value);
 		} catch (Exception e) {
 			return "";
 		}

@@ -46,31 +46,30 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Field;
-import com.vaadin.ui.Select;
 import com.vaadin.ui.TextField;
 
 @SuppressWarnings("serial")
 public class AttributeSelectObjectField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
 
-	private Field field;
-	private DataContainer property;
+	private NickiField<String> field;
+	private DataContainer<String> property;
 	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
 
 		if (dynamicObject.getModel().getDynamicAttribute(attributeName).isForeignKey()) {
-			Select select = new ComboBox(getName(dynamicObject, attributeName));
+			ComboBox select = new ComboBox(getName(dynamicObject, attributeName));
 			select.setContainerDataSource(getOptions(dynamicObject, dynamicObject.getModel().getDynamicAttribute(attributeName)));
 			select.setItemCaptionPropertyId("name");
 			select.setImmediate(true);
 			select.select(dynamicObject.getAttribute(attributeName));
-			property = new ReferenceAttributeDataContainer(dynamicObject, attributeName);
+			property = new ReferenceAttributeDataContainer<String>(dynamicObject, attributeName);
 			select.setValue(property.getValue());
-			select.addListener(new AttributeInputListener(property, objectListener));
-			field = select;
+			select.addValueChangeListener(new AttributeInputListener(property, objectListener));
+			field = new SelectField(select);
 		} else {
-			field = new TextField(attributeName);
-			field.addListener(new AttributeInputListener(property, objectListener));
+			field = new SimpleField<String>(new TextField(attributeName));
+			field.addValueChangeListener(new AttributeInputListener(property, objectListener));
 		}
+		field.getComponent().setWidth("600px");
 	}
 	
 	private Container getOptions(DynamicObject dynamicObject, DynamicAttribute dynamicAttribute) {
@@ -88,6 +87,6 @@ public class AttributeSelectObjectField extends BaseDynamicAttributeField implem
 
 	public Component getComponent(boolean readOnly) {
 		field.setReadOnly(readOnly);
-		return field;
+		return field.getComponent();
 	}
 }

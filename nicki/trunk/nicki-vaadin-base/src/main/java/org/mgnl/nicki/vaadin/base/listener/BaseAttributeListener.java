@@ -56,12 +56,12 @@ public abstract class BaseAttributeListener implements ValueChangeListener {
 	}
 	public abstract void textChange(TextChangeEvent event);
 
-	public List<Object> collectValues(AbstractComponentContainer cont) {
-		List<Object> list = new ArrayList<Object>();
-		for (Iterator<Component> iterator = cont.getComponentIterator(); iterator.hasNext();) {
+	public List<String> collectValues(AbstractComponentContainer cont) {
+		List<String> list = new ArrayList<String>();
+		for (Iterator<Component> iterator = cont.iterator(); iterator.hasNext();) {
 			Component component = iterator.next();
 			if (component instanceof AbstractField) {
-				String value = (String) ((AbstractField) component).getValue();
+				String value = ((AbstractField<String>) component).getValue();
 				if (StringUtils.isNotEmpty(value)) {
 					list.add(value);
 				}

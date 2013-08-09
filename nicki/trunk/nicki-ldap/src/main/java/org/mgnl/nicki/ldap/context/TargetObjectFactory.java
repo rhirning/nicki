@@ -32,6 +32,7 @@
  */
 package org.mgnl.nicki.ldap.context;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -44,8 +45,8 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
-public class TargetObjectFactory implements ObjectFactory {
-
+public class TargetObjectFactory implements ObjectFactory, Serializable {
+	private static final long serialVersionUID = 4047428469649718133L;
 	private NickiContext context;
 	private Target target;
 	

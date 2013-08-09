@@ -65,9 +65,6 @@ public class ReportApplication extends TemplateEditor {
 		templateConfig.setUsePreview(usePreview);
 		editor.setClassEditor(Template.class, templateConfig);
 		editor.initActions();
-		editor.setHeight("100%");
-		getMainWindow().setHeight("100%");
-		getMainWindow().getContent().setHeight("100%");
 
 		return editor;
 	}

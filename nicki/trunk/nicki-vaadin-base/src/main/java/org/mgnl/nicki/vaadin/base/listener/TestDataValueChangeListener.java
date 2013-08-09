@@ -33,8 +33,10 @@
 package org.mgnl.nicki.vaadin.base.listener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -45,32 +47,41 @@ import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Field;
 
 @SuppressWarnings("serial")
-public class TestDataValueChangeListener implements ValueChangeListener {
+public class TestDataValueChangeListener<T> implements ValueChangeListener {
 
-	private Property dataContainer;
+	private Property<Map<String, String>> dataContainer;
 	private ComponentContainer testData;
 	private String separator;
-	public TestDataValueChangeListener(Property dataContainer, ComponentContainer testData, String separator) {
+	public TestDataValueChangeListener(Property<Map<String, String>> dataContainer, ComponentContainer testData, String separator) {
 		this.dataContainer = dataContainer;
 		this.testData = testData;
 		this.separator = separator;
 	}
 
 	public void valueChange(ValueChangeEvent event) {
-		dataContainer.setValue(collectValues(testData));
+		dataContainer.setValue(collectMapValues(testData));
+	}
+
+	public Map<String, String> collectMapValues(ComponentContainer cont) {
+		Map<String, String> map = new HashMap<String, String>();
+		for (Iterator<Component> iterator = cont.iterator(); iterator.hasNext();) {
+			Component component = iterator.next();
+			String caption = component.getCaption();
+			if (component instanceof Field) {
+				String value = (String) ((Field<String>) component).getValue();
+				map.put(caption, value);
+			}
+		}
+		return map;
 	}
 
 	public List<String> collectValues(ComponentContainer cont) {
 		List<String> list = new ArrayList<String>();
-		for (Iterator<Component> iterator = cont.getComponentIterator(); iterator.hasNext();) {
+		for (Iterator<Component> iterator = cont.iterator(); iterator.hasNext();) {
 			Component component = iterator.next();
 			if (component instanceof Field) {
-				String caption = component.getCaption();
-				String value = (String) ((Field) component).getValue();
-				list.add(caption + separator + value);
-			}
-			if (component instanceof ComponentContainer) {
-				list.addAll(collectValues((AbstractComponentContainer) component));
+				String value = (String) ((Field<String>) component).getValue();
+				list.add(value);
 			}
 		}
 		return list;

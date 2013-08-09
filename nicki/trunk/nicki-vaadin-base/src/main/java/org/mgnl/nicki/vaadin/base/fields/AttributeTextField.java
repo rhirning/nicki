@@ -40,7 +40,7 @@ import org.mgnl.nicki.vaadin.base.data.DataContainer;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectValueChangeListener;
 import org.mgnl.nicki.vaadin.base.listener.AttributeInputListener;
 
-import com.vaadin.terminal.Sizeable;
+import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbstractField;
 import com.vaadin.ui.Field;
 import com.vaadin.ui.TextField;
@@ -48,20 +48,20 @@ import com.vaadin.ui.TextField;
 @SuppressWarnings("serial")
 public class AttributeTextField  extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
 
-	private AbstractField field;
-	private DataContainer property;
+	private AbstractField<String> field;
+	private DataContainer<String> property;
 	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
 
-		property = new AttributeDataContainer(dynamicObject, attributeName);
+		property = new AttributeDataContainer<String>(dynamicObject, attributeName);
 		field = new TextField(getName(dynamicObject, attributeName));
-		field.setHeight(2, Sizeable.UNITS_EM);
-		field.setWidth("400px");
+		field.setHeight(2, Unit.EM);
+		field.setWidth("600px");
 		field.setValue(property.getValue());
 		field.setImmediate(false);
-		field.addListener(new AttributeInputListener(property, objectListener));
+		field.addValueChangeListener(new AttributeInputListener(property, objectListener));
 	}
 
-	public Field getComponent(boolean readOnly) {
+	public Field<String> getComponent(boolean readOnly) {
 		field.setReadOnly(readOnly);
 		return field;
 	}

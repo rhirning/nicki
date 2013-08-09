@@ -40,6 +40,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import com.vaadin.data.Container;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.Action.Handler;
+import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Tree.ExpandListener;
 
@@ -73,7 +74,7 @@ public interface NickiSelect extends Serializable {
 
 	void setItemCaptionPropertyId(String propertyName);
 
-	void setItemCaptionMode(int itemCaptionModeProperty);
+	void setItemCaptionMode(ItemCaptionMode property);
 
 	void setItemIconPropertyId(String propertyIcon);
 

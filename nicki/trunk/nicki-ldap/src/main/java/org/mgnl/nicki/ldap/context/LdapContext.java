@@ -414,7 +414,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 
 	@Override
 	public List<DynamicObject> loadReferenceObjects(ReferenceMethod ref) {
-		LdapQuery query = new LdapQuery(ref.getPath(), ref.getReference());
+		//LdapQuery query = new LdapQuery(ref.getPath(), ref.getReference());
 		
 		// TODO Auto-generated method stub
 		return null;

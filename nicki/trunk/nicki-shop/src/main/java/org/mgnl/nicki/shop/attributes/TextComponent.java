@@ -35,18 +35,19 @@ package org.mgnl.nicki.shop.attributes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
+import org.mgnl.nicki.vaadin.base.fields.SimpleField;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TextField;
 
 @SuppressWarnings("serial")
-public class TextComponent extends BasicAttributeComponent implements AttributeComponent {
+public class TextComponent extends BasicAttributeComponent<String> implements AttributeComponent<String> {
 
 	public TextComponent() {
 		TextField field = new TextField();
 		field.setWidth("200px");
 		field.setImmediate(false);
-		setField(field);
+		setField(new SimpleField<String>(field));
 	}
 	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
@@ -54,9 +55,9 @@ public class TextComponent extends BasicAttributeComponent implements AttributeC
 		setCaption(attribute.getLabel());
 		getField().setValue(getArticle().getValue(getAttribute()));
 		if (isEnabled()) {
-			getField().addListener(new CatalogAttributeInputListener(getArticle(), getAttribute()));
+			getField().addValueChangeListener(new CatalogAttributeInputListener(getArticle(), getAttribute()));
 		}
-		return getField();
+		return getField().getComponent();
 	}
 
 }

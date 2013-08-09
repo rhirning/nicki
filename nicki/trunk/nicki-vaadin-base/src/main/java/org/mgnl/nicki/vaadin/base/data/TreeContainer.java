@@ -47,7 +47,7 @@ import org.mgnl.nicki.vaadin.base.editor.DataProvider;
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.HierarchicalContainer;
-import com.vaadin.terminal.ThemeResource;
+import com.vaadin.server.ThemeResource;
 
 @SuppressWarnings("serial")
 public class TreeContainer implements Serializable {

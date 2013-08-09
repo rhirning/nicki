@@ -47,21 +47,19 @@ import org.mgnl.nicki.shop.objects.Cart.CART_STATUS;
 import org.mgnl.nicki.shop.objects.CatalogArticle;
 import org.mgnl.nicki.shop.renderer.ShopRenderer;
 import org.mgnl.nicki.shop.renderer.TabRenderer;
-import org.mgnl.nicki.vaadin.base.command.SelectPersonCommand;
 
-import com.vaadin.terminal.Sizeable;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.Label;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Window.Notification;
 
 @SuppressWarnings("serial")
 public class ShopViewer extends CustomComponent implements ShopViewerComponent, Serializable {
 
-	private AbsoluteLayout mainLayout;
 	private Person shopper;
 	private Person recipient = null;
 	private Inventory inventory = null;
@@ -70,19 +68,9 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	private Button rememberButton;
 	private Button showInventoryButton;
 	private Button showCartButton;
-	private PersonSelector personSelector;
 	private ShopRenderer renderer = null;
 	private ShopParent parent;
 	private Cart cart = null;
-	
-	public ShopViewer(Person shopper, Shop shop, PersonSelector personSelector, ShopParent parent) {
-		this.shopper = shopper;
-		this.shop = shop;
-		this.personSelector = personSelector;
-		this.parent = parent;
-		init();
-	}
-
 
 	public ShopViewer(Person user, Shop shop, Person recipient, ShopParent parent, Cart cart) throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		this.shopper = user;
@@ -110,101 +98,34 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		if (this.renderer == null) {
 			this.renderer = new TabRenderer();
 		}
-		buildMainLayout();
-		setCompositionRoot(mainLayout);
-	}
-
-
-	private AbsoluteLayout buildMainLayout() {
-		// common part: create layout
-		mainLayout = new AbsoluteLayout();
-		
-		// top-level component properties
-		setWidth("100.0%");
-		setHeight("100.0%");
-		if (recipient != null) {
-			showShop();
-		} else {
-			Button selectPerson = new Button(I18n.getText("nicki.editor.generic.button.selectPerson"));
-			selectPerson.addListener(new Button.ClickListener() {
-				
-				public void buttonClick(ClickEvent event) {
-					boolean useInternalExternal = true;
-					boolean useActiveInactive = true;
-					personSelector.init(shopper.getContext(), useInternalExternal, useActiveInactive, new SelectPersonCommand() {
-						
-						public void setSelectedPerson(Person selectedPerson) {
-							try {
-								recipient = selectedPerson;
-								inventory = new Inventory(shopper, recipient);
-								mainLayout.removeAllComponents();
-								showShop();
-							} catch (Exception e) {
-								e.printStackTrace();
-							}
-						}
-	
-					});
-					Window window = new Window(I18n.getText(parent.getI18nBase() + ".window.person.title"), personSelector);
-					window.setWidth(640, Sizeable.UNITS_PIXELS);
-					window.setHeight(640, Sizeable.UNITS_PIXELS);
-					window.setModal(true);
-	
-					getWindow().addWindow(window);
-				}
-			});
-			
-			mainLayout.addComponent(selectPerson, "top:20.0px;left:20.0px;");
-		}
-		return mainLayout;
-		
+		setCompositionRoot(getShop());
 	}
 	
-	private void showShop() {
-		String shopPosition = "top:0.0px;left:0.0px;";
-		if (personSelector != null) {
-			AbsoluteLayout personLayout = new AbsoluteLayout();
-			personLayout.setHeight("30px");
-			personLayout.setWidth("100%");
-			Label personLabel = new Label(recipient.getDisplayName());
-			personLabel.setWidth("200px");
-			personLayout.addComponent(personLabel, "top:0.0px;left:20.0px;");
-	
-			Button selectPerson = new Button();
-			selectPerson.setWidth("-1px");
-			selectPerson.setHeight("-1px");
-			selectPerson.setCaption("Auswählen");
-			selectPerson.setImmediate(false);
-			personLayout.addComponent(selectPerson, "top:0.0px;left:240.0px;");
-	
-			mainLayout.addComponent(personLayout, "top:0.0px;left:0.0px;");
-			shopPosition = "top:30.0px;left:0.0px;";
-		}		
+	private VerticalLayout getShop() {
+		VerticalLayout shopLayout = new VerticalLayout();
 		AbsoluteLayout layout = new AbsoluteLayout();
-		layout.setHeight("100%");
-		mainLayout.addComponent(layout, shopPosition);
-		
+		layout.setHeight("100%");		
 
 		saveButton = new Button(I18n.getText("nicki.editor.generic.button.save"));
-		saveButton.addListener(new Button.ClickListener() {
+		saveButton.addClickListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
 				if (getInventory() != null) {
 					// System.out.println(getInventory().toString());
 					try {
 						if (!getInventory().hasChanged()) {
-							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".save.empty"),
-									Notification.TYPE_HUMANIZED_MESSAGE);
+							Notification.show(I18n.getText(parent.getI18nBase() + ".save.empty"),
+									Notification.Type.HUMANIZED_MESSAGE);
 						} else {
 							setCart(getInventory().save("shop", getCart()));
-							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".save.success"),
-									Notification.TYPE_HUMANIZED_MESSAGE);
+							Notification.show(I18n.getText(parent.getI18nBase() + ".save.success"),
+									Notification.Type.HUMANIZED_MESSAGE);
 							parent.closeShop();
 						}
 					} catch (Exception e) {
-						getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".save.error"),
+						Notification.show(I18n.getText(parent.getI18nBase() + ".save.error"),
 								e.getMessage(),
-								Notification.TYPE_ERROR_MESSAGE);
+								Notification.Type.ERROR_MESSAGE);
 						e.printStackTrace();
 					}
 				}
@@ -213,25 +134,25 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		
 
 		rememberButton = new Button(I18n.getText("nicki.editor.generic.button.remember"));
-		rememberButton.addListener(new Button.ClickListener() {
+		rememberButton.addClickListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
 				if (getInventory() != null) {
 					// System.out.println(getInventory().toString());
 					try {
 						if (!getInventory().hasChanged()) {
-							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".remember.empty"),
-									Notification.TYPE_HUMANIZED_MESSAGE);
+							Notification.show(I18n.getText(parent.getI18nBase() + ".remember.empty"),
+									Notification.Type.HUMANIZED_MESSAGE);
 						} else {
 							setCart(getInventory().remember("shop", getCart()));
-							getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".remember.success"),
-									Notification.TYPE_HUMANIZED_MESSAGE);
+							Notification.show(I18n.getText(parent.getI18nBase() + ".remember.success"),
+									Notification.Type.HUMANIZED_MESSAGE);
 							parent.closeShop();
 						}
 					} catch (Exception e) {
-						getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".remember.error"),
+						Notification.show(I18n.getText(parent.getI18nBase() + ".remember.error"),
 								e.getMessage(),
-								Notification.TYPE_ERROR_MESSAGE);
+								Notification.Type.ERROR_MESSAGE);
 						e.printStackTrace();
 					}
 				}
@@ -240,46 +161,46 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		
 
 		showInventoryButton = new Button(I18n.getText("nicki.editor.generic.button.showInventory"));
-		showInventoryButton.addListener(new Button.ClickListener() {
+		showInventoryButton.addClickListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
 				if (getInventory() != null) {
 					InventoryViewer inventoryViewer = new InventoryViewer(getInventory());
 					Window newWindow = new Window(I18n.getText(parent.getI18nBase() + ".inventory.window.title"), inventoryViewer);
-					newWindow.setWidth(1000, Sizeable.UNITS_PIXELS);
-					newWindow.setHeight(600, Sizeable.UNITS_PIXELS);
+					newWindow.setWidth(1000, Unit.PIXELS);
+					newWindow.setHeight(600, Unit.PIXELS);
 					newWindow.setModal(true);
-					getWindow().addWindow(newWindow);
+					getUI().addWindow(newWindow);
 				} else {
-					getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".showInventory.empty"),
-							Notification.TYPE_HUMANIZED_MESSAGE);
+					Notification.show(I18n.getText(parent.getI18nBase() + ".showInventory.empty"),
+							Notification.Type.HUMANIZED_MESSAGE);
 				}
 			}
 		});
 
 		showCartButton = new Button(I18n.getText("nicki.editor.generic.button.showCart"));
-		showCartButton.addListener(new Button.ClickListener() {
+		showCartButton.addClickListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
 				if (getInventory() != null) {
 					if (!getInventory().hasChanged()) {
-						getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".showCart.empty"),
-								Notification.TYPE_HUMANIZED_MESSAGE);
+						Notification.show(I18n.getText(parent.getI18nBase() + ".showCart.empty"),
+								Notification.Type.HUMANIZED_MESSAGE);
 					} else {
 						CartViewer cartViewer = new CartViewer(getInventory().getCart("shop", CART_STATUS.NEW));
 						Window newWindow = new Window(I18n.getText(parent.getI18nBase() + ".cart.window.title"), cartViewer);
-						newWindow.setWidth(1000, Sizeable.UNITS_PIXELS);
-						newWindow.setHeight(600, Sizeable.UNITS_PIXELS);
+						newWindow.setWidth(1000, Unit.PIXELS);
+						newWindow.setHeight(600, Unit.PIXELS);
 						newWindow.setModal(true);
-						getWindow().addWindow(newWindow);
+						getUI().addWindow(newWindow);
 						/*
 						getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".showCart.success"), getInventory().toString(),
 								Notification.TYPE_HUMANIZED_MESSAGE);
 						*/
 					}
 				} else {
-					getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".showCart.empty"),
-							Notification.TYPE_HUMANIZED_MESSAGE);
+					Notification.show(I18n.getText(parent.getI18nBase() + ".showCart.empty"),
+							Notification.Type.HUMANIZED_MESSAGE);
 				}
 			}
 		});
@@ -288,7 +209,12 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		layout.addComponent(rememberButton, "top:0.0px;left:220.0px;");
 		layout.addComponent(showInventoryButton, "top:0.0px;right:200.0px;");
 		layout.addComponent(showCartButton, "top:0.0px;right:20.0px;");
-		layout.addComponent(renderer.render(getShopViewerComponent(), getInventory()), "top:30.0px;;left:0.0px;");
+		shopLayout.addComponent(layout);
+		Component shopComponent = renderer.render(getShopViewerComponent(), getInventory());
+		shopLayout.addComponent(shopComponent);
+		shopComponent.setSizeFull();
+		shopLayout.setExpandRatio(shopComponent, 1);
+		return shopLayout;
 	}
 
 

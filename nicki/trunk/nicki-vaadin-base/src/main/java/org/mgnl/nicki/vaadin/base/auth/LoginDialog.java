@@ -78,7 +78,7 @@ public class LoginDialog extends CustomComponent {
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 
-		buttonLogin.addListener(new Button.ClickListener() {
+		buttonLogin.addClickListener(new Button.ClickListener() {
 			
 			public void buttonClick(ClickEvent event) {
 				count++;

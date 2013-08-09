@@ -46,9 +46,9 @@ import com.vaadin.ui.AbstractComponentContainer;
 @SuppressWarnings("serial")
 public class ListAttributeListener extends BaseAttributeListener implements ValueChangeListener {
 
-	private DataContainer property;
+	private DataContainer<List<String>> property;
 	private AbstractComponentContainer container;
-	private DynamicObjectValueChangeListener objectListener;
+	private DynamicObjectValueChangeListener<String> objectListener;
 	
 	private ListAttributeListener(AbstractComponentContainer container,
 			DynamicObject dynamicObject, String name) {
@@ -58,7 +58,7 @@ public class ListAttributeListener extends BaseAttributeListener implements Valu
 	public void textChange(TextChangeEvent event) {
 	}
 	public void valueChange(ValueChangeEvent event) {
-		List<Object> values = collectValues(this.container);
+		List<String> values = collectValues(this.container);
 		property.setValue(values);
 		if (values.size() > 0) {
 			getDynamicObject().put(getName(), values);
@@ -74,7 +74,7 @@ public class ListAttributeListener extends BaseAttributeListener implements Valu
 		
 	}
 	public ListAttributeListener(DynamicObject dynamicObject, String attributeName,
-			DataContainer property, AbstractComponentContainer container, DynamicObjectValueChangeListener objectListener) {
+			DataContainer<List<String>> property, AbstractComponentContainer container, DynamicObjectValueChangeListener<String> objectListener) {
 		super(dynamicObject, attributeName);
 		this.property = property;
 		this.container = container;

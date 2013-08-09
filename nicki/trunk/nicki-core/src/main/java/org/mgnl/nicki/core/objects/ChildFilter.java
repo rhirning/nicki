@@ -1,12 +1,13 @@
 package org.mgnl.nicki.core.objects;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-public class ChildFilter {
-
+public class ChildFilter implements Serializable {
+	private static final long serialVersionUID = -3256064092279768874L;
 	private String filter;
 	private List<Class<? extends DynamicObject>> objectFilters;
 	public String getFilter() {

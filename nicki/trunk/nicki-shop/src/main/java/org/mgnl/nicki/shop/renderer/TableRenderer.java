@@ -48,14 +48,14 @@ import org.mgnl.nicki.shop.objects.MultipleInstancesCatalogArticle;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 
 import com.vaadin.data.Item;
-import com.vaadin.terminal.Sizeable;
-import com.vaadin.ui.AbsoluteLayout;
+import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.PopupDateField;
@@ -66,30 +66,23 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 	
 	private ShopViewerComponent shopViewerComponent;
 	private Table table = null;
-	private AbsoluteLayout layout = new AbsoluteLayout();
 
 	public AbstractComponent render(ShopViewerComponent shopViewerComponent, Inventory inventory) {
 		this.shopViewerComponent = shopViewerComponent;
 		setInventory(inventory);
 		render();
-		return layout;
+		return table;
 	}
 
 	public void render() {
 		// collect all articles
 		List<CatalogArticle> articles = shopViewerComponent.getAllArticles();
 		// create Table
-		
-		if (table != null) {
-			layout.removeAllComponents();
-			table = null;
-		}
-		
+				
 		table = new Table();
-		layout.addComponent(table, "top:0.0px;left:0.0px;");
 		table.setWidth("100%");
 		table.setHeight("100%");
-		table.addContainerProperty("checkbox", Button.class, "");
+		table.addContainerProperty("checkbox", Component.class, "");
 		table.setColumnWidth("checkbox", 64);
 		table.setColumnHeader("checkbox", "");
 		table.addContainerProperty("title", String.class, "");
@@ -118,7 +111,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 					button.setIcon(Icon.HELP.getResource());
 					button.setDescription(article.getDescription());
 				}
-		        button.addListener(new Button.ClickListener() {
+		        button.addClickListener(new Button.ClickListener() {
 					
 					@Override
 					public void buttonClick(ClickEvent event) {
@@ -143,18 +136,15 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 	}
 	
 	protected void addInstance(CatalogArticle catalogArticle) {
-		EnterSpecifierAsSelectDialog dialog = new EnterSpecifierAsSelectDialog("nicki.rights.specifier");
-//		EnterSpecifierAsTextDialog dialog = new EnterSpecifierAsTextDialog("nicki.rights.specifier");
+		EnterSpecifierAsSelectDialog dialog = new EnterSpecifierAsSelectDialog("nicki.rights.specifier",
+				I18n.getText("nicki.rights.specifier.define.window.title"));
 		NewSpecifiedArticleHandler handler = new NewSpecifiedArticleHandler(catalogArticle, this);
 		dialog.setHandler(handler);
 		dialog.init((MultipleInstancesCatalogArticle) catalogArticle);
-
-		Window newWindow = new Window(I18n.getText("nicki.rights.specifier.define.window.title"),
-				dialog);
-		newWindow.setWidth(440, Sizeable.UNITS_PIXELS);
-		newWindow.setHeight(500, Sizeable.UNITS_PIXELS);
-		newWindow.setModal(true);
-		table.getWindow().addWindow(newWindow);		
+		dialog.setWidth(440, Unit.PIXELS);
+		dialog.setHeight(500, Unit.PIXELS);
+		dialog.setModal(true);
+		UI.getCurrent().addWindow(dialog);		
 	}
 
 	public Item addMultiArticle(InventoryArticle iArticle, STATUS status) {
@@ -173,25 +163,20 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		} else {
 			checkBox.setEnabled(false);
 		}
+		
+		checkBox.addValueChangeListener(new MulitCheckBoxChangeListener(getInventory(), iArticle, this));
 
-		checkBox.addListener(new Button.ClickListener() {
-			
-			public void buttonClick(ClickEvent event) {
-				InventoryArticle iArticle = (InventoryArticle) event.getButton().getData();
-				boolean enabled = event.getButton().booleanValue();
-				if (!enabled) {
-					getInventory().removeArticle(iArticle);
-					render();
-				}
-			}
-
-		});
 		Item item = table.addItem(iArticle);
 		item.getItemProperty("title").setValue(iArticle.getSpecifier());
 		item.getItemProperty("checkbox").setValue(checkBox);
 		showEntry(item, article, iArticle);
 
 		return item;
+	}
+
+	protected void cleanup() {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public Item addArticle(CatalogArticle article, InventoryArticle inventoryArticle) {
@@ -205,22 +190,8 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 			checkBox.setDescription(article.getDescription());
 		}
 
-		checkBox.addListener(new Button.ClickListener() {
-			
-			public void buttonClick(ClickEvent event) {
-				CatalogArticle article = (CatalogArticle) event.getButton().getData();
-				  Item item = table.getItem(article);
-				  boolean enabled = event.getButton().booleanValue();
-				  if (enabled) {
-					  InventoryArticle inventoryArticle = getInventory().addArticle(article);
-					  showEntry(item, article, inventoryArticle);
-				  } else {
-					  getInventory().removeArticle(article);
-					  hideEntry(item);
-				  }
-			}
+		checkBox.addValueChangeListener(new CheckBoxChangeListener(getInventory(), article, this));
 
-		});
 		Item item = table.addItem(article);
 		item.getItemProperty("title").setValue(article.getDisplayName());
 		item.getItemProperty("checkbox").setValue(checkBox);
@@ -244,7 +215,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 //		removeExcept(parent, event.getButton());
 	}
 
-	private void showEntry(Item item, CatalogArticle article, InventoryArticle inventoryArticle) {
+	public void showEntry(Item item, CatalogArticle article, InventoryArticle inventoryArticle) {
 		SOURCE source = SOURCE.SHOP;
 		Date start = new Date();
 		Date end = null;
@@ -278,8 +249,8 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		return attrLayout;
 	}
 
-	public Window getWindow() {
-		return table.getWindow();
+	public Table getTable() {
+		return table;
 	}
 
 }

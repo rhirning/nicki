@@ -70,9 +70,6 @@ public class CatalogEditor extends NickiApplication {
 //		editor.addAction(new PreviewShop(Catalog.class, I18n.getText(getI18nBase() +  ".action.preview")));
 //		editor.setClassEditor(CatalogPage.class, new CatalogPageViewer());
 		editor.initActions();
-		editor.setHeight("100%");
-		getMainWindow().setHeight("100%");
-		getMainWindow().getContent().setHeight("100%");
 		return editor;
 	}
 

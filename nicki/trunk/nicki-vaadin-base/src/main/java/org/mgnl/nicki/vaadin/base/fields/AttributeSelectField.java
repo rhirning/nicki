@@ -44,23 +44,21 @@ import com.vaadin.data.Container;
 import com.vaadin.ui.AbstractSelect;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Field;
-import com.vaadin.ui.Select;
 
 @SuppressWarnings("serial")
 public class AttributeSelectField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
 
-	private Field field;
-	private DataContainer property;
+	private ComboBox field;
+	private DataContainer<String> property;
 	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
 
-		Select select = new ComboBox(getName(dynamicObject, attributeName));
+		ComboBox select = new ComboBox(getName(dynamicObject, attributeName));
 //		select.setItemCaptionPropertyId("name");
 		select.setImmediate(true);
 		select.select(dynamicObject.getAttribute(attributeName));
-		property = new AttributeDataContainer(dynamicObject, attributeName);
+		property = new AttributeDataContainer<String>(dynamicObject, attributeName);
 		select.setValue(property.getValue());
-		select.addListener(new AttributeInputListener(property, objectListener));
+		select.addValueChangeListener(new AttributeInputListener(property, objectListener));
 		field = select;
 	}
 	
