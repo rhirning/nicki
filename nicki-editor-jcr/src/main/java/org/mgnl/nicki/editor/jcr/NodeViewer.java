@@ -121,7 +121,7 @@ public class NodeViewer extends CustomComponent implements ClassEditor {
 			}
 		});
 
-		saveButton.addListener(new Button.ClickListener() {
+		saveButton.addClickListener(new Button.ClickListener() {
 
 			public void buttonClick(ClickEvent event) {
 				try {
@@ -150,7 +150,7 @@ public class NodeViewer extends CustomComponent implements ClassEditor {
 		editor = null;
 		editor = new Window("New Property", new PropertyEditor(this, (PropertyWrapper) target)); 
 		editor.setModal(true);
-		getWindow().addWindow(editor);
+		getUI().addWindow(editor);
 	}
 
 	protected void addProperty() {
@@ -158,7 +158,7 @@ public class NodeViewer extends CustomComponent implements ClassEditor {
 		editor = null;
 		editor = new Window("New Property", new PropertyEditor(this, null)); 
 		editor.setModal(true);
-		getWindow().addWindow(editor);
+		getUI().addWindow(editor);
 		
 	}
 
@@ -201,7 +201,6 @@ public class NodeViewer extends CustomComponent implements ClassEditor {
 		mainLayout.setImmediate(false);
 		mainLayout.setWidth("100%");
 		mainLayout.setHeight("100%");
-		mainLayout.setMargin(false);
 		
 		// top-level component properties
 		setWidth("100.0%");
@@ -229,7 +228,7 @@ public class NodeViewer extends CustomComponent implements ClassEditor {
 		try {
 			type.setProperty(this.node.getNode(), name, value);
 			initTable();
-			editor.getParent().removeWindow(editor);
+			editor.close();
 			editor = null;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

@@ -64,7 +64,7 @@ public class PropertyEditor extends CustomComponent {
 			this.type.setEnabled(true);
 		}
 		
-		this.createButton.addListener(new Button.ClickListener() {
+		this.createButton.addClickListener(new Button.ClickListener() {
 
 			private static final long serialVersionUID = 3655313717691552016L;
 
@@ -90,7 +90,6 @@ public class PropertyEditor extends CustomComponent {
 		mainLayout.setImmediate(false);
 		mainLayout.setWidth("480px");
 		mainLayout.setHeight("360px");
-		mainLayout.setMargin(false);
 		
 		// top-level component properties
 		setWidth("480px");
