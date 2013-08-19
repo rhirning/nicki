@@ -39,8 +39,8 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.shop.objects.Catalog;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.Catalog;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;

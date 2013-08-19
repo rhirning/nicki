@@ -37,14 +37,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
-import org.mgnl.nicki.shop.inventory.Inventory;
-import org.mgnl.nicki.shop.inventory.Inventory.SOURCE;
-import org.mgnl.nicki.shop.inventory.InventoryArticle;
-import org.mgnl.nicki.shop.inventory.InventoryArticle.STATUS;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
-import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
-import org.mgnl.nicki.shop.objects.MultipleInstancesCatalogArticle;
+import org.mgnl.nicki.shop.base.inventory.Inventory;
+import org.mgnl.nicki.shop.base.inventory.Inventory.SOURCE;
+import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
+import org.mgnl.nicki.shop.base.inventory.InventoryArticle.STATUS;
+import org.mgnl.nicki.shop.base.objects.MultipleInstancesCatalogArticle;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 
 import com.vaadin.data.Item;

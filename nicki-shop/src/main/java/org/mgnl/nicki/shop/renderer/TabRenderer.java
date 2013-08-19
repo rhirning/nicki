@@ -34,12 +34,12 @@ package org.mgnl.nicki.shop.renderer;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.util.Classes;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.core.ShopArticle;
 import org.mgnl.nicki.shop.core.ShopPage;
 import org.mgnl.nicki.shop.core.ShopPage.TYPE;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
-import org.mgnl.nicki.shop.inventory.Inventory;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.inventory.Inventory;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 
 import com.vaadin.ui.AbstractComponent;

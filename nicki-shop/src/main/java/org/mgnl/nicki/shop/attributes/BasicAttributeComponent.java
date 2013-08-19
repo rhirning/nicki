@@ -38,8 +38,8 @@ import java.io.Serializable;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.shop.inventory.InventoryArticle;
-import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
+import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
+import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.vaadin.base.fields.NickiField;
 
 import com.vaadin.data.Property.ValueChangeListener;

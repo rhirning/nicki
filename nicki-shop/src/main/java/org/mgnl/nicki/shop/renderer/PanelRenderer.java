@@ -34,10 +34,10 @@ package org.mgnl.nicki.shop.renderer;
 
 import java.util.List;
 
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.core.ShopArticle;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
-import org.mgnl.nicki.shop.inventory.Inventory;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.inventory.Inventory;
 
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Panel;

@@ -43,8 +43,8 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.shop.objects.Catalog;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.Catalog;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 
 @SuppressWarnings("serial")
 public class Shop implements ShopViewerComponent, Serializable {

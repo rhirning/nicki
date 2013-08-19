@@ -47,11 +47,11 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
-import org.mgnl.nicki.shop.inventory.Inventory;
-import org.mgnl.nicki.shop.objects.Cart;
-import org.mgnl.nicki.shop.objects.CartEntry;
-import org.mgnl.nicki.shop.objects.Catalog;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.Cart;
+import org.mgnl.nicki.shop.base.objects.CartEntry;
+import org.mgnl.nicki.shop.base.objects.Catalog;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.inventory.Inventory;
 import org.mgnl.nicki.shop.objects.Selector;
 import org.mgnl.nicki.shop.objects.ValueProvider;
 

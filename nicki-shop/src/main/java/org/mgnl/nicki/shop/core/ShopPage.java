@@ -40,9 +40,9 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.util.Classes;
-import org.mgnl.nicki.shop.objects.Catalog;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
-import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
+import org.mgnl.nicki.shop.base.objects.Catalog;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
 
 @SuppressWarnings("serial")
 public class ShopPage implements ShopViewerComponent, Serializable{

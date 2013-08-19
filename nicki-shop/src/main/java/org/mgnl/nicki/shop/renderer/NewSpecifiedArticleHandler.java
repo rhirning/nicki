@@ -33,7 +33,7 @@
 package org.mgnl.nicki.shop.renderer;
 
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 
 import com.vaadin.ui.Notification;
 

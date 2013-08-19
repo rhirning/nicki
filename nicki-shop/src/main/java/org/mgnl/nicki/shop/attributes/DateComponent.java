@@ -36,8 +36,8 @@ import java.util.Date;
 
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.shop.inventory.InventoryArticle;
-import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
+import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
+import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.vaadin.base.data.DateHelper;
 import org.mgnl.nicki.vaadin.base.fields.SimpleField;
 
