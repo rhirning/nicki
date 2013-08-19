@@ -41,7 +41,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.vaadin.base.data.TreeContainer;
 import org.mgnl.nicki.vaadin.base.editor.DataProvider;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;

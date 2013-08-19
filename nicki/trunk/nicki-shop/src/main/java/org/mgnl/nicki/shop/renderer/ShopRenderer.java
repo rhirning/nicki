@@ -35,7 +35,7 @@ package org.mgnl.nicki.shop.renderer;
 import java.io.Serializable;
 
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
-import org.mgnl.nicki.shop.inventory.Inventory;
+import org.mgnl.nicki.shop.base.inventory.Inventory;
 
 import com.vaadin.ui.AbstractComponent;
 

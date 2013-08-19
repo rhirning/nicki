@@ -34,7 +34,7 @@ package org.mgnl.nicki.shop.inventory;
 
 import java.util.Date;
 
-import org.mgnl.nicki.shop.inventory.InventoryArticle;
+import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;

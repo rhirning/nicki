@@ -3,6 +3,10 @@ package org.mgnl.nicki.shop.objects;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.CatalogPage;
+import org.mgnl.nicki.shop.base.objects.Provider;
+
 public class EmptyProvider implements Provider {
 
 	@Override

@@ -32,40 +32,20 @@
  */
 package org.mgnl.nicki.shop.attributes;
 
-import org.mgnl.nicki.core.util.Classes;
+import org.mgnl.nicki.shop.base.attributes.Component;
 
 
 public class AttributeComponentFactory {
-	public enum Component {
-		DATE("org.mgnl.nicki.shop.attributes.DateComponent"),
-		TEXT("org.mgnl.nicki.shop.attributes.TextComponent"),
-		CHECKBOX("org.mgnl.nicki.shop.attributes.CheckboxComponent"),
-		SELECT("org.mgnl.nicki.shop.attributes.SelectComponent"),
-		FREESELECT("org.mgnl.nicki.shop.attributes.FreeSelectComponent"),
-		STATIC("org.mgnl.nicki.shop.attributes.LabelComponent"),
-		DEFAULT("org.mgnl.nicki.shop.attributes.LabelComponent")
-		;
-		
-		private String className;
-
-		Component(String className) {
-			this.className = className;
-		}
-
-		@SuppressWarnings("unchecked")
-		public <T extends Object> AttributeComponent<T> getInstance() throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-			return (AttributeComponent<T>) Classes.newInstance(className);
-		}
-	}
 
 
+	@SuppressWarnings("unchecked")
 	static public <T extends Object> AttributeComponent<T> getAttributeComponent(String type) {
 		try {
 			Component component = Component.valueOf(type);
 			if (component == null) {
 				component = Component.DEFAULT;
 			}
-			return component.getInstance();
+			return (AttributeComponent<T>) component.getInstance();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -41,10 +41,10 @@ import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.shop.inventory.Inventory;
-import org.mgnl.nicki.shop.objects.Cart;
-import org.mgnl.nicki.shop.objects.Cart.CART_STATUS;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.Cart;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.Cart.CART_STATUS;
+import org.mgnl.nicki.shop.base.inventory.Inventory;
 import org.mgnl.nicki.shop.renderer.ShopRenderer;
 import org.mgnl.nicki.shop.renderer.TabRenderer;
 

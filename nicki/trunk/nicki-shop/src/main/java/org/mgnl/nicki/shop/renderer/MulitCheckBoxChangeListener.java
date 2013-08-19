@@ -1,8 +1,8 @@
 package org.mgnl.nicki.shop.renderer;
 
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.shop.inventory.Inventory;
-import org.mgnl.nicki.shop.inventory.InventoryArticle;
+import org.mgnl.nicki.shop.base.inventory.Inventory;
+import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;

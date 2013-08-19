@@ -37,7 +37,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 
 public class ChangeSet {
 	private List<ArticleChange> changes = new ArrayList<ArticleChange>();

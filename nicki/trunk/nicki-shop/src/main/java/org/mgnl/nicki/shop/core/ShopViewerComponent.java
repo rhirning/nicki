@@ -34,7 +34,7 @@ package org.mgnl.nicki.shop.core;
 
 import java.util.List;
 
-import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 
 public interface ShopViewerComponent {
 	ShopViewerComponent getShopViewerComponent();

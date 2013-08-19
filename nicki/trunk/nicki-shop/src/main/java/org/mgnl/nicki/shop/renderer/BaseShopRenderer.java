@@ -41,13 +41,13 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.shop.attributes.AttributeComponent;
 import org.mgnl.nicki.shop.attributes.AttributeComponentFactory;
 import org.mgnl.nicki.shop.attributes.LabelComponent;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.inventory.EndInputListener;
-import org.mgnl.nicki.shop.inventory.Inventory;
-import org.mgnl.nicki.shop.inventory.InventoryArticle;
+import org.mgnl.nicki.shop.base.inventory.Inventory;
+import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.StartInputListener;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
-import org.mgnl.nicki.shop.objects.CatalogArticleAttribute;
 
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.AbsoluteLayout;

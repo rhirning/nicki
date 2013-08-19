@@ -33,8 +33,8 @@
 package org.mgnl.nicki.shop.rules;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.shop.objects.CartEntry.ACTION;
-import org.mgnl.nicki.shop.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.CartEntry.ACTION;
 
 public class ArticleChange {
 	public enum TYPE {ADD, REMOVE};

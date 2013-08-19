@@ -39,6 +39,7 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.ObjectFactory;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 
 public class CatalogArticleFactory {
 	private static CatalogArticleFactory instance = null;
