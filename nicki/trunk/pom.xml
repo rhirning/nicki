@@ -26,6 +26,7 @@
 		<module>nicki-editor-scripts</module>
 		<module>nicki-editor-templates</module>
 		<module>nicki-idm-novell</module>
+		<module>nicki-idm-novell-shop</module>
 		<module>nicki-jcr</module>
 		<module>nicki-jcr-apps</module>
 		<module>nicki-ldap</module>
@@ -33,6 +34,7 @@
 		<module>nicki-portlets</module>
 		<module>nicki-reports</module>
 		<module>nicki-shop</module>
+		<module>nicki-shop-base</module>
 		<module>nicki-storage</module>
 		<module>nicki-template</module>
 		<module>nicki-vaadin-base</module>

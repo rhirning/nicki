@@ -35,7 +35,7 @@ package org.mgnl.nicki.editor.catalogs;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.shop.objects.CatalogPage;
+import org.mgnl.nicki.shop.base.objects.CatalogPage;
 import org.mgnl.nicki.vaadin.base.components.EnterNameDialog;
 import org.mgnl.nicki.vaadin.base.components.EnterNameHandler;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
