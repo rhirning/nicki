@@ -30,7 +30,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
-			<artifactId>nicki-idm-novell</artifactId>
+			<artifactId>nicki-idm-novell-shop</artifactId>
 			<version>3.02-SNAPSHOT</version>
 		</dependency>
 		<dependency>
