@@ -32,10 +32,10 @@
 			<scope>provided</scope>
 		</dependency>
 		-->
-		<dependency>
+		<!-- dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-client</artifactId>
-		</dependency>
+		</dependency -->
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-push</artifactId>
