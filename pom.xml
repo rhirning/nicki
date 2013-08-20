@@ -48,34 +48,9 @@
 				<version>1.6</version>
 			</dependency>
 			<dependency>
-				<groupId>commons-lang</groupId>
-				<artifactId>commons-lang</artifactId>
-				<version>2.4</version>
-			</dependency>
-			<dependency>
 				<groupId>commons-codec</groupId>
 				<artifactId>commons-codec</artifactId>
 				<version>1.3</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
-				<version>2.4</version>
-			</dependency>
-			<dependency>
-				<groupId>net.sf.ehcache</groupId>
-				<artifactId>ehcache-core</artifactId>
-				<version>2.6.2</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-io</groupId>
-				<artifactId>commons-io</artifactId>
-				<version>1.4</version>
-			</dependency>
-			<dependency>
-				<groupId>commons-httpclient</groupId>
-				<artifactId>commons-httpclient</artifactId>
-				<version>3.1</version>
 			</dependency>
 			<dependency>
 				<groupId>commons-collections</groupId>
@@ -83,72 +58,70 @@
 				<version>3.2.1</version>
 			</dependency>
 			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>1.6.4</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.6.4</version>
-			</dependency>
-			<dependency>
-				<groupId>org.jdom</groupId>
-				<artifactId>jdom</artifactId>
-				<version>1.1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.freemarker</groupId>
-				<artifactId>freemarker</artifactId>
-				<version>2.3.16</version>
-			</dependency>
-			<dependency>
 				<groupId>commons-dbcp</groupId>
 				<artifactId>commons-dbcp</artifactId>
 				<version>1.3</version>
 			</dependency>
 			<dependency>
-				<groupId>org.beanshell</groupId>
-				<artifactId>bsh</artifactId>
-				<version>2.0b4</version>
+				<groupId>commons-httpclient</groupId>
+				<artifactId>commons-httpclient</artifactId>
+				<version>3.1</version>
 			</dependency>
 			<dependency>
-				<groupId>javax.xml</groupId>
-				<artifactId>jaxrpc-api</artifactId>
-				<version>1.1</version>
+				<groupId>commons-io</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>1.4</version>
 			</dependency>
 			<dependency>
-				<groupId>javax.portlet</groupId>
-				<artifactId>portlet-api</artifactId>
-				<version>1.0</version>
+				<groupId>commons-lang</groupId>
+				<artifactId>commons-lang</artifactId>
+				<version>2.4</version>
 			</dependency>
 			<dependency>
-				<groupId>org.jaxen</groupId>
-				<artifactId>jaxen</artifactId>
-				<version>1.1.1</version>
-			</dependency>
-			<!-- The JCR API -->
-			<dependency>
-				<groupId>javax.jcr</groupId>
-				<artifactId>jcr</artifactId>
-				<version>2.0</version>
-			</dependency>
-
-			<!-- Jackrabbit content repository -->
-			<dependency>
-				<groupId>org.apache.jackrabbit</groupId>
-				<artifactId>jackrabbit-core</artifactId>
-				<version>2.4.3</version>
+				<groupId>com.lowagie</groupId>
+				<artifactId>itext</artifactId>
+				<version>2.1.7</version>
 			</dependency>
 			<dependency>
-				<groupId>org.apache.jackrabbit</groupId>
-				<artifactId>jackrabbit-webapp</artifactId>
-				<version>2.4.3</version>
+				<groupId>com.novell.dirxml</groupId>
+				<artifactId>dirxml_misc</artifactId>
+				<version>3.6.1</version>
 			</dependency>
 			<dependency>
-				<groupId>org.xhtmlrenderer</groupId>
-				<artifactId>core-renderer</artifactId>
-				<version>R8</version>
+				<groupId>com.novell.dirxml</groupId>
+				<artifactId>nxsl</artifactId>
+				<version>3.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.novell.userapp</groupId>
+				<artifactId>IDMcommon</artifactId>
+				<version>3.7</version>
+			</dependency>
+			<dependency>
+				<groupId>com.novell.userapp</groupId>
+				<artifactId>IDMfw</artifactId>
+				<version>3.7</version>
+			</dependency>
+			<dependency>
+				<groupId>com.novell.userapp</groupId>
+				<artifactId>IDMsec</artifactId>
+				<version>3.7</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.novell.userapp</groupId>
+				<artifactId>UIRegistry</artifactId>
+				<version>3.7</version>
+			</dependency>
+			<dependency>
+				<groupId>com.novell.userapp</groupId>
+				<artifactId>wssdk</artifactId>
+				<version>3.6.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.novell.userapp</groupId>
+				<artifactId>workflow</artifactId>
+				<version>3.6.1</version>
 			</dependency>
 			<!-- dependency>
 				<groupId>com.vaadin</groupId>
@@ -196,6 +169,76 @@
 				<artifactId>vaadin-themes</artifactId>
 				<version>${vaadin.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>javax.portlet</groupId>
+				<artifactId>portlet-api</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>2.4</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.xml</groupId>
+				<artifactId>jaxrpc-api</artifactId>
+				<version>1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>net.sf.ehcache</groupId>
+				<artifactId>ehcache-core</artifactId>
+				<version>2.6.2</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-core</artifactId>
+				<version>2.4.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.jackrabbit</groupId>
+				<artifactId>jackrabbit-webapp</artifactId>
+				<version>2.4.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.beanshell</groupId>
+				<artifactId>bsh</artifactId>
+				<version>2.0b4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.freemarker</groupId>
+				<artifactId>freemarker</artifactId>
+				<version>2.3.16</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jaxen</groupId>
+				<artifactId>jaxen</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.jcr</groupId>
+				<artifactId>jcr</artifactId>
+				<version>2.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.jdom</groupId>
+				<artifactId>jdom</artifactId>
+				<version>1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-api</artifactId>
+				<version>1.6.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.slf4j</groupId>
+				<artifactId>slf4j-log4j12</artifactId>
+				<version>1.6.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.xhtmlrenderer</groupId>
+				<artifactId>core-renderer</artifactId>
+				<version>R8</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	<build>
@@ -237,6 +280,11 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<version>2.1.2</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1</version>
 			</plugin>
 		</plugins>
 		<resources>

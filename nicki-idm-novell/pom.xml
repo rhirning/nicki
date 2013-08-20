@@ -23,48 +23,42 @@
 		<dependency>
 			<groupId>com.novell.userapp</groupId>
 			<artifactId>IDMfw</artifactId>
-			<version>3.7</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.novell.userapp</groupId>
 			<artifactId>IDMcommon</artifactId>
-			<version>3.7</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.novell.userapp</groupId>
 			<artifactId>IDMsec</artifactId>
-			<version>3.7</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.novell.dirxml</groupId>
 			<artifactId>dirxml_misc</artifactId>
-			<version>3.6.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.novell.dirxml</groupId>
 			<artifactId>nxsl</artifactId>
-			<version>3.6.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.novell.userapp</groupId>
 			<artifactId>wssdk</artifactId>
-			<version>3.6.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.novell.userapp</groupId>
 			<artifactId>workflow</artifactId>
-			<version>3.6.1</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.portlet</groupId>
 			<artifactId>portlet-api</artifactId>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 </project>
