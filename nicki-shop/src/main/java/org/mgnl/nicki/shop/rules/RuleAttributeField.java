@@ -40,7 +40,7 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
-import org.mgnl.nicki.shop.objects.Selector;
+import org.mgnl.nicki.shop.base.objects.Selector;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectValueChangeListener;
 import org.mgnl.nicki.vaadin.base.fields.BaseDynamicAttributeField;
 import org.mgnl.nicki.vaadin.base.fields.DynamicAttributeField;

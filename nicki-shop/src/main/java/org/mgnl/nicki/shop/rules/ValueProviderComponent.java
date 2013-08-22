@@ -33,7 +33,7 @@
 package org.mgnl.nicki.shop.rules;
 
 
-import org.mgnl.nicki.shop.objects.ValueProvider;
+import org.mgnl.nicki.shop.base.objects.ValueProvider;
 
 import com.vaadin.ui.Component;
 

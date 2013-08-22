@@ -30,7 +30,7 @@
  * intact.
  *
  */
-package org.mgnl.nicki.shop.objects;
+package org.mgnl.nicki.shop.base.objects;
 
 import java.util.ArrayList;
 import java.util.List;
