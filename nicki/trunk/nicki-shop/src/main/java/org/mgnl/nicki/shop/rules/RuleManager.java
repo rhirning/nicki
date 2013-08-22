@@ -51,9 +51,9 @@ import org.mgnl.nicki.shop.base.objects.Cart;
 import org.mgnl.nicki.shop.base.objects.CartEntry;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.Selector;
+import org.mgnl.nicki.shop.base.objects.ValueProvider;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
-import org.mgnl.nicki.shop.objects.Selector;
-import org.mgnl.nicki.shop.objects.ValueProvider;
 
 /* 
  * Attribute nickiDirectory: Pfad getrennt mit "/"
