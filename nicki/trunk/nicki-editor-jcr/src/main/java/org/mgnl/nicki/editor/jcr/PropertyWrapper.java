@@ -9,7 +9,11 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class PropertyWrapper {
+	private static final Logger LOG = LoggerFactory.getLogger(PropertyWrapper.class);
 
 	private Property property;
 
@@ -23,7 +27,7 @@ public class PropertyWrapper {
 			return property.getName();
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return null;
 	}
@@ -33,7 +37,7 @@ public class PropertyWrapper {
 			return PROPERTY_TYPE.of(property.getType());
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return null;
 	}
@@ -43,13 +47,13 @@ public class PropertyWrapper {
 			return property.getValue().getString();
 		} catch (ValueFormatException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error", e);
 		} catch (IllegalStateException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error", e);
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return null;
 	}

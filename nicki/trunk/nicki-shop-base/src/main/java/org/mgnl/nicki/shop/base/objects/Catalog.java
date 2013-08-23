@@ -47,12 +47,15 @@ import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 @DynamicObject
 @ObjectClass("nickiCatalog")
 @Child(name="child", objectFilter={CatalogPage.class})
 public class Catalog extends BaseDynamicObject {
+	private static final Logger LOG = LoggerFactory.getLogger(Catalog.class);
 	private static final long serialVersionUID = 1114608130611536361L;
 	public static final String PATH_SEPARATOR = "/";
 	private static long lastBuild = 0;
@@ -119,7 +122,7 @@ public class Catalog extends BaseDynamicObject {
 		try {
 			instance = AppContext.getSystemContext().loadObject(Catalog.class, Config.getProperty("nicki.catalog"));
 		} catch (InvalidPrincipalException e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 			instance = null;
 		}
 	}
@@ -157,7 +160,7 @@ public class Catalog extends BaseDynamicObject {
 				try {
 					getContext().loadObject(page);
 				} catch (DynamicObjectException e) {
-					e.printStackTrace();
+					LOG.error("Error", e);
 				}
 			}
 		}

@@ -11,13 +11,13 @@
 
 	<logger name="org.mgnl.nicki.cache"
 		additivity="false">
-		<level value="debug" />
+		<level value="error" />
 		<appender-ref ref="ConsoleAppender" />
 	</logger>
 
 	<logger name="org.mgnl.nicki.core"
 		additivity="false">
-		<level value="debug" />
+		<level value="error" />
 		<appender-ref ref="ConsoleAppender" />
 	</logger>
 

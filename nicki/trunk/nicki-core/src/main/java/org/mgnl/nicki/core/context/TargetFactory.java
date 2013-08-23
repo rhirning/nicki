@@ -42,9 +42,12 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.AnnotationHelper;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.util.Classes;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TargetFactory {
 
+	private static final Logger LOG = LoggerFactory.getLogger(TargetFactory.class);
 	public static final String PROPERTY_BASE = "nicki.targets";
 	public static final String PROPERTY_OBJECTS = "objects";
 	public static final String PROPERTY_FACTORY = "factory";
@@ -69,7 +72,7 @@ public class TargetFactory {
 				try {
 					initContextFactory(target);
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.error("Error", e);
 				}
 				targets.put(targetName, target);
 			}
@@ -101,7 +104,7 @@ public class TargetFactory {
 					
 					dynamicObjects.add(objects[i]);
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.error("Error", e);
 				}
 			}
 		}

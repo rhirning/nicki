@@ -66,7 +66,7 @@ public class ConnectionManager implements ConfigListener{
     	try {
 			Config.addConfigListener(this);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
     }
     

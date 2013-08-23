@@ -42,10 +42,13 @@ import javax.jcr.RepositoryException;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import freemarker.template.TemplateMethodModel;
 
 public class ChildrenMethod implements Serializable, TemplateMethodModel {
+	private static final Logger LOG = LoggerFactory.getLogger(ChildrenMethod.class);
 
 	private static final long serialVersionUID = -81535049844368520L;
 	private List<? extends DynamicObject> objects = null;
@@ -59,7 +62,7 @@ public class ChildrenMethod implements Serializable, TemplateMethodModel {
 			this.parent = node.getPath();
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		this.filter = filter;
 	}

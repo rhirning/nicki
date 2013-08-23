@@ -56,7 +56,7 @@ import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
-public class RuleAttributeField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
+public class RuleAttributeField extends BaseDynamicAttributeField implements DynamicAttributeField<String>, Serializable {
 
 	private CatalogArticle article;
 	private String attributeName;
@@ -66,7 +66,7 @@ public class RuleAttributeField extends BaseDynamicAttributeField implements Dyn
 	private Button deleteEntryButton;
 	private Button testButton;
 	
-	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener<String> objectListener) {
 
 		this.article = (CatalogArticle) dynamicObject;
 		this.attributeName = attributeName;

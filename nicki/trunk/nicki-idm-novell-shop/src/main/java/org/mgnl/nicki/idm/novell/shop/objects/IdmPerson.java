@@ -57,6 +57,8 @@ import org.mgnl.nicki.idm.novell.shop.objects.Resource;
 import org.mgnl.nicki.idm.novell.shop.objects.Role;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
@@ -66,6 +68,7 @@ import freemarker.template.TemplateModelException;
 @RemoveDynamicAttribute("memberOf")
 @AdditionalObjectClass({"DirXML-EntitlementRecipient", "DirXML-EmployeeAux"})
 public class IdmPerson extends Person implements Serializable {
+	private static final Logger LOG = LoggerFactory.getLogger(IdmPerson.class);
 
 	private static final long serialVersionUID = -6791692458041112275L;
 	public static final String ATTRIBUTE_LASTWORKINGDAY = "lastWorkingDay";
@@ -379,7 +382,7 @@ public class IdmPerson extends Person implements Serializable {
 				try {
 					assignedRoles = (List<Role>) method.exec(null);
 				} catch (TemplateModelException e) {
-					e.printStackTrace();
+					LOG.error("Error", e);
 					assignedRoles =  new ArrayList<Role>();
 				}
 			}
@@ -401,7 +404,7 @@ public class IdmPerson extends Person implements Serializable {
 				try {
 					assignedResources = (List<Resource>) method.exec(null);
 				} catch (TemplateModelException e) {
-					e.printStackTrace();
+					LOG.error("Error", e);
 					assignedResources = new ArrayList<Resource>();
 				}
 			}

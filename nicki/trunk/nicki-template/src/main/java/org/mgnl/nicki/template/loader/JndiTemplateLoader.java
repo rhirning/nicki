@@ -112,7 +112,7 @@ public class JndiTemplateLoader implements TemplateLoader {
 		}
 		
 		String dnPath = getDnPath(directoryPath, templateName);
-//		System.out.println("Search for template: " + path + " at: " + dnPath);
+//		LOG.debug("Search for template: " + path + " at: " + dnPath);
 
 		return getTemplate(context, path, dnPath, part);
 	}

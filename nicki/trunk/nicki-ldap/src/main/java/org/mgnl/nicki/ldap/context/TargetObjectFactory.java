@@ -44,8 +44,11 @@ import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TargetObjectFactory implements ObjectFactory, Serializable {
+	private static final Logger LOG = LoggerFactory.getLogger(TargetObjectFactory.class);
 	private static final long serialVersionUID = 4047428469649718133L;
 	private NickiContext context;
 	private Target target;
@@ -156,7 +159,7 @@ public class TargetObjectFactory implements ObjectFactory, Serializable {
 			dynamicObject = getDynamicObject(storedDynamicObject);
 			dynamicObject.setContext(context);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return dynamicObject;
 	}
@@ -168,7 +171,7 @@ public class TargetObjectFactory implements ObjectFactory, Serializable {
 			dynamicObject = getDynamicObject(storedDynamicObject);
 			dynamicObject.setContext(context);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return dynamicObject;
 	}

@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	private static final long serialVersionUID = -3079627211615613041L;
+	private static final Logger LOG = LoggerFactory.getLogger(BasicJcrContext.class);
 
 	public static final String PATH_SEPARATOR = "/";
 	
@@ -71,7 +72,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 					node = root.getNode("scripts");
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					LOG.error("Error", e);
 				}
 				if (node == null) {
 					Node root = session.getRootNode();
@@ -81,14 +82,14 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 					session.save();
 
 					// Retrieve content
-					System.out.println(scripts.getPath());
+					LOG.debug(scripts.getPath());
 
 					session.save();
 				}
 			}
 			
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 	}
 	
@@ -231,7 +232,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 			}
 			return getDynamicObject(session.getNode(path));
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 			logger.debug("Could not load object " + path, e);
 		}
 		return null;
@@ -255,7 +256,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 				dynamicObject.init(this, node);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return dynamicObject;
 	}

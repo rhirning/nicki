@@ -47,11 +47,14 @@ import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.methods.ChildrenMethod;
 import org.mgnl.nicki.core.methods.StructuredData;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import freemarker.template.TemplateMethodModel;
 
 @SuppressWarnings("serial")
 public abstract class BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
+	private static final Logger LOG = LoggerFactory.getLogger(BaseDynamicObject.class);
 	public static final String ATTRIBUTE_NAME = "name";
 	public static final String SEPARATOR = "/";
 
@@ -82,7 +85,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 				this.context.loadObject(this);
 			} catch (DynamicObjectException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 		}
 	}
@@ -130,7 +133,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 			if (object != null) {
 				objects.add(context.loadObject(classDefinition, path));
 			} else {
-				System.out.println("Could not build object: " + path);
+				LOG.debug("Could not build object: " + path);
 			}
 		}
 		return objects;
@@ -228,7 +231,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 			cloned = context.getObjectFactory().getNewDynamicObject(this.getClass(), getParentPath(), getNamingValue());
 			cloned.copyFrom(this);
 		} catch (InstantiateDynamicObjectException e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return cloned;
 	}

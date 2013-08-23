@@ -40,9 +40,11 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Config {
-
+	private static final Logger LOG = LoggerFactory.getLogger(Config.class);
 	private static String MAIN_CONFIG = "/META-INF/nicki/config.properties";
 	private static String CONFIG_BASE = "nicki.config";
 	private static String I18N_BASE = "nicki.i18n";
@@ -68,7 +70,7 @@ public class Config {
 		try {
 			mainConfig = instance.getPropertiesFromClasspath(MAIN_CONFIG);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error reading " + MAIN_CONFIG, e);
 		}
 		if (mainConfig != null) {
 			String configList = mainConfig.getProperty(CONFIG_BASE, null);
@@ -102,7 +104,7 @@ public class Config {
 		try {
 			mainConfig = instance.getPropertiesFromClasspath(MAIN_CONFIG);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		if (mainConfig != null) {
 			String messageBaseList = mainConfig.getProperty(I18N_BASE, null);
@@ -113,7 +115,7 @@ public class Config {
 						try {
 							I18n.addMessageBase(messageBase);
 						} catch (Exception e) {
-							e.printStackTrace();
+							LOG.error("Error", e);
 						}
 					}
 				};

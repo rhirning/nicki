@@ -33,6 +33,8 @@
 package org.mgnl.nicki.vaadin.base.editor;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.event.DataBoundTransferable;
 import com.vaadin.event.dd.DragAndDropEvent;
@@ -45,6 +47,7 @@ import com.vaadin.ui.Notification;
 
 @SuppressWarnings("serial")
 public class TreeDropHandler implements DropHandler {
+	private static final Logger LOG = LoggerFactory.getLogger(TreeDropHandler.class);
 	private TreeEditor editor;
 
 	public TreeDropHandler(TreeEditor editor) {
@@ -82,7 +85,7 @@ public class TreeDropHandler implements DropHandler {
 			//editor.getWindow().showNotification(debugMessage, Notification.TYPE_WARNING_MESSAGE);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
         
 	}

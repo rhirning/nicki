@@ -42,11 +42,14 @@ import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("nickiSelector")
 public class Selector extends BaseDynamicObject {
+	private static final Logger LOG = LoggerFactory.getLogger(Selector.class);
 
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;
@@ -78,7 +81,7 @@ public class Selector extends BaseDynamicObject {
 			ValueProvider provider = (ValueProvider)Classes.newInstance(getValueProviderClass());
 			return provider;
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return null;
 	}

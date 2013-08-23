@@ -36,8 +36,11 @@ import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.Selector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BasicValueProvider {
+	private static final Logger LOG = LoggerFactory.getLogger(BasicValueProvider.class);
 	private Selector selector;
 	private String i18nBase;
 
@@ -59,7 +62,7 @@ public class BasicValueProvider {
 			Person person = article.getContext().getObjectFactory().getDynamicObject(Person.class);
 			return person.getModel().getAttributes().get(selectorName).getExternalName();
 		} catch (InstantiateDynamicObjectException e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 			return "INVALID";
 		}
 	}

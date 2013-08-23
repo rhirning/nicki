@@ -15,6 +15,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
+			<artifactId>nicki-editor-log4j</artifactId>
+			<version>3.09-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-scripts</artifactId>
 			<version>3.09-SNAPSHOT</version>
 		</dependency>
@@ -47,6 +52,10 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
 	</dependencies>
 	<packaging>war</packaging>

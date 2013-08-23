@@ -45,28 +45,32 @@ import org.mgnl.nicki.vaadin.base.fields.AttributeTextAreaField;
 import org.mgnl.nicki.vaadin.base.fields.AttributeTextField;
 import org.mgnl.nicki.vaadin.base.fields.DynamicAttributeField;
 import org.mgnl.nicki.vaadin.base.fields.TableListAttributeField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
 
 @SuppressWarnings("serial")
 public class DynamicObjectFieldFactory implements Serializable {
-	private DynamicObjectValueChangeListener objectListener = null;
+	private static final Logger LOG = LoggerFactory.getLogger(DynamicObjectFieldFactory.class);
+	private DynamicObjectValueChangeListener<String> objectListener = null;
 	
-	public DynamicObjectFieldFactory(DynamicObjectValueChangeListener objectListener) {
+	public DynamicObjectFieldFactory(DynamicObjectValueChangeListener<String> objectListener) {
 		this.objectListener = objectListener;
 	}
 
+	@SuppressWarnings("unchecked")
 	public Component createField(Component parent, DynamicObject dynamicObject, String attributeName, boolean create) {
 		DynamicAttribute dynAttribute = dynamicObject.getDynamicAttribute(attributeName);
-		DynamicAttributeField field = null;
+		DynamicAttributeField<String> field = null;
 		if (StringUtils.isNotEmpty(dynAttribute.getEditorClass())) {
 			try {
-				field = (DynamicAttributeField) Classes.newInstance(dynAttribute.getEditorClass());
+				field = (DynamicAttributeField<String>) Classes.newInstance(dynAttribute.getEditorClass());
 				field.init(attributeName, dynamicObject, objectListener);
 			} catch (Exception e) {
 				field = null;
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 		}
 		if (field == null) {

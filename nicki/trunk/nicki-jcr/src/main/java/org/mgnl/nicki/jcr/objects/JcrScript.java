@@ -7,8 +7,11 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Script;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JcrScript extends Script implements JcrDynamicObject {
+	private static final Logger LOG = LoggerFactory.getLogger(JcrScript.class);
 
 	private static final long serialVersionUID = -4137088698173077190L;
 	
@@ -19,7 +22,7 @@ public class JcrScript extends Script implements JcrDynamicObject {
 		try {
 			return StringUtils.startsWith(node.getPath(), "/users");
 		} catch (RepositoryException e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return false;
 	}

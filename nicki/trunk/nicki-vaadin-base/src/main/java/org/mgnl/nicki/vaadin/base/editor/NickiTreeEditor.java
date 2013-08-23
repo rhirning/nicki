@@ -51,6 +51,8 @@ import org.mgnl.nicki.vaadin.base.components.NewClassEditor;
 import org.mgnl.nicki.vaadin.base.components.SimpleNewClassEditor;
 import org.mgnl.nicki.vaadin.base.data.TreeContainer;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectViewer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -67,6 +69,7 @@ import com.vaadin.ui.Tree.ExpandEvent;
 
 @SuppressWarnings("serial")
 public class NickiTreeEditor extends CustomComponent {
+	private static final Logger LOG = LoggerFactory.getLogger(NickiTreeEditor.class);
 
 	public enum CREATE {
 		ALLOW, DENY
@@ -148,7 +151,7 @@ public class NickiTreeEditor extends CustomComponent {
 							// TODO: ask save/not save/back
 							viewer.save();
 						} catch (Exception e) {
-							e.printStackTrace();
+							LOG.error("Error", e);
 						}
 					}
 					hideClassEditor();
@@ -160,7 +163,7 @@ public class NickiTreeEditor extends CustomComponent {
 						// TODO: ask save/not save/back
 						viewer.save();
 					} catch (Exception e) {
-						e.printStackTrace();
+						LOG.error("Error", e);
 					}
 				}
 				setSelectedObject(selected);
@@ -197,7 +200,7 @@ public class NickiTreeEditor extends CustomComponent {
 								renameItem((DynamicObject) target);
 							}
 						} catch (Exception e) {
-							e.printStackTrace();
+							LOG.error("Error", e);
 						}
 					}
 				} else if (treeActionMap.containsKey(action)) {
@@ -316,7 +319,7 @@ public class NickiTreeEditor extends CustomComponent {
 						list.add(childObject.getClass());
 					}
 				} catch (InstantiateDynamicObjectException e) {
-					e.printStackTrace();
+					LOG.error("Error", e);
 				}
 			}
 }

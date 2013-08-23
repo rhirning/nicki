@@ -40,8 +40,11 @@ import org.mgnl.nicki.ldap.query.LdapSearchHandler;
 import org.mgnl.nicki.ldap.query.ObjectLoaderLdapQueryHandler;
 import org.mgnl.nicki.ldap.query.ObjectsLoaderQueryHandler;
 import org.mgnl.nicki.ldap.query.SubObjectsLoaderQueryHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class LdapContext extends BasicContext implements NickiContext {
+	private static final Logger LOG = LoggerFactory.getLogger(LdapContext.class);
 
 	private static final long serialVersionUID = -3079627211615613041L;
 
@@ -141,7 +144,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 					list.add(new JndiSearchResult(results.next()));
 				}
 			} catch (NamingException e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 			queryHandler.handle(list);
 		} catch (Throwable e) {
@@ -152,7 +155,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 					results.close();
 				} catch (NamingException e) {
 					
-					e.printStackTrace();
+					LOG.error("Error", e);
 				}
 			}
 			if (ctx != null) {
@@ -160,7 +163,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 					ctx.close();
 				} catch (NamingException e) {
 					
-					e.printStackTrace();
+					LOG.error("Error", e);
 				}
 			}
 		}
@@ -352,7 +355,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			String path = namingAttribute + "=" + namingValue + "," + parent.getPath();
 			return loadObject(class1, path);
 		} catch (InstantiateDynamicObjectException e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return null;
 	}

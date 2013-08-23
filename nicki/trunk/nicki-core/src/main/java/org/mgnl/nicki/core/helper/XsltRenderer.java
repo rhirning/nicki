@@ -43,7 +43,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class XsltRenderer extends Thread implements Runnable {
+	private static final Logger LOG = LoggerFactory.getLogger(XsltRenderer.class);
 	InputStream in;
 	OutputStream out;
 	InputStream xslTemplate;
@@ -77,7 +81,7 @@ public class XsltRenderer extends Thread implements Runnable {
 			out.flush();
 			out.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 	}
 }

@@ -46,9 +46,12 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.template.handler.TemplateHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class BasicTemplateStreamSource {
+	private static final Logger LOG = LoggerFactory.getLogger(BasicTemplateStreamSource.class);
 
 	Template template;
 	Map<String, Object> params;
@@ -88,7 +91,7 @@ public class BasicTemplateStreamSource {
 			return TemplateEngine.getInstance().executeTemplate(getTemplatePath(), getDataModel(),
 					TemplateEngine.DEFAULT_CHARSET);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		
 		return null;
@@ -98,7 +101,7 @@ public class BasicTemplateStreamSource {
 		try {
 			return TemplateEngine.getInstance().executeTemplateAsPdf(getTemplatePath(), getDataModel());
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		
 		return null;
@@ -108,7 +111,7 @@ public class BasicTemplateStreamSource {
 			return convertStream(TemplateEngine.getInstance().executeTemplateAsCsv(getTemplatePath(), getDataModel()),
 					Charset.forName(TemplateEngine.DEFAULT_CHARSET), Charset.forName(TemplateEngine.CSV_CHARSET));
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		
 		return null;

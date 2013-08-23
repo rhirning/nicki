@@ -61,6 +61,7 @@ public abstract class BaseAttributeListener implements ValueChangeListener {
 		for (Iterator<Component> iterator = cont.iterator(); iterator.hasNext();) {
 			Component component = iterator.next();
 			if (component instanceof AbstractField) {
+				@SuppressWarnings("unchecked")
 				String value = ((AbstractField<String>) component).getValue();
 				if (StringUtils.isNotEmpty(value)) {
 					list.add(value);

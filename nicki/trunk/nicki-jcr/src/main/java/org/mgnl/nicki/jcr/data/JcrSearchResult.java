@@ -41,8 +41,11 @@ import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
 
 import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class JcrSearchResult implements ContextSearchResult {
+	private static final Logger LOG = LoggerFactory.getLogger(JcrSearchResult.class);
 	private Node node;
 
 	public JcrSearchResult(Node node) {
@@ -54,7 +57,7 @@ public class JcrSearchResult implements ContextSearchResult {
 			return node.getPath();
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return null;
 	}
@@ -65,10 +68,10 @@ public class JcrSearchResult implements ContextSearchResult {
 			return node.getProperty(name);
 		} catch (PathNotFoundException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error", e);
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return name;
 	}
@@ -82,7 +85,7 @@ public class JcrSearchResult implements ContextSearchResult {
 			}
 		} catch (RepositoryException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return list;
 	}

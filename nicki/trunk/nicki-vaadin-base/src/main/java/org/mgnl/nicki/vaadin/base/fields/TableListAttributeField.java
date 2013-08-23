@@ -42,7 +42,6 @@ import org.mgnl.nicki.vaadin.base.components.EnterNameHandler;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectValueChangeListener;
 
 import com.vaadin.server.Sizeable.Unit;
-import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.HorizontalLayout;
@@ -52,7 +51,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-public class TableListAttributeField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
+public class TableListAttributeField extends BaseDynamicAttributeField implements DynamicAttributeField<String>, Serializable {
 
 	private DynamicObject dynamicObject;
 	private String attributeName;
@@ -61,7 +60,7 @@ public class TableListAttributeField extends BaseDynamicAttributeField implement
 	private Button newEntryButton;
 	private Button deleteEntryButton;
 	
-	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener<String> objectListener) {
 
 		this.dynamicObject = dynamicObject;
 		this.attributeName = attributeName;

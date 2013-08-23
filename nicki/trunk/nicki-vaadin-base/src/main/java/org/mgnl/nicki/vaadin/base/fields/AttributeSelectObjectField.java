@@ -46,32 +46,28 @@ import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.TextField;
 
 @SuppressWarnings("serial")
-public class AttributeSelectObjectField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
+public class AttributeSelectObjectField extends BaseDynamicAttributeField implements DynamicAttributeField<String>, Serializable {
 
 	private NickiField<String> field;
 	private DataContainer<String> property;
-	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener<String> objectListener) {
 
-		if (dynamicObject.getModel().getDynamicAttribute(attributeName).isForeignKey()) {
-			ComboBox select = new ComboBox(getName(dynamicObject, attributeName));
-			select.setContainerDataSource(getOptions(dynamicObject, dynamicObject.getModel().getDynamicAttribute(attributeName)));
-			select.setItemCaptionPropertyId("name");
-			select.setImmediate(true);
-			select.select(dynamicObject.getAttribute(attributeName));
-			property = new ReferenceAttributeDataContainer<String>(dynamicObject, attributeName);
-			select.setValue(property.getValue());
-			select.addValueChangeListener(new AttributeInputListener(property, objectListener));
-			field = new SelectField(select);
-		} else {
-			field = new SimpleField<String>(new TextField(attributeName));
-			field.addValueChangeListener(new AttributeInputListener(property, objectListener));
-		}
+		ComboBox select = new ComboBox(getName(dynamicObject, attributeName));
+		select.setContainerDataSource(getOptions(dynamicObject, dynamicObject.getModel().getDynamicAttribute(attributeName)));
+		select.setItemCaptionPropertyId("name");
+		select.setImmediate(true);
+		select.select(dynamicObject.getAttribute(attributeName));
+		property = new ReferenceAttributeDataContainer(dynamicObject, attributeName);
+		select.setValue(property.getValue());
+		select.addValueChangeListener(new AttributeInputListener<String>(property, objectListener));
+		field = new SelectField(select);
+
 		field.getComponent().setWidth("600px");
 	}
 	
+	@SuppressWarnings("unchecked")
 	private Container getOptions(DynamicObject dynamicObject, DynamicAttribute dynamicAttribute) {
 		
 		Container container = new IndexedContainer();

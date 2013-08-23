@@ -80,7 +80,7 @@ public class TestDataView extends CustomComponent {
 		this.messageKeyBase = messageKeyBase + ".testdata";
 		buildMainLayout();
 		setCompositionRoot(verticalLayout);
-		listener = new TestDataValueChangeListener<String>(dataContainer, testData, SEPARATOR);
+		listener = new TestDataValueChangeListener(dataContainer, testData);
 		Map<String, String> values = data.getValue();
 		for (String name : values.keySet()) {
 			addField(name, values.get(name));

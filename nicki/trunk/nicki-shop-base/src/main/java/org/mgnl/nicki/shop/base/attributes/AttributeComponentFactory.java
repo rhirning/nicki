@@ -32,8 +32,12 @@
  */
 package org.mgnl.nicki.shop.base.attributes;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class AttributeComponentFactory {
+	private static final Logger LOG = LoggerFactory.getLogger(AttributeComponentFactory.class);
 
 	@SuppressWarnings("unchecked")
 	static public <T extends Object> StringValueGetter<T> getStringValueGetter(String type) {
@@ -44,7 +48,7 @@ public class AttributeComponentFactory {
 			}
 			return (StringValueGetter<T>) component.getInstance();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return null;
 	}

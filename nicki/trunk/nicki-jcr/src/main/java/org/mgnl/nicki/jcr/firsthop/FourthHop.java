@@ -5,11 +5,14 @@ import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.jcr.Node;
 import org.apache.jackrabbit.core.TransientRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Second hop example. Stores, retrieves, and removes example content.
  */
 public class FourthHop {
+	private static final Logger LOG = LoggerFactory.getLogger(FourthHop.class);
 
 	/**
 	 * The main entry point of the example application.
@@ -34,8 +37,8 @@ public class FourthHop {
 
 			// Retrieve content
 			Node node = root.getNode("users/admin");
-			System.out.println(node.getPath());
-			System.out.println(node.getProperty("password").getString());
+			LOG.debug(node.getPath());
+			LOG.debug(node.getProperty("password").getString());
 
 			session.save();
 		} finally {
