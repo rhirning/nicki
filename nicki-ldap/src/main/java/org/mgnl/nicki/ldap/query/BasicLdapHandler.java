@@ -41,8 +41,11 @@ import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class BasicLdapHandler implements QueryHandler {
+	private static final Logger LOG = LoggerFactory.getLogger(BasicLdapHandler.class);
 	private NickiContext context;
 	private Class<? extends DynamicObject> classDefinition = null;
 	private String filter;
@@ -79,7 +82,7 @@ public abstract class BasicLdapHandler implements QueryHandler {
 			try {
 				LdapHelper.addQuery(sb, getContext().getObjectClassFilter(getContext(), getClassDefinition()), LOGIC.AND);
 			} catch (InstantiateDynamicObjectException e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 		}
 		return sb.toString();

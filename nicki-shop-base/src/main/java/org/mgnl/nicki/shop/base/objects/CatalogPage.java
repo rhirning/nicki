@@ -50,6 +50,8 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import freemarker.template.TemplateMethodModel;
 import freemarker.template.TemplateModelException;
@@ -60,6 +62,7 @@ import freemarker.template.TemplateModelException;
 @ObjectClass("nickiCatalogPage")
 @Child(name="child", objectFilter={CatalogPage.class, CatalogArticle.class})
 public class CatalogPage extends BaseDynamicObject {
+	private static final Logger LOG = LoggerFactory.getLogger(CatalogPage.class);
 	
 	private Provider provider = null;
 
@@ -87,10 +90,10 @@ public class CatalogPage extends BaseDynamicObject {
 				}
 			} catch (JDOMException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOG.error("Error", e);
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 		}
 		return list;
@@ -170,7 +173,7 @@ public class CatalogPage extends BaseDynamicObject {
 				}
 			}
 		} catch (TemplateModelException e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return articles;
 	}
@@ -184,7 +187,7 @@ public class CatalogPage extends BaseDynamicObject {
 				this.provider = (Provider) Classes.newInstance(providerClass);
 				this.provider.init(this);
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 		}
 	}

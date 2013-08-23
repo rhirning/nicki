@@ -39,8 +39,11 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.NickiLoginModule;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.context.AppContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DevLoginModule extends NickiLoginModule implements LoginModule {
+	private static final Logger LOG = LoggerFactory.getLogger(DevLoginModule.class);
 
 	@Override
 	public boolean login() throws LoginException {
@@ -52,7 +55,7 @@ public class DevLoginModule extends NickiLoginModule implements LoginModule {
 		try {
 			 principal = AppContext.getSystemContext().getPrincipal();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		String username = principal.getName();
 		String password = principal.getPassword();

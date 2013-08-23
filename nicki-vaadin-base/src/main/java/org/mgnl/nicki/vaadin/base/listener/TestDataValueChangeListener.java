@@ -41,21 +41,18 @@ import java.util.Map;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.ui.AbstractComponentContainer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.Field;
 
 @SuppressWarnings("serial")
-public class TestDataValueChangeListener<T> implements ValueChangeListener {
+public class TestDataValueChangeListener implements ValueChangeListener {
 
 	private Property<Map<String, String>> dataContainer;
 	private ComponentContainer testData;
-	private String separator;
-	public TestDataValueChangeListener(Property<Map<String, String>> dataContainer, ComponentContainer testData, String separator) {
+	public TestDataValueChangeListener(Property<Map<String, String>> dataContainer, ComponentContainer testData) {
 		this.dataContainer = dataContainer;
 		this.testData = testData;
-		this.separator = separator;
 	}
 
 	public void valueChange(ValueChangeEvent event) {
@@ -68,7 +65,8 @@ public class TestDataValueChangeListener<T> implements ValueChangeListener {
 			Component component = iterator.next();
 			String caption = component.getCaption();
 			if (component instanceof Field) {
-				String value = (String) ((Field<String>) component).getValue();
+				@SuppressWarnings("unchecked")
+				String value = ((Field<String>) component).getValue();
 				map.put(caption, value);
 			}
 		}
@@ -80,7 +78,8 @@ public class TestDataValueChangeListener<T> implements ValueChangeListener {
 		for (Iterator<Component> iterator = cont.iterator(); iterator.hasNext();) {
 			Component component = iterator.next();
 			if (component instanceof Field) {
-				String value = (String) ((Field<String>) component).getValue();
+				@SuppressWarnings("unchecked")
+				String value = ((Field<String>) component).getValue();
 				list.add(value);
 			}
 		}

@@ -39,8 +39,11 @@ import java.io.OutputStream;
 import java.nio.charset.Charset;
 
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class StreamConverter extends Thread implements Runnable {
+	private static final Logger LOG = LoggerFactory.getLogger(StreamConverter.class);
 	InputStream in;
 	OutputStream out;
 	Charset charsetIn;
@@ -64,7 +67,7 @@ public class StreamConverter extends Thread implements Runnable {
 			out.flush();
 			out.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 	}
 }

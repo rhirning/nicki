@@ -41,12 +41,15 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.vaadin.base.fields.NickiField;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Component;
 
 @SuppressWarnings("serial")
 public abstract class BasicAttributeComponent<F> implements AttributeComponent<F>, Serializable {
+	private static final Logger LOG = LoggerFactory.getLogger(BasicAttributeComponent.class);
 	private NickiField<F> field;
 	private boolean enabled;
 	private InventoryArticle article;
@@ -55,10 +58,11 @@ public abstract class BasicAttributeComponent<F> implements AttributeComponent<F
 	protected <T extends Object> T getContent(Class<T> classDefinition, Person user, Person person) {
 		if (StringUtils.isNotEmpty(attribute.getContentClass())) {
 			try {
-				AttributeContent contentProvider = (AttributeContent) Classes.newInstance(attribute.getContentClass());
+				@SuppressWarnings("unchecked")
+				AttributeContent<T> contentProvider = (AttributeContent<T>) Classes.newInstance(attribute.getContentClass());
 				return (T) contentProvider.getContent(classDefinition, user, person);
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 		}
 		return null;

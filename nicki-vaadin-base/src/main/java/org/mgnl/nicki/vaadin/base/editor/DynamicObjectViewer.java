@@ -38,6 +38,8 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.components.NewClassEditor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
@@ -47,6 +49,7 @@ import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class DynamicObjectViewer extends CustomComponent implements NewClassEditor, ClassEditor {
+	private static final Logger LOG = LoggerFactory.getLogger(DynamicObjectViewer.class);
 
 	private VerticalLayout mainLayout;
 	private DynamicObject dynamicObject;
@@ -67,6 +70,7 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 	}
 
 	public void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject) {
+		LOG.debug("DynamicObject: " + dynamicObject);
 		this.dynamicObject = dynamicObject;
 		this.create = false;
 		buildMainLayout();
@@ -118,7 +122,7 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 				listener.refresh(this.parent);
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 	}
 

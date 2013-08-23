@@ -44,11 +44,11 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.TextArea;
 
 @SuppressWarnings("serial")
-public class AttributeTextAreaField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
+public class AttributeTextAreaField extends BaseDynamicAttributeField implements DynamicAttributeField<String>, Serializable {
 
 	private TextArea field;
 	private DataContainer<String> property;
-	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener<String> objectListener) {
 
 		property = new AttributeDataContainer<String>(dynamicObject, attributeName);
 		field = new TextArea(getName(dynamicObject, attributeName));
@@ -56,7 +56,7 @@ public class AttributeTextAreaField extends BaseDynamicAttributeField implements
 		field.setHeight("100px");
 		field.setValue((String) property.getValue());
 		field.setImmediate(false);
-		field.addValueChangeListener(new AttributeInputListener(property, objectListener));
+		field.addValueChangeListener(new AttributeInputListener<String>(property, objectListener));
 	}
 
 	public Component getComponent(boolean readOnly) {

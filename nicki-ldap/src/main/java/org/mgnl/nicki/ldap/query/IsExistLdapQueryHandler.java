@@ -37,9 +37,12 @@ import java.util.List;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public class IsExistLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
+	private static final Logger LOG = LoggerFactory.getLogger(IsExistLdapQueryHandler.class);
 	
 	private String dn = null;
 
@@ -61,7 +64,7 @@ public class IsExistLdapQueryHandler extends BasicLdapHandler implements QueryHa
 				exist = true;
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 	}
 

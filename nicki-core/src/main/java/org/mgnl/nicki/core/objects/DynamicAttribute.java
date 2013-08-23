@@ -132,7 +132,7 @@ public class DynamicAttribute implements Serializable {
 				setPropertyValue(clazz, dynamicObject, value);
 				return;
 			} catch (Exception e) {
-				System.out.println(value.getClass());
+				LOG.debug(value.getClass().toString());
 				clazz = clazz.getSuperclass();
 			}
 		}

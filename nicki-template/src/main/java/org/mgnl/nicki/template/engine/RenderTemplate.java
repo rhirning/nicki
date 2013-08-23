@@ -37,9 +37,13 @@ import java.io.OutputStreamWriter;
 import java.nio.charset.Charset;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import freemarker.template.Template;
 
 public class RenderTemplate extends Thread implements Runnable {
+	private static final Logger LOG = LoggerFactory.getLogger(RenderTemplate.class);
 	public final static String DEFAULT_CHARSET = "UTF-8";
 	Template template;
 	Map<String, Object> dataModel;
@@ -65,7 +69,7 @@ public class RenderTemplate extends Thread implements Runnable {
 			out.flush();
 			out.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 	}
 

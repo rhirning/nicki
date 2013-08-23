@@ -40,12 +40,15 @@ import java.util.List;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import freemarker.template.TemplateMethodModel;
 
 public class ListForeignKeyMethod implements TemplateMethodModel, Serializable {
 
 	private static final long serialVersionUID = -81535049844368520L;
+	private static final Logger LOG = LoggerFactory.getLogger(ListForeignKeyMethod.class);
 	private List<DynamicObject> objects = null;
 	private List<Object> foreignKeys = new ArrayList<Object>();
 	private NickiContext context;
@@ -68,7 +71,7 @@ public class ListForeignKeyMethod implements TemplateMethodModel, Serializable {
 				if (object != null) {
 					objects.add(context.loadObject(classDefinition, path));
 				} else {
-					System.out.println("Could not build object: " + path);
+					LOG.debug("Could not build object: " + path);
 				}
 			}
 		}

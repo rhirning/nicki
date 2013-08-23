@@ -56,6 +56,7 @@ public class ListAttributeDataContainer<T> implements DataContainer<T>, Property
 		this.attributeName = attributeName;
 	}
 
+	@SuppressWarnings("unchecked")
 	public T getValue() {
 		return (T) dynamicObject.get(attributeName);
 	}
@@ -64,6 +65,7 @@ public class ListAttributeDataContainer<T> implements DataContainer<T>, Property
 		dynamicObject.put(attributeName, newValue);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Class<? extends T> getType() {
 		return (Class<? extends T>) dynamicObject.getModel().getDynamicAttribute(attributeName).getClass();
 	}

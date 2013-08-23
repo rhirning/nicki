@@ -38,10 +38,13 @@ import java.io.OutputStream;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
 public class PdfTemplateRenderer extends Thread implements Runnable {
+	private static final Logger LOG = LoggerFactory.getLogger(PdfTemplateRenderer.class);
 	InputStream in;
 	OutputStream out;
 
@@ -63,7 +66,7 @@ public class PdfTemplateRenderer extends Thread implements Runnable {
 			out.flush();
 			out.close();
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 	}
 }

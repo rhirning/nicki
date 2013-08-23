@@ -2,11 +2,14 @@ package org.mgnl.nicki.vaadin.base.helper;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.mgnl.nicki.core.i18n.I18n;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
 
 public class ContainerHelper {
+	private static final Logger LOG = LoggerFactory.getLogger(ContainerHelper.class);
 
 
 	
@@ -33,7 +36,7 @@ public class ContainerHelper {
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 	}
 }

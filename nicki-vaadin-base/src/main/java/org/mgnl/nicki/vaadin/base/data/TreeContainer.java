@@ -70,6 +70,7 @@ public class TreeContainer implements Serializable {
 		this.name = name;
 		this.entryFilter = treeDataProvider.getEntryFilter();
 	}
+	@SuppressWarnings("unchecked")
 	public HierarchicalContainer getTree() {
 		container = new HierarchicalContainer();
 		container.addContainerProperty(PROPERTY_NAME, String.class, null);
@@ -90,6 +91,7 @@ public class TreeContainer implements Serializable {
 		this.classIcons.put(classDefinition, icon);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Item addItem(DynamicObject object) {
 		if (this.entryFilter.accepts(object)) {
 			Item item = container.addItem(object);
@@ -105,8 +107,9 @@ public class TreeContainer implements Serializable {
 	}
 
 	public void loadChildren(DynamicObject object) {
-		Property loaded = container.getItem(object).getItemProperty(PROPERTY_LOADED);
-		if (!(Boolean)loaded.getValue()) {
+		@SuppressWarnings("unchecked")
+		Property<Boolean> loaded = container.getItem(object).getItemProperty(PROPERTY_LOADED);
+		if (!loaded.getValue()) {
 			if (object == this.root) {
 			    List<? extends DynamicObject> objects = this.treeDataProvider.getChildren(context);
 			    if (objects != null) {
@@ -142,6 +145,7 @@ public class TreeContainer implements Serializable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void addItem(DynamicObject object, Object parent, boolean childrenAllowed) {
 		if (this.entryFilter.accepts(object)) {
 			Item item = container.addItem(object);
@@ -173,6 +177,7 @@ public class TreeContainer implements Serializable {
 		return (DynamicObject) container.getParent(child);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void removeChildren(DynamicObject parent) {
 		if (parent != null) {
 			Item item = container.getItem(parent);

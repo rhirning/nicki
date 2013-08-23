@@ -41,7 +41,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import com.vaadin.data.Property;
 
 @SuppressWarnings("serial")
-public class PartDataContainer<T> extends AttributeDataContainer<T> implements DataContainer<T>, Property<T> {
+public class PartDataContainer extends AttributeDataContainer<String> implements DataContainer<String>, Property<String> {
 	private String separator;
 	private String name;
 
@@ -51,21 +51,23 @@ public class PartDataContainer<T> extends AttributeDataContainer<T> implements D
 		this.name = name;
 	}
 
-	public T getValue() {
+	@Override
+	public String getValue() {
 		@SuppressWarnings("unchecked")
 		List<String> list = (List<String>) getDynamicObject().get(getAttributeName());
 		for (String value : list) {
 			String name = StringUtils.substringBefore(value, this.separator);
 			if (StringUtils.equals(name, this.name)) {
 				String data = StringUtils.substringAfter(value, this.separator);
-				return (T) data;
+				return data;
 			}
 		}
 
 		return null;
 	}
 
-	public void setValue(T newValue) {
+	@Override
+	public void setValue(String newValue) {
 		String value = (String) newValue;
 		@SuppressWarnings("unchecked")
 		List<String> list = (List<String>) getDynamicObject().get(getAttributeName());

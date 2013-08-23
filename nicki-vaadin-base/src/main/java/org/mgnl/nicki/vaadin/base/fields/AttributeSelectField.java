@@ -46,11 +46,11 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 
 @SuppressWarnings("serial")
-public class AttributeSelectField extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
+public class AttributeSelectField extends BaseDynamicAttributeField implements DynamicAttributeField<String>, Serializable {
 
 	private ComboBox field;
 	private DataContainer<String> property;
-	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener<String> objectListener) {
 
 		ComboBox select = new ComboBox(getName(dynamicObject, attributeName));
 //		select.setItemCaptionPropertyId("name");
@@ -58,7 +58,7 @@ public class AttributeSelectField extends BaseDynamicAttributeField implements D
 		select.select(dynamicObject.getAttribute(attributeName));
 		property = new AttributeDataContainer<String>(dynamicObject, attributeName);
 		select.setValue(property.getValue());
-		select.addValueChangeListener(new AttributeInputListener(property, objectListener));
+		select.addValueChangeListener(new AttributeInputListener<String>(property, objectListener));
 		field = select;
 	}
 	

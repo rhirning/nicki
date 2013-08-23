@@ -40,6 +40,8 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.util.XmlHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -48,6 +50,7 @@ import org.w3c.dom.Element;
  * @author cna
  */
 public class CartEntry {
+	private static final Logger LOG = LoggerFactory.getLogger(CartEntry.class);
     public static final String ATTR_ID = "id";
     public static final String ATTR_ACTION = "action";
     public static final String ATTR_START = "start";
@@ -128,14 +131,14 @@ public class CartEntry {
         	try {
 				entry.setStart(DataHelper.dateFromString(node.getAttribute(ATTR_START)));
 			} catch (ParseException e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
         }
         if (StringUtils.isNotEmpty(node.getAttribute(ATTR_END))) {
         	try {
 				entry.setEnd(DataHelper.dateFromString(node.getAttribute(ATTR_END)));
 			} catch (ParseException e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
         }
         for (Element element : XmlHelper.selectNodes(Element.class, node, ELEM_ATTRIBUTE)) {

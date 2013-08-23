@@ -32,7 +32,6 @@
  */
 package org.mgnl.nicki.vaadin.base.listener;
 
-import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.vaadin.base.data.DataContainer;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectValueChangeListener;
 
@@ -40,18 +39,19 @@ import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 
 @SuppressWarnings("serial")
-public class AttributeInputListener implements ValueChangeListener {
+public class AttributeInputListener<T> implements ValueChangeListener {
 
-	DataContainer<String> property = null;
-	private DynamicObjectValueChangeListener<String> objectListener = null;
+	DataContainer<T> property = null;
+	private DynamicObjectValueChangeListener<T> objectListener = null;
 
-	public AttributeInputListener(DataContainer<String> property, DynamicObjectValueChangeListener<String> objectListener) {
+	public AttributeInputListener(DataContainer<T> property, DynamicObjectValueChangeListener<T> objectListener) {
 		this.property = property;
 		this.objectListener = objectListener;
 	}
 
 	public void valueChange(ValueChangeEvent event) {
-		String value = StringUtils.trimToEmpty((String) event.getProperty().getValue());
+		@SuppressWarnings("unchecked")
+		T value = (T) event.getProperty().getValue();
 		property.setValue(value);
 		property.getDynamicObject().setModified(true);
 		if (objectListener != null) {

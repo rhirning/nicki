@@ -32,7 +32,11 @@
  */
 package org.mgnl.nicki.core.data;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class OctetString {
+	private static final Logger LOG = LoggerFactory.getLogger(OctetString.class);
 	byte octetString[];
 
 	public OctetString(byte octet[]) {
@@ -52,7 +56,7 @@ public class OctetString {
 			}
 			return result;
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return null;
 	}

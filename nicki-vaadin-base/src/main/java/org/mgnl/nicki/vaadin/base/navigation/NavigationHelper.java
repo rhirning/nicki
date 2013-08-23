@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NavigationHelper {
+	private static final Logger LOG = LoggerFactory.getLogger(NavigationHelper.class);
 
 	public static void executeCommands(Object object, NavigationCommand command) {
 		List<NavigationCommandEntry> toBeRemoved = new ArrayList<NavigationCommandEntry>();
@@ -17,7 +20,7 @@ public class NavigationHelper {
 					execute(object, commandEntry);
 					toBeRemoved.add(commandEntry);
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.error("Error", e);
 				}
 				continue;
 			}

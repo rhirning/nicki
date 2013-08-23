@@ -45,6 +45,7 @@ public class InventoryViewer extends CustomComponent {
 		fillInventoryEntries();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void fillInventoryEntries() {
 
 		inventoryEntries.addContainerProperty("status", String.class, "");

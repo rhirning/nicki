@@ -44,6 +44,7 @@ public class CartViewer extends CustomComponent {
 		fillCartEntries();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void fillCartEntries() {
 
 		cartEntries.addContainerProperty("action", String.class, "");

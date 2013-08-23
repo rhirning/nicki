@@ -47,6 +47,8 @@ import org.mgnl.nicki.vaadin.base.auth.LoginDialog;
 import org.mgnl.nicki.vaadin.base.command.Command;
 import org.mgnl.nicki.vaadin.base.components.ConfirmDialog;
 import org.mgnl.nicki.vaadin.base.components.WelcomeDialog;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
@@ -56,6 +58,7 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public abstract class NickiApplication extends UI {
+	private static final Logger LOG = LoggerFactory.getLogger(NickiApplication.class);
 	public static final String JAAS_SSO_ENTRY = "NickiSSO";
 	public static final String JAAS_ENTRY = "Nicki";
 	public static final String ATTR_NICKI_CONTEXT = "NICKI_CONTEXT";
@@ -91,7 +94,7 @@ public abstract class NickiApplication extends UI {
 				start();
 				return;
 			} catch (DynamicObjectException e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 		}
 
@@ -140,7 +143,7 @@ public abstract class NickiApplication extends UI {
 				}
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return null;
 	}
@@ -165,7 +168,7 @@ public abstract class NickiApplication extends UI {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Login failed, user=" + name);
+			LOG.debug("Login failed, user=" + name);
 		}
 		this.nickiContext = getTarget().getGuestContext();
 		return false;
@@ -200,7 +203,7 @@ public abstract class NickiApplication extends UI {
 			try {
 				//getRequest().getSession(true).setAttribute(ATTR_NICKI_CONTEXT, this.nickiContext);
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 		}
 	}

@@ -48,6 +48,8 @@ import org.mgnl.nicki.shop.inventory.EndInputListener;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.inventory.StartInputListener;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.AbsoluteLayout;
@@ -56,6 +58,7 @@ import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextArea;
 
 public class BaseShopRenderer {
+	private static final Logger LOG = LoggerFactory.getLogger(BaseShopRenderer.class);
 	
 	private Inventory inventory;
 	
@@ -85,7 +88,7 @@ public class BaseShopRenderer {
 			return attributeComponent.getInstance(getInventory().getUser(), getInventory().getPerson(),
 					getInventory().getInventoryArticle(article), articleAttribute);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 			return new LabelComponent().getInstance(getInventory().getUser(), getInventory().getPerson(),
 					getInventory().getInventoryArticle(article), articleAttribute);
 		}
@@ -100,7 +103,7 @@ public class BaseShopRenderer {
 			ValueChangeListener listener = new StartInputListener(inventoryArticle);
 			return attributeComponent.getInstance(I18n.getText(CatalogArticle.CAPTION_START), start, listener);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 			// TODO: convert date
 			return new LabelComponent().getInstance(I18n.getText(CatalogArticle.CAPTION_START), start.toString(), null);
 		}
@@ -115,7 +118,7 @@ public class BaseShopRenderer {
 			ValueChangeListener listener = new EndInputListener(inventoryArticle);
 			return attributeComponent.getInstance(I18n.getText(CatalogArticle.CAPTION_END), end, listener);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 			// TODO: convert date
 			return new LabelComponent().getInstance(I18n.getText(CatalogArticle.CAPTION_END), end.toString(), null);
 		}

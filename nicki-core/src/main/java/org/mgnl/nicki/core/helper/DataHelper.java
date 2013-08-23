@@ -43,9 +43,12 @@ import java.util.Map;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DataHelper {
 
+	private static final Logger LOG = LoggerFactory.getLogger(DataHelper.class);
 	public final static String FORMAT_DAY = "yyyyMMdd";
 	public final static String FORMAT_DISPLAY_DAY = "dd.MM.yyyy";
 	// 20091030115321
@@ -142,7 +145,7 @@ public class DataHelper {
 				String entry[] = StringUtils.split(string, valueSeparator);
 				map.put(entry[0], entry[1]);
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 			
 		}
@@ -155,7 +158,7 @@ public class DataHelper {
 				return new String(Base64.decodeBase64(StringUtils.substringAfter(string, "!").getBytes()));
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return string;
 	}

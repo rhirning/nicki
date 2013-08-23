@@ -32,7 +32,6 @@
  */
 package org.mgnl.nicki.vaadin.base.data;
 
-import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
 import com.vaadin.data.Property;
@@ -57,14 +56,23 @@ public class AttributeDataContainer<T> implements DataContainer<T>, Property<T> 
 		this.attributeName = attributeName;
 	}
 
+	@SuppressWarnings("unchecked")
 	public T getValue() {
-		return (T) StringUtils.trimToEmpty((String) dynamicObject.get(attributeName));
+		if (dynamicObject.get(attributeName) == null) {
+			try {
+				return (T) "";
+			} catch (Exception e) {
+				// nothing to do
+			}
+		}
+		return (T) dynamicObject.get(attributeName);
 	}
 
 	public void setValue(T newValue) {
 		dynamicObject.put(attributeName, newValue);
 	}
 
+	@SuppressWarnings("unchecked")
 	public Class<? extends T> getType() {
 		return  (Class<? extends T>) dynamicObject.getModel().getDynamicAttribute(attributeName).getClass();
 	}

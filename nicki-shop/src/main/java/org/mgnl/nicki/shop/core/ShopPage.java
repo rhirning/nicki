@@ -43,9 +43,12 @@ import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public class ShopPage implements ShopViewerComponent, Serializable{
+	private static final Logger LOG = LoggerFactory.getLogger(ShopPage.class);
 	private Shop shop;
 	private TYPE type;
 	private String name;
@@ -123,7 +126,7 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 					this.articleList.addAll(articles);
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 		}
 	}

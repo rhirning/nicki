@@ -29,13 +29,11 @@ public class PdfEngine {
 	private static float CM_PER_INCH = 2.54f;
 	private static float MM_PER_USER_UNIT = CM_PER_INCH * 10.0f / 72.0f;
 	private Map<String, BaseFont> fonts = new HashMap<String, BaseFont>();
-	private PdfTemplate template;
 
 
 
 	public void render(PdfTemplate template, OutputStream os) throws DocumentException, IOException {
 
-		this.template = template;
 		Document doc = template.getDocument();
 		com.lowagie.text.Document document = new com.lowagie.text.Document();
 		PdfWriter writer = PdfWriter.getInstance(document, os);

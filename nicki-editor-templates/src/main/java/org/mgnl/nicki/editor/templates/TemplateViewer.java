@@ -44,6 +44,8 @@ import org.mgnl.nicki.vaadin.base.data.AttributeDataContainer;
 import org.mgnl.nicki.vaadin.base.data.ListPartDataContainer;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
@@ -55,6 +57,7 @@ import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class TemplateViewer extends CustomComponent implements ClassEditor {
+	private static final Logger LOG = LoggerFactory.getLogger(TemplateViewer.class);
 
 	private VerticalLayout mainLayout;
 	
@@ -91,7 +94,7 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 				try {
 					save();
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.error("Error", e);
 				}
 			}
 		});
@@ -101,7 +104,7 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 				try {
 					execute();
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.error("Error", e);
 				}
 			}
 		});

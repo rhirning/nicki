@@ -73,6 +73,7 @@ public class ArticleShopContainer implements ShopContainer{
 
 
 
+	@SuppressWarnings("unchecked")
 	public IndexedContainer getArticles() throws DynamicObjectException {
 		container = new IndexedContainer();
 		container.addContainerProperty(PROPERTY_STATUS, String.class, null);
@@ -99,11 +100,13 @@ public class ArticleShopContainer implements ShopContainer{
 
 
 
+	@SuppressWarnings("unchecked")
 	public void orderItem(Object target) {
 		Item item = container.getItem(target);
 		item.getItemProperty(PROPERTY_STATUS).setValue(STATUS_ORDERED);
 	}
 	
+	@SuppressWarnings("unchecked")
 	public void cancelItem(Object target) {
 		Item item = container.getItem(target);
 		String oldValue = (String) item.getItemProperty(PROPERTY_STATUS).getValue();

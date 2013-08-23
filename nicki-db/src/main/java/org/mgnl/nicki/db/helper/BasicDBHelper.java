@@ -43,8 +43,11 @@ import org.mgnl.nicki.db.handler.IsExistSelectHandler;
 import org.mgnl.nicki.db.handler.MaxIntValueSelectHandler;
 import org.mgnl.nicki.db.handler.SelectHandler;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BasicDBHelper {
+	private static final Logger LOG = LoggerFactory.getLogger(BasicDBHelper.class);
 	public final static String DATE_FORMAT = "yyyy-MM-dd";
 	public final static String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss Z";
 	public static SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
@@ -56,7 +59,7 @@ public class BasicDBHelper {
 		try {
 			conn = profile.getConnection();
 			stmt = conn.createStatement();
-			System.out.println(statement);
+			LOG.debug(statement);
 			stmt.executeUpdate(statement);
 			stmt.close();
 			stmt = null;
@@ -94,7 +97,7 @@ public class BasicDBHelper {
 		try {
 			select(profile, handler);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return handler.isExist();
 	}
@@ -108,7 +111,7 @@ public class BasicDBHelper {
 			conn = profile.getConnection();
 			stmt = conn.createStatement();
 			if (handler.isLoggingEnabled()) {
-				System.out.println(handler.getSearchStatement());
+				LOG.debug(handler.getSearchStatement());
 			}
 			rs = stmt.executeQuery(handler.getSearchStatement());
 			handler.handle(rs);
@@ -153,7 +156,7 @@ public class BasicDBHelper {
 		try {
 			select(profile, handler);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Error", e);
 		}
 		return handler.getResult();
 	}

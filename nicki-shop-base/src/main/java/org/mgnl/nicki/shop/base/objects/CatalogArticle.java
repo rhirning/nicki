@@ -52,10 +52,13 @@ import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.base.inventory.InventoryAttribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @DynamicObject
 @ObjectClass("nickiCatalogArticle")
 public class CatalogArticle extends BaseDynamicObject {
+	private static final Logger LOG = LoggerFactory.getLogger(CatalogArticle.class);
 	private static final long serialVersionUID = 2340086861870174607L;
 	public static final String TYPE_ARTICLE = "ARTICLE";
 	public static final String CAPTION_START = "nicki.rights.attribute.dateFrom.label";
@@ -119,7 +122,7 @@ public class CatalogArticle extends BaseDynamicObject {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 		}
 		return map;
@@ -139,7 +142,7 @@ public class CatalogArticle extends BaseDynamicObject {
 					}
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 			}
 		}
 		return list;
@@ -168,7 +171,7 @@ public class CatalogArticle extends BaseDynamicObject {
 		StringBuffer sb = new StringBuffer();
 		sb.append("[catalogArticle name='").append(getName());
 		sb.append("' displayName='").append(getDisplayName());
-		sb.append("']\n");
+		sb.append("']");
 		if (hasAttributes()) {
 			for (CatalogArticleAttribute catalogArticleAttribute : getAllAttributes()) {
 				sb.append(catalogArticleAttribute.toString());

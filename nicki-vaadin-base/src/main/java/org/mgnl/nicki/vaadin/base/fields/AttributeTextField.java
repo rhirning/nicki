@@ -46,11 +46,11 @@ import com.vaadin.ui.Field;
 import com.vaadin.ui.TextField;
 
 @SuppressWarnings("serial")
-public class AttributeTextField  extends BaseDynamicAttributeField implements DynamicAttributeField, Serializable {
+public class AttributeTextField  extends BaseDynamicAttributeField implements DynamicAttributeField<String>, Serializable {
 
 	private AbstractField<String> field;
 	private DataContainer<String> property;
-	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener objectListener) {
+	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener<String> objectListener) {
 
 		property = new AttributeDataContainer<String>(dynamicObject, attributeName);
 		field = new TextField(getName(dynamicObject, attributeName));
@@ -58,7 +58,7 @@ public class AttributeTextField  extends BaseDynamicAttributeField implements Dy
 		field.setWidth("600px");
 		field.setValue(property.getValue());
 		field.setImmediate(false);
-		field.addValueChangeListener(new AttributeInputListener(property, objectListener));
+		field.addValueChangeListener(new AttributeInputListener<String>(property, objectListener));
 	}
 
 	public Field<String> getComponent(boolean readOnly) {

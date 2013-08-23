@@ -47,6 +47,8 @@ import org.mgnl.nicki.shop.base.objects.Cart.CART_STATUS;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
 import org.mgnl.nicki.shop.renderer.ShopRenderer;
 import org.mgnl.nicki.shop.renderer.TabRenderer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
@@ -59,6 +61,7 @@ import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class ShopViewer extends CustomComponent implements ShopViewerComponent, Serializable {
+	private static final Logger LOG = LoggerFactory.getLogger(ShopViewer.class);
 
 	private Person shopper;
 	private Person recipient = null;
@@ -73,9 +76,9 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	private Cart cart = null;
 
 	public ShopViewer(Person user, Shop shop, Person recipient, ShopParent parent, Cart cart) throws InvalidPrincipalException, InstantiateDynamicObjectException {
-		this.shopper = user;
+		this.setShopper(user);
 		this.shop = shop;
-		this.recipient = recipient;
+		this.setRecipient(recipient);
 		this.parent = parent;
 		this.setCart(cart);
 		if (cart != null) {
@@ -91,7 +94,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 			try {
 				this.renderer = (ShopRenderer) Classes.newInstance(shop.getRenderer());
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Error", e);
 				this.renderer = null;
 			}
 		}
@@ -111,7 +114,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 			
 			public void buttonClick(ClickEvent event) {
 				if (getInventory() != null) {
-					// System.out.println(getInventory().toString());
+					// LOG.debug(getInventory().toString());
 					try {
 						if (!getInventory().hasChanged()) {
 							Notification.show(I18n.getText(parent.getI18nBase() + ".save.empty"),
@@ -126,7 +129,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 						Notification.show(I18n.getText(parent.getI18nBase() + ".save.error"),
 								e.getMessage(),
 								Notification.Type.ERROR_MESSAGE);
-						e.printStackTrace();
+						LOG.error("Error", e);
 					}
 				}
 			}
@@ -138,7 +141,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 			
 			public void buttonClick(ClickEvent event) {
 				if (getInventory() != null) {
-					// System.out.println(getInventory().toString());
+					// LOG.debug(getInventory().toString());
 					try {
 						if (!getInventory().hasChanged()) {
 							Notification.show(I18n.getText(parent.getI18nBase() + ".remember.empty"),
@@ -153,7 +156,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 						Notification.show(I18n.getText(parent.getI18nBase() + ".remember.error"),
 								e.getMessage(),
 								Notification.Type.ERROR_MESSAGE);
-						e.printStackTrace();
+						LOG.error("Error", e);
 					}
 				}
 			}
@@ -249,6 +252,22 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 
 	public void setCart(Cart cart) {
 		this.cart = cart;
+	}
+
+	public Person getRecipient() {
+		return recipient;
+	}
+
+	public void setRecipient(Person recipient) {
+		this.recipient = recipient;
+	}
+
+	public Person getShopper() {
+		return shopper;
+	}
+
+	public void setShopper(Person shopper) {
+		this.shopper = shopper;
 	}
 
 

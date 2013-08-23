@@ -45,6 +45,8 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
 import org.mgnl.nicki.vaadin.base.editor.LinkResource;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
@@ -58,6 +60,7 @@ import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class TemplateConfig extends CustomComponent implements ClassEditor {
+	private static final Logger LOG = LoggerFactory.getLogger(TemplateConfig.class);
 
 	private AbsoluteLayout mainLayout;
 	
@@ -97,7 +100,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 					try {
 						preview();
 					} catch (Exception e) {
-						e.printStackTrace();
+						LOG.error("Error", e);
 					}
 				}
 			});
@@ -109,7 +112,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 				try {
 					htmlPreview();
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.error("Error", e);
 				}
 			}
 		});

@@ -23,6 +23,7 @@
 		<module>nicki-dynamic-objects-ad</module>
 		<module>nicki-editor-catalogs</module>
 		<module>nicki-editor-jcr</module>
+		<module>nicki-editor-log4j</module>
 		<module>nicki-editor-scripts</module>
 		<module>nicki-editor-templates</module>
 		<module>nicki-idm-novell</module>
@@ -80,7 +81,7 @@
 			<dependency>
 				<groupId>com.lowagie</groupId>
 				<artifactId>itext</artifactId>
-				<version>2.1.7</version>
+				<version>2.0.8</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novell.dirxml</groupId>
@@ -182,6 +183,11 @@
 				<groupId>javax.xml</groupId>
 				<artifactId>jaxrpc-api</artifactId>
 				<version>1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>1.2.16</version>
 			</dependency>
 			<dependency>
 				<groupId>net.sf.ehcache</groupId>

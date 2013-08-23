@@ -74,6 +74,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		return table;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void render() {
 		// collect all articles
 		List<CatalogArticle> articles = shopViewerComponent.getAllArticles();
@@ -147,6 +148,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		UI.getCurrent().addWindow(dialog);		
 	}
 
+	@SuppressWarnings("unchecked")
 	public Item addMultiArticle(InventoryArticle iArticle, STATUS status) {
 		CheckBox checkBox = new CheckBox();
 		CatalogArticle article = iArticle.getArticle();
@@ -179,6 +181,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	public Item addArticle(CatalogArticle article, InventoryArticle inventoryArticle) {
 		CheckBox checkBox = new CheckBox();
 		checkBox.setData(article);
@@ -208,6 +211,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		return item;
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void hideEntry(Item item) {
 		item.getItemProperty("dateFrom").setValue(null);
 		item.getItemProperty("dateTo").setValue(null);
@@ -215,6 +219,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 //		removeExcept(parent, event.getButton());
 	}
 
+	@SuppressWarnings("unchecked")
 	public void showEntry(Item item, CatalogArticle article, InventoryArticle inventoryArticle) {
 		SOURCE source = SOURCE.SHOP;
 		Date start = new Date();
