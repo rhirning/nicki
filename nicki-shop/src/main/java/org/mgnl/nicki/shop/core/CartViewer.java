@@ -67,14 +67,14 @@ public class CartViewer extends CustomComponent {
 			Item item = cartEntries.addItem(cartEntry);
 			CatalogArticle article = Catalog.getCatalog().getArticle(cartEntry.getId());
 			item.getItemProperty("right").setValue(article.getDisplayName());
-			item.getItemProperty("action").setValue(cartEntry.getAction());	
+			item.getItemProperty("action").setValue(cartEntry.getAction().toString());	
 			if (cartEntry.getStart() != null) {
 				item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(cartEntry.getStart()));
 			}
 			if (cartEntry.getEnd() != null) {
 				item.getItemProperty("end").setValue(DataHelper.formatDisplayDay.format(cartEntry.getEnd()));
 			}
-			item.getItemProperty("attributes").setValue(cartEntry.getAttributes());
+			item.getItemProperty("attributes").setValue(cartEntry.getAttributes().toString());
 		}
 	}
 

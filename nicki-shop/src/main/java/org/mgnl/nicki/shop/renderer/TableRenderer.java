@@ -79,26 +79,29 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		// collect all articles
 		List<CatalogArticle> articles = shopViewerComponent.getAllArticles();
 		// create Table
-				
-		table = new Table();
-		table.setWidth("100%");
-		table.setHeight("100%");
-		table.addContainerProperty("checkbox", Component.class, "");
-		table.setColumnWidth("checkbox", 64);
-		table.setColumnHeader("checkbox", "");
-		table.addContainerProperty("title", String.class, "");
-		table.setColumnWidth("title", 200);
-		table.setColumnHeader("title", I18n.getText("nicki.rights.attribute.title.label"));
-		table.addContainerProperty("dateFrom", PopupDateField.class, "");
-		table.setColumnWidth("dateFrom", 100);
-		table.setColumnHeader("dateFrom", I18n.getText(CatalogArticle.CAPTION_START));
-		table.addContainerProperty("dateTo", PopupDateField.class, "");
-		table.setColumnWidth("dateTo", 100);
-		table.setColumnHeader("dateTo", I18n.getText(CatalogArticle.CAPTION_END));
-		
-		table.addContainerProperty("attributes", Layout.class, "");
-		table.setColumnHeader("attributes", I18n.getText("nicki.rights.attributes.label"));
 
+		if (table == null) {
+			table = new Table();
+			table.setWidth("100%");
+			table.setHeight("100%");
+			table.addContainerProperty("checkbox", Component.class, "");
+			table.setColumnWidth("checkbox", 64);
+			table.setColumnHeader("checkbox", "");
+			table.addContainerProperty("title", String.class, "");
+			table.setColumnWidth("title", 200);
+			table.setColumnHeader("title", I18n.getText("nicki.rights.attribute.title.label"));
+			table.addContainerProperty("dateFrom", PopupDateField.class, "");
+			table.setColumnWidth("dateFrom", 100);
+			table.setColumnHeader("dateFrom", I18n.getText(CatalogArticle.CAPTION_START));
+			table.addContainerProperty("dateTo", PopupDateField.class, "");
+			table.setColumnWidth("dateTo", 100);
+			table.setColumnHeader("dateTo", I18n.getText(CatalogArticle.CAPTION_END));
+			
+			table.addContainerProperty("attributes", Layout.class, "");
+			table.setColumnHeader("attributes", I18n.getText("nicki.rights.attributes.label"));
+			
+		}
+		table.removeAllItems();
 		// add articles to table
 		for (CatalogArticle article : articles) {
 			if (!article.isMultiple()) {
