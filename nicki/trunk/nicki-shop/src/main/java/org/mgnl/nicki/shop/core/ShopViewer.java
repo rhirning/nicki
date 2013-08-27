@@ -107,7 +107,8 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	private VerticalLayout getShop() {
 		VerticalLayout shopLayout = new VerticalLayout();
 		AbsoluteLayout layout = new AbsoluteLayout();
-		layout.setHeight("100%");		
+		layout.setHeight(24, Unit.PIXELS);
+		layout.setWidth("100%");
 
 		saveButton = new Button(I18n.getText("nicki.editor.generic.button.save"));
 		saveButton.addClickListener(new Button.ClickListener() {
