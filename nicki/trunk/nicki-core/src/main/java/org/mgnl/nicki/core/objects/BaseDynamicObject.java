@@ -128,12 +128,14 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		List<T> objects = new ArrayList<T>();
 		@SuppressWarnings("unchecked")
 		List<String> foreignKeys = (List<String>) get(key);
-		for (String path : foreignKeys) {
-			DynamicObject object = context.loadObject(classDefinition, path);
-			if (object != null) {
-				objects.add(context.loadObject(classDefinition, path));
-			} else {
-				LOG.debug("Could not build object: " + path);
+		if (foreignKeys != null) {
+			for (String path : foreignKeys) {
+				DynamicObject object = context.loadObject(classDefinition, path);
+				if (object != null) {
+					objects.add(context.loadObject(classDefinition, path));
+				} else {
+					LOG.debug("Could not build object: " + path);
+				}
 			}
 		}
 		return objects;
@@ -194,6 +196,10 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	
 	public void addAttribute(DynamicAttribute dynAttribute) {
 		this.getModel().addAttribute(dynAttribute);
+	}
+	
+	public void removeAttribute(String attributeName) {
+		this.getModel().removeAttribute(attributeName);
 	}
 
 	

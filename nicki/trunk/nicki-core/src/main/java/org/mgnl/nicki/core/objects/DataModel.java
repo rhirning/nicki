@@ -241,6 +241,12 @@ public class DataModel implements Serializable {
 			this.namingAttribute = attributeName;
 		}
 	}
+	
+	public void removeAttribute(String attrbuteName) {
+		if (this.attributes.containsKey(attrbuteName)) {
+			this.attributes.remove(attrbuteName);
+		}
+	}
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
 		for (DynamicAttribute dynamicAttribute : this.attributes.values()) {
 			dynamicAttribute.init(context, dynamicObject, rs);

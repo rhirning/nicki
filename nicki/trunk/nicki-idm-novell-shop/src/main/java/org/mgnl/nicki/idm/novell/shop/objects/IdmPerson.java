@@ -96,6 +96,7 @@ public class IdmPerson extends Person implements Serializable {
 	public static final String ATTRIBUTE_MAIL = "mail";
 	public static final String ATTRIBUTE_PHONENUMBER = "phoneNumber";
 
+	private List<Group> assignedGroups = null;
 	private List<Role> assignedRoles = null;
 	private List<Resource> assignedResources = null;
 	
@@ -105,7 +106,8 @@ public class IdmPerson extends Person implements Serializable {
 	private String quitDate;
 	@DynamicAttribute(externalName="nickiActivationDate")
 	private String activationDate;
-	@DynamicReferenceAttribute(externalName="manager", foreignKey=Person.class, reference=Person.class,
+	@DynamicReferenceAttribute(externalName="manager", foreignKey=Person.class,
+			reference=Person.class,
 			baseProperty="nicki.users.basedn")
 	private String manager;
 	@DynamicAttribute(externalName="employeeType")
@@ -138,7 +140,9 @@ public class IdmPerson extends Person implements Serializable {
 	private String company;
 	@DynamicAttribute(externalName="nickiOccupation")
 	private String occupation;
-	@DynamicAttribute(externalName="groupMembership", foreignKey=Group.class)
+	@DynamicReferenceAttribute(externalName="groupMembership", foreignKey=Group.class,
+			reference=Group.class,
+			baseProperty="nicki.users.basedn")
 	private String[] memberOf;
 	@DynamicAttribute(externalName="ou", foreignKey=Org.class)
 	private String ou;
@@ -148,6 +152,16 @@ public class IdmPerson extends Person implements Serializable {
 	private String mail;
 	@DynamicAttribute(externalName="telephoneNumber")
 	private String phoneNumber;
+	
+
+
+
+	public List<Group> getGroups() {
+		if (assignedGroups == null) {
+			assignedGroups = getForeignKeyObjects(Group.class, "memberOf");
+		}
+		return assignedGroups;
+	}
 	
 	public boolean hasRole(Role role2) {
 		for (Role role : getRoles()) {
@@ -329,6 +343,16 @@ public class IdmPerson extends Person implements Serializable {
 	}
 
 
+	@Override
+	public boolean isMemberOf(String groupName) {
+		for (Group group : getGroups()) {
+			if (StringUtils.equals(group.getName(), groupName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public void setCompany(String value) {
 		put(ATTRIBUTE_COMPANY, value);
 	}
@@ -417,6 +441,7 @@ public class IdmPerson extends Person implements Serializable {
 		}
 		return assignedResources;
 	}
+
 
 	public enum GENDER {
 

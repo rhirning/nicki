@@ -143,6 +143,8 @@ public interface DynamicObject {
 
 	public <T extends DynamicAttribute >void addAttribute(T dynAttribute);
 
+	public void removeAttribute(String attributeName);
+
 	public void setContext(NickiContext context);
 
 	public NickiContext getContext();

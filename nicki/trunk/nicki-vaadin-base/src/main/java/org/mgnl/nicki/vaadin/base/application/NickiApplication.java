@@ -43,6 +43,7 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.util.Classes;
+import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.vaadin.base.auth.LoginDialog;
 import org.mgnl.nicki.vaadin.base.command.Command;
 import org.mgnl.nicki.vaadin.base.components.ConfirmDialog;
@@ -53,6 +54,8 @@ import org.slf4j.LoggerFactory;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -180,11 +183,57 @@ public abstract class NickiApplication extends UI {
 			getView().addComponent(new WelcomeDialog(this));
 		}
 		Component editor = getEditor();
-		getView().addComponent(editor);
-		editor.setSizeFull();
-		getView().setExpandRatio(editor, 1);
+		if (isAllowed(this.nickiContext.getUser())) {
+			getView().addComponent(editor);
+			editor.setSizeFull();
+			getView().setExpandRatio(editor, 1);
+		} else {
+			logout();
+		}
 	}
 	
+	private boolean isAllowed(DynamicObject user) {
+		boolean allowed = false;
+		AccessRole roleAnnotation = getClass().getAnnotation(AccessRole.class);
+		AccessGroup groupAnnotation = getClass().getAnnotation(AccessGroup.class);
+		if (roleAnnotation == null && groupAnnotation == null) {
+			allowed =  true;
+		} else if (roleAnnotation != null){
+			try {
+				AccessRoleEvaluator roleEvaluator = roleAnnotation.evaluator().newInstance();
+				allowed = roleEvaluator.hasRole((Person) user, roleAnnotation.name());
+			} catch (Exception e) {
+				LOG.error("Could not create AccessRoleEvaluator", e);
+				allowed = false;
+			}
+		}
+		if (!allowed && groupAnnotation != null) {
+			try {
+				AccessGroupEvaluator groupEvaluator = groupAnnotation.evaluator().newInstance();
+				allowed = groupEvaluator.isMemberOf((Person) user, groupAnnotation.name());
+			} catch (Exception e) {
+				LOG.error("Could not create AccessGroupEvaluator", e);
+				allowed = false;
+			}
+		}
+		if (!allowed) {
+			LOG.error("Not allowed user '" + user + "' tried to access application " + getClass().getName());
+			StringBuffer description = new StringBuffer();
+			if (roleAnnotation != null) {
+				description.append("Role: ").append(roleAnnotation.name());
+			}
+			if (groupAnnotation != null) {
+				if (description.length() > 0) {
+					description.append(", ");
+				}
+				description.append("Group: ").append(groupAnnotation.name());
+			}
+			Notification.show(I18n.getText(getI18nBase() + ".access.denied"),
+					description.toString() ,Type.ERROR_MESSAGE);
+		}
+		return allowed;
+	}
+
 	public String getEditorHeight() {
 		return "100%";
 	}

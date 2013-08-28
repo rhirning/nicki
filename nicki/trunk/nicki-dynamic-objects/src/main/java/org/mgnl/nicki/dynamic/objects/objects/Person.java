@@ -45,6 +45,11 @@ import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateModelException;
 
 
 @SuppressWarnings("serial")
@@ -52,6 +57,7 @@ import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 @ObjectClass("Person")
 @AdditionalObjectClass("nickiUserAux")
 public class Person extends BaseDynamicObject {
+	private static final Logger LOG = LoggerFactory.getLogger(Person.class);
 	public static final String ATTRIBUTE_DISPLAYNAME = "displayName";
 	public static final String ATTRIBUTE_SURNAME = "surname";
 	public static final String ATTRIBUTE_GIVENNAME = "givenname";
@@ -67,6 +73,7 @@ public class Person extends BaseDynamicObject {
 	public static final String SEPARATOR_VALUE = "=";
 
 	private List<AssignedArticle> assignedArticles = null;
+	private List<Group> assignedGroups = null;
 	private List<String> attributeValues = null;
 	private Map<String, String> catalogAttributes = new HashMap<String, String>();
 	
@@ -80,7 +87,8 @@ public class Person extends BaseDynamicObject {
 	private String fullname;
 	@DynamicAttribute(externalName="Language")
 	private String language;
-	@DynamicReferenceAttribute(externalName="member", reference=Group.class, baseProperty="nicki.data.basedn")
+	@DynamicReferenceAttribute(externalName="member", reference=Group.class,
+			baseProperty="nicki.data.basedn")
 	private String[] memberOf;
 	@DynamicAttribute(externalName="nickiLocation")
 	private String location;
@@ -104,6 +112,13 @@ public class Person extends BaseDynamicObject {
 	}
 
 
+	public List<Group> getGroups() {
+		if (assignedGroups == null) {
+			assignedGroups = getForeignKeyObjects(Group.class, "memberOf");
+		}
+		return assignedGroups;
+	}
+	
 	public String getFullname() {
 		return getAttribute(ATTRIBUTE_FULLNAME);
 	}
@@ -192,5 +207,16 @@ public class Person extends BaseDynamicObject {
 
 	public String getActiveFilter() {
 		return "!(nickiStatus=inactive)";
+	}
+
+
+	public boolean hasGroup(String groupName) {
+		return false;
+	}
+
+
+	public boolean isMemberOf(String group) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

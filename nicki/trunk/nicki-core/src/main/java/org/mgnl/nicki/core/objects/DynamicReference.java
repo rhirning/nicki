@@ -33,8 +33,11 @@
 package org.mgnl.nicki.core.objects;
 
 import java.io.Serializable;
+import java.util.List;
 
-import org.mgnl.nicki.core.methods.ReferenceMethod;
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.methods.ForeignKeyMethod;
+import org.mgnl.nicki.core.methods.ListForeignKeyMethod;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.context.NickiContext;
@@ -42,18 +45,13 @@ import org.mgnl.nicki.core.context.NickiContext;
 @SuppressWarnings("serial")
 public class DynamicReference extends DynamicAttribute implements Serializable {
 
-	private String attributeName;
 	private String baseDn;
 	private Class<? extends DynamicObject> classDefinition;
-	public DynamicReference(Class<? extends DynamicObject> classDefinition, String name, String baseDn, String attributeName, Class<?> attributeClass) {
-		super(name, name, attributeClass);
+	public DynamicReference(Class<? extends DynamicObject> classDefinition, String name, String baseDn, String externalName, Class<?> attributeClass) {
+		super(name, externalName, attributeClass);
 		this.classDefinition = classDefinition;
 		setVirtual();
 		this.setBaseDn(baseDn);
-		this.attributeName = attributeName;
-	}
-	public String getAttributeName() {
-		return attributeName;
 	}
 	public void setBaseDn(String baseDn) {
 		this.baseDn = baseDn;
@@ -63,10 +61,22 @@ public class DynamicReference extends DynamicAttribute implements Serializable {
 	}
 	@Override
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
-		dynamicObject.put(getGetter(getName()), new ReferenceMethod(context, rs, this));
-		String value = (String) rs.getValue(getExternalName());
-		dynamicObject.put(getName(), value);
+		if (isMultiple()) {
+			List<Object> values = rs.getValues(getExternalName());
+			dynamicObject.put(getName(), values);
+			dynamicObject.put(getMultipleGetter(getName()),
+					new ListForeignKeyMethod(context, rs, getExternalName(), getForeignKeyClass()));
+
+		} else {
+			String value = (String) rs.getValue(getExternalName());
+			if (StringUtils.isNotEmpty(value)) {
+				dynamicObject.put(getName(), value);
+				dynamicObject.put(getGetter(getName()),
+						new ForeignKeyMethod(context, rs, getExternalName(), getForeignKeyClass()));
+			}
+		}
 	}
+
 	public Class<? extends DynamicObject> getClassDefinition() {
 		return classDefinition;
 	}
