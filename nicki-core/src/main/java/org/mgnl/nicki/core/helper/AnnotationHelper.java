@@ -9,6 +9,7 @@ import org.mgnl.nicki.core.annotation.Child;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
 import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.core.annotation.RemoveDynamicAttribute;
 import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.objects.ChildFilter;
@@ -62,6 +63,13 @@ public class AnnotationHelper {
 		}
 		for (String objectClass : getAdditionalObjectClasses(modelClass)) {
 			dynamicObject.addAdditionalObjectClass(objectClass);
+		}
+		
+		RemoveDynamicAttribute removeDynamicAttribute = modelClass.getAnnotation(RemoveDynamicAttribute.class);
+		if (removeDynamicAttribute != null) {
+			for (String attributeName : removeDynamicAttribute.value()) {
+				dynamicObject.removeAttribute(attributeName);
+			}
 		}
 		
 		Annotation[] annotations = modelClass.getAnnotations();

@@ -62,7 +62,7 @@ public class LdapQuery implements Query {
 	public LdapQuery(String path, DynamicReference reference) {
 		super();
 		this.baseDN = reference.getBaseDn();
-		addSearchValue(reference.getAttributeName(), path);
+		addSearchValue(reference.getExternalName(), path);
 	}
 
 	public LdapQuery(String path, StructuredDynamicReference reference) {
