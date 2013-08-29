@@ -37,8 +37,10 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.TabSheet;
 
 @SuppressWarnings("serial")
 public class Log4jEditor extends NickiApplication {
@@ -50,8 +52,12 @@ public class Log4jEditor extends NickiApplication {
 
 	@Override
 	public Component getEditor() {
+		TabSheet tabSheet = new TabSheet();
+		TailViewer tailViewer = new TailViewer();
+		tabSheet.addTab(tailViewer, I18n.getText(getI18nBase() + ".tab.tailviewer"));
 		Log4jViewer editor = new Log4jViewer(this);
-		return editor;
+		tabSheet.addTab(editor, I18n.getText(getI18nBase() + ".tab.log4j"));
+		return tabSheet;
 	}
 
 	@Override
