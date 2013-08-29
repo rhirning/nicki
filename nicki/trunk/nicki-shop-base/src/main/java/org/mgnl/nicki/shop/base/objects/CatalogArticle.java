@@ -34,7 +34,6 @@ package org.mgnl.nicki.shop.base.objects;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -96,41 +95,17 @@ public class CatalogArticle extends BaseDynamicObject {
 		return this.getPath();
 	}
 	
-	public void setAttributes(List<CatalogArticleAttribute> attributes) {
-		put("attribute", attributes);
-	}
-	
 	public void setAttributesField(String attributes) {
-		put("attributes", attributes);
+		put("attributesField", attributes);
 	}
 	
 	public String getAttributesField() {
-		return getAttribute("attributes");
-	}
-
-	public Map<String, CatalogArticleAttribute> getAttributeMap() {
-		Map<String, CatalogArticleAttribute> map = new HashMap<String, CatalogArticleAttribute>();
-		String attributes = getAttribute("attributes");
-		if (StringUtils.isNotEmpty(attributes)) {
-			try {
-				Document document = XMLHelper.documentFromString(attributes);
-				@SuppressWarnings("unchecked")
-				List<Element> attrs = document.getRootElement().getChildren("attribute");
-				if (attrs != null) {
-					for (Element attributeElement : attrs) {
-						map.put(attributeElement.getAttributeValue("name"), new CatalogArticleAttribute(attributeElement));
-					}
-				}
-			} catch (Exception e) {
-				LOG.error("Error", e);
-			}
-		}
-		return map;
+		return getAttribute("attributesField");
 	}
 	
 	public List<CatalogArticleAttribute> getAttributes() {
 		List<CatalogArticleAttribute> list = new ArrayList<CatalogArticleAttribute>();
-		String attributes = getAttribute("attributes");
+		String attributes = getAttribute("attributesField");
 		if (StringUtils.isNotEmpty(attributes)) {
 			try {
 				Document document = XMLHelper.documentFromString(attributes);

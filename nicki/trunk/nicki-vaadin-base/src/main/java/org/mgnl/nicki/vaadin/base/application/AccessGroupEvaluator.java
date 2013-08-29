@@ -4,5 +4,5 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 public interface AccessGroupEvaluator {
 
-	boolean isMemberOf(Person person, String group);
+	boolean isMemberOf(Person person, String[] groups);
 }

@@ -217,19 +217,21 @@ public abstract class NickiApplication extends UI {
 			}
 		}
 		if (!allowed) {
-			LOG.error("Not allowed user '" + user + "' tried to access application " + getClass().getName());
-			StringBuffer description = new StringBuffer();
+			StringBuffer errorMsg = new StringBuffer();
+			errorMsg.append(user).append(" tried to access application ");
+			errorMsg.append(getClass().getName()).append(". Allowed: ");
 			if (roleAnnotation != null) {
-				description.append("Role: ").append(roleAnnotation.name());
+				errorMsg.append("Role: ").append(roleAnnotation.name());
 			}
 			if (groupAnnotation != null) {
-				if (description.length() > 0) {
-					description.append(", ");
+				if (errorMsg.length() > 0) {
+					errorMsg.append(", ");
 				}
-				description.append("Group: ").append(groupAnnotation.name());
+				errorMsg.append("Group: ").append(groupAnnotation.name());
 			}
+			LOG.error(errorMsg.toString());
 			Notification.show(I18n.getText(getI18nBase() + ".access.denied"),
-					description.toString() ,Type.ERROR_MESSAGE);
+					Type.ERROR_MESSAGE);
 		}
 		return allowed;
 	}

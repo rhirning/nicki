@@ -44,11 +44,6 @@ public class CatalogArticleAttribute implements Serializable{
 	private String key;
 	private String type;
 	private String contentClass;
-	public CatalogArticleAttribute(String name, String key, String type) {
-		this.name = name;
-		this.key = key;
-		this.type = type;
-	}
 
 	public CatalogArticleAttribute(Element attributeElement) {
 		this.name = attributeElement.getAttributeValue("name");
