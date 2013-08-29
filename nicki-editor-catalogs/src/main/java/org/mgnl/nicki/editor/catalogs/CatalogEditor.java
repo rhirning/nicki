@@ -41,6 +41,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
+import org.mgnl.nicki.vaadin.base.application.AccessGroup;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
@@ -50,6 +51,7 @@ import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
 
 import com.vaadin.ui.Component;
 
+@AccessGroup(name = {"nickiAdmins", "IDM-Development"})
 @SuppressWarnings("serial")
 public class CatalogEditor extends NickiApplication {
 

@@ -216,7 +216,11 @@ public class Person extends BaseDynamicObject {
 
 
 	public boolean isMemberOf(String group) {
-		// TODO Auto-generated method stub
+		return false;
+	}
+
+
+	public boolean hasRole(String role) {
 		return false;
 	}
 }

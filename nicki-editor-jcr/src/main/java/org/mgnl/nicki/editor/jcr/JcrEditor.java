@@ -39,6 +39,7 @@ import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.jcr.objects.GenericNodeDynamicObject;
+import org.mgnl.nicki.vaadin.base.application.AccessGroup;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
 import org.mgnl.nicki.vaadin.base.editor.ExportTreeAction;
@@ -50,6 +51,7 @@ import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
 
 import com.vaadin.ui.Component;
 
+@AccessGroup(name = {"nickiAdmins", "IDM-Development"})
 @SuppressWarnings("serial")
 public class JcrEditor extends NickiApplication {
 	

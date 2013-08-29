@@ -52,7 +52,7 @@ import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
 
 import com.vaadin.ui.Component;
 
-@AccessGroup(name = "scriptAdmins")
+@AccessGroup(name = {"nickiAdmins", "IDM-Development"})
 @SuppressWarnings("serial")
 public class ScriptEditor extends NickiApplication {
 	

@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface AccessGroup {
-	String name();
+	String[] name();
 	Class<? extends AccessGroupEvaluator> evaluator() default DefaultGroupEvaluator.class;
 }

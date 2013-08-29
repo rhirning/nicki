@@ -8,6 +8,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface AccessRole {
-	String name();
+	String[] name();
 	Class<? extends AccessRoleEvaluator> evaluator() default DefaultRoleEvaluator.class;
 }

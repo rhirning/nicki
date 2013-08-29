@@ -172,6 +172,16 @@ public class IdmPerson extends Person implements Serializable {
 		return false;
 	}
 
+	@Override
+	public boolean hasRole(String roleName) {
+		for (Role role : getRoles()) {
+			if (StringUtils.equalsIgnoreCase(role.getName(), roleName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public boolean hasResource(Resource resource2) {
 		for (Resource resource : getResources()) {
 			if (StringUtils.equals(resource.getPath(), resource2.getPath())) {
@@ -346,7 +356,7 @@ public class IdmPerson extends Person implements Serializable {
 	@Override
 	public boolean isMemberOf(String groupName) {
 		for (Group group : getGroups()) {
-			if (StringUtils.equals(group.getName(), groupName)) {
+			if (StringUtils.equalsIgnoreCase(group.getName(), groupName)) {
 				return true;
 			}
 		}
@@ -494,4 +504,5 @@ public class IdmPerson extends Person implements Serializable {
 	public void setOwner(IdmPerson owner) {
 		put(ATTRIBUTE_OWNER, owner.getId());
 	}
+
 }
