@@ -5,7 +5,7 @@
 	<name>nicki-config-efg</name>
 	<parent>
 		<artifactId>nicki-parent</artifactId>
-		<version>3.14</version>
+		<version>3.15-SNAPSHOT</version>
 		<groupId>org.mgnl.nicki</groupId>
 		<relativePath>..</relativePath>
 	</parent>
@@ -13,7 +13,7 @@
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-dynamic-objects</artifactId>
-			<version>3.14</version>
+			<version>3.15-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>de.deron</groupId>
