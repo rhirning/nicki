@@ -57,7 +57,7 @@ public class StaticComponent extends BasicAttributeComponent<String> implements 
 		if (StringUtils.isNotEmpty(value)) {
 			value += ": ";
 		}
-		String content = getContent(String.class, user, person);
+		String content = getContent(user, person);
 		value += StringUtils.trimToEmpty(content);
 		field.setCaption(value);
 		return field;

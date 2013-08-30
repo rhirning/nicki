@@ -55,8 +55,7 @@ public class SelectComponent extends BasicAttributeComponent<String> implements 
 		setArticle(article);
 		setAttribute(attribute);
 		setCaption(attribute.getLabel());
-		@SuppressWarnings("unchecked")
-		List<String> content = getContent(List.class, user, person);
+		List<String> content = getListContent(user, person);
 		if (content != null) {
 			for (String entry : content) {
 				field.addItem(entry);

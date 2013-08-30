@@ -30,28 +30,40 @@
  * intact.
  *
  */
-package org.mgnl.nicki.shop.base.attributes;
+package org.mgnl.nicki.editor.log4j;
 
-import org.mgnl.nicki.core.util.Classes;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.Iterator;
 
-public enum Component {
-	DATE("org.mgnl.nicki.shop.attributes.DateComponent"),
-	TEXT("org.mgnl.nicki.shop.attributes.TextComponent"),
-	CHECKBOX("org.mgnl.nicki.shop.attributes.CheckboxComponent"),
-	SELECT("org.mgnl.nicki.shop.attributes.SelectComponent"),
-	FREESELECT("org.mgnl.nicki.shop.attributes.FreeSelectComponent"),
-	STATIC("org.mgnl.nicki.shop.attributes.LabelComponent"),
-	GENERIC("org.mgnl.nicki.shop.attributes.GenericComponent"),
-	DEFAULT("org.mgnl.nicki.shop.attributes.LabelComponent");
+import org.apache.commons.io.IOUtils;
+import org.mgnl.nicki.core.helper.NameValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import com.vaadin.data.util.BeanItemContainer;
 
-	private String className;
+public class BeanItemContainerRenderer extends Thread implements Runnable {
+	private static final Logger LOG = LoggerFactory.getLogger(BeanItemContainerRenderer.class);
+	BeanItemContainer<NameValue> container;
+	OutputStream out;
 
-	Component(String className) {
-		this.className = className;
+	public BeanItemContainerRenderer(BeanItemContainer<NameValue> container, OutputStream out) {
+		super();
+		this.container = container;
+		this.out = out;
 	}
+	public void run() {
+		try {
+			for (Iterator<NameValue> i = container.getItemIds().iterator(); i.hasNext();) {
+				NameValue entry = i.next();
+				IOUtils.write(entry.getValue(), out);
+				IOUtils.write("\n", out);
+			}
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			LOG.error("Error reading container", e);
+		}
 
-	public Object getInstance() throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException {
-		return Classes.newInstance(className);
 	}
 }

@@ -34,6 +34,7 @@ package org.mgnl.nicki.shop.attributes;
 
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.util.Classes;
@@ -55,12 +56,35 @@ public abstract class BasicAttributeComponent<F> implements AttributeComponent<F
 	private InventoryArticle article;
 	private CatalogArticleAttribute attribute;
 
-	protected <T extends Object> T getContent(Class<T> classDefinition, Person user, Person person) {
+	protected String getContent(Person user, Person person) {
 		if (StringUtils.isNotEmpty(attribute.getContentClass())) {
 			try {
-				@SuppressWarnings("unchecked")
-				AttributeContent<T> contentProvider = (AttributeContent<T>) Classes.newInstance(attribute.getContentClass());
-				return (T) contentProvider.getContent(classDefinition, user, person);
+				AttributeContent contentProvider = (AttributeContent) Classes.newInstance(attribute.getContentClass());
+				return contentProvider.getContent(user, person);
+			} catch (Exception e) {
+				LOG.error("Error", e);
+			}
+		}
+		return null;
+	}
+
+	protected VaadinComponent getVaadinContent(Person user, Person person) {
+		if (StringUtils.isNotEmpty(attribute.getContentClass())) {
+			try {
+				AttributeVaadinContent contentProvider = (AttributeVaadinContent) Classes.newInstance(attribute.getContentClass());
+				return contentProvider.getVaadinContent(user, person);
+			} catch (Exception e) {
+				LOG.error("Error", e);
+			}
+		}
+		return null;
+	}
+
+	protected List<String> getListContent(Person user, Person person) {
+		if (StringUtils.isNotEmpty(attribute.getContentClass())) {
+			try {
+				AttributeListContent contentProvider = (AttributeListContent) Classes.newInstance(attribute.getContentClass());
+				return contentProvider.getContent(user, person);
 			} catch (Exception e) {
 				LOG.error("Error", e);
 			}
