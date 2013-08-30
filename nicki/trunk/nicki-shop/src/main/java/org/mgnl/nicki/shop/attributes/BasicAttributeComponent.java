@@ -68,11 +68,11 @@ public abstract class BasicAttributeComponent<F> implements AttributeComponent<F
 		return null;
 	}
 
-	protected VaadinComponent getVaadinContent(Person user, Person person) {
+	protected VaadinComponent getVaadinContent() {
 		if (StringUtils.isNotEmpty(attribute.getContentClass())) {
 			try {
 				AttributeVaadinContent contentProvider = (AttributeVaadinContent) Classes.newInstance(attribute.getContentClass());
-				return contentProvider.getVaadinContent(user, person);
+				return contentProvider.getVaadinContent();
 			} catch (Exception e) {
 				LOG.error("Error", e);
 			}
@@ -157,6 +157,10 @@ public abstract class BasicAttributeComponent<F> implements AttributeComponent<F
 		return (String) value;
 	}
 
+	@Override
+	public String getStringValue(String value) {
+		return value;
+	}
 
 
 }

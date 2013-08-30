@@ -69,11 +69,13 @@ public class BaseShopRenderer {
 			return attributeComponent.getInstance(inventory.getUser(), inventory.getPerson(),
 					inventoryArticle, articleAttribute);
 		} catch (Exception e) {
+			LOG.error("Could not create Instance", e);
 			return new LabelComponent().getInstance(inventory.getUser(), inventory.getPerson(),
 					inventoryArticle, articleAttribute);
 		}
 	}
 
+	
 	@SuppressWarnings("unchecked")
 	protected Component getAttributeComponent(CatalogArticle article, CatalogArticleAttribute articleAttribute, boolean enabled, Object value) {
 		try {
@@ -93,7 +95,8 @@ public class BaseShopRenderer {
 					getInventory().getInventoryArticle(article), articleAttribute);
 		}
 	}
-
+	
+	
 	protected Component getStartDateComponent(InventoryArticle inventoryArticle, boolean enabled, Date start) {
 		try {
 			AttributeComponent<Date> attributeComponent = AttributeComponentFactory.getAttributeComponent("DATE");

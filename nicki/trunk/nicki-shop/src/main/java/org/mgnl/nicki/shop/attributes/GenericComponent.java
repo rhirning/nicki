@@ -39,19 +39,48 @@ import com.vaadin.ui.Component;
 
 @SuppressWarnings("serial")
 public class GenericComponent extends BasicAttributeComponent<String> implements AttributeComponent<String> {
+	
+	private VaadinComponent vaadinComponent = null;
 
+	public GenericComponent() {
+	}
 	public Component getInstance(Person user, Person person, InventoryArticle article, CatalogArticleAttribute attribute) {
 		setArticle(article);
 		setAttribute(attribute);
+		vaadinComponent = getVaadinContent();
 		setCaption(attribute.getLabel());
-		VaadinComponent vaadinComponent = getVaadinContent(user, person);
 		vaadinComponent.setValue((String) getArticle().getValue(getAttribute()));
 
-		if (isEnabled()) {
-			vaadinComponent.addValueChangeListener(new CatalogAttributeInputListener(getArticle(), getAttribute()));
-		}
+		vaadinComponent.addValueChangeListener(new CatalogAttributeInputListener(getArticle(), getAttribute()));
 	
 		return vaadinComponent.getComponent();
 	}
+
+	@Override
+	public void setValue(String value) {
+		vaadinComponent.setValue(value);
+	}
+
+	@Override
+	public String getValue() {
+		return vaadinComponent.getValue();
+	}
+	@Override
+	public void setCaption(String caption) {
+		vaadinComponent.setCaption(caption);
+	}
+	@Override
+	public void setEnabled(boolean enabled) {
+	}
+	@Override
+	public boolean isEnabled() {
+		return vaadinComponent.isEnabled();
+	}
+	@Override
+	public String getStringValue(String value) {
+		return (String) value;
+	}
+	
+	
 	
 }
