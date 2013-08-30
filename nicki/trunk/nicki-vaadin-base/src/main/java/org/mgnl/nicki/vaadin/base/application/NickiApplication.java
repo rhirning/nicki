@@ -230,7 +230,7 @@ public abstract class NickiApplication extends UI {
 				errorMsg.append("Group: ").append(groupAnnotation.name());
 			}
 			LOG.error(errorMsg.toString());
-			Notification.show(I18n.getText(getI18nBase() + ".access.denied"),
+			Notification.show(I18n.getText("nicki.editor.access.denied", getClass().getName()),
 					Type.ERROR_MESSAGE);
 		}
 		return allowed;

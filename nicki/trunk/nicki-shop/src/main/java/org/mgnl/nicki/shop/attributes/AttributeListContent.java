@@ -30,28 +30,14 @@
  * intact.
  *
  */
-package org.mgnl.nicki.shop.base.attributes;
+package org.mgnl.nicki.shop.attributes;
 
-import org.mgnl.nicki.core.util.Classes;
+import java.util.List;
 
-public enum Component {
-	DATE("org.mgnl.nicki.shop.attributes.DateComponent"),
-	TEXT("org.mgnl.nicki.shop.attributes.TextComponent"),
-	CHECKBOX("org.mgnl.nicki.shop.attributes.CheckboxComponent"),
-	SELECT("org.mgnl.nicki.shop.attributes.SelectComponent"),
-	FREESELECT("org.mgnl.nicki.shop.attributes.FreeSelectComponent"),
-	STATIC("org.mgnl.nicki.shop.attributes.LabelComponent"),
-	GENERIC("org.mgnl.nicki.shop.attributes.GenericComponent"),
-	DEFAULT("org.mgnl.nicki.shop.attributes.LabelComponent");
+import org.mgnl.nicki.dynamic.objects.objects.Person;
 
-	private String className;
+public interface AttributeListContent {
 
-	Component(String className) {
-		this.className = className;
-	}
+	List<String> getContent(Person user, Person person);
 
-	public Object getInstance() throws ClassNotFoundException,
-			InstantiationException, IllegalAccessException {
-		return Classes.newInstance(className);
-	}
 }
