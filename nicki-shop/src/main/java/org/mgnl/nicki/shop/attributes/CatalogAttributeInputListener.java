@@ -51,6 +51,10 @@ public class CatalogAttributeInputListener implements ValueChangeListener {
 
 	public void valueChange(ValueChangeEvent event) {
 		Object value = event.getProperty().getValue();
+		setValue(value);
+	}
+	
+	public void setValue(Object value) {
 		try {
 			article.setValue(attribute, value);
 		} catch (Exception e) {

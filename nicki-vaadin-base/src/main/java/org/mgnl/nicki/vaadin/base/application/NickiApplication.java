@@ -221,13 +221,13 @@ public abstract class NickiApplication extends UI {
 			errorMsg.append(user).append(" tried to access application ");
 			errorMsg.append(getClass().getName()).append(". Allowed: ");
 			if (roleAnnotation != null) {
-				errorMsg.append("Role: ").append(roleAnnotation.name());
+				errorMsg.append("Role: ").append(roleAnnotation.name().toString());
 			}
 			if (groupAnnotation != null) {
 				if (errorMsg.length() > 0) {
 					errorMsg.append(", ");
 				}
-				errorMsg.append("Group: ").append(groupAnnotation.name());
+				errorMsg.append("Group: ").append(groupAnnotation.name().toString());
 			}
 			LOG.error(errorMsg.toString());
 			Notification.show(I18n.getText("nicki.editor.access.denied", getClass().getName()),

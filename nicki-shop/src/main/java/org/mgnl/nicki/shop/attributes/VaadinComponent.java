@@ -11,4 +11,12 @@ public interface VaadinComponent {
 
 	Component getComponent();
 
+	String getValue();
+
+	void setCaption(String caption);
+
+	void setEnabled(boolean enabled);
+
+	boolean isEnabled();
+
 }
