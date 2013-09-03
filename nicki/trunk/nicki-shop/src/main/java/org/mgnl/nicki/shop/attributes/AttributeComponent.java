@@ -33,20 +33,15 @@
 package org.mgnl.nicki.shop.attributes;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.shop.base.attributes.StringValueGetter;
+import org.mgnl.nicki.shop.base.attributes.BaseAttributeComponent;
 import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Component;
 
-public interface AttributeComponent<F> extends StringValueGetter<F> {
+public interface AttributeComponent<F> extends BaseAttributeComponent<F> {
 
-	void setValue(F value);
-	F getValue();
-	void setCaption(String caption);
-	void setEnabled(boolean enabled);
-	boolean isEnabled();
 	Component getInstance(Person user, Person person, InventoryArticle article,
 			CatalogArticleAttribute attribute);
 	Component getInstance(String caption, F value, ValueChangeListener listener);

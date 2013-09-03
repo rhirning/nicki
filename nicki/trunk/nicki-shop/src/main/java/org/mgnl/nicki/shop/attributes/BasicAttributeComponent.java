@@ -152,10 +152,6 @@ public abstract class BasicAttributeComponent<F> implements AttributeComponent<F
 	public CatalogArticleAttribute getAttribute() {
 		return attribute;
 	}
-	
-	public String getStringValue(Object value) {
-		return (String) value;
-	}
 
 	@Override
 	public String getStringValue(String value) {
