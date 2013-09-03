@@ -30,14 +30,15 @@
  * intact.
  *
  */
-package org.mgnl.nicki.shop.attributes;
-
-import java.util.Date;
+package org.mgnl.nicki.shop.attributes.mock;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.shop.attributes.AttributeContent;
 
-public interface AttributeContent {
+public class MockAttributeContent implements AttributeContent {
 
-	String getContent(Person user, Person person);
+	public String getContent(Person user, Person person) {
+		return "Mock value";
+	}
 
 }

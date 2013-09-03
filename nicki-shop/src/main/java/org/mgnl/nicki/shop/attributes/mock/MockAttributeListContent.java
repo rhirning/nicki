@@ -30,14 +30,26 @@
  * intact.
  *
  */
-package org.mgnl.nicki.shop.attributes;
+package org.mgnl.nicki.shop.attributes.mock;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.shop.attributes.AttributeListContent;
 
-public interface AttributeContent {
+public class MockAttributeListContent implements AttributeListContent {
 
-	String getContent(Person user, Person person);
+	public List<String> getContent(Person user, Person person) {
+		List<String> list = new ArrayList<String>();
+		list.add("value 1");
+		list.add("value 2");
+		list.add("value 3");
+		list.add("value 4");
+		list.add("value 5");
+		list.add("value 6");
+		list.add("value 7");
+		return list;
+	}
 
 }

@@ -65,5 +65,9 @@ public class CheckboxComponent extends BasicAttributeComponent<Boolean> implemen
 	public String getStringValue(Boolean value) {
 		return value?"1":"0";
 	}
+	
+	public String getStringValue(String value) {
+		return value;
+	}
 
 }

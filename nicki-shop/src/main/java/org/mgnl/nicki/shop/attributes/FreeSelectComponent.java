@@ -62,7 +62,9 @@ public class FreeSelectComponent extends BasicAttributeComponent<String> impleme
 				field.addItem(entry);
 			}
 		}
-		getField().setValue((String) getArticle().getValue(getAttribute()));
+		String value = (String) getArticle().getValue(getAttribute());
+		addNewItem(value);
+		setValue(value);
 
 		if (isEnabled()) {
 			getField().addValueChangeListener(new CatalogAttributeInputListener(getArticle(), getAttribute()));

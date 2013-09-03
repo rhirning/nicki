@@ -30,14 +30,15 @@
  * intact.
  *
  */
-package org.mgnl.nicki.shop.attributes;
+package org.mgnl.nicki.shop.base.attributes;
 
-import java.util.Date;
+public interface BaseAttributeComponent<F> {
 
-import org.mgnl.nicki.dynamic.objects.objects.Person;
-
-public interface AttributeContent {
-
-	String getContent(Person user, Person person);
-
+	void setValue(F value);
+	F getValue();
+	void setCaption(String caption);
+	void setEnabled(boolean enabled);
+	boolean isEnabled();
+	String getStringValue(F value);
+	String getStringValue(String value);
 }

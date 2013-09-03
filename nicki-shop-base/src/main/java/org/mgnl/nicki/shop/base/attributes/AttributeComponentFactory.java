@@ -40,13 +40,13 @@ public class AttributeComponentFactory {
 	private static final Logger LOG = LoggerFactory.getLogger(AttributeComponentFactory.class);
 
 	@SuppressWarnings("unchecked")
-	static public <T extends Object> StringValueGetter<T> getStringValueGetter(String type) {
+	static public <T extends Object> BaseAttributeComponent<T> getAttributeComponent(String type) {
 		try {
 			Component component = Component.valueOf(type);
 			if (component == null) {
 				component = Component.DEFAULT;
 			}
-			return (StringValueGetter<T>) component.getInstance();
+			return (BaseAttributeComponent<T>) component.getInstance();
 		} catch (Exception e) {
 			LOG.error("Error", e);
 		}

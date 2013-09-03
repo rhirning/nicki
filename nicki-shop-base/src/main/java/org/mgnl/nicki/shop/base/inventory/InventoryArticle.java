@@ -182,7 +182,12 @@ public class InventoryArticle implements Serializable{
 
 	private void setValue(InventoryAttribute iAttribute, Object value) {
 		CatalogArticleAttribute attribute = iAttribute.getAttribute();
-		String stringValue = AttributeComponentFactory.getStringValueGetter(attribute.getType()).getStringValue(value);
+		String stringValue;
+		if (value instanceof String) {
+			stringValue = (String) value;
+		} else {
+			stringValue = AttributeComponentFactory.getAttributeComponent(attribute.getType()).getStringValue(value);
+		}
 		if (iAttribute != null) {
 			if (getStatus() == STATUS.PROVISIONED && !StringUtils.equals(stringValue, iAttribute.getOldValue())) {
 				setStatus(STATUS.MODIFIED);
