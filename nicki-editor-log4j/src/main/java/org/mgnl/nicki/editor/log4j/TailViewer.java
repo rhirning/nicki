@@ -1,9 +1,13 @@
 package org.mgnl.nicki.editor.log4j;
 
 import java.io.File;
+import java.util.Date;
+
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListenerAdapter;
 import org.mgnl.nicki.core.helper.NameValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.event.FieldEvents.BlurListener;
@@ -14,6 +18,7 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Link;
+import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
@@ -21,7 +26,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
 public class TailViewer extends CustomComponent {
-	
+
+	private static Logger LOG = LoggerFactory.getLogger(TailViewer.class);
 	static final Object VISIBLE_COLUMNS[] = {"value"};
 
 	private static final long serialVersionUID = 7750777204922803240L;
@@ -33,19 +39,21 @@ public class TailViewer extends CustomComponent {
 	private Tailer tailer = null;
 	private TailerListener listener = new TailerListener();
 	private LinesContainer container = new LinesContainer();
-	public LinesContainer getContainer() {
-		return container;
-	}
-
 	private TextField numberOfLinesField;
 	private long numberOfLines = 1000;
 	private CheckBox checkBox;
 	private boolean end = true;
+	private long lastUse;
+	private String activePath = null;
+	private static final long timeout = 10 * 60 * 1000; // 10 Minutes
 
 	public TailViewer() {
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 		setSizeFull();
+	}
+	public LinesContainer getContainer() {
+		return container;
 	}
 
 	private VerticalLayout buildMainLayout() {
@@ -154,8 +162,10 @@ public class TailViewer extends CustomComponent {
 	}
 
 	protected void refresh() {
-		// TODO Auto-generated method stub
-		
+		if (tailer == null) {
+			Notification.show("Es wird keine Datei überwacht. Nach 10 Inaktivität wird die Überwachung automatisch gestoppt");
+		}
+		lastUse = new Date().getTime();
 	}
 
 	protected void reload() {
@@ -163,17 +173,27 @@ public class TailViewer extends CustomComponent {
 		if (tailer != null) {
 			tailer.stop();
 			tailer = null;
+			LOG.debug("Stop Tailer for File '" + activePath + "'");
 		}
-		File file = new File(path.getValue()); 
+		lastUse = new Date().getTime();
+		activePath = path.getValue();
+		File file = new File(activePath); 
 		
 		long delayMillis = 1000;
 		tailer = Tailer.create(file, listener, delayMillis , end);
+		LOG.debug("Tailer for File '" + activePath + "' started");
 	}
 
 	class TailerListener extends TailerListenerAdapter {
 
 		@Override
 		public void handle(String line) {
+			long now = new Date().getTime();
+			if (now - timeout > lastUse) {
+				tailer.stop();
+				tailer = null;
+				LOG.debug("Timeout Tailer for File '" + activePath + "'");
+			}
 			container.addBean(new NameValue("line", line));
 			checkContainer();
 		}
