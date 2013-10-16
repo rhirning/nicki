@@ -42,6 +42,7 @@ import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.data.SearchQueryHandler;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.objects.ChildFilter;
+import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
@@ -89,4 +90,5 @@ public interface NickiContext extends Serializable {
 	void search(QueryHandler handler) throws DynamicObjectException;
 	SearchQueryHandler getSearchHandler(Query query);
 	Query getQuery(String base);
+	<T extends DynamicObject> DataModel getDataModel(Class<T> classDefinition) throws InstantiateDynamicObjectException;
 }

@@ -19,4 +19,7 @@ public @interface DynamicReferenceAttribute {
 	Class<? extends DynamicObject> reference();
 	String baseProperty();
 	String editorClass() default "";
+	String searchFieldClass() default "";
+	boolean search() default false;
+	String caption() default "";
 }

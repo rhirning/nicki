@@ -104,6 +104,9 @@ public class AnnotationHelper {
 				if (dAttribute.naming()) {
 					dynAttribute.setNaming();
 				}
+				if (dAttribute.search()) {
+					dynAttribute.setSearchable(true);
+				}
 				if (dAttribute.mandatory()) {
 					dynAttribute.setMandatory();
 				}
@@ -116,10 +119,16 @@ public class AnnotationHelper {
 				if (StringUtils.isNotBlank(dAttribute.editorClass())) {
 					dynAttribute.setEditorClass(dAttribute.editorClass());
 				}
+				if (StringUtils.isNotBlank(dAttribute.searchFieldClass())) {
+					dynAttribute.setSearchFieldClass(dAttribute.searchFieldClass());
+				}
 				if (dAttribute.foreignKey() != null && dAttribute.foreignKey().length > 0) {
 					for (Class<? extends DynamicObject> clazz : dAttribute.foreignKey()) {
 						dynAttribute.setForeignKey(clazz);
 					}
+				}
+				if (StringUtils.isNotBlank(dAttribute.caption())) {
+					dynAttribute.setCaption(dAttribute.caption());
 				}
 				
 				dynamicObject.addAttribute(dynAttribute);
@@ -141,6 +150,9 @@ public class AnnotationHelper {
 				if (dAttribute.naming()) {
 					dynAttribute.setNaming();
 				}
+				if (dAttribute.search()) {
+					dynAttribute.setSearchable(true);
+				}
 				if (dAttribute.mandatory()) {
 					dynAttribute.setMandatory();
 				}
@@ -153,10 +165,16 @@ public class AnnotationHelper {
 				if (StringUtils.isNotBlank(dAttribute.editorClass())) {
 					dynAttribute.setEditorClass(dAttribute.editorClass());
 				}
+				if (StringUtils.isNotBlank(dAttribute.searchFieldClass())) {
+					dynAttribute.setSearchFieldClass(dAttribute.searchFieldClass());
+				}
 				if (dAttribute.foreignKey() != null && dAttribute.foreignKey().length > 0) {
 					for (Class<? extends DynamicObject> clazz : dAttribute.foreignKey()) {
 						dynAttribute.setForeignKey(clazz);
 					}
+				}
+				if (StringUtils.isNotBlank(dAttribute.caption())) {
+					dynAttribute.setCaption(dAttribute.caption());
 				}
 				
 				dynamicObject.addAttribute(dynAttribute);
@@ -175,6 +193,9 @@ public class AnnotationHelper {
 				if (dAttribute.naming()) {
 					dynAttribute.setNaming();
 				}
+				if (dAttribute.search()) {
+					dynAttribute.setSearchable(true);
+				}
 				if (dAttribute.mandatory()) {
 					dynAttribute.setMandatory();
 				}
@@ -187,10 +208,16 @@ public class AnnotationHelper {
 				if (StringUtils.isNotBlank(dAttribute.editorClass())) {
 					dynAttribute.setEditorClass(dAttribute.editorClass());
 				}
+				if (StringUtils.isNotBlank(dAttribute.searchFieldClass())) {
+					dynAttribute.setSearchFieldClass(dAttribute.searchFieldClass());
+				}
 				if (dAttribute.foreignKey() != null && dAttribute.foreignKey().length > 0) {
 					for (Class<? extends DynamicObject> clazz : dAttribute.foreignKey()) {
 						dynAttribute.setForeignKey(clazz);
 					}
+				}
+				if (StringUtils.isNotBlank(dAttribute.caption())) {
+					dynAttribute.setCaption(dAttribute.caption());
 				}
 				
 				dynamicObject.addAttribute(dynAttribute);

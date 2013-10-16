@@ -34,6 +34,7 @@ package org.mgnl.nicki.core.context;
 
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
@@ -121,6 +122,12 @@ public abstract class BasicContext implements NickiContext {
 		if (principalUser == null) {
 			this.principalUser = this.user;
 		}
+	}
+
+	@Override
+	public <T extends DynamicObject> DataModel getDataModel(
+			Class<T> classDefinition) throws InstantiateDynamicObjectException {
+		return getTarget().getDataModel(classDefinition);
 	}
 	
 }
