@@ -25,7 +25,6 @@ import org.mgnl.nicki.core.helper.AnnotationHelper;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;

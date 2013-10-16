@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
