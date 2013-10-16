@@ -45,19 +45,11 @@ import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import freemarker.template.TemplateMethodModel;
-import freemarker.template.TemplateModelException;
-
-
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("Person")
 @AdditionalObjectClass("nickiUserAux")
 public class Person extends BaseDynamicObject {
-	private static final Logger LOG = LoggerFactory.getLogger(Person.class);
 	public static final String ATTRIBUTE_DISPLAYNAME = "displayName";
 	public static final String ATTRIBUTE_SURNAME = "surname";
 	public static final String ATTRIBUTE_GIVENNAME = "givenname";

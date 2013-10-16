@@ -32,8 +32,6 @@
  */
 package org.mgnl.nicki.shop.attributes;
 
-import java.util.Date;
-
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 public interface AttributeContent {
