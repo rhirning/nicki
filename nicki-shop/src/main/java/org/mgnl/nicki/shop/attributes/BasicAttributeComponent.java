@@ -37,6 +37,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
@@ -72,12 +73,17 @@ public abstract class BasicAttributeComponent<F> implements AttributeComponent<F
 		if (StringUtils.isNotEmpty(attribute.getContentClass())) {
 			try {
 				AttributeVaadinContent contentProvider = (AttributeVaadinContent) Classes.newInstance(attribute.getContentClass());
+				contentProvider.setContext(getContext());
 				return contentProvider.getVaadinContent();
 			} catch (Exception e) {
 				LOG.error("Error", e);
 			}
 		}
 		return null;
+	}
+
+	private NickiContext getContext() {
+		return article.getArticle().getContext();
 	}
 
 	protected List<String> getListContent(Person user, Person person) {

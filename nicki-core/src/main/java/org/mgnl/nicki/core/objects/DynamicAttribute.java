@@ -57,6 +57,7 @@ public class DynamicAttribute implements Serializable {
 	private String ldapName;
 	private Class<?> attributeClass;
 	private boolean naming = false;
+	private boolean searchable = false;
 	private boolean mandatory = false;
 	private boolean multiple = false;
 	private boolean foreignKey = false;
@@ -65,6 +66,8 @@ public class DynamicAttribute implements Serializable {
 	private boolean readonly = false;
 	private boolean staticAttribute = false;
 	private String editorClass = null;
+	private String searchFieldClass = null;
+	private String caption;
 
 	public String getExternalName() {
 		return ldapName;
@@ -258,6 +261,30 @@ public class DynamicAttribute implements Serializable {
 	@Override
 	public String toString() {
 		return name + "(" + ldapName + ")";
+	}
+
+	public String getSearchFieldClass() {
+		return searchFieldClass;
+	}
+
+	public void setSearchFieldClass(String searchFieldClass) {
+		this.searchFieldClass = searchFieldClass;
+	}
+
+	public boolean isSearchable() {
+		return searchable;
+	}
+
+	public void setSearchable(boolean searchable) {
+		this.searchable = searchable;
+	}
+
+	public String getCaption() {
+		return caption;
+	}
+
+	public void setCaption(String caption) {
+		this.caption = caption;
 	}
 	
 	

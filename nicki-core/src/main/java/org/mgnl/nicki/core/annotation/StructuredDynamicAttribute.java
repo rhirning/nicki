@@ -17,4 +17,7 @@ public @interface StructuredDynamicAttribute {
 	String externalName();
 	Class<? extends DynamicObject>[] foreignKey() default {};
 	String editorClass() default "";
+	String searchFieldClass() default "";
+	boolean search() default false;
+	String caption() default "";
 }

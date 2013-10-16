@@ -41,6 +41,7 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
@@ -150,6 +151,16 @@ public class Target implements Serializable {
 
 	public void setContextFactory(ContextFactory contextFactory) {
 		this.contextFactory = contextFactory;
+	}
+	
+	public <T extends DynamicObject> DataModel getDataModel(
+			Class<T> classDefinition) throws InstantiateDynamicObjectException {
+		try {
+			return getDynamicObject(classDefinition).getModel();
+		} catch (Exception e) {
+			throw new InstantiateDynamicObjectException(e);
+		}
+
 	}
 
 }
