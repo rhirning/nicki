@@ -41,6 +41,8 @@ import org.mgnl.nicki.shop.core.ShopPage.TYPE;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.TabSheet;
@@ -49,6 +51,7 @@ import com.vaadin.ui.TabSheet.Tab;
 
 @SuppressWarnings("serial")
 public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
+	private static final Logger LOG = LoggerFactory.getLogger(TabRenderer.class);
 
 	private ShopViewerComponent shopViewerComponent;
 	private TabSheet tabSheet;
@@ -86,9 +89,12 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 			@Override
 			public void selectedTabChange(SelectedTabChangeEvent event) {
 				TabSheet source = (TabSheet) event.getSource();
-				AbstractComponent tab = (AbstractComponent) source.getSelectedTab();
-				ShopRenderer renderer = (ShopRenderer) tab.getData();
-				renderer.render();
+				AbstractComponent component = (AbstractComponent) source.getSelectedTab();
+				LOG.debug(component.getClass().getName());
+				ShopRenderer renderer = (ShopRenderer) component.getData();
+				if (renderer != null) {
+					renderer.render();
+				}
 			}
 		});
 		
@@ -117,7 +123,9 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 				TabSheet source = (TabSheet) event.getSource();
 				AbstractComponent tab = (AbstractComponent) source.getSelectedTab();
 				ShopRenderer renderer = (ShopRenderer) tab.getData();
-				renderer.render();
+				if (renderer != null) {
+					renderer.render();
+				}
 			}
 		});
 		
