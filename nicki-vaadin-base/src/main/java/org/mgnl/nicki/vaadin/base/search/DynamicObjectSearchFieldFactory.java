@@ -45,7 +45,7 @@ import org.mgnl.nicki.core.util.Classes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vaadin.ui.AbstractOrderedLayout;
+import com.vaadin.ui.AbstractLayout;
 import com.vaadin.ui.Component;
 
 @SuppressWarnings("serial")
@@ -75,12 +75,13 @@ public class DynamicObjectSearchFieldFactory<T extends DynamicObject> implements
 		if (field == null) {
 			field = new TextFieldSearchField<T>();
 		}
+		field.setWidth("100%");
 		field.init(dynAttribute, map);
 		return field.getComponent();
 	}
 	
 	
-	public void addFields(AbstractOrderedLayout layout, Class<T> clazz) throws InstantiateDynamicObjectException {
+	public void addFields(AbstractLayout layout, Class<T> clazz) throws InstantiateDynamicObjectException {
 		DataModel model = context.getDataModel(clazz);
 		for (DynamicAttribute dynAttribute : model.getAttributes().values()) {
 			if (dynAttribute.isSearchable()) {
