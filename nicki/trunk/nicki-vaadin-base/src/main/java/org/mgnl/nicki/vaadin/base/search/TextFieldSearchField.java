@@ -42,4 +42,9 @@ public class TextFieldSearchField<T> implements DynamicAttributeSearchField<T> {
 		});
 	}
 
+	@Override
+	public void setWidth(String width) {
+		textField.setWidth(width);
+	}
+
 }

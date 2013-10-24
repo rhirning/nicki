@@ -21,4 +21,10 @@ public class ComboBoxSearchField<T> implements DynamicAttributeSearchField<T> {
 		comboBox.setCaption(dynAttribute.getName());
 	}
 
+	@Override
+	public void setWidth(String width) {
+		comboBox.setWidth(width);
+	}
+
+
 }

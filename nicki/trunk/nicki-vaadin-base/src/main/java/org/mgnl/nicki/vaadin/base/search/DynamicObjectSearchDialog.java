@@ -51,11 +51,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.ui.AbstractLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class DynamicObjectSearchDialog<T extends DynamicObject> extends CustomComponent {
@@ -86,13 +88,14 @@ public class DynamicObjectSearchDialog<T extends DynamicObject> extends CustomCo
 	}
 
 
-	private VerticalLayout buildMainLayout() throws InstantiateDynamicObjectException {
-		
+	private AbstractLayout buildMainLayout() throws InstantiateDynamicObjectException {
 		mainLayout = new VerticalLayout();
 		mainLayout.setWidth("100%");
 		mainLayout.setMargin(true);
+		AbstractLayout searchLayout = getLayout();
+		mainLayout.addComponent(searchLayout);
 		DynamicObjectSearchFieldFactory<T> factory = new DynamicObjectSearchFieldFactory<T>(context, searchDataMap);
-		factory.addFields(mainLayout, clazz);
+		factory.addFields(searchLayout, clazz);
 		
 		searchButton = new Button(I18n.getText("nicki.editor.generic.button.search"));
 		searchButton.addClickListener(new Button.ClickListener() {
@@ -123,6 +126,15 @@ public class DynamicObjectSearchDialog<T extends DynamicObject> extends CustomCo
 		
 		return mainLayout;
 	}
+
+	private GridLayout getLayout() {
+		GridLayout layout = new GridLayout();
+		layout.setColumns(2);
+		layout.setWidth("100%");
+		layout.setSpacing(true);
+		return layout;
+	}
+
 
 	private String[] getColumnHeaders() {
 

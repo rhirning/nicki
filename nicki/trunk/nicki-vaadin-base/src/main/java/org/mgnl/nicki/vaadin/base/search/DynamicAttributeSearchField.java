@@ -41,5 +41,6 @@ public interface DynamicAttributeSearchField<T> {
 
 	Component getComponent();
 	void init(DynamicAttribute dynAttribute, Map<DynamicAttribute, String> map);
+	void setWidth(String string);
 
 }
