@@ -193,4 +193,46 @@ public class DataHelper {
 	public static Date dateFromString(String stored) throws ParseException {
 		return formatDay.parse(stored);
 	}
+
+	public static boolean contains(String[] list, String entry) {
+		for (String listEntry : list) {
+			if (StringUtils.equals(entry, listEntry)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static String[] addToStringArray(String[] array, String value) {
+		if (array == null) {
+			return new String[]{value};
+		}
+		List<String> list = Arrays.asList(array);
+		if (!list.contains(value)) {
+			list.add(value);
+			return list.toArray(new String[0]);
+		} else return array;
+	}
+
+	public static boolean contains(List<String> list, String value) {
+		return list != null && list.contains(value);
+	}
+
+	public static <T> List<T> addToList(List<T> list, T value) {
+		if (list == null) {
+			list = new ArrayList<T>();
+		}
+		if (!list.contains(value)) {
+			list.add(value);
+		}
+		return list;
+	}
+	
+	public static boolean inRange(int value, int from, int to) {
+		if (value < from || value > to) {
+			return false;
+		} else {
+			return true;
+		}
+	}
 }

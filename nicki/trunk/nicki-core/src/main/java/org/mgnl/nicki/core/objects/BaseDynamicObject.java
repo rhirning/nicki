@@ -84,7 +84,6 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 			try {
 				this.context.loadObject(this);
 			} catch (DynamicObjectException e) {
-				// TODO Auto-generated catch block
 				LOG.error("Error", e);
 			}
 		}
@@ -150,7 +149,6 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		getModel().addChild(attribute, filter);
 	}
 	
-	// TODO
 	public String getAttribute(String attributeName) {
 		init();
 		return (String) get(attributeName);
@@ -257,6 +255,16 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 			throw new DynamicObjectException("Path has changed: " + getOriginal().getPath() + "->" + getPath());
 		}
 		context.updateObject(this);
+	}
+	
+	public void update(String[] attributeNames) throws DynamicObjectException {
+		if (isNew()) {
+			throw new DynamicObjectException("Object does not exist: " + getPath());
+		}
+		if (!StringUtils.equalsIgnoreCase(getPath(), getOriginal().getPath())) {
+			throw new DynamicObjectException("Path has changed: " + getOriginal().getPath() + "->" + getPath());
+		}
+		context.updateObject(this, attributeNames);
 	}
 	
 	public void create() throws DynamicObjectException {

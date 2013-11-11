@@ -41,7 +41,6 @@ public class Template extends HashMap<String, String> {
 
 	public Template(String name) {
 		this.name = name;
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getName() {

@@ -27,7 +27,6 @@ public class JcrContextFactory implements ContextFactory {
 
 	@Override
 	public DynamicObjectAdapter getAdapter() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

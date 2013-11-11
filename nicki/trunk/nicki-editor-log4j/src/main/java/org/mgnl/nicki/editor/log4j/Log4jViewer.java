@@ -60,8 +60,6 @@ public class Log4jViewer extends CustomComponent {
 		table.setColumnHeader("saveButton", "");
 		fillTable();
 		setCompositionRoot(canvas);
-
-		// TODO add user code here
 	}
 	
 

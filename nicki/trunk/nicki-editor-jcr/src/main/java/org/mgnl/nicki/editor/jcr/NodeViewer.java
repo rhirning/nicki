@@ -144,7 +144,6 @@ public class NodeViewer extends CustomComponent implements ClassEditor {
 			//properties.setContainerDataSource(new NodeContainer(node));
 			table.setContainerDataSource(getBeanItems(this.node));
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		}
 	}
@@ -234,7 +233,6 @@ public class NodeViewer extends CustomComponent implements ClassEditor {
 			editor.close();
 			editor = null;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		}
 	}

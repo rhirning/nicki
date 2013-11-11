@@ -140,7 +140,6 @@ public class TargetObjectFactory implements ObjectFactory, Serializable {
 		return list;
 	}
 	
-	// TODO
 	private DynamicObject findDynamicObject(String className) throws InstantiateDynamicObjectException {
 		for (String dynamicObjectName : target.getDynamicObjects()) {
 			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);

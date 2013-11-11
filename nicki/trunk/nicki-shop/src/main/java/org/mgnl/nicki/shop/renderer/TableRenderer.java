@@ -180,7 +180,6 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 	}
 
 	protected void cleanup() {
-		// TODO Auto-generated method stub
 		
 	}
 

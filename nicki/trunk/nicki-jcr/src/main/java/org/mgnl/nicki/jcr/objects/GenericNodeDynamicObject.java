@@ -47,7 +47,6 @@ public class GenericNodeDynamicObject extends NodeDynamicTemplateObject implemen
 
 	@Override
 	public boolean accept(Node node) {
-		// TODO Auto-generated method stub
 		return true;
 	}
 

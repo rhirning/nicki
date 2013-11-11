@@ -68,6 +68,7 @@ public interface NickiContext extends Serializable {
 			throws  InstantiateDynamicObjectException, DynamicObjectException;
 	Target getTarget();
 	void updateObject(DynamicObject dynamicObject) throws DynamicObjectException;
+	void updateObject(DynamicObject dynamicObject, String[] attributeNames) throws DynamicObjectException;
 	DynamicObject createObject(DynamicObject dynamicObject) throws DynamicObjectException;
 	void deleteObject(DynamicObject dynamicObject) throws DynamicObjectException;
 	DynamicObject moveObject(DynamicObject dynamicObject, String newPath) throws DynamicObjectException;

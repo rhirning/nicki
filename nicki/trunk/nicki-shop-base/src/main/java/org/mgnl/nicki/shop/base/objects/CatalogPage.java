@@ -89,10 +89,8 @@ public class CatalogPage extends BaseDynamicObject {
 					}
 				}
 			} catch (JDOMException e) {
-				// TODO Auto-generated catch block
 				LOG.error("Error", e);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				LOG.error("Error", e);
 			}
 		}

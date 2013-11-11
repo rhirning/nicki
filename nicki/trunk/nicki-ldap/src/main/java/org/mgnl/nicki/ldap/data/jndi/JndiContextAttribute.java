@@ -60,12 +60,10 @@ public class JndiContextAttribute implements ContextAttribute {
 		return new Enumeration<Object>() {
 			
 			public String nextElement() {
-				// TODO Auto-generated method stub
 				return null;
 			}
 			
 			public boolean hasMoreElements() {
-				// TODO Auto-generated method stub
 				return false;
 			}
 		};
