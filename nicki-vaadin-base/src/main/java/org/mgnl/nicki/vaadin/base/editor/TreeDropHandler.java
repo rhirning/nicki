@@ -66,7 +66,7 @@ public class TreeDropHandler implements DropHandler {
 			AbstractSelectTargetDetails dropData = ((AbstractSelectTargetDetails) dropEvent
 			.getTargetDetails());
 			DynamicObject targetItemId = (DynamicObject) dropData.getItemIdOver();
-			dropData.getDropLocation(); // TODO
+			dropData.getDropLocation(); // TODO what to do with this?
 			
 			Class<? extends DynamicObject> sourceClass = sourceItemId.getClass();
 			Class<? extends DynamicObject> targetClass = targetItemId.getClass();
@@ -84,7 +84,6 @@ public class TreeDropHandler implements DropHandler {
 //			String debugMessage = "source: " + sourceItemId.getName() + ", target: " +  targetItemId.getName();
 			//editor.getWindow().showNotification(debugMessage, Notification.TYPE_WARNING_MESSAGE);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		}
         

@@ -61,7 +61,6 @@ public class ChildrenMethod implements Serializable, TemplateMethodModel {
 		try {
 			this.parent = node.getPath();
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		}
 		this.filter = filter;

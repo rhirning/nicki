@@ -70,8 +70,6 @@ public class PropertyEditor extends CustomComponent {
 				nodeViewer.create((String) name.getValue(), (PROPERTY_TYPE)type.getValue(), (String) value.getValue());
 			}
 		});
-
-		// TODO add user code here
 	}
 
 	private void addOptions() {

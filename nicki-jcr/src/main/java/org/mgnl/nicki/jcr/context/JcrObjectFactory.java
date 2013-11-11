@@ -149,7 +149,6 @@ public class JcrObjectFactory implements ObjectFactory {
 		return list;
 	}
 	
-	// TODO
 	private DynamicObject findDynamicObject(String className) throws InstantiateDynamicObjectException {
 		for (String dynamicObjectName : target.getDynamicObjects()) {
 			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);
@@ -185,7 +184,6 @@ public class JcrObjectFactory implements ObjectFactory {
 		return dynamicObject;
 	}
 	
-	// TODO
 	private <T extends DynamicObject> T getExistingDynamicObject(T pattern, String path) throws InstantiateDynamicObjectException {
 		try {
 			T object = getDynamicObject(pattern);
@@ -242,7 +240,6 @@ public class JcrObjectFactory implements ObjectFactory {
 	@Override
 	public DynamicObject getObject(ContextSearchResult contextSearchResult)
 			throws InstantiateDynamicObjectException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -250,7 +247,6 @@ public class JcrObjectFactory implements ObjectFactory {
 	public <T extends DynamicObject> T getObject(ContextSearchResult rs,
 			Class<T> classDefinition) throws InstantiateDynamicObjectException,
 			DynamicObjectException {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

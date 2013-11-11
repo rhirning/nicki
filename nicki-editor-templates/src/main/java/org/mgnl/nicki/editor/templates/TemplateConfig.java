@@ -140,7 +140,6 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	}
 
 	protected void close() {
-		// TODO:
 	}
 
 	protected void preview() throws DynamicObjectException, NamingException {

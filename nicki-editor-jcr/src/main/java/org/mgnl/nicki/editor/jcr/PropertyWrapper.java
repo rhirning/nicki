@@ -26,7 +26,6 @@ public class PropertyWrapper {
 		try {
 			return property.getName();
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		}
 		return null;
@@ -36,7 +35,6 @@ public class PropertyWrapper {
 		try {
 			return PROPERTY_TYPE.of(property.getType());
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		}
 		return null;
@@ -46,13 +44,10 @@ public class PropertyWrapper {
 		try {
 			return property.getValue().getString();
 		} catch (ValueFormatException e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		} catch (IllegalStateException e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		}
 		return null;

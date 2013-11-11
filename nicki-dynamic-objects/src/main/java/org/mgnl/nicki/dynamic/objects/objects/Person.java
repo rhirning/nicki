@@ -43,6 +43,7 @@ import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
 import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 @SuppressWarnings("serial")
@@ -59,6 +60,7 @@ public class Person extends BaseDynamicObject {
 	public static final String ATTRIBUTE_LOCATION = "location";
 	public static final String ATTRIBUTE_ASSIGNEDARTICLE = "assignedArticle";
 	public static final String ATTRIBUTE_ATTRIBUTEVALUE = "attributeValue";
+	public static final String ATTRIBUTE_IS_MANAGER = "isManager";
 
 	public static final String SEPARATOR_SPECIFIER = "|";
 	public static final String SEPARATOR_KEY = "|";
@@ -79,6 +81,8 @@ public class Person extends BaseDynamicObject {
 	private String fullname;
 	@DynamicAttribute(externalName="Language")
 	private String language;
+	@DynamicAttribute(externalName="isManager")
+	private boolean isManager;
 	@DynamicReferenceAttribute(externalName="member", reference=Group.class,
 			baseProperty="nicki.data.basedn")
 	private String[] memberOf;
@@ -214,5 +218,13 @@ public class Person extends BaseDynamicObject {
 
 	public boolean hasRole(String role) {
 		return false;
+	}
+
+	public boolean hasManagerFlag() {
+		return DataHelper.booleanOf(getAttribute(ATTRIBUTE_IS_MANAGER));
+	}
+
+	public void setManagerFlag(boolean value) {
+		put(ATTRIBUTE_IS_MANAGER, value?"TRUE":"FALSE");
 	}
 }

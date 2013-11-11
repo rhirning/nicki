@@ -212,7 +212,6 @@ public class EnterSpecifierDialog extends EnterNameDialog implements NewItemHand
 
 	@Override
 	public void addNewItem(String newItemCaption) {
-		// TODO Auto-generated method stub
 		
 	}
 }

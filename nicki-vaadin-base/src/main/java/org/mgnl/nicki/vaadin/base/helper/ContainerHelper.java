@@ -35,7 +35,6 @@ public class ContainerHelper {
 				container.addItem(new ValuePair(translatedName, ""));
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		}
 	}

@@ -7,6 +7,8 @@ import java.util.List;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.directory.Attribute;
+import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
@@ -178,6 +180,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			ctx = getDirContext();
 			ctx.modifyAttributes(dynamicObject.getPath(),DirContext.REPLACE_ATTRIBUTE, dynamicObject.getModel().getLdapAttributes(dynamicObject));
 		} catch (NamingException e) {
+			String details = getDetails(dynamicObject);
+			LOG.error(details);
 			throw new DynamicObjectException(e);
 		} finally {
 			if (ctx != null) {
@@ -189,6 +193,36 @@ public class LdapContext extends BasicContext implements NickiContext {
 			}
 		}
 	}
+
+	public void updateObject(DynamicObject dynamicObject, String[] attributeNames) throws DynamicObjectException {
+		if (this.isReadonly()) {
+			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
+		}
+		DirContext ctx = null;
+		try {
+			ctx = getDirContext();
+			ctx.modifyAttributes(dynamicObject.getPath(),DirContext.REPLACE_ATTRIBUTE,
+					dynamicObject.getModel().getLdapAttributes(dynamicObject, attributeNames));
+		} catch (NamingException e) {
+			String details = getDetails(dynamicObject);
+			LOG.error(details);
+			throw new DynamicObjectException(e);
+		} finally {
+			if (ctx != null) {
+				try {
+					ctx.close();
+				} catch (NamingException e) {
+					throw new DynamicObjectException(e);
+				}
+			}
+		}
+	}
+
+	private String getDetails(DynamicObject dynamicObject) {
+		Attributes attributes = dynamicObject.getModel().getLdapAttributes(dynamicObject);
+		return attributes.toString();
+	}
+
 
 	public void deleteObject(DynamicObject dynamicObject)
 			throws DynamicObjectException {
@@ -419,7 +453,6 @@ public class LdapContext extends BasicContext implements NickiContext {
 	public List<DynamicObject> loadReferenceObjects(ReferenceMethod ref) {
 		//LdapQuery query = new LdapQuery(ref.getPath(), ref.getReference());
 		
-		// TODO Auto-generated method stub
 		return null;
 	}
 

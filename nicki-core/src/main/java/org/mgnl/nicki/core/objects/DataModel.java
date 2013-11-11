@@ -49,6 +49,7 @@ import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicReference;
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.helper.DataHelper;
 
 @SuppressWarnings("serial")
 public class DataModel implements Serializable {
@@ -154,6 +155,12 @@ public class DataModel implements Serializable {
 		addLdapAttributes(myAttrs, dynamicObject, true);
 		return myAttrs;
 	}
+
+	public Attributes getLdapAttributes(DynamicObject dynamicObject, String[] attributeNames) {
+		Attributes myAttrs = new BasicAttributes(true);
+		addLdapAttributes(myAttrs, dynamicObject, true, attributeNames);
+		return myAttrs;
+	}
 	
 	public void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject, boolean nullable) {
 
@@ -183,6 +190,45 @@ public class DataModel implements Serializable {
 				}
 				if (nullable || attribute.size() > 0) {
 					myAttrs.put(attribute);
+				}
+			}
+		}
+		
+	}
+	
+	public void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject,
+			boolean nullable, String[] attributeNames) {
+
+		// single attributes (except namingAttribute)
+		for (DynamicAttribute dynAttribute : getAttributes().values()) {
+			if (DataHelper.contains(attributeNames, dynAttribute.getName())) {
+				if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
+					String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
+					if (nullable || value != null) {
+						Attribute attribute = new BasicAttribute(dynAttribute.getExternalName(), value);
+						myAttrs.put(attribute);
+					}
+				}
+			}
+		}
+		
+		// multi attributes
+		for (DynamicAttribute dynAttribute : getAttributes().values()) {
+			if (DataHelper.contains(attributeNames, dynAttribute.getName())) {
+				if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
+					Attribute attribute = new BasicAttribute(dynAttribute.getExternalName());
+					@SuppressWarnings("unchecked")
+					List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
+					if (list != null) {
+						for (String value : list) {
+							if (StringUtils.isNotEmpty(value)) {
+								attribute.add(value);
+							}
+						}
+					}
+					if (nullable || attribute.size() > 0) {
+						myAttrs.put(attribute);
+					}
 				}
 			}
 		}

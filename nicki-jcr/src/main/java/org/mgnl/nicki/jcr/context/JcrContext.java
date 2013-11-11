@@ -71,7 +71,6 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 				try {
 					node = root.getNode("scripts");
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					LOG.error("Error", e);
 				}
 				if (node == null) {
@@ -165,6 +164,23 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	@Override
 	public void updateObject(DynamicObject dynamicObject) throws DynamicObjectException {
+		if (this.isReadonly()) {
+			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
+		}
+		try {
+			((JcrDynamicObject)dynamicObject).getNode().getSession().save();
+			/*
+			Node node = session.getNode(dynamicObject.getPath());
+			updateNode(node, dynamicObject);
+			session.save();
+			*/
+		} catch (Exception e) {
+			throw new DynamicObjectException(e);
+		}
+	}
+
+	@Override
+	public void updateObject(DynamicObject dynamicObject, String[] attributeNames) throws DynamicObjectException {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
 		}
@@ -399,39 +415,33 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	@Override
 	public List<DynamicObject> loadReferenceObjects(Query query) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public <T extends DynamicObject> List<T> loadReferenceObjects(
 			Class<T> classDefinition, Query query) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<DynamicObject> loadReferenceObjects(
 			ReferenceMethod referenceMethod) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public void search(QueryHandler handler) throws DynamicObjectException {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public SearchQueryHandler getSearchHandler(Query query) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Query getQuery(String base) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

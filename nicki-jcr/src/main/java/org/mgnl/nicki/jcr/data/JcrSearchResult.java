@@ -56,7 +56,6 @@ public class JcrSearchResult implements ContextSearchResult {
 		try {
 			return node.getPath();
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		}
 		return null;
@@ -67,10 +66,8 @@ public class JcrSearchResult implements ContextSearchResult {
 		try {
 			return node.getProperty(name);
 		} catch (PathNotFoundException e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		}
 		return name;
@@ -84,7 +81,6 @@ public class JcrSearchResult implements ContextSearchResult {
 				list.add(it.next());
 			}
 		} catch (RepositoryException e) {
-			// TODO Auto-generated catch block
 			LOG.error("Error", e);
 		}
 		return list;

@@ -135,7 +135,6 @@ public class RuleManager {
 		return article.getContext().loadObjects(Person.class, query.getBaseDn(), filter.toString());
 	}
 
-	// TODO
 	public static String getAssignedRuleArticlesQuery(Person person) {
 		StringBuffer sb = new StringBuffer();
 		@SuppressWarnings("unchecked")

@@ -93,7 +93,6 @@ public interface DynamicObject {
 
 	public void addChild(String attribute, ChildFilter filter);
 	
-	// TODO
 	public String getAttribute(String attributeName);
 
 	public Object get(String key);

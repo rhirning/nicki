@@ -121,14 +121,6 @@ public class UserAppAdapter implements SSOAdapter {
 		}
 		return userDn;
 	}
-
-	// TODO
-	/*
-	public boolean isAdmin(Object request) {
-		String adminGroup = Config.getInstance().getAdminGroup();
-		return isInGroup(request, adminGroup);
-	}
-	 */
 	
 	public boolean isInGroup(Object request, String group) {
 		return getGroups(request).contains(group);
