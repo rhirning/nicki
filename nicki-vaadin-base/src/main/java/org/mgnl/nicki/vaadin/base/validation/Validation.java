@@ -49,6 +49,11 @@ public class Validation {
 			throw new ValidationException(error);
 		}
 	}
+	public static void notNull(DynamicObject dynamicObject, String error) throws ValidationException {
+		if (dynamicObject == null) {
+			throw new ValidationException(error);
+		}
+	}
 
 	public static void notNull(Field<?> component, Date date, String error) throws ValidationException {
 		if (date == null) {
