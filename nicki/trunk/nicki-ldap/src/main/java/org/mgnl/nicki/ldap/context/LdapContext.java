@@ -7,7 +7,6 @@ import java.util.List;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
-import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
@@ -67,6 +66,10 @@ public class LdapContext extends BasicContext implements NickiContext {
 		String binaries = getTarget().getProperty("attributes.binary");
 		if (StringUtils.isNotEmpty(binaries)) {
 			env.put("java.naming.ldap.attributes.binary", binaries);
+		}
+		String referral = getTarget().getProperty("context.referral");
+		if (StringUtils.isNotEmpty(referral)) {
+			env.put(Context.REFERRAL, referral);
 		}
 		// Enable connection pooling
 		env.put("com.sun.jndi.ldap.connect.pool", "true");
