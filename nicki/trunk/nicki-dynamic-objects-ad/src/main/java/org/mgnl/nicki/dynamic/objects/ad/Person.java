@@ -52,7 +52,8 @@ public class Person extends BaseDynamicObject {
 	public static final String ATTRIBUTE_LANGUAGE = "language";
 	public static final String ATTRIBUTE_MEMBEROF = "memberOf";
 	public static final String ATTRIBUTE_LOCATION = "location";
-	public static final String ATTRIBUTE_ACCOUNT_NAME = "accountName";
+	public static final String ATTRIBUTE_ACCOUNT_NAME = "accountname";
+	public static final String ATTRIBUTE_PRINCIPAL_NAME = "principalname";
 	public static final String ATTRIBUTE_ASSIGNEDARTICLE = "assignedArticle";
 	public static final String ATTRIBUTE_ATTRIBUTEVALUE = "attributeValue";
 	public static final String ATTRIBUTE_IS_MANAGER = "isManager";
@@ -71,6 +72,8 @@ public class Person extends BaseDynamicObject {
 	private String fullname;
 	@DynamicAttribute(externalName="sAMAccountName")
 	private String accountname;
+	@DynamicAttribute(externalName="userPrincipalName")
+	private String principalname;
 	@DynamicAttribute(externalName="member", foreignKey=Group.class)
 	private String[] group;
 	
@@ -116,5 +119,13 @@ public class Person extends BaseDynamicObject {
 
 	public void setAccountName(String value) {
 		put(ATTRIBUTE_ACCOUNT_NAME, value);
+	}
+
+	public String getPrincipalName() {
+		return getAttribute(ATTRIBUTE_PRINCIPAL_NAME);
+	}
+
+	public void setPrincipalName(String value) {
+		put(ATTRIBUTE_PRINCIPAL_NAME, value);
 	}
 }
