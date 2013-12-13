@@ -46,8 +46,8 @@ import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.annotation.RemoveDynamicAttribute;
 import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Group;
-import org.mgnl.nicki.dynamic.objects.objects.Org;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.idm.novell.catalog.ResourceCatalogArticle;
@@ -76,6 +76,7 @@ public class IdmPerson extends Person implements Serializable {
 	public static final String ATTRIBUTE_ACTIVATIONDATE = "activationDate";
 	public static final String ATTRIBUTE_MANAGER = "manager";
 	public static final String ATTRIBUTE_TYPE = "type";
+	public static final String ATTRIBUTE_TYPE_AS_STRING = "typeAsString";
 	public static final String ATTRIBUTE_COSTCENTER = "costCenter";
 	public static final String ATTRIBUTE_GENDER = "gender";
 	public static final String ATTRIBUTE_ENTITLEMENT = "entitlement";
@@ -144,7 +145,7 @@ public class IdmPerson extends Person implements Serializable {
 			reference=Group.class,
 			baseProperty="nicki.users.basedn")
 	private String[] memberOf;
-	@DynamicAttribute(externalName="ou", foreignKey=Org.class)
+	@DynamicAttribute(externalName="ou")
 	private String ou;
 	@DynamicAttribute(externalName="workforceID")
 	private String workforceId;
@@ -201,6 +202,10 @@ public class IdmPerson extends Person implements Serializable {
 
 	public PERSONTYPE getType() {
 		return PERSONTYPE.fromValue(getAttribute(ATTRIBUTE_TYPE));
+	}
+
+	public String getTypeAsString() {
+		return getType().getDisplayName();
 	}
 
 	public void setCostCenter(String value) {
@@ -468,6 +473,10 @@ public class IdmPerson extends Person implements Serializable {
 		private PERSONTYPE(String type) {
 			this.type = type;
 		}
+		
+		public String getDisplayName() {
+			return I18n.getText("nicki.dynamic.objects.persontype." + this);
+		}
 
 		public static PERSONTYPE fromValue(String type) {
 			if (INTERNAL_USER.getValue().equals(type)) {
@@ -494,7 +503,11 @@ public class IdmPerson extends Person implements Serializable {
 	}
 
 	public void setManager(IdmPerson manager) {
-		put(ATTRIBUTE_MANAGER, manager.getId());
+		if (manager != null) {
+			put(ATTRIBUTE_MANAGER, manager.getId());
+		} else {
+			clear(ATTRIBUTE_MANAGER);
+		}
 	}
 
 	public Person getOwner() {
