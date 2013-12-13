@@ -151,6 +151,19 @@ public class DataHelper {
 		}
 		return map;
 	}
+	
+	public static String getAsString(List<String> list, String separator) {
+		StringBuffer sb = new StringBuffer();
+		if (list != null) {
+			for (String string : list) {
+				if (sb.length() > 0) {
+					sb.append(separator);
+				}
+				sb.append(string);
+			}
+		}
+		return sb.toString();
+	}
 
 	public static String getPassword(String string) {
 		try {
