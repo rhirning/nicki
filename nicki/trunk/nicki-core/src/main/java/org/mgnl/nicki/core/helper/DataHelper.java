@@ -203,6 +203,10 @@ public class DataHelper {
 		return formatDay.format(value);
 	}
 
+	public static String getDisplayDay(Date value) {
+		return formatDisplayDay.format(value);
+	}
+
 	public static Date dateFromString(String stored) throws ParseException {
 		return formatDay.parse(stored);
 	}
