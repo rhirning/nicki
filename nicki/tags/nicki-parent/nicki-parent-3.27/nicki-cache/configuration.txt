@@ -1,0 +1,26 @@
+<!--
+
+Einbinden in web.xml als Filter
+===============================
+
+	<filter>
+		<filter-name>Cache Filter</filter-name>
+		<filter-class>org.mgnl.nicki.cache.filter.CacheFilter</filter-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>/config/ehcache.xml</param-value>
+		</init-param>
+		<init-param>
+			<param-name>cacheName</param-name>
+			<param-value>nickiCache</param-value>
+		</init-param>
+		<init-param>
+			<param-name>pattern</param-name>
+			<param-value>.*\.png|.*\.gif</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>Cache Filter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+-->
