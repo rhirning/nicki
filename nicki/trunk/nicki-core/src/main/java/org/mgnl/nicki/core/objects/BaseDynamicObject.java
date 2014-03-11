@@ -267,14 +267,14 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		context.updateObject(this, attributeNames);
 	}
 	
-	public void create() throws DynamicObjectException {
+	public DynamicObject create() throws DynamicObjectException {
 		if (!isNew() ||context.isExist(getPath())) {
 			throw new DynamicObjectException("Object exists: " + getPath());
 		}
 		if (!isComplete()) {
 			throw new DynamicObjectException("Object incomplete: " + getPath());
 		}
-		context.createObject(this);
+		return context.createObject(this);
 	}
 
 	public void delete() throws DynamicObjectException {

@@ -122,7 +122,7 @@ public interface DynamicObject {
 	
 	public void update() throws DynamicObjectException;
 	
-	public void create() throws DynamicObjectException;
+	public DynamicObject create() throws DynamicObjectException;
 
 	public void delete() throws DynamicObjectException;
 
