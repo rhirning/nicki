@@ -165,9 +165,9 @@ public class Cart extends BaseDynamicObject {
 	
 
     @Override
-    public void create() throws DynamicObjectException {
+    public org.mgnl.nicki.core.objects.DynamicObject create() throws DynamicObjectException {
         put("data", toXml());
-        super.create();
+        return super.create();
     }
 
     @Override
