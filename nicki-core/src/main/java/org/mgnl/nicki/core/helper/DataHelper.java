@@ -56,6 +56,7 @@ public class DataHelper {
 	public final static String FORMAT_MILLI = "yyyyMMddHHmmssSSS";
 	
 	public final static String FORMAT_TIMESTAMP = "yyyy-MM-dd HH:mm:ss Z";
+	public final static String FORMAT_GERMAN_TIMESTAMP = "dd.MM.yyyy HH:mm:ss";
 
         
 	public static SimpleDateFormat formatDay = new SimpleDateFormat(FORMAT_DAY);
@@ -63,6 +64,7 @@ public class DataHelper {
 	public static SimpleDateFormat formatTime = new SimpleDateFormat(FORMAT_TIME);
 	public static SimpleDateFormat formatMilli = new SimpleDateFormat(FORMAT_MILLI);
 	public static SimpleDateFormat formatTimestamp = new SimpleDateFormat(FORMAT_TIMESTAMP);
+	public static SimpleDateFormat formatGermanTimestamp = new SimpleDateFormat(FORMAT_GERMAN_TIMESTAMP);
 
 	public static int getInteger(String stringValue, int defaultValue) {
 		stringValue = StringUtils.strip(stringValue);
