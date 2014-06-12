@@ -106,9 +106,31 @@ public class BasicTemplateStreamSource {
 		
 		return null;
 	}
+
+	public InputStream getPdfStream2() {
+		try {
+			return TemplateEngine.getInstance().executeTemplateAsPdf2(getTemplatePath(), getDataModel());
+		} catch (Exception e) {
+			LOG.error("Error", e);
+		}
+		
+		return null;
+	}
+	
 	public InputStream getCsVStream() {
 		try {
 			return convertStream(TemplateEngine.getInstance().executeTemplateAsCsv(getTemplatePath(), getDataModel()),
+					Charset.forName(TemplateEngine.DEFAULT_CHARSET), Charset.forName(TemplateEngine.CSV_CHARSET));
+		} catch (Exception e) {
+			LOG.error("Error", e);
+		}
+		
+		return null;
+	}
+	
+	public InputStream getCsVStream2() {
+		try {
+			return convertStream(TemplateEngine.getInstance().executeTemplateAsCsv2(getTemplatePath(), getDataModel()),
 					Charset.forName(TemplateEngine.DEFAULT_CHARSET), Charset.forName(TemplateEngine.CSV_CHARSET));
 		} catch (Exception e) {
 			LOG.error("Error", e);

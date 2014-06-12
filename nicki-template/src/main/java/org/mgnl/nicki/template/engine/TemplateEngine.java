@@ -51,6 +51,7 @@ import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.template.engine.ConfigurationFactory;
 import org.mgnl.nicki.template.handler.TemplateHandler;
 import org.mgnl.nicki.template.pdf.PdfTemplateRenderer;
+import org.mgnl.nicki.template.pdf.PdfTemplateRenderer2;
 import org.xml.sax.SAXException;
 
 import com.lowagie.text.DocumentException;
@@ -128,10 +129,31 @@ public class TemplateEngine {
 		return pis;
 	}
 
+	public InputStream executeTemplateAsPdf2(String templateName,
+			Map<String, Object> dataModel) throws IOException,
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+	    PipedOutputStream pos = new PipedOutputStream();
+	    PipedInputStream pis = new PipedInputStream(pos);
+		PdfTemplateRenderer2 renderer = new PdfTemplateRenderer2(executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos);
+		renderer.start();
+		return pis;
+	}
+
 	public InputStream executeTemplateAsCsv(String templateName,
 			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
 		InputStream xslTemplate = this.getClass().getResourceAsStream("/META-INF/nicki/xsl/csv.xsl");
+	    PipedOutputStream pos = new PipedOutputStream();
+	    PipedInputStream pis = new PipedInputStream(pos);
+		XsltRenderer renderer = new XsltRenderer(executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos, xslTemplate);
+		renderer.start();
+		return pis;
+	}
+
+	public InputStream executeTemplateAsCsv2(String templateName,
+			Map<String, Object> dataModel) throws IOException,
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+		InputStream xslTemplate = this.getClass().getResourceAsStream("/META-INF/nicki/xsl/csv2.xsl");
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
 		XsltRenderer renderer = new XsltRenderer(executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos, xslTemplate);

@@ -19,7 +19,7 @@ import com.lowagie.text.pdf.PdfWriter;
 public class PdfTest {
  
     public static final String RESULT
-        = "src/main/resources/output/pdfTest.pdf";
+        = "d:/temp/pdfTest.pdf";
  
     /**
      * Main method.
