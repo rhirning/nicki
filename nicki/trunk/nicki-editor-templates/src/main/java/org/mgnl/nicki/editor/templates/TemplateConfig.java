@@ -38,6 +38,8 @@ import java.util.Map;
 
 import javax.naming.NamingException;
 
+import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
@@ -69,13 +71,17 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	private Button previewButton;
 	private Button htmlPreviewButton;
 	private Link csvLink;
+	private Link csvLink2;
 	private Link pdfLink;
+	private Link pdfLink2;
 	private boolean usePreview = true;
 	private NickiTreeEditor editor;
 	private Map<String, Object> params = new HashMap<String, Object>();
+	private boolean usePdfEngine = false;
 
 	
 	public TemplateConfig() {
+		usePdfEngine = DataHelper.booleanOf(Config.getProperty("nicki.template.usePdfEngine", "false"));
 	}
 
 	/**
@@ -122,12 +128,27 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		PdfStreamSource pdfStreamSource = new PdfStreamSource(template, template.getContext(), params);
 		pdfLink.setResource(new LinkResource(pdfStreamSource, template.getName() + ".pdf",
 				"application/pdf"));
+		if (usePdfEngine) {
+			pdfLink2.setCaption("PDF2");
+			pdfLink2.setTargetName("_blank");
+			PdfStreamSource2 pdfStreamSource2 = new PdfStreamSource2(template, template.getContext(), params);
+			pdfLink2.setResource(new LinkResource(pdfStreamSource2, template.getName() + ".pdf",
+					"application/pdf"));
+		}
 
 		csvLink.setCaption("CSV");
 		csvLink.setTargetName("_blank");
 		CsvStreamSource csvStreamSource = new CsvStreamSource(template, template.getContext(), params);
 		csvLink.setResource(new LinkResource(csvStreamSource, template.getName() + ".csv",
 				"text/comma-separated-values"));
+
+		if (usePdfEngine) {
+			csvLink2.setCaption("CSV2");
+			csvLink2.setTargetName("_blank");
+			CsvStreamSource2 csvStreamSource2 = new CsvStreamSource2(template, template.getContext(), params);
+			csvLink2.setResource(new LinkResource(csvStreamSource2, template.getName() + ".csv",
+					"text/comma-separated-values"));
+		}
 		
 		paramsChanged();
 	}
@@ -209,6 +230,13 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		csvLink = new Link();
 		horizontalLayout.addComponent(csvLink);
 		
+		if (usePdfEngine) {
+			pdfLink2 = new Link();
+			horizontalLayout.addComponent(pdfLink2);
+			
+			csvLink2 = new Link();
+			horizontalLayout.addComponent(csvLink2);
+		}		
 		return mainLayout;
 	}
 
@@ -216,9 +244,17 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		if (GuiTemplateHelper.isComplete(template, params)) {
 			pdfLink.setEnabled(true);
 			csvLink.setEnabled(true);
+			if (usePdfEngine) {
+				pdfLink2.setEnabled(true);
+				csvLink2.setEnabled(true);
+			}
 		} else {
 			pdfLink.setEnabled(false);
 			csvLink.setEnabled(false);
+			if (usePdfEngine) {
+				pdfLink2.setEnabled(false);
+				csvLink2.setEnabled(false);
+			}
 		}		
 	}
 
