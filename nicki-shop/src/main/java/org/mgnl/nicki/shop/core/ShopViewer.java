@@ -55,6 +55,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -174,7 +175,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 					newWindow.setWidth(1000, Unit.PIXELS);
 					newWindow.setHeight(600, Unit.PIXELS);
 					newWindow.setModal(true);
-					getUI().addWindow(newWindow);
+					UI.getCurrent().addWindow(newWindow);
 				} else {
 					Notification.show(I18n.getText(parent.getI18nBase() + ".showInventory.empty"),
 							Notification.Type.HUMANIZED_MESSAGE);
@@ -196,7 +197,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 						newWindow.setWidth(1000, Unit.PIXELS);
 						newWindow.setHeight(600, Unit.PIXELS);
 						newWindow.setModal(true);
-						getUI().addWindow(newWindow);
+						UI.getCurrent().addWindow(newWindow);
 						/*
 						getWindow().showNotification(I18n.getText(parent.getI18nBase() + ".showCart.success"), getInventory().toString(),
 								Notification.TYPE_HUMANIZED_MESSAGE);

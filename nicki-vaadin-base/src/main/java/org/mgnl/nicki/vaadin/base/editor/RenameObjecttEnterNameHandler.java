@@ -38,6 +38,8 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.components.EnterNameHandler;
 
+import com.vaadin.ui.UI;
+
 @SuppressWarnings("serial")
 public class RenameObjecttEnterNameHandler extends EnterNameHandler implements Serializable {
 	private NickiTreeEditor editor;
@@ -50,7 +52,7 @@ public class RenameObjecttEnterNameHandler extends EnterNameHandler implements S
 	}
 
 	public void closeEnterNameDialog() {
-		editor.getUI().removeWindow(getDialog());
+		UI.getCurrent().removeWindow(getDialog());
 	}
 
 	public void setName(String name) throws DynamicObjectException {

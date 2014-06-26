@@ -48,6 +48,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
@@ -110,7 +111,7 @@ public class TestDataView extends CustomComponent {
 		newFieldWindow.setWidth(440, Unit.PIXELS);
 		newFieldWindow.setHeight(500, Unit.PIXELS);
 		newFieldWindow.setModal(true);
-		getUI().addWindow(newFieldWindow);
+		UI.getCurrent().addWindow(newFieldWindow);
 	}
 	
 	public class NewFieldHandler extends EnterNameHandler implements Serializable {
@@ -120,7 +121,7 @@ public class TestDataView extends CustomComponent {
 		}
 
 		public void closeEnterNameDialog() {
-			getUI().removeWindow(newFieldWindow);
+			UI.getCurrent().removeWindow(newFieldWindow);
 		}
 
 	}

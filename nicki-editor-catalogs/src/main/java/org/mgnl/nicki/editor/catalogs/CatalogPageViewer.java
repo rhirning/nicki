@@ -48,6 +48,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.UI;
 
 @SuppressWarnings("serial")
 public class CatalogPageViewer extends CustomComponent implements ClassEditor {
@@ -119,7 +120,7 @@ public class CatalogPageViewer extends CustomComponent implements ClassEditor {
 		dialog.setWidth(440, Unit.PIXELS);
 		dialog.setHeight(500, Unit.PIXELS);
 		dialog.setModal(true);
-		getUI().addWindow(dialog);
+		UI.getCurrent().addWindow(dialog);
 	}
 
 	private void initAttributes() {
