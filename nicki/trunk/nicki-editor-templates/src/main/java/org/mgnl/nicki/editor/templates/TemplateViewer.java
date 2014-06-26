@@ -51,6 +51,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
@@ -124,7 +125,7 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 		previewWindow.setModal(true);
 		previewWindow.setWidth(480, Unit.PIXELS);
 		previewWindow.setHeight(520, Unit.PIXELS);
-		getUI().addWindow(previewWindow);
+		UI.getCurrent().addWindow(previewWindow);
 	}
 
 	private void createSheets() {

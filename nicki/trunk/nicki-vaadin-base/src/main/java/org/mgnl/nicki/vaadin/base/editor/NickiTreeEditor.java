@@ -64,6 +64,7 @@ import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Tree;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Tree.ExpandEvent;
 
@@ -350,7 +351,7 @@ public class NickiTreeEditor extends CustomComponent {
 		dialog.setWidth(440, Unit.PIXELS);
 		dialog.setHeight(500, Unit.PIXELS);
 		dialog.setModal(true);
-		getUI().addWindow(dialog);
+		UI.getCurrent().addWindow(dialog);
 	}
 
 	protected void create(DynamicObject parent,
@@ -390,7 +391,7 @@ public class NickiTreeEditor extends CustomComponent {
 			window.setWidth(440, Unit.PIXELS);
 			window.setHeight(500, Unit.PIXELS);
 			window.setModal(true);
-			getUI().addWindow(window);
+			UI.getCurrent().addWindow(window);
 		} else {
 			// TODO: error!!
 		}
