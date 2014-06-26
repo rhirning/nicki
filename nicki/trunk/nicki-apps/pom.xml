@@ -3,7 +3,7 @@
 	<artifactId>nicki-apps</artifactId>
 	<parent>
 		<artifactId>nicki-parent</artifactId>
-		<version>3.33</version>
+		<version>3.34-SNAPSHOT</version>
 		<groupId>org.mgnl.nicki</groupId>
 		<relativePath>..</relativePath>
 	</parent>
@@ -11,42 +11,42 @@
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-catalogs</artifactId>
-			<version>3.33</version>
+			<version>3.34-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-log4j</artifactId>
-			<version>3.33</version>
+			<version>3.34-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-scripts</artifactId>
-			<version>3.33</version>
+			<version>3.34-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-templates</artifactId>
-			<version>3.33</version>
+			<version>3.34-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-reports</artifactId>
-			<version>3.33</version>
+			<version>3.34-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-idm-novell-shop</artifactId>
-			<version>3.33</version>
+			<version>3.34-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-dynamic-objects</artifactId>
-			<version>3.33</version>
+			<version>3.34-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-dynamic-objects-ad</artifactId>
-			<version>3.33</version>
+			<version>3.34-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
