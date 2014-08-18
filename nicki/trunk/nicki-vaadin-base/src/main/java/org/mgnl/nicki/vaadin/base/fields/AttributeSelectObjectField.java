@@ -44,8 +44,8 @@ import org.mgnl.nicki.vaadin.base.listener.AttributeInputListener;
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
 import com.vaadin.data.util.IndexedContainer;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.NativeSelect;
 
 @SuppressWarnings("serial")
 public class AttributeSelectObjectField extends BaseDynamicAttributeField implements DynamicAttributeField<String>, Serializable {
@@ -54,7 +54,7 @@ public class AttributeSelectObjectField extends BaseDynamicAttributeField implem
 	private DataContainer<String> property;
 	public void init(String attributeName, DynamicObject dynamicObject, DynamicObjectValueChangeListener<String> objectListener) {
 
-		ComboBox select = new ComboBox(getName(dynamicObject, attributeName));
+		NativeSelect select = new NativeSelect(getName(dynamicObject, attributeName));
 		select.setContainerDataSource(getOptions(dynamicObject, dynamicObject.getModel().getDynamicAttribute(attributeName)));
 		select.setItemCaptionPropertyId("name");
 		select.setImmediate(true);

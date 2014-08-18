@@ -30,26 +30,20 @@
  * intact.
  *
  */
-package org.mgnl.nicki.editor.templates;
+package org.mgnl.nicki.editor.projects.objects;
 
-import java.io.InputStream;
-import java.util.Map;
+import java.io.Serializable;
 
-import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.template.engine.BasicTemplateStreamSource;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
+import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
-import com.vaadin.server.StreamResource.StreamSource;
+@DynamicObject
+@ObjectClass({ "nickiProjectDirectory" })
+@SuppressWarnings("serial")
+public class Directory extends BaseDynamicObject implements Serializable {
 
-
-public class PdfStreamSource extends BasicTemplateStreamSource implements StreamSource {
-	private static final long serialVersionUID = 4222973194514516918L;
-	public PdfStreamSource(Template template, NickiContext context, Map<String, Object> params) {
-		super(template, context, params, TYPE.XHTML);
-	}
-
-	public InputStream getStream() {
-		return getPdfStream();
-	}
-
+	@DynamicAttribute(externalName = "cn", naming = true)
+	private String name;
 }

@@ -61,7 +61,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 public class TemplateEngine {
-	public enum OUTPUT_TYPE {TXT, PDF, CSV };
+	public enum OUTPUT_TYPE {TXT, PDF, CSV, PDF2 };
 	public final static String DEFAULT_CHARSET = "UTF-8";
 	public final static String CSV_CHARSET = "ISO-8859-1";
 	public static final String PROPERTY_BASE_DN = "nicki.templates.basedn";
@@ -99,6 +99,9 @@ public class TemplateEngine {
 			break;
 		case PDF:
 			IOUtils.copy(executeTemplateAsPdf(templateName, handler.getDataModel()), out);
+			break;
+		case PDF2:
+			IOUtils.copy(executeTemplateAsPdf2(templateName, handler.getDataModel()), out);
 			break;
 
 		default:

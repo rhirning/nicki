@@ -45,7 +45,7 @@ import com.vaadin.server.StreamResource.StreamSource;
 public class PdfStreamSource2 extends BasicTemplateStreamSource implements StreamSource {
 	private static final long serialVersionUID = 4222973194514516918L;
 	public PdfStreamSource2(Template template, NickiContext context, Map<String, Object> params) {
-		super(template, context, params);
+		super(template, context, params, TYPE.PDF);
 	}
 
 	public InputStream getStream() {

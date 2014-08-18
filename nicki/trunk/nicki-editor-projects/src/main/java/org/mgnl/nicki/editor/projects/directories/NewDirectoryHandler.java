@@ -30,26 +30,12 @@
  * intact.
  *
  */
-package org.mgnl.nicki.editor.templates;
+package org.mgnl.nicki.editor.projects.directories;
 
-import java.io.InputStream;
-import java.util.Map;
+public interface NewDirectoryHandler {
 
-import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.template.engine.BasicTemplateStreamSource;
+	void createNewDirectory(String value);
 
-import com.vaadin.server.StreamResource.StreamSource;
-
-
-public class PdfStreamSource extends BasicTemplateStreamSource implements StreamSource {
-	private static final long serialVersionUID = 4222973194514516918L;
-	public PdfStreamSource(Template template, NickiContext context, Map<String, Object> params) {
-		super(template, context, params, TYPE.XHTML);
-	}
-
-	public InputStream getStream() {
-		return getPdfStream();
-	}
+	void closeNewDirectoryWindow();
 
 }
