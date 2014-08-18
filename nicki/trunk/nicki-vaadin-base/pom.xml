@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>3.34-SNAPSHOT</version>
+		<version>3.34</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
@@ -47,7 +47,7 @@
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-dynamic-objects</artifactId>
-			<version>3.34-SNAPSHOT</version>
+			<version>3.34</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
