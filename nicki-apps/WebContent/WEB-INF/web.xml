@@ -28,6 +28,16 @@
 		</init-param>
 	</servlet>
 	<servlet>
+		<servlet-name>Project Editor</servlet-name>
+		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+		<init-param>
+			<description>
+			Vaadin UI class to start</description>
+			<param-name>UI</param-name>
+			<param-value>org.mgnl.nicki.editor.projects.core.ProjectEditor</param-value>
+		</init-param>
+	</servlet>
+	<servlet>
 		<servlet-name>Script Editor</servlet-name>
 		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
 		<init-param>
@@ -68,6 +78,10 @@
 	<servlet-mapping>
 		<servlet-name>Template Editor</servlet-name>
 		<url-pattern>/templates/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>Project Editor</servlet-name>
+		<url-pattern>/projects/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Script Editor</servlet-name>

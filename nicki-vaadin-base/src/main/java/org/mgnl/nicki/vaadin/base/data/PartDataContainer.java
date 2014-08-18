@@ -45,7 +45,7 @@ public class PartDataContainer extends AttributeDataContainer<String> implements
 	private String separator;
 	private String name;
 
-	public PartDataContainer(DynamicObject dynamicObject, String name, String attributeName, String separator) {
+	public PartDataContainer(DynamicObject dynamicObject, String attributeName, String name, String separator) {
 		super(dynamicObject, attributeName);
 		this.separator = separator;
 		this.name = name;

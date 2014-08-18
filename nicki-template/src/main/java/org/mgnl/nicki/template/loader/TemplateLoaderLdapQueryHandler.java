@@ -79,11 +79,12 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 
 	public void handle(ContextSearchResult rs) throws DynamicObjectException {
 		template = new Template(this.name);
-			
+
 		try {
 			template.setData(getAttribute(rs, ATTRIBUTE_DATA));
 		} catch (Exception e) {
 		}
+
 		for (Object value : rs.getValues(ATTRIBUTE_PART)) {
 			String partString = (String) value;
 			String partName = StringUtils.substringBefore(partString, PART_SEPARATOR);

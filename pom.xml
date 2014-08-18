@@ -24,6 +24,7 @@
 		<module>nicki-editor-catalogs</module>
 		<module>nicki-editor-jcr</module>
 		<module>nicki-editor-log4j</module>
+		<module>nicki-editor-projects</module>
 		<module>nicki-editor-scripts</module>
 		<module>nicki-editor-templates</module>
 		<module>nicki-idm-novell</module>
