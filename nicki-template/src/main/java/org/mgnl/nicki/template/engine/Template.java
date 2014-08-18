@@ -37,7 +37,8 @@ import java.util.HashMap;
 public class Template extends HashMap<String, String> {
 
 	private static final long serialVersionUID = 7277660752803306281L;
-	private String name = null;;
+	private String name;
+	private String data;
 
 	public Template(String name) {
 		this.name = name;
@@ -54,8 +55,6 @@ public class Template extends HashMap<String, String> {
 	public void setData(String data) {
 		this.data = data;
 	}
-
-	private String data = null;
 
 	public void putPart(String partName, String partValue) {
 		put(partName, partValue);

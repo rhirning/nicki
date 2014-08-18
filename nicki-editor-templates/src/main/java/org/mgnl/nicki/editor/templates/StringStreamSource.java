@@ -46,7 +46,7 @@ public class StringStreamSource extends BasicTemplateStreamSource implements Str
 	private static final long serialVersionUID = 4222973194514516918L;
 	
 	public StringStreamSource(Template template, NickiContext context, Map<String, Object> params) {
-		super(template, context, params);
+		super(template, context, params, TYPE.STRING);
 	}
 
 	public InputStream getStream() {

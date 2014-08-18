@@ -30,26 +30,31 @@
  * intact.
  *
  */
-package org.mgnl.nicki.editor.templates;
+package org.mgnl.nicki.editor.projects.core;
 
-import java.io.InputStream;
-import java.util.Map;
+import java.io.Serializable;
 
-import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.template.engine.BasicTemplateStreamSource;
+import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.editor.projects.objects.Project;
+import org.mgnl.nicki.vaadin.base.editor.EntryFilter;
 
-import com.vaadin.server.StreamResource.StreamSource;
+@SuppressWarnings("serial")
+public class ProjectFilter implements EntryFilter, Serializable {
+	private DynamicObject user;
 
-
-public class PdfStreamSource extends BasicTemplateStreamSource implements StreamSource {
-	private static final long serialVersionUID = 4222973194514516918L;
-	public PdfStreamSource(Template template, NickiContext context, Map<String, Object> params) {
-		super(template, context, params, TYPE.XHTML);
+	public ProjectFilter(DynamicObject user) {
+		super();
+		this.user = user;
 	}
 
-	public InputStream getStream() {
-		return getPdfStream();
+	public boolean accepts(DynamicObject object) {
+		if (object instanceof Project) {
+			Project project = (Project) object;
+			if (!project.isProjectLeader(user) && !project.isProjectDeputyLeader(user)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

@@ -57,7 +57,7 @@ public class Template extends BaseDynamicObject {
 	
 	@DynamicAttribute(externalName="nickiTemplateData")
 	private String data;
-
+	
 	@DynamicAttribute(externalName="nickiTemplateParams")
 	private String params;
 
@@ -80,14 +80,35 @@ public class Template extends BaseDynamicObject {
 	public void setData(String data) {
 		this.put(ATTRIBUTE_DATA, data);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	public List<String> getParts() {
 		return (List<String>) get(ATTRIBUTE_PARTS);
 	}
 	
+	public String getPart(String part) {
+		List<String> parts = getParts();
+		if (parts != null) {
+			for (String entry : parts) {
+				String key = StringUtils.substringBefore(entry, "=");
+				if (StringUtils.equals(key, part)) {
+					return StringUtils.substringAfter(entry, "=");
+				}
+			}
+		}
+		return null;
+	}
+	
+	public boolean hasPart(String part) {
+		return StringUtils.isNotBlank(getPart(part)); 
+	}
+	
 	public String getHandler() {
 		return getAttribute(ATTRIBUTE_HANDLER);
+	}
+	
+	public void setHandler(String handler) {
+		this.put(ATTRIBUTE_HANDLER, StringUtils.trimToNull(handler));
 	}
 	
 	public boolean hasHandler() {

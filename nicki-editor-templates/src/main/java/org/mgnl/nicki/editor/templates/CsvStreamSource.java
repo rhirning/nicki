@@ -46,7 +46,7 @@ public class CsvStreamSource extends BasicTemplateStreamSource implements Stream
 	private static final long serialVersionUID = 4222973194514516918L;
 	
 	public CsvStreamSource(Template template, NickiContext context, Map<String, Object> params) {
-		super(template, context, params);
+		super(template, context, params, TYPE.XHTML);
 	}
 
 	public InputStream getStream() {

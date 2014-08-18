@@ -52,18 +52,24 @@ import org.slf4j.LoggerFactory;
 
 public class BasicTemplateStreamSource {
 	private static final Logger LOG = LoggerFactory.getLogger(BasicTemplateStreamSource.class);
+	protected static enum TYPE {PDF, XHTML, STRING};
 
 	Template template;
 	Map<String, Object> params;
 	private String templatePath;
 	private TemplateHandler handler;
 	
-	public BasicTemplateStreamSource(Template template, NickiContext context, Map<String, Object> params) {
+	public BasicTemplateStreamSource(Template template, NickiContext context, Map<String, Object> params, TYPE type) {
 		this.template = template;
 		this.params = params;
 		// render template
 		String parentPath = Config.getProperty("nicki.templates.basedn");
 		templatePath = template.getSlashPath(parentPath);
+		if (type == TYPE.PDF) {
+			if (template.hasPart("pdf")) {
+				templatePath += ".pdf.ftl";
+			}
+		};
 		if (StringUtils.contains(templatePath, "_")) {
 			templatePath = StringUtils.substringBefore(templatePath, "_");
 		}
