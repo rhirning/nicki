@@ -29,35 +29,35 @@
  * Any modifications to this file must keep this entire header
  * intact.
  *
- */
-package org.mgnl.nicki.dynamic.objects.objects;
+ */package org.mgnl.nicki.vaadin.base.dialog;
 
-import org.mgnl.nicki.core.annotation.DynamicAttribute;
-import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.annotation.ObjectClass;
-import org.mgnl.nicki.core.objects.BaseDynamicObject;
+import java.io.Serializable;
 
-@DynamicObject
-@ObjectClass("groupOfNames")
-public class Group extends BaseDynamicObject {
-	public static final String ATTRIBUTE_DESCRIPTION = "description";
-	public static final String ATTRIBUTE_MEMBER = "member";
-	public static final String ATTRIBUTE_OWNER = "owner";
+import org.mgnl.nicki.vaadin.base.dialog.View;
 
-	@DynamicAttribute(externalName="cn", naming=true)
-	public String getName() {
-		return super.getName();
+
+public class NavigationEntry implements Serializable, NavigationElement {
+	private static final long serialVersionUID = 4285844482143266130L;
+	private String caption;
+	private View view;
+
+	public NavigationEntry(String caption, View view) {
+		super();
+		this.caption = caption;
+		this.view = view;
 	}
-	
-	@DynamicAttribute(externalName="description")
-	private String description;
-	
-	@DynamicAttribute(externalName="member", foreignKey=Person.class)
-	private String[] member;
-	
-	@DynamicAttribute(externalName="owner", foreignKey=Person.class)
-	private String owner;
-	
-	private static final long serialVersionUID = 6170300879001415636L;
+
+	public String getCaption() {
+		return caption;
+	}
+
+	public View getView() {
+		return view;
+	}
+
+	@Override
+	public String getNavigationCaption() {
+		return getCaption();
+	}
 
 }

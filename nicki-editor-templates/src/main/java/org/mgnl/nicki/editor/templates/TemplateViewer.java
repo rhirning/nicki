@@ -39,6 +39,7 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.components.SimpleEditor;
+import org.mgnl.nicki.vaadin.base.components.SimplePropertyEditor;
 import org.mgnl.nicki.vaadin.base.components.TestDataView;
 import org.mgnl.nicki.vaadin.base.data.AttributeDataContainer;
 import org.mgnl.nicki.vaadin.base.data.ListPartDataContainer;
@@ -132,7 +133,7 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 	private void createSheets() {
 		tab.addTab(new SimpleEditor(new AttributeDataContainer<String>(template, "data")), I18n.getText(editor.getMessageKeyBase() +".tab.data"), null);
 		tab.addTab(new SimpleEditor(new PartDataContainer(template, Template.ATTRIBUTE_PARTS, "pdf", "=")), I18n.getText(editor.getMessageKeyBase() +".tab.pdf"), null);
-		tab.addTab(new SimpleEditor(new AttributeDataContainer<String>(template, "handler")), I18n.getText(editor.getMessageKeyBase() +".tab.handler"), null);
+		tab.addTab(new SimplePropertyEditor(new AttributeDataContainer<String>(template, "handler")), I18n.getText(editor.getMessageKeyBase() +".tab.handler"), null);
 		tab.addTab(new TestDataView(new ListPartDataContainer(template, "testData", "="), editor.getMessageKeyBase()),
 				I18n.getText(editor.getMessageKeyBase() +".tab.testdata"), null);
 		tab.addTab(new SimpleEditor(new AttributeDataContainer<String>(template, "params")), I18n.getText(editor.getMessageKeyBase() +".tab.params"), null);

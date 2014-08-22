@@ -70,19 +70,10 @@ public class Person extends BaseDynamicObject {
 	private List<Group> assignedGroups = null;
 	private List<String> attributeValues = null;
 	private Map<String, String> catalogAttributes = new HashMap<String, String>();
-	
-	@DynamicAttribute(externalName="cn", naming=true)
-	private String name;	
-	@DynamicAttribute(externalName="sn", mandatory=true)
-	private String surname;	
-	@DynamicAttribute(externalName="givenName")
-	private String givenname;
-	@DynamicAttribute(externalName="fullName")
-	private String fullname;
-	@DynamicAttribute(externalName="Language")
-	private String language;
+
 	@DynamicAttribute(externalName="isManager")
 	private boolean isManager;
+	
 	@DynamicReferenceAttribute(externalName="member", reference=Group.class,
 			baseProperty="nicki.data.basedn")
 	private String[] memberOf;
@@ -92,6 +83,11 @@ public class Person extends BaseDynamicObject {
 	private String[] assignedArticle;
 	@DynamicAttribute(externalName="nickiCatalogAttribute")
 	private String[] attributeValue;
+	
+	@DynamicAttribute(externalName="cn", naming=true)
+	public String getName() {
+		return super.getName();
+	}
 
 	@Override
 	public String getDisplayName() {
@@ -114,7 +110,8 @@ public class Person extends BaseDynamicObject {
 		}
 		return assignedGroups;
 	}
-	
+
+	@DynamicAttribute(externalName="fullName")
 	public String getFullname() {
 		return getAttribute(ATTRIBUTE_FULLNAME);
 	}
@@ -123,10 +120,12 @@ public class Person extends BaseDynamicObject {
 		put(ATTRIBUTE_SURNAME, value);
 	}
 
+	@DynamicAttribute(externalName="sn", mandatory=true)
 	public String getSurname() {
 		return getAttribute(ATTRIBUTE_SURNAME);
 	}
 
+	@DynamicAttribute(externalName="givenName")
 	public String getGivenname() {
 		return getAttribute(ATTRIBUTE_GIVENNAME);
 	}
@@ -139,6 +138,7 @@ public class Person extends BaseDynamicObject {
 		put(ATTRIBUTE_LANGUAGE, value);
 	}
 
+	@DynamicAttribute(externalName="Language")
 	public String getLanguage() {
 		return (String) get(ATTRIBUTE_LANGUAGE);
 	}
