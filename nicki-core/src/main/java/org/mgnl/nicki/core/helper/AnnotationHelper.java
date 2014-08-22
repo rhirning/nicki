@@ -2,6 +2,8 @@ package org.mgnl.nicki.core.helper;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.AdditionalObjectClass;
@@ -93,12 +95,14 @@ public class AnnotationHelper {
 		for (Field field : modelClass.getDeclaredFields()) {
 			if (field.isAnnotationPresent(DynamicAttribute.class)) {
 				LOG.debug("DynamicAttribute: " + field.getName());
+				LOG.warn("Deprecated usage of Annotation DynamicAttribute with field "
+				+ field.getName() + " in class " + modelClass);
 				DynamicAttribute dAttribute = field
 						.getAnnotation(DynamicAttribute.class);
 				org.mgnl.nicki.core.objects.DynamicAttribute dynAttribute = new org.mgnl.nicki.core.objects.DynamicAttribute(
 						field.getName(), dAttribute.externalName(),
 						field.getType());
-				if (field.getType().isArray()) {
+				if (isMultiple(field)) {
 					dynAttribute.setMultiple();
 				}
 				if (dAttribute.naming()) {
@@ -134,6 +138,8 @@ public class AnnotationHelper {
 				dynamicObject.addAttribute(dynAttribute);
 			} else if (field.isAnnotationPresent(StructuredDynamicAttribute.class)) {
 				LOG.debug("StructuredDynamicAttribute: " + field.getName());
+				LOG.warn("Deprecated usage of Annotation StructuredDynamicAttribute with field "
+				+ field.getName() + " in class " + modelClass);
 				StructuredDynamicAttribute dAttribute = field
 						.getAnnotation(StructuredDynamicAttribute.class);
 				org.mgnl.nicki.core.objects.StructuredDynamicAttribute dynAttribute = null;
@@ -144,7 +150,7 @@ public class AnnotationHelper {
 				} catch (Exception e) {
 					LOG.error("Field=" + field.getName(), e);
 				}
-				if (field.getType().isArray()) {
+				if (isMultiple(field)) {
 					dynAttribute.setMultiple();
 				}
 				if (dAttribute.naming()) {
@@ -180,6 +186,8 @@ public class AnnotationHelper {
 				dynamicObject.addAttribute(dynAttribute);
 			} else if (field.isAnnotationPresent(DynamicReferenceAttribute.class)) {
 				LOG.debug("DynamicReferenceAttribute: " + field.getName() + "(" + field.getType() + ")");
+				LOG.warn("Deprecated usage of Annotation DynamicReferenceAttribute with field "
+				+ field.getName() + " in class " + modelClass);
 				DynamicReferenceAttribute dAttribute = field
 						.getAnnotation(DynamicReferenceAttribute.class);
 				DynamicReference dynAttribute = new DynamicReference(dAttribute.reference(),
@@ -187,7 +195,7 @@ public class AnnotationHelper {
 						Config.getProperty(dAttribute.baseProperty()),
 						dAttribute.externalName(),
 						field.getType());
-				if (field.getType().isArray()) {
+				if (isMultiple(field)) {
 					dynAttribute.setMultiple();
 				}
 				if (dAttribute.naming()) {
@@ -222,7 +230,163 @@ public class AnnotationHelper {
 				
 				dynamicObject.addAttribute(dynAttribute);
 			}
+			
+			for (Method method : modelClass.getDeclaredMethods()) {
+				if (method.isAnnotationPresent(DynamicAttribute.class)) {
+					LOG.debug("DynamicAttribute: " + getName(method.getName()));
+					DynamicAttribute dAttribute = method
+							.getAnnotation(DynamicAttribute.class);
+					org.mgnl.nicki.core.objects.DynamicAttribute dynAttribute = new org.mgnl.nicki.core.objects.DynamicAttribute(
+							getName(method.getName()), dAttribute.externalName(),
+							method.getReturnType());
+					if (isMultiple(method)) {
+						dynAttribute.setMultiple();
+					}
+					
+					if (dAttribute.naming()) {
+						dynAttribute.setNaming();
+					}
+					if (dAttribute.search()) {
+						dynAttribute.setSearchable(true);
+					}
+					if (dAttribute.mandatory()) {
+						dynAttribute.setMandatory();
+					}
+					if (dAttribute.virtual()) {
+						dynAttribute.setVirtual();
+					}
+					if (dAttribute.readonly()) {
+						dynAttribute.setReadonly();
+					}
+					if (StringUtils.isNotBlank(dAttribute.editorClass())) {
+						dynAttribute.setEditorClass(dAttribute.editorClass());
+					}
+					if (StringUtils.isNotBlank(dAttribute.searchFieldClass())) {
+						dynAttribute.setSearchFieldClass(dAttribute.searchFieldClass());
+					}
+					if (dAttribute.foreignKey() != null && dAttribute.foreignKey().length > 0) {
+						for (Class<? extends DynamicObject> clazz : dAttribute.foreignKey()) {
+							dynAttribute.setForeignKey(clazz);
+						}
+					}
+					if (StringUtils.isNotBlank(dAttribute.caption())) {
+						dynAttribute.setCaption(dAttribute.caption());
+					}
+					
+					dynamicObject.addAttribute(dynAttribute);
+				} else if (method.isAnnotationPresent(StructuredDynamicAttribute.class)) {
+					LOG.debug("StructuredDynamicAttribute: " + getName(method.getName()));
+					StructuredDynamicAttribute dAttribute = method
+							.getAnnotation(StructuredDynamicAttribute.class);
+					org.mgnl.nicki.core.objects.StructuredDynamicAttribute dynAttribute = null;
+					try {
+						dynAttribute = new org.mgnl.nicki.core.objects.StructuredDynamicAttribute(
+								getName(method.getName()), dAttribute.externalName(),
+								method.getReturnType());
+					} catch (Exception e) {
+						LOG.error("Method=" +getName(method.getName()), e);
+					}
+					if (isMultiple(method)) {
+						dynAttribute.setMultiple();
+					}
+					if (dAttribute.naming()) {
+						dynAttribute.setNaming();
+					}
+					if (dAttribute.search()) {
+						dynAttribute.setSearchable(true);
+					}
+					if (dAttribute.mandatory()) {
+						dynAttribute.setMandatory();
+					}
+					if (dAttribute.virtual()) {
+						dynAttribute.setVirtual();
+					}
+					if (dAttribute.readonly()) {
+						dynAttribute.setReadonly();
+					}
+					if (StringUtils.isNotBlank(dAttribute.editorClass())) {
+						dynAttribute.setEditorClass(dAttribute.editorClass());
+					}
+					if (StringUtils.isNotBlank(dAttribute.searchFieldClass())) {
+						dynAttribute.setSearchFieldClass(dAttribute.searchFieldClass());
+					}
+					if (dAttribute.foreignKey() != null && dAttribute.foreignKey().length > 0) {
+						for (Class<? extends DynamicObject> clazz : dAttribute.foreignKey()) {
+							dynAttribute.setForeignKey(clazz);
+						}
+					}
+					if (StringUtils.isNotBlank(dAttribute.caption())) {
+						dynAttribute.setCaption(dAttribute.caption());
+					}
+					
+					dynamicObject.addAttribute(dynAttribute);
+				} else if (method.isAnnotationPresent(DynamicReferenceAttribute.class)) {
+					LOG.debug("DynamicReferenceAttribute: " + getName(method.getName()) + "(" + method.getReturnType() + ")");
+					DynamicReferenceAttribute dAttribute = method
+							.getAnnotation(DynamicReferenceAttribute.class);
+					DynamicReference dynAttribute = new DynamicReference(dAttribute.reference(),
+							getName(method.getName()),
+							Config.getProperty(dAttribute.baseProperty()),
+							dAttribute.externalName(),
+							method.getReturnType());
+					if (isMultiple(method)) {
+						dynAttribute.setMultiple();
+					}
+					if (dAttribute.naming()) {
+						dynAttribute.setNaming();
+					}
+					if (dAttribute.search()) {
+						dynAttribute.setSearchable(true);
+					}
+					if (dAttribute.mandatory()) {
+						dynAttribute.setMandatory();
+					}
+					if (dAttribute.virtual()) {
+						dynAttribute.setVirtual();
+					}
+					if (dAttribute.readonly()) {
+						dynAttribute.setReadonly();
+					}
+					if (StringUtils.isNotBlank(dAttribute.editorClass())) {
+						dynAttribute.setEditorClass(dAttribute.editorClass());
+					}
+					if (StringUtils.isNotBlank(dAttribute.searchFieldClass())) {
+						dynAttribute.setSearchFieldClass(dAttribute.searchFieldClass());
+					}
+					if (dAttribute.foreignKey() != null && dAttribute.foreignKey().length > 0) {
+						for (Class<? extends DynamicObject> clazz : dAttribute.foreignKey()) {
+							dynAttribute.setForeignKey(clazz);
+						}
+					}
+					if (StringUtils.isNotBlank(dAttribute.caption())) {
+						dynAttribute.setCaption(dAttribute.caption());
+					}
+					
+					dynamicObject.addAttribute(dynAttribute);
+				}
+			}
 		}
+	}
+
+	private static boolean isMultiple(Method method) {
+		return isMultiple(method.getReturnType());
+	}
+
+	private static boolean isMultiple(Field field) {
+		return isMultiple(field.getType());
+	}
+
+	private static boolean isMultiple(Class<?> clazz) {
+		if (clazz.isArray()) {
+			return true;
+		}
+		
+		return	Collection.class.isAssignableFrom(clazz);
+	}
+
+	private static String getName(String name) {
+		
+		return StringUtils.uncapitalize(StringUtils.substringAfter(name, "get"));
 	}
 	
 

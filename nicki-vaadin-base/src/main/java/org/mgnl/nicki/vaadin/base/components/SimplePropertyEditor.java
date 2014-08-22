@@ -30,34 +30,34 @@
  * intact.
  *
  */
-package org.mgnl.nicki.dynamic.objects.objects;
+package org.mgnl.nicki.vaadin.base.components;
 
-import org.mgnl.nicki.core.annotation.DynamicAttribute;
-import org.mgnl.nicki.core.annotation.DynamicObject;
-import org.mgnl.nicki.core.annotation.ObjectClass;
-import org.mgnl.nicki.core.objects.BaseDynamicObject;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.TextField;
 
-@DynamicObject
-@ObjectClass("groupOfNames")
-public class Group extends BaseDynamicObject {
-	public static final String ATTRIBUTE_DESCRIPTION = "description";
-	public static final String ATTRIBUTE_MEMBER = "member";
-	public static final String ATTRIBUTE_OWNER = "owner";
+@SuppressWarnings("serial")
+public class SimplePropertyEditor extends CustomComponent {
 
-	@DynamicAttribute(externalName="cn", naming=true)
-	public String getName() {
-		return super.getName();
+	private TextField editor;
+	private Property<String> data;
+
+	public SimplePropertyEditor(Property<String> dataContainer) {
+		this.data = dataContainer;
+		// editor
+		editor = new TextField();
+		editor.setWidth("100%");
+		setWidth("100%");
+		
+		setCompositionRoot(editor);
+		editor.setValue((String) data.getValue());
+		editor.addValueChangeListener(new Property.ValueChangeListener() {
+			
+			public void valueChange(ValueChangeEvent event) {
+				data.setValue((String) editor.getValue());
+			}
+		});
 	}
-	
-	@DynamicAttribute(externalName="description")
-	private String description;
-	
-	@DynamicAttribute(externalName="member", foreignKey=Person.class)
-	private String[] member;
-	
-	@DynamicAttribute(externalName="owner", foreignKey=Person.class)
-	private String owner;
-	
-	private static final long serialVersionUID = 6170300879001415636L;
 
 }

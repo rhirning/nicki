@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD})
+@Target({ElementType.FIELD, ElementType.METHOD})
 public @interface DynamicAttribute {
 	boolean naming() default false;
 	boolean mandatory() default false;

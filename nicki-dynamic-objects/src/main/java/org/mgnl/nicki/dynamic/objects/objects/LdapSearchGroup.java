@@ -50,7 +50,9 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 public class LdapSearchGroup extends BaseDynamicObject {
 
 	@DynamicAttribute(externalName="cn", naming=true)
-	private String name;
+	public String getName() {
+		return super.getName();
+	}
 	
 	@DynamicAttribute(externalName="member", readonly=true, foreignKey=Person.class)
 	private String[] member;
