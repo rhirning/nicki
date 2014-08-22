@@ -72,9 +72,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	private Button previewButton;
 	private Button htmlPreviewButton;
 	private Link csvLink;
-	private Link csvLink2;
 	private Link pdfLink;
-	private Link pdfLink2;
 	private boolean usePreview = true;
 	private NickiTreeEditor editor;
 	private Map<String, Object> params = new HashMap<String, Object>();
@@ -134,7 +132,12 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 				"application/pdf"));
 		csvLink.setCaption("CSV");
 		csvLink.setTargetName("_blank");
-		CsvStreamSource csvStreamSource = new CsvStreamSource(template, template.getContext(), params);
+		StreamSource csvStreamSource;
+		if (template.hasPart("pdf")) {
+			csvStreamSource = new CsvStreamSource2(template, template.getContext(), params);
+		} else {
+			csvStreamSource = new CsvStreamSource(template, template.getContext(), params);
+		}
 		csvLink.setResource(new LinkResource(csvStreamSource, template.getName() + ".csv",
 				"text/comma-separated-values"));
 

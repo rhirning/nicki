@@ -46,7 +46,7 @@ public class CsvStreamSource2 extends BasicTemplateStreamSource implements Strea
 	private static final long serialVersionUID = 4222973194514516918L;
 	
 	public CsvStreamSource2(Template template, NickiContext context, Map<String, Object> params) {
-		super(template, context, params, TYPE.XHTML);
+		super(template, context, params, TYPE.PDF);
 	}
 
 	public InputStream getStream() {

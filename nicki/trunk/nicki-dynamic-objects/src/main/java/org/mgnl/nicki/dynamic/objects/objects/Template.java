@@ -52,27 +52,29 @@ public class Template extends BaseDynamicObject {
 	public static final String ATTRIBUTE_FILTER = "filter";
 	public static final String ATTRIBUTE_TESTDATA = "testData";
 	
-	@DynamicAttribute(naming=true, externalName="ou")
-	private String name;
-	
-	@DynamicAttribute(externalName="nickiTemplateData")
-	private String data;
-	
 	@DynamicAttribute(externalName="nickiTemplateParams")
-	private String params;
+	public String getParams() {
+		return getAttribute(ATTRIBUTE_PARAMS);
+	}
 
-	@DynamicAttribute(externalName="nickiHandler")
-	private String handler;
-
-	@DynamicAttribute(externalName="nickiTemplatePart")
-	private String[] parts;
-
+	@SuppressWarnings("unchecked")
 	@DynamicAttribute(externalName="nickiFilter")
-	private String[] filter;
+	public List<String> getFilter() {
+		return (List<String>) get(ATTRIBUTE_FILTER);
+	}
 
+	@SuppressWarnings("unchecked")
 	@DynamicAttribute(externalName="nickiStructuredRef")
-	private String[] testData;
-	
+	public List<String> getTestData() {
+		return (List<String>) get(ATTRIBUTE_TESTDATA);
+	}
+
+	@DynamicAttribute(naming=true, externalName="ou")
+	public String getName() {
+		return super.getName();
+	}
+
+	@DynamicAttribute(externalName="nickiTemplateData")
 	public String getData() {
 		return getAttribute(ATTRIBUTE_DATA);
 	}
@@ -82,6 +84,7 @@ public class Template extends BaseDynamicObject {
 	}
 	
 	@SuppressWarnings("unchecked")
+	@DynamicAttribute(externalName="nickiTemplatePart")
 	public List<String> getParts() {
 		return (List<String>) get(ATTRIBUTE_PARTS);
 	}
@@ -102,7 +105,8 @@ public class Template extends BaseDynamicObject {
 	public boolean hasPart(String part) {
 		return StringUtils.isNotBlank(getPart(part)); 
 	}
-	
+
+	@DynamicAttribute(externalName="nickiHandler")
 	public String getHandler() {
 		return getAttribute(ATTRIBUTE_HANDLER);
 	}
@@ -119,8 +123,8 @@ public class Template extends BaseDynamicObject {
 		if (StringUtils.isEmpty(filter)) {
 			return true;
 		}
-		@SuppressWarnings("unchecked")
-		List<String> filterList = (List<String>) get(ATTRIBUTE_FILTER);
+
+		List<String> filterList = getFilter();
 		if (filterList != null && filterList.contains(filter)) {
 			return true;
 		}
