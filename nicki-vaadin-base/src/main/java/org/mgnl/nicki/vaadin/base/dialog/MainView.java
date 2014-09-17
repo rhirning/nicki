@@ -33,7 +33,7 @@ public class MainView extends CustomComponent implements NavigationSelector {
 	private View activeView = null;;
 	private List<NavigationFolder> navigationFolders = new ArrayList<NavigationFolder>();
 	private Person user;
-	/*- VaadinEditorProperties={"grid":"RegularGrid,20","showGrid":true,"snapToGrid":true,"snapToObject":true,"movingGuides":false,"snappingDistance":10} */
+
 	private static final long serialVersionUID = 8701670605362637395L;
 	public MainView(Person user) {
 		this.user = user;
@@ -41,8 +41,6 @@ public class MainView extends CustomComponent implements NavigationSelector {
 		setCompositionRoot(mainLayout);
 		hsplit.setSplitPosition(250, Unit.PIXELS);
 		navigation = new TableNavigation(this);
-//		navigation = new ListSelectNavigation(this);
-//		navigation = new ButtonNavigation(this);
 		hsplit.setFirstComponent(navigation);
 
 	}
