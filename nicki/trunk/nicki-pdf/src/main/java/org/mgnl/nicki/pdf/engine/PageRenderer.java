@@ -53,6 +53,9 @@ public class PageRenderer {
 		log.debug("rendering text: {}", text.getValue());
 		Font f = config.getFont(text.getFont(), text.getSize(), FontStyle.byName(text.getStyle()));
 
+		if (StringUtils.isNotBlank(text.getColor())) {
+			f.setColor(ContentRenderer.getColor(text.getColor()));
+		}
 		String string = StringUtils.replace(text.getValue(), "{pageNumber}",  "" + content.getPdfWriter().getPageNumber());
 		
 		Point posUU = config.transformPoint(p);
