@@ -58,7 +58,7 @@ public class StructuredDynamicAttribute extends DynamicAttribute implements Seri
 					new ListStructuredForeignKeyMethod(context, rs, getExternalName(), getForeignKeyClass()));
 
 		} else {
-			String value = (String) rs.getValue(getExternalName());
+			String value = (String) rs.getValue(String.class, getExternalName());
 			if (StringUtils.isNotEmpty(value)) {
 				dynamicObject.put(getName(), value);
 				dynamicObject.put(getGetter(getName()),

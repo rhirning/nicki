@@ -69,7 +69,7 @@ public class LdapSearchHandler extends BasicLdapHandler implements SearchQueryHa
 			entry.setDn(dn);
 			entry.addValue("dn", dn);
 			for (String attributeName :query.getResultAttributes().keySet()) {
-				Object value = rs.getValue(attributeName);
+				Object value = rs.getValue(Object.class, attributeName);
 				entry.addValue(query.getResultAttributes().get(attributeName), value);
 			}
 			result.add(entry);
