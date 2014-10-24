@@ -38,8 +38,6 @@ import java.util.Map;
 
 import javax.naming.NamingException;
 
-import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
@@ -73,6 +71,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	private Button htmlPreviewButton;
 	private Link csvLink;
 	private Link pdfLink;
+	private Link xlsLink;
 	private boolean usePreview = true;
 	private NickiTreeEditor editor;
 	private Map<String, Object> params = new HashMap<String, Object>();
@@ -130,6 +129,16 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		}
 		pdfLink.setResource(new LinkResource(pdfStreamSource, template.getName() + ".pdf",
 				"application/pdf"));
+
+		if (template.hasPart("xls")) {
+			xlsLink.setCaption("XLS");
+			xlsLink.setTargetName("_blank");
+	
+			StreamSource xlsStreamSource = new XlsStreamSource(template, template.getContext(), params);;
+			xlsLink.setResource(new LinkResource(xlsStreamSource, template.getName() + ".xls",
+					"application/vnd.ms-excel"));
+		}	
+		
 		csvLink.setCaption("CSV");
 		csvLink.setTargetName("_blank");
 		StreamSource csvStreamSource;
@@ -149,6 +158,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		htmlPreviewButton.setCaption(I18n.getText(editor.getMessageKeyBase() + ".config.button.htmlpreview"));
 		pdfLink.setCaption(I18n.getText(editor.getMessageKeyBase() + ".config.link.pdf"));
 		csvLink.setCaption(I18n.getText(editor.getMessageKeyBase() + ".config.link.csv"));
+		xlsLink.setCaption(I18n.getText(editor.getMessageKeyBase() + ".config.link.xls"));
 	}
 
 	protected void close() {
@@ -221,6 +231,9 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		csvLink = new Link();
 		horizontalLayout.addComponent(csvLink);
 		
+		xlsLink = new Link();
+		horizontalLayout.addComponent(xlsLink);
+		
 		return mainLayout;
 	}
 
@@ -228,9 +241,13 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		if (GuiTemplateHelper.isComplete(template, params)) {
 			pdfLink.setEnabled(true);
 			csvLink.setEnabled(true);
+			if (template.hasPart("xls")) {
+				xlsLink.setEnabled(true);
+			}
 		} else {
 			pdfLink.setEnabled(false);
 			csvLink.setEnabled(false);
+			xlsLink.setEnabled(false);
 		}		
 	}
 

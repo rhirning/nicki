@@ -52,6 +52,7 @@ import org.mgnl.nicki.template.engine.ConfigurationFactory;
 import org.mgnl.nicki.template.handler.TemplateHandler;
 import org.mgnl.nicki.template.pdf.PdfTemplateRenderer;
 import org.mgnl.nicki.template.pdf.PdfTemplateRenderer2;
+import org.mgnl.nicki.template.pdf.XlsTemplateRenderer;
 import org.xml.sax.SAXException;
 
 import com.lowagie.text.DocumentException;
@@ -61,7 +62,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 public class TemplateEngine {
-	public enum OUTPUT_TYPE {TXT, PDF, CSV, PDF2 };
+	public enum OUTPUT_TYPE {TXT, PDF, CSV, PDF2, XLS };
 	public final static String DEFAULT_CHARSET = "UTF-8";
 	public final static String CSV_CHARSET = "ISO-8859-1";
 	public static final String PROPERTY_BASE_DN = "nicki.templates.basedn";
@@ -138,6 +139,17 @@ public class TemplateEngine {
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
 		PdfTemplateRenderer2 renderer = new PdfTemplateRenderer2(executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos);
+		renderer.start();
+		return pis;
+	}
+
+	public InputStream executeTemplateAsXls(org.mgnl.nicki.dynamic.objects.objects.Template template, String templateName,
+			Map<String, Object> dataModel) throws IOException,
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+	    PipedOutputStream pos = new PipedOutputStream();
+	    PipedInputStream pis = new PipedInputStream(pos);
+	    
+		XlsTemplateRenderer renderer = new XlsTemplateRenderer(template, executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos);
 		renderer.start();
 		return pis;
 	}

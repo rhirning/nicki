@@ -68,7 +68,7 @@ public class DynamicReference extends DynamicAttribute implements Serializable {
 					new ListForeignKeyMethod(context, rs, getExternalName(), getForeignKeyClass()));
 
 		} else {
-			String value = (String) rs.getValue(getExternalName());
+			String value = (String) rs.getValue(getType(), getExternalName());
 			if (StringUtils.isNotEmpty(value)) {
 				dynamicObject.put(getName(), value);
 				dynamicObject.put(getGetter(getName()),

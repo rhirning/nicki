@@ -56,18 +56,19 @@ public class DynamicAttribute implements Serializable {
 	private String name;
 	private String ldapName;
 	private Class<?> attributeClass;
-	private boolean naming = false;
-	private boolean searchable = false;
-	private boolean mandatory = false;
-	private boolean multiple = false;
-	private boolean foreignKey = false;
+	private boolean naming;
+	private boolean searchable;
+	private boolean mandatory;
+	private boolean multiple;
+	private boolean foreignKey;
 	private Class<? extends DynamicObject> foreignKeyClass;
-	private boolean virtual = false;
-	private boolean readonly = false;
-	private boolean staticAttribute = false;
-	private String editorClass = null;
-	private String searchFieldClass = null;
+	private boolean virtual;
+	private boolean readonly;
+	private boolean staticAttribute;
+	private String editorClass;
+	private String searchFieldClass;
 	private String caption;
+	private Class<?> type;
 
 	public String getExternalName() {
 		return ldapName;
@@ -85,19 +86,20 @@ public class DynamicAttribute implements Serializable {
 		}
 		// mandatory
 		if (isMandatory()) {
-			Object attribute = rs.getValue(getExternalName());
+			Object attribute = rs.getValue(getType(), getExternalName());
 			if (attribute != null) {
 				dynamicObject.put(name, attribute);
 			}
 		}
 		// optional
 		if (!isMandatory() && !isMultiple() && !isForeignKey()) {
-			Object attribute = rs.getValue(getExternalName());
-			if (attribute != null) {
+			if (rs.hasAttribute(getExternalName())) {
 				if (attributeClass == OctetString.class) {
-					dynamicObject.put(name, new OctetString(((byte[])attribute)));
+					dynamicObject.put(name, new OctetString((byte[]) rs.getValue(byte[].class, getExternalName())));
+				} else if (attributeClass == byte[].class) {
+					dynamicObject.put(name, rs.getValue(byte[].class, getExternalName()));
 				} else {
-					dynamicObject.put(name, attribute);
+					dynamicObject.put(name, rs.getValue(getType(), getExternalName()));
 				}
 			}
 		}
@@ -108,7 +110,7 @@ public class DynamicAttribute implements Serializable {
 		}
 		// foreign key
 		if (!isMandatory() && !isMultiple() && isForeignKey()) {
-			String value = (String) rs.getValue(getExternalName());
+			String value = (String) rs.getValue(getType(), getExternalName());
 			if (StringUtils.isNotEmpty(value)) {
 				dynamicObject.put(name, value);
 				dynamicObject.put(getGetter(name),
@@ -286,6 +288,13 @@ public class DynamicAttribute implements Serializable {
 	public void setCaption(String caption) {
 		this.caption = caption;
 	}
-	
-	
+
+	public Class<?> getType() {
+		return type;
+	}
+
+	public void setType(Class<?> type) {
+		this.type = type;
+	}
+
 }

@@ -20,4 +20,5 @@ public @interface DynamicAttribute {
 	String searchFieldClass() default "";
 	boolean search() default false;
 	String caption() default "";
+	Class<?> type() default String.class;
 }

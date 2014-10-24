@@ -52,7 +52,7 @@ import org.slf4j.LoggerFactory;
 
 public class BasicTemplateStreamSource {
 	private static final Logger LOG = LoggerFactory.getLogger(BasicTemplateStreamSource.class);
-	protected static enum TYPE {PDF, XHTML, STRING};
+	protected static enum TYPE {PDF, XLS, XHTML, STRING};
 
 	Template template;
 	Map<String, Object> params;
@@ -68,6 +68,10 @@ public class BasicTemplateStreamSource {
 		if (type == TYPE.PDF) {
 			if (template.hasPart("pdf")) {
 				templatePath += ".pdf.ftl";
+			}
+		} else if (type == TYPE.XLS) {
+			if (template.hasPart("xls")) {
+				templatePath += ".xls.ftl";
 			}
 		};
 		if (StringUtils.contains(templatePath, "_")) {
@@ -116,6 +120,16 @@ public class BasicTemplateStreamSource {
 	public InputStream getPdfStream2() {
 		try {
 			return TemplateEngine.getInstance().executeTemplateAsPdf2(getTemplatePath(), getDataModel());
+		} catch (Exception e) {
+			LOG.error("Error", e);
+		}
+		
+		return null;
+	}
+
+	public InputStream getXlsStream() {
+		try {
+			return TemplateEngine.getInstance().executeTemplateAsXls(template, getTemplatePath(), getDataModel());
 		} catch (Exception e) {
 			LOG.error("Error", e);
 		}

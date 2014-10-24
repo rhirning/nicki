@@ -30,18 +30,26 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.objects;
+package org.mgnl.nicki.editor.templates;
 
-import java.util.List;
+import java.io.InputStream;
+import java.util.Map;
 
-public interface ContextSearchResult {
+import org.mgnl.nicki.dynamic.objects.objects.Template;
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.template.engine.BasicTemplateStreamSource;
 
-	String getNameInNamespace();
-	
-	List<Object> getValues(String name);
+import com.vaadin.server.StreamResource.StreamSource;
 
-	boolean hasAttribute(String name);
 
-	Object getValue(Class<?> clazz, String name);
+public class XlsStreamSource extends BasicTemplateStreamSource implements StreamSource {
+	private static final long serialVersionUID = 4222973194514516918L;
+	public XlsStreamSource(Template template, NickiContext context, Map<String, Object> params) {
+		super(template, context, params, TYPE.XLS);
+	}
+
+	public InputStream getStream() {
+		return getXlsStream();
+	}
 
 }
