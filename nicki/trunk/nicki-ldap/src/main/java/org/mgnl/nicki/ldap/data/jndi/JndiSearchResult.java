@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.naming.NamingEnumeration;
+import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchResult;
 
 import org.mgnl.nicki.core.objects.ContextAttributes;
@@ -60,10 +61,23 @@ public class JndiSearchResult implements ContextSearchResult {
 	}
 
 	@Override
-	public Object getValue(String name) {
+	public Object getValue(Class<?> clazz, String name) {
 		try {
-			return rs.getAttributes().get(name).get();
+			Attribute attribute = rs.getAttributes().get(name);
+
+			if (attribute != null) {
+				Object o = attribute.get();
+				LOG.debug("getValue " + name + ":" + clazz.getName() + ":" + o.getClass().getName());
+				if (clazz == byte[].class && o instanceof String) {
+					return ((String) o).getBytes();
+				}
+				return o;
+			}
 		} catch (Exception e) {
+			LOG.error("Error retrieving " + name, e);
+		}
+		if (clazz == String.class) {
+			return "";
 		}
 		return null;
 	}
@@ -79,6 +93,11 @@ public class JndiSearchResult implements ContextSearchResult {
 			// nothing to do
 		}
 		return list;
+	}
+
+	@Override
+	public boolean hasAttribute(String name) {
+		return rs.getAttributes().get(name) != null;
 	}
 
 }
