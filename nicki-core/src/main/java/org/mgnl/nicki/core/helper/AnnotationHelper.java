@@ -102,6 +102,7 @@ public class AnnotationHelper {
 				org.mgnl.nicki.core.objects.DynamicAttribute dynAttribute = new org.mgnl.nicki.core.objects.DynamicAttribute(
 						field.getName(), dAttribute.externalName(),
 						field.getType());
+				dynAttribute.setType(dAttribute.type());
 				if (isMultiple(field)) {
 					dynAttribute.setMultiple();
 				}
@@ -150,6 +151,7 @@ public class AnnotationHelper {
 				} catch (Exception e) {
 					LOG.error("Field=" + field.getName(), e);
 				}
+				dynAttribute.setType(dAttribute.type());
 				if (isMultiple(field)) {
 					dynAttribute.setMultiple();
 				}
@@ -195,6 +197,7 @@ public class AnnotationHelper {
 						Config.getProperty(dAttribute.baseProperty()),
 						dAttribute.externalName(),
 						field.getType());
+				dynAttribute.setType(dAttribute.type());
 				if (isMultiple(field)) {
 					dynAttribute.setMultiple();
 				}
@@ -239,6 +242,7 @@ public class AnnotationHelper {
 					org.mgnl.nicki.core.objects.DynamicAttribute dynAttribute = new org.mgnl.nicki.core.objects.DynamicAttribute(
 							getName(method.getName()), dAttribute.externalName(),
 							method.getReturnType());
+					dynAttribute.setType(dAttribute.type());
 					if (isMultiple(method)) {
 						dynAttribute.setMultiple();
 					}
@@ -286,6 +290,7 @@ public class AnnotationHelper {
 					} catch (Exception e) {
 						LOG.error("Method=" +getName(method.getName()), e);
 					}
+					dynAttribute.setType(dAttribute.type());
 					if (isMultiple(method)) {
 						dynAttribute.setMultiple();
 					}
@@ -329,6 +334,7 @@ public class AnnotationHelper {
 							Config.getProperty(dAttribute.baseProperty()),
 							dAttribute.externalName(),
 							method.getReturnType());
+					dynAttribute.setType(dAttribute.type());
 					if (isMultiple(method)) {
 						dynAttribute.setMultiple();
 					}
@@ -377,7 +383,7 @@ public class AnnotationHelper {
 	}
 
 	private static boolean isMultiple(Class<?> clazz) {
-		if (clazz.isArray()) {
+		if (clazz.isArray() && clazz != byte[].class) {
 			return true;
 		}
 		

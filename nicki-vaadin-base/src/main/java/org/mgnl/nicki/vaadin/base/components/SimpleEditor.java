@@ -51,7 +51,9 @@ public class SimpleEditor extends CustomComponent {
 		setSizeFull();
 		
 		setCompositionRoot(editor);
-		editor.setValue((String) data.getValue());
+		if (data.getValue() != null) {
+			editor.setValue((String) data.getValue());
+		}
 		editor.addValueChangeListener(new Property.ValueChangeListener() {
 			
 			public void valueChange(ValueChangeEvent event) {

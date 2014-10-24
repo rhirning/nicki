@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>nicki-template</artifactId>
-	<name>nicki-template</name>
+	<artifactId>nicki-xls</artifactId>
+	<name>nicki-xls</name>
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
@@ -11,28 +11,24 @@
 	</parent>
 	<dependencies>
 		<dependency>
-			<groupId>org.mgnl.nicki</groupId>
-			<artifactId>nicki-dynamic-objects</artifactId>
-			<version>3.37-SNAPSHOT</version>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
-			<artifactId>nicki-ldap</artifactId>
+			<artifactId>nicki-core</artifactId>
 			<version>3.37-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mgnl.nicki</groupId>
-			<artifactId>nicki-pdf</artifactId>
-			<version>3.37-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.mgnl.nicki</groupId>
-			<artifactId>nicki-xls</artifactId>
-			<version>3.37-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.xhtmlrenderer</groupId>
-			<artifactId>core-renderer</artifactId>
 		</dependency>
 	</dependencies>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 </project>

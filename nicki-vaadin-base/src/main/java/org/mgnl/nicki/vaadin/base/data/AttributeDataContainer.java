@@ -60,7 +60,9 @@ public class AttributeDataContainer<T> implements DataContainer<T>, Property<T> 
 	public T getValue() {
 		if (dynamicObject.get(attributeName) == null) {
 			try {
-				return (T) "";
+				if (String.class == getType()) {
+					return (T) "";
+				}
 			} catch (Exception e) {
 				// nothing to do
 			}

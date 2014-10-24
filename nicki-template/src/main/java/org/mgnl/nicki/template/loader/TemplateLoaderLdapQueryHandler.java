@@ -99,7 +99,7 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 
 
 	private String getAttribute(ContextSearchResult rs, String attributeName) throws DynamicObjectException {
-		String result = rs.getValue(attributeName).toString();
+		String result = (String) rs.getValue(String.class, attributeName);
 		if (StringUtils.isNotEmpty(result)) {
 			return result;
 		}

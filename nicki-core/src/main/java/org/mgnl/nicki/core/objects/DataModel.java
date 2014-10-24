@@ -163,37 +163,7 @@ public class DataModel implements Serializable {
 	}
 	
 	public void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject, boolean nullable) {
-
-		// single attributes (except namingAttribute)
-		for (DynamicAttribute dynAttribute : getAttributes().values()) {
-			if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
-				String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
-				if (nullable || value != null) {
-					Attribute attribute = new BasicAttribute(dynAttribute.getExternalName(), value);
-					myAttrs.put(attribute);
-				}
-			}
-		}
-		
-		// multi attributes
-		for (DynamicAttribute dynAttribute : getAttributes().values()) {
-			if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
-				Attribute attribute = new BasicAttribute(dynAttribute.getExternalName());
-				@SuppressWarnings("unchecked")
-				List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
-				if (list != null) {
-					for (String value : list) {
-						if (StringUtils.isNotEmpty(value)) {
-							attribute.add(value);
-						}
-					}
-				}
-				if (nullable || attribute.size() > 0) {
-					myAttrs.put(attribute);
-				}
-			}
-		}
-		
+		addLdapAttributes(myAttrs, dynamicObject, nullable, null);
 	}
 	
 	public void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject,
@@ -201,12 +171,20 @@ public class DataModel implements Serializable {
 
 		// single attributes (except namingAttribute)
 		for (DynamicAttribute dynAttribute : getAttributes().values()) {
-			if (DataHelper.contains(attributeNames, dynAttribute.getName())) {
+			if (attributeNames == null || DataHelper.contains(attributeNames, dynAttribute.getName())) {
 				if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
-					String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
-					if (nullable || value != null) {
-						Attribute attribute = new BasicAttribute(dynAttribute.getExternalName(), value);
-						myAttrs.put(attribute);
+					if (dynAttribute.getType() == String.class) {
+						String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
+						if (nullable || value != null) {
+							Attribute attribute = new BasicAttribute(dynAttribute.getExternalName(), value);
+							myAttrs.put(attribute);
+						}
+					} else if (dynAttribute.getType() == byte[].class) {
+						byte[] value = (byte[]) dynamicObject.get(dynAttribute.getName());
+						if (nullable || value != null) {
+							Attribute attribute = new BasicAttribute(dynAttribute.getExternalName(), value);
+							myAttrs.put(attribute);
+						}
 					}
 				}
 			}
@@ -214,20 +192,35 @@ public class DataModel implements Serializable {
 		
 		// multi attributes
 		for (DynamicAttribute dynAttribute : getAttributes().values()) {
-			if (DataHelper.contains(attributeNames, dynAttribute.getName())) {
+			if (attributeNames == null || DataHelper.contains(attributeNames, dynAttribute.getName())) {
 				if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
 					Attribute attribute = new BasicAttribute(dynAttribute.getExternalName());
-					@SuppressWarnings("unchecked")
-					List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
-					if (list != null) {
-						for (String value : list) {
-							if (StringUtils.isNotEmpty(value)) {
-								attribute.add(value);
+					if (dynAttribute.getType() == String.class) {
+						@SuppressWarnings("unchecked")
+						List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
+						if (list != null) {
+							for (String value : list) {
+								if (StringUtils.isNotEmpty(value)) {
+									attribute.add(value);
+								}
 							}
 						}
-					}
-					if (nullable || attribute.size() > 0) {
-						myAttrs.put(attribute);
+						if (nullable || attribute.size() > 0) {
+							myAttrs.put(attribute);
+						}
+					} else if (dynAttribute.getType() == byte[].class) {
+						@SuppressWarnings("unchecked")
+						List<byte[]> list = (List<byte[]>) dynamicObject.get(dynAttribute.getName());
+						if (list != null) {
+							for (byte[] value : list) {
+								if (value != null) {
+									attribute.add(value);
+								}
+							}
+						}
+						if (nullable || attribute.size() > 0) {
+							myAttrs.put(attribute);
+						}
 					}
 				}
 			}
@@ -241,9 +234,11 @@ public class DataModel implements Serializable {
 		for (DynamicAttribute dynAttribute : getAttributes().values()) {
 			if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple()
 					&& !dynAttribute.isReadonly() && !dynAttribute.isMandatory()) {
-				String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
-				if (value != null) {
-					map.put(dynAttribute, value);
+				if (dynAttribute.getType() == String.class) {
+					String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
+					if (value != null) {
+						map.put(dynAttribute, value);
+					}
 				}
 			}
 		}
@@ -252,10 +247,12 @@ public class DataModel implements Serializable {
 		for (DynamicAttribute dynAttribute : getAttributes().values()) {
 			if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()
 					&& !dynAttribute.isMandatory()) {
-				@SuppressWarnings("unchecked")
-				List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
-				if (list != null && list.size() > 0) {
-					map.put(dynAttribute, list);
+				if (dynAttribute.getType() == String.class) {
+					@SuppressWarnings("unchecked")
+					List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
+					if (list != null && list.size() > 0) {
+						map.put(dynAttribute, list);
+					}
 				}
 			}
 		}

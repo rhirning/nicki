@@ -53,7 +53,7 @@ public class ForeignKeyMethod implements Serializable,TemplateMethodModel {
 	public ForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName,
 			Class<? extends DynamicObject> classDefinition) {
 		this.context = context;
-		this.foreignKey = (String) rs.getValue(ldapName);
+		this.foreignKey = (String) rs.getValue(String.class, ldapName);
 		this.classDefinition = classDefinition;
 	}
 

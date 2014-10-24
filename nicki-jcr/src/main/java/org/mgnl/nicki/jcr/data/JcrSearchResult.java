@@ -62,7 +62,7 @@ public class JcrSearchResult implements ContextSearchResult {
 	}
 
 	@Override
-	public Object getValue(String name) {
+	public Object getValue(Class<?> clazz, String name) {
 		try {
 			return node.getProperty(name);
 		} catch (PathNotFoundException e) {
@@ -84,6 +84,15 @@ public class JcrSearchResult implements ContextSearchResult {
 			LOG.error("Error", e);
 		}
 		return list;
+	}
+
+	@Override
+	public boolean hasAttribute(String name) {
+		try {
+			return node.hasProperty(name);
+		} catch (RepositoryException e) {
+			return false;
+		}
 	}
 
 }

@@ -133,6 +133,8 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 	private void createSheets() {
 		tab.addTab(new SimpleEditor(new AttributeDataContainer<String>(template, "data")), I18n.getText(editor.getMessageKeyBase() +".tab.data"), null);
 		tab.addTab(new SimpleEditor(new PartDataContainer(template, Template.ATTRIBUTE_PARTS, "pdf", "=")), I18n.getText(editor.getMessageKeyBase() +".tab.pdf"), null);
+//		tab.addTab(new SimpleEditor(new PartDataContainer(template, Template.ATTRIBUTE_PARTS, "xls", "=")), I18n.getText(editor.getMessageKeyBase() +".tab.xls"), null);
+		tab.addTab(new ExcelEditor(editor.getMessageKeyBase() + ".excel", template), I18n.getText(editor.getMessageKeyBase() +".tab.xls"), null);
 		tab.addTab(new SimplePropertyEditor(new AttributeDataContainer<String>(template, "handler")), I18n.getText(editor.getMessageKeyBase() +".tab.handler"), null);
 		tab.addTab(new TestDataView(new ListPartDataContainer(template, "testData", "="), editor.getMessageKeyBase()),
 				I18n.getText(editor.getMessageKeyBase() +".tab.testdata"), null);
