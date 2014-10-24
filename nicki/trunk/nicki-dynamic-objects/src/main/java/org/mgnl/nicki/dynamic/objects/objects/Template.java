@@ -51,12 +51,22 @@ public class Template extends BaseDynamicObject {
 	public static final String ATTRIBUTE_PARTS = "parts";
 	public static final String ATTRIBUTE_FILTER = "filter";
 	public static final String ATTRIBUTE_TESTDATA = "testData";
+	public static final String ATTRIBUTE_FILE = "file";
 	
 	@DynamicAttribute(externalName="nickiTemplateParams")
 	public String getParams() {
 		return getAttribute(ATTRIBUTE_PARAMS);
 	}
+	
+	@DynamicAttribute(externalName="nickiTemplateFile", type=byte[].class)
+	public byte[] getFile() {
+		return (byte[]) get(ATTRIBUTE_FILE);
+	}
 
+	public void setFile(byte[] binary) {
+		put(ATTRIBUTE_FILE, binary);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@DynamicAttribute(externalName="nickiFilter")
 	public List<String> getFilter() {

@@ -30,18 +30,43 @@
  * intact.
  *
  */
-package org.mgnl.nicki.core.objects;
+package org.mgnl.nicki.template.pdf;
 
-import java.util.List;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.OutputStream;
 
-public interface ContextSearchResult {
+import org.mgnl.nicki.dynamic.objects.objects.Template;
+import org.mgnl.nicki.xls.engine.XlsEngine;
+import org.mgnl.nicki.xls.template.XlsTemplate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-	String getNameInNamespace();
-	
-	List<Object> getValues(String name);
+public class XlsTemplateRenderer extends Thread implements Runnable {
+	private static final Logger LOG = LoggerFactory.getLogger(XlsTemplateRenderer.class);
+	InputStream in;
+	OutputStream out;
+	Template template;
 
-	boolean hasAttribute(String name);
-
-	Object getValue(Class<?> clazz, String name);
-
+	public XlsTemplateRenderer(Template template, InputStream in, OutputStream out) {
+		super();
+		this.template = template;
+		this.in = in;
+		this.out = out;
+	}
+	public void run() {
+		try {
+			XlsEngine engine = new XlsEngine();
+			XlsTemplate template = new XlsTemplate(in);
+			InputStream master = null;
+			if (this.template.getFile() != null) {
+				master = new ByteArrayInputStream(this.template.getFile());
+			}
+			engine.render(master, template, out);
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+			LOG.error("Error", e);
+		}
+	}
 }
