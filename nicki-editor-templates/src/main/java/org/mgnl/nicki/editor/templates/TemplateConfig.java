@@ -119,7 +119,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 			}
 		});
 		
-		pdfLink.setCaption("PDF");
+		//pdfLink.setCaption("PDF");
 		pdfLink.setTargetName("_blank");
 		StreamSource pdfStreamSource;
 		if (template.hasPart("pdf")) {
@@ -131,7 +131,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 				"application/pdf"));
 
 		if (template.hasPart("xls")) {
-			xlsLink.setCaption("XLS");
+			//xlsLink.setCaption("XLS");
 			xlsLink.setTargetName("_blank");
 	
 			StreamSource xlsStreamSource = new XlsStreamSource(template, template.getContext(), params);;
@@ -139,7 +139,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 					"application/vnd.ms-excel"));
 		}	
 		
-		csvLink.setCaption("CSV");
+		//csvLink.setCaption("CSV");
 		csvLink.setTargetName("_blank");
 		StreamSource csvStreamSource;
 		if (template.hasPart("pdf")) {
