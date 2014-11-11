@@ -167,7 +167,10 @@ public class XlsEngine {
 			int y = starty;
 			for (TableRow tableRow : table.getRow()) {
 				int x = startX;
-				Row row = sheet.createRow(y);
+				Row row = sheet.getRow(y);
+				if (row == null) {
+					row = sheet.createRow(y);
+				}
 				y++;
 				if (tableRow.getColumn() != null) {
 					for (TableData tableData : tableRow.getColumn()) {
