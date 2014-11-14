@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+            jxb:version="2.0">
+
+<xsd:element name="document">
+ <xsd:complexType>
+       <xsd:sequence>
+         <xsd:element name="styles">
+           <xsd:complexType>
+                 <xsd:sequence>
+                   <xsd:element name="style" type="style" maxOccurs="unbounded"/>
+                 </xsd:sequence>
+           </xsd:complexType>
+         </xsd:element>
+         <xsd:element name="pages">
+           <xsd:complexType>
+                 <xsd:sequence>
+                   <xsd:element name="page" type="page" maxOccurs="unbounded"/>
+                 </xsd:sequence>
+           </xsd:complexType>
+         </xsd:element>
+       </xsd:sequence>
+ </xsd:complexType>
+</xsd:element>
+ 
+  <xsd:complexType name="page">
+       <xsd:sequence>
+         <xsd:element name="box" type="box" maxOccurs="unbounded" minOccurs="0"/>
+         <xsd:element name="table" type="table"/>
+       </xsd:sequence>
+       <xsd:attribute name="name"/>
+ </xsd:complexType>
+ 
+ <xsd:complexType name="style">
+   <xsd:simpleContent>
+     <xsd:extension base="xsd:string">
+       <xsd:attributeGroup ref="alignment"/>
+       <xsd:attribute name="name"/>
+     </xsd:extension>
+   </xsd:simpleContent>
+ </xsd:complexType>
+
+  <xsd:complexType name="box">
+       <xsd:choice>
+         <xsd:element name="text" type="text" minOccurs="0"/>
+       </xsd:choice>
+       <xsd:attributeGroup ref="coordinates"/>
+       <xsd:attribute name="style"/>
+ </xsd:complexType>
+
+  <xsd:complexType name="text">
+   <xsd:simpleContent>
+     <xsd:extension base="xsd:string">
+     </xsd:extension>
+   </xsd:simpleContent>
+ </xsd:complexType>
+
+  <xsd:complexType name="link">
+   <xsd:simpleContent>
+     <xsd:extension base="xsd:string">
+       <xsd:attribute name="reference"/>
+     </xsd:extension>
+   </xsd:simpleContent>
+ </xsd:complexType>
+ 
+ <xsd:complexType name="table">
+   <xsd:complexContent>
+     <xsd:restriction base="xsd:anyType">
+       <xsd:sequence>
+         <xsd:element name="header" type="table-row" minOccurs="0"/>
+         <xsd:element name="row" type="table-row" maxOccurs="unbounded"/>
+       </xsd:sequence>
+       <xsd:attributeGroup  ref="coordinates"/>
+     </xsd:restriction>
+   </xsd:complexContent>
+ </xsd:complexType>
+
+  <xsd:complexType name="table-row">
+       <xsd:sequence>
+         <xsd:element name="column" type="table-data" maxOccurs="unbounded"/>
+       </xsd:sequence>
+ </xsd:complexType>
+
+ <xsd:complexType name="table-data" mixed="true">
+       <xsd:sequence>
+         <xsd:element name="text" type="text"/>
+         <xsd:element name="link" type="link"/>
+       </xsd:sequence>
+       <xsd:attribute name="style"/>
+ </xsd:complexType>
+
+<xsd:attributeGroup name="coordinates">
+    <xsd:attribute name="x" type="xsd:int"/>
+    <xsd:attribute name="y" type="xsd:int"/>
+</xsd:attributeGroup>
+
+<xsd:attributeGroup name="alignment">
+        <xsd:attribute name="align" type="xsd:string"/>
+        <xsd:attribute name="vertical-align" type="xsd:string"/>
+</xsd:attributeGroup>
+ 
+ </xsd:schema>
