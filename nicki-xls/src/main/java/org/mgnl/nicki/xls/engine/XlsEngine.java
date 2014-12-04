@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.JAXBElement;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -42,7 +43,7 @@ public class XlsEngine {
 
 	public XlsEngine()  {
 	}
-	
+
 	public void render(InputStream master, XlsTemplate xlsTemplate, OutputStream os) throws IOException {
 		log.debug("rendering xls");
 		//if (template.)
@@ -53,7 +54,7 @@ public class XlsEngine {
 			wb = new HSSFWorkbook();  // or new XSSFWorkbook();
 		}
 		Document document = xlsTemplate.getDocument();
-		
+
 		createDefaultStyles();
 		if (document.getStyles() != null) {
 			List<Style> styles = document.getStyles().getStyle();
@@ -61,16 +62,16 @@ public class XlsEngine {
 				cellStyles.put(style.getName(), createCellStyle(style));
 			}
 		}
-		
+
 		List<Page> pages = document.getPages().getPage();
-		
+
 		int i = 0;
 		for (Page page : pages) {
 			i++;
 			render(wb, page, i);
 		}
 
-	    wb.write(os);
+		wb.write(os);
 	}
 
 	private void createDefaultStyles() {
@@ -81,7 +82,7 @@ public class XlsEngine {
 		hlink_style.setFont(hlink_font);
 
 		cellStyles.put(HYPER_LINK, hlink_style);
-		
+
 	}
 
 	private CellStyle createCellStyle(Style style) {
@@ -93,7 +94,7 @@ public class XlsEngine {
 		if (style.getVerticalAlign() != null) {
 			ALIGN.setVerticalAlign(cellStyle, style.getVerticalAlign());
 		}
-		
+
 		return cellStyle;
 	}
 
@@ -106,9 +107,9 @@ public class XlsEngine {
 		if (sheet == null) {
 			sheet = wb.createSheet(pageName);
 		}
-		
+
 		render (sheet, page);
-		
+
 	}
 
 	private void render(Sheet sheet, Page page) {
@@ -120,7 +121,7 @@ public class XlsEngine {
 		if (page.getTable() != null) {
 			render (sheet, page.getTable());
 		}
-		
+
 	}
 
 	public enum ALIGN {
@@ -135,12 +136,12 @@ public class XlsEngine {
 		VERTICAL_BOTTOM			(CellStyle.VERTICAL_BOTTOM),
 		VERTICAL_CENTER			(CellStyle.VERTICAL_CENTER),
 		VERTICAL_JUSTIFY		(CellStyle.VERTICAL_JUSTIFY);
-		
+
 		short value;
 		ALIGN(short value) {
 			this.value = value;
 		}
-		
+
 		private static void setAlign(CellStyle cellStyle, String alignString, String pattern) {
 			for (ALIGN align : values()) {
 				String name = StringUtils.substringAfter(align.name(), pattern);
@@ -149,11 +150,11 @@ public class XlsEngine {
 				}
 			}
 		}
-		
+
 		public static void setAlign(CellStyle cellStyle, String alignString) {
 			setAlign(cellStyle, alignString, "ALIGN_");
 		}
-		
+
 		public static void setVerticalAlign(CellStyle cellStyle, String alignString) {
 			setAlign(cellStyle, alignString, "VERTICAL_");
 		}
@@ -180,11 +181,14 @@ public class XlsEngine {
 								{
 									@SuppressWarnings("rawtypes")
 									Object entry = ((JAXBElement) contentElement).getValue();
-									Cell cell = row.createCell(x);
+									Cell cell = row.getCell(x);
+									if (cell == null) {
+										cell = row.createCell(x);
+									}
 									if (tableData.getStyle() != null) {
 										setCellStyle(cell, tableData.getStyle());
 									}
-									
+
 									if (entry instanceof Text) {
 										log.debug("rendering text to document");
 										render(cell, (Text) entry);
@@ -201,15 +205,15 @@ public class XlsEngine {
 						x++;
 					}
 				}
-				
+
 			}
 		}
 	}
 
 	private void render(Cell cell, Link entry) {
 		Hyperlink link = wb.getCreationHelper().createHyperlink(Hyperlink.LINK_URL);
-	    link.setAddress(entry.getReference());
-	    cell.setHyperlink(link);
+		link.setAddress(entry.getReference());
+		cell.setHyperlink(link);
 		cell.setCellStyle(cellStyles.get(HYPER_LINK));
 	}
 
