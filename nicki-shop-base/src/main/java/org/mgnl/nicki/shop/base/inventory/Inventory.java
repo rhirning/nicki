@@ -1,38 +1,26 @@
 /**
- * This file Copyright (c) 2003-2011 Dr. Ralf Hirning
+ * Copyright (c) 2003-2015 Dr. Ralf Hirning
  * All rights reserved.
- *
- *
- * This file is dual-licensed under both the GNU General
+ *  
+ * This program is dual-licensed under both the GNU General
  * Public License and an individual license with Dr. Ralf
  * Hirning.
- *
- * This file is distributed in the hope that it will be
- * useful, but AS-IS and WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A
- * PARTICULAR PURPOSE, TITLE, or NONINFRINGEMENT.
- * Redistribution, except as permitted by whichever of the GPL
- * or the individual license, is prohibited.
- *
+ * 
  * 1. For the GPL license (GPL), you can redistribute and/or
- * modify this file under the terms of the GNU General
- * Public License, Version 3, as published by the Free Software
- * Foundation.  You should have received a copy of the GNU
- * General Public License, Version 3 along with this program;
- * if not, write to the Free Software Foundation, Inc., 51
- * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
- *
+ * modify this file under the terms of the GNU Public License v3.0
+ * which is available at
+ * http://www.gnu.org/licenses/gpl.html
  * 2. For the individual license, this file and the accompanying
  * materials are made available under the terms of the
  * individual license.
- *
+ * 
  * Any modifications to this file must keep this entire header
  * intact.
- *
- */
+*/
 package org.mgnl.nicki.shop.base.inventory;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -80,7 +68,7 @@ public class Inventory implements Serializable {
 
 	private Map<String, InventoryArticle> articles = new HashMap<String, InventoryArticle>();
 	
-	private Map<String, Map<String, InventoryArticle>> mulitArticles = new HashMap<String, Map<String, InventoryArticle>>();
+	private Map<String, Map<String, InventoryArticle>> multiArticles = new HashMap<String, Map<String, InventoryArticle>>();
 	
 	public Map<String, InventoryArticle> getArticles() {
 		return articles;
@@ -96,7 +84,7 @@ public class Inventory implements Serializable {
 
 	private void init() throws InvalidPrincipalException, InstantiateDynamicObjectException {
 
-		List<CatalogArticle> availableArticles = CatalogArticleFactory.getInstance().getArticles();
+		Collection<CatalogArticle> availableArticles = CatalogArticleFactory.getInstance().getArticleTypes().values();
 		for (CatalogArticle catalogArticle : availableArticles) {
 			List<InventoryArticle> inventoryArticles = catalogArticle.getInventoryArticles(getPerson());
 			for (InventoryArticle inventoryArticle : inventoryArticles) {
@@ -129,10 +117,10 @@ public class Inventory implements Serializable {
 
 	
 	private void addArticle(CatalogArticle catalogArticle, String specifier, InventoryArticle inventoryArticle) {
-		Map<String, InventoryArticle> map = this.mulitArticles.get(catalogArticle.getPath());
+		Map<String, InventoryArticle> map = this.multiArticles.get(catalogArticle.getPath());
 		if (map == null) {
 			map = new HashMap<String, InventoryArticle>();
-			this.mulitArticles.put(catalogArticle.getPath(), map);
+			this.multiArticles.put(catalogArticle.getPath(), map);
 		}
 		map.put(specifier, inventoryArticle);
 	}
@@ -152,16 +140,16 @@ public class Inventory implements Serializable {
 	}
 
 	public Map<String, InventoryArticle> getArticles(CatalogArticle article) {
-		return mulitArticles.get(article.getPath());
+		return multiArticles.get(article.getPath());
 	}
 
 	public void addArticle(CatalogArticle catalogArticle, String specifier) {
 		InventoryArticle iArticle = getInventoryArticle(catalogArticle, specifier);
 		if (iArticle == null) {
-			Map<String, InventoryArticle> map = this.mulitArticles.get(catalogArticle.getPath());
+			Map<String, InventoryArticle> map = this.multiArticles.get(catalogArticle.getPath());
 			if (map == null) {
 				map = new HashMap<String, InventoryArticle>();
-				this.mulitArticles.put(catalogArticle.getPath(), map);
+				this.multiArticles.put(catalogArticle.getPath(), map);
 			}
 			map.put(specifier, new InventoryArticle(catalogArticle, specifier));
 		} else if (iArticle.getStatus() == STATUS.DELETED) {
@@ -174,7 +162,7 @@ public class Inventory implements Serializable {
 	}
 	
 	public InventoryArticle getInventoryArticle(CatalogArticle catalogArticle, String specifier) {
-		Map<String, InventoryArticle> map = this.mulitArticles.get(catalogArticle.getPath());
+		Map<String, InventoryArticle> map = this.multiArticles.get(catalogArticle.getPath());
 		if (map != null) {
 			return map.get(specifier);
 		}
@@ -199,7 +187,7 @@ public class Inventory implements Serializable {
 	}
 
 	private void removeArticle(String path, String specifier) {
-		Map<String, InventoryArticle> map = this.mulitArticles.get(path);
+		Map<String, InventoryArticle> map = this.multiArticles.get(path);
 		if (map != null) {
 			if (map.containsKey(specifier));
 			map.remove(specifier);
@@ -230,12 +218,13 @@ public class Inventory implements Serializable {
 				cart.setCartStatus(cartStatus);
 				cart.setSource(source);
 				cart.setCatalog(Catalog.getCatalog());
-				for (String key : mulitArticles.keySet()) {
-					Map<String, InventoryArticle> list = mulitArticles.get(key);
+				for (String key : multiArticles.keySet()) {
+					Map<String, InventoryArticle> list = multiArticles.get(key);
 					for (String specifier : list.keySet()) {
 						InventoryArticle iArticle = list.get(specifier);
 						if (iArticle.hasChanged()) {
 							CartEntry entry = new CartEntry(
+									iArticle,
 									iArticle.getArticle().getCatalogPath(), specifier,
 									InventoryArticle.getAction(iArticle.getStatus()));
 							entry.setStart(iArticle.getStart());
@@ -254,6 +243,7 @@ public class Inventory implements Serializable {
 					InventoryArticle iArticle = articles.get(key);
 					if (iArticle.hasChanged()) {
 						CartEntry entry = new CartEntry(
+								iArticle,
 								iArticle.getArticle().getCatalogPath(),
 								InventoryArticle.getAction(iArticle.getStatus()));
 						for (InventoryAttribute iAttribute : iArticle.getAttributes().values()) {
@@ -300,8 +290,8 @@ public class Inventory implements Serializable {
 	}
 
 	public boolean hasChanged() {
-		for (String key : mulitArticles.keySet()) {
-			Map<String, InventoryArticle> map = mulitArticles.get(key);
+		for (String key : multiArticles.keySet()) {
+			Map<String, InventoryArticle> map = multiArticles.get(key);
 			for (String specifier : map.keySet()) {
 				InventoryArticle iArticle = map.get(specifier);
 				if (iArticle.hasChanged()) {
@@ -351,8 +341,8 @@ public class Inventory implements Serializable {
 		}
 	}
 
-	public Map<String, Map<String, InventoryArticle>> getMulitArticles() {
-		return mulitArticles;
+	public Map<String, Map<String, InventoryArticle>> getMultiArticles() {
+		return multiArticles;
 	}
 
 	public static Inventory fromCart(Person user, Person recipient, Cart cart) throws InvalidPrincipalException, InstantiateDynamicObjectException {
