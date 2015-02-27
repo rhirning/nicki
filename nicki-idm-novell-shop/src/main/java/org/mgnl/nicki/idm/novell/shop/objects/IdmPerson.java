@@ -1,35 +1,22 @@
 /**
- * This file Copyright (c) 2003-2011 Dr. Ralf Hirning
+ * Copyright (c) 2003-2015 Dr. Ralf Hirning
  * All rights reserved.
- *
- *
- * This file is dual-licensed under both the GNU General
+ *  
+ * This program is dual-licensed under both the GNU General
  * Public License and an individual license with Dr. Ralf
  * Hirning.
- *
- * This file is distributed in the hope that it will be
- * useful, but AS-IS and WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A
- * PARTICULAR PURPOSE, TITLE, or NONINFRINGEMENT.
- * Redistribution, except as permitted by whichever of the GPL
- * or the individual license, is prohibited.
- *
+ * 
  * 1. For the GPL license (GPL), you can redistribute and/or
- * modify this file under the terms of the GNU General
- * Public License, Version 3, as published by the Free Software
- * Foundation.  You should have received a copy of the GNU
- * General Public License, Version 3 along with this program;
- * if not, write to the Free Software Foundation, Inc., 51
- * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
- *
+ * modify this file under the terms of the GNU Public License v3.0
+ * which is available at
+ * http://www.gnu.org/licenses/gpl.html
  * 2. For the individual license, this file and the accompanying
  * materials are made available under the terms of the
  * individual license.
- *
+ * 
  * Any modifications to this file must keep this entire header
  * intact.
- *
- */
+*/
 package org.mgnl.nicki.idm.novell.shop.objects;
 
 import java.io.Serializable;
@@ -99,6 +86,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	private List<Group> assignedGroups = null;
 	private List<Role> assignedRoles = null;
+	private List<Role> groupRoles = null;
 	private List<Resource> assignedResources = null;
 	
 	@DynamicAttribute(externalName="nickiLastWorkingDay")
@@ -121,6 +109,8 @@ public class IdmPerson extends Person implements Serializable {
 	private String[] entitlement;
 	@StructuredDynamicAttribute(externalName="nrfAssignedRoles", foreignKey=Role.class)
 	private String[] role;
+	@StructuredDynamicAttribute(externalName="nrfGroupRoles", foreignKey=Role.class)
+	private String[] groupRole;
 	@StructuredDynamicAttribute(externalName="nrfAssignedResources", foreignKey=Resource.class)
 	private String[] resource;
 	@DynamicAttribute(externalName="nickiBirthDate")
@@ -433,6 +423,28 @@ public class IdmPerson extends Person implements Serializable {
 			}
 		}
 		return assignedRoles;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Role> getGroupRoles() {
+		if (groupRoles == null) {
+			TemplateMethodModel method = (TemplateMethodModel) get("getGroupRoles");
+			if (method != null) {
+				try {
+					groupRoles = (List<Role>) method.exec(null);
+				} catch (TemplateModelException e) {
+					LOG.error("Error", e);
+					groupRoles =  new ArrayList<Role>();
+				}
+			}
+			for (AssignedArticle article : getAssignedArticles()) {
+				CatalogArticle catalogArticle = Catalog.getCatalog().getArticle(article.getArticleId());
+				if (catalogArticle.getClass().isAssignableFrom(RoleCatalogArticle.class)) {
+					groupRoles.add(((RoleCatalogArticle)catalogArticle).getRole());
+				}
+			}
+		}
+		return groupRoles;
 	}
 
 	@SuppressWarnings("unchecked")
