@@ -1,35 +1,22 @@
 /**
- * This file Copyright (c) 2003-2011 Dr. Ralf Hirning
+ * Copyright (c) 2003-2015 Dr. Ralf Hirning
  * All rights reserved.
- *
- *
- * This file is dual-licensed under both the GNU General
+ *  
+ * This program is dual-licensed under both the GNU General
  * Public License and an individual license with Dr. Ralf
  * Hirning.
- *
- * This file is distributed in the hope that it will be
- * useful, but AS-IS and WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A
- * PARTICULAR PURPOSE, TITLE, or NONINFRINGEMENT.
- * Redistribution, except as permitted by whichever of the GPL
- * or the individual license, is prohibited.
- *
+ * 
  * 1. For the GPL license (GPL), you can redistribute and/or
- * modify this file under the terms of the GNU General
- * Public License, Version 3, as published by the Free Software
- * Foundation.  You should have received a copy of the GNU
- * General Public License, Version 3 along with this program;
- * if not, write to the Free Software Foundation, Inc., 51
- * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
- *
+ * modify this file under the terms of the GNU Public License v3.0
+ * which is available at
+ * http://www.gnu.org/licenses/gpl.html
  * 2. For the individual license, this file and the accompanying
  * materials are made available under the terms of the
  * individual license.
- *
+ * 
  * Any modifications to this file must keep this entire header
  * intact.
- *
- */
+*/
 package org.mgnl.nicki.shop.core;
 
 import java.io.Serializable;
@@ -43,130 +30,86 @@ import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import org.mgnl.nicki.shop.renderer.ShopRenderer;
+import org.mgnl.nicki.shop.renderer.TableRenderer;
+/**
+ * ShopPage
+ * 
+ * Represents a page or a container in the shop
+ * 
+ * @author rhirning
+ *
+ * Attributes:
+ * 
+ * name		will not be used, only to make the XML readable
+ * label	i18n Key for the page
+ * article	id of article in the page
+ * renderer	renderer class to render the page (Default: org.mgnl.nicki.shop.renderer.TableRenderer)
+ *
+ * Different types of ShopPage declarations:
+ * 1. Page withone article
+ * 
+ * <page name="multi" article="/Host/ChangeMan fuer FB-Freigeber"/>
+ * 
+ * The page uses the label of the article
+ * 
+ * 2. Page with declared articles (in sub tags)
+ *	
+ *	<page name="notes" label="pnw.gui.rights.pages.Notes" renderer="org.mgnl.nicki.shop.renderer.TabRenderer">
+ *		<articles type="pageRef" page="/Notes"/>
+ *	</page>
+ *  
+ */
 @SuppressWarnings("serial")
 public class ShopPage implements ShopViewerComponent, Serializable{
-	private static final Logger LOG = LoggerFactory.getLogger(ShopPage.class);
-	private Shop shop;
-	private TYPE type;
 	private String name;
 	private String label;
-	private String referencedPage;
 	private List<ShopPage> pageList = new ArrayList<ShopPage>();
-	private List<CatalogArticle> articleList = new ArrayList<CatalogArticle>();
 	private List<CatalogArticleAttribute> attributeList = new ArrayList<CatalogArticleAttribute>();
 	private String renderer;
-	private String selectorClass;
+	private List<ArticleContainer> shopArticles = new ArrayList<ArticleContainer>();
+	List<CatalogArticle> articles;
 
 	public ShopPage(Shop shop, Element pageElement) {
-		this.shop = shop;
-		this.type = getPageType(pageElement);
 		
-		if (type == TYPE.SHOP_ARTICLE_PAGE) {
-			String catalogArticleId = pageElement.getAttributeValue("article");
-			if (StringUtils.isNotEmpty(catalogArticleId)) {
-				CatalogArticle article = this.shop.getArticle(catalogArticleId);
-				this.name = article.getName();
-				this.label = article.getDisplayName();
-				this.articleList.add(article);
-				this.renderer = pageElement.getAttributeValue("renderer");
-			}
-		} else if (type == TYPE.STRUCTURE_PAGE) {
-			this.renderer = pageElement.getAttributeValue("renderer");
-			this.name = pageElement.getAttributeValue("name");
-			this.label = I18n.getText(pageElement.getAttributeValue("label"));
-			@SuppressWarnings("unchecked")
-			List<Element> pages = pageElement.getChildren("page");
-			if (pages != null && pages.size() > 0) {
-				for (Element pElement : pages) {
-					this.pageList.add(new ShopPage(shop, pElement));
-				}
-			}
-			@SuppressWarnings("unchecked")
-			List<Element> articles = pageElement.getChildren("article");
-			if (articles != null && articles.size() > 0) {
-				for (Element articleElement : articles) {
-					String catalogArticleId = articleElement.getAttributeValue("article");
-					if (StringUtils.isNotEmpty(catalogArticleId)) {
-						CatalogArticle article = this.shop.getArticle(catalogArticleId);
-						this.articleList.add(article);
-					}
-				}
-			}
-		} else if (type == TYPE.PAGE_REF_PAGE) {
-			this.renderer = pageElement.getAttributeValue("renderer");
-			this.name = pageElement.getAttributeValue("name");
-			this.label = I18n.getText(pageElement.getAttributeValue("label"));
-			this.referencedPage = pageElement.getAttributeValue("page");
-			this.articleList.addAll(Catalog.getCatalog().getReferencedPage(referencedPage).getArticles());
-			@SuppressWarnings("unchecked")
-			List<Element> articles = pageElement.getChildren("article");
-			if (articles != null && articles.size() > 0) {
-				for (Element articleElement : articles) {
-					String catalogArticleId = articleElement.getAttributeValue("article");
-					if (StringUtils.isNotEmpty(catalogArticleId)) {
-						CatalogArticle article = this.shop.getArticle(catalogArticleId);
-						this.articleList.add(article);
-					}
-				}
-			}
-		} else if (type == TYPE.ARTICLE_SELECT) {
-			this.renderer = pageElement.getAttributeValue("renderer");
-			this.name = pageElement.getAttributeValue("name");
-			this.label = I18n.getText(pageElement.getAttributeValue("label"));
-			this.selectorClass = pageElement.getAttributeValue("selector");
-			try {
-				CatalogArticleSelector selector = (CatalogArticleSelector) Classes.newInstance(selectorClass);
-				selector.setShopper(shop.getShopper());
-				selector.setRecipient(shop.getRecipient());
-				List<CatalogArticle> articles = selector.getArticles();
-				if (articles != null && articles.size() > 0) {
-					this.articleList.addAll(articles);
-				}
-			} catch (Exception e) {
-				LOG.error("Error", e);
-			}
+		this.name = pageElement.getAttributeValue("name");
+		this.label = I18n.getText(pageElement.getAttributeValue("label"));
+		this.renderer = pageElement.getAttributeValue("renderer");
+		if (StringUtils.isBlank(renderer)) {
+			renderer = TableRenderer.class.getCanonicalName();
 		}
-	}
-
-	private TYPE getPageType(Element pageElement) {
-		String typeName = pageElement.getAttributeValue("type");
-		if (StringUtils.isNotEmpty(typeName)) {
-			return TYPE.getType(typeName);
-		}
-		String article = pageElement.getAttributeValue("article"); 
-		if (StringUtils.isNotEmpty(article)) {
-			return TYPE.SHOP_ARTICLE_PAGE;
-		}
-		return TYPE.STRUCTURE_PAGE;
 		
-	}
-
-	public enum TYPE {
-		SHOP_ARTICLE_PAGE("shopArticlePage"),
-		STRUCTURE_PAGE("structurePage"),
-		PAGE_REF_PAGE("pageRef"),
-		ARTICLE_SELECT("select");
-
-		String name;
-		TYPE(String name) {
-			this.name = name;
-		}
-		public static TYPE getType(String name) {
-			if ("shopArticlePage".equals(name)) {
-				return SHOP_ARTICLE_PAGE;
-			} else if ("structurePage".equals(name)) {
-				return STRUCTURE_PAGE;
-			} else if ("pageRef".equals(name)) {
-				return PAGE_REF_PAGE;
-			} else if ("select".equals(name)) {
-				return ARTICLE_SELECT;
-			} else {
-				return null;
+		for (Object child  : pageElement.getChildren()) {
+			if (child instanceof Element) {
+				Element childElement = (Element) child;
+				if (StringUtils.equals("page", childElement.getName())) {
+					pageList.add(new ShopPage(shop, childElement));
+				}
 			}
 		}
+		
+		// direct article
+		String catalogArticleId = pageElement.getAttributeValue("article");
+		if (StringUtils.isNotBlank(catalogArticleId)) {
+			CatalogArticle catalogArticle = Catalog.getCatalog().getArticle(catalogArticleId);
+			if (catalogArticle != null) {
+				ArticleContainer articleContainer = new ArticleContainer(shop);
+				articleContainer.addArticle(catalogArticle);
+				this.shopArticles.add(articleContainer);
+				this.name = catalogArticle.getName();
+				this.label = catalogArticle.getDisplayName();
+			}
+		}
+		
+		// articles
+		@SuppressWarnings("unchecked")
+		List<Element> articlesElements = pageElement.getChildren("articles");
+		if (articlesElements != null && articlesElements.size() > 0) {
+			for (Element articlesElement : articlesElements) {
+				this.shopArticles.add(new ArticleContainer(shop, articlesElement));
+			}
+		}
+		
 	}
 
 
@@ -179,14 +122,6 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 		return label;
 	}
 
-	public String getRenderer() {
-		return renderer;
-	}
-
-	public TYPE getType() {
-		return type;
-	}
-
 	public boolean hasAttributes() {
 		return this.attributeList != null && this.attributeList.size() > 0;
 	}
@@ -195,16 +130,18 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 		return attributeList;
 	}
 
-	public boolean hasArticles() {
-		return this.articleList != null && this.articleList.size() > 0;
-	}
-
 	public boolean hasPages() {
 		return this.pageList != null && this.pageList.size() > 0;
 	}
 
-	public List<CatalogArticle> getArticleList() {
-		return articleList;
+	public List<CatalogArticle> getArticles() {
+		if (articles == null) {
+			articles = new ArrayList<CatalogArticle>();
+			for (ArticleContainer container : shopArticles) {
+				articles.addAll(container.getArticles());
+			}
+		}
+		return articles;
 	};
 	
 	public String toString() {
@@ -218,8 +155,8 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 				sb.append(page.toString()).append("\n");
 			}
 		}
-		if (hasArticles()) {
-			for (CatalogArticle article : articleList) {
+		if (!getArticles().isEmpty()) {
+			for (CatalogArticle article : getArticles()) {
 				sb.append(article.toString()).append("\n");
 			}
 		}
@@ -233,12 +170,10 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 
 	public List<CatalogArticle> getAllArticles() {
 		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
-		if (hasArticles()) {
-			articles.addAll(articleList);
-		}
+		articles.addAll(getArticles());
 		if (hasPages()) {
 			for (ShopPage page : pageList) {
-				articles.addAll(page.getArticles());
+				articles.addAll(page.getAllArticles());
 			}
 		}
 		return articles;
@@ -251,9 +186,15 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 	public List<ShopPage> getPageList() {
 		return pageList;
 	}
+	
 
-	public List<CatalogArticle> getArticles() {
-		return articleList;
+	
+	public ShopRenderer getRenderer() {
+		try {
+			return (ShopRenderer) Classes.newInstance(renderer);
+		} catch (Exception e) {
+		}
+		return new TableRenderer();
 	}
 
 }

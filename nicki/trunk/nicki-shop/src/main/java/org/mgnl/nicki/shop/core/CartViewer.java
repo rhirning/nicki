@@ -2,6 +2,7 @@ package org.mgnl.nicki.shop.core;
 
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.shop.base.inventory.Inventory;
 import org.mgnl.nicki.shop.base.objects.Cart;
 import org.mgnl.nicki.shop.base.objects.CartEntry;
 import org.mgnl.nicki.shop.base.objects.Catalog;
@@ -27,6 +28,7 @@ public class CartViewer extends CustomComponent {
 	
 	private static final long serialVersionUID = 8441664095916322794L;
 	private Cart cart;
+	private Inventory inventory;
 
 	/**
 	 * The constructor should first build the main layout, set the
@@ -42,6 +44,10 @@ public class CartViewer extends CustomComponent {
 
 		this.recipient.setValue(this.cart.getRecipient().getDisplayName());
 		fillCartEntries();
+	}
+
+	public CartViewer(Inventory inventory) {
+		this.inventory = inventory;
 	}
 
 	@SuppressWarnings("unchecked")
