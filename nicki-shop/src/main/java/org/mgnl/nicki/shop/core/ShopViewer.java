@@ -1,35 +1,22 @@
 /**
- * This file Copyright (c) 2003-2011 Dr. Ralf Hirning
+ * Copyright (c) 2003-2015 Dr. Ralf Hirning
  * All rights reserved.
- *
- *
- * This file is dual-licensed under both the GNU General
+ *  
+ * This program is dual-licensed under both the GNU General
  * Public License and an individual license with Dr. Ralf
  * Hirning.
- *
- * This file is distributed in the hope that it will be
- * useful, but AS-IS and WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A
- * PARTICULAR PURPOSE, TITLE, or NONINFRINGEMENT.
- * Redistribution, except as permitted by whichever of the GPL
- * or the individual license, is prohibited.
- *
+ * 
  * 1. For the GPL license (GPL), you can redistribute and/or
- * modify this file under the terms of the GNU General
- * Public License, Version 3, as published by the Free Software
- * Foundation.  You should have received a copy of the GNU
- * General Public License, Version 3 along with this program;
- * if not, write to the Free Software Foundation, Inc., 51
- * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
- *
+ * modify this file under the terms of the GNU Public License v3.0
+ * which is available at
+ * http://www.gnu.org/licenses/gpl.html
  * 2. For the individual license, this file and the accompanying
  * materials are made available under the terms of the
  * individual license.
- *
+ * 
  * Any modifications to this file must keep this entire header
  * intact.
- *
- */
+*/
 package org.mgnl.nicki.shop.core;
 
 
@@ -43,7 +30,6 @@ import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.shop.base.objects.Cart;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
-import org.mgnl.nicki.shop.base.objects.Cart.CART_STATUS;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
 import org.mgnl.nicki.shop.renderer.ShopRenderer;
 import org.mgnl.nicki.shop.renderer.TabRenderer;
@@ -59,9 +45,11 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.ui.Window.CloseListener;
 
 @SuppressWarnings("serial")
-public class ShopViewer extends CustomComponent implements ShopViewerComponent, Serializable {
+public class ShopViewer extends CustomComponent implements ShopViewerComponent, CloseListener, Serializable {
 	private static final Logger LOG = LoggerFactory.getLogger(ShopViewer.class);
 
 	private Person shopper;
@@ -75,8 +63,10 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	private ShopRenderer renderer = null;
 	private ShopParent parent;
 	private Cart cart = null;
+	private ShopViewer showViewer;;
 
 	public ShopViewer(Person user, Shop shop, Person recipient, ShopParent parent, Cart cart) throws InvalidPrincipalException, InstantiateDynamicObjectException {
+		this.showViewer = this;
 		this.setShopper(user);
 		this.shop = shop;
 		this.setRecipient(recipient);
@@ -107,6 +97,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	
 	private VerticalLayout getShop() {
 		VerticalLayout shopLayout = new VerticalLayout();
+		shopLayout.setHeight("100%");
 		AbsoluteLayout layout = new AbsoluteLayout();
 		layout.setHeight(24, Unit.PIXELS);
 		layout.setWidth("100%");
@@ -192,8 +183,9 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 						Notification.show(I18n.getText(parent.getI18nBase() + ".showCart.empty"),
 								Notification.Type.HUMANIZED_MESSAGE);
 					} else {
-						CartViewer cartViewer = new CartViewer(getInventory().getCart("shop", CART_STATUS.NEW));
+						CartViewer cartViewer = new CartViewer(getInventory());
 						Window newWindow = new Window(I18n.getText(parent.getI18nBase() + ".cart.window.title"), cartViewer);
+						newWindow.addCloseListener(showViewer);
 						newWindow.setWidth(1000, Unit.PIXELS);
 						newWindow.setHeight(600, Unit.PIXELS);
 						newWindow.setModal(true);
@@ -220,6 +212,10 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		shopComponent.setSizeFull();
 		shopLayout.setExpandRatio(shopComponent, 1);
 		return shopLayout;
+	}
+	@Override
+	public void windowClose(CloseEvent e) {
+		setCompositionRoot(getShop());
 	}
 
 

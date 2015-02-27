@@ -29,30 +29,31 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.AbstractComponent;
+import com.vaadin.ui.Accordion;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
+import com.vaadin.ui.TabSheet.Tab;
 
 @SuppressWarnings("serial")
-public class PanelRenderer extends BaseShopRenderer implements ShopRenderer {
-	private static final Logger LOG = LoggerFactory.getLogger(PanelRenderer.class);
+public class AccordionRenderer extends BaseShopRenderer implements ShopRenderer {
+	private static final Logger LOG = LoggerFactory.getLogger(AccordionRenderer.class);
 
 	private ShopViewerComponent shopViewerComponent;
-	private VerticalLayout layout;
+	private Accordion accordion;
 	private List<ShopRenderer> pageRenderers = new ArrayList<ShopRenderer>();
 
 	public AbstractComponent render(ShopViewerComponent shopViewerComponent, Inventory inventory) {
 		this.shopViewerComponent = shopViewerComponent;
 		setInventory(inventory);
-		layout = new VerticalLayout();
-		layout.setHeight("100%");
+		accordion = new Accordion();
+		accordion.setHeight("100%");
 		render();
-		return layout;
+		return accordion;
 	}
 	
 	public void render() {
-		layout.removeAllComponents();
+		accordion.removeAllComponents();
 		addPanels();
 	}
 	
@@ -61,11 +62,22 @@ public class PanelRenderer extends BaseShopRenderer implements ShopRenderer {
 			ShopRenderer renderer = page.getRenderer();
 			pageRenderers.add(renderer);
 			renderer.setParentRenderer(this);
-			Panel panel = new Panel(page.getLabel());
-			Component component = renderer.render(page, getInventory());
-			panel.setContent(component);
-			resize();
-			layout.addComponent(panel);
+			Component component =  renderer.render(page, getInventory());
+			Tab tab = accordion.addTab(component, page.getLabel());
+			((AbstractComponent)tab.getComponent()).setData(renderer);
+			accordion.addSelectedTabChangeListener(new TabSheet.SelectedTabChangeListener() {
+				
+				@Override
+				public void selectedTabChange(SelectedTabChangeEvent event) {
+					TabSheet source = (TabSheet) event.getSource();
+					AbstractComponent component = (AbstractComponent) source.getSelectedTab();
+					LOG.debug(component.getClass().getName());
+					ShopRenderer renderer = (ShopRenderer) component.getData();
+					if (renderer != null) {
+						renderer.render();
+					}
+				}
+			});
 		}
 	}
 

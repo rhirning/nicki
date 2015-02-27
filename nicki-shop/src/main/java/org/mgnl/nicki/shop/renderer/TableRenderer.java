@@ -1,38 +1,24 @@
 /**
- * This file Copyright (c) 2003-2011 Dr. Ralf Hirning
+ * Copyright (c) 2003-2015 Dr. Ralf Hirning
  * All rights reserved.
- *
- *
- * This file is dual-licensed under both the GNU General
+ *  
+ * This program is dual-licensed under both the GNU General
  * Public License and an individual license with Dr. Ralf
  * Hirning.
- *
- * This file is distributed in the hope that it will be
- * useful, but AS-IS and WITHOUT ANY WARRANTY; without even the
- * implied warranty of MERCHANTABILITY or FITNESS FOR A
- * PARTICULAR PURPOSE, TITLE, or NONINFRINGEMENT.
- * Redistribution, except as permitted by whichever of the GPL
- * or the individual license, is prohibited.
- *
+ * 
  * 1. For the GPL license (GPL), you can redistribute and/or
- * modify this file under the terms of the GNU General
- * Public License, Version 3, as published by the Free Software
- * Foundation.  You should have received a copy of the GNU
- * General Public License, Version 3 along with this program;
- * if not, write to the Free Software Foundation, Inc., 51
- * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
- *
+ * modify this file under the terms of the GNU Public License v3.0
+ * which is available at
+ * http://www.gnu.org/licenses/gpl.html
  * 2. For the individual license, this file and the accompanying
  * materials are made available under the terms of the
  * individual license.
- *
+ * 
  * Any modifications to this file must keep this entire header
  * intact.
- *
- */
+*/
 package org.mgnl.nicki.shop.renderer;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -58,11 +44,11 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Layout;
-import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.Table;
 
 @SuppressWarnings("serial")
 public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
+	private static int MAX_TABLE_SIZE = 10;
 	
 	private ShopViewerComponent shopViewerComponent;
 	private Table table = null;
@@ -90,12 +76,14 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 			table.addContainerProperty("title", String.class, "");
 			table.setColumnWidth("title", 200);
 			table.setColumnHeader("title", I18n.getText("nicki.rights.attribute.title.label"));
+			/*
 			table.addContainerProperty("dateFrom", PopupDateField.class, "");
 			table.setColumnWidth("dateFrom", 100);
 			table.setColumnHeader("dateFrom", I18n.getText(CatalogArticle.CAPTION_START));
 			table.addContainerProperty("dateTo", PopupDateField.class, "");
 			table.setColumnWidth("dateTo", 100);
 			table.setColumnHeader("dateTo", I18n.getText(CatalogArticle.CAPTION_END));
+			*/
 			
 			table.addContainerProperty("attributes", Layout.class, "");
 			table.setColumnHeader("attributes", I18n.getText("nicki.rights.attributes.label"));
@@ -125,18 +113,21 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 				});
 
 				Item item = table.addItem(article);
-				item.getItemProperty("title").setValue(article.getDisplayName());
-				item.getItemProperty("checkbox").setValue(button);
-				
-		        Map<String, InventoryArticle> articleMap = getInventory().getArticles(article);
-		        if (articleMap != null) {
-			        for (String specifier : articleMap.keySet()) {
-						InventoryArticle iArticle = articleMap.get(specifier);
-						addMultiArticle(iArticle, iArticle.getStatus());
-					}
-		        }	
+				if (item != null) {
+					item.getItemProperty("title").setValue(article.getDisplayName());
+					item.getItemProperty("checkbox").setValue(button);
+					
+			        Map<String, InventoryArticle> articleMap = getInventory().getArticles(article);
+			        if (articleMap != null) {
+				        for (String specifier : articleMap.keySet()) {
+							InventoryArticle iArticle = articleMap.get(specifier);
+							addMultiArticle(iArticle, iArticle.getStatus());
+						}
+			        }
+				}
 			}
 		}
+		resize();
 	}
 	
 	protected void addInstance(CatalogArticle catalogArticle) {
@@ -215,8 +206,10 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 
 	@SuppressWarnings("unchecked")
 	protected void hideEntry(Item item) {
+		/*
 		item.getItemProperty("dateFrom").setValue(null);
 		item.getItemProperty("dateTo").setValue(null);
+		*/
 		item.getItemProperty("attributes").setValue(null);
 //		removeExcept(parent, event.getButton());
 	}
@@ -224,13 +217,17 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 	@SuppressWarnings("unchecked")
 	public void showEntry(Item item, CatalogArticle article, InventoryArticle inventoryArticle) {
 		SOURCE source = SOURCE.SHOP;
+		/*
 		Date start = new Date();
 		Date end = null;
+		*/
 		boolean enabled = true;
 		boolean toEnabled = true;
 		if (inventoryArticle != null && inventoryArticle.getStatus() != STATUS.NEW) {
+			/*
 			start = inventoryArticle.getStart();
 			end = inventoryArticle.getEnd();
+			*/
 			enabled = false;
 			source = inventoryArticle.getSource();
 			if (source == SOURCE.RULE) {
@@ -238,8 +235,10 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 			}
 		}
 
+		/*
 		item.getItemProperty("dateFrom").setValue(getStartDateComponent(inventoryArticle, enabled, start));
 		item.getItemProperty("dateTo").setValue(getEndDateComponent(inventoryArticle, toEnabled, end));
+		*/
 		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article, inventoryArticle, enabled, source));
 //		showArticleAttributes(parent);
 	}
@@ -258,6 +257,14 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 
 	public Table getTable() {
 		return table;
+	}
+
+	public void resize() {
+		if (table.size() > MAX_TABLE_SIZE) {
+			table.setPageLength(MAX_TABLE_SIZE);
+		} else {
+			table.setPageLength(table.size());
+		}
 	}
 
 }
