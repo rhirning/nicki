@@ -93,6 +93,7 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 	private VerticalLayout buildMainLayout() {
 		
 		mainLayout = new VerticalLayout();
+		mainLayout.setMargin(true);
 		mainLayout.setWidth("100%");
 		DynamicObjectFieldFactory factory = new DynamicObjectFieldFactory(listener);
 		factory.addFields(mainLayout, dynamicObject, create);
