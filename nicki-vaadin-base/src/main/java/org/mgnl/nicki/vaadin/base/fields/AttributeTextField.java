@@ -34,6 +34,7 @@ package org.mgnl.nicki.vaadin.base.fields;
 
 import java.io.Serializable;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.data.AttributeDataContainer;
 import org.mgnl.nicki.vaadin.base.data.DataContainer;
@@ -56,7 +57,7 @@ public class AttributeTextField  extends BaseDynamicAttributeField implements Dy
 		field = new TextField(getName(dynamicObject, attributeName));
 		field.setHeight(2, Unit.EM);
 		field.setWidth("600px");
-		field.setValue(property.getValue());
+		field.setValue(StringUtils.stripToEmpty(property.getValue()));
 		field.setImmediate(false);
 		field.addValueChangeListener(new AttributeInputListener<String>(property, objectListener));
 	}
