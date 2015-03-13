@@ -54,8 +54,10 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 	}
 	
 	public void render() {
+		setInit(true);
 		tabSheet.removeAllComponents();
 		addTabs(tabSheet);
+		setInit(false);
 	}
 	
 	private void addTabs(TabSheet tabSheet) {
@@ -97,6 +99,7 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 		
 		Tab tab = tabSheet.addTab(renderer.render(page, getInventory()), page.getLabel(), Icon.SETTINGS.getResource());
 		((AbstractComponent)tab.getComponent()).setData(renderer);
+		((AbstractComponent)tab.getComponent()).setHeight("100%");
 		tabSheet.addSelectedTabChangeListener(new TabSheet.SelectedTabChangeListener() {
 			
 			@Override
@@ -109,15 +112,5 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 				}
 			}
 		});
-	}
-
-	@Override
-	public void resize() {
-		for (ShopRenderer renderer : pageRenderers) {
-			renderer.resize();
-		}
-		if (null != getParentRenderer()) {
-			getParentRenderer().resize();
-		}
 	}
 }

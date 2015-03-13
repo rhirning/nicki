@@ -30,7 +30,7 @@ public interface ShopRenderer extends Serializable{
 
 	AbstractComponent render(ShopViewerComponent shopViewerComponent, Inventory inventory);
 	void render();
-	void resize();
 	void setParentRenderer(ShopRenderer parentRenderer);
-
+	Inventory getInventory();
+	void handleChange();
 }

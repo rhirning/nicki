@@ -27,24 +27,23 @@ import com.vaadin.ui.Notification;
 public class NewSpecifiedArticleHandler implements CreateInstanceHandler {
 
 	private CatalogArticle catalogArticle;
-	private TableRenderer tableRenderer;
+	private ShopRenderer renderer;
 
 
-	public NewSpecifiedArticleHandler(CatalogArticle catalogArticle, TableRenderer tableRenderer) {
+	public NewSpecifiedArticleHandler(CatalogArticle catalogArticle, ShopRenderer renderer) {
 		super();
 		this.catalogArticle = catalogArticle;
-		this.tableRenderer = tableRenderer;
+		this.renderer = renderer;
 	}
 
 	@Override
 	public void setName(String value) {
-		if (tableRenderer.getInventory().hasArticle(catalogArticle, value)) {
+		if (renderer.getInventory().hasArticle(catalogArticle, value)) {
 			Notification.show(I18n.getText("nicki.rights.specifier.exists"),
 					Notification.Type.ERROR_MESSAGE);
 		} else {
-			tableRenderer.getInventory().addArticle(catalogArticle, value);
-			tableRenderer.render();
-			tableRenderer.resize();
+			renderer.getInventory().addArticle(catalogArticle, value);
+			renderer.handleChange();
 		}
 	}
 

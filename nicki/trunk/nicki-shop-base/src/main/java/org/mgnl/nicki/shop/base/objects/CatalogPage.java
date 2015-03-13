@@ -32,7 +32,6 @@ import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.helper.XMLHelper;
-import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.util.Classes;
@@ -40,15 +39,12 @@ import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import freemarker.template.TemplateMethodModel;
-import freemarker.template.TemplateModelException;
-
 @SuppressWarnings("serial")
 
 @DynamicObject
 @ObjectClass("nickiCatalogPage")
 @Child(name="child", objectFilter={CatalogPage.class, CatalogArticle.class})
-public class CatalogPage extends BaseDynamicObject {
+public class CatalogPage extends CatalogObject {
 	private static final Logger LOG = LoggerFactory.getLogger(CatalogPage.class);
 	
 	private Provider provider = null;
@@ -63,6 +59,9 @@ public class CatalogPage extends BaseDynamicObject {
 	private String providerData;
 	@DynamicAttribute(externalName="nickiAttributes")
 	private TextArea attributes;
+	
+
+	private List<CatalogPage> pages;
 	
 	public List<CatalogArticleAttribute> getAttributes() {
 		List<CatalogArticleAttribute> list = new ArrayList<CatalogArticleAttribute>();
@@ -145,23 +144,30 @@ public class CatalogPage extends BaseDynamicObject {
 			List<CatalogArticle> articles = getContext().loadChildObjects(CatalogArticle.class, getPath(), null);
 			return articles;
 		}
+	}	
+	
+	public List<CatalogPage> getPages() {
+		if (pages == null) {
+			pages = getContext().loadChildObjects(CatalogPage.class, this.getPath(), null);
+			for (CatalogPage page : pages) {
+				try {
+					getContext().loadObject(page);
+				} catch (DynamicObjectException e) {
+					LOG.error("Error", e);
+				}
+			}
+		}
+		return pages;
 	}
+
 
 	public List<CatalogArticle> getAllArticles() {
 		List<CatalogArticle> articles = getArticles();
-		try {
-			TemplateMethodModel method = (TemplateMethodModel) get("getPage");
-			if (method != null) {
-				@SuppressWarnings("unchecked")
-				List<Object> pages = (List<Object>) method.exec(null);
-				for (Object entry : pages) {
-					CatalogPage page= (CatalogPage) entry;
-					articles.addAll(page.getAllArticles()); 
-				}
-			}
-		} catch (TemplateModelException e) {
-			LOG.error("Error", e);
+
+		for (CatalogPage page : getPages()) {
+			articles.addAll(page.getAllArticles()); 
 		}
+
 		return articles;
 	}
 
@@ -231,6 +237,11 @@ public class CatalogPage extends BaseDynamicObject {
 		}
 		return null;
 
+	}
+
+	@Override
+	public List<? extends CatalogObject> getChildList() {
+		return getPages();
 	}
 
 

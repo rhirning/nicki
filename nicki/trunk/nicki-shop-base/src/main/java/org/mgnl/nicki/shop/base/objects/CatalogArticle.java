@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 
 @DynamicObject
 @ObjectClass("nickiCatalogArticle")
-public class CatalogArticle extends BaseDynamicObject {
+public class CatalogArticle extends CatalogObject {
 	private static final Logger LOG = LoggerFactory.getLogger(CatalogArticle.class);
 	private static final long serialVersionUID = 2340086861870174607L;
 	public static final String TYPE_ARTICLE = "ARTICLE";
@@ -224,6 +224,11 @@ public class CatalogArticle extends BaseDynamicObject {
 		return attributes;
 	}
 
+	public String getPermissionDn() {
+		return null;
+	}
+
+
 	public void setDescription(String description) {
 
 		put("description", description);
@@ -235,5 +240,10 @@ public class CatalogArticle extends BaseDynamicObject {
 
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
+	}
+
+	@Override
+	public List<? extends CatalogObject> getChildList() {
+		return new ArrayList<CatalogObject>();
 	}
 }

@@ -3,6 +3,7 @@ package org.mgnl.nicki.shop.core;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
+import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.base.objects.Cart;
 import org.mgnl.nicki.shop.base.objects.CartEntry;
 import org.mgnl.nicki.shop.base.objects.Catalog;
@@ -78,8 +79,7 @@ public class CartViewer extends CustomComponent {
 		cartEntries.setColumnHeader("attributes", "attributes");
 		for (CartEntry cartEntry : cart.getCartEntries()) {
 			Item item = cartEntries.addItem(cartEntry);
-			CatalogArticle article = Catalog.getCatalog().getArticle(cartEntry.getId());
-			item.getItemProperty("right").setValue(article.getDisplayName());
+			item.getItemProperty("right").setValue(cartEntry.getDisplayName());
 			item.getItemProperty("action").setValue(cartEntry.getAction().toString());	
 			if (cartEntry.getStart() != null) {
 				item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(cartEntry.getStart()));
