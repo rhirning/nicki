@@ -132,7 +132,7 @@ public class Inventory implements Serializable {
 	}
 
 	public boolean hasArticle(CatalogArticle article) {
-		return articles.containsKey(article.getPath());
+		return articles.containsKey(article.getPath()) || multiArticles.containsKey(article.getPath());
 	}
 
 	public InventoryArticle getArticle(CatalogArticle article) {
@@ -227,6 +227,7 @@ public class Inventory implements Serializable {
 									iArticle,
 									iArticle.getArticle().getCatalogPath(), specifier,
 									InventoryArticle.getAction(iArticle.getStatus()));
+							entry.setComment(iArticle.getComment());
 							entry.setStart(iArticle.getStart());
 							entry.setEnd(iArticle.getEnd());
 							for (InventoryAttribute iAttribute : iArticle.getAttributes().values()) {
@@ -246,6 +247,7 @@ public class Inventory implements Serializable {
 								iArticle,
 								iArticle.getArticle().getCatalogPath(),
 								InventoryArticle.getAction(iArticle.getStatus()));
+						entry.setComment(iArticle.getComment());
 						for (InventoryAttribute iAttribute : iArticle.getAttributes().values()) {
 							if (iAttribute.hasChanged()) {
 								entry.addAttribute(iAttribute.getName(),
@@ -357,10 +359,21 @@ public class Inventory implements Serializable {
 	private void addCartEntry(CartEntry entry) throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		InventoryArticle iArticle = getInventoryArticleFrom(entry);
 		if (iArticle!= null) {
-			if (entry.getAction() == ACTION.ADD && !hasArticle(iArticle.getArticle()) ||
-				(entry.getAction() == ACTION.DELETE || entry.getAction() == ACTION.MODIFY) &&
-					hasArticle(iArticle.getArticle())) {
-				addArticle(iArticle);
+			CatalogArticle catalogArticle = iArticle.getArticle();
+			if (!catalogArticle.isMultiple()) {
+				if (entry.getAction() == ACTION.ADD && !hasArticle(iArticle.getArticle())) {
+					addArticle(iArticle);
+				} else if ((entry.getAction() == ACTION.DELETE || entry.getAction() == ACTION.MODIFY) &&
+							hasArticle(iArticle.getArticle())) {
+					addArticle(iArticle);
+				}
+			} else {
+				if (entry.getAction() == ACTION.ADD && !hasArticle(iArticle.getArticle(), iArticle.getSpecifier())) {
+					addArticle(iArticle);
+				} else if ((entry.getAction() == ACTION.DELETE || entry.getAction() == ACTION.MODIFY) &&
+							hasArticle(iArticle.getArticle(), iArticle.getSpecifier())) {
+					addArticle(iArticle);
+				}
 			}
 		}
 	}
@@ -374,6 +387,7 @@ public class Inventory implements Serializable {
 				iArticle.setStart(entry.getStart());
 				iArticle.setEnd(entry.getEnd());
 				iArticle.setStatus(InventoryArticle.getStatus(entry.getAction()));
+				iArticle.setComment(entry.getComment());
 				if (entry.getAttributes() != null) {
 					List<InventoryAttribute> iAttributes = catalogArticle.getInventoryAttributes(catalogArticle, entry.getAttributes());
 					if (iAttributes != null) {
