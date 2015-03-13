@@ -48,7 +48,6 @@ import com.vaadin.ui.Table;
 
 @SuppressWarnings("serial")
 public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
-	private static int MAX_TABLE_SIZE = 10;
 	
 	private ShopViewerComponent shopViewerComponent;
 	private Table table = null;
@@ -62,12 +61,14 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 
 	@SuppressWarnings("unchecked")
 	public void render() {
+		setInit(true);
 		// collect all articles
 		List<CatalogArticle> articles = shopViewerComponent.getAllArticles();
 		// create Table
 
 		if (table == null) {
 			table = new Table();
+			table.setPageLength(0);
 			table.setWidth("100%");
 			table.setHeight("100%");
 			table.addContainerProperty("checkbox", Component.class, "");
@@ -127,7 +128,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 				}
 			}
 		}
-		resize();
+		setInit(false);
 	}
 	
 	protected void addInstance(CatalogArticle catalogArticle) {
@@ -163,7 +164,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		checkBox.addValueChangeListener(new MulitCheckBoxChangeListener(getInventory(), iArticle, this));
 
 		Item item = table.addItem(iArticle);
-		item.getItemProperty("title").setValue(iArticle.getSpecifier());
+		item.getItemProperty("title").setValue(iArticle.getDisplayName());
 		item.getItemProperty("checkbox").setValue(checkBox);
 		showEntry(item, article, iArticle);
 
@@ -259,12 +260,6 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		return table;
 	}
 
-	public void resize() {
-		if (table.size() > MAX_TABLE_SIZE) {
-			table.setPageLength(MAX_TABLE_SIZE);
-		} else {
-			table.setPageLength(table.size());
-		}
-	}
+
 
 }

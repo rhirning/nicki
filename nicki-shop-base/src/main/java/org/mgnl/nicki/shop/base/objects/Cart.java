@@ -23,6 +23,8 @@ import java.text.ParseException;
 import java.util.ArrayList;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.shop.base.objects.CartEntry.ACTION;
+import org.mgnl.nicki.shop.base.objects.CartEntry.CART_ENTRY_STATUS;
 
 import java.util.Date;
 import java.util.List;
@@ -100,19 +102,33 @@ public class Cart extends BaseDynamicObject {
     private String source;
 	
 
-    @Override
+    @SuppressWarnings("unchecked")
+	@Override
     public void init(ContextSearchResult rs) throws DynamicObjectException {
         super.init(rs);
 
         try {
-            fromXml((String) get("data"));
+        	List<String> list = (List<String>) get("cartEntry");
+        	if (list != null && list.size() != 0) {
+        		fromStrings((List<String>) get("cartEntry"));
+        	}
+        	
+        	fromXml((String) get("data"));
         } catch (Exception ex) {
             System.err.println("xml invalid - " + ex.getMessage());
             throw new IllegalArgumentException(ex);
         }
     }
 
-    public void fromXml(String xml) throws SAXException  {
+	private void fromStrings(List<String> list) {
+		if (list != null) {
+			for (String string : list) {
+				cartentries.add(CartEntry.fromString(string));
+			}
+		}
+	}
+
+	public void fromXml(String xml) throws SAXException  {
 
         Document doc = XmlHelper.getDocumentFromXml(xml);
 
@@ -123,16 +139,29 @@ public class Cart extends BaseDynamicObject {
         }
 
         List<Element> entries = XmlHelper.selectNodes(Element.class, cart, ELEM_CARTENTRY);
-        CartEntry entry;
 
         for (Element node : entries) {
-            entry = CartEntry.fromNode(node);
-
-            cartentries.add(entry);
+            CartEntry tempEntry = CartEntry.fromNode(node);
+            
+            CartEntry entry = findEntry(tempEntry);
+            if (entry != null) {
+            	entry.setComment(tempEntry.getComment());
+            }
         }
     }
 
-    public String toXml() throws DynamicObjectException {
+	private CartEntry findEntry(CartEntry tempEntry) {
+        if (cartentries.contains(tempEntry)) {
+			for (CartEntry entry : cartentries) {
+				if (entry.equals(tempEntry)) {
+					return entry;
+				}
+			}
+        }
+		return null;
+	}
+
+	public String toXml() throws DynamicObjectException {
         if (catalog == null) {
             throw new DynamicObjectException("catalog undefined");
         }
@@ -158,12 +187,22 @@ public class Cart extends BaseDynamicObject {
     @Override
     public org.mgnl.nicki.core.objects.DynamicObject create() throws DynamicObjectException {
         put("data", toXml());
+    	put("cartEntry", getCartEntriesAsList());
         return super.create();
     }
 
-    @Override
+    private Object getCartEntriesAsList() {
+    	List<String> list = new ArrayList<String>();
+    	for (CartEntry cartEntry : getCartEntries()) {
+			list.add(cartEntry.asString());
+		}
+		return list;
+	}
+
+	@Override
     public void update() throws DynamicObjectException {
         put("data", toXml());
+    	put("cartEntry", getCartEntriesAsList());
         super.update();
     }
 
@@ -292,6 +331,26 @@ public class Cart extends BaseDynamicObject {
 	public void removeEntry(CartEntry cartEntry) {
 		if (cartentries.contains(cartEntry)) {
 			cartentries.remove(cartEntry);
+		}
+	}
+
+	/*
+	 * Status: FINISHED, wenn alle entries finished oder denied sind
+	 * Status: 
+	 */
+	public void updateStatus(String permissionDn, String specifier,
+			ACTION cartEntryAction, CART_ENTRY_STATUS oldCartEntryStatus,
+			CART_ENTRY_STATUS newCartEntryStatus) {
+		boolean finished = true;
+		for (CartEntry cartEntry : cartentries) {
+			if (cartEntry.match(permissionDn, specifier, cartEntryAction, oldCartEntryStatus)) {
+				cartEntry.updateStatus(newCartEntryStatus);
+			}
+			finished = finished && (cartEntry.getStatus() == CART_ENTRY_STATUS.FINISHED ||
+					cartEntry.getStatus() == CART_ENTRY_STATUS.DENIED);
+		}
+		if (finished) {
+			setCartStatus(CART_STATUS.FINISHED);
 		}
 	}
 }

@@ -53,8 +53,10 @@ public class AccordionRenderer extends BaseShopRenderer implements ShopRenderer 
 	}
 	
 	public void render() {
+		setInit(true);
 		accordion.removeAllComponents();
 		addPanels();
+		setInit(false);
 	}
 	
 	private void addPanels() {
@@ -78,16 +80,6 @@ public class AccordionRenderer extends BaseShopRenderer implements ShopRenderer 
 					}
 				}
 			});
-		}
-	}
-
-	@Override
-	public void resize() {
-		for (ShopRenderer renderer : pageRenderers) {
-			renderer.resize();
-		}
-		if (null != getParentRenderer()) {
-			getParentRenderer().resize();
 		}
 	}
 }

@@ -93,4 +93,9 @@ public class RoleCatalogArticle extends CatalogArticle {
 		return getForeignKeyObject(Role.class, ATTRIBUTE_ROLE);
 	}
 
+	
+	public String getPermissionDn() {
+		return getAttribute(ATTRIBUTE_ROLE);
+	}
+
 }

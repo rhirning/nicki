@@ -27,6 +27,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.shop.base.attributes.AttributeComponentFactory;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
@@ -46,6 +47,7 @@ public class InventoryArticle implements Serializable{
 	private Date end = null;
 	private Date orgEnd = null;
 	private String specifier = null;
+	private String comment = null;
 	private Map<String, InventoryAttribute> attributes = new HashMap<String, InventoryAttribute>();
 
 	public InventoryArticle(CatalogArticle catalogArticle) {
@@ -60,6 +62,15 @@ public class InventoryArticle implements Serializable{
 		this.specifier = specifier;
 		addEmptyAttributes();
 		setStatus(STATUS.NEW);
+	}
+	
+	public String getDisplayName() {
+		StringBuffer sb = new StringBuffer();
+		sb.append(catalogArticle.getDisplayName());
+		if (specifier != null) {
+			sb.append(": ").append(specifier);
+		}
+		return sb.toString();
 	}
 
 	private void addEmptyAttributes() {
@@ -260,6 +271,16 @@ public class InventoryArticle implements Serializable{
 
 	public void setSpecifier(String specifier) {
 		this.specifier = specifier;
+	}
+
+
+	public String getComment() {
+		return comment;
+	}
+
+
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 
 }

@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
@@ -51,9 +50,12 @@ public class PanelRenderer extends BaseShopRenderer implements ShopRenderer {
 		return layout;
 	}
 	
+	@Override
 	public void render() {
+		setInit(true);
 		layout.removeAllComponents();
 		addPanels();
+		setInit(false);
 	}
 	
 	private void addPanels() {
@@ -63,19 +65,9 @@ public class PanelRenderer extends BaseShopRenderer implements ShopRenderer {
 			renderer.setParentRenderer(this);
 			Panel panel = new Panel(page.getLabel());
 			Component component = renderer.render(page, getInventory());
+			component.setHeight("100%");
 			panel.setContent(component);
-			resize();
 			layout.addComponent(panel);
-		}
-	}
-
-	@Override
-	public void resize() {
-		for (ShopRenderer renderer : pageRenderers) {
-			renderer.resize();
-		}
-		if (null != getParentRenderer()) {
-			getParentRenderer().resize();
 		}
 	}
 }

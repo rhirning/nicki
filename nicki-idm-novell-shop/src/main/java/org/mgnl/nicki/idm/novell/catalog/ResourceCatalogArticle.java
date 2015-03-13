@@ -94,4 +94,9 @@ public class ResourceCatalogArticle extends CatalogArticle {
 		return getForeignKeyObject(Resource.class, ATTRIBUTE_RESOURCE);
 	}
 	
+	public String getPermissionDn() {
+		return getAttribute(ATTRIBUTE_RESOURCE);
+	}
+
+	
 }

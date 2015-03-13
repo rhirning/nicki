@@ -43,6 +43,7 @@ import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
@@ -95,6 +96,8 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 		mainLayout = new VerticalLayout();
 		mainLayout.setMargin(true);
 		mainLayout.setWidth("100%");
+		Label label = new Label(dynamicObject.getClass().getName());
+		mainLayout.addComponent(label);
 		DynamicObjectFieldFactory factory = new DynamicObjectFieldFactory(listener);
 		factory.addFields(mainLayout, dynamicObject, create);
 		

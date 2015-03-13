@@ -44,11 +44,14 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextArea;
 
-public class BaseShopRenderer {
+public abstract class BaseShopRenderer implements ShopRenderer {
+	private static final long serialVersionUID = -5984151970232783233L;
+
 	private static final Logger LOG = LoggerFactory.getLogger(BaseShopRenderer.class);
 	
 	private Inventory inventory;
 	private ShopRenderer parentRenderer;
+	private boolean init;
 	
 	protected Component getAttributeComponent(CatalogArticle article, InventoryArticle inventoryArticle, CatalogArticleAttribute articleAttribute, boolean enabled) {
 		try {
@@ -161,9 +164,24 @@ public class BaseShopRenderer {
 		this.parentRenderer = parentRenderer;
 	}
 
+	@Override
+	public void handleChange() {
+		if (!init) {
+			render();
+			if (getParentRenderer() != null) {
+				getParentRenderer().render();
+			}
+		}
+	}
 
 
+	public boolean isInit() {
+		return init;
+	}
 
 
+	public void setInit(boolean init) {
+		this.init = init;
+	}
 
 }

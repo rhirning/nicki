@@ -41,17 +41,33 @@ public class CartEntry {
 	private static final Logger LOG = LoggerFactory.getLogger(CartEntry.class);
     public static final String ATTR_ID = "id";
     public static final String ATTR_ACTION = "action";
-    public static final String ATTR_START = "start";
-    public static final String ATTR_END = "end";
     public static final String ATTR_SPECIFIER = "specifier";
 	public static final String ATTR_NAME = "name";
     public static final String ELEM_ATTRIBUTE = "attribute";
 
+    private String comment;
+    
     public enum ACTION {
 
         ADD,
         MODIFY,
         DELETE
+    }
+
+	public enum CART_ENTRY_STATUS {
+
+		NEW,
+        REQUESTED,
+        DENIED,
+        FINISHED;
+
+        public String getValue() {
+            return this.toString().toLowerCase();
+        }
+
+        public static CART_ENTRY_STATUS fromString(String str) {
+            return CART_ENTRY_STATUS.valueOf(str.toUpperCase());
+        }
     }
     private InventoryArticle inventoryArticle;
     private String id;
@@ -59,19 +75,17 @@ public class CartEntry {
     private Date start = null;
     private Date end = null;
     private String specifier;
+    private CART_ENTRY_STATUS status = CART_ENTRY_STATUS.NEW;
     
     private Map<String, String> attributes = new HashMap<String, String>();
 
     public Element getNode(Document doc, String name) {
         
 		Element cartentry = doc.createElement(name);
+		if (StringUtils.isNotBlank(comment)) {
+			cartentry.setTextContent(comment);
+		}
 		
-		if (start != null) {
-	        cartentry.setAttribute(ATTR_START, DataHelper.getDay(start));
-		}
-		if (end != null) {
-	        cartentry.setAttribute(ATTR_START, DataHelper.getDay(end));
-		}
         cartentry.setAttribute(ATTR_ID, getId());
 		if (specifier != null) {
 	        cartentry.setAttribute(ATTR_SPECIFIER, specifier);
@@ -117,19 +131,8 @@ public class CartEntry {
         if (StringUtils.isNotEmpty(node.getAttribute(ATTR_SPECIFIER))) {
         	entry.setSpecifier(node.getAttribute(ATTR_SPECIFIER));
         }
-        if (StringUtils.isNotEmpty(node.getAttribute(ATTR_START))) {
-        	try {
-				entry.setStart(DataHelper.dateFromString(node.getAttribute(ATTR_START)));
-			} catch (ParseException e) {
-				LOG.error("Error", e);
-			}
-        }
-        if (StringUtils.isNotEmpty(node.getAttribute(ATTR_END))) {
-        	try {
-				entry.setEnd(DataHelper.dateFromString(node.getAttribute(ATTR_END)));
-			} catch (ParseException e) {
-				LOG.error("Error", e);
-			}
+        if (StringUtils.isNotEmpty(node.getTextContent())) {
+        	entry.setComment(node.getTextContent());
         }
         for (Element element : XmlHelper.selectNodes(Element.class, node, ELEM_ATTRIBUTE)) {
             entry.addAttribute(element.getAttribute(ATTR_NAME), element.getTextContent());
@@ -210,5 +213,101 @@ public class CartEntry {
 
 	public InventoryArticle getInventoryArticle() {
 		return inventoryArticle;
+	}
+
+	public boolean match(String permissionDn, String specifier,
+			ACTION cartEntryAction, CART_ENTRY_STATUS cartEntryStatus) {
+		if (!StringUtils.equals(specifier, this.specifier)) {
+			return false;
+		}
+		if (cartEntryAction != action) {
+			return false;
+		}
+		CatalogArticle catalogArticle = Catalog.getCatalog().getArticle(id);
+		if (!StringUtils.equals(permissionDn, catalogArticle.getPermissionDn())) {
+			return false;
+		}
+		
+		return true;
+	}
+
+	public void updateStatus(CART_ENTRY_STATUS newCartEntryStatus) {
+		setStatus(newCartEntryStatus);
+	}
+
+	public CART_ENTRY_STATUS getStatus() {
+		return status;
+	}
+
+	public void setStatus(CART_ENTRY_STATUS status) {
+		this.status = status;
+	}
+//	String cartEntryQualifier = catalogArticle.getId() + "#" + cartEntryAction + "#" + cartEntryStatus + "#";
+
+	public String asString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append(id).append("#");
+		sb.append(action).append("#");
+		sb.append(status);
+		if (StringUtils.isNotBlank(specifier)) {
+			sb.append("#");
+			sb.append(specifier);
+		}
+		return sb.toString();
+	}
+	
+	public static CartEntry fromString(String cartEntryString) {
+		String elements[] = StringUtils.split(cartEntryString, "#", 4);
+		String id = elements[0];
+		String action = elements[1];
+		String status = elements[2];
+		String specifier = null;
+		if (elements.length > 3) {
+			specifier = elements[3];
+		}
+		CartEntry entry = new CartEntry(null, id,
+                ACTION.valueOf(action));
+		entry.specifier = specifier;
+		entry.status = CART_ENTRY_STATUS.fromString(status);
+		return entry;
+	}
+
+	public String getDisplayName() {
+		String name = getCatalogArticle().getDisplayName();
+		if (StringUtils.isNotBlank(specifier)) {
+			name += ": " + specifier;
+		}
+		return name;
+	}
+
+	private CatalogArticle getCatalogArticle() {
+		return Catalog.getCatalog().getArticle(id);
+	}
+
+	public String getComment() {
+		return comment;
+	}
+
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof CartEntry) {
+			CartEntry entry = (CartEntry) obj;
+			if (!StringUtils.equals(entry.specifier, this.specifier)) {
+				return false;
+			}
+			if (!StringUtils.equals(entry.id, this.id)) {
+				return false;
+			}
+			if (entry.action != action) {
+				return false;
+			}
+			return true;
+		}
+		// TODO Auto-generated method stub
+		return super.equals(obj);
 	}
 }
