@@ -24,7 +24,9 @@ import java.util.Map;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 
 public interface CatalogValueProvider {
+	public static enum TYPE {TEXT_AREA, LIST, INPUT_FIELD}
 	
+	TYPE getType();
 	
 	Map<String, String> getEntries();
 	

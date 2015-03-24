@@ -58,9 +58,9 @@ public class ValuedResourceCatalogArticle extends ResourceCatalogArticle impleme
 	private static final long serialVersionUID = -7208705030668378943L;
 	private CatalogValueProvider provider = null;
 
-	@DynamicAttribute(externalName="nickiProvider", mandatory=true)
+	@DynamicAttribute(externalName="nickiProvider")
 	private String providerClass;	
-	@DynamicAttribute(externalName="nickiProviderData", mandatory=true)
+	@DynamicAttribute(externalName="nickiProviderData")
 	private String providerData;
 
 	public boolean isMultiple() {
