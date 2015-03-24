@@ -92,6 +92,11 @@ public class XmlValueProvider implements CatalogValueProvider {
 			}
 		}
 	}
+
+	@Override
+	public TYPE getType() {
+		return TYPE.LIST;
+	}
 	
 
 }
