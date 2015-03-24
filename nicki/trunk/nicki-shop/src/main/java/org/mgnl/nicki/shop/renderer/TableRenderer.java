@@ -31,6 +31,7 @@ import org.mgnl.nicki.shop.base.inventory.Inventory.SOURCE;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle.STATUS;
 import org.mgnl.nicki.shop.base.objects.MultipleInstancesCatalogArticle;
+import org.mgnl.nicki.shop.base.objects.CatalogValueProvider.TYPE;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 
 import com.vaadin.data.Item;
@@ -132,15 +133,37 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 	}
 	
 	protected void addInstance(CatalogArticle catalogArticle) {
-		EnterSpecifierAsSelectDialog dialog = new EnterSpecifierAsSelectDialog("nicki.rights.specifier",
-				I18n.getText("nicki.rights.specifier.define.window.title"));
+		boolean isTextArea = false;
+		if (catalogArticle instanceof MultipleInstancesCatalogArticle) {
+			MultipleInstancesCatalogArticle micArticeCatalogArticle = (MultipleInstancesCatalogArticle) catalogArticle;
+			if (micArticeCatalogArticle.getValueProvider() != null
+					&& micArticeCatalogArticle.getValueProvider().getType() == TYPE.TEXT_AREA) {
+				isTextArea = true;
+			}
+		}
+		
 		NewSpecifiedArticleHandler handler = new NewSpecifiedArticleHandler(catalogArticle, this);
-		dialog.setHandler(handler);
-		dialog.init((MultipleInstancesCatalogArticle) catalogArticle);
-		dialog.setWidth(440, Unit.PIXELS);
-		dialog.setHeight(500, Unit.PIXELS);
-		dialog.setModal(true);
-		UI.getCurrent().addWindow(dialog);		
+
+		if (isTextArea) {
+			EnterSpecifierAsTextAreaDialog dialog = new EnterSpecifierAsTextAreaDialog("nicki.rights.specifier",
+					I18n.getText("nicki.rights.specifier.define.window.title"));
+			dialog.setHandler(handler);
+			dialog.init((MultipleInstancesCatalogArticle) catalogArticle);
+			dialog.setWidth(600, Unit.PIXELS);
+			dialog.setHeight(560, Unit.PIXELS);
+			dialog.setModal(true);
+			UI.getCurrent().addWindow(dialog);
+			
+		} else {
+			EnterSpecifierAsSelectDialog dialog = new EnterSpecifierAsSelectDialog("nicki.rights.specifier",
+					I18n.getText("nicki.rights.specifier.define.window.title"));
+			dialog.setHandler(handler);
+			dialog.init((MultipleInstancesCatalogArticle) catalogArticle);
+			dialog.setWidth(440, Unit.PIXELS);
+			dialog.setHeight(500, Unit.PIXELS);
+			dialog.setModal(true);
+			UI.getCurrent().addWindow(dialog);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
