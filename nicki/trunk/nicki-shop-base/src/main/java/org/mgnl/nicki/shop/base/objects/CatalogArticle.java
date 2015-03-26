@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 public class CatalogArticle extends CatalogObject {
 	private static final Logger LOG = LoggerFactory.getLogger(CatalogArticle.class);
 	private static final long serialVersionUID = 2340086861870174607L;
-	public static final String TYPE_ARTICLE = "ARTICLE";
+	public static enum TYPE {RESOURCE, ROLE, ARTICLE};
 	public static final String CAPTION_START = "nicki.rights.attribute.dateFrom.label";
 	public static final String CAPTION_END = "nicki.rights.attribute.dateTo.label";
 
@@ -76,8 +76,8 @@ public class CatalogArticle extends CatalogObject {
 		return false;
 	}
 	
-	public String getArticleType() {
-		return TYPE_ARTICLE;
+	public TYPE getArticleType() {
+		return TYPE.ARTICLE;
 	}
 	
 	public String getArticlePath() {

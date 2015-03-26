@@ -98,5 +98,10 @@ public class ResourceCatalogArticle extends CatalogArticle {
 		return getAttribute(ATTRIBUTE_RESOURCE);
 	}
 
+	@Override
+	public TYPE getArticleType() {
+		return TYPE.RESOURCE;
+	}
+
 	
 }
