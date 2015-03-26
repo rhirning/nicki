@@ -43,10 +43,11 @@ public class CartManager {
 	}
 	
 	public void updateCarts(String personDn, String permissionDn, String specifier, ACTION cartEntryAction,
-			CartEntry.CART_ENTRY_STATUS oldCartEntryStatus, CartEntry.CART_ENTRY_STATUS newCartEntryStatus) {
+			CartEntry.CART_ENTRY_STATUS oldCartEntryStatus, CartEntry.CART_ENTRY_STATUS newCartEntryStatus,
+			String comment) {
 		for (Cart cart : getCarts(personDn, permissionDn, specifier, cartEntryAction, oldCartEntryStatus)) {
 			cart.updateStatus(permissionDn, specifier, cartEntryAction,
-					oldCartEntryStatus, newCartEntryStatus);
+					oldCartEntryStatus, newCartEntryStatus, comment);
 		}
 		
 		

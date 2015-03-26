@@ -231,8 +231,11 @@ public class CartEntry {
 		return true;
 	}
 
-	public void updateStatus(CART_ENTRY_STATUS newCartEntryStatus) {
+	public void updateStatus(CART_ENTRY_STATUS newCartEntryStatus, String comment) {
 		setStatus(newCartEntryStatus);
+		if (StringUtils.isNotBlank(comment)) {
+			setComment(comment);
+		}
 	}
 
 	public CART_ENTRY_STATUS getStatus() {
