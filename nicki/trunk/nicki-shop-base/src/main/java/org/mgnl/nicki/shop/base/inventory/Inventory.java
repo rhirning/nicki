@@ -285,8 +285,9 @@ public class Inventory implements Serializable {
 		}
 		if (hasChanged()) {
 			Cart cart = getCart(source, Cart.CART_STATUS.TEMP);
-			cart.create();
-			return cart;
+			Cart newCart = (Cart) cart.create();
+			oldCart = newCart;
+			return newCart;
 		}
 		return null;
 	}

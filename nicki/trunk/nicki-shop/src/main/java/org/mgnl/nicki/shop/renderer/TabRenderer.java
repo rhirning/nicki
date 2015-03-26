@@ -97,7 +97,7 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 	private void addPageTab(TabSheet tabSheet, ShopPage page) {
 		ShopRenderer renderer = page.getRenderer();
 		
-		Tab tab = tabSheet.addTab(renderer.render(page, getInventory()), page.getLabel(), Icon.SETTINGS.getResource());
+		Tab tab = tabSheet.addTab(renderer.render(page, getInventory()), page.getLabel());
 		((AbstractComponent)tab.getComponent()).setData(renderer);
 		((AbstractComponent)tab.getComponent()).setHeight("100%");
 		tabSheet.addSelectedTabChangeListener(new TabSheet.SelectedTabChangeListener() {

@@ -71,18 +71,20 @@ public class InventoryViewer extends CustomComponent {
 		inventoryEntries.addContainerProperty("status", String.class, "");
 		inventoryEntries.setColumnWidth("status", 100);
 		inventoryEntries.setColumnHeader("status", "Status");
-		inventoryEntries.addContainerProperty("article", String.class, "");
-		inventoryEntries.setColumnWidth("article", 250);
-		inventoryEntries.setColumnHeader("article", "Artikel");
 		inventoryEntries.addContainerProperty("start", String.class, "");
 		inventoryEntries.setColumnWidth("start", 70);
 		inventoryEntries.setColumnHeader("start", I18n.getText(CatalogArticle.CAPTION_START));
+		inventoryEntries.addContainerProperty("article", String.class, "");
+		inventoryEntries.setColumnWidth("article", -1);
+		inventoryEntries.setColumnHeader("article", "Artikel");
+		/*
 		inventoryEntries.addContainerProperty("end", String.class, "");
 		inventoryEntries.setColumnWidth("end", 70);
 		inventoryEntries.setColumnHeader("end", I18n.getText(CatalogArticle.CAPTION_END));
 		inventoryEntries.addContainerProperty("attributes", String.class, "");
 		inventoryEntries.setColumnWidth("attributes", 420);
 		inventoryEntries.setColumnHeader("attributes", "Attribute");
+		*/
 		for (String key : inventory.getMultiArticles().keySet()) {
 			Map<String, InventoryArticle> list = inventory.getMultiArticles().get(key);
 			for (String specifier : list.keySet()) {
@@ -95,6 +97,7 @@ public class InventoryViewer extends CustomComponent {
 				item.getItemProperty("status").setValue(status);
 				item.getItemProperty("article").setValue(iArticle.getArticle().getDisplayName()
 						+ ": " + iArticle.getSpecifier());
+				/*
 				if (iArticle.getStart() != null) {
 					item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(iArticle.getStart()));
 				}
@@ -102,6 +105,7 @@ public class InventoryViewer extends CustomComponent {
 					item.getItemProperty("end").setValue(DataHelper.formatDisplayDay.format(iArticle.getEnd()));
 				}
 				item.getItemProperty("attributes").setValue(iArticle.getAttributes().toString());
+				*/
 			}
 		}
 		for (String key : inventory.getArticles().keySet()) {
@@ -120,10 +124,12 @@ public class InventoryViewer extends CustomComponent {
 			if (iArticle.getStart() != null) {
 				item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(iArticle.getStart()));
 			}
+			/*
 			if (iArticle.getEnd() != null) {
 				item.getItemProperty("end").setValue(DataHelper.formatDisplayDay.format(iArticle.getEnd()));
 			}
 			item.getItemProperty("attributes").setValue(iArticle.getAttributes().toString());
+			*/
 		}
 	}
 
