@@ -143,7 +143,8 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 							setCart(getInventory().remember("shop", getCart()));
 							Notification.show(I18n.getText(parent.getI18nBase() + ".remember.success"),
 									Notification.Type.HUMANIZED_MESSAGE);
-							parent.closeShop();
+							//parent.closeShop();
+							parent.render(cart);
 						}
 					} catch (Exception e) {
 						Notification.show(I18n.getText(parent.getI18nBase() + ".remember.error"),

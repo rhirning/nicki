@@ -36,7 +36,9 @@ import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -133,16 +135,16 @@ public class TwoTablesRenderer extends BaseShopRenderer implements ShopRenderer 
 		rightTable.setSelectable(true);
 		rightTable.setWidth("100%");
 		rightTable.setHeight("100%");
-		rightTable.addContainerProperty("title", String.class, "");
-		rightTable.setColumnWidth("title", 200);
+		rightTable.addContainerProperty("title", Component.class, "");
+		rightTable.setColumnWidth("title", -1);
 		rightTable.setColumnHeader("title", I18n.getText("nicki.rights.attribute.title.label"));
+		/*		
 		rightTable.addContainerProperty("dateFrom", PopupDateField.class, "");
 		rightTable.setColumnWidth("dateFrom", 100);
 		rightTable.setColumnHeader("dateFrom", I18n.getText(CatalogArticle.CAPTION_START));
-		
 		rightTable.addContainerProperty("attributes", Layout.class, "");
 		rightTable.setColumnHeader("attributes", I18n.getText("nicki.rights.attributes.label"));
-		
+*/		
 		rightContainer.addComponent(rightTable);
 		
 		
@@ -217,7 +219,9 @@ public class TwoTablesRenderer extends BaseShopRenderer implements ShopRenderer 
 	public Item addArticleToRight(InventoryArticle iArticle, STATUS status) {
 		CatalogArticle article = iArticle.getArticle();
 		Item item = rightTable.addItem(iArticle);
-		item.getItemProperty("title").setValue(article.getDisplayName());
+
+		Label label = new Label(article.getDisplayName());
+		item.getItemProperty("title").setValue(label);
 		showEntry(item, article, iArticle);
 
 		return item;
@@ -227,7 +231,9 @@ public class TwoTablesRenderer extends BaseShopRenderer implements ShopRenderer 
 	public Item addMultiArticleToRight(InventoryArticle iArticle, STATUS status) {
 		CatalogArticle article = iArticle.getArticle();
 		Item item = rightTable.addItem(iArticle);
-		item.getItemProperty("title").setValue(article.getDisplayName() + ": " + iArticle.getSpecifier());
+
+		Label label = new Label(article.getDisplayName() + ": " + iArticle.getSpecifier());
+		item.getItemProperty("title").setValue(label);
 		showEntry(item, article, iArticle);
 
 		return item;
@@ -242,8 +248,8 @@ public class TwoTablesRenderer extends BaseShopRenderer implements ShopRenderer 
 		/*
 		item.getItemProperty("dateFrom").setValue(null);
 		item.getItemProperty("dateTo").setValue(null);
-		*/
 		item.getItemProperty("attributes").setValue(null);
+		*/
 //		removeExcept(parent, event.getButton());
 	}
 
@@ -271,8 +277,8 @@ public class TwoTablesRenderer extends BaseShopRenderer implements ShopRenderer 
 		/*
 		item.getItemProperty("dateFrom").setValue(getStartDateComponent(inventoryArticle, enabled, start));
 		item.getItemProperty("dateTo").setValue(getEndDateComponent(inventoryArticle, toEnabled, end));
-		*/
 		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article, inventoryArticle, enabled, source));
+		*/
 //		showArticleAttributes(parent);
 	}
 	

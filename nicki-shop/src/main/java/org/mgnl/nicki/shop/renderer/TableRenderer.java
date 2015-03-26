@@ -41,6 +41,7 @@ import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
@@ -75,8 +76,8 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 			table.addContainerProperty("checkbox", Component.class, "");
 			table.setColumnWidth("checkbox", 64);
 			table.setColumnHeader("checkbox", "");
-			table.addContainerProperty("title", String.class, "");
-			table.setColumnWidth("title", 200);
+			table.addContainerProperty("title", Component.class, "");
+//			table.setColumnWidth("title", 200);
 			table.setColumnHeader("title", I18n.getText("nicki.rights.attribute.title.label"));
 			/*
 			table.addContainerProperty("dateFrom", PopupDateField.class, "");
@@ -85,10 +86,10 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 			table.addContainerProperty("dateTo", PopupDateField.class, "");
 			table.setColumnWidth("dateTo", 100);
 			table.setColumnHeader("dateTo", I18n.getText(CatalogArticle.CAPTION_END));
-			*/
 			
 			table.addContainerProperty("attributes", Layout.class, "");
 			table.setColumnHeader("attributes", I18n.getText("nicki.rights.attributes.label"));
+			*/
 			
 		}
 		table.removeAllItems();
@@ -116,7 +117,8 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 
 				Item item = table.addItem(article);
 				if (item != null) {
-					item.getItemProperty("title").setValue(article.getDisplayName());
+					Label label = new Label(article.getDisplayName());
+					item.getItemProperty("title").setValue(label);
 					item.getItemProperty("checkbox").setValue(button);
 					
 			        Map<String, InventoryArticle> articleMap = getInventory().getArticles(article);
@@ -187,7 +189,8 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		checkBox.addValueChangeListener(new MulitCheckBoxChangeListener(getInventory(), iArticle, this));
 
 		Item item = table.addItem(iArticle);
-		item.getItemProperty("title").setValue(iArticle.getDisplayName());
+		Label label = new Label(iArticle.getDisplayName());
+		item.getItemProperty("title").setValue(label);
 		item.getItemProperty("checkbox").setValue(checkBox);
 		showEntry(item, article, iArticle);
 
@@ -213,7 +216,8 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		checkBox.addValueChangeListener(new CheckBoxChangeListener(getInventory(), article, this));
 
 		Item item = table.addItem(article);
-		item.getItemProperty("title").setValue(article.getDisplayName());
+		Label label = new Label(article.getDisplayName());
+		item.getItemProperty("title").setValue(label);
 		item.getItemProperty("checkbox").setValue(checkBox);
 
 		if (inventoryArticle != null) {
@@ -233,8 +237,8 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		/*
 		item.getItemProperty("dateFrom").setValue(null);
 		item.getItemProperty("dateTo").setValue(null);
-		*/
 		item.getItemProperty("attributes").setValue(null);
+		*/
 //		removeExcept(parent, event.getButton());
 	}
 
@@ -262,8 +266,8 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		/*
 		item.getItemProperty("dateFrom").setValue(getStartDateComponent(inventoryArticle, enabled, start));
 		item.getItemProperty("dateTo").setValue(getEndDateComponent(inventoryArticle, toEnabled, end));
-		*/
 		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article, inventoryArticle, enabled, source));
+		*/
 //		showArticleAttributes(parent);
 	}
 	

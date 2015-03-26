@@ -19,9 +19,12 @@
 */
 package org.mgnl.nicki.shop.core;
 
+import org.mgnl.nicki.shop.base.objects.Cart;
+
 public interface ShopParent {
 
 	void closeShop();
 	String getI18nBase();
+	void render(Cart cart);
 
 }

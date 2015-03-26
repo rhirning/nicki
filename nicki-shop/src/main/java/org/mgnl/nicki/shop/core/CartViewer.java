@@ -65,8 +65,9 @@ public class CartViewer extends CustomComponent {
 		cartEntries.setColumnWidth("action", 50);
 		cartEntries.setColumnHeader("action", "Aktion");
 		cartEntries.addContainerProperty("right", String.class, "");
-		cartEntries.setColumnWidth("right", 420);
+		cartEntries.setColumnWidth("right", -1);
 		cartEntries.setColumnHeader("right", "Artikel");
+		/*
 		cartEntries.addContainerProperty("start", String.class, "");
 		cartEntries.setColumnWidth("start", 70);
 		cartEntries.setColumnHeader("start", I18n.getText(CatalogArticle.CAPTION_START));
@@ -77,10 +78,12 @@ public class CartViewer extends CustomComponent {
 		cartEntries.addContainerProperty("attributes", String.class, "");
 		cartEntries.setColumnWidth("attributes", 420);
 		cartEntries.setColumnHeader("attributes", "attributes");
+		*/
 		for (CartEntry cartEntry : cart.getCartEntries()) {
 			Item item = cartEntries.addItem(cartEntry);
 			item.getItemProperty("right").setValue(cartEntry.getDisplayName());
-			item.getItemProperty("action").setValue(cartEntry.getAction().toString());	
+			item.getItemProperty("action").setValue(cartEntry.getAction().toString());
+			/*
 			if (cartEntry.getStart() != null) {
 				item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(cartEntry.getStart()));
 			}
@@ -88,6 +91,7 @@ public class CartViewer extends CustomComponent {
 				item.getItemProperty("end").setValue(DataHelper.formatDisplayDay.format(cartEntry.getEnd()));
 			}
 			item.getItemProperty("attributes").setValue(cartEntry.getAttributes().toString());
+			*/
 		}
 	}
 
