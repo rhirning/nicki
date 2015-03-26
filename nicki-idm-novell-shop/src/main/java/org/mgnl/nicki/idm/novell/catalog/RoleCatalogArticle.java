@@ -45,6 +45,7 @@ import org.mgnl.nicki.idm.novell.shop.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.shop.objects.Role;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
+import org.mgnl.nicki.shop.base.objects.CatalogArticle.TYPE;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.base.inventory.InventoryAttribute;
 
@@ -97,5 +98,12 @@ public class RoleCatalogArticle extends CatalogArticle {
 	public String getPermissionDn() {
 		return getAttribute(ATTRIBUTE_ROLE);
 	}
+	
+	@Override
+	public TYPE getArticleType() {
+		return TYPE.ROLE;
+	}
+
+
 
 }
