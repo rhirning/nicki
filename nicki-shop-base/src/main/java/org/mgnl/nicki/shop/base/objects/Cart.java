@@ -340,11 +340,11 @@ public class Cart extends BaseDynamicObject {
 	 */
 	public void updateStatus(String permissionDn, String specifier,
 			ACTION cartEntryAction, CART_ENTRY_STATUS oldCartEntryStatus,
-			CART_ENTRY_STATUS newCartEntryStatus) {
+			CART_ENTRY_STATUS newCartEntryStatus, String comment) {
 		boolean finished = true;
 		for (CartEntry cartEntry : cartentries) {
 			if (cartEntry.match(permissionDn, specifier, cartEntryAction, oldCartEntryStatus)) {
-				cartEntry.updateStatus(newCartEntryStatus);
+				cartEntry.updateStatus(newCartEntryStatus, comment);
 			}
 			finished = finished && (cartEntry.getStatus() == CART_ENTRY_STATUS.FINISHED ||
 					cartEntry.getStatus() == CART_ENTRY_STATUS.DENIED);
