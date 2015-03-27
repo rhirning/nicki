@@ -6,14 +6,14 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>3.43-SNAPSHOT</version>
+		<version>3.43</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-vaadin-base</artifactId>
-			<version>3.43-SNAPSHOT</version>
+			<version>3.43</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
