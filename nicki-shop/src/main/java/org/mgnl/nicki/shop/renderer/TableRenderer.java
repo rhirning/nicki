@@ -26,31 +26,31 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
+import org.mgnl.nicki.shop.renderer.BaseTableRenderer.ActionHandler;
+import org.mgnl.nicki.shop.renderer.BaseTableRenderer.ItemClickListener;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
 import org.mgnl.nicki.shop.base.inventory.Inventory.SOURCE;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle.STATUS;
 import org.mgnl.nicki.shop.base.objects.MultipleInstancesCatalogArticle;
-import org.mgnl.nicki.shop.base.objects.CatalogValueProvider.TYPE;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 
 import com.vaadin.data.Item;
+import com.vaadin.event.Action;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.Table;
 
 @SuppressWarnings("serial")
-public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
-	
+public class TableRenderer extends BaseTableRenderer implements ShopRenderer {
+
 	private ShopViewerComponent shopViewerComponent;
 	private Table table = null;
 
@@ -76,9 +76,10 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 			table.addContainerProperty("checkbox", Component.class, "");
 			table.setColumnWidth("checkbox", 64);
 			table.setColumnHeader("checkbox", "");
-			table.addContainerProperty("title", Component.class, "");
+			table.addContainerProperty("title", String.class, "");
 //			table.setColumnWidth("title", 200);
 			table.setColumnHeader("title", I18n.getText("nicki.rights.attribute.title.label"));
+			
 			/*
 			table.addContainerProperty("dateFrom", PopupDateField.class, "");
 			table.setColumnWidth("dateFrom", 100);
@@ -90,7 +91,10 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 			table.addContainerProperty("attributes", Layout.class, "");
 			table.setColumnHeader("attributes", I18n.getText("nicki.rights.attributes.label"));
 			*/
-			
+
+			//table.addActionHandler(new ActionHandler());
+			table.addItemClickListener(new ItemClickListener());
+
 		}
 		table.removeAllItems();
 		// add articles to table
@@ -117,8 +121,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 
 				Item item = table.addItem(article);
 				if (item != null) {
-					Label label = new Label(article.getDisplayName());
-					item.getItemProperty("title").setValue(label);
+					item.getItemProperty("title").setValue(article.getDisplayName());
 					item.getItemProperty("checkbox").setValue(button);
 					
 			        Map<String, InventoryArticle> articleMap = getInventory().getArticles(article);
@@ -132,21 +135,14 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 			}
 		}
 		setInit(false);
+
 	}
-	
+
 	protected void addInstance(CatalogArticle catalogArticle) {
-		boolean isTextArea = false;
-		if (catalogArticle instanceof MultipleInstancesCatalogArticle) {
-			MultipleInstancesCatalogArticle micArticeCatalogArticle = (MultipleInstancesCatalogArticle) catalogArticle;
-			if (micArticeCatalogArticle.getValueProvider() != null
-					&& micArticeCatalogArticle.getValueProvider().getType() == TYPE.TEXT_AREA) {
-				isTextArea = true;
-			}
-		}
 		
 		NewSpecifiedArticleHandler handler = new NewSpecifiedArticleHandler(catalogArticle, this);
 
-		if (isTextArea) {
+		if (isTextArea(catalogArticle)) {
 			EnterSpecifierAsTextAreaDialog dialog = new EnterSpecifierAsTextAreaDialog("nicki.rights.specifier",
 					I18n.getText("nicki.rights.specifier.define.window.title"));
 			dialog.setHandler(handler);
@@ -189,8 +185,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		checkBox.addValueChangeListener(new MulitCheckBoxChangeListener(getInventory(), iArticle, this));
 
 		Item item = table.addItem(iArticle);
-		Label label = new Label(iArticle.getDisplayName());
-		item.getItemProperty("title").setValue(label);
+		item.getItemProperty("title").setValue(iArticle.getDisplayName());
 		item.getItemProperty("checkbox").setValue(checkBox);
 		showEntry(item, article, iArticle);
 
@@ -216,8 +211,7 @@ public class TableRenderer extends BaseShopRenderer implements ShopRenderer {
 		checkBox.addValueChangeListener(new CheckBoxChangeListener(getInventory(), article, this));
 
 		Item item = table.addItem(article);
-		Label label = new Label(article.getDisplayName());
-		item.getItemProperty("title").setValue(label);
+		item.getItemProperty("title").setValue(article.getDisplayName());
 		item.getItemProperty("checkbox").setValue(checkBox);
 
 		if (inventoryArticle != null) {
