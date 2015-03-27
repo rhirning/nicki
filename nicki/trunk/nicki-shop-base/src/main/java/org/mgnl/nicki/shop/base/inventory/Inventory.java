@@ -411,4 +411,15 @@ public class Inventory implements Serializable {
 		this.cartPath = cartPath;
 	}
 
+	public void modifyArticle(CatalogArticle catalogArticle, 
+			String oldSpecifier, String newSpecifier) {
+		InventoryArticle iArticle = getInventoryArticle(catalogArticle, oldSpecifier);
+		if (iArticle != null) {
+			if (iArticle.getStatus() == STATUS.NEW) {
+				removeArticle(catalogArticle.getPath(), oldSpecifier);
+				addArticle(catalogArticle, newSpecifier);
+			}
+		}
+	}
+
 }

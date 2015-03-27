@@ -123,11 +123,10 @@ public class XmlHelper implements java.io.Serializable {
 			xml = "";
 		}
 
-		InputStream is = new ByteArrayInputStream(xml.getBytes());
 
 		Document document = null;
 		try {
-
+			InputStream is = new ByteArrayInputStream(xml.getBytes("UTF-8"));
 			document = getDocBuilder().parse(is);
 
 		} catch (Exception ex) {

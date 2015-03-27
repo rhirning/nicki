@@ -32,6 +32,7 @@ import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle.STATUS;
 import org.mgnl.nicki.shop.base.objects.MultipleInstancesCatalogArticle;
 import com.vaadin.data.Item;
+import com.vaadin.event.Action;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.AbstractOrderedLayout;
@@ -39,16 +40,13 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Layout;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
-public class TwoTablesRenderer extends BaseShopRenderer implements ShopRenderer {
-	private static int MAX_TABLE_SIZE = 10;
+public class TwoTablesRenderer extends BaseTableRenderer implements ShopRenderer {
 	
 	private ShopViewerComponent shopViewerComponent;
 	private HorizontalLayout layout;
@@ -145,11 +143,13 @@ public class TwoTablesRenderer extends BaseShopRenderer implements ShopRenderer 
 		rightTable.addContainerProperty("attributes", Layout.class, "");
 		rightTable.setColumnHeader("attributes", I18n.getText("nicki.rights.attributes.label"));
 */		
+		//rightTable.addActionHandler(new ActionHandler());
+		rightTable.addItemClickListener(new ItemClickListener());
 		rightContainer.addComponent(rightTable);
 		
 		
 
-	}
+	}	
 
 	public void render() {
 		renderLeft();
