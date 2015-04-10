@@ -20,25 +20,14 @@
 package org.mgnl.nicki.shop.renderer;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.shop.attributes.AttributeComponent;
-import org.mgnl.nicki.shop.attributes.AttributeComponentFactory;
-import org.mgnl.nicki.shop.attributes.LabelComponent;
-import org.mgnl.nicki.shop.base.objects.CatalogArticle;
-import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
-import org.mgnl.nicki.shop.inventory.EndInputListener;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
-import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
-import org.mgnl.nicki.shop.inventory.StartInputListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
@@ -53,70 +42,6 @@ public abstract class BaseShopRenderer implements ShopRenderer {
 	private ShopRenderer parentRenderer;
 	private boolean init;
 	
-	protected Component getAttributeComponent(CatalogArticle article, InventoryArticle inventoryArticle, CatalogArticleAttribute articleAttribute, boolean enabled) {
-		try {
-			AttributeComponent<?> attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
-			attributeComponent.setEnabled(enabled);
-			return attributeComponent.getInstance(inventory.getUser(), inventory.getPerson(),
-					inventoryArticle, articleAttribute);
-		} catch (Exception e) {
-			LOG.error("Could not create Instance", e);
-			return new LabelComponent().getInstance(inventory.getUser(), inventory.getPerson(),
-					inventoryArticle, articleAttribute);
-		}
-	}
-
-	
-	@SuppressWarnings("unchecked")
-	protected Component getAttributeComponent(CatalogArticle article, CatalogArticleAttribute articleAttribute, boolean enabled, Object value) {
-		try {
-			AttributeComponent<?> attributeComponent = AttributeComponentFactory.getAttributeComponent(articleAttribute.getType());
-			try {
-				((AttributeComponent<Date>)attributeComponent).setValue((Date)value);
-			} catch (Exception e) {
-				((AttributeComponent<String>)attributeComponent).setValue((String)value);
-			}
-			inventory.getInventoryArticle(article).setValue(articleAttribute, value);
-			attributeComponent.setEnabled(enabled);
-			return attributeComponent.getInstance(getInventory().getUser(), getInventory().getPerson(),
-					getInventory().getInventoryArticle(article), articleAttribute);
-		} catch (Exception e) {
-			LOG.error("Error", e);
-			return new LabelComponent().getInstance(getInventory().getUser(), getInventory().getPerson(),
-					getInventory().getInventoryArticle(article), articleAttribute);
-		}
-	}
-	
-	
-	protected Component getStartDateComponent(InventoryArticle inventoryArticle, boolean enabled, Date start) {
-		try {
-			AttributeComponent<Date> attributeComponent = AttributeComponentFactory.getAttributeComponent("DATE");
-			attributeComponent.setValue(start);
-			inventoryArticle.setStart(start);
-			attributeComponent.setEnabled(enabled);
-			ValueChangeListener listener = new StartInputListener(inventoryArticle);
-			return attributeComponent.getInstance(I18n.getText(CatalogArticle.CAPTION_START), start, listener);
-		} catch (Exception e) {
-			LOG.error("Error", e);
-			// TODO: convert date
-			return new LabelComponent().getInstance(I18n.getText(CatalogArticle.CAPTION_START), start.toString(), null);
-		}
-	}
-
-	protected Component getEndDateComponent(InventoryArticle inventoryArticle, boolean enabled, Date end) {
-		try {
-			AttributeComponent<Date> attributeComponent = AttributeComponentFactory.getAttributeComponent("DATE");
-			attributeComponent.setValue(end);
-			inventoryArticle.setEnd(end);
-			attributeComponent.setEnabled(enabled);
-			ValueChangeListener listener = new EndInputListener(inventoryArticle);
-			return attributeComponent.getInstance(I18n.getText(CatalogArticle.CAPTION_END), end, listener);
-		} catch (Exception e) {
-			LOG.error("Error", e);
-			// TODO: convert date
-			return new LabelComponent().getInstance(I18n.getText(CatalogArticle.CAPTION_END), end.toString(), null);
-		}
-	}
 
 	protected void removeExcept(Layout parent, Component button) {
 		List<Component> toBeRemoved = new ArrayList<Component>();

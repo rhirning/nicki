@@ -19,9 +19,11 @@
 */
 package org.mgnl.nicki.shop.renderer;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
@@ -76,22 +78,12 @@ public class TableRenderer extends BaseTableRenderer implements ShopRenderer {
 			table.addContainerProperty("checkbox", Component.class, "");
 			table.setColumnWidth("checkbox", 64);
 			table.setColumnHeader("checkbox", "");
+			table.addContainerProperty("start", String.class, "");
+			table.setColumnWidth("start", 70);
+			table.setColumnHeader("start", I18n.getText(CatalogArticle.CAPTION_START));
 			table.addContainerProperty("title", String.class, "");
 //			table.setColumnWidth("title", 200);
 			table.setColumnHeader("title", I18n.getText("nicki.rights.attribute.title.label"));
-			
-			/*
-			table.addContainerProperty("dateFrom", PopupDateField.class, "");
-			table.setColumnWidth("dateFrom", 100);
-			table.setColumnHeader("dateFrom", I18n.getText(CatalogArticle.CAPTION_START));
-			table.addContainerProperty("dateTo", PopupDateField.class, "");
-			table.setColumnWidth("dateTo", 100);
-			table.setColumnHeader("dateTo", I18n.getText(CatalogArticle.CAPTION_END));
-			
-			table.addContainerProperty("attributes", Layout.class, "");
-			table.setColumnHeader("attributes", I18n.getText("nicki.rights.attributes.label"));
-			*/
-
 			//table.addActionHandler(new ActionHandler());
 			table.addItemClickListener(new ItemClickListener());
 
@@ -176,18 +168,17 @@ public class TableRenderer extends BaseTableRenderer implements ShopRenderer {
 			checkBox.setDescription(article.getDescription());
 		}
 		checkBox.setValue(true);
-		if (status == STATUS.NEW) {
-			checkBox.setEnabled(true);
-		} else {
+		if (iArticle.isReadOnly()) {
 			checkBox.setEnabled(false);
+		} else {
+			checkBox.addValueChangeListener(new MulitCheckBoxChangeListener(getInventory(), iArticle, this));
 		}
-		
-		checkBox.addValueChangeListener(new MulitCheckBoxChangeListener(getInventory(), iArticle, this));
-
 		Item item = table.addItem(iArticle);
 		item.getItemProperty("title").setValue(iArticle.getDisplayName());
 		item.getItemProperty("checkbox").setValue(checkBox);
-		showEntry(item, article, iArticle);
+		if (iArticle.getStart() != null) {
+			item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(iArticle.getStart()));
+		}
 
 		return item;
 	}
@@ -215,66 +206,24 @@ public class TableRenderer extends BaseTableRenderer implements ShopRenderer {
 		item.getItemProperty("checkbox").setValue(checkBox);
 
 		if (inventoryArticle != null) {
-			checkBox.setValue(true);
+			if (inventoryArticle.getStart() != null) {
+				item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(inventoryArticle.getStart()));
+			}
+			if (inventoryArticle.getStatus() != InventoryArticle.STATUS.DELETED) {
+				checkBox.setValue(true);
+			}
+			if (inventoryArticle.isReadOnly()) {
+				checkBox.setEnabled(false);
+			}
+			/*
 			if (inventoryArticle.getStatus() == STATUS.NEW) {
 				checkBox.setEnabled(true);
 			} else {
 				checkBox.setEnabled(false);
 			}
-			showEntry(item, article, inventoryArticle);
+			*/
 		}
 		return item;
-	}
-
-	@SuppressWarnings("unchecked")
-	protected void hideEntry(Item item) {
-		/*
-		item.getItemProperty("dateFrom").setValue(null);
-		item.getItemProperty("dateTo").setValue(null);
-		item.getItemProperty("attributes").setValue(null);
-		*/
-//		removeExcept(parent, event.getButton());
-	}
-
-	@SuppressWarnings("unchecked")
-	public void showEntry(Item item, CatalogArticle article, InventoryArticle inventoryArticle) {
-		SOURCE source = SOURCE.SHOP;
-		/*
-		Date start = new Date();
-		Date end = null;
-		*/
-		boolean enabled = true;
-		boolean toEnabled = true;
-		if (inventoryArticle != null && inventoryArticle.getStatus() != STATUS.NEW) {
-			/*
-			start = inventoryArticle.getStart();
-			end = inventoryArticle.getEnd();
-			*/
-			enabled = false;
-			source = inventoryArticle.getSource();
-			if (source == SOURCE.RULE) {
-				toEnabled = false;
-			}
-		}
-
-		/*
-		item.getItemProperty("dateFrom").setValue(getStartDateComponent(inventoryArticle, enabled, start));
-		item.getItemProperty("dateTo").setValue(getEndDateComponent(inventoryArticle, toEnabled, end));
-		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article, inventoryArticle, enabled, source));
-		*/
-//		showArticleAttributes(parent);
-	}
-	
-
-	private AbstractOrderedLayout getVerticalArticleAttributes(CatalogArticle article, InventoryArticle inventoryArticle, boolean provisioned, SOURCE source) {
-		AbstractOrderedLayout attrLayout = new VerticalLayout();
-		if (article.hasAttributes()) {
-			for (CatalogArticleAttribute pageAttribute : article.getAllAttributes()) {
-				boolean enabled = true;
-				attrLayout.addComponent(getAttributeComponent(article, inventoryArticle, pageAttribute, enabled));
-			}
-		}
-		return attrLayout;
 	}
 
 	public Table getTable() {

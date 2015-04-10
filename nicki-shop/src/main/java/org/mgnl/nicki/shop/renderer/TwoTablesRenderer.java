@@ -24,7 +24,6 @@ import java.util.Map;
 
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
-import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
 import org.mgnl.nicki.shop.base.inventory.Inventory.SOURCE;
@@ -280,18 +279,6 @@ public class TwoTablesRenderer extends BaseTableRenderer implements ShopRenderer
 		item.getItemProperty("attributes").setValue(getVerticalArticleAttributes(article, inventoryArticle, enabled, source));
 		*/
 //		showArticleAttributes(parent);
-	}
-	
-
-	private AbstractOrderedLayout getVerticalArticleAttributes(CatalogArticle article, InventoryArticle inventoryArticle, boolean provisioned, SOURCE source) {
-		AbstractOrderedLayout attrLayout = new VerticalLayout();
-		if (article.hasAttributes()) {
-			for (CatalogArticleAttribute pageAttribute : article.getAllAttributes()) {
-				boolean enabled = true;
-				attrLayout.addComponent(getAttributeComponent(article, inventoryArticle, pageAttribute, enabled));
-			}
-		}
-		return attrLayout;
 	}
 
 	public Table getTable() {

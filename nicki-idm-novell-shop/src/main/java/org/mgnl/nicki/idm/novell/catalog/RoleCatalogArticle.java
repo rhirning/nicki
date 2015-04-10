@@ -34,8 +34,6 @@ package org.mgnl.nicki.idm.novell.catalog;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
@@ -43,11 +41,8 @@ import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.idm.novell.shop.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.shop.objects.Role;
-import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
-import org.mgnl.nicki.shop.base.objects.CatalogArticle.TYPE;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
-import org.mgnl.nicki.shop.base.inventory.InventoryAttribute;
 
 @DynamicObject
 @ObjectClass("nickiRoleArticle")
@@ -64,24 +59,25 @@ public class RoleCatalogArticle extends CatalogArticle {
 	@Override
 	public List<InventoryArticle> getInventoryArticles(Person person) {
 		List<InventoryArticle> inventoryArticles = new ArrayList<InventoryArticle>();
-		List<Role> roles = ((IdmPerson)person).getRoles();
-		List<CatalogArticle> articles = Catalog.getCatalog().getAllArticles();
-		for (CatalogArticle catalogArticle : articles) {
-			if (RoleCatalogArticle.class.isAssignableFrom(catalogArticle.getClass())) {
-				RoleCatalogArticle roleCatalogArticle = (RoleCatalogArticle) catalogArticle;
-				for (Role role : roles) {
-					if (roleCatalogArticle.contains(role)) {
-						String articleId = catalogArticle.getCatalogPath();
-						Map<String, String> attributeMap = person.getCatalogAttributes(articleId, null);
-						List<InventoryAttribute> attributes = getInventoryAttributes(catalogArticle, attributeMap);
-						inventoryArticles.add(new InventoryArticle(catalogArticle, role.getStartTime(),
-								role.getEndTime(), attributes));
-					}
-				}
+		for (Role role : ((IdmPerson)person).getRoles()) {
+			if (contains(role)) {
+				inventoryArticles.add(new InventoryArticle(this, role.getStartTime(),
+						role.getEndTime()));
 			}
 		}
+		for (Role role : ((IdmPerson)person).getGroupRoles()) {
+			if (contains(role)) {
+				InventoryArticle iArticle = (new InventoryArticle(this, role.getStartTime(),
+						role.getEndTime()));
+				iArticle.setReadOnly(true);
+				inventoryArticles.add(iArticle);
+			}
+		}
+
 		return inventoryArticles;
 	}
+	
+	
 
 	public boolean contains(Role role) {
 		if (getRole() != null && StringUtils.equalsIgnoreCase(role.getPath(), getRole().getPath())) {
@@ -104,6 +100,14 @@ public class RoleCatalogArticle extends CatalogArticle {
 		return TYPE.ROLE;
 	}
 
-
+	@Override
+	public boolean hasArticle(Person person) {
+		for (Role role : ((IdmPerson)person).getRoles()) {
+			if (contains(role)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 }

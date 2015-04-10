@@ -22,22 +22,14 @@ package org.mgnl.nicki.shop.base.objects;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
-import org.jdom.Document;
-import org.jdom.Element;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
-import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
-import org.mgnl.nicki.shop.base.inventory.InventoryAttribute;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -62,10 +54,7 @@ public class CatalogArticle extends CatalogObject {
 	private String[] category;
 	@DynamicAttribute(externalName="nickiRule", editorClass="org.mgnl.nicki.shop.rules.RuleAttributeField")
 	private String[] rule;
-	@DynamicAttribute(externalName="nickiAttributes")
-	private TextArea attributesField;
 	
-	private boolean readOnly = false;
 
 	public boolean hasArticle(Person person, CatalogArticle article) {
 		for (InventoryArticle inventoryArticle : getInventoryArticles(person)) {
@@ -73,6 +62,10 @@ public class CatalogArticle extends CatalogObject {
 				return true;
 			}
 		}
+		return false;
+	}
+
+	public boolean hasArticle(Person person) {
 		return false;
 	}
 	
@@ -83,52 +76,6 @@ public class CatalogArticle extends CatalogObject {
 	public String getArticlePath() {
 		return this.getPath();
 	}
-	
-	public void setAttributesField(String attributes) {
-		put("attributesField", attributes);
-	}
-	
-	public String getAttributesField() {
-		return getAttribute("attributesField");
-	}
-	
-	public List<CatalogArticleAttribute> getAttributes() {
-		List<CatalogArticleAttribute> list = new ArrayList<CatalogArticleAttribute>();
-		String attributes = getAttribute("attributesField");
-		if (StringUtils.isNotEmpty(attributes)) {
-			try {
-				Document document = XMLHelper.documentFromString(attributes);
-				@SuppressWarnings("unchecked")
-				List<Element> attrs = document.getRootElement().getChildren("attribute");
-				if (attrs != null) {
-					for (Element attributeElement : attrs) {
-						list.add(new CatalogArticleAttribute(attributeElement));
-					}
-				}
-			} catch (Exception e) {
-				LOG.error("Error", e);
-			}
-		}
-		return list;
-	}
-	
-	public List<CatalogArticleAttribute> getInheritedAttributes() {
-		try {
-			return getParent(CatalogPage.class).getAllAttributes();
-		} catch (Exception e) {
-			return new ArrayList<CatalogArticleAttribute>();
-		}
-	}
-	
-	public List<CatalogArticleAttribute> getAllAttributes() {
-		List<CatalogArticleAttribute> list = getAttributes();
-		list.addAll(getInheritedAttributes());
-		return list;
-	}
-
-	public boolean hasAttributes() {
-		return getAllAttributes().size() > 0;
-	}
 
 
 	public String toString() {
@@ -136,11 +83,6 @@ public class CatalogArticle extends CatalogObject {
 		sb.append("[catalogArticle name='").append(getName());
 		sb.append("' displayName='").append(getDisplayName());
 		sb.append("']");
-		if (hasAttributes()) {
-			for (CatalogArticleAttribute catalogArticleAttribute : getAllAttributes()) {
-				sb.append(catalogArticleAttribute.toString());
-			}
-		}
 		return sb.toString();
 	}
 
@@ -150,10 +92,6 @@ public class CatalogArticle extends CatalogObject {
 	
 	public String getCatalogPath() {
 		return getSlashPath(Catalog.getCatalog());
-	}
-
-	public String getAttributeId(String name) {
-		return getCatalogPath() + Catalog.PATH_SEPARATOR + name;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -199,29 +137,7 @@ public class CatalogArticle extends CatalogObject {
 	}
 
 	public List<InventoryArticle> getInventoryArticles(Person person) {
-		List<InventoryArticle> result = new ArrayList<InventoryArticle>();
-		// find all articles of that kind for person
-		List<AssignedArticle> assignedArticles = person.getAssignedArticles();
-		for (AssignedArticle assignedArticle : assignedArticles) {
-			CatalogArticle catalogArticle = Catalog.getCatalog().getArticle(assignedArticle.getArticleId());
-			Map<String, String> attributeMap = person.getCatalogAttributes(assignedArticle);
-			List<InventoryAttribute> attributes = getInventoryAttributes(catalogArticle, attributeMap);
-			result.add(new InventoryArticle(catalogArticle, assignedArticle, attributes));
-		}
-		return result;
-	}
-	
-	public List<InventoryAttribute> getInventoryAttributes(CatalogArticle article,
-			Map<String, String> attributeMap) {
-		List<InventoryAttribute> attributes = new ArrayList<InventoryAttribute>();
-		for (String key : attributeMap.keySet()) {
-			for (CatalogArticleAttribute attribute : article.getAllAttributes()) {
-				if (StringUtils.equals(key, attribute.getName())) {
-					attributes.add(new InventoryAttribute(article, attribute, attributeMap.get(key)));
-				}
-			}
-		}
-		return attributes;
+		return new ArrayList<InventoryArticle>();
 	}
 
 	public String getPermissionDn() {
@@ -232,14 +148,6 @@ public class CatalogArticle extends CatalogObject {
 	public void setDescription(String description) {
 
 		put("description", description);
-	}
-
-	public boolean isReadOnly() {
-		return readOnly;
-	}
-
-	public void setReadOnly(boolean readOnly) {
-		this.readOnly = readOnly;
 	}
 
 	@Override
