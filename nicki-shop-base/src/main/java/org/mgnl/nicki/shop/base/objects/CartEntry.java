@@ -19,14 +19,8 @@
 */
 package org.mgnl.nicki.shop.base.objects;
 
-import java.text.ParseException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.core.util.XmlHelper;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +37,6 @@ public class CartEntry {
     public static final String ATTR_ACTION = "action";
     public static final String ATTR_SPECIFIER = "specifier";
 	public static final String ATTR_NAME = "name";
-    public static final String ELEM_ATTRIBUTE = "attribute";
 
     private String comment;
     
@@ -76,8 +69,6 @@ public class CartEntry {
     private Date end = null;
     private String specifier;
     private CART_ENTRY_STATUS status = CART_ENTRY_STATUS.NEW;
-    
-    private Map<String, String> attributes = new HashMap<String, String>();
 
     public Element getNode(Document doc, String name) {
         
@@ -91,17 +82,6 @@ public class CartEntry {
 	        cartentry.setAttribute(ATTR_SPECIFIER, specifier);
 		}
         cartentry.setAttribute(ATTR_ACTION, getAction().toString().toLowerCase());
-
-        Map<String, String> attributes = getAttributes();
-        Element attr;
-
-        for (String key : attributes.keySet()) {
-            attr = doc.createElement(ELEM_ATTRIBUTE);
-            attr.setAttribute(ATTR_NAME, key);
-            attr.setTextContent(attributes.get(key));
-
-            cartentry.appendChild(attr);
-        }
 
         return cartentry;
     }
@@ -134,9 +114,6 @@ public class CartEntry {
         if (StringUtils.isNotEmpty(node.getTextContent())) {
         	entry.setComment(node.getTextContent());
         }
-        for (Element element : XmlHelper.selectNodes(Element.class, node, ELEM_ATTRIBUTE)) {
-            entry.addAttribute(element.getAttribute(ATTR_NAME), element.getTextContent());
-        }
 
         return entry;
     }
@@ -165,26 +142,6 @@ public class CartEntry {
         this.action = action;
     }
 
-    public void setAttributes(Map<String, String> attributes) {
-        this.attributes = attributes;
-    }
-
-    public void addAttributes(Map<String, String> attributes) {
-        this.attributes.putAll(attributes);
-    }
-
-    public void addAttribute(String key, String value) {
-        attributes.put(key, value);
-    }
-
-    public String getAttribute(String key) {
-        return attributes.get(key);
-    }
-
-    public Map<String, String> getAttributes() {
-        return attributes;
-    }
-
     public void setStart(Date start) {
 		this.start = start;
 	}
@@ -204,8 +161,6 @@ public class CartEntry {
         sb.append(id);
         sb.append(", action=");
         sb.append(action.toString());
-        sb.append(", attributes=");
-        sb.append(attributes);
         sb.append("]");
 
         return sb.toString();
@@ -283,7 +238,7 @@ public class CartEntry {
 		return name;
 	}
 
-	private CatalogArticle getCatalogArticle() {
+	public CatalogArticle getCatalogArticle() {
 		return Catalog.getCatalog().getArticle(id);
 	}
 

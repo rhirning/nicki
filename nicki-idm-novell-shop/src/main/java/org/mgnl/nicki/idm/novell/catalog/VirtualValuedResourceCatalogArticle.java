@@ -33,19 +33,27 @@
 package org.mgnl.nicki.idm.novell.catalog;
 
 import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.idm.novell.shop.objects.Resource;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
+import org.mgnl.nicki.shop.base.objects.MultipleInstancesCatalogArticle;
 
-@SuppressWarnings("serial")
 @DynamicObject
-public class VirtualResourceCatalogArticle extends ResourceCatalogArticle {
+@ObjectClass("nickiValuedResourceArticle")
+public class VirtualValuedResourceCatalogArticle extends ValuedResourceCatalogArticle implements MultipleInstancesCatalogArticle {
+
+	private static final long serialVersionUID = -7208705030668378943L;
 	private Resource resource;
 	private CatalogPage page;
 
-	public VirtualResourceCatalogArticle(Resource resource, CatalogPage page) {
+	public VirtualValuedResourceCatalogArticle(Resource resource, CatalogPage page) {
 		this.resource = resource;
 		this.page = page;
+	}
+	
+	public boolean isMultiple() {
+		return true;
 	}
 
 	public Resource getResource() {
@@ -71,6 +79,4 @@ public class VirtualResourceCatalogArticle extends ResourceCatalogArticle {
 	public String getCatalogPath() {
 		return page.getCatalogPath() + Catalog.PATH_SEPARATOR + getName();
 	}
-
-
 }

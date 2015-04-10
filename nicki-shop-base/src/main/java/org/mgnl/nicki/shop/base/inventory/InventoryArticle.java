@@ -21,17 +21,11 @@ package org.mgnl.nicki.shop.base.inventory;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
-import org.mgnl.nicki.shop.base.attributes.AttributeComponentFactory;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
-import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.base.objects.CartEntry.ACTION;
 import org.mgnl.nicki.shop.base.inventory.Inventory.SOURCE;
 
@@ -48,11 +42,10 @@ public class InventoryArticle implements Serializable{
 	private Date orgEnd = null;
 	private String specifier = null;
 	private String comment = null;
-	private Map<String, InventoryAttribute> attributes = new HashMap<String, InventoryAttribute>();
+	private boolean readOnly = false;
 
 	public InventoryArticle(CatalogArticle catalogArticle) {
 		this.catalogArticle = catalogArticle;
-		addEmptyAttributes();
 		setStatus(STATUS.NEW);
 	}
 	
@@ -60,7 +53,6 @@ public class InventoryArticle implements Serializable{
 	public InventoryArticle(CatalogArticle catalogArticle, String specifier) {
 		this.catalogArticle = catalogArticle;
 		this.specifier = specifier;
-		addEmptyAttributes();
 		setStatus(STATUS.NEW);
 	}
 	
@@ -73,21 +65,8 @@ public class InventoryArticle implements Serializable{
 		return sb.toString();
 	}
 
-	private void addEmptyAttributes() {
-		for (CatalogArticleAttribute attribute : getArticle().getAllAttributes()) {
-			this.attributes.put(attribute.getName(), new InventoryAttribute(getArticle(), attribute, ""));
-		}
-	}
-
-	public InventoryArticle(CatalogArticle catalogArticle, Date start, Date end,
-			List<InventoryAttribute> attributes) {
+	public InventoryArticle(CatalogArticle catalogArticle, Date start, Date end) {
 		this.catalogArticle = catalogArticle;
-		addEmptyAttributes();
-		if (attributes != null) {
-			for (InventoryAttribute attribute : attributes) {
-				this.attributes.put(attribute.getName(), attribute);
-			}
-		}
 		this.start = start;
 		this.end = end;
 		this.orgEnd = end;
@@ -95,16 +74,9 @@ public class InventoryArticle implements Serializable{
 		originalStatus = STATUS.PROVISIONED;
 	}
 
-	public InventoryArticle(CatalogArticle catalogArticle, String specifier, Date start, Date end,
-			List<InventoryAttribute> attributes) {
+	public InventoryArticle(CatalogArticle catalogArticle, String specifier, Date start, Date end) {
 		this.catalogArticle = catalogArticle;
 		this.setSpecifier(specifier);
-		addEmptyAttributes();
-		if (attributes != null) {
-			for (InventoryAttribute attribute : attributes) {
-				this.attributes.put(attribute.getName(), attribute);
-			}
-		}
 		this.start = start;
 		this.end = end;
 		this.orgEnd = end;
@@ -113,16 +85,9 @@ public class InventoryArticle implements Serializable{
 	}
 	
 
-	public InventoryArticle(CatalogArticle catalogArticle, AssignedArticle assignedArticle,
-			List<InventoryAttribute> attributes) {
+	public InventoryArticle(CatalogArticle catalogArticle, AssignedArticle assignedArticle) {
 		this.catalogArticle = catalogArticle;
 		this.setSpecifier(assignedArticle.getSpecifier());
-		addEmptyAttributes();
-		if (attributes != null) {
-			for (InventoryAttribute attribute : attributes) {
-				this.attributes.put(attribute.getName(), attribute);
-			}
-		}
 		this.start = assignedArticle.getStart();
 		this.end = assignedArticle.getEnd();
 		this.orgEnd = end;
@@ -154,44 +119,11 @@ public class InventoryArticle implements Serializable{
 		sb.append(" start=").append(start);
 		sb.append(" end=").append(end);
 		sb.append(" status=").append(getStatus()).append("]");
-		for (String key : attributes.keySet()) {
-			sb.append("\n").append(attributes.get(key).toString());
-		}
 		return sb.toString();
 	}
 
 	public CatalogArticle getArticle() {
 		return catalogArticle;
-	}
-
-	public String getValue(CatalogArticleAttribute attribute) {
-		return getValue(attribute.getName());
-	}
-
-	public String getValue(String attributeName) {
-		InventoryAttribute iAttribute = attributes.get(attributeName);
-		return iAttribute.getValue();
-	}
-
-	public void setValue(CatalogArticleAttribute attribute, Object value) {
-		InventoryAttribute iAttribute = attributes.get(attribute.getName());
-		setValue(iAttribute, value);
-	}
-
-	private void setValue(InventoryAttribute iAttribute, Object value) {
-		CatalogArticleAttribute attribute = iAttribute.getAttribute();
-		String stringValue;
-		if (value instanceof String) {
-			stringValue = (String) value;
-		} else {
-			stringValue = AttributeComponentFactory.getAttributeComponent(attribute.getType()).getStringValue(value);
-		}
-		if (iAttribute != null) {
-			if (getStatus() == STATUS.PROVISIONED && !StringUtils.equals(stringValue, iAttribute.getOldValue())) {
-				setStatus(STATUS.MODIFIED);
-			}
-			attributes.get(attribute.getName()).setValue(stringValue);
-		}
 	}
 
 	public boolean hasChanged() {
@@ -227,10 +159,6 @@ public class InventoryArticle implements Serializable{
 			return STATUS.NEW;
 		}
 		return null;
-	}
-
-	public Map<String, InventoryAttribute> getAttributes() {
-		return attributes;
 	}
 
 	public void setStart(Date start) {
@@ -281,6 +209,16 @@ public class InventoryArticle implements Serializable{
 
 	public void setComment(String comment) {
 		this.comment = comment;
+	}
+
+
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+
+
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
 	}
 
 }
