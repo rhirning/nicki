@@ -34,8 +34,6 @@ package org.mgnl.nicki.idm.novell.catalog;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
@@ -43,10 +41,8 @@ import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.idm.novell.shop.objects.IdmPerson;
 import org.mgnl.nicki.idm.novell.shop.objects.Resource;
-import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
-import org.mgnl.nicki.shop.base.inventory.InventoryAttribute;
 
 @DynamicObject
 @ObjectClass("nickiResourceArticle")
@@ -63,21 +59,11 @@ public class ResourceCatalogArticle extends CatalogArticle {
 	@Override
 	public List<InventoryArticle> getInventoryArticles(Person person) {
 		List<InventoryArticle> inventoryArticles = new ArrayList<InventoryArticle>();
-		List<Resource> resources = ((IdmPerson)person).getResources();
-		List<CatalogArticle> articles = Catalog.getCatalog().getAllArticles();
-		for (CatalogArticle catalogArticle : articles) {
-			if (ResourceCatalogArticle.class.isAssignableFrom(catalogArticle.getClass())) {
-				ResourceCatalogArticle resourceCatalogArticle = (ResourceCatalogArticle) catalogArticle;
-				for (Resource resource : resources) {
-					if (resourceCatalogArticle.contains(resource)) {
-						String articleId = catalogArticle.getCatalogPath();
-						String specifier = resource.getParameter();
-						Map<String, String> attributeMap = person.getCatalogAttributes(articleId, specifier);
-						List<InventoryAttribute> attributes = getInventoryAttributes(catalogArticle, attributeMap);
-						inventoryArticles.add(new InventoryArticle(catalogArticle, resource.getStartTime(),
-								resource.getEndTime(), attributes));
-					}
-				}
+
+		for (Resource resource : ((IdmPerson)person).getResources()) {
+			if (contains(resource)) {
+				inventoryArticles.add(new InventoryArticle(this, resource.getStartTime(),
+						resource.getEndTime()));
 			}
 		}
 		return inventoryArticles;
@@ -101,6 +87,18 @@ public class ResourceCatalogArticle extends CatalogArticle {
 	@Override
 	public TYPE getArticleType() {
 		return TYPE.RESOURCE;
+	}
+	
+
+
+	@Override
+	public boolean hasArticle(Person person) {
+		for (Resource resource : ((IdmPerson)person).getResources()) {
+			if (contains(resource)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	

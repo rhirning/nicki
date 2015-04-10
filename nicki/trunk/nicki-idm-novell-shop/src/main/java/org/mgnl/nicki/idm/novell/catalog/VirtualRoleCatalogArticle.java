@@ -32,13 +32,9 @@
  */
 package org.mgnl.nicki.idm.novell.catalog;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.idm.novell.shop.objects.Role;
 import org.mgnl.nicki.shop.base.objects.Catalog;
-import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 
 @SuppressWarnings("serial")
@@ -50,21 +46,6 @@ public class VirtualRoleCatalogArticle extends RoleCatalogArticle {
 	public VirtualRoleCatalogArticle(Role role, CatalogPage page) {
 		this.role = role;
 		this.page = page;
-	}
-
-	@Override
-	public List<CatalogArticleAttribute> getAttributes() {
-		return new ArrayList<CatalogArticleAttribute>();
-	}
-
-	@Override
-	public List<CatalogArticleAttribute> getInheritedAttributes() {
-		return page.getAttributes();
-	}
-
-	@Override
-	public List<CatalogArticleAttribute> getAllAttributes() {
-		return getInheritedAttributes();
 	}
 
 	@Override

@@ -77,42 +77,28 @@ public class InventoryViewer extends CustomComponent {
 		inventoryEntries.addContainerProperty("article", String.class, "");
 		inventoryEntries.setColumnWidth("article", -1);
 		inventoryEntries.setColumnHeader("article", "Artikel");
-		/*
-		inventoryEntries.addContainerProperty("end", String.class, "");
-		inventoryEntries.setColumnWidth("end", 70);
-		inventoryEntries.setColumnHeader("end", I18n.getText(CatalogArticle.CAPTION_END));
-		inventoryEntries.addContainerProperty("attributes", String.class, "");
-		inventoryEntries.setColumnWidth("attributes", 420);
-		inventoryEntries.setColumnHeader("attributes", "Attribute");
-		*/
 		for (String key : inventory.getMultiArticles().keySet()) {
 			Map<String, InventoryArticle> list = inventory.getMultiArticles().get(key);
 			for (String specifier : list.keySet()) {
 				InventoryArticle iArticle = list.get(specifier);
 				Item item = inventoryEntries.addItem(iArticle);
 				String status = iArticle.getStatus().toString();
-				if (iArticle.getArticle().isReadOnly()) {
+				if (iArticle.isReadOnly()) {
 					status += ";R/O";
 				}
 				item.getItemProperty("status").setValue(status);
 				item.getItemProperty("article").setValue(iArticle.getArticle().getDisplayName()
 						+ ": " + iArticle.getSpecifier());
-				/*
 				if (iArticle.getStart() != null) {
 					item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(iArticle.getStart()));
 				}
-				if (iArticle.getEnd() != null) {
-					item.getItemProperty("end").setValue(DataHelper.formatDisplayDay.format(iArticle.getEnd()));
-				}
-				item.getItemProperty("attributes").setValue(iArticle.getAttributes().toString());
-				*/
 			}
 		}
 		for (String key : inventory.getArticles().keySet()) {
 			InventoryArticle iArticle = inventory.getArticles().get(key);
 			Item item = inventoryEntries.addItem(iArticle);
 			String status = iArticle.getStatus().toString();
-			if (iArticle.getArticle().isReadOnly()) {
+			if (iArticle.isReadOnly()) {
 				status += ";R/O";
 			}
 			item.getItemProperty("status").setValue(status);
@@ -124,12 +110,6 @@ public class InventoryViewer extends CustomComponent {
 			if (iArticle.getStart() != null) {
 				item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(iArticle.getStart()));
 			}
-			/*
-			if (iArticle.getEnd() != null) {
-				item.getItemProperty("end").setValue(DataHelper.formatDisplayDay.format(iArticle.getEnd()));
-			}
-			item.getItemProperty("attributes").setValue(iArticle.getAttributes().toString());
-			*/
 		}
 	}
 

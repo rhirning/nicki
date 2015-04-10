@@ -48,7 +48,9 @@ public class MulitCheckBoxChangeListener implements Property.ValueChangeListener
 	public void valueChange(ValueChangeEvent event) {
 		String checkedString = String.valueOf(event.getProperty().getValue());
 		boolean checked = DataHelper.booleanOf(checkedString);
-		if (!checked) {
+		if (checked) {
+			inventory.addArticle(inventoryArticle);
+		} else {
 			inventory.removeArticle(inventoryArticle);
 		}
 		renderer.handleChange();
