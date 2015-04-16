@@ -51,10 +51,6 @@ public class ResourceCatalogArticle extends CatalogArticle {
 	private static final long serialVersionUID = 3397169876567940029L;
 
 	public static final String ATTRIBUTE_RESOURCE = "resource";
-	
-	@DynamicReferenceAttribute(externalName="nickiResourceRef", foreignKey=Resource.class, reference=Resource.class,
-			baseProperty="nicki.resources.basedn")
-	private String resource;
 
 	@Override
 	public List<InventoryArticle> getInventoryArticles(Person person) {
@@ -76,8 +72,19 @@ public class ResourceCatalogArticle extends CatalogArticle {
 		return false;
 	}
 
+	
+	@DynamicReferenceAttribute(externalName="nickiResourceRef", foreignKey=Resource.class, reference=Resource.class,
+			baseProperty="nicki.resources.basedn")
 	public Resource getResource() {
 		return getForeignKeyObject(Resource.class, ATTRIBUTE_RESOURCE);
+	}
+
+	public Resource getRequestResource() {
+		return null;
+	}
+	
+	public boolean hasRequestResource() {
+		return null != getRequestResource();
 	}
 	
 	public String getPermissionDn() {
