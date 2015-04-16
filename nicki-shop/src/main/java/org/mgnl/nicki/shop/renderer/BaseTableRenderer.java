@@ -70,8 +70,8 @@ public abstract class BaseTableRenderer extends BaseShopRenderer implements Shop
 	public boolean isTextArea(CatalogArticle catalogArticle) {
 		if (catalogArticle instanceof MultipleInstancesCatalogArticle) {
 			MultipleInstancesCatalogArticle micArticeCatalogArticle = (MultipleInstancesCatalogArticle) catalogArticle;
-			if (micArticeCatalogArticle.getValueProvider() != null
-					&& micArticeCatalogArticle.getValueProvider().getType() == TYPE.TEXT_AREA) {
+			if (micArticeCatalogArticle.getCatalogValueProvider() != null
+					&& micArticeCatalogArticle.getCatalogValueProvider().getType() == TYPE.TEXT_AREA) {
 				return true;
 			}
 		}

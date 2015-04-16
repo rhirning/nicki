@@ -110,7 +110,7 @@ public class EnterSpecifierAsSelectDialog extends DialogBase implements NewItemH
 	}
 	
 	public void init(MultipleInstancesCatalogArticle catalogArticle) {
-		provider = catalogArticle.getValueProvider();
+		provider = catalogArticle.getCatalogValueProvider();
 		for (String value : provider.getEntries().keySet()) {
 			Item item = name.addItem(value);
 			name.setItemCaption(item, provider.getEntries().get(value));

@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
@@ -51,25 +52,27 @@ import org.mgnl.nicki.shop.base.objects.XmlValueProvider;
 public class ValuedResourceCatalogArticle extends ResourceCatalogArticle implements MultipleInstancesCatalogArticle {
 
 	private static final long serialVersionUID = -7208705030668378943L;
+	public static final String ATTRIBUTE_REQUEST_RESOURCE = "requestResource";
 	private CatalogValueProvider provider = null;
 
-	@DynamicAttribute(externalName="nickiProvider")
-	private String providerClass;	
 	@DynamicAttribute(externalName="nickiProviderData")
-	private String providerData;
+	public String getProviderData() {
+		return getAttribute("providerData");
+	}
 
 	public boolean isMultiple() {
 		return true;
 	}
 
-	public String getValueProviderClass() {
-		return getAttribute("providerClass");
+	@DynamicAttribute(externalName="nickiProvider")
+	public String getProvider() {
+		return getAttribute("provider");
 	}
 
-	public CatalogValueProvider getValueProvider() {
+	public CatalogValueProvider getCatalogValueProvider() {
 		if (provider == null) {
 			try {
-				provider = (CatalogValueProvider)Classes.newInstance(getValueProviderClass());
+				provider = (CatalogValueProvider)Classes.newInstance(getProvider());
 				provider.init(this);
 				return provider;
 			} catch (Exception e) {
@@ -102,6 +105,13 @@ public class ValuedResourceCatalogArticle extends ResourceCatalogArticle impleme
 			}
 		}
 		return false;
+	}
+
+	
+	@DynamicReferenceAttribute(externalName="nickiRequestResourceRef", foreignKey=Resource.class, reference=Resource.class,
+			baseProperty="nicki.resources.basedn")
+	public Resource getRequestResource() {
+		return getForeignKeyObject(Resource.class, ATTRIBUTE_REQUEST_RESOURCE);
 	}
 
 
