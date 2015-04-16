@@ -104,7 +104,7 @@ public class EnterSpecifierAsTextDialog extends DialogBase {
 	}
 	
 	public void init(MultipleInstancesCatalogArticle catalogArticle) {
-		provider = catalogArticle.getValueProvider();
+		provider = catalogArticle.getCatalogValueProvider();
 	}
 
 	private void applyI18n(String messageBase) {

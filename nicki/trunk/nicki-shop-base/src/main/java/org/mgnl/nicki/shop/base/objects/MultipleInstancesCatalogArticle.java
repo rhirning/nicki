@@ -23,6 +23,6 @@ public interface MultipleInstancesCatalogArticle {
 
 	boolean isMultiple();
 
-	CatalogValueProvider getValueProvider();
+	CatalogValueProvider getCatalogValueProvider();
 	
 }
