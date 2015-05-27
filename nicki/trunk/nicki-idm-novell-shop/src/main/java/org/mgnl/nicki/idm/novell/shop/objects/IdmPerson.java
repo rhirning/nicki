@@ -21,8 +21,10 @@ package org.mgnl.nicki.idm.novell.shop.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.AdditionalObjectClass;
@@ -84,10 +86,11 @@ public class IdmPerson extends Person implements Serializable {
 	public static final String ATTRIBUTE_MAIL = "mail";
 	public static final String ATTRIBUTE_PHONENUMBER = "phoneNumber";
 
-	private List<Group> assignedGroups = null;
-	private List<Role> assignedRoles = null;
-	private List<Role> groupRoles = null;
-	private List<Resource> assignedResources = null;
+	private Collection<Group> assignedGroups = null;
+	private Collection<Role> assignedRoles = null;
+	private Collection<Role> groupRoles = null;
+	private Collection<Role> containerRoles = null;
+	private Collection<Resource> assignedResources = null;
 	
 	@DynamicAttribute(externalName="nickiLastWorkingDay")
 	private String lastWorkingDay;
@@ -111,6 +114,8 @@ public class IdmPerson extends Person implements Serializable {
 	private String[] role;
 	@StructuredDynamicAttribute(externalName="nrfGroupRoles", foreignKey=Role.class)
 	private String[] groupRole;
+	@StructuredDynamicAttribute(externalName="nrfContainerRoles", foreignKey=Role.class)
+	private String[] containerRole;
 	@StructuredDynamicAttribute(externalName="nrfAssignedResources", foreignKey=Resource.class)
 	private String[] resource;
 	@DynamicAttribute(externalName="nickiBirthDate")
@@ -147,7 +152,7 @@ public class IdmPerson extends Person implements Serializable {
 
 
 
-	public List<Group> getGroups() {
+	public Collection<Group> getGroups() {
 		if (assignedGroups == null) {
 			assignedGroups = getForeignKeyObjects(Group.class, "memberOf");
 		}
@@ -403,13 +408,21 @@ public class IdmPerson extends Person implements Serializable {
 		put(ATTRIBUTE_OCCUPATION, value);
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Role> getRoles() {
+	public Collection<Role> getRoles() {
+		Set<Role> roles = new HashSet<Role>();
+		roles.addAll(getAssignedRoles());
+		roles.addAll(getGroupRoles());
+		roles.addAll(getContainerRoles());
+		return roles;
+	}
+
+		@SuppressWarnings("unchecked")
+		public Collection<Role> getAssignedRoles() {
 		if (assignedRoles == null) {
 			TemplateMethodModel method = (TemplateMethodModel) get("getRoles");
 			if (method != null) {
 				try {
-					assignedRoles = (List<Role>) method.exec(null);
+					assignedRoles = (Collection<Role>) method.exec(null);
 				} catch (TemplateModelException e) {
 					LOG.error("Error", e);
 					assignedRoles =  new ArrayList<Role>();
@@ -425,35 +438,45 @@ public class IdmPerson extends Person implements Serializable {
 		return assignedRoles;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<Role> getGroupRoles() {
-		if (groupRoles == null) {
-			TemplateMethodModel method = (TemplateMethodModel) get("getGroupRoles");
-			if (method != null) {
-				try {
-					groupRoles = (List<Role>) method.exec(null);
-				} catch (TemplateModelException e) {
-					LOG.error("Error", e);
-					groupRoles =  new ArrayList<Role>();
+		@SuppressWarnings("unchecked")
+		public Collection<Role> getGroupRoles() {
+			if (groupRoles == null) {
+				TemplateMethodModel method = (TemplateMethodModel) get("getGroupRoles");
+				if (method != null) {
+					try {
+						groupRoles = (Collection<Role>) method.exec(null);
+					} catch (TemplateModelException e) {
+						LOG.error("Error", e);
+						groupRoles =  new ArrayList<Role>();
+					}
 				}
 			}
-			for (AssignedArticle article : getAssignedArticles()) {
-				CatalogArticle catalogArticle = Catalog.getCatalog().getArticle(article.getArticleId());
-				if (catalogArticle.getClass().isAssignableFrom(RoleCatalogArticle.class)) {
-					groupRoles.add(((RoleCatalogArticle)catalogArticle).getRole());
-				}
-			}
+			return groupRoles;
 		}
-		return groupRoles;
-	}
+
+		@SuppressWarnings("unchecked")
+		public Collection<Role> getContainerRoles() {
+			if (containerRoles == null) {
+				TemplateMethodModel method = (TemplateMethodModel) get("getContainerRoles");
+				if (method != null) {
+					try {
+						containerRoles = (Collection<Role>) method.exec(null);
+					} catch (TemplateModelException e) {
+						LOG.error("Error", e);
+						containerRoles =  new ArrayList<Role>();
+					}
+				}
+			}
+			return containerRoles;
+		}
 
 	@SuppressWarnings("unchecked")
-	public List<Resource> getResources() {
+	public Collection<Resource> getResources() {
 		if (assignedResources == null) {
 			TemplateMethodModel method = (TemplateMethodModel) get("getResources");
 			if (method != null) {
 				try {
-					assignedResources = (List<Resource>) method.exec(null);
+					assignedResources = (Collection<Resource>) method.exec(null);
 				} catch (TemplateModelException e) {
 					LOG.error("Error", e);
 					assignedResources = new ArrayList<Resource>();

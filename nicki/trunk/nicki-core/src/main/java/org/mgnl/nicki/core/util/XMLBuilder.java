@@ -34,7 +34,7 @@ package org.mgnl.nicki.core.util;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.CDATA;
@@ -65,7 +65,7 @@ public class XMLBuilder {
 	}
 
 	private void addChildren(Element parentNode, DynamicObject parent) {
-		List<? extends DynamicObject> children = parent.getAllChildren();
+		Collection<? extends DynamicObject> children = parent.getAllChildren();
 		for (DynamicObject child : children) {
 			Element childNode = getElement(child);
 			parentNode.addContent(childNode);
@@ -89,7 +89,7 @@ public class XMLBuilder {
 				attributeNode.setAttribute("ldapName", dynamicAttribute.getExternalName());
 				if (dynamicAttribute.isMultiple()) {
 					@SuppressWarnings("unchecked")
-					List<Object> values = (List<Object>) dynamicObject.get(attributeName);
+					Collection<Object> values = (Collection<Object>) dynamicObject.get(attributeName);
 					if (values.size() > 0) {
 						newNode.addContent(attributeNode);
 						Element valuesNode = new Element("values");

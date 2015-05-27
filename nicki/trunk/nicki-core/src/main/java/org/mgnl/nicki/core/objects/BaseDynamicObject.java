@@ -34,7 +34,9 @@ package org.mgnl.nicki.core.objects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -67,7 +69,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	private DataModel model = null;
 	
 	// cached attributes
-	private Map<String, List<DynamicObject>> childObjects = null;
+	private Map<String, Collection<DynamicObject>> childObjects = null;
 
 	// Map with the attribute values
 	private Map<String, Object> map = new HashMap<String, Object>();
@@ -123,10 +125,10 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		}
 	}
 
-	public <T extends DynamicObject> List<T> getForeignKeyObjects(Class<T> classDefinition, String key) {
-		List<T> objects = new ArrayList<T>();
+	public <T extends DynamicObject> Collection<T> getForeignKeyObjects(Class<T> classDefinition, String key) {
+		Collection<T> objects = new ArrayList<T>();
 		@SuppressWarnings("unchecked")
-		List<String> foreignKeys = (List<String>) get(key);
+		Collection<String> foreignKeys = (Collection<String>) get(key);
 		if (foreignKeys != null) {
 			for (String path : foreignKeys) {
 				DynamicObject object = context.loadObject(classDefinition, path);
@@ -140,7 +142,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return objects;
 	}
 	
-	public <T extends DynamicObject> List<T>  getChildren(Class<T> classDefinition) {
+	public <T extends DynamicObject> Collection<T>  getChildren(Class<T> classDefinition) {
 		init();
 		return getContext().loadChildObjects(classDefinition, this, "");
 	}
@@ -444,12 +446,12 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return map;
 	}
 
-	protected Map<String, List<DynamicObject>> getChildObjects() {
+	protected Map<String, Collection<DynamicObject>> getChildObjects() {
 		return childObjects;
 	}
 
 	protected void initChildren() {
-		childObjects = new HashMap<String, List<DynamicObject>>();
+		childObjects = new HashMap<String, Collection<DynamicObject>>();
 	}
 
 	public void loadChildren() {
@@ -459,7 +461,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 			for (String key : getModel().getChildren().keySet()) {
 				ChildFilter filter = getModel().getChildren().get(key);
 				@SuppressWarnings("unchecked")
-				List<DynamicObject> list = (List<DynamicObject>) getContext().loadChildObjects(getPath(), filter);
+				Collection<DynamicObject> list = (Collection<DynamicObject>) getContext().loadChildObjects(getPath(), filter);
 				if (list != null) {
 					getChildObjects().put(key, list);
 				}
@@ -471,14 +473,14 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		this.childObjects = null;
 	}
 	
-	public List<DynamicObject> getChildren(String key) {
+	public Collection<DynamicObject> getChildren(String key) {
 		loadChildren();
 		return childObjects.get(key);
 	}
 	
-	public List<? extends DynamicObject> getAllChildren() {
+	public Collection<? extends DynamicObject> getAllChildren() {
 		loadChildren();
-		List<DynamicObject> list = new ArrayList<DynamicObject>();
+		Collection<DynamicObject> list = new HashSet<DynamicObject>();
 		for (String key : childObjects.keySet()) {
 			list.addAll(getChildren(key));
 		}

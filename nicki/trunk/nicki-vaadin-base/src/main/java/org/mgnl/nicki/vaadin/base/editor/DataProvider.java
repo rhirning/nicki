@@ -32,7 +32,7 @@
  */
 package org.mgnl.nicki.vaadin.base.editor;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObject;
@@ -40,7 +40,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 public interface DataProvider {
 
-	public List<? extends DynamicObject> getChildren(NickiContext context);
+	public Collection<? extends DynamicObject> getChildren(NickiContext context);
 	public DynamicObject getRoot(NickiContext context);
 	public String getMessage();
 	public EntryFilter getEntryFilter();

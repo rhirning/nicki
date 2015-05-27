@@ -20,7 +20,7 @@
 package org.mgnl.nicki.editor.projects.objects;
 
 import java.io.Serializable;
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.Child;
@@ -121,11 +121,11 @@ public class Project extends BaseDynamicObject implements Serializable {
 		this.put(ATTRIBUTE_DEPUTY, deputyProjectLeader.getPath());
 	}
 
-	public List<Member> getMembers() {
+	public Collection<Member> getMembers() {
 		return getChildren(Member.class);
 	}
 
-	public List<Directory> getDirectories() {
+	public Collection<Directory> getDirectories() {
 		return getChildren(Directory.class);
 	}
 
