@@ -36,6 +36,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -233,11 +234,11 @@ public class DataHelper {
 		} else return array;
 	}
 
-	public static boolean contains(List<String> list, String value) {
+	public static boolean contains(Collection<String> list, String value) {
 		return list != null && list.contains(value);
 	}
 
-	public static <T> List<T> addToList(List<T> list, T value) {
+	public static <T> Collection<T> addToList(Collection<T> list, T value) {
 		if (list == null) {
 			list = new ArrayList<T>();
 		}

@@ -134,6 +134,7 @@ public class EnterSpecifierAsSelectDialog extends DialogBase implements NewItemH
 	}
 	
 	public void setName(String name) {
+		this.name.addItem(name);
 		this.name.setValue(name);
 	}
 

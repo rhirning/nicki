@@ -32,7 +32,7 @@
  */
 package org.mgnl.nicki.core.objects;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Map;
 
 import org.mgnl.nicki.core.context.NickiContext;
@@ -81,15 +81,15 @@ public interface DynamicObject {
 
 	public <T extends DynamicObject> T getForeignKeyObject(Class<T> classDefinition, String key);
 
-	public <T extends DynamicObject> List<T> getForeignKeyObjects(Class<T> classDefinition, String key);
+	public <T extends DynamicObject> Collection<T> getForeignKeyObjects(Class<T> classDefinition, String key);
 
 	public void loadChildren();
 	
 	public void unLoadChildren();
 		
-	public List<? extends DynamicObject> getAllChildren();
+	public Collection<? extends DynamicObject> getAllChildren();
 
-	public <T extends DynamicObject> List<T>  getChildren(Class<T> classDefinition);
+	public <T extends DynamicObject> Collection<T>  getChildren(Class<T> classDefinition);
 
 	public void addChild(String attribute, ChildFilter filter);
 	

@@ -33,8 +33,8 @@
 package org.mgnl.nicki.idm.novell.shop.objects;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
@@ -89,7 +89,7 @@ public class Role extends DynamicStructObject {
 		return getDateInfo("/assignment/upd_tm");
 	}
 	
-	public List<Person> getMembers() {
+	public Collection<Person> getMembers() {
 		if (get("member") != null) {
 			return getForeignKeyObjects(Person.class, "member");
 		} else {

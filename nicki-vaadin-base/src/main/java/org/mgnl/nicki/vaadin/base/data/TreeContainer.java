@@ -33,8 +33,8 @@
 package org.mgnl.nicki.vaadin.base.data;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.mgnl.nicki.core.context.NickiContext;
@@ -111,7 +111,7 @@ public class TreeContainer implements Serializable {
 		Property<Boolean> loaded = container.getItem(object).getItemProperty(PROPERTY_LOADED);
 		if (!loaded.getValue()) {
 			if (object == this.root) {
-			    List<? extends DynamicObject> objects = this.treeDataProvider.getChildren(context);
+			    Collection<? extends DynamicObject> objects = this.treeDataProvider.getChildren(context);
 			    if (objects != null) {
 				    for (DynamicObject p : objects) {
 						if (this.entryFilter.accepts(p)) {
@@ -130,7 +130,7 @@ public class TreeContainer implements Serializable {
 	}
 	
 	public void addChildren(Object parent,
-			List<? extends DynamicObject> children) {
+			Collection<? extends DynamicObject> children) {
 		for (DynamicObject p : children) {
 			if (this.entryFilter.accepts(p)) {
 				addChild(parent, p);
