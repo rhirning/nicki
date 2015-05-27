@@ -33,8 +33,8 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -66,9 +66,9 @@ public class Person extends BaseDynamicObject {
 	public static final String SEPARATOR_KEY = "|";
 	public static final String SEPARATOR_VALUE = "=";
 
-	private List<AssignedArticle> assignedArticles = null;
-	private List<Group> assignedGroups = null;
-	private List<String> attributeValues = null;
+	private Collection<AssignedArticle> assignedArticles = null;
+	private Collection<Group> assignedGroups = null;
+	private Collection<String> attributeValues = null;
 	private Map<String, String> catalogAttributes = new HashMap<String, String>();
 
 	@DynamicAttribute(externalName="isManager")
@@ -104,7 +104,7 @@ public class Person extends BaseDynamicObject {
 	}
 
 
-	public List<Group> getGroups() {
+	public Collection<Group> getGroups() {
 		if (assignedGroups == null) {
 			assignedGroups = getForeignKeyObjects(Group.class, "memberOf");
 		}
@@ -144,10 +144,10 @@ public class Person extends BaseDynamicObject {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<String> getCatalogAttributeValues() {
+	public Collection<String> getCatalogAttributeValues() {
 		if (this.attributeValues == null) {
 			if (get("attributeValue") != null) {
-				this.attributeValues = (List<String>) get(ATTRIBUTE_ATTRIBUTEVALUE);
+				this.attributeValues = (Collection<String>) get(ATTRIBUTE_ATTRIBUTEVALUE);
 			} else {
 				this.attributeValues = new ArrayList<String>();
 			}
@@ -187,11 +187,11 @@ public class Person extends BaseDynamicObject {
 		return result;
 	}
 
-	public List<AssignedArticle> getAssignedArticles() {
+	public Collection<AssignedArticle> getAssignedArticles() {
 		if (this.assignedArticles == null) {
 			this.assignedArticles = new ArrayList<AssignedArticle>();
 			@SuppressWarnings("unchecked")
-			List<String> articles = (List<String>) get(ATTRIBUTE_ASSIGNEDARTICLE);
+			Collection<String> articles = (Collection<String>) get(ATTRIBUTE_ASSIGNEDARTICLE);
 			if (articles != null) {
 				for (String text : articles) {
 					this.assignedArticles.add(new AssignedArticle(text));
