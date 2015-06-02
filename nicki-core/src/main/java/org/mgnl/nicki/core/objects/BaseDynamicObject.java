@@ -36,7 +36,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -480,7 +479,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	
 	public Collection<? extends DynamicObject> getAllChildren() {
 		loadChildren();
-		Collection<DynamicObject> list = new HashSet<DynamicObject>();
+		Collection<DynamicObject> list = new ArrayList<DynamicObject>();
 		for (String key : childObjects.keySet()) {
 			list.addAll(getChildren(key));
 		}
