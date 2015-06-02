@@ -33,8 +33,11 @@
 package org.mgnl.nicki.vaadin.base.editor;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.DynamicObject;
@@ -52,7 +55,16 @@ public class DynamicObjectRoot implements DataProvider, Serializable {
 	}
 
 	public List<? extends DynamicObject> getChildren(NickiContext context) {
-		return context.loadChildObjects(baseDn, new ChildFilter());
+		List<? extends DynamicObject> list = context.loadChildObjects(baseDn, new ChildFilter());
+		Collections.sort(list, new Comparator<DynamicObject>() {
+
+			@Override
+			public int compare(DynamicObject o1, DynamicObject o2) {
+				// TODO Auto-generated method stub
+				return StringUtils.lowerCase(o1.getName()).compareTo(StringUtils.lowerCase(o2.getName()));
+			}
+		});
+		return list;
 	}
 
 	public DynamicObject getRoot(NickiContext context) {
