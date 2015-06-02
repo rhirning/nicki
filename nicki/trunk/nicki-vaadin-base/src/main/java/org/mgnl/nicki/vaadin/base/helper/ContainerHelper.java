@@ -1,6 +1,6 @@
 package org.mgnl.nicki.vaadin.base.helper;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.mgnl.nicki.core.i18n.I18n;
@@ -16,7 +16,7 @@ public class ContainerHelper {
 
 
 	
-	public static <T extends Object> Container getListContainer(List<T> data, String nameProperties) {
+	public static <T extends Object> Container getListContainer(Collection<T> data, String nameProperties) {
 		Container container = new IndexedContainer(data);
 		container.addContainerProperty(nameProperties, String.class, "");
 		return container;
