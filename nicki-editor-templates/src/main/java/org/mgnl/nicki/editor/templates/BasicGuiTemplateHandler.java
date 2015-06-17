@@ -34,6 +34,7 @@ package org.mgnl.nicki.editor.templates;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.template.engine.BasicTemplateHandler;
 import org.mgnl.nicki.template.engine.TemplateParameter;
@@ -56,11 +57,13 @@ public class BasicGuiTemplateHandler extends BasicTemplateHandler implements
 		java.util.List<TemplateParameter> list = getTemplateParameters();
 		if (list != null) {
 			for (TemplateParameter templateParameter : list) {
-				if (!params.containsKey(templateParameter.getName())) {
-					return false;
-				} else {
-					if (null == params.get(templateParameter.getName())) {
+				if (!StringUtils.startsWith(templateParameter.getName(), ".")) {
+					if (!params.containsKey(templateParameter.getName())) {
 						return false;
+					} else {
+						if (null == params.get(templateParameter.getName())) {
+							return false;
+						}
 					}
 				}
 			}

@@ -34,14 +34,17 @@ package org.mgnl.nicki.editor.templates;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.naming.NamingException;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.template.engine.TemplateParameter;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
 import org.mgnl.nicki.vaadin.base.editor.LinkResource;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
@@ -62,6 +65,8 @@ import com.vaadin.ui.Button.ClickEvent;
 @SuppressWarnings("serial")
 public class TemplateConfig extends CustomComponent implements ClassEditor {
 	private static final Logger LOG = LoggerFactory.getLogger(TemplateConfig.class);
+	public static final String DIALOG_WIDTH = ".dialogWidth";
+	public static final String DIALOG_HEIGHT = ".dialogHeight";
 
 	private AbsoluteLayout mainLayout;
 	
@@ -200,9 +205,14 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		setWidth("100.0%");
 		setHeight("100.0%");
 		
-		configDialog = GuiTemplateHelper.getConfigDialog(template, params, this);
-		configDialog.setWidth("400px");
-		configDialog.setHeight("400px");
+		GuiTemplateHandler handler = GuiTemplateHelper.getGuiTemplateHandler(template);
+		configDialog = handler.getConfigDialog(template, params, this);
+		List<TemplateParameter> templateParams = handler.getTemplateParameters();
+		String width  = getTemplateParameter(templateParams, DIALOG_WIDTH, "400px");
+		String height = getTemplateParameter(templateParams, DIALOG_HEIGHT, "400px");
+		setWidth(width);
+		setHeight(height);
+
 		verticalLayout.addComponent(configDialog);
 
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
@@ -235,6 +245,16 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		horizontalLayout.addComponent(xlsLink);
 		
 		return mainLayout;
+	}
+
+	private String getTemplateParameter(List<TemplateParameter> templateParams,
+			String name, String defaultValue) {
+		for (TemplateParameter templateParameter : templateParams) {
+			if (StringUtils.equals(templateParameter.getName(), name)) {
+				return templateParameter.getValue();
+			}
+		}
+		return defaultValue;
 	}
 
 	public void paramsChanged() {

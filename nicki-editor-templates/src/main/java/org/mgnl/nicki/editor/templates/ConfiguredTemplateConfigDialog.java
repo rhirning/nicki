@@ -80,27 +80,29 @@ public class ConfiguredTemplateConfigDialog extends CustomComponent implements T
 		List<TemplateParameter> templateParameters = TemplateHelper.getTemplateHandler(template).getTemplateParameters();
 		if (templateParameters != null) {
 			for (TemplateParameter templateParameter : templateParameters) {
-				if (StringUtils.equalsIgnoreCase("date", templateParameter.getDataType())) {
-					PopupDateField field = new PopupDateField();
-					field.setCaption(templateParameter.getDisplayName());
-					field.setImmediate(true);
-					field.setWidth("-1px");
-					field.setHeight("-1px");
-					field.setInvalidAllowed(false);
-					mainLayout.addComponent(field);
-					DateHelper.init(field);
-					field.addValueChangeListener(new ParamInputListener(field, templateParameter.getName(), params, templateConfig));
-				} else if (StringUtils.equalsIgnoreCase("string", templateParameter.getDataType())) {
-					TextField field = new TextField();
-					field.setCaption(templateParameter.getDisplayName());
-					field.setImmediate(true);
-					field.setWidth("-1px");
-					field.setHeight("-1px");
-					field.setInvalidAllowed(false);
-					mainLayout.addComponent(field);
-					field.addValueChangeListener(new ParamInputListener(field, templateParameter.getName(), params, templateConfig));
-				} else if (StringUtils.equalsIgnoreCase("static", templateParameter.getDataType())) {
-					params.put(templateParameter.getName(), templateParameter.getValue());
+				if (!StringUtils.startsWith(templateParameter.getName(), ".")) {
+					if (StringUtils.equalsIgnoreCase("date", templateParameter.getDataType())) {
+						PopupDateField field = new PopupDateField();
+						field.setCaption(templateParameter.getDisplayName());
+						field.setImmediate(true);
+						field.setWidth("-1px");
+						field.setHeight("-1px");
+						field.setInvalidAllowed(false);
+						mainLayout.addComponent(field);
+						DateHelper.init(field);
+						field.addValueChangeListener(new ParamInputListener(field, templateParameter.getName(), params, templateConfig));
+					} else if (StringUtils.equalsIgnoreCase("string", templateParameter.getDataType())) {
+						TextField field = new TextField();
+						field.setCaption(templateParameter.getDisplayName());
+						field.setImmediate(true);
+						field.setWidth("-1px");
+						field.setHeight("-1px");
+						field.setInvalidAllowed(false);
+						mainLayout.addComponent(field);
+						field.addValueChangeListener(new ParamInputListener(field, templateParameter.getName(), params, templateConfig));
+					} else if (StringUtils.equalsIgnoreCase("static", templateParameter.getDataType())) {
+						params.put(templateParameter.getName(), templateParameter.getValue());
+					}
 				}
 			}
 		}
