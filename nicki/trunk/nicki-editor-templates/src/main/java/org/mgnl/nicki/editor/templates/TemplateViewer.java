@@ -125,8 +125,8 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 		configDialog.setDynamicObject(editor, template);
 		previewWindow = new Window(I18n.getText(editor.getMessageKeyBase() + ".config.window.title"), configDialog);
 		previewWindow.setModal(true);
-		previewWindow.setWidth(480, Unit.PIXELS);
-		previewWindow.setHeight(520, Unit.PIXELS);
+		previewWindow.setWidth(configDialog.getWidth() + 80, Unit.PIXELS);
+		previewWindow.setHeight(configDialog.getHeight() + 120, Unit.PIXELS);
 		UI.getCurrent().addWindow(previewWindow);
 	}
 
