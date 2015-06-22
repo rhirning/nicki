@@ -210,8 +210,8 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		List<TemplateParameter> templateParams = handler.getTemplateParameters();
 		String width  = getTemplateParameter(templateParams, DIALOG_WIDTH, "400px");
 		String height = getTemplateParameter(templateParams, DIALOG_HEIGHT, "400px");
-		setWidth(width);
-		setHeight(height);
+		configDialog.setWidth(width);
+		configDialog.setHeight(height);
 
 		verticalLayout.addComponent(configDialog);
 
