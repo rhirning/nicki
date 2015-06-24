@@ -39,6 +39,7 @@
 		<module>nicki-shop-base</module>
 		<module>nicki-storage</module>
 		<module>nicki-template</module>
+		<module>nicki-user-admin</module>
 		<module>nicki-vaadin-base</module>
 		<module>nicki-xls</module>
 		<module>nicki-apps</module>
@@ -172,6 +173,11 @@
 				<version>${vaadin.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>javax.json</groupId>
+				<artifactId>javax.json-api</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
 				<groupId>javax.portlet</groupId>
 				<artifactId>portlet-api</artifactId>
 				<version>1.0</version>
@@ -225,6 +231,11 @@
 				<groupId>org.freemarker</groupId>
 				<artifactId>freemarker</artifactId>
 				<version>2.3.16</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.glassfish</groupId>
+			    <artifactId>javax.json</artifactId>
+			    <version>1.0.4</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jaxen</groupId>
