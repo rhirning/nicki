@@ -21,6 +21,16 @@
 		</init-param>
 	</servlet>
 	<servlet>
+		<servlet-name>User Admin</servlet-name>
+		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+		<init-param>
+			<description>
+			Vaadin UI class to start</description>
+			<param-name>UI</param-name>
+			<param-value>org.mgnl.nicki.user.admin.app.UserAdmin</param-value>
+		</init-param>
+	</servlet>
+	<servlet>
 		<servlet-name>Template Editor</servlet-name>
 		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
 		<init-param>
@@ -73,6 +83,10 @@
 	<servlet-mapping>
 		<servlet-name>Report Application</servlet-name>
 		<url-pattern>/reports/*</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>User Admin</servlet-name>
+		<url-pattern>/userAdmin/*</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
 		<servlet-name>Report Application</servlet-name>
