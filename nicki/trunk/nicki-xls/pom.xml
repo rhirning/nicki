@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>3.50-SNAPSHOT</version>
+		<version>4.01</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
@@ -25,7 +25,7 @@
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-core</artifactId>
-			<version>3.50-SNAPSHOT</version>
+			<version>4.01</version>
 		</dependency>
 	</dependencies>
     <properties>
