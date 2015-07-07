@@ -11,9 +11,10 @@
 		<deron.version>1.37</deron.version>
 		<efg.version>1.22</efg.version>
 		<project.build.sourceEncoding>iso-8859-1</project.build.sourceEncoding>
-		<vaadin.version>7.1.12</vaadin.version>
+		<vaadin.version>7.5.0</vaadin.version>
 	</properties>
 	<modules>
+		<module>nicki-app-menu</module>
 		<module>nicki-cache</module>
 		<module>nicki-config-efg</module>
 		<module>nicki-config-rhi</module>

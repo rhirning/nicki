@@ -35,6 +35,9 @@ package org.mgnl.nicki.core.objects;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
+
 import org.mgnl.nicki.core.context.NickiContext;
 
 public interface DynamicObject {
@@ -192,5 +195,8 @@ public interface DynamicObject {
 	public void setParentPath(String parentPath);
 
 	public void setPath(String path);
+	
+	public JsonObjectBuilder toJsonObjectBuilder(Map<String, String> mapping);
+	public JsonObject toJsonObject(Map<String, String> mapping);
 
 }
