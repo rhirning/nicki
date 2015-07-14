@@ -40,6 +40,7 @@ import java.util.Set;
 import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.SSOAdapter;
 import org.slf4j.Logger;
@@ -61,6 +62,21 @@ public class UserAppAdapter implements SSOAdapter {
 	static String USER_CONNECTION = BASE_KEY + "USER_DIRECTORY_CONNECTION";
 	
 	public static final String ATTRIBUTE_NAME_PORTAL_CONTEXT = "com.sssw.portal.api.EbiPortalContext";
+	private TYPE type = TYPE.UNKNOWN;
+	
+	@Override
+	public void init(Object request) {
+		String credentials = new String(getPassword(request));
+		if (StringUtils.length(credentials) > 100 &&
+				  Base64.isArrayByteBase64(credentials.getBytes())) {
+			type = TYPE.SAML;
+		} else if (StringUtils.length(credentials) > 0) {
+			type = TYPE.BASIC;
+		} else {
+			type = TYPE.UNKNOWN;
+		}
+	}
+	
 	public  List<String> getGroups(Object request) {
 		List<String> list = new ArrayList<String>();
 		try {
@@ -160,6 +176,11 @@ public class UserAppAdapter implements SSOAdapter {
 
 	public String getSessionId(Object request) {
 		return getSession(request).getId();
+	}
+
+	@Override
+	public TYPE getType() {
+		return type;
 	}
 	
 	

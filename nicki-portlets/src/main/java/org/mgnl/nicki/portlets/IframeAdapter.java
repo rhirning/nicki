@@ -37,13 +37,64 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.SSOAdapter;
+import org.mgnl.nicki.core.util.XmlHelper;
+import org.w3c.dom.Document;
 
 
 public class IframeAdapter implements SSOAdapter {
+	static final String USER_PATH = "/Assertion/AuthenticationStatement/Subject/NameIdentifier";
+	private boolean isInit = false;
+	private TYPE type = TYPE.UNKNOWN;
+	
+	private String password;
+	private String name;
+
+	@Override
+	public TYPE getType() {
+		return type;
+	}
+
+	@Override
+	public void init(Object request) {
+		if (!isInit) {
+			String encodedToken = getRequest(request).getParameter("nickiToken");
+			String encodedPassword = getRequest(request).getParameter("nickiPassword");
+			String encoded;
+			if (StringUtils.isNotBlank(encodedToken)) {
+				type = TYPE.SAML;
+				encoded = getRequest(request).getParameter("nickiToken");
+				password = new String(Base64.decodeBase64(encoded.getBytes()));
+				name = getNameFromToken(password);
+			} else if (StringUtils.isNotBlank(encodedPassword)) {
+				type = TYPE.BASIC;
+				encoded = getRequest(request).getParameter("nickiPassword");
+				password = new String(Base64.decodeBase64(encoded.getBytes()));
+				String encodedName = getRequest(request).getParameter("nickiName");
+				name = new String(Base64.decodeBase64(encodedName.getBytes()));
+			} else {
+				type = TYPE.UNKNOWN;
+				password = "";
+			}
+			isInit = true;
+		}
+	}
+
+	private String getNameFromToken(String token) {
+		try {
+			Document doc = XmlHelper.getDocumentFromXml(token);
+			XPath xPath = XPathFactory.newInstance().newXPath();
+			return xPath.compile(USER_PATH).evaluate(doc);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public  List<String> getGroups(Object request) {
 		List<String> list = new ArrayList<String>();
@@ -51,18 +102,19 @@ public class IframeAdapter implements SSOAdapter {
 	}
 	
 	public char[] getPassword(Object request) {
-		String encodedPassword = getRequest(request).getParameter("nickiPassword");
-		return new String(Base64.decodeBase64(encodedPassword.getBytes())).toCharArray();
+		init(request);
+		return password.toCharArray();
 	}
 	/** user DN like 
 	 * cn=padmin,ou=users,o=utopia
 	 */
 	public String getName(Object request) {
-		String encodedName = getRequest(request).getParameter("nickiName");
-		return new String(Base64.decodeBase64(encodedName.getBytes()));
+		init(request);
+		return name;
 	}
 
 	public String getUserId(Object request) {
+		init(request);
 		String userDn = getName(request);
 		if (StringUtils.isNotEmpty(userDn)) {
 			userDn = StringUtils.substringAfter(userDn, "=");

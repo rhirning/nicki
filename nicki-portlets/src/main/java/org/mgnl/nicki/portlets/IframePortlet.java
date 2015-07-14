@@ -43,6 +43,8 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.auth.SSOAdapter.TYPE;
 import org.mgnl.nicki.idm.novell.jaas.UserAppAdapter;
 
 public class IframePortlet extends GenericPortlet {
@@ -75,10 +77,20 @@ public class IframePortlet extends GenericPortlet {
 		  PortletPreferences pref = request.getPreferences();
 		  String url = pref.getValue("url", "");
 		  UserAppAdapter uaa = new UserAppAdapter();
+		  uaa.init(request);
 		  String user = uaa.getName(request);
 		  char passwd[] = uaa.getPassword(request);
-		  String args = "?nickiName=" + new String(Base64.encodeBase64(user.getBytes())) + "&nickiPassword="
-				  + new String(Base64.encodeBase64(new String(passwd).getBytes()));
+		  
+		  String credentials = new String(passwd);
+		  
+		  String args;
+		  
+		  if (uaa.getType() == TYPE.SAML) {
+			  args = "?nickiToken=" + credentials;
+		  } else {
+			  args = "?nickiName=" + new String(Base64.encodeBase64(user.getBytes())) + "&nickiPassword="
+				  + new String(Base64.encodeBase64(credentials.getBytes()));
+		  }
 		  return url + args;
 	}
 }

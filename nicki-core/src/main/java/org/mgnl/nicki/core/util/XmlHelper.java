@@ -33,6 +33,7 @@
 package org.mgnl.nicki.core.util;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +46,7 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.apache.commons.lang.StringUtils;
+import org.jdom.JDOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -116,6 +118,19 @@ public class XmlHelper implements java.io.Serializable {
 		} else {
 			return null;
 		}
+	}
+	
+	static public Document getDocumentFromClasspath(Class<?> refClass, String classLoaderPath) throws JDOMException, IOException {
+		Document document = null;
+		try {
+			InputStream is = refClass.getClassLoader().getResourceAsStream(classLoaderPath);
+			document = getDocBuilder().parse(is);
+
+		} catch (Exception ex) {
+			System.err.println(ex.getMessage());
+		}
+
+		return document;
 	}
 
 	public static Document getDocumentFromXml(String xml) throws SAXException {
