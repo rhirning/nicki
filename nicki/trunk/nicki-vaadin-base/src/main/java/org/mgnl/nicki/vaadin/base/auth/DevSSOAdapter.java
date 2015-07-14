@@ -53,4 +53,13 @@ public class DevSSOAdapter implements SSOAdapter {
 			}
 	}
 
+	@Override
+	public TYPE getType() {
+		return TYPE.BASIC;
+	}
+
+	@Override
+	public void init(Object request) {		
+	}
+
 }

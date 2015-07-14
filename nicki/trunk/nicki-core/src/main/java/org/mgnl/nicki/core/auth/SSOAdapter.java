@@ -33,6 +33,13 @@
 package org.mgnl.nicki.core.auth;
 
 public interface SSOAdapter {
+	public enum TYPE {
+		BASIC,
+		SAML,
+		UNKNOWN
+	}
 	String getName(Object request);
 	char[] getPassword(Object request);
+	TYPE getType();
+	void init(Object request);
 }
