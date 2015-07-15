@@ -64,7 +64,9 @@ public class IframeAdapter implements SSOAdapter {
 	public void init(Object request) {
 		if (!isInit) {
 			String encodedToken = getRequest(request).getParameter("nickiToken");
+			System.out.println("encodedToken=" + encodedToken);
 			String encodedPassword = getRequest(request).getParameter("nickiPassword");
+			System.out.println("encodedPassword=" + encodedPassword);
 			String encoded;
 			if (StringUtils.isNotBlank(encodedToken)) {
 				type = TYPE.SAML;
@@ -76,6 +78,7 @@ public class IframeAdapter implements SSOAdapter {
 				encoded = getRequest(request).getParameter("nickiPassword");
 				password = new String(Base64.decodeBase64(encoded.getBytes()));
 				String encodedName = getRequest(request).getParameter("nickiName");
+				System.out.println("encodedName=" + encodedName);
 				name = new String(Base64.decodeBase64(encodedName.getBytes()));
 			} else {
 				type = TYPE.UNKNOWN;
@@ -83,6 +86,7 @@ public class IframeAdapter implements SSOAdapter {
 			}
 			isInit = true;
 		}
+		System.out.println(toString());
 	}
 
 	private String getNameFromToken(String token) {
@@ -160,6 +164,14 @@ public class IframeAdapter implements SSOAdapter {
 
 	public String getSessionId(Object request) {
 		return getSession(request).getId();
+	}
+
+	@Override
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		sb.append("IframeAdapter: type=").append(type).append("|name=").append(name);
+		sb.append("|password=").append(password);
+		return sb.toString();
 	}
 	
 	
