@@ -32,6 +32,7 @@
  */
 package org.mgnl.nicki.portlets;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,7 +72,12 @@ public class IframeAdapter implements SSOAdapter {
 			if (StringUtils.isNotBlank(encodedToken)) {
 				type = TYPE.SAML;
 				encoded = getRequest(request).getParameter("nickiToken");
-				password = new String(Base64.decodeBase64(encoded.getBytes()));
+				try {
+					password = new String(Base64.decodeBase64(encoded.getBytes()), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					password = new String(Base64.decodeBase64(encoded.getBytes()));
+					System.out.println("Could use charset UTF-8");
+				}
 				name = getNameFromToken(password);
 			} else if (StringUtils.isNotBlank(encodedPassword)) {
 				type = TYPE.BASIC;
