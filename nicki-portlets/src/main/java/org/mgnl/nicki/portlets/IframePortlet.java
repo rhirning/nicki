@@ -34,6 +34,8 @@ package org.mgnl.nicki.portlets;
 
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.portlet.GenericPortlet;
 import javax.portlet.PortletException;
@@ -61,6 +63,9 @@ public class IframePortlet extends GenericPortlet {
 		response.setContentType(request.getResponseContentType());
 		request.setAttribute("javax.portlet.request", request);
 		request.setAttribute("nickiUrl", getUrl(request));
+		request.setAttribute("nickiApp", getApp(request));
+		request.setAttribute("nickiParameters", getParameters(request));
+		request.setAttribute("nickiParametersMap", getParametersMap(request));
 		if (pageName == null || pageName.length() == 0) {
 			throw new NullPointerException("null or empty page name");
 		}
@@ -73,9 +78,13 @@ public class IframePortlet extends GenericPortlet {
 		}
 	}
 	
-	private String getUrl(RenderRequest request) {
+	private String getApp(RenderRequest request) {
 		  PortletPreferences pref = request.getPreferences();
 		  String url = pref.getValue("url", "");
+		  return url;
+	}
+	
+	private String getParameters(RenderRequest request) {
 		  UserAppAdapter uaa = new UserAppAdapter();
 		  uaa.init(request);
 		  String user = uaa.getName(request);
@@ -86,11 +95,34 @@ public class IframePortlet extends GenericPortlet {
 		  String args;
 		  
 		  if (uaa.getType() == TYPE.SAML) {
-			  args = "?nickiToken=" + credentials;
+			  args = "nickiToken=" + credentials;
 		  } else {
-			  args = "?nickiName=" + new String(Base64.encodeBase64(user.getBytes())) + "&nickiPassword="
+			  args = "nickiName=" + new String(Base64.encodeBase64(user.getBytes())) + "&nickiPassword="
 				  + new String(Base64.encodeBase64(credentials.getBytes()));
 		  }
-		  return url + args;
+		  return args;
+	}
+	private Map getParametersMap(RenderRequest request) {
+		Map<String, String> map = new HashMap<String, String>();
+		  UserAppAdapter uaa = new UserAppAdapter();
+		  uaa.init(request);
+		  String user = uaa.getName(request);
+		  char passwd[] = uaa.getPassword(request);
+		  
+		  String credentials = new String(passwd);
+		  
+		  String args;
+		  
+		  if (uaa.getType() == TYPE.SAML) {
+			  map.put("nickiToken", credentials);
+		  } else {
+			  map.put("nickiName=", new String(Base64.encodeBase64(user.getBytes())));
+			  map.put("nickiPassword", new String(Base64.encodeBase64(credentials.getBytes())));
+		  }
+		  return map;
+	}
+	
+	private String getUrl(RenderRequest request) {
+		  return getApp(request) + "?" + getParameters(request);
 	}
 }
