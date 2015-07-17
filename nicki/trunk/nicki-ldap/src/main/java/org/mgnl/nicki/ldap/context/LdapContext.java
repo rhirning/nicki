@@ -60,7 +60,11 @@ public class LdapContext extends BasicContext implements NickiContext {
 		Hashtable<String, String> env = new Hashtable<String, String>();
 		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 		env.put(Context.PROVIDER_URL, getTarget().getProperty("providerUrl"));
-		env.put(Context.SECURITY_AUTHENTICATION, getTarget().getProperty("securityAuthentication"));
+		if (password.length() < 100) {
+			env.put(Context.SECURITY_AUTHENTICATION, getTarget().getProperty("securityAuthentication"));
+		} else {
+			env.put(Context.SECURITY_AUTHENTICATION, getTarget().getProperty("ticketSecurityAuthentication", "SAML"));
+		}
 		env.put(Context.SECURITY_PRINCIPAL, name);
 		env.put(Context.SECURITY_CREDENTIALS, password);
 		String binaries = getTarget().getProperty("attributes.binary");
