@@ -94,11 +94,15 @@ public class LdapContext extends BasicContext implements NickiContext {
 			}
 		}
 		if (user != null) {
+			LOG.debug("try login for user " + user.getDisplayName());
 			try {
 				getDirContext(user.getPath(), password);
 				return user;
 			} catch (Exception e) {
+				LOG.debug("Could not login user " + username, e);
 			}
+		} else {
+			LOG.debug("could not load user " + username);
 		}
 		return null;
 	}
