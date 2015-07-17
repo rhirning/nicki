@@ -1,6 +1,7 @@
 package org.mgnl.nicki.editor.log4j;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Date;
 
 import org.apache.commons.io.input.Tailer;
@@ -25,7 +26,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
-public class TailViewer extends CustomComponent {
+public class TailViewer extends CustomComponent implements Serializable {
 
 	private static Logger LOG = LoggerFactory.getLogger(TailViewer.class);
 	static final Object VISIBLE_COLUMNS[] = {"value"};
