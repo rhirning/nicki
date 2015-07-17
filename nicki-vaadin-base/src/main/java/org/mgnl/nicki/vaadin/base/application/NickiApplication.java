@@ -32,6 +32,8 @@
  */
 package org.mgnl.nicki.vaadin.base.application;
 
+import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.auth.SSOAdapter;
@@ -75,6 +77,12 @@ public abstract class NickiApplication extends UI {
 	@Override
 	public void init(VaadinRequest vaadinRequest) {
 		AppContext.setRequest(vaadinRequest);
+		Map<String, String> map = (Map<String, String>) getSession().getSession().getAttribute(NickiServlet.NICKI_PARAMETERS);
+		AppContext.setRequestParameters(map);
+
+		for (String paramName : map.keySet()) {
+			System.out.println(paramName + "=" + map.get(paramName));
+		}
 
 		view = new VerticalLayout();
 		view.setHeight("100%");
