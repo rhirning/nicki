@@ -33,6 +33,7 @@
 package org.mgnl.nicki.core.context;
 
 import java.util.Locale;
+import java.util.Map;
 
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
@@ -48,6 +49,14 @@ public class AppContext {
     public static Context getInstance() {
         return ThreadContext.getInstance();
     }
+    
+    public static void setRequestParameters(Map<String, String> map) {
+    	getInstance().setRequestParameters(map);
+    }
+	
+	public static Map<String, String> getRequestParameters() {
+		return getInstance().getRequestParameters();
+	}
     
 	public static Object getRequest() {
 		return getInstance().getRequest();
