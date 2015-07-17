@@ -44,6 +44,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.SSOAdapter;
+import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.util.XmlHelper;
 import org.w3c.dom.Document;
 
@@ -64,9 +65,19 @@ public class IframeAdapter implements SSOAdapter {
 	@Override
 	public void init(Object request) {
 		if (!isInit) {
-			String encodedToken = getRequest(request).getParameter("nickiToken");
+			String encodedToken = null;
+			String encodedPassword = null;
+			String encodedName = null;
+			if (AppContext.getRequestParameters() != null) {
+				encodedToken = AppContext.getRequestParameters().get("nickiToken");
+				encodedPassword = getRequest(request).getParameter("nickiPassword");
+				encodedName = getRequest(request).getParameter("nickiName");
+			} else {
+				encodedToken = getRequest(request).getParameter("nickiToken");
+				encodedPassword = getRequest(request).getParameter("nickiPassword");
+				encodedName = getRequest(request).getParameter("nickiName");
+			}
 			System.out.println("encodedToken=" + encodedToken);
-			String encodedPassword = getRequest(request).getParameter("nickiPassword");
 			System.out.println("encodedPassword=" + encodedPassword);
 			String encoded;
 			if (StringUtils.isNotBlank(encodedToken)) {
@@ -83,7 +94,6 @@ public class IframeAdapter implements SSOAdapter {
 				type = TYPE.BASIC;
 				encoded = getRequest(request).getParameter("nickiPassword");
 				password = new String(Base64.decodeBase64(encoded.getBytes()));
-				String encodedName = getRequest(request).getParameter("nickiName");
 				System.out.println("encodedName=" + encodedName);
 				name = new String(Base64.decodeBase64(encodedName.getBytes()));
 			} else {
