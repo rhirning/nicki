@@ -79,21 +79,18 @@ public class IframeAdapter implements SSOAdapter {
 			}
 			System.out.println("encodedToken=" + encodedToken);
 			System.out.println("encodedPassword=" + encodedPassword);
-			String encoded;
 			if (StringUtils.isNotBlank(encodedToken)) {
 				type = TYPE.SAML;
-				encoded = getRequest(request).getParameter("nickiToken");
 				try {
-					password = new String(Base64.decodeBase64(encoded.getBytes()), "UTF-8");
+					password = new String(Base64.decodeBase64(encodedToken.getBytes()), "UTF-8");
 				} catch (UnsupportedEncodingException e) {
-					password = new String(Base64.decodeBase64(encoded.getBytes()));
+					password = new String(Base64.decodeBase64(encodedPassword.getBytes()));
 					System.out.println("Could use charset UTF-8");
 				}
 				name = getNameFromToken(password);
 			} else if (StringUtils.isNotBlank(encodedPassword)) {
 				type = TYPE.BASIC;
-				encoded = getRequest(request).getParameter("nickiPassword");
-				password = new String(Base64.decodeBase64(encoded.getBytes()));
+				password = new String(Base64.decodeBase64(encodedPassword.getBytes()));
 				System.out.println("encodedName=" + encodedName);
 				name = new String(Base64.decodeBase64(encodedName.getBytes()));
 			} else {
