@@ -33,10 +33,12 @@
 package org.mgnl.nicki.core.context;
 
 import java.util.Locale;
+import java.util.Map;
 
 public class Context {
 	private Object request = null;
 	private Locale locale = Locale.GERMAN;
+	private Map<String, String> parameterMap;
 
 	public Object getRequest() {
 		return request;
@@ -54,6 +56,14 @@ public class Context {
 		if (locale != null) {
 			this.locale = locale;
 		}
+	}
+
+	public void setRequestParameters(Map<String, String> map) {
+		this.parameterMap = map;
+	}
+	
+	public Map<String, String> getRequestParameters() {
+		return this.parameterMap;
 	}
 
 }

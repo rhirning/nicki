@@ -12,7 +12,7 @@
 	</session-config>
 	<servlet>
 		<servlet-name>Report Application</servlet-name>
-		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+		<servlet-class>org.mgnl.nicki.vaadin.base.application.NickiServlet</servlet-class>
 		<init-param>
 			<description>
 			Vaadin UI class to start</description>
@@ -22,7 +22,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>User Admin</servlet-name>
-		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+		<servlet-class>org.mgnl.nicki.vaadin.base.application.NickiServlet</servlet-class>
 		<init-param>
 			<description>
 			Vaadin UI class to start</description>
@@ -32,7 +32,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>Template Editor</servlet-name>
-		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+		<servlet-class>org.mgnl.nicki.vaadin.base.application.NickiServlet</servlet-class>
 		<init-param>
 			<description>
 			Vaadin UI class to start</description>
@@ -42,7 +42,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>Project Editor</servlet-name>
-		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+		<servlet-class>org.mgnl.nicki.vaadin.base.application.NickiServlet</servlet-class>
 		<init-param>
 			<description>
 			Vaadin UI class to start</description>
@@ -52,7 +52,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>Script Editor</servlet-name>
-		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+		<servlet-class>org.mgnl.nicki.vaadin.base.application.NickiServlet</servlet-class>
 		<init-param>
 			<description>
 			Vaadin UI class to start</description>
@@ -62,7 +62,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>Catalog Editor</servlet-name>
-		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+		<servlet-class>org.mgnl.nicki.vaadin.base.application.NickiServlet</servlet-class>
 		<init-param>
 			<description>
 			Vaadin UI class to start</description>
@@ -72,7 +72,7 @@
 	</servlet>
 	<servlet>
 		<servlet-name>Log4j Editor</servlet-name>
-		<servlet-class>com.vaadin.server.VaadinServlet</servlet-class>
+		<servlet-class>org.mgnl.nicki.vaadin.base.application.NickiServlet</servlet-class>
 		<init-param>
 			<description>
 			Vaadin UI class to start</description>
