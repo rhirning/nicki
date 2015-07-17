@@ -9,10 +9,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.vaadin.server.VaadinServlet;
 
 public class NickiServlet extends VaadinServlet {
+	private static final Logger LOG = LoggerFactory.getLogger(NickiServlet.class);
 	private static final long serialVersionUID = 6114917183362066306L;
 	public static final String NICKI_PARAMETERS = "NICKI_PARAMETERS";
 	private static final String[] PARAMETERS = {
@@ -30,6 +33,7 @@ public class NickiServlet extends VaadinServlet {
 				}
 			}
 			request.getSession().setAttribute(NICKI_PARAMETERS, map);
+			LOG.debug("ParameterMap: " + map);
 		}
 		super.service(request, response);
 	}

@@ -46,10 +46,13 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.SSOAdapter;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.util.XmlHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 
 public class IframeAdapter implements SSOAdapter {
+	private static final Logger LOG = LoggerFactory.getLogger(IframeAdapter.class);
 	static final String USER_PATH = "/Assertion/AuthenticationStatement/Subject/NameIdentifier";
 	private boolean isInit = false;
 	private TYPE type = TYPE.UNKNOWN;
@@ -77,29 +80,29 @@ public class IframeAdapter implements SSOAdapter {
 				encodedPassword = getRequest(request).getParameter("nickiPassword");
 				encodedName = getRequest(request).getParameter("nickiName");
 			}
-			System.out.println("encodedToken=" + encodedToken);
-			System.out.println("encodedPassword=" + encodedPassword);
+			LOG.debug("encodedToken=" + encodedToken);
+			LOG.debug("encodedPassword=" + encodedPassword);
 			if (StringUtils.isNotBlank(encodedToken)) {
 				type = TYPE.SAML;
 				try {
 					password = new String(Base64.decodeBase64(encodedToken.getBytes()), "UTF-8");
 				} catch (UnsupportedEncodingException e) {
 					password = new String(Base64.decodeBase64(encodedPassword.getBytes()));
-					System.out.println("Could use charset UTF-8");
+					LOG.debug("Could use charset UTF-8");
 				}
 				name = getNameFromToken(password);
 			} else if (StringUtils.isNotBlank(encodedPassword)) {
 				type = TYPE.BASIC;
 				password = new String(Base64.decodeBase64(encodedPassword.getBytes()));
-				System.out.println("encodedName=" + encodedName);
+				LOG.debug("encodedName=" + encodedName);
 				name = new String(Base64.decodeBase64(encodedName.getBytes()));
 			} else {
 				type = TYPE.UNKNOWN;
 				password = "";
 			}
 			isInit = true;
+			LOG.debug(toString());
 		}
-		System.out.println(toString());
 	}
 
 	private String getNameFromToken(String token) {
