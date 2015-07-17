@@ -34,6 +34,7 @@ package org.mgnl.nicki.editor.scripts;
 
 
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.helper.DataHelper;
@@ -64,7 +65,7 @@ public class ScriptEditor extends NickiApplication {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Component getEditor() {
-		ScriptViewer scriptViewer = new ScriptViewer();
+		ScriptViewer scriptViewer = new ScriptViewer(AppContext.getRequest());
 		//scriptViewer.setRequest(getRequest());
 		//scriptViewer.setResponse(getResponse());
 
