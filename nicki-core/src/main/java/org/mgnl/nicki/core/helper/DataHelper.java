@@ -42,6 +42,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -177,6 +181,32 @@ public class DataHelper {
 			LOG.error("Error", e);
 		}
 		return string;
+	}
+	
+	public static String translate(String variable) {
+		if (StringUtils.startsWith(variable, "${")) {
+			// remove ${ ... }
+			String name = StringUtils.replaceChars(variable, "${}", "");
+			// first check for System environment
+			String value = System.getenv(name);
+			if (StringUtils.isNotBlank(value)) {
+				return value;
+			}
+			// Check JNDI environment
+			try {
+				Context initCtx = new InitialContext();
+				Context envCtx = (Context) initCtx.lookup("java:comp/env");
+				value = (String) envCtx.lookup(name);
+				if (StringUtils.isNotBlank(value)) {
+					return value;
+				}
+			} catch (NamingException e) {
+				LOG.error("Error parsing variable " + name, e);
+			}
+			return "";
+		} else {
+			return variable;
+		}
 	}
 
 	/**
