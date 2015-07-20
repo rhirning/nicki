@@ -37,6 +37,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
@@ -76,7 +80,8 @@ public class Config {
 			String configList = mainConfig.getProperty(CONFIG_BASE, null);
 			if (configList != null) {
 				for(String configName : DataHelper.getList(configList, SEPARATOR)) {
-					String configPath = mainConfig.getProperty(CONFIG_BASE + "." + configName, null);
+					String configPath = DataHelper.translate(mainConfig.getProperty(CONFIG_BASE + "." + configName, null));
+					
 					if (StringUtils.isNotEmpty(configPath)) {
 						instance.addProperties(configPath);
 					}
@@ -138,7 +143,7 @@ public class Config {
 	
 	private String _getProperty(String key) {
 		for (Properties props : this.properties) {
-			String value = props.getProperty(key);
+			String value = DataHelper.translate(props.getProperty(key));
 			if (value != null) {
 				return DataHelper.getPassword(value);
 			}
