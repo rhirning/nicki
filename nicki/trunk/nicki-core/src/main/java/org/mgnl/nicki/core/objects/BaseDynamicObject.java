@@ -41,7 +41,6 @@ import java.util.Map;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
-import javax.json.JsonBuilderFactory;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
@@ -49,6 +48,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.helper.AttributeMapper;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.methods.ChildrenMethod;
@@ -206,8 +206,11 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	public void removeAttribute(String attributeName) {
 		this.getModel().removeAttribute(attributeName);
 	}
-
 	
+	public void removeAdditionalObjectClass(String objectClass) {
+		this.getModel().removeAdditionalObjectClass(objectClass);
+	}
+
 	public void addMethod(String name, TemplateMethodModel method) {
 		put(DynamicAttribute.getGetter(name), method);
 	}
@@ -553,13 +556,17 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	}
 
 	@Override
-	public JsonObjectBuilder toJsonObjectBuilder(Map<String, String> mapping) {
+	public JsonObjectBuilder toJsonObjectBuilder(AttributeMapper mapping) {
 		DataModel model = getModel();
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		for (DynamicAttribute dynAttribute : model.getAttributes().values()) {
 			String key;
 			if (mapping != null) {
-				key = mapping.get(dynAttribute.getExternalName());
+				if (mapping.isStrict() && !mapping.hasInternal(dynAttribute.getName())) {
+					key = null;
+				} else {
+					key = mapping.toExternal(dynAttribute.getName());
+				}
 			} else {
 				key = dynAttribute.getName();
 			}
@@ -585,7 +592,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	}
 
 	@Override
-	public JsonObject toJsonObject(Map<String, String> mapping) {
+	public JsonObject toJsonObject(AttributeMapper mapping) {
 		return toJsonObjectBuilder(mapping).build();
 	}
 

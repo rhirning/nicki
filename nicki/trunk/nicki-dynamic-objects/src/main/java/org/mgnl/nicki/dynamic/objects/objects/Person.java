@@ -52,11 +52,11 @@ import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 @AdditionalObjectClass("nickiUserAux")
 public class Person extends BaseDynamicObject {
 	public static final String ATTRIBUTE_DISPLAYNAME = "displayName";
-	public static final String ATTRIBUTE_SURNAME = "surname";
-	public static final String ATTRIBUTE_GIVENNAME = "givenname";
+	public static final String ATTRIBUTE_SURNAME = "sn";
+	public static final String ATTRIBUTE_GIVENNAME = "givenName";
 	public static final String ATTRIBUTE_FULLNAME = "fullname";
 	public static final String ATTRIBUTE_LANGUAGE = "language";
-	public static final String ATTRIBUTE_MEMBEROF = "memberOf";
+	public static final String ATTRIBUTE_MEMBER = "member";
 	public static final String ATTRIBUTE_LOCATION = "location";
 	public static final String ATTRIBUTE_ASSIGNEDARTICLE = "assignedArticle";
 	public static final String ATTRIBUTE_ATTRIBUTEVALUE = "attributeValue";
@@ -76,7 +76,7 @@ public class Person extends BaseDynamicObject {
 	
 	@DynamicReferenceAttribute(externalName="member", reference=Group.class,
 			baseProperty="nicki.data.basedn")
-	private String[] memberOf;
+	private String[] member;
 	@DynamicAttribute(externalName="nickiLocation")
 	private String location;
 	@DynamicAttribute(externalName="nickiCatalogArticle")
@@ -112,7 +112,7 @@ public class Person extends BaseDynamicObject {
 	}
 
 	@DynamicAttribute(externalName="fullName")
-	public String getFullname() {
+	public String getFullName() {
 		return getAttribute(ATTRIBUTE_FULLNAME);
 	}
 
@@ -126,7 +126,7 @@ public class Person extends BaseDynamicObject {
 	}
 
 	@DynamicAttribute(externalName="givenName")
-	public String getGivenname() {
+	public String getGivenName() {
 		return getAttribute(ATTRIBUTE_GIVENNAME);
 	}
 

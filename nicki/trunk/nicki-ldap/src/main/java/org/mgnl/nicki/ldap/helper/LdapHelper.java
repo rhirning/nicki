@@ -143,7 +143,12 @@ public class LdapHelper extends PathHelper {
 		// single attributes (except namingAttribute)
 		for (DynamicAttribute dynAttribute : dynamicObject.getModel().getAttributes().values()) {
 			if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
-				String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
+				Object value;
+				if (dynAttribute.getType() == String.class) {
+					value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
+				} else {
+					value = dynamicObject.get(dynAttribute.getName());
+				}
 				if (nullable || value != null) {
 					Attribute attribute = new BasicAttribute(dynAttribute.getExternalName(), value);
 					myAttrs.put(attribute);

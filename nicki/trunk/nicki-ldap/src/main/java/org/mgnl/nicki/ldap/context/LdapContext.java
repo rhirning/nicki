@@ -26,6 +26,7 @@ import org.mgnl.nicki.core.helper.AnnotationHelper;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
+import org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
@@ -189,9 +190,9 @@ public class LdapContext extends BasicContext implements NickiContext {
 		DirContext ctx = null;
 		try {
 			ctx = getDirContext();
-			ctx.modifyAttributes(dynamicObject.getPath(),DirContext.REPLACE_ATTRIBUTE, dynamicObject.getModel().getLdapAttributes(dynamicObject));
+			ctx.modifyAttributes(dynamicObject.getPath(),DirContext.REPLACE_ATTRIBUTE, dynamicObject.getModel().getLdapAttributes(dynamicObject, CREATEONLY.FALSE));
 		} catch (NamingException e) {
-			String details = getDetails(dynamicObject);
+			String details = getDetails(dynamicObject, CREATEONLY.FALSE);
 			LOG.error(details);
 			throw new DynamicObjectException(e);
 		} finally {
@@ -213,9 +214,9 @@ public class LdapContext extends BasicContext implements NickiContext {
 		try {
 			ctx = getDirContext();
 			ctx.modifyAttributes(dynamicObject.getPath(),DirContext.REPLACE_ATTRIBUTE,
-					dynamicObject.getModel().getLdapAttributes(dynamicObject, attributeNames));
+					dynamicObject.getModel().getLdapAttributes(dynamicObject, attributeNames, CREATEONLY.FALSE));
 		} catch (NamingException e) {
-			String details = getDetails(dynamicObject);
+			String details = getDetails(dynamicObject, CREATEONLY.FALSE);
 			LOG.error(details);
 			throw new DynamicObjectException(e);
 		} finally {
@@ -229,8 +230,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
-	private String getDetails(DynamicObject dynamicObject) {
-		Attributes attributes = dynamicObject.getModel().getLdapAttributes(dynamicObject);
+	private String getDetails(DynamicObject dynamicObject, CREATEONLY createOnly) {
+		Attributes attributes = dynamicObject.getModel().getLdapAttributes(dynamicObject, createOnly);
 		return attributes.toString();
 	}
 

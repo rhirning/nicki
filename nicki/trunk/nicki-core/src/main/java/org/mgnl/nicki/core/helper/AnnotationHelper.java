@@ -11,10 +11,12 @@ import org.mgnl.nicki.core.annotation.Child;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
 import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.core.annotation.RemoveAdditionalObjectClass;
 import org.mgnl.nicki.core.annotation.RemoveDynamicAttribute;
 import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.objects.ChildFilter;
+import org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicReference;
 import org.slf4j.Logger;
@@ -74,6 +76,13 @@ public class AnnotationHelper {
 			}
 		}
 		
+		RemoveAdditionalObjectClass removeAdditionalObjectClass = modelClass.getAnnotation(RemoveAdditionalObjectClass.class);
+		if (removeAdditionalObjectClass != null) {
+			for (String objectClass : removeAdditionalObjectClass.value()) {
+				dynamicObject.removeAdditionalObjectClass(objectClass);
+			}
+		}
+		
 		Annotation[] annotations = modelClass.getAnnotations();
 		for (Annotation annotation : annotations) {
 			if (annotation instanceof Child) {
@@ -109,6 +118,9 @@ public class AnnotationHelper {
 				if (dAttribute.naming()) {
 					dynAttribute.setNaming();
 				}
+					
+				dynAttribute.setCreateOnly(dAttribute.createOnly());
+				
 				if (dAttribute.search()) {
 					dynAttribute.setSearchable(true);
 				}
@@ -158,6 +170,9 @@ public class AnnotationHelper {
 				if (dAttribute.naming()) {
 					dynAttribute.setNaming();
 				}
+				
+				dynAttribute.setCreateOnly(dAttribute.createOnly());
+				
 				if (dAttribute.search()) {
 					dynAttribute.setSearchable(true);
 				}
@@ -204,6 +219,9 @@ public class AnnotationHelper {
 				if (dAttribute.naming()) {
 					dynAttribute.setNaming();
 				}
+				
+				dynAttribute.setCreateOnly(dAttribute.createOnly());
+			
 				if (dAttribute.search()) {
 					dynAttribute.setSearchable(true);
 				}
@@ -250,6 +268,9 @@ public class AnnotationHelper {
 					if (dAttribute.naming()) {
 						dynAttribute.setNaming();
 					}
+					
+					dynAttribute.setCreateOnly(dAttribute.createOnly());
+				
 					if (dAttribute.search()) {
 						dynAttribute.setSearchable(true);
 					}
@@ -297,6 +318,9 @@ public class AnnotationHelper {
 					if (dAttribute.naming()) {
 						dynAttribute.setNaming();
 					}
+					
+					dynAttribute.setCreateOnly(dAttribute.createOnly());
+					
 					if (dAttribute.search()) {
 						dynAttribute.setSearchable(true);
 					}
@@ -341,6 +365,9 @@ public class AnnotationHelper {
 					if (dAttribute.naming()) {
 						dynAttribute.setNaming();
 					}
+					
+					dynAttribute.setCreateOnly(dAttribute.createOnly());
+					
 					if (dAttribute.search()) {
 						dynAttribute.setSearchable(true);
 					}
