@@ -52,6 +52,8 @@ import org.slf4j.LoggerFactory;
 @SuppressWarnings("serial")
 public class DynamicAttribute implements Serializable {
 	private static final Logger LOG = LoggerFactory.getLogger(DynamicAttribute.class);
+	
+	public enum CREATEONLY {TRUE, FALSE}
 
 	private String name;
 	private String ldapName;
@@ -69,6 +71,7 @@ public class DynamicAttribute implements Serializable {
 	private String searchFieldClass;
 	private String caption;
 	private Class<?> type;
+	private CREATEONLY createOnly = CREATEONLY.FALSE;
 
 	public String getExternalName() {
 		return ldapName;
@@ -295,6 +298,14 @@ public class DynamicAttribute implements Serializable {
 
 	public void setType(Class<?> type) {
 		this.type = type;
+	}
+
+	public CREATEONLY getCreateOnly() {
+		return createOnly;
+	}
+
+	public void setCreateOnly(CREATEONLY createOnly) {
+		this.createOnly = createOnly;
 	}
 
 }

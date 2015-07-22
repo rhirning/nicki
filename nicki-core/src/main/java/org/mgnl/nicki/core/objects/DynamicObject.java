@@ -39,6 +39,7 @@ import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.helper.AttributeMapper;
 
 public interface DynamicObject {
 	public static final String ATTRIBUTE_NAME = "name";
@@ -146,6 +147,8 @@ public interface DynamicObject {
 	public <T extends DynamicAttribute >void addAttribute(T dynAttribute);
 
 	public void removeAttribute(String attributeName);
+	
+	public void removeAdditionalObjectClass(String objectClass);
 
 	public void setContext(NickiContext context);
 
@@ -196,7 +199,7 @@ public interface DynamicObject {
 
 	public void setPath(String path);
 	
-	public JsonObjectBuilder toJsonObjectBuilder(Map<String, String> mapping);
-	public JsonObject toJsonObject(Map<String, String> mapping);
+	public JsonObjectBuilder toJsonObjectBuilder(AttributeMapper attributeMapper);
+	public JsonObject toJsonObject(AttributeMapper attributeMapper);
 
 }

@@ -48,6 +48,7 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicReference;
+import org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.helper.DataHelper;
 
@@ -150,40 +151,42 @@ public class DataModel implements Serializable {
 		additionalObjectClasses.add(objectClass);
 	}
 
-	public Attributes getLdapAttributes(DynamicObject dynamicObject) {
+	public Attributes getLdapAttributes(DynamicObject dynamicObject, CREATEONLY createOnly) {
 		Attributes myAttrs = new BasicAttributes(true);
-		addLdapAttributes(myAttrs, dynamicObject, true);
+		addLdapAttributes(myAttrs, dynamicObject, true, createOnly);
 		return myAttrs;
 	}
 
-	public Attributes getLdapAttributes(DynamicObject dynamicObject, String[] attributeNames) {
+	public Attributes getLdapAttributes(DynamicObject dynamicObject, String[] attributeNames, CREATEONLY createOnly) {
 		Attributes myAttrs = new BasicAttributes(true);
-		addLdapAttributes(myAttrs, dynamicObject, true, attributeNames);
+		addLdapAttributes(myAttrs, dynamicObject, true, attributeNames, createOnly);
 		return myAttrs;
 	}
 	
-	public void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject, boolean nullable) {
-		addLdapAttributes(myAttrs, dynamicObject, nullable, null);
+	public void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject, boolean nullable, CREATEONLY createOnly) {
+		addLdapAttributes(myAttrs, dynamicObject, nullable, null, createOnly);
 	}
 	
 	public void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject,
-			boolean nullable, String[] attributeNames) {
+			boolean nullable, String[] attributeNames, CREATEONLY createOnly) {
 
 		// single attributes (except namingAttribute)
 		for (DynamicAttribute dynAttribute : getAttributes().values()) {
 			if (attributeNames == null || DataHelper.contains(attributeNames, dynAttribute.getName())) {
 				if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
-					if (dynAttribute.getType() == String.class) {
-						String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
-						if (nullable || value != null) {
-							Attribute attribute = new BasicAttribute(dynAttribute.getExternalName(), value);
-							myAttrs.put(attribute);
-						}
-					} else if (dynAttribute.getType() == byte[].class) {
-						byte[] value = (byte[]) dynamicObject.get(dynAttribute.getName());
-						if (nullable || value != null) {
-							Attribute attribute = new BasicAttribute(dynAttribute.getExternalName(), value);
-							myAttrs.put(attribute);
+					if (dynAttribute.getCreateOnly() == CREATEONLY.FALSE || createOnly == CREATEONLY.TRUE) {
+						if (dynAttribute.getType() == String.class) {
+							String value = StringUtils.trimToNull(dynamicObject.getAttribute(dynAttribute.getName()));
+							if (nullable || value != null) {
+								Attribute attribute = new BasicAttribute(dynAttribute.getExternalName(), value);
+								myAttrs.put(attribute);
+							}
+						} else if (dynAttribute.getType() == byte[].class) {
+							byte[] value = (byte[]) dynamicObject.get(dynAttribute.getName());
+							if (nullable || value != null) {
+								Attribute attribute = new BasicAttribute(dynAttribute.getExternalName(), value);
+								myAttrs.put(attribute);
+							}
 						}
 					}
 				}
@@ -194,32 +197,34 @@ public class DataModel implements Serializable {
 		for (DynamicAttribute dynAttribute : getAttributes().values()) {
 			if (attributeNames == null || DataHelper.contains(attributeNames, dynAttribute.getName())) {
 				if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
-					Attribute attribute = new BasicAttribute(dynAttribute.getExternalName());
-					if (dynAttribute.getType() == String.class) {
-						@SuppressWarnings("unchecked")
-						List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
-						if (list != null) {
-							for (String value : list) {
-								if (StringUtils.isNotEmpty(value)) {
-									attribute.add(value);
+					if (dynAttribute.getCreateOnly() == CREATEONLY.FALSE || createOnly == CREATEONLY.TRUE) {
+						Attribute attribute = new BasicAttribute(dynAttribute.getExternalName());
+						if (dynAttribute.getType() == String.class) {
+							@SuppressWarnings("unchecked")
+							List<String> list = (List<String>) dynamicObject.get(dynAttribute.getName());
+							if (list != null) {
+								for (String value : list) {
+									if (StringUtils.isNotEmpty(value)) {
+										attribute.add(value);
+									}
 								}
 							}
-						}
-						if (nullable || attribute.size() > 0) {
-							myAttrs.put(attribute);
-						}
-					} else if (dynAttribute.getType() == byte[].class) {
-						@SuppressWarnings("unchecked")
-						List<byte[]> list = (List<byte[]>) dynamicObject.get(dynAttribute.getName());
-						if (list != null) {
-							for (byte[] value : list) {
-								if (value != null) {
-									attribute.add(value);
+							if (nullable || attribute.size() > 0) {
+								myAttrs.put(attribute);
+							}
+						} else if (dynAttribute.getType() == byte[].class) {
+							@SuppressWarnings("unchecked")
+							List<byte[]> list = (List<byte[]>) dynamicObject.get(dynAttribute.getName());
+							if (list != null) {
+								for (byte[] value : list) {
+									if (value != null) {
+										attribute.add(value);
+									}
 								}
 							}
-						}
-						if (nullable || attribute.size() > 0) {
-							myAttrs.put(attribute);
+							if (nullable || attribute.size() > 0) {
+								myAttrs.put(attribute);
+							}
 						}
 					}
 				}
@@ -288,6 +293,12 @@ public class DataModel implements Serializable {
 	public void removeAttribute(String attrbuteName) {
 		if (this.attributes.containsKey(attrbuteName)) {
 			this.attributes.remove(attrbuteName);
+		}
+	}
+	
+	public void removeAdditionalObjectClass(String objectClass) {
+		if (this.additionalObjectClasses.contains(objectClass)) {
+			this.additionalObjectClasses.remove(objectClass);
 		}
 	}
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
