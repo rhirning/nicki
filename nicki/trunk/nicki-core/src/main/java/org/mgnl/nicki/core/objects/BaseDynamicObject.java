@@ -560,30 +560,33 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		DataModel model = getModel();
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		for (DynamicAttribute dynAttribute : model.getAttributes().values()) {
-			String key;
-			if (mapping != null) {
-				if (mapping.isStrict() && !mapping.hasInternal(dynAttribute.getName())) {
-					key = null;
-				} else {
-					key = mapping.toExternal(dynAttribute.getName());
-				}
-			} else {
-				key = dynAttribute.getName();
-			}
-			if (key != null) {
-				if (dynAttribute.isMultiple()) {
-					List<String> list = (List<String>) get(dynAttribute.getName());
-					if (list != null && list.size() > 0) {
-						JsonArrayBuilder lb = Json.createArrayBuilder();
-						for (String entry : list) {
-							lb.add(entry);
-						}
-						builder.add(key, lb);
+
+			if (mapping == null || !mapping.isHiddenInternal(dynAttribute.getName())) {
+				String key;
+				if (mapping != null) {
+					if (mapping.isStrict() && !mapping.hasInternal(dynAttribute.getName())) {
+						key = null;
+					} else {
+						key = mapping.toExternal(dynAttribute.getName());
 					}
 				} else {
-					String value = getAttribute(dynAttribute.getName());
-					if (value != null) {
-						builder.add(key, value);
+					key = dynAttribute.getName();
+				}
+				if (key != null) {
+					if (dynAttribute.isMultiple()) {
+						List<String> list = (List<String>) get(dynAttribute.getName());
+						if (list != null && list.size() > 0) {
+							JsonArrayBuilder lb = Json.createArrayBuilder();
+							for (String entry : list) {
+								lb.add(entry);
+							}
+							builder.add(key, lb);
+						}
+					} else {
+						String value = getAttribute(dynAttribute.getName());
+						if (value != null) {
+							builder.add(key, value);
+						}
 					}
 				}
 			}
