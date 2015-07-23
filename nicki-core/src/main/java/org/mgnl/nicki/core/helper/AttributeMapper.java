@@ -11,4 +11,8 @@ public interface AttributeMapper {
 	public boolean hasInternal(String internal);
 	
 	public boolean isStrict();
+
+	boolean isHiddenInternal(String internal);
+
+	boolean isHiddenExternal(String external);
 }
