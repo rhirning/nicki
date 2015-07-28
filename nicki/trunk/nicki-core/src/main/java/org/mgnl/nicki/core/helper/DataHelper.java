@@ -41,6 +41,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -183,30 +185,69 @@ public class DataHelper {
 		return string;
 	}
 	
-	public static String translate(String variable) {
-		if (StringUtils.startsWith(variable, "${")) {
-			// remove ${ ... }
-			String name = StringUtils.replaceChars(variable, "${}", "");
-			// first check for System environment
-			String value = System.getenv(name);
-			if (StringUtils.isNotBlank(value)) {
-				return value;
-			}
-			// Check JNDI environment
-			try {
-				Context initCtx = new InitialContext();
-				Context envCtx = (Context) initCtx.lookup("java:comp/env");
-				value = (String) envCtx.lookup(name);
+	public static final String PATTERN = "\\$\\{(.*)\\}";
+	public static final Pattern pattern = Pattern.compile(PATTERN);
+	public static String translate(String text) {
+		String result = text;
+		
+		while (true) {
+			Matcher matcher = pattern.matcher(result);
+			if (matcher.find()) {
+				String name = matcher.group();
+				String value = System.getenv(name);
 				if (StringUtils.isNotBlank(value)) {
-					return value;
+					result = StringUtils.replace(result, "${" + name + "}", value);
+					continue;
 				}
-			} catch (NamingException e) {
-				LOG.error("Error parsing variable " + name, e);
+				// Check JNDI environment
+				try {
+					Context initCtx = new InitialContext();
+					Context envCtx = (Context) initCtx.lookup("java:comp/env");
+					value = (String) envCtx.lookup(name);
+					if (StringUtils.isNotBlank(value)) {
+						result = StringUtils.replace(result, "${" + name + "}", value);
+						continue;
+					}
+				} catch (NamingException e) {
+					LOG.error("Error parsing variable " + name, e);
+				}
+				result = StringUtils.replace(result, "${" + name + "}", name);
+			} else {
+				break;
 			}
-			return "";
-		} else {
-			return variable;
 		}
+		return result;
+	}
+	public static String translate(String text, String defaultValue) {
+		String result = text;
+		
+		while (true) {
+			Matcher matcher = pattern.matcher(result);
+			if (matcher.find()) {
+				String name = matcher.group();
+				String value = System.getenv(name);
+				if (StringUtils.isNotBlank(value)) {
+					result = StringUtils.replace(result, "${" + name + "}", value);
+					continue;
+				}
+				// Check JNDI environment
+				try {
+					Context initCtx = new InitialContext();
+					Context envCtx = (Context) initCtx.lookup("java:comp/env");
+					value = (String) envCtx.lookup(name);
+					if (StringUtils.isNotBlank(value)) {
+						result = StringUtils.replace(result, "${" + name + "}", value);
+						continue;
+					}
+				} catch (NamingException e) {
+					e.printStackTrace();
+				}
+				result = StringUtils.replace(result, "${" + name + "}", defaultValue);
+			} else {
+				break;
+			}
+		}
+		return result;
 	}
 
 	/**
