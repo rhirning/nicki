@@ -224,7 +224,7 @@ public class DataHelper {
 		while (result != null) {
 			Matcher matcher = pattern.matcher(result);
 			if (matcher.find()) {
-				String name = matcher.group();
+				String name = matcher.group(1);
 				String value = System.getenv(name);
 				if (StringUtils.isNotBlank(value)) {
 					result = StringUtils.replace(result, "${" + name + "}", value);
