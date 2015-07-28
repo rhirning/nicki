@@ -115,6 +115,9 @@ public class Person extends BaseDynamicObject {
 	public String getFullName() {
 		return getAttribute(ATTRIBUTE_FULLNAME);
 	}
+	public String getFullname() {
+		return getFullName();
+	}
 
 	public void setSurname(String value) {
 		put(ATTRIBUTE_SURNAME, value);
@@ -128,6 +131,9 @@ public class Person extends BaseDynamicObject {
 	@DynamicAttribute(externalName="givenName")
 	public String getGivenName() {
 		return getAttribute(ATTRIBUTE_GIVENNAME);
+	}
+	public String getGivenname() {
+		return getGivenName();
 	}
 
 	public void setGivenName(String value) {
