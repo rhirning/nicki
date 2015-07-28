@@ -190,10 +190,10 @@ public class DataHelper {
 	public static String translate(String text) {
 		String result = text;
 		
-		while (true) {
+		while (result != null) {
 			Matcher matcher = pattern.matcher(result);
 			if (matcher.find()) {
-				String name = matcher.group();
+				String name = matcher.group(1);
 				String value = System.getenv(name);
 				if (StringUtils.isNotBlank(value)) {
 					result = StringUtils.replace(result, "${" + name + "}", value);
@@ -221,7 +221,7 @@ public class DataHelper {
 	public static String translate(String text, String defaultValue) {
 		String result = text;
 		
-		while (true) {
+		while (result != null) {
 			Matcher matcher = pattern.matcher(result);
 			if (matcher.find()) {
 				String name = matcher.group();
