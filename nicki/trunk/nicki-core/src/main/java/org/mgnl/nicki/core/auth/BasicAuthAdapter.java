@@ -46,11 +46,21 @@ public class BasicAuthAdapter implements SSOAdapter {
 	private static Logger LOG = LoggerFactory.getLogger(BasicAuthAdapter.class);
 
 	public String getName(Object request) {
-		return getAuthPart(request, 0);
+		try {
+			return getAuthPart(request, 0);
+		} catch (Exception e) {
+			LOG.error("Error reading Basic Authentication data", e);
+			return null;
+		}
 	}
 
 	public char[] getPassword(Object request) {
-		return getAuthPart(request, 1).toCharArray();
+		try {
+			return getAuthPart(request, 1).toCharArray();
+		} catch (Exception e) {
+			LOG.error("Error reading Basic Authentication data", e);
+			return null;
+		}
 	}
 
 	@Override
