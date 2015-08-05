@@ -171,6 +171,15 @@ public class NickiTreeEditor extends CustomComponent {
 				if (selected == null || isRoot(selected)) {
 					hideClassEditor();
 				} else {
+					for (Class<? extends DynamicObject> clazz : classEditors.keySet()) {
+						if (clazz.isAssignableFrom(selected.getClass())) {
+							ClassEditor classEditor = classEditors.get(clazz);
+							showClassEditor(classEditor, selected);
+							return;
+						}
+					}
+					showClassEditor(new DynamicObjectViewer(), selected);
+					/*
 					if (classEditors.containsKey(selected.getClass())) {
 						ClassEditor classEditor = classEditors.get(selected
 								.getClass());
@@ -178,6 +187,7 @@ public class NickiTreeEditor extends CustomComponent {
 					} else {
 						showClassEditor(new DynamicObjectViewer(), selected);
 					}
+					*/
 				}
 			}
 		});

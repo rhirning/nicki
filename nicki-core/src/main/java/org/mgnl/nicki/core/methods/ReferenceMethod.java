@@ -59,7 +59,7 @@ public class ReferenceMethod implements TemplateMethodModel, Serializable {
 
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (objects == null) {
-			objects = (List<DynamicObject>) context.loadReferenceObjects(this);
+			objects = (List<DynamicObject>) context.loadReferenceObjects(this.reference.getClassDefinition(), this);
 		}
 		return objects;
 	}
