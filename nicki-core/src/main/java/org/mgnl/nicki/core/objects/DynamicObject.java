@@ -149,6 +149,8 @@ public interface DynamicObject {
 	public void removeAttribute(String attributeName);
 	
 	public void removeAdditionalObjectClass(String objectClass);
+	
+	public void removeObjectClass(String objectClass);
 
 	public void setContext(NickiContext context);
 

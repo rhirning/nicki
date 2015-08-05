@@ -210,6 +210,10 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	public void removeAdditionalObjectClass(String objectClass) {
 		this.getModel().removeAdditionalObjectClass(objectClass);
 	}
+	
+	public void removeObjectClass(String objectClass) {
+		this.getModel().removeObjectClass(objectClass);
+	}
 
 	public void addMethod(String name, TemplateMethodModel method) {
 		put(DynamicAttribute.getGetter(name), method);

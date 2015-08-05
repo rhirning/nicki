@@ -414,19 +414,8 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 	}
 
 	@Override
-	public List<DynamicObject> loadReferenceObjects(Query query) {
-		return null;
-	}
-
-	@Override
 	public <T extends DynamicObject> List<T> loadReferenceObjects(
 			Class<T> classDefinition, Query query) {
-		return null;
-	}
-
-	@Override
-	public List<DynamicObject> loadReferenceObjects(
-			ReferenceMethod referenceMethod) {
 		return null;
 	}
 
@@ -442,6 +431,19 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	@Override
 	public Query getQuery(String base) {
+		return null;
+	}
+
+	@Override
+	public <T extends DynamicObject> List<T> loadReferenceObjects(Query query) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <T extends DynamicObject> List<T> loadReferenceObjects(
+			Class<T> classDefinition, ReferenceMethod referenceMethod) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

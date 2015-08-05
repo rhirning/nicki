@@ -190,8 +190,8 @@ public abstract class NickiApplication extends UI {
 		if (isUseWelcomeDialog()) {
 			getView().addComponent(new WelcomeDialog(this));
 		}
-		Component editor = getEditor();
 		if (isAllowed(this.nickiContext.getUser())) {
+			Component editor = getEditor();
 			getView().addComponent(editor);
 			editor.setSizeFull();
 			getView().setExpandRatio(editor, 1);
