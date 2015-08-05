@@ -38,6 +38,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.methods.ForeignKeyMethod;
 import org.mgnl.nicki.core.methods.ListForeignKeyMethod;
+import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.context.NickiContext;
@@ -61,6 +62,21 @@ public class DynamicReference extends DynamicAttribute implements Serializable {
 	}
 	@Override
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
+		if (isMultiple()) {
+			dynamicObject.put(getMultipleGetter(getName()),
+					new ReferenceMethod(context, rs, this));
+
+		} else {
+			String value = (String) rs.getValue(getType(), getExternalName());
+			if (StringUtils.isNotEmpty(value)) {
+				dynamicObject.put(getName(), value);
+				dynamicObject.put(getGetter(getName()),
+						new ForeignKeyMethod(context, rs, getExternalName(), getForeignKeyClass()));
+			}
+		}
+	}
+
+	public void XXXinit(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
 		if (isMultiple()) {
 			List<Object> values = rs.getValues(getExternalName());
 			dynamicObject.put(getName(), values);

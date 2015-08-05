@@ -13,10 +13,10 @@ import org.mgnl.nicki.core.annotation.DynamicReferenceAttribute;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.annotation.RemoveAdditionalObjectClass;
 import org.mgnl.nicki.core.annotation.RemoveDynamicAttribute;
+import org.mgnl.nicki.core.annotation.RemoveObjectClass;
 import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.objects.ChildFilter;
-import org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicReference;
 import org.slf4j.Logger;
@@ -80,6 +80,13 @@ public class AnnotationHelper {
 		if (removeAdditionalObjectClass != null) {
 			for (String objectClass : removeAdditionalObjectClass.value()) {
 				dynamicObject.removeAdditionalObjectClass(objectClass);
+			}
+		}
+		
+		RemoveObjectClass removeObjectClass = modelClass.getAnnotation(RemoveObjectClass.class);
+		if (removeObjectClass != null) {
+			for (String objectClass : removeObjectClass.value()) {
+				dynamicObject.removeObjectClass(objectClass);
 			}
 		}
 		

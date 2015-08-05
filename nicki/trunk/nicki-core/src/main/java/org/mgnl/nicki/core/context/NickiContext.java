@@ -60,7 +60,7 @@ public interface NickiContext extends Serializable {
 	<T extends DynamicObject> List<T> loadChildObjects(Class<T> classDefinition, String parent,	String filter);
 	<T extends DynamicObject> List<T> loadChildObjects(Class<T> class1, DynamicObject parent, String filter);
 	
-	List<DynamicObject> loadReferenceObjects(Query query);
+	<T extends DynamicObject> List<T> loadReferenceObjects(Query query);
 	<T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, Query query);
 
 	boolean isExist(String path);
@@ -86,7 +86,7 @@ public interface NickiContext extends Serializable {
 	void loadAttributes(DynamicObject dynamicObject, Class<?> requester, String[] attributes) throws DynamicObjectException;
 	void setReadonly(boolean readonly);
 	<T extends DynamicObject> T loadObjectAs(Class<T> classDefinition, DynamicObject dynamicObject);
-	List<DynamicObject> loadReferenceObjects(ReferenceMethod referenceMethod);
+	<T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, ReferenceMethod referenceMethod);
 	DynamicObjectAdapter getAdapter();
 	void search(QueryHandler handler) throws DynamicObjectException;
 	SearchQueryHandler getSearchHandler(Query query);

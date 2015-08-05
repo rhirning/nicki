@@ -301,6 +301,12 @@ public class DataModel implements Serializable {
 			this.additionalObjectClasses.remove(objectClass);
 		}
 	}
+	
+	public void removeObjectClass(String objectClass) {
+		if (this.objectClasses.contains(objectClass)) {
+			this.objectClasses.remove(objectClass);
+		}
+	}
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
 		for (DynamicAttribute dynamicAttribute : this.attributes.values()) {
 			dynamicAttribute.init(context, dynamicObject, rs);
