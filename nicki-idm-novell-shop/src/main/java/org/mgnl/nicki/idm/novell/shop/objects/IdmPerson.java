@@ -1,7 +1,7 @@
 /**
  * Copyright (c) 2003-2015 Dr. Ralf Hirning
  * All rights reserved.
- *  
+ * 
  * This program is dual-licensed under both the GNU General
  * Public License and an individual license with Dr. Ralf
  * Hirning.
@@ -16,7 +16,7 @@
  * 
  * Any modifications to this file must keep this entire header
  * intact.
-*/
+ */
 package org.mgnl.nicki.idm.novell.shop.objects;
 
 import java.io.Serializable;
@@ -41,9 +41,6 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.idm.novell.catalog.ResourceCatalogArticle;
 import org.mgnl.nicki.idm.novell.catalog.RoleCatalogArticle;
-import org.mgnl.nicki.idm.novell.shop.objects.Entitlement;
-import org.mgnl.nicki.idm.novell.shop.objects.Resource;
-import org.mgnl.nicki.idm.novell.shop.objects.Role;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.slf4j.Logger;
@@ -91,7 +88,7 @@ public class IdmPerson extends Person implements Serializable {
 	private Collection<Role> groupRoles = null;
 	private Collection<Role> containerRoles = null;
 	private Collection<Resource> assignedResources = null;
-	
+
 	@DynamicAttribute(externalName="nickiLastWorkingDay")
 	private String lastWorkingDay;
 	@DynamicAttribute(externalName="nickiQuitDate")
@@ -148,17 +145,18 @@ public class IdmPerson extends Person implements Serializable {
 	private String mail;
 	@DynamicAttribute(externalName="telephoneNumber")
 	private String phoneNumber;
-	
 
 
 
+
+	@Override
 	public Collection<Group> getGroups() {
 		if (assignedGroups == null) {
 			assignedGroups = getForeignKeyObjects(Group.class, "memberOf");
 		}
 		return assignedGroups;
 	}
-	
+
 	public boolean hasRole(Role role2) {
 		for (Role role : getRoles()) {
 			if (StringUtils.equals(role.getPath(), role2.getPath())) {
@@ -177,7 +175,7 @@ public class IdmPerson extends Person implements Serializable {
 		}
 		return false;
 	}
-	
+
 	public boolean hasResource(Resource resource2) {
 		for (Resource resource : getResources()) {
 			if (StringUtils.equals(resource.getPath(), resource2.getPath())) {
@@ -302,7 +300,7 @@ public class IdmPerson extends Person implements Serializable {
 			return null;
 		}
 	}
-	
+
 	public Date getBirthDate() {
 		try {
 			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_BIRTHDATE));
@@ -310,7 +308,7 @@ public class IdmPerson extends Person implements Serializable {
 			return null;
 		}
 	}
-	
+
 	public Date getOuChangeDate() {
 		try {
 			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_OUCHANGEDATE));
@@ -379,7 +377,7 @@ public class IdmPerson extends Person implements Serializable {
 	public String getLocation() {
 		return (String) get(ATTRIBUTE_LOCATION);
 	}
-	
+
 	public void setPhoneNumber(String value) {
 		put(ATTRIBUTE_PHONENUMBER, value);
 	}
@@ -387,7 +385,7 @@ public class IdmPerson extends Person implements Serializable {
 	public String getPhoneNumber() {
 		return (String) get(ATTRIBUTE_PHONENUMBER);
 	}
-	
+
 	public void setOu(String value) {
 		put(ATTRIBUTE_OU, value);
 	}
@@ -416,8 +414,8 @@ public class IdmPerson extends Person implements Serializable {
 		return roles;
 	}
 
-		@SuppressWarnings("unchecked")
-		public Collection<Role> getAssignedRoles() {
+	@SuppressWarnings("unchecked")
+	public Collection<Role> getAssignedRoles() {
 		if (assignedRoles == null) {
 			TemplateMethodModel method = (TemplateMethodModel) get("getRoles");
 			if (method != null) {
@@ -438,37 +436,37 @@ public class IdmPerson extends Person implements Serializable {
 		return assignedRoles;
 	}
 
-		@SuppressWarnings("unchecked")
-		public Collection<Role> getGroupRoles() {
-			if (groupRoles == null) {
-				TemplateMethodModel method = (TemplateMethodModel) get("getGroupRoles");
-				if (method != null) {
-					try {
-						groupRoles = (Collection<Role>) method.exec(null);
-					} catch (TemplateModelException e) {
-						LOG.error("Error", e);
-						groupRoles =  new ArrayList<Role>();
-					}
+	@SuppressWarnings("unchecked")
+	public Collection<Role> getGroupRoles() {
+		if (groupRoles == null) {
+			TemplateMethodModel method = (TemplateMethodModel) get("getGroupRoles");
+			if (method != null) {
+				try {
+					groupRoles = (Collection<Role>) method.exec(null);
+				} catch (TemplateModelException e) {
+					LOG.error("Error", e);
+					groupRoles =  new ArrayList<Role>();
 				}
 			}
-			return groupRoles;
 		}
+		return groupRoles;
+	}
 
-		@SuppressWarnings("unchecked")
-		public Collection<Role> getContainerRoles() {
-			if (containerRoles == null) {
-				TemplateMethodModel method = (TemplateMethodModel) get("getContainerRoles");
-				if (method != null) {
-					try {
-						containerRoles = (Collection<Role>) method.exec(null);
-					} catch (TemplateModelException e) {
-						LOG.error("Error", e);
-						containerRoles =  new ArrayList<Role>();
-					}
+	@SuppressWarnings("unchecked")
+	public Collection<Role> getContainerRoles() {
+		if (containerRoles == null) {
+			TemplateMethodModel method = (TemplateMethodModel) get("getContainerRoles");
+			if (method != null) {
+				try {
+					containerRoles = (Collection<Role>) method.exec(null);
+				} catch (TemplateModelException e) {
+					LOG.error("Error", e);
+					containerRoles =  new ArrayList<Role>();
 				}
 			}
-			return containerRoles;
 		}
+		return containerRoles;
+	}
 
 	@SuppressWarnings("unchecked")
 	public Collection<Resource> getResources() {
@@ -500,15 +498,13 @@ public class IdmPerson extends Person implements Serializable {
 
 	public enum PERSONTYPE {
 
-		INTERNAL_USER("INTERNAL"), EXTERNAL_USER("EXTERNAL"), FUNCTIONAL_USER(
-				"FUNCTIONAL"), SECONDARY_USER(
-						"SECONDARY"), NOT_SET("");
+		INTERNAL_USER("INTERNAL"), EXTERNAL_USER("EXTERNAL"), FUNCTIONAL_USER("FUNCTIONAL"), SECONDARY_USER("SECONDARY"), ADMIN_USER("ADMINACC"), NOT_SET("");
 		private final String type;
 
 		private PERSONTYPE(String type) {
 			this.type = type;
 		}
-		
+
 		public String getDisplayName() {
 			return I18n.getText("nicki.dynamic.objects.persontype." + this);
 		}
@@ -522,6 +518,8 @@ public class IdmPerson extends Person implements Serializable {
 				return FUNCTIONAL_USER;
 			} else if (SECONDARY_USER.getValue().equals(type)) {
 				return SECONDARY_USER;
+			} else if (ADMIN_USER.getValue().equals(type)) {
+				return ADMIN_USER;
 			}
 
 			return NOT_SET;
