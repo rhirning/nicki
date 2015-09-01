@@ -72,7 +72,7 @@ public class BasicAuthAdapter implements SSOAdapter {
 	public void init(Object request) {
 	}
 
-	private static String[] decode(final String encodedString) {
+	public static String[] decode(final String encodedString) {
 		final byte[] decodedBytes = Base64.decodeBase64(encodedString
 				.getBytes());
 		final String pair = new String(decodedBytes);
