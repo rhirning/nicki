@@ -73,7 +73,7 @@ public class Person extends BaseDynamicObject {
 
 	@DynamicAttribute(externalName="isManager")
 	private boolean isManager;
-	
+
 	@DynamicReferenceAttribute(externalName="member", reference=Group.class,
 			baseProperty="nicki.data.basedn")
 	private String[] member;
@@ -83,7 +83,8 @@ public class Person extends BaseDynamicObject {
 	private String[] assignedArticle;
 	@DynamicAttribute(externalName="nickiCatalogAttribute")
 	private String[] attributeValue;
-	
+
+	@Override
 	@DynamicAttribute(externalName="cn", naming=true)
 	public String getName() {
 		return super.getName();
@@ -165,7 +166,7 @@ public class Person extends BaseDynamicObject {
 		}
 		return this.attributeValues;
 	}
-	
+
 	public Map<String, String> getCatalogAttributes() {
 		return catalogAttributes;
 	}
@@ -181,7 +182,7 @@ public class Person extends BaseDynamicObject {
 			prefix.append(SEPARATOR_SPECIFIER).append(specifier);
 		}
 		prefix.append(SEPARATOR_KEY);
-		
+
 		for (String value : getCatalogAttributeValues()) {
 			if (StringUtils.startsWith(value, prefix.toString())) {
 				String name = StringUtils.substringBefore(value, SEPARATOR_VALUE);
