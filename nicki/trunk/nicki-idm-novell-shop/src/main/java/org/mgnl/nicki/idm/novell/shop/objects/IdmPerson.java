@@ -133,9 +133,7 @@ public class IdmPerson extends Person implements Serializable {
 	private String company;
 	@DynamicAttribute(externalName="nickiOccupation")
 	private String occupation;
-	@DynamicReferenceAttribute(externalName="groupMembership", foreignKey=Group.class,
-			reference=Group.class,
-			baseProperty="nicki.users.basedn")
+	@DynamicAttribute(externalName="groupMembership", foreignKey=Group.class)
 	private String[] memberOf;
 	@DynamicAttribute(externalName="ou")
 	private String ou;
