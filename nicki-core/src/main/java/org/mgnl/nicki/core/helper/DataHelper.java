@@ -209,7 +209,7 @@ public class DataHelper {
 						continue;
 					}
 				} catch (NamingException e) {
-					LOG.error("Error parsing variable " + name, e);
+					LOG.debug("Error parsing variable " + name, e);
 				}
 				result = StringUtils.replace(result, "${" + name + "}", name);
 			} else {
