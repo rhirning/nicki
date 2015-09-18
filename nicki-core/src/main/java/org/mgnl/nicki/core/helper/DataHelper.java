@@ -281,6 +281,10 @@ public class DataHelper {
 		return formatDisplayDay.format(value);
 	}
 
+	public static Date dateFromDisplayDay(String stored) throws ParseException {
+		return formatDisplayDay.parse(stored);
+	}
+
 	public static Date dateFromString(String stored) throws ParseException {
 		return formatDay.parse(stored);
 	}
