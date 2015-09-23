@@ -14,10 +14,16 @@ import com.vaadin.ui.Component;
 
 public abstract class DeletableContainer<T extends Deletable> extends IndexedContainer implements Container {
 	private static final long serialVersionUID = -5658914311396563600L;
+	
+	private String deleteCaption;
+	private String undeleteCaption;
 
 	public DeletableContainer(Class<? super T> type,
-			Collection<? extends T> collection, Object columns[]) throws IllegalArgumentException {
+			Collection<? extends T> collection, Object columns[],
+			String deleteCaption, String undeleteCaption) throws IllegalArgumentException {
 		super();
+		this.deleteCaption = deleteCaption;
+		this.undeleteCaption = undeleteCaption;
 		for (Object object : columns) {
 			addContainerProperty(object, String.class, "");
 		}
@@ -31,15 +37,21 @@ public abstract class DeletableContainer<T extends Deletable> extends IndexedCon
 			}
 			@SuppressWarnings("unchecked")
 			Property<Component> editProperty = item.getItemProperty("delete");
+			String caption;
 			if (bean.isDeletable()) {
-				editProperty.setValue(new DeleteButton(bean, "delete"));
+				if (bean.isDeleted()) {
+				 caption = undeleteCaption;
+				} else {
+					 caption = deleteCaption;
+				}
+				editProperty.setValue(new DeleteButton<T>(bean, caption));
 			}
 		}
 	}
 
-	public class DeleteButton extends Button implements Property<Component> {
+	public class DeleteButton<T1 extends Deletable> extends Button implements Property<Component> {
 		private static final long serialVersionUID = -5928278839208615249L;
-		public DeleteButton(T bean, String title) {
+		public DeleteButton(T1 bean, String title) {
 			setCaption(title);
 			setData(bean);
 			addClickListener(new ClickListener() {
@@ -48,16 +60,20 @@ public abstract class DeletableContainer<T extends Deletable> extends IndexedCon
 				@Override
 				public void buttonClick(ClickEvent event) {
 					@SuppressWarnings("unchecked")
-					T bean = (T) event.getButton().getData();
-					if (delete(bean)) {
-						getValue().setEnabled(false);
+					T1 bean = (T1) event.getButton().getData();
+					if (!bean.isDeleted()) {
+						bean.delete();
+						event.getButton().setCaption(undeleteCaption);
+					} else {
+						bean.undelete();
+						event.getButton().setCaption(deleteCaption);
 					}
 					
 				}
 			});
 		}
 		@Override
-		public DeleteButton getValue() {
+		public DeleteButton<T1> getValue() {
 			return this;
 		}
 		@Override
@@ -69,13 +85,8 @@ public abstract class DeletableContainer<T extends Deletable> extends IndexedCon
 		public Class<? extends Component> getType() {
 			return this.getType();
 		}
-
-
 		
 	}
-
-	abstract public boolean delete(T bean);
-
 
 	public static String get(Object object, String name) {
 		String methodName =  "get" + StringUtils.capitalize(name);

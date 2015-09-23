@@ -271,7 +271,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		context.updateObject(this);
 	}
 	
-	public void update(String[] attributeNames) throws DynamicObjectException {
+	public void update(String... attributeNames) throws DynamicObjectException {
 		if (isNew()) {
 			throw new DynamicObjectException("Object does not exist: " + getPath());
 		}
