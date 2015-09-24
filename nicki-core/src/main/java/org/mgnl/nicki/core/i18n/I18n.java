@@ -84,4 +84,12 @@ public class I18n {
 	public static void addMessageBase(String base) {
 		instance.messageBases.add(base);
 	}
+
+	public static String[] getTexts(String base, String... keys) {
+		List<String> texts = new ArrayList<String>();
+		for (String key: keys) {
+			texts.add(I18n.getText(base + "." + key));
+		}
+		return texts.toArray(new String[]{});
+	}
 }
