@@ -72,7 +72,7 @@ public class BasicAuthAdapter implements SSOAdapter {
 	public void init(Object request) {
 	}
 
-	public static String[] decode(final String encodedString) {
+	protected String[] decode(final String encodedString) {
 		final byte[] decodedBytes = Base64.decodeBase64(encodedString
 				.getBytes());
 		final String pair = new String(decodedBytes);
@@ -80,7 +80,7 @@ public class BasicAuthAdapter implements SSOAdapter {
 		return userDetails;
 	}
 	
-	private static String getAuthPart(Object request, int num) {
+	protected String getAuthPart(Object request, int num) {
 		try {
 			if (request instanceof HttpServletRequest) {
 				HttpServletRequest httpServletRequest = (HttpServletRequest) request;
