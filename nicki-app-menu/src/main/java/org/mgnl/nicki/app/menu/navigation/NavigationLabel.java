@@ -1,6 +1,9 @@
 package org.mgnl.nicki.app.menu.navigation;
 
-public class NavigationLabel {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class NavigationLabel implements Serializable {
 	private String caption;
 
 	public NavigationLabel(String caption) {
