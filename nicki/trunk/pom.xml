@@ -42,6 +42,7 @@
 		<module>nicki-template</module>
 		<module>nicki-user-admin</module>
 		<module>nicki-vaadin-base</module>
+		<module>nicki-verify</module>
 		<module>nicki-xls</module>
 		<module>nicki-apps</module>
 	</modules>
@@ -177,6 +178,11 @@
 				<groupId>javax.json</groupId>
 				<artifactId>javax.json-api</artifactId>
 				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>javax.mail</groupId>
+				<artifactId>mail</artifactId>
+				<version>1.4.1</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.portlet</groupId>
