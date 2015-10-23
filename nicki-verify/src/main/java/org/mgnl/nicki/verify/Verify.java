@@ -71,7 +71,7 @@ public class Verify {
 		return instance;
 	}
 	
-	public void verify(String attributeName, String value) throws VerifiyException {
+	public void verify(String attributeName, String value) throws VerifyException {
 		String rule = attributeRules.get(attributeName.toLowerCase());
 		
 		StringBuffer sb = new StringBuffer();
@@ -100,6 +100,8 @@ public class Verify {
 					checkRule = new MaxLengthRule(StringUtils.substringAfter(params[i], "maxlength:"));
 				} else if (StringUtils.startsWith(params[i],"regex:")) {
 					checkRule = new RegExRule(StringUtils.substringAfter(params[i], "regex:"));
+				} else if (StringUtils.startsWith(params[i],"password:")) {
+					checkRule = new PasswordRule(StringUtils.substringAfter(params[i], "password:"));
 				}
 				if (checkRule != null) {
 					if (!checkRule.evaluate(value)) {
@@ -113,7 +115,7 @@ public class Verify {
 				}
 			}
 			if (sb.length() > 0) {
-				throw new VerifiyException(sb.toString());
+				throw new VerifyException(sb.toString());
 			}
 		}
 	}
