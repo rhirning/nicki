@@ -13,4 +13,6 @@ public interface Navigation extends Component {
 	
 	Container getContainer();
 
+	void selectInNavigation(NavigationEntry entry);
+
 }
