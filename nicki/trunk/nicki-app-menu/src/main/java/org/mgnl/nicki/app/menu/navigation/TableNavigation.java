@@ -106,4 +106,9 @@ public class TableNavigation extends NavigationBase implements Navigation {
 		}
 		table.setContainerDataSource(getContainer());
 	}
+	
+	@Override
+	public void selectInNavigation(NavigationEntry entry) {
+		table.select(entry);
+	}
 }

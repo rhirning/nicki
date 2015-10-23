@@ -91,6 +91,7 @@ public class MainView extends CustomComponent {
 			Notification.show(I18n.getText("pva.cms.client.message.modified"), Type.HUMANIZED_MESSAGE);
 			return false;
 		}
+		navigation.selectInNavigation(entry);
 		View view = entry.getView();
 		showView(view);
 		return true;
