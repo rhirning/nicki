@@ -30,10 +30,10 @@
  * intact.
  *
  */
-package org.mgnl.nicki.db.helper;
+package org.mgnl.nicki.db.profile;
 
 import java.sql.Connection;
 
 public interface DBProfile {
-	public Connection getConnection()  throws Exception;
+	Connection getConnection()  throws Exception;
 }
