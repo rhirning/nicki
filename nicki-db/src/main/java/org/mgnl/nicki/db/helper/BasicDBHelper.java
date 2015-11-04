@@ -38,6 +38,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map;
 
 import org.mgnl.nicki.db.handler.IsExistSelectHandler;
 import org.mgnl.nicki.db.handler.MaxIntValueSelectHandler;
@@ -52,6 +53,7 @@ public class BasicDBHelper {
 	public final static String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss Z";
 	public static SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
 	public static SimpleDateFormat timestampFormat = new SimpleDateFormat(TIMESTAMP_FORMAT);
+	public final static String COLUMN_SEPARATOR = ", ";
 
 	public static void executeUpdate(DBProfile profile, String statement) throws Exception {
 		Connection conn = null;
@@ -175,6 +177,24 @@ public class BasicDBHelper {
 	public static String toDate(Date date) {
 		return "to_date('" + format.format(date) + "','" + DATE_FORMAT + "')";
 		
+	}
+
+	public static void executeInsert(DBProfile profile, String tableName,
+			Map<String, String> values) throws Exception {
+		executeUpdate(profile, getInsertStatement(tableName, values));
+	}
+
+	protected static String getInsertStatement(String tableName, Map<String, String> columnValues) {
+		ColumnsAndValues cv = new ColumnsAndValues("","");
+		cv = addStringValues(cv, columnValues);
+		return "insert into " + tableName + " (" + cv.getColumns() + ") values (" + cv.getValues() + ")";
+	}
+	
+	protected static ColumnsAndValues addStringValues(ColumnsAndValues columnsAndValues, Map<String, String> columnValues) {
+		for (String  columnName : columnValues.keySet()) {
+			columnsAndValues.add(columnName, columnValues.get(columnName));
+		}
+		return columnsAndValues;
 	}
 
 }
