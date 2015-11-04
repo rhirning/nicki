@@ -44,6 +44,7 @@ import org.mgnl.nicki.db.handler.IsExistSelectHandler;
 import org.mgnl.nicki.db.handler.MaxIntValueSelectHandler;
 import org.mgnl.nicki.db.handler.SelectHandler;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
+import org.mgnl.nicki.db.profile.DBProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
