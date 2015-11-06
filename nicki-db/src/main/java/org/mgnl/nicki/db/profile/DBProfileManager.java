@@ -13,7 +13,7 @@ public class DBProfileManager {
 	private static final String PROPERTY_PROFILES = "nicki.db.profiles";
 	private static final String PROPERTY_PROFILES_BASE = "nicki.db.profile";
 	private static final String PROPERTY_PROFILES_DATA_SOURCE = "datasource";
-	private static final String PROPERTY_PROFILES_CONNECTION_TYPE = "nicki.db.connection.type";
+	private static final String PROPERTY_PROFILES_CONNECTION_TYPE = "type";
 	private static final String SEPARATOR = ",";
 	
 	
@@ -40,7 +40,7 @@ public class DBProfileManager {
 	}
 
 	private void addProfile(String name) {
-		String profileBase = PROPERTY_PROFILES_BASE + "." + name;
+		String profileBase = PROPERTY_PROFILES_BASE + "." + name + ".";
 		String dataSource = Config.getProperty(profileBase + PROPERTY_PROFILES_DATA_SOURCE);
 		String type  = Config.getProperty(profileBase + PROPERTY_PROFILES_CONNECTION_TYPE);
 		
