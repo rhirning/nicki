@@ -37,10 +37,10 @@ import java.sql.SQLException;
 
 public interface SelectHandler {
 
-	String getSearchStatement() throws Exception;
+	String getSearchStatement();
 
 	void handle(ResultSet rs) throws SQLException;
 	
 	boolean isLoggingEnabled();
-
+	
 }
