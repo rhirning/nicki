@@ -40,7 +40,7 @@ public class DBProfileManager {
 	}
 
 	private void addProfile(String name) {
-		String profileBase = PROPERTY_PROFILES_BASE + "." + name + ".";
+		String profileBase = PROPERTY_PROFILES_BASE + "." + name;
 		String dataSource = Config.getProperty(profileBase + PROPERTY_PROFILES_DATA_SOURCE);
 		String type  = Config.getProperty(profileBase + PROPERTY_PROFILES_CONNECTION_TYPE);
 		

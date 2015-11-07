@@ -37,7 +37,7 @@ import java.sql.SQLException;
 
 public abstract class NonLoggingSelectHandler implements SelectHandler {
 
-	public abstract String getSearchStatement() throws Exception;
+	public abstract String getSearchStatement();
 
 	public abstract void handle(ResultSet rs) throws SQLException;
 	
