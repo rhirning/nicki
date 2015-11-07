@@ -33,7 +33,8 @@
 package org.mgnl.nicki.db.profile;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public interface DBProfile {
-	Connection getConnection()  throws Exception;
+	Connection getConnection() throws SQLException, InitProfileException;
 }
