@@ -213,21 +213,20 @@ public class BaseDBContext implements DBContext {
 	}
 
 	@Override
-	public void beginTransaction() throws SQLException, InitProfileException {
+	public Connection beginTransaction() throws SQLException, InitProfileException {
 		if (this.connection == null) {
 			this.connection = profile.getConnection();
 		}
+		return this.connection;
 	}
 
 	@Override
-	public void commit() throws NotInTransactionException {
+	public void commit() throws NotInTransactionException, SQLException {
 		if (this.connection == null) {
 			throw new NotInTransactionException();
 		}
 		try {
 			this.connection.commit();
-		} catch (SQLException e) {
-			;
 		} finally {
 			// Always make sure result sets and statements are closed,
 			// and the connection is returned to the pool
@@ -243,14 +242,12 @@ public class BaseDBContext implements DBContext {
 	}
 
 	@Override
-	public void rollback() throws NotInTransactionException {
+	public void rollback() throws NotInTransactionException, SQLException {
 		if (this.connection == null) {
 			throw new NotInTransactionException();
 		}
 		try {
 			this.connection.rollback();
-		} catch (SQLException e) {
-			;
 		} finally {
 			// Always make sure result sets and statements are closed,
 			// and the connection is returned to the pool
