@@ -1,5 +1,6 @@
 package org.mgnl.nicki.db.context;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -16,11 +17,11 @@ public interface DBContext {
 	
 	<T> List<T> select(Class<T> clazz, ListSelectHandler<T> handler) throws SQLException, InitProfileException;
 	
-	void beginTransaction() throws SQLException, InitProfileException;
+	Connection beginTransaction() throws SQLException, InitProfileException;
 	
-	void commit() throws NotInTransactionException;
+	void commit() throws NotInTransactionException, SQLException;
 	
-	void rollback() throws  NotInTransactionException;
+	void rollback() throws  NotInTransactionException, SQLException;
 
 	<T> String createInsertStatement(T bean);
 
