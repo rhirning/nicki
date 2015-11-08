@@ -6,19 +6,19 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>5.04</version>
+		<version>5.05-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-dynamic-objects</artifactId>
-			<version>5.04</version>
+			<version>5.05-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-shop-base</artifactId>
-			<version>5.04</version>
+			<version>5.05-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.novell.userapp</groupId>
