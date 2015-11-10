@@ -140,15 +140,19 @@ public abstract class NickiApplication extends UI {
 			String ssoLoginClass = Config.getProperty("nicki.login.sso");
 			if (StringUtils.isNotEmpty(ssoLoginClass)) {
 				SSOAdapter adapter = (SSOAdapter) Classes.newInstance(ssoLoginClass);
-				NickiPrincipal principal = new NickiPrincipal(adapter.getName(getRequest()), new String(adapter.getPassword(getRequest())));
-				if (principal != null) {
-					DynamicObject user = getTarget().login(principal);
-					if (user != null) {
-						if (isUseSystemContext()) {
-							NickiContext ctx = AppContext.getSystemContext(getTarget(), user.getPath(), principal.getPassword());
-							return ctx;
-						} else {
-							return getTarget().getNamedUserContext(user, principal.getPassword());
+				String name = adapter.getName(getRequest());
+				char[] password = adapter.getPassword(getRequest());
+				if (name != null && password != null) {
+					NickiPrincipal principal = new NickiPrincipal(name, new String(password));
+					if (principal != null) {
+						DynamicObject user = getTarget().login(principal);
+						if (user != null) {
+							if (isUseSystemContext()) {
+								NickiContext ctx = AppContext.getSystemContext(getTarget(), user.getPath(), principal.getPassword());
+								return ctx;
+							} else {
+								return getTarget().getNamedUserContext(user, principal.getPassword());
+							}
 						}
 					}
 				}
