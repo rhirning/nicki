@@ -46,21 +46,15 @@ public class BasicAuthAdapter implements SSOAdapter {
 	private static Logger LOG = LoggerFactory.getLogger(BasicAuthAdapter.class);
 
 	public String getName(Object request) {
-		try {
-			return getAuthPart(request, 0);
-		} catch (Exception e) {
-			LOG.error("Error reading Basic Authentication data", e);
-			return null;
-		}
+		return getAuthPart(request, 0);
 	}
 
 	public char[] getPassword(Object request) {
-		try {
-			return getAuthPart(request, 1).toCharArray();
-		} catch (Exception e) {
-			LOG.error("Error reading Basic Authentication data", e);
-			return null;
+		String password = getAuthPart(request, 1);
+		if (password != null) {
+			return password.toCharArray();
 		}
+		return null;
 	}
 
 	@Override
@@ -73,11 +67,13 @@ public class BasicAuthAdapter implements SSOAdapter {
 	}
 
 	protected String[] decode(final String encodedString) {
-		final byte[] decodedBytes = Base64.decodeBase64(encodedString
-				.getBytes());
-		final String pair = new String(decodedBytes);
-		final String[] userDetails = pair.split(":", 2);
-		return userDetails;
+		if (StringUtils.isNotBlank(encodedString)) {
+			final byte[] decodedBytes = Base64.decodeBase64(encodedString
+					.getBytes());
+			final String pair = new String(decodedBytes);
+			final String[] userDetails = pair.split(":", 2);
+			return userDetails;
+		} return null;
 	}
 	
 	protected String getAuthPart(Object request, int num) {
@@ -86,7 +82,10 @@ public class BasicAuthAdapter implements SSOAdapter {
 				HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 				String header = httpServletRequest.getHeader("Authorization");
 				String encodedCredentials = StringUtils.substringAfter(header, " ");
-				return decode(encodedCredentials)[num];
+				String[] decodedCredentials = decode(encodedCredentials);
+				if (decodedCredentials != null) {
+					return decodedCredentials[num];
+				}
 			}
 		} catch (Exception e) {
 			LOG.error("Error reading Basic Authentication data", e);
