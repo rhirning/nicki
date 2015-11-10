@@ -14,6 +14,7 @@ public class DBProfileManager {
 	private static final String PROPERTY_PROFILES_BASE = "nicki.db.profile";
 	private static final String PROPERTY_PROFILES_DATA_SOURCE = "datasource";
 	private static final String PROPERTY_PROFILES_CONNECTION_TYPE = "type";
+	private static final String PROPERTY_PROFILES_AUTO_COMMIT = "autocommit";
 	private static final String SEPARATOR = ",";
 	
 	
@@ -43,12 +44,13 @@ public class DBProfileManager {
 		String profileBase = PROPERTY_PROFILES_BASE + "." + name;
 		String dataSource = Config.getProperty(profileBase + PROPERTY_PROFILES_DATA_SOURCE);
 		String type  = Config.getProperty(profileBase + PROPERTY_PROFILES_CONNECTION_TYPE);
+		boolean autoCommit  = DataHelper.booleanOf(Config.getProperty(profileBase + PROPERTY_PROFILES_AUTO_COMMIT, "false")) ;
 		
 		if (StringUtils.isNotBlank(dataSource)) {
 			if (StringUtils.equals("dbcp", type)) {
-				profiles.put(name, new DBCPProfile(dataSource));
+				profiles.put(name, new DBCPProfile(dataSource, autoCommit));
 			} else {
-				profiles.put(name, new JndiDBProfile(dataSource));
+				profiles.put(name, new JndiDBProfile(dataSource, autoCommit));
 			}
 		}
 	}

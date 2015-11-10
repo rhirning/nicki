@@ -8,14 +8,18 @@ import org.mgnl.nicki.db.connection.ConnectionManager;
 
 public class DBCPProfile implements DBProfile {
 	private String name = null;
+	private boolean autoCommit = false;
 
-	public DBCPProfile(String name) {
+	public DBCPProfile(String name, boolean autoCommit) {
 		super();
 		this.name = name;
+		this.autoCommit = autoCommit;
 	}
 
 	public Connection getConnection() throws SQLException  {
-		return ConnectionManager.getInstance().getConnection(this.name);
+		Connection connection = ConnectionManager.getInstance().getConnection(this.name);
+		connection.setAutoCommit(this.autoCommit);
+		return connection;
 	}
 
 }

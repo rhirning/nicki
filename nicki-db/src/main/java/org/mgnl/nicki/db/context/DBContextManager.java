@@ -21,6 +21,7 @@ public class DBContextManager {
 	private static final String PROPERTY_PROFILES_DATA_SOURCE = "datasource";
 	private static final String PROPERTY_PROFILES_CONNECTION_TYPE = "type";
 	private static final String PROPERTY_PROFILES_CONTEXT_CLASS_NAME = "contextClassName";
+	private static final String PROPERTY_PROFILES_AUTO_COMMIT = "autocommit";
 	private static final String SEPARATOR = ",";
 	
 	
@@ -61,12 +62,13 @@ public class DBContextManager {
 		String profileBase = PROPERTY_PROFILES_BASE + "." + name + ".";
 		String dataSource = Config.getProperty(profileBase + PROPERTY_PROFILES_DATA_SOURCE);
 		String type  = Config.getProperty(profileBase + PROPERTY_PROFILES_CONNECTION_TYPE);
+		boolean autoCommit  = DataHelper.booleanOf(Config.getProperty(profileBase + PROPERTY_PROFILES_AUTO_COMMIT, "false")) ;
 		
 		if (StringUtils.isNotBlank(dataSource)) {
 			if (StringUtils.equals("dbcp", type)) {
-				return new DBCPProfile(dataSource);
+				return new DBCPProfile(dataSource, autoCommit);
 			} else {
-				return new JndiDBProfile(dataSource);
+				return new JndiDBProfile(dataSource, autoCommit);
 			}
 		}
 		return null;

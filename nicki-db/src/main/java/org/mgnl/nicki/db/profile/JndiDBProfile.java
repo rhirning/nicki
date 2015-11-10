@@ -11,10 +11,12 @@ import javax.sql.DataSource;
 public class JndiDBProfile implements DBProfile {
 	String jndiEnvironment = "java:comp/env";
 	String dataSource = null;
+	private boolean autoCommit = false;
 	
-	public JndiDBProfile(String dataSource) {
+	public JndiDBProfile(String dataSource, boolean autoCommit) {
 		super();
 		this.dataSource = dataSource;
+		this.autoCommit = autoCommit;
 	}
 
 	public String getJndiEnvironment() {
@@ -34,7 +36,9 @@ public class JndiDBProfile implements DBProfile {
 		} catch (NamingException e) {
 			throw new InitProfileException(e);
 		}
-		return ds.getConnection();
+		Connection connection = ds.getConnection();
+		connection.setAutoCommit(this.autoCommit);
+		return connection;
 	}
 	
 }

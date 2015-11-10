@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.util.List;
 
 import org.mgnl.nicki.db.handler.ListSelectHandler;
+import org.mgnl.nicki.db.handler.SelectHandler;
 import org.mgnl.nicki.db.profile.DBProfile;
 import org.mgnl.nicki.db.profile.InitProfileException;
 import org.slf4j.Logger;
@@ -205,6 +206,55 @@ public class BaseDBContext implements DBContext {
 			if (!inTransaction) {
 				try {
 					rollback();
+				} catch (NotInTransactionException e) {
+					;
+				}
+			}
+		}
+	}
+
+	@Override
+	public void select(SelectHandler handler) throws SQLException, InitProfileException {
+		boolean inTransaction = false;
+		if (this.connection != null) {
+			inTransaction = true;
+		} else {
+			beginTransaction();
+		}
+
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			stmt = this.connection.createStatement();
+			if (handler.isLoggingEnabled()) {
+				LOG.debug(handler.getSearchStatement());
+			}
+			rs = stmt.executeQuery(handler.getSearchStatement());
+			handler.handle(rs);
+			rs.close();
+			rs = null;
+		} finally {
+			// Always make sure result sets and statements are closed,
+			// and the connection is returned to the pool
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					;
+				}
+				rs = null;
+			}
+			if (stmt != null) {
+				try {
+					stmt.close();
+				} catch (SQLException e) {
+					;
+				}
+				stmt = null;
+			}
+			if (!inTransaction) {
+				try {
+					commit();
 				} catch (NotInTransactionException e) {
 					;
 				}
