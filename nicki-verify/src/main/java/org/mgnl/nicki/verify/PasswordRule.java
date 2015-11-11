@@ -2,6 +2,7 @@ package org.mgnl.nicki.verify;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
@@ -31,7 +32,7 @@ public class PasswordRule extends Rule {
 		return defaultValue;
 	}
 	@Override
-	public boolean evaluate(String value) {
+	public boolean evaluate(String value, Map<String, String> values) {
 		boolean ok = true;
 		if (complexity > 0 && complexity > getComplexity(value)) {
 			addMessage(I18n.getText(getI18nBase() + ".password.complexity",

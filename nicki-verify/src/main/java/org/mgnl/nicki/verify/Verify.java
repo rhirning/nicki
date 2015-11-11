@@ -71,10 +71,20 @@ public class Verify {
 		return instance;
 	}
 	
-	public void verify(String attributeName, String value) throws VerifyException {
+	public void verify(String attributeName, String value, Map<String, String> values) throws VerifyException {
 		String rule = attributeRules.get(attributeName.toLowerCase());
 		
-		StringBuffer sb = new StringBuffer();
+		try {
+			verifyRule(rule, value, values);
+		} catch (VerifyException e) {
+			StringBuilder sb = new StringBuilder();
+			sb.append(attributeName).append(" - ").append(e.getMessage());
+			throw new VerifyException(sb.toString());
+		}
+	}
+	public void verifyRule(String rule, String value, Map<String, String> values) throws VerifyException {
+		
+		StringBuilder sb = new StringBuilder();
 		
 		if (StringUtils.isNotBlank(rule)) {
 			String params[] = rule.split("\\|");
@@ -102,12 +112,12 @@ public class Verify {
 					checkRule = new RegExRule(StringUtils.substringAfter(params[i], "regex:"));
 				} else if (StringUtils.startsWith(params[i],"password:")) {
 					checkRule = new PasswordRule(StringUtils.substringAfter(params[i], "password:"));
+				} else if (StringUtils.startsWith(params[i],"dependend:")) {
+					checkRule = new DependendRule(StringUtils.substringAfter(params[i], "dependend:"));
 				}
 				if (checkRule != null) {
-					if (!checkRule.evaluate(value)) {
-						if (sb.length() == 0) {
-							sb.append(attributeName).append(" - ");
-						} else {
+					if (!checkRule.evaluate(value, values)) {
+						if (sb.length() > 0) {
 							sb.append(", ");
 						}
 						sb.append(checkRule.getMessage());
