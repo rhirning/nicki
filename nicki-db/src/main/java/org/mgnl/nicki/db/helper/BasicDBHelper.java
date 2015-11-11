@@ -57,11 +57,12 @@ public class BasicDBHelper {
 
 	public static void executeUpdate(DBProfile profile, String statement) throws Exception {
 
-		try(Connection conn = profile.getConnection()) {
-			try(Statement stmt = conn.createStatement()) {
-				LOG.debug(statement);
-				stmt.executeUpdate(statement);
-			}
+		try(
+			Connection conn = profile.getConnection();
+			Statement stmt = conn.createStatement()
+		) {
+			LOG.debug(statement);
+			stmt.executeUpdate(statement);
 		}
 	}
 	
@@ -82,15 +83,16 @@ public class BasicDBHelper {
 	
 	public static void select(DBProfile profile, SelectHandler handler) throws Exception {
 
-		try(Connection conn = profile.getConnection()) {
-			try(Statement stmt = conn.createStatement()) {
-				if (handler.isLoggingEnabled()) {
-					LOG.debug(handler.getSearchStatement());
-				}
-				try(ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
-					handler.handle(rs);
-				}
-			}
+		if (handler.isLoggingEnabled()) {
+			LOG.debug(handler.getSearchStatement());
+		}
+
+		try(
+			Connection conn = profile.getConnection();
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(handler.getSearchStatement())
+		) {
+			handler.handle(rs);
 		}
 	}
 
