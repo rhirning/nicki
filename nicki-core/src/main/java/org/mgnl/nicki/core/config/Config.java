@@ -33,6 +33,7 @@
 package org.mgnl.nicki.core.config;
 
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -90,6 +91,8 @@ public class Config {
 
 	private void addProperties(String configPath) {
 		try {
+			URL resource = getClass().getResource(configPath);
+			LOG.info("Using config properties: " + configPath + " (" + resource + ")");
 			Properties props = getPropertiesFromClasspath(configPath);
 			if (props != null && props.size() > 0) {
 				this.properties.add(props);
