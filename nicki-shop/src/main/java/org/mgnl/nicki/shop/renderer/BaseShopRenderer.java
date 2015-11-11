@@ -45,8 +45,7 @@ public abstract class BaseShopRenderer implements ShopRenderer {
 
 	protected void removeExcept(Layout parent, Component button) {
 		List<Component> toBeRemoved = new ArrayList<Component>();
-		for (Iterator<Component> iterator = parent.iterator(); iterator.hasNext();) {
-			Component component = iterator.next();
+		for (Component component : parent) {
 			if (component != button) {
 				toBeRemoved.add(component);
 			}

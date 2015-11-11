@@ -34,7 +34,6 @@ package org.mgnl.nicki.db.helper;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,35 +56,11 @@ public class BasicDBHelper {
 	public final static String COLUMN_SEPARATOR = ", ";
 
 	public static void executeUpdate(DBProfile profile, String statement) throws Exception {
-		Connection conn = null;
-		Statement stmt = null; // Or PreparedStatement if needed
-		try {
-			conn = profile.getConnection();
-			stmt = conn.createStatement();
-			LOG.debug(statement);
-			stmt.executeUpdate(statement);
-			stmt.close();
-			stmt = null;
-			conn.close(); // Return to connection pool
-			conn = null; // Make sure we don't close it twice
-		} finally {
-			// Always make sure result sets and statements are closed,
-			// and the connection is returned to the pool
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					;
-				}
-				stmt = null;
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					;
-				}
-				conn = null;
+
+		try(Connection conn = profile.getConnection()) {
+			try(Statement stmt = conn.createStatement()) {
+				LOG.debug(statement);
+				stmt.executeUpdate(statement);
 			}
 		}
 	}
@@ -107,46 +82,14 @@ public class BasicDBHelper {
 	
 	public static void select(DBProfile profile, SelectHandler handler) throws Exception {
 
-		Connection conn = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		try {
-			conn = profile.getConnection();
-			stmt = conn.createStatement();
-			if (handler.isLoggingEnabled()) {
-				LOG.debug(handler.getSearchStatement());
-			}
-			rs = stmt.executeQuery(handler.getSearchStatement());
-			handler.handle(rs);
-			rs.close();
-			rs = null;
-			
-		} finally {
-			// Always make sure result sets and statements are closed,
-			// and the connection is returned to the pool
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					;
+		try(Connection conn = profile.getConnection()) {
+			try(Statement stmt = conn.createStatement()) {
+				if (handler.isLoggingEnabled()) {
+					LOG.debug(handler.getSearchStatement());
 				}
-				rs = null;
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					;
+				try(ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
+					handler.handle(rs);
 				}
-				stmt = null;
-			}
-			if (conn != null) {
-				try {
-					conn.close();
-				} catch (SQLException e) {
-					;
-				}
-				conn = null;
 			}
 		}
 	}
