@@ -17,7 +17,7 @@ public abstract class Rule implements Serializable {
 		super();
 	}
 
-	public abstract boolean evaluate(String value);
+	public abstract boolean evaluate(String value, Map<String, String> values);
 	
 	public static long getLong(String value) {
 		value = StringUtils.strip(value);
