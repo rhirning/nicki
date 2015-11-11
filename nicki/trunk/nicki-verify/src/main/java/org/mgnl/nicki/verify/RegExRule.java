@@ -1,5 +1,6 @@
 package org.mgnl.nicki.verify;
 
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,7 +17,7 @@ public class RegExRule extends Rule {
 	}
 
 	@Override
-	public boolean evaluate(String value) {
+	public boolean evaluate(String value, Map<String, String> values) {
 
 		Matcher matcher = pattern.matcher(value);
 		//return (StringUtils.equals(value, matcher.group()));

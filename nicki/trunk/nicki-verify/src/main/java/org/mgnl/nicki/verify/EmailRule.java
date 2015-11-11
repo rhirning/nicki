@@ -1,5 +1,7 @@
 package org.mgnl.nicki.verify;
 
+import java.util.Map;
+
 import javax.mail.internet.InternetAddress;
 
 import org.apache.commons.lang.StringUtils;
@@ -9,7 +11,7 @@ public class EmailRule extends Rule {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	public boolean evaluate(String value) {
+	public boolean evaluate(String value, Map<String, String> values) {
 		try {
 			new InternetAddress(value);
 			if (!hasNameAndDomain(value)) {

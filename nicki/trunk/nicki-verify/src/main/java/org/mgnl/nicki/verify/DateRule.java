@@ -3,6 +3,7 @@ package org.mgnl.nicki.verify;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
@@ -13,7 +14,7 @@ public class DateRule extends Rule {
 	public static final SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
 
 	@Override
-	public boolean evaluate(String value) {
+	public boolean evaluate(String value, Map<String, String> values) {
 		try {
 			formatter.parse(value);
 			String[] parts = StringUtils.split(value, ".");
