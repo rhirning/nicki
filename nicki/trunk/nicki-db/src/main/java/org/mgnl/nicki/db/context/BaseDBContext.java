@@ -34,34 +34,22 @@ public class BaseDBContext implements DBContext {
 		} else {
 			beginTransaction();
 		}
-		Statement stmt = null; // Or PreparedStatement if needed
 		
 		try {
-			stmt = this.connection.createStatement();
-			String statement = createInsertStatement(bean);
-			LOG.debug(statement);
-			stmt.executeUpdate(statement);
-			stmt.close();
-			stmt = null;
-			if (!inTransaction) {
-				try {
-					commit();
-				} catch (NotInTransactionException e) {
-					;
+			try(Statement stmt = this.connection.createStatement()) {
+				String statement = createInsertStatement(bean);
+				LOG.debug(statement);
+				stmt.executeUpdate(statement);
+				if (!inTransaction) {
+					try {
+						commit();
+					} catch (NotInTransactionException e) {
+						;
+					}
 				}
+				return load(bean);
 			}
-			return load(bean);
 		} finally {
-			// Always make sure result sets and statements are closed,
-			// and the connection is returned to the pool
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					;
-				}
-				stmt = null;
-			}
 			if (!inTransaction) {
 				try {
 					rollback();
@@ -80,34 +68,22 @@ public class BaseDBContext implements DBContext {
 		} else {
 			beginTransaction();
 		}
-		Statement stmt = null; // Or PreparedStatement if needed
 		
 		try {
-			stmt = this.connection.createStatement();
-			String statement = createUpdateStatement(bean);
-			LOG.debug(statement);
-			stmt.executeUpdate(statement);
-			stmt.close();
-			stmt = null;
-			if (!inTransaction) {
-				try {
-					commit();
-				} catch (NotInTransactionException e) {
-					;
+			try(Statement stmt = this.connection.createStatement()) {
+				String statement = createUpdateStatement(bean);
+				LOG.debug(statement);
+				stmt.executeUpdate(statement);
+				if (!inTransaction) {
+					try {
+						commit();
+					} catch (NotInTransactionException e) {
+						;
+					}
 				}
+				return load(bean);
 			}
-			return load(bean);
 		} finally {
-			// Always make sure result sets and statements are closed,
-			// and the connection is returned to the pool
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					;
-				}
-				stmt = null;
-			}
 			if (!inTransaction) {
 				try {
 					rollback();
@@ -126,33 +102,21 @@ public class BaseDBContext implements DBContext {
 		} else {
 			beginTransaction();
 		}
-		Statement stmt = null; // Or PreparedStatement if needed
 		
 		try {
-			stmt = this.connection.createStatement();
-			String statement = createDeleteStatement(bean);
-			LOG.debug(statement);
-			stmt.executeUpdate(statement);
-			stmt.close();
-			stmt = null;
-			if (!inTransaction) {
-				try {
-					commit();
-				} catch (NotInTransactionException e) {
-					;
+			try(Statement stmt = this.connection.createStatement()) {
+				String statement = createDeleteStatement(bean);
+				LOG.debug(statement);
+				stmt.executeUpdate(statement);
+				if (!inTransaction) {
+					try {
+						commit();
+					} catch (NotInTransactionException e) {
+						;
+					}
 				}
 			}
 		} finally {
-			// Always make sure result sets and statements are closed,
-			// and the connection is returned to the pool
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					;
-				}
-				stmt = null;
-			}
 			if (!inTransaction) {
 				try {
 					rollback();
@@ -172,37 +136,17 @@ public class BaseDBContext implements DBContext {
 			beginTransaction();
 		}
 
-		Statement stmt = null;
-		ResultSet rs = null;
 		try {
-			stmt = this.connection.createStatement();
-			if (handler.isLoggingEnabled()) {
-				LOG.debug(handler.getSearchStatement());
+			try(Statement stmt = this.connection.createStatement()) {
+				if (handler.isLoggingEnabled()) {
+					LOG.debug(handler.getSearchStatement());
+				}
+				try(ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
+					handler.handle(rs);
+					return handler.getResults();
+				}
 			}
-			rs = stmt.executeQuery(handler.getSearchStatement());
-			handler.handle(rs);
-			rs.close();
-			rs = null;
-			return handler.getResults();
 		} finally {
-			// Always make sure result sets and statements are closed,
-			// and the connection is returned to the pool
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					;
-				}
-				rs = null;
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					;
-				}
-				stmt = null;
-			}
 			if (!inTransaction) {
 				try {
 					rollback();
@@ -222,36 +166,16 @@ public class BaseDBContext implements DBContext {
 			beginTransaction();
 		}
 
-		Statement stmt = null;
-		ResultSet rs = null;
 		try {
-			stmt = this.connection.createStatement();
-			if (handler.isLoggingEnabled()) {
-				LOG.debug(handler.getSearchStatement());
+			try(Statement stmt = this.connection.createStatement()) {
+				if (handler.isLoggingEnabled()) {
+					LOG.debug(handler.getSearchStatement());
+				}
+				try(ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
+					handler.handle(rs);
+				}
 			}
-			rs = stmt.executeQuery(handler.getSearchStatement());
-			handler.handle(rs);
-			rs.close();
-			rs = null;
 		} finally {
-			// Always make sure result sets and statements are closed,
-			// and the connection is returned to the pool
-			if (rs != null) {
-				try {
-					rs.close();
-				} catch (SQLException e) {
-					;
-				}
-				rs = null;
-			}
-			if (stmt != null) {
-				try {
-					stmt.close();
-				} catch (SQLException e) {
-					;
-				}
-				stmt = null;
-			}
 			if (!inTransaction) {
 				try {
 					commit();

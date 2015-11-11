@@ -33,7 +33,6 @@
 package org.mgnl.nicki.vaadin.base.listener;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -58,8 +57,7 @@ public abstract class BaseAttributeListener implements ValueChangeListener {
 
 	public List<String> collectValues(AbstractComponentContainer cont) {
 		List<String> list = new ArrayList<String>();
-		for (Iterator<Component> iterator = cont.iterator(); iterator.hasNext();) {
-			Component component = iterator.next();
+		for (Component component : cont) {
 			if (component instanceof AbstractField) {
 				@SuppressWarnings("unchecked")
 				String value = ((AbstractField<String>) component).getValue();
