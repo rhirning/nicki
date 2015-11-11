@@ -19,9 +19,6 @@
 */
 package org.mgnl.nicki.editor.projects.members;
 
-import java.util.Iterator;
-
-
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.editor.projects.objects.Directory;
@@ -96,8 +93,7 @@ public class MemberEditor extends CustomComponent implements ClassEditor {
 	}
 
 	public void save() {
-		for (Iterator<Component> iterator = directoriesLayout.iterator(); iterator.hasNext();) {
-			Component component= iterator.next();
+		for (Component component : directoriesLayout) {
 			if (component instanceof DirectoryComponent) {
 				DirectoryComponent dirComponent = (DirectoryComponent) component;
 				dirComponent.save();

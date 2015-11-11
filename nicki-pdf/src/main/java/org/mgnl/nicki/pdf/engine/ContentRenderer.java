@@ -155,8 +155,7 @@ public class ContentRenderer {
 			pdfTable.setHeaderRows(1);
 		}
 
-		for (Iterator<TableRow> it = table.getRow().iterator(); it.hasNext();) {
-			TableRow row = it.next();
+		for (TableRow row : table.getRow()) {
 			Font f = config.getFont(
 					row.getFont(), 
 					row.getSize(), 

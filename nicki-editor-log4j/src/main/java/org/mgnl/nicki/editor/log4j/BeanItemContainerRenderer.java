@@ -34,8 +34,6 @@ package org.mgnl.nicki.editor.log4j;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Iterator;
-
 import org.apache.commons.io.IOUtils;
 import org.mgnl.nicki.core.helper.NameValue;
 import org.slf4j.Logger;
@@ -54,8 +52,7 @@ public class BeanItemContainerRenderer extends Thread implements Runnable {
 	}
 	public void run() {
 		try {
-			for (Iterator<NameValue> i = container.getItemIds().iterator(); i.hasNext();) {
-				NameValue entry = i.next();
+			for (NameValue entry : container.getItemIds()) {
 				IOUtils.write(entry.getValue(), out);
 				IOUtils.write("\n", out);
 			}

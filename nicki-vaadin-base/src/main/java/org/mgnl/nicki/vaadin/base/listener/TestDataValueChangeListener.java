@@ -34,7 +34,6 @@ package org.mgnl.nicki.vaadin.base.listener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -61,8 +60,7 @@ public class TestDataValueChangeListener implements ValueChangeListener {
 
 	public Map<String, String> collectMapValues(ComponentContainer cont) {
 		Map<String, String> map = new HashMap<String, String>();
-		for (Iterator<Component> iterator = cont.iterator(); iterator.hasNext();) {
-			Component component = iterator.next();
+		for (Component component : cont) {
 			String caption = component.getCaption();
 			if (component instanceof Field) {
 				@SuppressWarnings("unchecked")
@@ -75,8 +73,7 @@ public class TestDataValueChangeListener implements ValueChangeListener {
 
 	public List<String> collectValues(ComponentContainer cont) {
 		List<String> list = new ArrayList<String>();
-		for (Iterator<Component> iterator = cont.iterator(); iterator.hasNext();) {
-			Component component = iterator.next();
+		for (Component component : cont) {
 			if (component instanceof Field) {
 				@SuppressWarnings("unchecked")
 				String value = ((Field<String>) component).getValue();
