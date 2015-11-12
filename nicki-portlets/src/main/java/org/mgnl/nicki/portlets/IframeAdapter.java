@@ -184,7 +184,7 @@ public class IframeAdapter implements SSOAdapter {
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("IframeAdapter: type=").append(type).append("|name=").append(name);
 		sb.append("|password=").append(password);
 		return sb.toString();

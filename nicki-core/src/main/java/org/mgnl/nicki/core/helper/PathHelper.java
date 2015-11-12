@@ -45,7 +45,7 @@ public class PathHelper {
 	}
 
 	public static String getSlashPath(String parentPath, String childPath) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		if (StringUtils.isNotEmpty(parentPath)) {
 			if (StringUtils.equals(parentPath, childPath)) {
 				return "/";

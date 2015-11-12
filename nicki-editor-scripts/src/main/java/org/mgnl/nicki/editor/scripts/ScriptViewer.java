@@ -139,7 +139,7 @@ public class ScriptViewer extends CustomComponent implements ClassEditor {
 		resultObject.setValue("");
 		String script = (String) editor.getValue();
 		try {
-			StringBuffer scriptOutput = new StringBuffer();
+			StringBuilder scriptOutput = new StringBuilder();
 			Object resultObj = evalScript(script, scriptOutput, false);
 			setResult(scriptOutput.toString());
 			if (resultObj != null) {
@@ -170,7 +170,7 @@ public class ScriptViewer extends CustomComponent implements ClassEditor {
 	}
 
 	String showScriptContext(String s, int lineNo, int context) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		BufferedReader br = new BufferedReader(new StringReader(s));
 
 		int beginLine = Math.max(1, lineNo - context);
@@ -217,7 +217,7 @@ public class ScriptViewer extends CustomComponent implements ClassEditor {
 
 	}
 
-	private Object evalScript(String script, StringBuffer scriptOutput,
+	private Object evalScript(String script, StringBuilder scriptOutput,
 			boolean captureOutErr) throws EvalError {
 		// Create a PrintStream to capture output
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

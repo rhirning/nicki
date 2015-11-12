@@ -205,7 +205,7 @@ public class Inventory implements Serializable {
 	}
 
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("Inventory for ").append(person.getDisplayName())
 				.append("\n");
 		for (String key : articles.keySet()) {

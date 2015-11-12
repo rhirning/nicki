@@ -95,14 +95,14 @@ public class LdapQuery implements Query {
 	}
 	
 	public String getFilter() {
-		StringBuffer outerSb = new StringBuffer();
+		StringBuilder outerSb = new StringBuilder();
 
 		for (String filter : filters) {
 			LdapHelper.addQuery(outerSb, filter, LOGIC.AND);
 		}
 
 		for (String key : searchValues.keySet()) {
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			for (String value : searchValues.get(key)) {
 				LdapHelper.addQuery(sb, key + "=" + value, LOGIC.OR);
 			}

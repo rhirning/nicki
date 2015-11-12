@@ -145,7 +145,7 @@ public class ShopPage implements ShopViewerComponent, Serializable{
 	};
 	
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("[page name='").append(getName());
 		sb.append("' label='").append(getLabel());
 		sb.append("' renderer='").append(getRenderer());

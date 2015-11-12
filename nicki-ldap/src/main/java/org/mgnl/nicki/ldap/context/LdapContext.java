@@ -319,10 +319,10 @@ public class LdapContext extends BasicContext implements NickiContext {
 	public List<DynamicObject> loadChildObjects(String parent,
 			ChildFilter filter) {
 		try {
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			if (filter.hasObjectFilters()) {
 				for (Class<? extends DynamicObject> objecFilter : filter.getObjectFilters()) {
-					StringBuffer sb2 = new StringBuffer();
+					StringBuilder sb2 = new StringBuilder();
 					for (String objectClass : AnnotationHelper.getObjectClasses(objecFilter)) {
 						LdapHelper.addQuery(sb2, "objectClass=" + objectClass, LOGIC.AND);
 					}

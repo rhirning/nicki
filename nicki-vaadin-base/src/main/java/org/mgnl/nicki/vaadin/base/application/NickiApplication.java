@@ -229,7 +229,7 @@ public abstract class NickiApplication extends UI {
 			}
 		}
 		if (!allowed) {
-			StringBuffer errorMsg = new StringBuffer();
+			StringBuilder errorMsg = new StringBuilder();
 			errorMsg.append(user).append(" tried to access application ");
 			errorMsg.append(getClass().getName()).append(". Allowed: ");
 			if (roleAnnotation != null) {
