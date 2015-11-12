@@ -71,12 +71,12 @@
 			<artifactId>CONFIG_RHI</artifactId>
 			<groupId>de.deron.idm.novell</groupId>
 			<version>1.10-SNAPSHOT</version>
-		</dependency -->
+		</dependency>
 		<dependency>
 			<artifactId>pnw-dynamic-objects</artifactId>
 			<groupId>de.deron.idm.novell</groupId>
 			<version>1.10-SNAPSHOT</version>
-		</dependency>
+		</dependency-->
 	</dependencies>
 	<packaging>war</packaging>
 	<build>
