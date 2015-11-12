@@ -122,7 +122,7 @@ public class ArticleContainer implements Serializable{
 	}
 	
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("[articles]\n");
 		if (hasArticles()) {
 			for (CatalogArticle article : articleList) {

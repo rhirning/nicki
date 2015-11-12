@@ -79,7 +79,7 @@ public class CatalogArticle extends CatalogObject {
 
 
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("[catalogArticle name='").append(getName());
 		sb.append("' displayName='").append(getDisplayName());
 		sb.append("']");

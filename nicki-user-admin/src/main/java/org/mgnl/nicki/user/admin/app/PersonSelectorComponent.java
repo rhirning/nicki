@@ -249,7 +249,7 @@ public class PersonSelectorComponent extends CustomComponent {
 	protected Collection<Person> searchAll() {
 		String baseDn = Config.getProperty("nicki.users.basedn");
 
-		StringBuffer filter = new StringBuffer();
+		StringBuilder filter = new StringBuilder();
 		addQuery(filter, "cn", userId.getValue(), LdapHelper.LOGIC.AND, WILDCARD.YES);
 		addQuery(filter, "surname", name.getValue(), LdapHelper.LOGIC.AND, WILDCARD.YES);
 		addQuery(filter, "givenname", givenName.getValue(), LdapHelper.LOGIC.AND, WILDCARD.YES);
@@ -263,7 +263,7 @@ public class PersonSelectorComponent extends CustomComponent {
 		return this.context.loadObjects(Person.class, baseDn, filter.toString());
 	}
 
-	private void addQuery(StringBuffer filter, String attribute, String searchString,
+	private void addQuery(StringBuilder filter, String attribute, String searchString,
 			LOGIC andOR, WILDCARD wildcard) {
 		if (StringUtils.isNotBlank(searchString)) {
 			LdapHelper.addQuery(filter, attribute + "=" +

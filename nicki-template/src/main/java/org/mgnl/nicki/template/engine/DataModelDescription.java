@@ -136,7 +136,7 @@ public class DataModelDescription {
 	}
 
 	public String toXml() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("<datamodel>");
 
 		for (DMEntry e : entries) {
@@ -162,7 +162,7 @@ class DMFunction {
 	List<DMParam> param = new ArrayList<DMParam>();
 
 	public String toXml() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		sb.append("<function ");
 		sb.append("name=\"").append(name).append("\" ");
@@ -203,7 +203,7 @@ class DMParam {
 	}
 
 	public String toXml() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		sb.append("<param ");
 		sb.append("name=\"").append(name).append("\" ");
@@ -221,7 +221,7 @@ class DMObject {
 	String name = null;
 
 	public String toXml() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		sb.append("<object ");
 		sb.append("name=\"").append(name).append("\" ");
@@ -243,7 +243,7 @@ class DMEntry {
 	String value;
 
 	public String toXml() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		sb.append("<entry ");
 		sb.append("name=\"").append(name).append("\" ");

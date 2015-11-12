@@ -137,7 +137,7 @@ public class JndiTemplateLoader implements TemplateLoader {
 
 	private String getDnPath(String directoryPath, String templateName) {
 		String dirParts[] = StringUtils.split(directoryPath, PATH_SEP);
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (int i = dirParts.length -1; i >= 0; i--) {
 			if (StringUtils.isNotEmpty(dirParts[i])) {
 					sb.append(DN_SEP);

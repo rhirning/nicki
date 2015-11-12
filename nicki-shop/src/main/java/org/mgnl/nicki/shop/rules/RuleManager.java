@@ -68,7 +68,7 @@ public class RuleManager {
 	}
 	
 	public static String getArticleQuery(Person person) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		LdapHelper.addQuery(sb, "nickiRule=*", LOGIC.AND);
 		List<Selector> selectors = person.getContext().loadChildObjects(Selector.class, 
 				Config.getProperty("nicki.selectors.basedn"), ""); 
@@ -78,7 +78,7 @@ public class RuleManager {
 				ValueProvider valueProvider = selector.getValueProvider();
 				LdapHelper.addQuery(sb, valueProvider.getArticleQuery(person, value), LOGIC.AND);
 			} else {
-				StringBuffer sb2 = new StringBuffer();
+				StringBuilder sb2 = new StringBuilder();
 				LdapHelper.addQuery(sb2, "nickiRule=" + selector.getName() + "=*", LOGIC.OR);
 				LdapHelper.negateQuery(sb2);
 				if (value == null) {
@@ -112,7 +112,7 @@ public class RuleManager {
 		if (!query.isNeedQuery()) {
 			return new ArrayList<Person>();
 		}
-		StringBuffer filter = new StringBuffer();
+		StringBuilder filter = new StringBuilder();
 		if (StringUtils.isNotEmpty(query.getQuery())) {
 			LdapHelper.addQuery(filter, query.getQuery(), LOGIC.AND);
 		}
@@ -123,7 +123,7 @@ public class RuleManager {
 	}
 
 	public static String getAssignedRuleArticlesQuery(Person person) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		@SuppressWarnings("unchecked")
 		List<String> articles = (List<String>) person.get(Person.ATTRIBUTE_ASSIGNEDARTICLE);
 		if (articles != null && articles.size() > 0) {
@@ -146,7 +146,7 @@ public class RuleManager {
 		String assigned = getAssignedRuleArticlesQuery(person);
 		
 		// missing
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		LdapHelper.addQuery(sb, assigned, LOGIC.AND);
 		LdapHelper.negateQuery(sb);
 		LdapHelper.addQuery(sb, planned, LOGIC.AND);
@@ -177,7 +177,7 @@ public class RuleManager {
 	// surplus = assigned - planned = (assignedArticles) && !(plannedArticles)
 	public static ChangeSet getChangeSet(CatalogArticle article) {
 		ChangeSet changeSet = new ChangeSet();
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		// missing
 		if (article.hasRules()) {
 			LdapHelper.addQuery(sb, getAssignedRulePersonsQuery(article), LOGIC.AND);
@@ -202,9 +202,9 @@ public class RuleManager {
 		for (String entry : article.getRules()) {
 			add(map,entry);
 		}
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (String selectorName : map.keySet()) {
-			StringBuffer sb2 = new StringBuffer();
+			StringBuilder sb2 = new StringBuilder();
 			for (String value : map.get(selectorName)) {
 				Selector selector = getSelector(article, selectorName);
 				if (selector.hasValueProvider()) {

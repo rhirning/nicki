@@ -203,7 +203,7 @@ public class CartEntry {
 //	String cartEntryQualifier = catalogArticle.getId() + "#" + cartEntryAction + "#" + cartEntryStatus + "#";
 
 	public String asString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(id).append("#");
 		sb.append(action).append("#");
 		sb.append(status);

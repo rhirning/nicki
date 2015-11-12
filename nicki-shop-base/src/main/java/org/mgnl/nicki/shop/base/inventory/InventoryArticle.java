@@ -57,7 +57,7 @@ public class InventoryArticle implements Serializable{
 	}
 	
 	public String getDisplayName() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(catalogArticle.getDisplayName());
 		if (specifier != null) {
 			sb.append(": ").append(specifier);
@@ -113,7 +113,7 @@ public class InventoryArticle implements Serializable{
 	}
 	
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("[Article path=").append(getArticle().getPath());
 		sb.append(" target=").append(getArticle().getArticlePath());
 		sb.append(" start=").append(start);

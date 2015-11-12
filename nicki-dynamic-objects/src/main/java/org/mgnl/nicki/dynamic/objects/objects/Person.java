@@ -92,7 +92,7 @@ public class Person extends BaseDynamicObject {
 
 	@Override
 	public String getDisplayName() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(StringUtils.trimToEmpty(getAttribute(ATTRIBUTE_GIVENNAME)));
 		if (sb.length() > 0) {
 			sb.append(" ");
@@ -177,7 +177,7 @@ public class Person extends BaseDynamicObject {
 
 	public Map<String, String> getCatalogAttributes(String articleId, String specifier) {
 		Map<String,String> result = new HashMap<String, String>();
-		StringBuffer prefix = new StringBuffer(articleId);
+		StringBuilder prefix = new StringBuilder(articleId);
 		if (StringUtils.isNotEmpty(specifier)) {
 			prefix.append(SEPARATOR_SPECIFIER).append(specifier);
 		}

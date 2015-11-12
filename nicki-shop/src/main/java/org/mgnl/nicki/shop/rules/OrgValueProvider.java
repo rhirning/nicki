@@ -102,7 +102,7 @@ public class OrgValueProvider extends BasicValueProvider implements ValueProvide
 	public String getPersonQuery(CatalogArticle article, String value) {
 		value = StringUtils.stripEnd(value, "/");
 		if (getType(value) == TYPE.ALL) {
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			LdapHelper.addQuery(sb, getSharpQuery(value), LOGIC.OR);
 			LdapHelper.addQuery(sb, getChildrenQuery(value), LOGIC.OR);
 			return sb.toString();
@@ -128,7 +128,7 @@ public class OrgValueProvider extends BasicValueProvider implements ValueProvide
 	}
 
 	public String getArticleQuery(Person person, Object value) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		LdapHelper.addQuery(sb, "nickiRule=" + getSelector().getName() + "=*", LOGIC.OR);
 		LdapHelper.negateQuery(sb);
 		LdapHelper.addQuery(sb, "nickiRule=" + getSelector().getName() + "=/", LOGIC.OR);

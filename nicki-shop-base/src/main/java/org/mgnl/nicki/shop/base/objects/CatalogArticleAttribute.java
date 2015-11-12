@@ -55,7 +55,7 @@ public class CatalogArticleAttribute implements Serializable{
 	}
 	
 	public String getAttributeString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(name).append(SEPARATOR).append(key).append(SEPARATOR).append(type);
 		return sb.toString();
 	}
@@ -67,7 +67,7 @@ public class CatalogArticleAttribute implements Serializable{
 	}
 	
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("[catalogArticleAttribute name='").append(getName());
 		sb.append("' label='").append(getLabel());
 		sb.append("' key='").append(getKey());
