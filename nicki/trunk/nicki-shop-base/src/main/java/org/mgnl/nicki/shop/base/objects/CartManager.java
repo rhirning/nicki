@@ -28,7 +28,7 @@ public class CartManager {
 	
 	public List<Cart> getCarts(String personDn, String permissionDn, String specifier,
 			ACTION cartEntryAction, CartEntry.CART_ENTRY_STATUS cartEntryStatus) {
-		StringBuffer query = new StringBuffer();
+		StringBuilder query = new StringBuilder();
 		
 		for (CatalogArticle catalogArticle : getCatalogArticles(permissionDn)) {
 			String cartEntryQualifier = catalogArticle.getId() + "#" + cartEntryAction + "#" + cartEntryStatus + "#";

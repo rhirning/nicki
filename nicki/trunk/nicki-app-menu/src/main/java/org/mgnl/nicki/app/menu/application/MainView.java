@@ -166,7 +166,7 @@ public class MainView extends CustomComponent {
 			}
 		}
 		if (!allowed) {
-			StringBuffer errorMsg = new StringBuffer();
+			StringBuilder errorMsg = new StringBuilder();
 			errorMsg.append(user.getDisplayName()).append(" tried to access application ");
 			errorMsg.append(clazz.getName()).append(". Allowed: ");
 			if (roleAnnotation != null) {

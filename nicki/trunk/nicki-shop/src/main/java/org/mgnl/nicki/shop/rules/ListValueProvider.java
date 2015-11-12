@@ -62,7 +62,7 @@ public class ListValueProvider extends BasicValueProvider implements ValueProvid
 	}
 
 	public String getArticleQuery(Person person, Object value) {
-		StringBuffer sb2 = new StringBuffer();
+		StringBuilder sb2 = new StringBuilder();
 		LdapHelper.addQuery(sb2, "nickiRule=" + getSelector().getName() + "=*", LOGIC.OR);
 		LdapHelper.negateQuery(sb2);
 		if (value == null) {

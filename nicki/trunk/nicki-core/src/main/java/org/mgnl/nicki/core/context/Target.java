@@ -50,10 +50,10 @@ public class Target implements Serializable {
 
 	private String targetName;
 	private String propertyBase;
-	private List<String> dynamicObjects = null;
+	private List<String> dynamicObjects;
 	private Map<Class<? extends DynamicObject>, DynamicObject> allDynamicObjectsMap = new HashMap<Class<? extends DynamicObject>, DynamicObject>();
-	private Map<String, DynamicObject> dynamicObjectsMap = null;
-	private ContextFactory contextFactory = null;
+	private Map<String, DynamicObject> dynamicObjectsMap;
+	private ContextFactory contextFactory;
 
 	public Target(String targetName, String propertyBase) {
 		this.targetName = targetName;
@@ -79,7 +79,7 @@ public class Target implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();;
 		sb.append("Target [").append(targetName).append("]:");
 		for (String dynamicObjectName : dynamicObjectsMap.keySet()) {
 			sb.append(" ").append(dynamicObjectName).append(":");

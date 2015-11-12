@@ -65,7 +65,7 @@ public class LdapHelper extends PathHelper {
 	}
 
 	public static String getPath(String parentPath, String namingLdapAttribute, String namingValue) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append(StringUtils.upperCase(namingLdapAttribute));
 		sb.append("=");
 		sb.append(namingValue);
@@ -83,7 +83,7 @@ public class LdapHelper extends PathHelper {
 		return StringUtils.strip(StringUtils.substringAfter(StringUtils.substringBefore(path, ","), "="));
 	}
 
-	public static void negateQuery(StringBuffer sb) {
+	public static void negateQuery(StringBuilder sb) {
 		if (sb.length() > 0) {
 			sb.insert(0, "!");
 			sb.insert(0, "(");
@@ -91,7 +91,7 @@ public class LdapHelper extends PathHelper {
 		}
 	}
 
-	public static void addQuery(StringBuffer sb, String query, LOGIC andOr) {
+	public static void addQuery(StringBuilder sb, String query, LOGIC andOr) {
 		if (sb.length() == 0) {
 			sb.append(query);
 			if (!StringUtils.startsWith(query, "(")) {
@@ -179,7 +179,7 @@ public class LdapHelper extends PathHelper {
 	
 
 	public static String getObjectClassFilter(DataModel model) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (String objectClass : model.getObjectClasses()) {
 			LdapHelper.addQuery(sb, "objectClass=" + objectClass, LOGIC.AND);
 		}

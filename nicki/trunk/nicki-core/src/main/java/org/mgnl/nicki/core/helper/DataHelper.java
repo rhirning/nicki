@@ -162,7 +162,7 @@ public class DataHelper {
 	}
 	
 	public static String getAsString(List<String> list, String separator) {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		if (list != null) {
 			for (String string : list) {
 				if (sb.length() > 0) {

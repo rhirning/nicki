@@ -68,7 +68,7 @@ public class Shop implements ShopViewerComponent, Serializable {
 	}
 	
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		for (ShopPage page : pageList) {
 			sb.append(page.toString()).append("\n");
 		}
