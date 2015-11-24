@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -36,6 +37,7 @@ import org.mgnl.nicki.core.helper.XsltRenderer;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.template.engine.ConfigurationFactory;
+import org.mgnl.nicki.template.engine.ConfigurationFactory.TYPE;
 import org.mgnl.nicki.template.handler.TemplateHandler;
 import org.mgnl.nicki.template.pdf.PdfTemplateRenderer;
 import org.mgnl.nicki.template.pdf.PdfTemplateRenderer2;
@@ -53,8 +55,23 @@ public class TemplateEngine {
 	public final static String DEFAULT_CHARSET = "UTF-8";
 	public final static String CSV_CHARSET = "ISO-8859-1";
 	public static final String PROPERTY_BASE_DN = "nicki.templates.basedn";
-	
-	private static TemplateEngine instance = new TemplateEngine();
+	public static final String PROPERTY_BASE = "nicki.templates.base";
+
+	private Configuration cfg;
+	private static Map<ConfigurationFactory.TYPE, TemplateEngine> instances = new HashMap<>();
+	static {
+		Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(ConfigurationFactory.TYPE.JNDI,
+					Config.getProperty(PROPERTY_BASE_DN));
+			instances.put(TYPE.JNDI, new TemplateEngine(cfg));
+		
+		cfg = ConfigurationFactory.getInstance().getConfiguration(ConfigurationFactory.TYPE.CLASSPATH,
+					Config.getProperty(PROPERTY_BASE, "/META-INF/templates"));
+		instances.put(TYPE.CLASSPATH, new TemplateEngine(cfg));
+	}
+
+	public TemplateEngine(Configuration cfg) {
+		this.cfg = cfg;
+	}
 
 	/*
 	 * 4 Supported arguments user password template type
@@ -100,8 +117,6 @@ public class TemplateEngine {
 	public InputStream executeTemplate(String templateName,
 			Map<String, Object> dataModel, String charset) throws IOException,
 			TemplateException, InvalidPrincipalException {
-		Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(
-				Config.getProperty(PROPERTY_BASE_DN));
 		Template template = cfg.getTemplate(templateName);
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
@@ -164,7 +179,10 @@ public class TemplateEngine {
 	}
 
 	public static TemplateEngine getInstance() {
-		return instance;
+		return instances.get(ConfigurationFactory.TYPE.JNDI);
+	}
+	public static TemplateEngine getInstance(ConfigurationFactory.TYPE type) {
+		return instances.get(type);
 	}
 
 }

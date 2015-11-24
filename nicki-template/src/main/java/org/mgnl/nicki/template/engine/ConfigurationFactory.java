@@ -24,24 +24,47 @@ import java.util.Map;
 
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.template.loader.ClassPathTemplateLoader;
 import org.mgnl.nicki.template.loader.JndiTemplateLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import freemarker.cache.TemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
 
 public class ConfigurationFactory {
+	private static Logger LOG = LoggerFactory.getLogger(ConfigurationFactory.class);
+	
+	public enum TYPE {JNDI, CLASSPATH};
 
 	private static ConfigurationFactory instance = new ConfigurationFactory();
 	private Map<String, Configuration> configurations = new HashMap<String, Configuration>();
-	public Configuration getConfiguration(String baseDn) throws InvalidPrincipalException {
-		if (!configurations.containsKey(baseDn)) {
-			JndiTemplateLoader loader = new JndiTemplateLoader(AppContext.getSystemContext(), baseDn);
+	public Configuration getConfiguration(TYPE type, String base) {
+		String key = type.name() + "-" + base;
+		if (!configurations.containsKey(key)) {
 			Configuration cfg = new Configuration();
-			cfg.setTemplateLoader(loader);
 			cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
-			configurations.put(baseDn, cfg);
+			TemplateLoader loader = null;
+			if (type == TYPE.JNDI) {
+				try {
+					loader = new JndiTemplateLoader(AppContext.getSystemContext(), base);
+				} catch (InvalidPrincipalException e) {
+					LOG.error("Error initiating JNDI templates", e);
+				}
+			} else if (type == TYPE.CLASSPATH) {
+				loader = new ClassPathTemplateLoader(base);
+			}
+			if (loader != null) {
+				cfg.setTemplateLoader(loader);
+				configurations.put(key, cfg);
+			}
 		}
-		return configurations.get(baseDn);
+		return configurations.get(key);
+	}
+
+	public Configuration getConfiguration(String baseDn) throws InvalidPrincipalException {
+		return getConfiguration(TYPE.JNDI, baseDn);
 	}
 
 	public static ConfigurationFactory getInstance() {
