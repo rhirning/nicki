@@ -5,7 +5,7 @@
 	<name>nicki-config-rhi</name>
 	<parent>
 		<artifactId>nicki-parent</artifactId>
-		<version>5.12</version>
+		<version>5.13-SNAPSHOT</version>
 		<groupId>org.mgnl.nicki</groupId>
 		<relativePath>..</relativePath>
 	</parent>
