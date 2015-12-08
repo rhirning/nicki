@@ -183,7 +183,7 @@ public abstract class NickiApplication extends UI {
 				}
 			}
 		} catch (Exception e) {
-			LOG.debug("Login failed, user=" + name);
+			LOG.debug("Login failed, user=" + name, e);
 		}
 		this.nickiContext = getTarget().getGuestContext();
 		return false;
