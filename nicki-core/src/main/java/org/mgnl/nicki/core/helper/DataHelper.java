@@ -60,7 +60,9 @@ public class DataHelper {
 	public final static String FORMAT_DISPLAY_DAY = "dd.MM.yyyy";
 	// 20091030115321
 	public final static String FORMAT_TIME = "yyyyMMddHHmmss";
-	public final static String FORMAT_MILLI = "yyyyMMddHHmmssSSS";
+	public final static String FORMAT_MILLI = "dd.MM.yyyy HH:mm:ss:SSS";
+
+//	public final static String FORMAT_MILLI = "yyyyMMddHHmmssSSS";
 	
 	public final static String FORMAT_TIMESTAMP = "yyyy-MM-dd HH:mm:ss Z";
 	public final static String FORMAT_GERMAN_TIMESTAMP = "dd.MM.yyyy HH:mm:ss";
@@ -275,6 +277,10 @@ public class DataHelper {
 
 	public static String getDay(Date value) {
 		return formatDay.format(value);
+	}
+
+	public static String getMilli(Date value) {
+		return formatMilli.format(value);
 	}
 
 	public static String getDisplayDay(Date value) {
