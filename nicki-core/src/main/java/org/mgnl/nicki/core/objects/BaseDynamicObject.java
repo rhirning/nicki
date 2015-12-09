@@ -33,8 +33,11 @@
 package org.mgnl.nicki.core.objects;
 
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +46,7 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
 
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
@@ -578,7 +582,23 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 				}
 				if (key != null) {
 					if (dynAttribute.isMultiple()) {
-						List<String> list = (List<String>) get(dynAttribute.getName());
+						Method getter = null;
+						try {
+							getter = getClass().getMethod(dynAttribute.getMultipleGetter(dynAttribute.getName()));
+						} catch (NoSuchMethodException | SecurityException e) {
+							LOG.debug("no getter for " + dynAttribute.getName());
+						}
+						List<String> list = null;
+						if (getter != null) {
+							try {
+								list = (List<String>) getter.invoke(this);
+							} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+								LOG.debug("wrongo getter for " + dynAttribute.getName(), e);
+							}
+						}
+						if (list == null) {
+							list = (List<String>) get(dynAttribute.getName());
+						}
 						if (list != null && list.size() > 0) {
 							JsonArrayBuilder lb = Json.createArrayBuilder();
 							for (String entry : list) {
@@ -587,9 +607,29 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 							builder.add(key, lb);
 						}
 					} else {
-						String value = getAttribute(dynAttribute.getName());
+						Method getter = null;
+						try {
+							getter = getClass().getMethod(dynAttribute.getGetter(dynAttribute.getName()));
+						} catch (NoSuchMethodException | SecurityException e) {
+							LOG.debug("no getter for " + dynAttribute.getName());
+						}
+						Object value = null;
+						if (getter != null) {
+							try {
+								value = getter.invoke(this);
+							} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+								LOG.debug("wrongo getter for " + dynAttribute.getName(), e);
+							}
+						}
+						if (value == null) {
+							value = getAttribute(dynAttribute.getName());
+						}
 						if (value != null) {
-							builder.add(key, value);
+							if (value instanceof String) {
+								builder.add(key, (String) value);
+							} else if (value instanceof Date) {
+								builder.add(key, DataHelper.getMilli((Date)value));
+							}
 						}
 					}
 				}
