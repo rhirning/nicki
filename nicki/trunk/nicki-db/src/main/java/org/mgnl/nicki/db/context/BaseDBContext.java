@@ -26,15 +26,17 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class BaseDBContext implements DBContext {
+public class BaseDBContext
+		implements DBContext {
 	public final static String TIMESTAMP_ORACLE = "YYYY-MM-DD HH24:MI:SS";
 	public final static String TIMESTAMP_FOR_ORACLE = "yyyy-MM-dd HH:mm:ss";
 	public static SimpleDateFormat timestampOracle = new SimpleDateFormat(TIMESTAMP_FOR_ORACLE);
 	private static final Logger LOG = LoggerFactory.getLogger(BaseDBContext.class);
 	private DBProfile profile;
 	private Connection connection;
+
 	private String schema;
-	
+
 	public BaseDBContext() {
 	}
 
@@ -49,64 +51,64 @@ public class BaseDBContext implements DBContext {
 		if (this.connection != null) {
 			inTransaction = true;
 		} else {
-			beginTransaction();
+			this.beginTransaction();
 		}
-		
-		
+
 		try {
-			Long primaryKey = _create(bean);
-			if (hasSubs(bean)) {
-				for (Object sub : getSubs(bean, primaryKey)) {
-					create(sub);
+			Long primaryKey = this._create(bean);
+			if (this.hasSubs(bean)) {
+				for (Object sub : this.getSubs(bean, primaryKey)) {
+					this.create(sub);
 				}
 			}
-			
+
 			if (!inTransaction) {
 				try {
-					commit();
+					this.commit();
 				} catch (NotInTransactionException e) {
 					;
 				}
 			}
-			return load(bean);
+			return this.load(bean);
 		} finally {
 			if (!inTransaction) {
 				try {
-					rollback();
+					this.rollback();
 				} catch (NotInTransactionException e) {
 					;
 				}
 			}
 		}
 	}
-	
+
 	private Collection<Object> getSubs(Object bean, long primaryKey) {
 		Collection<Object> list = new ArrayList<>();
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			try {
 				if (field.getAnnotation(SubTable.class) != null) {
-						if (Collection.class.isAssignableFrom(field.getType())) {
-							String getter = "get" + StringUtils.capitalize(field.getName());
-							Method method;
-							method = bean.getClass().getMethod(getter);
-							@SuppressWarnings("unchecked")
-							Collection<Object> fieldList = (Collection<Object>) method.invoke(bean);
-							if (fieldList != null && fieldList.size() > 0) {
-								list.addAll(fieldList);
-							}
-						} else {
-							String getter = "get" + StringUtils.capitalize(field.getName());
-							Method method = bean.getClass().getMethod(getter);
-							Object fieldEntry = method.invoke(bean);
-							if (fieldEntry != null) {
-								list.add(fieldEntry);
-							}
+					if (Collection.class.isAssignableFrom(field.getType())) {
+						String getter = "get" + StringUtils.capitalize(field.getName());
+						Method method;
+						method = bean.getClass().getMethod(getter);
+						@SuppressWarnings("unchecked")
+						Collection<Object> fieldList = (Collection<Object>) method.invoke(bean);
+						if (fieldList != null && fieldList.size() > 0) {
+							list.addAll(fieldList);
 						}
+					} else {
+						String getter = "get" + StringUtils.capitalize(field.getName());
+						Method method = bean.getClass().getMethod(getter);
+						Object fieldEntry = method.invoke(bean);
+						if (fieldEntry != null) {
+							list.add(fieldEntry);
+						}
+					}
 				}
 				for (Object object : list) {
-					setPrimaryKey(object, primaryKey);
+					this.setPrimaryKey(object, primaryKey);
 				}
-			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -114,7 +116,8 @@ public class BaseDBContext implements DBContext {
 		return list;
 	}
 
-	private void setPrimaryKey(Object bean, long primaryKey) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	private void setPrimaryKey(Object bean, long primaryKey) throws NoSuchMethodException, SecurityException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(Attribute.class) != null) {
 				Attribute attribute = field.getAnnotation(Attribute.class);
@@ -136,19 +139,19 @@ public class BaseDBContext implements DBContext {
 		return false;
 	}
 
-	private <T> Long _create(T bean) throws SQLException, NotSupportedException {
-		try(Statement stmt = this.connection.createStatement()) {
-			String statement = createInsertStatement(bean);
+	protected <T> Long _create(T bean) throws SQLException, NotSupportedException {
+		try (Statement stmt = this.connection.createStatement()) {
+			String statement = this.createInsertStatement(bean);
 			LOG.debug(statement);
 			stmt.executeUpdate(statement, Statement.RETURN_GENERATED_KEYS);
 			ResultSet generatedKeys = stmt.getGeneratedKeys();
-			if (generatedKeys != null && generatedKeys.first()) {
-				return new Long(generatedKeys.getInt(1));
+			if (generatedKeys != null && generatedKeys.next()) {
+				return new Long(generatedKeys.getLong(1));
 			} else {
 				return null;
 			}
 		}
-		
+
 	}
 
 	@Override
@@ -157,27 +160,27 @@ public class BaseDBContext implements DBContext {
 		if (this.connection != null) {
 			inTransaction = true;
 		} else {
-			beginTransaction();
+			this.beginTransaction();
 		}
-		
+
 		try {
-			try(Statement stmt = this.connection.createStatement()) {
-				String statement = createUpdateStatement(bean);
+			try (Statement stmt = this.connection.createStatement()) {
+				String statement = this.createUpdateStatement(bean);
 				LOG.debug(statement);
 				stmt.executeUpdate(statement);
 				if (!inTransaction) {
 					try {
-						commit();
+						this.commit();
 					} catch (NotInTransactionException e) {
 						;
 					}
 				}
-				return load(bean);
+				return this.load(bean);
 			}
 		} finally {
 			if (!inTransaction) {
 				try {
-					rollback();
+					this.rollback();
 				} catch (NotInTransactionException e) {
 					;
 				}
@@ -191,17 +194,17 @@ public class BaseDBContext implements DBContext {
 		if (this.connection != null) {
 			inTransaction = true;
 		} else {
-			beginTransaction();
+			this.beginTransaction();
 		}
-		
+
 		try {
-			try(Statement stmt = this.connection.createStatement()) {
-				String statement = createDeleteStatement(bean);
+			try (Statement stmt = this.connection.createStatement()) {
+				String statement = this.createDeleteStatement(bean);
 				LOG.debug(statement);
 				stmt.executeUpdate(statement);
 				if (!inTransaction) {
 					try {
-						commit();
+						this.commit();
 					} catch (NotInTransactionException e) {
 						;
 					}
@@ -210,7 +213,7 @@ public class BaseDBContext implements DBContext {
 		} finally {
 			if (!inTransaction) {
 				try {
-					rollback();
+					this.rollback();
 				} catch (NotInTransactionException e) {
 					;
 				}
@@ -224,15 +227,15 @@ public class BaseDBContext implements DBContext {
 		if (this.connection != null) {
 			inTransaction = true;
 		} else {
-			beginTransaction();
+			this.beginTransaction();
 		}
 
 		try {
-			try(Statement stmt = this.connection.createStatement()) {
+			try (Statement stmt = this.connection.createStatement()) {
 				if (handler.isLoggingEnabled()) {
 					LOG.debug(handler.getSearchStatement());
 				}
-				try(ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
+				try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
 					handler.handle(rs);
 					return handler.getResults();
 				}
@@ -240,7 +243,7 @@ public class BaseDBContext implements DBContext {
 		} finally {
 			if (!inTransaction) {
 				try {
-					rollback();
+					this.rollback();
 				} catch (NotInTransactionException e) {
 					;
 				}
@@ -254,22 +257,22 @@ public class BaseDBContext implements DBContext {
 		if (this.connection != null) {
 			inTransaction = true;
 		} else {
-			beginTransaction();
+			this.beginTransaction();
 		}
 
 		try {
-			try(Statement stmt = this.connection.createStatement()) {
+			try (Statement stmt = this.connection.createStatement()) {
 				if (handler.isLoggingEnabled()) {
 					LOG.debug(handler.getSearchStatement());
 				}
-				try(ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
+				try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
 					handler.handle(rs);
 				}
 			}
 		} finally {
 			if (!inTransaction) {
 				try {
-					commit();
+					this.commit();
 				} catch (NotInTransactionException e) {
 					;
 				}
@@ -280,7 +283,7 @@ public class BaseDBContext implements DBContext {
 	@Override
 	public Connection beginTransaction() throws SQLException, InitProfileException {
 		if (this.connection == null) {
-			this.connection = profile.getConnection();
+			this.connection = this.profile.getConnection();
 		}
 		return this.connection;
 	}
@@ -327,7 +330,7 @@ public class BaseDBContext implements DBContext {
 		}
 	}
 
-	private<T> T load(T bean) {
+	private <T> T load(T bean) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -337,55 +340,78 @@ public class BaseDBContext implements DBContext {
 		/**
 		 * insert into SCHEMA.TABLE (a,b,c) values (" ", " ", 2);
 		 */
-		
+
 		Table table = bean.getClass().getAnnotation(Table.class);
 		if (table == null) {
 			throw new NotSupportedException();
 		}
-		
+
 		Map<String, String> columnValues = new HashMap<>();
-		
+
 		for (Field field : bean.getClass().getDeclaredFields()) {
-			if (field.getAnnotation(Attribute.class)!= null) {
+			if (field.getAnnotation(Attribute.class) != null) {
 				Attribute attribute = field.getAnnotation(Attribute.class);
-				try {
-					if (field.getType() == String.class) {
-						columnValues.put(attribute.name(), getStringValue(bean, field));
-					} else if (field.getType() == Date.class) {
-						columnValues.put(attribute.name(), getDateValue(bean, field, attribute));
-					} else if (field.getType() == long.class) {
-						columnValues.put(attribute.name(), getLongValue(bean, field, attribute));
-					} else if (field.getType() == int.class) {
-						columnValues.put(attribute.name(), getIntValue(bean, field, attribute));
+				if (!attribute.autogen()) {
+					try {
+						if (field.getType() == String.class) {
+							columnValues.put(attribute.name(), this.getStringValue(bean, field));
+						} else if (field.getType() == Date.class) {
+							columnValues.put(attribute.name(), this.getDateValue(bean, field, attribute));
+						} else if (field.getType() == long.class) {
+							columnValues.put(attribute.name(), this.getLongValue(bean, field, attribute));
+						} else if (field.getType() == int.class) {
+							columnValues.put(attribute.name(), this.getIntValue(bean, field, attribute));
+						}
+					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+							| InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
 					}
-				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-						| IllegalArgumentException | InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 		}
-		
+
 		// TODO Auto-generated method stub
-		return getInsertStatement(getQualifiedTableName(bean.getClass()), columnValues);
+		return getInsertStatement(this.getQualifiedTableName(bean.getClass()), columnValues);
 	}
 
-	protected String getLongValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return ((Long) getValue(bean, field)).toString();
+	protected String[] getGeneratedKeys(Object bean) {
+		List<String> keys = new ArrayList<>();
+
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			if (field.getAnnotation(Attribute.class) != null) {
+				Attribute attribute = field.getAnnotation(Attribute.class);
+				if (attribute.autogen()) {
+					keys.add(attribute.name());
+				}
+			}
+		}
+		if (keys.size() > 0) {
+			return keys.toArray(new String[] {});
+		} else {
+			return null;
+		}
 	}
 
-	protected String getIntValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return ((Integer) getValue(bean, field)).toString();
+	protected String getLongValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		return ((Long) this.getValue(bean, field)).toString();
 	}
 
+	protected String getIntValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		return ((Integer) this.getValue(bean, field)).toString();
+	}
+
+	@Override
 	public String getQualifiedTableName(Class<? extends Object> clazz) throws NotSupportedException {
-		
+
 		Table table = clazz.getAnnotation(Table.class);
 		if (table == null) {
 			throw new NotSupportedException();
 		}
-		if (schema != null) {
-			return schema + "." + table.name();
+		if (this.schema != null) {
+			return this.schema + "." + table.name();
 		} else {
 			return table.name();
 		}
@@ -396,7 +422,7 @@ public class BaseDBContext implements DBContext {
 
 		try {
 			Field field = clazz.getDeclaredField(fieldName);
-			if (field.getAnnotation(Attribute.class)!= null) {
+			if (field.getAnnotation(Attribute.class) != null) {
 				Attribute attribute = field.getAnnotation(Attribute.class);
 				return attribute.name();
 			} else {
@@ -405,11 +431,11 @@ public class BaseDBContext implements DBContext {
 		} catch (NoSuchFieldException | SecurityException e) {
 			throw new NoSuchFieldException(fieldName);
 		}
-				
+
 	}
 
 	protected static String getInsertStatement(String tableName, Map<String, String> columnValues) {
-		ColumnsAndValues cv = new ColumnsAndValues("","");
+		ColumnsAndValues cv = new ColumnsAndValues("", "");
 		for (String columnName : columnValues.keySet()) {
 			cv.add(columnName, columnValues.get(columnName));
 		}
@@ -423,15 +449,15 @@ public class BaseDBContext implements DBContext {
 			if (attribute.now()) {
 				date = new Date();
 			} else {
-				date = (Date) getValue(bean, field);
+				date = (Date) this.getValue(bean, field);
 			}
-			return toTimestamp(date);
+			return this.toTimestamp(date);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -440,11 +466,13 @@ public class BaseDBContext implements DBContext {
 		return "to_date('" + timestampOracle.format(date) + "','" + TIMESTAMP_ORACLE + "')";
 	}
 
-	protected String getStringValue(Object bean, Field field) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return "'" + (String) getValue(bean, field) + "'";
+	protected String getStringValue(Object bean, Field field) throws NoSuchMethodException, SecurityException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		return "'" + (String) this.getValue(bean, field) + "'";
 	}
 
-	protected Object getValue(Object bean, Field field) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+	protected Object getValue(Object bean, Field field) throws NoSuchMethodException, SecurityException, IllegalAccessException,
+			IllegalArgumentException, InvocationTargetException {
 		String getter = "get" + StringUtils.capitalize(field.getName());
 		Method method = bean.getClass().getMethod(getter);
 		return method.invoke(bean);
@@ -463,11 +491,15 @@ public class BaseDBContext implements DBContext {
 	}
 
 	public String getSchema() {
-		return schema;
+		return this.schema;
 	}
 
+	@Override
 	public void setSchema(String schema) {
 		this.schema = schema;
 	}
 
+	public Connection getConnection() {
+		return this.connection;
+	}
 }
