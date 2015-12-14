@@ -28,7 +28,9 @@ public class DBContextManager {
 	
 	
 	private static DBContextManager instance = null;
-	private Map<String, DBContext> contexts = new HashMap<String, DBContext>();
+	private Map<String, String> contextClassNames = new HashMap<>();
+	private Map<String, String> schemas = new HashMap<>();
+	private Map<String, DBProfile> profiles = new HashMap<>();
 
 	public static DBContextManager getInstance() {
 		if (instance == null) {
@@ -39,7 +41,9 @@ public class DBContextManager {
 	}
 	
 	public void init() {
-		contexts.clear();
+		contextClassNames.clear();
+		schemas.clear();
+		profiles.clear();
 		String contextsConfigurations = Config.getProperty(PROPERTY_CONTEXTS);
 		if (StringUtils.isNotEmpty(contextsConfigurations)) {
 			for (String contextName : DataHelper.getList(contextsConfigurations, SEPARATOR)) {
@@ -47,18 +51,16 @@ public class DBContextManager {
 					String contextBase = PROPERTY_CONTEXT_BASE + "." + contextName + ".";
 					String contextClassName = Config.getProperty(contextBase
 							+ PROPERTY_CONTEXT_CLASS_NAME);
-					DBContext context = (DBContext) getClass().getClassLoader().loadClass(contextClassName).newInstance();
+					contextClassNames.put(contextName, contextClassName);
 					
 					String schema = Config.getProperty(contextBase + PROPERTY_CONTEXT_SCHEMA);
 					if (StringUtils.isNotBlank(schema)) {
-						context.setSchema(schema);
+						schemas.put(contextName, schema);
 					}
 					
 					DBProfile profile = createProfile(contextName);
-					if (profile != null) {
-						context.setProfile(profile);
-						contexts.put(contextName, context);
-					}
+					profiles.put(contextName, profile);
+					
 				} catch (Exception e) {
 					LOG.error("error init DBContexts", e);
 				}
@@ -81,7 +83,23 @@ public class DBContextManager {
 	}
 	
 	public static DBContext getContext(String name) {
-		return getInstance().contexts.get(name);
+		return getInstance()._getContext(name);
+	}
+	
+	private DBContext _getContext(String name) {
+		try {
+			DBContext context = (DBContext) getClass().getClassLoader()
+					.loadClass(contextClassNames.get(name)).newInstance();
+			if (schemas.containsKey(name)) {
+				context.setSchema(schemas.get(name));
+			}
+			context.setSchema(schemas.get(name));
+			context.setProfile(profiles.get(name));
+			return context;
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+			LOG.error("error loading DBContext " + name, e);
+		}
+		return null;
 	}
 	
 	
