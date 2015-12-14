@@ -36,7 +36,7 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
 
-public class Configuration {
+public class DbcpConfiguration {
 
     private String dbDriverName = null;
     private String dbUser = null;
@@ -46,8 +46,7 @@ public class Configuration {
     private int dbPoolMinSize = 0;
     private int dbPoolMaxSize = 0;
 
-    public Configuration(String propertyBase, String name) throws InvalidConfigurationException {
-    	String base = propertyBase + "." + name + ".";
+    public DbcpConfiguration(String base) throws InvalidConfigurationException {
         dbDriverName = Config.getProperty(base + "driverClassName");
         dbUser = Config.getProperty(base + "username");
         dbPassword = DataHelper.getPassword(Config.getProperty(base + "password"));

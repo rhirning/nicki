@@ -1,5 +1,5 @@
 /**
- * This file Copyright (c) 2003-2011 Dr. Ralf Hirning
+ * This file Copyright (c) 2003-2015 Dr. Ralf Hirning
  * All rights reserved.
  *
  *
@@ -37,75 +37,36 @@ import org.apache.commons.dbcp.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp.PoolableConnectionFactory;
 import org.apache.commons.dbcp.PoolingDataSource;
 import org.apache.commons.pool.impl.GenericObjectPool;
-import org.apache.commons.pool.ObjectPool;
-import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.config.ConfigListener;
 import org.mgnl.nicki.core.util.Classes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.sql.DataSource;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
-public class ConnectionManager implements ConfigListener{
+public class ConnectionManager {
 
     private static final Logger LOG = LoggerFactory.getLogger(ConnectionManager.class);
-
-    private static ConnectionManager instance = new ConnectionManager();
     
-    public Map<String, DataSource> dataSources = new HashMap<String, DataSource>();
-    public Map<String, GenericObjectPool> pools = new HashMap<String, GenericObjectPool>();
+    public DataSource dataSource;
+    public GenericObjectPool pool;
     
-    private ConnectionManager() {
-    	try {
-			Config.addConfigListener(this);
-		} catch (IOException e) {
-			LOG.error("Error", e);
-		}
+    public ConnectionManager() {
+    	
     }
     
-    public static ConnectionManager getInstance() {
-    	return instance;
+	public void init(String profileConfigBase) throws InvalidConfigurationException {
+		DbcpConfiguration configuration = new DbcpConfiguration(profileConfigBase);
+    	connectToDB(configuration);
     }
-    
-	public void configChanged() {
-    	this.dataSources.clear();
-    	this.pools.clear();
-    	ConfigurationManager.getInstance().configChanged();
-    	for (String id : ConfigurationManager.getInstance().getConfigurations().keySet()) {
-            connectToDB(id,
-            		ConfigurationManager.getInstance().getConfiguration(id) );
-			
-		}
-    }
-
-    /**
-    *  destructor
-    */
-    protected void finalize()
-    {
-        LOG.debug("Finalizing ConnectionManager");
-        try
-        {
-            super.finalize();
-        }
-        catch(Throwable ex)
-        {
-            LOG.error( "ConnectionManager finalize failed to disconnect", ex );
-        }
-    }
-
 
     /**
     *  connectToDB - Connect to the DB!
     */
-    private void connectToDB(String id, Configuration config ) {
+    private void connectToDB(DbcpConfiguration config ) {
 
         try
         {
@@ -121,12 +82,12 @@ public class ConnectionManager implements ConfigListener{
         LOG.debug("Trying to connect to database...");
         try
         {
-        	dataSources.put(id, setupDataSource(id,
+        	dataSource = setupDataSource(
                     config.getDbURI(),
                     config.getDbUser(),
                     config.getDbPassword(),
                     config.getDbPoolMinSize(),
-                    config.getDbPoolMaxSize() ));
+                    config.getDbPoolMaxSize() );
 
             LOG.debug("Connection attempt to database succeeded.");
         }
@@ -145,7 +106,7 @@ public class ConnectionManager implements ConfigListener{
      * @param maxActive - Connection Pool Maximum Capacity (Size)
      * @throws Exception
      */
-    public DataSource setupDataSource(String id,
+    public DataSource setupDataSource(
     		String connectURI, 
     		String username,
     		String password,
@@ -158,11 +119,10 @@ public class ConnectionManager implements ConfigListener{
         // We'll use a GenericObjectPool instance, although
         // any ObjectPool implementation will suffice.
         //
-        GenericObjectPool connectionPool = new GenericObjectPool(null);
+        pool = new GenericObjectPool(null);
 
-        connectionPool.setMinIdle( minIdle );
-        connectionPool.setMaxActive( maxActive );
-        this.pools.put(id, connectionPool);
+        pool.setMinIdle( minIdle );
+        pool.setMaxActive( maxActive );
         //
         // Next, we'll create a ConnectionFactory that the
         // pool will use to create Connections.
@@ -178,25 +138,21 @@ public class ConnectionManager implements ConfigListener{
         // the classes that implement the pooling functionality.
         //
          new PoolableConnectionFactory(
-        	connectionFactory,connectionPool,null,null,false,true);
+        	connectionFactory,pool,null,null,false,true);
 
         PoolingDataSource dataSource = 
-        	new PoolingDataSource(connectionPool);
+        	new PoolingDataSource(pool);
 
         return dataSource;
     }
 
     public void printDriverStats() throws Exception {
-    	for (String id : this.pools.keySet()) {
-	        ObjectPool connectionPool = this.pools.get(id);
-	        LOG.info("NumActive: " + connectionPool.getNumActive());
-	        LOG.info("NumIdle: " + connectionPool.getNumIdle());
-			
-		}
+        LOG.info("NumActive: " + pool.getNumActive());
+        LOG.info("NumIdle: " + pool.getNumIdle());
     }
 
-	public Connection getConnection(String name) throws SQLException {
-		return this.dataSources.get(name).getConnection();
+	public Connection getConnection() throws SQLException {
+		return dataSource.getConnection();
 	}
 
 
