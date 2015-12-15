@@ -39,5 +39,7 @@ public interface DBContext {
 	 String getQualifiedTableName(Class<? extends Object> clazz) throws NotSupportedException;
 
 	Object getColumn(Class<? extends Object> clazz, String string) throws NoSuchFieldException;
+
+	<T> List<T> loadObjects(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 	
 }

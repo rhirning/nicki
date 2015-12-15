@@ -16,4 +16,6 @@ public @interface Attribute {
 	boolean foreignKey() default false;
 
 	boolean now() default false;
+
+	boolean primaryKey() default false;
 }
