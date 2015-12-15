@@ -3,6 +3,8 @@ package org.mgnl.nicki.db.context;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.json.JsonValue.ValueType;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.db.annotation.Attribute;
@@ -80,6 +84,219 @@ public class BaseDBContext
 			}
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> List<T> loadObjects(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
+		boolean inTransaction = false;
+		if (this.connection != null) {
+			inTransaction = true;
+		} else {
+			this.beginTransaction();
+		}
+
+		try {
+			try (Statement stmt = this.connection.createStatement()) {
+				String searchStatement = getLoadObjectsSearchStatement(bean);
+				LOG.debug(searchStatement);
+				List<T> list = null;
+				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
+					list = (List<T>) handle(bean.getClass(), rs);
+				}
+				if (list != null && deepSearch) {
+					for (T t : list) {
+						addObjects(t, deepSearch);
+					}
+				}
+				return list;
+			}
+		} finally {
+			if (!inTransaction) {
+				try {
+					this.rollback();
+				} catch (NotInTransactionException e) {
+					;
+				}
+			}
+		}
+	}
+
+	private void addObjects(Object bean, boolean deepSearch) {
+		Object primaryKey = null;
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null && attribute.primaryKey()) {
+				String getter = "get" + StringUtils.capitalize(field.getName());
+				try {
+					Method method = bean.getClass().getMethod(getter);
+					primaryKey = method.invoke(bean);
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					LOG.error("Error reading primary key ", e);
+				}
+			}
+		}
+		if (primaryKey != null) {
+			for (Field field : bean.getClass().getDeclaredFields()) {
+				SubTable subTable = field.getAnnotation(SubTable.class);
+				if (subTable != null) {
+					if (field.getType().isAssignableFrom(List.class)) {
+						Type genericFieldType = field.getGenericType();
+						if(genericFieldType instanceof ParameterizedType){
+						    ParameterizedType aType = (ParameterizedType) genericFieldType;
+						    Type[] fieldArgTypes = aType.getActualTypeArguments();
+							Class<?> entryClass = (Class<?>) fieldArgTypes[0];
+							addObjects(bean, field, entryClass, primaryKey);
+						}
+					} else {
+						addObject(bean, field, field.getType(), primaryKey);
+					}
+	
+				}
+			}
+		}
+		// TODO Auto-generated method stub
+		
+	}
+
+	private <T> void addObject(Object bean, Field field, Class<T> entryClass, Object primaryKey) {
+		T subBean = getNewInstance(entryClass);
+		setPrimaryKey(subBean, primaryKey);
+		try {
+			List<T> subs = loadObjects(subBean, true);
+			if (subs != null && subs.size() > 0) {
+				String setter = "set" + StringUtils.capitalize(field.getName());
+				Method method = bean.getClass().getMethod(setter, entryClass);
+				method.invoke(bean, subs.get(0));
+			}			
+		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
+			LOG.error("Error adding objects " + field.getName(), e);
+		}
+	}
+
+	private <T> void addObjects(Object bean, Field field, Class<T> entryClass, Object primaryKey) {
+		T subBean = getNewInstance(entryClass);
+		setPrimaryKey(subBean, primaryKey);
+		try {
+			List<T> subs = loadObjects(subBean, true);
+			if (subs != null && subs.size() > 0) {
+				String setter = "set" + StringUtils.capitalize(field.getName());
+				Method method = bean.getClass().getMethod(setter, List.class);
+				method.invoke(bean, subs);
+			}			
+		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
+			LOG.error("Error adding objects " + field.getName(), e);
+		}
+	}
+
+	private <T> T getNewInstance(Class<T> clazz) {
+
+		try {
+			return clazz.newInstance();
+		} catch (InstantiationException | IllegalAccessException e) {
+			LOG.error("Error creating instance of  " + clazz.getName(), e);
+		}
+		return null;
+	}
+
+
+	private void setPrimaryKey(Object bean, Object primaryKey) {
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null && attribute.foreignKey()) {
+				String setter = "set" + StringUtils.capitalize(field.getName());
+				try {
+					Method method = bean.getClass().getMethod(setter, primaryKey.getClass());
+					method.invoke(bean, primaryKey);
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					LOG.error("Error reading primary key ", e);
+				}
+			}
+		}
+	}
+
+	public <T> List<T> handle(Class<T> beanClass, ResultSet rs) throws SQLException, InstantiationException, IllegalAccessException {
+		List<T> list = new ArrayList<>();
+		while (rs.next()) {
+			T entry = beanClass.newInstance();
+			for (Field field : beanClass.getDeclaredFields()) {
+				Attribute attribute = field.getAnnotation(Attribute.class);
+				if (attribute != null) {
+					try {
+						String setter = "set" + StringUtils.capitalize(field.getName());
+						Method method = beanClass.getMethod(setter, field.getType());
+						if (field.getType() == String.class) {
+							method.invoke(entry, rs.getString(attribute.name()));
+						} else if (field.getType() == int.class || field.getType() == Integer.class) {
+							method.invoke(entry, rs.getInt(attribute.name()));
+						} else if (field.getType() == long.class || field.getType() == Long.class) {
+							method.invoke(entry, rs.getLong(attribute.name()));
+						} else if (field.getType() == Date.class) {
+							method.invoke(entry, rs.getTimestamp(attribute.name()));
+						}
+					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+							| IllegalArgumentException | InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}
+			list.add(entry);
+		}
+		return list;
+
+	}
+	
+	protected String getLoadObjectsSearchStatement(Object bean) {
+		try {
+			StringBuilder sb = new StringBuilder();
+			sb.append("select * from ").append(getQualifiedTableName(bean.getClass()));
+			sb.append(" where ");
+			int count = 0;
+			for (Field field : bean.getClass().getDeclaredFields()) {
+				Attribute attribute = field.getAnnotation(Attribute.class);
+				if (attribute != null) {
+					String getter = "get" + StringUtils.capitalize(field.getName());
+					Method method;
+					method = bean.getClass().getMethod(getter);
+					Object rawValue = method.invoke(bean);
+					String value = null;
+					if (rawValue != null) {
+						value = getStringValue(method.getReturnType(), rawValue);
+					}
+					if (value != null) {
+						if (count > 0) {
+							sb.append(" AND ");
+						}
+						count++;
+						sb.append(attribute.name()).append("=").append(value);
+					}
+				}
+			}
+			return sb.toString();
+		} catch (NotSupportedException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			LOG.error("Error creating load objects search statement ", e);
+			return e.getMessage();
+		}
+	}
+
+	protected String getStringValue(Class<?> type, Object value) {
+		try {
+			if (type == String.class) {
+				return "'" + (String) value + "'";
+			} else if (type == Date.class) {
+				return this.toTimestamp((Date) value);
+			} else if (type == long.class || type == Long.class) {
+				return Long.toString((long) value);
+			} else if (type == int.class || type == Integer.class) {
+				return Integer.toString((int) value);
+			}
+		} catch (SecurityException | IllegalArgumentException e) {
+			LOG.error("Error converting", e);
+		}
+		return null;
+	}
 
 	private Collection<Object> getSubs(Object bean, long primaryKey) {
 		Collection<Object> list = new ArrayList<>();
@@ -123,7 +340,7 @@ public class BaseDBContext
 				Attribute attribute = field.getAnnotation(Attribute.class);
 				if (attribute.foreignKey()) {
 					String setter = "set" + StringUtils.capitalize(field.getName());
-					Method method = bean.getClass().getMethod(setter, long.class);
+					Method method = bean.getClass().getMethod(setter, field.getType());
 					method.invoke(bean, primaryKey);
 				}
 			}
@@ -357,9 +574,9 @@ public class BaseDBContext
 							columnValues.put(attribute.name(), this.getStringValue(bean, field));
 						} else if (field.getType() == Date.class) {
 							columnValues.put(attribute.name(), this.getDateValue(bean, field, attribute));
-						} else if (field.getType() == long.class) {
+						} else if (field.getType() == long.class || field.getType() == Long.class) {
 							columnValues.put(attribute.name(), this.getLongValue(bean, field, attribute));
-						} else if (field.getType() == int.class) {
+						} else if (field.getType() == int.class || field.getType() == Integer.class) {
 							columnValues.put(attribute.name(), this.getIntValue(bean, field, attribute));
 						}
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
