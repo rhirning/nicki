@@ -23,7 +23,7 @@ public class OracleContext
 	@Override
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
 		if (attribute.now()) {
-			return "SYSDATE";
+			return "SYSTIMESTAMP";
 		}
 		try {
 			Date date = (Date) this.getValue(bean, field);
