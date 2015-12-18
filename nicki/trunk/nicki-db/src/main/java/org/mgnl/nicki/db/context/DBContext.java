@@ -41,5 +41,8 @@ public interface DBContext {
 	Object getColumn(Class<? extends Object> clazz, String string) throws NoSuchFieldException;
 
 	<T> List<T> loadObjects(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
+
+	<T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy)
+			throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 	
 }
