@@ -85,9 +85,14 @@ public class BaseDBContext
 		}
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> loadObjects(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
+		return loadObjects(bean, deepSearch, null, null);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
 		boolean inTransaction = false;
 		if (this.connection != null) {
 			inTransaction = true;
@@ -97,7 +102,7 @@ public class BaseDBContext
 
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
-				String searchStatement = getLoadObjectsSearchStatement(bean);
+				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
 				LOG.debug(searchStatement);
 				List<T> list = null;
 				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
@@ -248,12 +253,17 @@ public class BaseDBContext
 
 	}
 	
-	protected String getLoadObjectsSearchStatement(Object bean) {
+	protected String getLoadObjectsSearchStatement(Object bean, String filter, String orderBy) {
 		try {
 			StringBuilder sb = new StringBuilder();
 			sb.append("select * from ").append(getQualifiedTableName(bean.getClass()));
-			sb.append(" where ");
 			int count = 0;
+			if (StringUtils.isNotBlank(filter)) {
+				sb.append(" where (");
+				sb.append(filter);
+				sb.append(") ");
+				count++;
+			}
 			for (Field field : bean.getClass().getDeclaredFields()) {
 				Attribute attribute = field.getAnnotation(Attribute.class);
 				if (attribute != null) {
@@ -268,11 +278,16 @@ public class BaseDBContext
 					if (value != null) {
 						if (count > 0) {
 							sb.append(" AND ");
+						} else {
+							sb.append(" where ");
 						}
 						count++;
 						sb.append(attribute.name()).append("=").append(value);
 					}
 				}
+			}
+			if (StringUtils.isNotBlank(orderBy)) {
+				sb.append(" order by ").append(orderBy);
 			}
 			return sb.toString();
 		} catch (NotSupportedException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
