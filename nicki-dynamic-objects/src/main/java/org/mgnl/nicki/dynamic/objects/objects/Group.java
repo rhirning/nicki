@@ -32,11 +32,15 @@
  */
 package org.mgnl.nicki.dynamic.objects.objects;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
+@SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("groupOfNames")
 public class Group extends BaseDynamicObject {
@@ -50,14 +54,39 @@ public class Group extends BaseDynamicObject {
 	}
 	
 	@DynamicAttribute(externalName="description")
-	private String description;
+	public String getDescription() {
+		return getAttribute(ATTRIBUTE_DESCRIPTION);
+	}
 	
-	@DynamicAttribute(externalName="member", foreignKey=Person.class)
-	private String[] member;
+	public void setDescription(String description) {
+		put(ATTRIBUTE_DESCRIPTION, description);
+	}
 	
 	@DynamicAttribute(externalName="owner", foreignKey=Person.class)
-	private String owner;
-	
-	private static final long serialVersionUID = 6170300879001415636L;
+	public String getOwner() {
+		return getAttribute(ATTRIBUTE_OWNER);
+	}
+		
+    @SuppressWarnings("unchecked")
+	@DynamicAttribute(externalName = "member", foreignKey=Person.class)
+    public List<String> getMember() {
+    	return (List<String>) get(ATTRIBUTE_MEMBER);
+    }
 
+	public void addMember(String path) {
+		List<String> list = getMember();
+		if (list == null) {
+			list = new ArrayList<>();
+		}
+		if (!list.contains(path)) {
+			list.add(path);
+		}
+	}
+	
+	public void removeMember(String path) {
+		List<String> list = getMember();
+		if (list != null && list.contains(path)) {
+			list.remove(path);
+		}
+	}
 }
