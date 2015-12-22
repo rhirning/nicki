@@ -61,7 +61,11 @@ public class OracleContext
 	}
 
 	@Override
-	protected String toTimestamp(Date date) {
-		return "to_date('" + timestampOracle.format(date) + "','" + TIMESTAMP_ORACLE + "')";
+	public String toTimestamp(Date date) {
+		if (date != null) {
+			return "to_date('" + timestampOracle.format(date) + "','" + TIMESTAMP_ORACLE + "')";
+		} else {
+			return "''";
+		}
 	}
 }
