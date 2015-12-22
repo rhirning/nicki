@@ -2,6 +2,7 @@ package org.mgnl.nicki.db.context;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 import org.mgnl.nicki.db.handler.ListSelectHandler;
@@ -12,7 +13,7 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 public interface DBContext {
 	<T> T create(T bean) throws SQLException, InitProfileException, NotSupportedException;
 
-	<T> T update(T bean) throws NotSupportedException, SQLException, InitProfileException;
+	<T> T update(T bean, String... columns) throws NotSupportedException, SQLException, InitProfileException;
 	
 	<T> void delete(T bean) throws SQLException, InitProfileException;
 
@@ -28,15 +29,16 @@ public interface DBContext {
 
 	<T> String createInsertStatement(T bean) throws NotSupportedException;
 
-	<T> String createUpdateStatement(T bean);
+	<T> String createUpdateStatement(T bean, String... columns) throws NotSupportedException, NothingToDoException;
 
-	<T> String createDeleteStatement(T bean);
+	<T> String createDeleteStatement(T bean) throws NotSupportedException;
 
 	void setProfile(DBProfile profile);
 
 	void setSchema(String schema);
+	String getSchema();
 	
-	 String getQualifiedTableName(Class<? extends Object> clazz) throws NotSupportedException;
+	String getQualifiedTableName(Class<? extends Object> clazz) throws NotSupportedException;
 
 	Object getColumn(Class<? extends Object> clazz, String string) throws NoSuchFieldException;
 
@@ -44,5 +46,6 @@ public interface DBContext {
 
 	<T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy)
 			throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
-	
+
+	String toTimestamp(Date date);
 }

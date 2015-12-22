@@ -139,6 +139,12 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 		tab.addTab(new TestDataView(new ListPartDataContainer(template, "testData", "="), editor.getMessageKeyBase()),
 				I18n.getText(editor.getMessageKeyBase() +".tab.testdata"), null);
 		tab.addTab(new SimpleEditor(new AttributeDataContainer<String>(template, "params")), I18n.getText(editor.getMessageKeyBase() +".tab.params"), null);
+		if (template.hasPart("subject")) {
+			tab.addTab(new SimpleEditor(new PartDataContainer(template, Template.ATTRIBUTE_PARTS, "subject", "=")), "subject", null);
+		}
+		if (template.hasPart("body")) {
+			tab.addTab(new SimpleEditor(new PartDataContainer(template, Template.ATTRIBUTE_PARTS, "body", "=")), "body", null);
+		}
 	}
 	
 	private VerticalLayout buildEditor() {

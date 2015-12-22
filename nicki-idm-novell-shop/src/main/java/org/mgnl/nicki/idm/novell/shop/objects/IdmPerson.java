@@ -376,6 +376,10 @@ public class IdmPerson extends Person implements Serializable {
 		return (String) get(ATTRIBUTE_LOCATION);
 	}
 
+	public String getMail() {
+		return (String) get(ATTRIBUTE_MAIL);
+	}
+
 	public void setPhoneNumber(String value) {
 		put(ATTRIBUTE_PHONENUMBER, value);
 	}

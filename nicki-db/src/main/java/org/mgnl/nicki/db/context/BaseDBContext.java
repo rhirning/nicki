@@ -11,13 +11,12 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.json.JsonValue.ValueType;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.db.annotation.Attribute;
@@ -387,7 +386,7 @@ public class BaseDBContext
 	}
 
 	@Override
-	public <T> T update(T bean) throws SQLException, InitProfileException {
+	public <T> T update(T bean, String... columns) throws SQLException, InitProfileException, NotSupportedException {
 		boolean inTransaction = false;
 		if (this.connection != null) {
 			inTransaction = true;
@@ -397,15 +396,19 @@ public class BaseDBContext
 
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
-				String statement = this.createUpdateStatement(bean);
-				LOG.debug(statement);
-				stmt.executeUpdate(statement);
-				if (!inTransaction) {
-					try {
-						this.commit();
-					} catch (NotInTransactionException e) {
-						;
+				try {
+					String statement = this.createUpdateStatement(bean, columns);
+					LOG.debug(statement);
+					stmt.executeUpdate(statement);
+					if (!inTransaction) {
+						try {
+							this.commit();
+						} catch (NotInTransactionException e) {
+							;
+						}
 					}
+				} catch (NothingToDoException e) {
+					LOG.error("Nothing to do");
 				}
 				return this.load(bean);
 			}
@@ -675,6 +678,24 @@ public class BaseDBContext
 		return "insert into " + tableName + " (" + cv.getColumns() + ") values (" + cv.getValues() + ")";
 	}
 
+	protected static String getUpdateStatement(String tableName, Map<String, String> columnValues, String whereClause) throws NothingToDoException {
+		if (columnValues == null || columnValues.size() == 0) {
+			throw new NothingToDoException();
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append("update ").append(tableName).append(" set ");
+		
+		for (String columnName : columnValues.keySet()) {
+			sb.append(columnName).append("=").append(columnValues.get(columnName));
+		}
+
+		if (StringUtils.isNotBlank(whereClause)) {
+			sb.append(" where ");
+			sb.append(whereClause);
+		}
+		return sb.toString();
+	}
+
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
 		try {
 			Date date;
@@ -694,7 +715,7 @@ public class BaseDBContext
 		return null;
 	}
 
-	protected String toTimestamp(Date date) {
+	public String toTimestamp(Date date) {
 		return "to_date('" + timestampOracle.format(date) + "','" + TIMESTAMP_ORACLE + "')";
 	}
 
@@ -711,9 +732,55 @@ public class BaseDBContext
 	}
 
 	@Override
-	public <T> String createUpdateStatement(T bean) {
+	public <T> String createUpdateStatement(T bean, String... columns) throws NotSupportedException, NothingToDoException {
+		/**
+		 * update SCHEMA.TABLE set a=' ', b=' ', c=' ' where clause;
+		 */
+		List<String> cols= null;
+		if (columns != null && columns.length > 0) {
+			cols = Arrays.asList(columns);
+		}
+		Table table = bean.getClass().getAnnotation(Table.class);
+		if (table == null) {
+			throw new NotSupportedException();
+		}
+
+		StringBuilder whereClause = new StringBuilder();
+		Map<String, String> columnValues = new HashMap<>();
+
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			if (field.getAnnotation(Attribute.class) != null) {
+				Attribute attribute = field.getAnnotation(Attribute.class);
+				String attributeValue = null;
+				try {
+					if (field.getType() == String.class) {
+						attributeValue = this.getStringValue(bean, field);
+					} else if (field.getType() == Date.class) {
+						attributeValue = this.getDateValue(bean, field, attribute);
+					} else if (field.getType() == long.class || field.getType() == Long.class) {
+						attributeValue = this.getLongValue(bean, field, attribute);
+					} else if (field.getType() == int.class || field.getType() == Integer.class) {
+						attributeValue = this.getIntValue(bean, field, attribute);
+					}
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				if (cols == null | cols.contains(field.getName())) {
+					columnValues.put(attribute.name(), attributeValue);
+				}
+				if (attribute.primaryKey()) {
+					if (whereClause.length() > 0) {
+						whereClause.append(" AND ");
+					}
+					whereClause.append(attribute.name()).append("=").append(attributeValue);
+				}
+			}
+		}
+
 		// TODO Auto-generated method stub
-		return null;
+		return getUpdateStatement(this.getQualifiedTableName(bean.getClass()), columnValues, whereClause.toString());
 	}
 
 	@Override
