@@ -92,6 +92,8 @@ public class Verify {
 				Rule checkRule = null;
 				if (StringUtils.equals("required", params[i])) {
 					checkRule = new RequiredRule();
+				} else if (StringUtils.startsWith(params[i],"boolean:")) {
+					checkRule = new BooleanRule(StringUtils.substringAfter(params[i], "boolean:"));
 				} else if (StringUtils.equals("date", params[i])) {
 					checkRule = new DateRule();
 				} else if (StringUtils.equals("digits", params[i])) {
