@@ -59,7 +59,7 @@ public class BaseDBContext
 
 		try {
 			Long primaryKey = this._create(bean);
-			if (this.hasSubs(bean)) {
+			if (this.hasSubs(bean.getClass())) {
 				for (Object sub : this.getSubs(bean, primaryKey)) {
 					this.create(sub);
 				}
@@ -159,7 +159,6 @@ public class BaseDBContext
 				}
 			}
 		}
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -241,8 +240,7 @@ public class BaseDBContext
 						}
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 							| IllegalArgumentException | InvocationTargetException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						LOG.error("Error handling ResultSet", e);
 					}
 				}
 			}
@@ -340,9 +338,68 @@ public class BaseDBContext
 				}
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				LOG.error("Error reading subs", e);
 			}
+		}
+		return list;
+	}
+
+	protected Collection<Object> getAllSubs(Object bean) {
+		Collection<Object> list = new ArrayList<>();
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			try {
+				if (field.getAnnotation(SubTable.class) != null) {
+					if (Collection.class.isAssignableFrom(field.getType())) {
+						String getter = "get" + StringUtils.capitalize(field.getName());
+						Method method;
+						method = bean.getClass().getMethod(getter);
+						@SuppressWarnings("unchecked")
+						Collection<Object> fieldList = (Collection<Object>) method.invoke(bean);
+						if (fieldList != null && fieldList.size() > 0) {
+							list.addAll(fieldList);
+						}
+					} else {
+						String getter = "get" + StringUtils.capitalize(field.getName());
+						Method method = bean.getClass().getMethod(getter);
+						Object fieldEntry = method.invoke(bean);
+						if (fieldEntry != null) {
+							list.add(fieldEntry);
+						}
+					}
+				}
+			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+					| InvocationTargetException e) {
+				LOG.error("Error reading subs", e);
+			}
+		}
+		return list;
+	}
+
+	private Collection<Object> getSubs(Object bean, Field field) {
+		Collection<Object> list = new ArrayList<>();
+		try {
+			if (field.getAnnotation(SubTable.class) != null) {
+				if (Collection.class.isAssignableFrom(field.getType())) {
+					String getter = "get" + StringUtils.capitalize(field.getName());
+					Method method;
+					method = bean.getClass().getMethod(getter);
+					@SuppressWarnings("unchecked")
+					Collection<Object> fieldList = (Collection<Object>) method.invoke(bean);
+					if (fieldList != null && fieldList.size() > 0) {
+						list.addAll(fieldList);
+					}
+				} else {
+					String getter = "get" + StringUtils.capitalize(field.getName());
+					Method method = bean.getClass().getMethod(getter);
+					Object fieldEntry = method.invoke(bean);
+					if (fieldEntry != null) {
+						list.add(fieldEntry);
+					}
+				}
+			}
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			LOG.error("Error reading subs", e);
 		}
 		return list;
 	}
@@ -361,8 +418,8 @@ public class BaseDBContext
 		}
 	}
 
-	private boolean hasSubs(Object bean) {
-		for (Field field : bean.getClass().getDeclaredFields()) {
+	private boolean hasSubs(Class<?> clazz) {
+		for (Field field : clazz.getDeclaredFields()) {
 			if (field.getAnnotation(SubTable.class) != null) {
 				return true;
 			}
@@ -431,18 +488,23 @@ public class BaseDBContext
 		} else {
 			this.beginTransaction();
 		}
+		this.deleteSubs(bean);
 
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
-				String statement = this.createDeleteStatement(bean);
-				LOG.debug(statement);
-				stmt.executeUpdate(statement);
-				if (!inTransaction) {
-					try {
-						this.commit();
-					} catch (NotInTransactionException e) {
-						;
+				try {
+					String statement = this.createDeleteStatement(bean);
+					LOG.debug(statement);
+					stmt.executeUpdate(statement);
+					if (!inTransaction) {
+						try {
+							this.commit();
+						} catch (NotInTransactionException e) {
+							;
+						}
 					}
+				} catch (NotSupportedException e) {
+					LOG.error("Delete not supported");
 				}
 			}
 		} finally {
@@ -453,6 +515,25 @@ public class BaseDBContext
 					;
 				}
 			}
+		}
+	}
+
+	protected void deleteSubs(Object bean) throws SQLException, InitProfileException {
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			if (field.getAnnotation(SubTable.class) != null) {
+				if (this.hasSubs(field.getType())) {
+					for (Object sub : this.getSubs(bean, field)) {
+						this.delete(sub);
+					}					
+				}
+				this.deleteSubs(bean, field);
+			}
+		}
+	}
+
+	private void deleteSubs(Object bean, Field field) throws SQLException, InitProfileException {
+		for (Object sub : this.getSubs(bean, field)) {
+			this.delete(sub);
 		}
 	}
 
@@ -599,14 +680,12 @@ public class BaseDBContext
 						}
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+						LOG.error("Error creating statement", e);
 					}
 				}
 			}
 		}
 
-		// TODO Auto-generated method stub
 		return getInsertStatement(this.getQualifiedTableName(bean.getClass()), columnValues);
 	}
 
@@ -696,6 +775,16 @@ public class BaseDBContext
 		return sb.toString();
 	}
 
+	protected static String getDeleteStatement(String tableName, String whereClause) {
+		StringBuilder sb = new StringBuilder();
+		if (StringUtils.isNotBlank(whereClause)) {
+			sb.append("delete from ").append(tableName);
+			sb.append(" where ");
+			sb.append(whereClause);
+		}
+		return sb.toString();
+	}
+
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
 		try {
 			Date date;
@@ -707,11 +796,9 @@ public class BaseDBContext
 			return this.toTimestamp(date);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error converting date", e);
 		}
 
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -764,8 +851,7 @@ public class BaseDBContext
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					LOG.error("Error converting value", e);
 				}
 				if (cols == null | cols.contains(field.getName())) {
 					columnValues.put(attribute.name(), attributeValue);
@@ -779,14 +865,47 @@ public class BaseDBContext
 			}
 		}
 
-		// TODO Auto-generated method stub
 		return getUpdateStatement(this.getQualifiedTableName(bean.getClass()), columnValues, whereClause.toString());
 	}
 
 	@Override
-	public <T> String createDeleteStatement(T bean) {
-		// TODO Auto-generated method stub
-		return null;
+	public <T> String createDeleteStatement(T bean) throws NotSupportedException {
+		/**
+		 * delete from SCHEMA.TABLE where clause;
+		 */
+		Table table = bean.getClass().getAnnotation(Table.class);
+		if (table == null) {
+			throw new NotSupportedException();
+		}
+
+		StringBuilder whereClause = new StringBuilder();
+
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			if (field.getAnnotation(Attribute.class) != null) {
+				Attribute attribute = field.getAnnotation(Attribute.class);
+				String attributeValue = null;
+				try {
+					if (field.getType() == String.class) {
+						attributeValue = this.getStringValue(bean, field);
+					} else if (field.getType() == long.class || field.getType() == Long.class) {
+						attributeValue = this.getLongValue(bean, field, attribute);
+					} else if (field.getType() == int.class || field.getType() == Integer.class) {
+						attributeValue = this.getIntValue(bean, field, attribute);
+					}
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					LOG.error("Error converting value", e);
+				}
+				if (StringUtils.isNotBlank(attributeValue)) {
+					if (whereClause.length() > 0) {
+						whereClause.append(" AND ");
+					}
+					whereClause.append(attribute.name()).append("=").append(attributeValue);
+				}
+			}
+		}
+
+		return getDeleteStatement(this.getQualifiedTableName(bean.getClass()), whereClause.toString());
 	}
 
 	public String getSchema() {
