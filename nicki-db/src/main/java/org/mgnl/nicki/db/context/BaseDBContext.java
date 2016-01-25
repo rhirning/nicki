@@ -230,7 +230,7 @@ public class BaseDBContext
 						String setter = "set" + StringUtils.capitalize(field.getName());
 						Method method = beanClass.getMethod(setter, field.getType());
 						if (field.getType() == String.class) {
-							method.invoke(entry, rs.getString(attribute.name()));
+							method.invoke(entry, StringUtils.trim(rs.getString(attribute.name())));
 						} else if (field.getType() == int.class || field.getType() == Integer.class) {
 							method.invoke(entry, rs.getInt(attribute.name()));
 						} else if (field.getType() == long.class || field.getType() == Long.class) {
@@ -481,6 +481,38 @@ public class BaseDBContext
 	}
 
 	@Override
+	public void executeUpdate(String statement) throws SQLException, InitProfileException, NotSupportedException {
+		boolean inTransaction = false;
+		if (this.connection != null) {
+			inTransaction = true;
+		} else {
+			this.beginTransaction();
+		}
+
+		try {
+			try (Statement stmt = this.connection.createStatement()) {
+				LOG.debug(statement);
+				stmt.executeUpdate(statement);
+				if (!inTransaction) {
+					try {
+						this.commit();
+					} catch (NotInTransactionException e) {
+						;
+					}
+				}
+			}
+		} finally {
+			if (!inTransaction) {
+				try {
+					this.rollback();
+				} catch (NotInTransactionException e) {
+					;
+				}
+			}
+		}
+	}
+
+	@Override
 	public <T> void delete(T bean) throws SQLException, InitProfileException {
 		boolean inTransaction = false;
 		if (this.connection != null) {
@@ -647,7 +679,16 @@ public class BaseDBContext
 	}
 
 	private <T> T load(T bean) {
-		// TODO Auto-generated method stub
+		List<T> list = null;
+		try {
+			list = loadObjects(bean, true);
+		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (list != null && list.size() > 0) {
+			return list.get(0);
+		}
 		return null;
 	}
 
@@ -764,8 +805,13 @@ public class BaseDBContext
 		StringBuilder sb = new StringBuilder();
 		sb.append("update ").append(tableName).append(" set ");
 		
+		boolean multi = false;
 		for (String columnName : columnValues.keySet()) {
+			if (multi) {
+				sb.append(",");
+			}
 			sb.append(columnName).append("=").append(columnValues.get(columnName));
+			multi = true;
 		}
 
 		if (StringUtils.isNotBlank(whereClause)) {
@@ -919,5 +965,15 @@ public class BaseDBContext
 
 	public Connection getConnection() {
 		return this.connection;
+	}
+
+	@Override
+	public String getTimeStamp() {
+		return "SYSDATE";
+	}
+
+	@Override
+	public String getSysDate() {
+		return "SYSDATE";
 	}
 }

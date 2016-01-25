@@ -21,6 +21,16 @@ public class DerbyContext
 	private static final Logger LOG = LoggerFactory.getLogger(DerbyContext.class);
 
 	@Override
+	public String getTimeStamp() {
+		return "CURRENT_TIMESTAMP";
+	}
+
+	@Override
+	public String getSysDate() {
+		return "CURRENT_DATE";
+	}
+	
+	@Override
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
 		if (attribute.now()) {
 			return "CURRENT_TIMESTAMP";
