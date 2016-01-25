@@ -48,4 +48,10 @@ public interface DBContext {
 			throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 
 	String toTimestamp(Date date);
+
+	void executeUpdate(String statement) throws SQLException, InitProfileException, NotSupportedException;
+
+	String getSysDate();
+
+	String getTimeStamp();
 }
