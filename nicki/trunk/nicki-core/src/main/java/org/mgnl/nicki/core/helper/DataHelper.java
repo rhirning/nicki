@@ -163,7 +163,7 @@ public class DataHelper {
 		return map;
 	}
 	
-	public static String getAsString(List<String> list, String separator) {
+	public static String getAsString(Collection<String> list, String separator) {
 		StringBuilder sb = new StringBuilder();
 		if (list != null) {
 			for (String string : list) {
@@ -299,6 +299,17 @@ public class DataHelper {
 		for (String listEntry : list) {
 			if (StringUtils.equals(entry, listEntry)) {
 				return true;
+			}
+		}
+		return false;
+	}
+
+	public static boolean contains(String list, String entry) {
+		if (list != null) {
+			for (String listEntry : StringUtils.split(list)) {
+				if (StringUtils.equals(entry, listEntry)) {
+					return true;
+				}
 			}
 		}
 		return false;
