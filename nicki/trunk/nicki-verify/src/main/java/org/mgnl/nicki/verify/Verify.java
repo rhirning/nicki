@@ -116,6 +116,12 @@ public class Verify {
 					checkRule = new PasswordRule(StringUtils.substringAfter(params[i], "password:"));
 				} else if (StringUtils.startsWith(params[i],"dependend:")) {
 					checkRule = new DependendRule(StringUtils.substringAfter(params[i], "dependend:"));
+				} else if (StringUtils.startsWith(params[i],"values:")) {
+					checkRule = new ValuesRule(StringUtils.substringAfter(params[i], "values:"));
+				} else if (StringUtils.startsWith(params[i],"allowedMapKeys:")) {
+					checkRule = new AllowedMapKeysRule(StringUtils.substringAfter(params[i], "allowedMapKeys:"));
+				} else if (StringUtils.startsWith(params[i],"allowedMapValues:")) {
+					checkRule = new AllowedMapValuesRule(StringUtils.substringAfter(params[i], "allowedMapValues:"));
 				}
 				if (checkRule != null) {
 					if (!checkRule.evaluate(value, values)) {
