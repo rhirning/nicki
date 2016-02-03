@@ -338,9 +338,9 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent/nicki-parent-5.32</connection>
-		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent/nicki-parent-5.32</developerConnection>
-		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent/nicki-parent-5.32</url>
+		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</connection>
+		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</developerConnection>
+		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</url>
 	</scm>
 	<distributionManagement>
 		<repository>
