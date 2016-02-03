@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mgnl.nicki</groupId>
 	<artifactId>nicki-parent</artifactId>
-	<version>5.29</version>
+	<version>5.30-SNAPSHOT</version>
 	<name>nicki-parent</name>
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
@@ -291,6 +291,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
+				<version>2.5.3</version>
 				<configuration>
 					<tagBase>https://svn.nicki-tools.de/nicki/nicki/tags/${project.artifactId}</tagBase>
 					<autoversionsubmodules>true</autoversionsubmodules>
