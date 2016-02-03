@@ -6,19 +6,19 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>5.35-SNAPSHOT</version>
+		<version>5.34-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-vaadin-base</artifactId>
-			<version>5.35-SNAPSHOT</version>
+			<version>5.34-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-template</artifactId>
-			<version>5.35-SNAPSHOT</version>
+			<version>5.34-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -26,4 +26,9 @@
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
+	<scm>
+		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</connection>
+		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</developerConnection>
+		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</url>
+	</scm>
 </project>
