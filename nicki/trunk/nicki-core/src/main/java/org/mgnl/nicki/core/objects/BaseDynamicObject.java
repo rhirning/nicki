@@ -629,6 +629,8 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 								builder.add(key, (String) value);
 							} else if (value instanceof Date) {
 								builder.add(key, DataHelper.getMilli((Date)value));
+							} else if (value instanceof Boolean) {
+								builder.add(key, ((Boolean) value).toString());
 							}
 						}
 					}
