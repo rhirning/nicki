@@ -73,7 +73,7 @@ public class DerbyContext
 	@Override
 	public String toTimestamp(Date date) {
 		if (date != null) {
-			return "date('" + timestampOracle.format(date) + "')";
+			return "timestamp('" + timestampOracle.format(date) + "')";
 		} else {
 			return "''";
 		}
