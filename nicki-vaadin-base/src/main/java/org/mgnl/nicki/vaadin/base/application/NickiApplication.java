@@ -163,8 +163,8 @@ public abstract class NickiApplication extends UI {
 		return null;
 	}
 
-	public VaadinRequest getRequest() {
-		return (VaadinRequest) AppContext.getRequest();
+	public Object getRequest() {
+		return AppContext.getRequest();
 	}
 
 	public boolean login(String name, String password) {
