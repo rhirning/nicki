@@ -32,7 +32,6 @@
 		<module>nicki-idm-novell-shop</module>
 		<module>nicki-jcr</module>
 		<module>nicki-jcr-apps</module>
-		<module>nicki-job</module>
 		<module>nicki-ldap</module>
 		<module>nicki-pdf</module>
 		<module>nicki-portlets</module>
