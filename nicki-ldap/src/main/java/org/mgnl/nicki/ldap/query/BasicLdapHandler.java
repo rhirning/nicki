@@ -61,7 +61,22 @@ public abstract class BasicLdapHandler implements QueryHandler {
 	}
 
 	public <T extends DynamicObject> void setClassDefinition(Class<T> classDefinition) {
-		this.classDefinition = classDefinition;
+		try {
+			this.classDefinition = findDynamicObject(classDefinition).getClass();
+		} catch (InstantiateDynamicObjectException e) {
+			this.classDefinition = classDefinition;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T extends DynamicObject> T findDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException {
+		for (String dynamicObjectName : getContext().getTarget().getDynamicObjects()) {
+			DynamicObject dynamicObject = getContext().getTarget().getDynamicObject(dynamicObjectName);
+			if (classDefinition.isAssignableFrom(dynamicObject.getClass())){
+				return (T) dynamicObject;
+			}
+		}
+		throw new InstantiateDynamicObjectException("Could not getObject " + classDefinition);
 	}
 
 	public Class<? extends DynamicObject> getClassDefinition() {

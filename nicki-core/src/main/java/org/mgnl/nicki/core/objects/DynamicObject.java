@@ -126,6 +126,8 @@ public interface DynamicObject {
 	
 	public void update() throws DynamicObjectException;
 	
+	void update(String... attributeNames) throws DynamicObjectException;
+	
 	public DynamicObject create() throws DynamicObjectException;
 
 	public void delete() throws DynamicObjectException;
