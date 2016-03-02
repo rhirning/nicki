@@ -70,6 +70,7 @@ public class DynamicAttribute implements Serializable {
 	private String editorClass;
 	private String searchFieldClass;
 	private String caption;
+	private String format;
 	private Class<?> type;
 	private CREATEONLY createOnly = CREATEONLY.FALSE;
 
@@ -306,6 +307,14 @@ public class DynamicAttribute implements Serializable {
 
 	public void setCreateOnly(CREATEONLY createOnly) {
 		this.createOnly = createOnly;
+	}
+
+	public String getFormat() {
+		return this.format;
+	}
+
+	public void setFormat(String format) {
+		this.format = format;
 	}
 
 }

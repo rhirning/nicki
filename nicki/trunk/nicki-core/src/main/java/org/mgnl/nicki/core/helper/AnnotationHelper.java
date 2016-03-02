@@ -154,6 +154,9 @@ public class AnnotationHelper {
 				if (StringUtils.isNotBlank(dAttribute.caption())) {
 					dynAttribute.setCaption(dAttribute.caption());
 				}
+				if (StringUtils.isNotBlank(dAttribute.format())) {
+					dynAttribute.setFormat(dAttribute.format());
+				}
 				
 				dynamicObject.addAttribute(dynAttribute);
 			} else if (field.isAnnotationPresent(StructuredDynamicAttribute.class)) {
@@ -303,6 +306,9 @@ public class AnnotationHelper {
 					}
 					if (StringUtils.isNotBlank(dAttribute.caption())) {
 						dynAttribute.setCaption(dAttribute.caption());
+					}
+					if (StringUtils.isNotBlank(dAttribute.format())) {
+						dynAttribute.setFormat(dAttribute.format());
 					}
 					
 					dynamicObject.addAttribute(dynAttribute);
