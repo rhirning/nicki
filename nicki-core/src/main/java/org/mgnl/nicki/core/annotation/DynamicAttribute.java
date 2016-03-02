@@ -20,6 +20,7 @@ public @interface DynamicAttribute {
 	String searchFieldClass() default "";
 	boolean search() default false;
 	String caption() default "";
+	String format() default "";
 	Class<?> type() default String.class;
 	org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY createOnly()
 		default org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY.FALSE;

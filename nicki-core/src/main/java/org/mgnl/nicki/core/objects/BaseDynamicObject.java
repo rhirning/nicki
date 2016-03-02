@@ -35,6 +35,7 @@ package org.mgnl.nicki.core.objects;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -628,7 +629,12 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 							if (value instanceof String) {
 								builder.add(key, (String) value);
 							} else if (value instanceof Date) {
-								builder.add(key, DataHelper.getMilli((Date)value));
+								if (StringUtils.isNotBlank(dynAttribute.getFormat())) {
+									SimpleDateFormat format = new SimpleDateFormat(dynAttribute.getFormat());
+									builder.add(key, format.format((Date)value));
+								} else {
+									builder.add(key, DataHelper.getMilli((Date)value));
+								}
 							} else if (value instanceof Boolean) {
 								builder.add(key, ((Boolean) value).toString());
 							}
