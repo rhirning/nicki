@@ -136,6 +136,12 @@ public class Target implements Serializable {
 	public DynamicObject getDynamicObject(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
 		DynamicObject dynamicObject = allDynamicObjectsMap.get(classDefinition);
 		if (dynamicObject == null) {
+			// 
+			try {
+				return findDynamicObject(classDefinition);
+			} catch (Exception e1) {
+				// not found, so create a new one
+			}
 			try {
 				dynamicObject = classDefinition.newInstance();
 				TargetFactory.initDataModel(dynamicObject);
@@ -147,6 +153,17 @@ public class Target implements Serializable {
 		} else {
 			return dynamicObject;
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T extends DynamicObject> T findDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException {
+		for (String dynamicObjectName : getDynamicObjects()) {
+			DynamicObject dynamicObject = getDynamicObject(dynamicObjectName);
+			if (classDefinition.isAssignableFrom(dynamicObject.getClass())){
+				return (T) dynamicObject;
+			}
+		}
+		throw new InstantiateDynamicObjectException("Could not getObject " + classDefinition);
 	}
 
 	public ContextFactory getContextFactory() {
