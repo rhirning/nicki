@@ -196,24 +196,13 @@ public class DataHelper {
 			Matcher matcher = pattern.matcher(result);
 			if (matcher.find()) {
 				String name = matcher.group(1);
-				String value = System.getenv(name);
+				String value = Environment.getProperty(name);
 				if (StringUtils.isNotBlank(value)) {
 					result = StringUtils.replace(result, "${" + name + "}", value);
 					continue;
+				} else {
+					result = StringUtils.replace(result, "${" + name + "}", name);
 				}
-				// Check JNDI environment
-				try {
-					Context initCtx = new InitialContext();
-					Context envCtx = (Context) initCtx.lookup("java:comp/env");
-					value = (String) envCtx.lookup(name);
-					if (StringUtils.isNotBlank(value)) {
-						result = StringUtils.replace(result, "${" + name + "}", value);
-						continue;
-					}
-				} catch (NamingException e) {
-					LOG.debug("Error parsing variable " + name, e);
-				}
-				result = StringUtils.replace(result, "${" + name + "}", name);
 			} else {
 				break;
 			}
