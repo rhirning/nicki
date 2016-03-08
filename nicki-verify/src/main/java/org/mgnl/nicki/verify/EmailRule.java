@@ -28,7 +28,7 @@ public class EmailRule extends Rule {
 		if (tokens.length != 2) return false;
 		
 		return StringUtils.isNotEmpty(tokens[0])
-			&& StringUtils.split(tokens[1], ".").length == 2;
+			&& StringUtils.split(tokens[1], ".").length > 1;
 	}
 
 	@Override
