@@ -76,8 +76,9 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (StringUtils.isNotEmpty(referral)) {
 			env.put(Context.REFERRAL, referral);
 		}
-		// Enable connection pooling
-		env.put("com.sun.jndi.ldap.connect.pool", "true");
+		// Set pooling timeout
+		String connectionPoolTimeout = getTarget().getProperty("connect.pool.timeout", "1800000");
+		env.put("com.sun.jndi.ldap.connect.pool.timeout", connectionPoolTimeout);
 
 		return new InitialDirContext(env);
 	}
