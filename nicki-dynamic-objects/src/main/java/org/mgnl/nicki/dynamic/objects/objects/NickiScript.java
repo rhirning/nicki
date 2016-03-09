@@ -32,14 +32,30 @@
  */
 package org.mgnl.nicki.dynamic.objects.objects;
 
-import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.annotation.DynamicAttribute;
+import org.mgnl.nicki.core.annotation.DynamicObject;
+import org.mgnl.nicki.core.annotation.ObjectClass;
+import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
-public interface Script extends DynamicObject {
+@SuppressWarnings("serial")
+@DynamicObject
+@ObjectClass({ "nickiScript" })
+public class NickiScript extends BaseDynamicObject implements Script {
 
-	String getName();
+	public static final String ATTRIBUTE_DATA = "data";
 
-	String getData();
+	@DynamicAttribute(externalName = "cn", naming = true)
+	public String getName() {
+		return super.getName();
+	}
 
-	void setData(String data);
+	@DynamicAttribute(externalName = "nickiScriptData")
+	public String getData() {
+		return getAttribute(ATTRIBUTE_DATA);
+	}
+
+	public void setData(String data) {
+		this.put(ATTRIBUTE_DATA, data);
+	}
 
 }
