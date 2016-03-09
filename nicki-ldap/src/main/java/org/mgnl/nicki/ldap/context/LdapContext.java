@@ -96,6 +96,9 @@ public class LdapContext extends BasicContext implements NickiContext {
 			List<DynamicObject> list = loadObjects(Config.getProperty("nicki.users.basedn"), "cn=" + username);
 			if (list != null && list.size() == 1) {
 				user = list.get(0);
+			} else {
+				LOG.debug("Loading Objects not successful: " 
+						+ ((list == null)?"null":"size=" + list.size()));
 			}
 		}
 		if (user != null) {
@@ -302,6 +305,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			search(handler);
 			return handler.getDynamicObject(); 
 		} catch (DynamicObjectException e) {
+			LOG.debug("Could not load object: " + path, e);
 		}
 		return null;
 	}
@@ -312,6 +316,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			search(handler);
 			return handler.getList();
 		} catch (DynamicObjectException e) {
+			LOG.debug("Could not load objects: " + filter + " under "+ baseDn, e);
 		} 
 		return null;
 	}
