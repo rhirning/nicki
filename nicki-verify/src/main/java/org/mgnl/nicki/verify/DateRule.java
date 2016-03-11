@@ -2,7 +2,6 @@ package org.mgnl.nicki.verify;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -16,7 +15,9 @@ public class DateRule extends Rule {
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		try {
-			formatter.parse(value);
+			synchronized (formatter) {
+				formatter.parse(value);
+			}
 			String[] parts = StringUtils.split(value, ".");
 			Integer day = Integer.parseInt(parts[0]);
 			if (day < 1 || day > 31) {
@@ -32,6 +33,7 @@ public class DateRule extends Rule {
 				return false;
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 		return true;

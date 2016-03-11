@@ -51,25 +51,24 @@ public class Config {
 	private static String I18N_BASE = "nicki.i18n";
 	private static String SEPARATOR = ",";
 	private static Config instance = new Config();
+	private static boolean initPerformed;
 	private List<Properties> properties = new ArrayList<Properties>();
-	private List<String> openProperties = new ArrayList<String>();
+	//private List<String> openProperties = new ArrayList<String>();
 	private List<ConfigListener> configListener = new ArrayList<ConfigListener>();
-	private static boolean initPerformed = false;
 	private Config() {
 		
 	}
 	
-	private static synchronized void init() {
-		initPerformed = true;
+	private void init() {
 		initConfig();
 		initI18n();
 	}
 
-	private static void initConfig() {
+	private void initConfig() {
 		// read config from MAIN_CONFIG
 		Properties mainConfig = null;
 		try {
-			mainConfig = instance.getPropertiesFromClasspath(MAIN_CONFIG);
+			mainConfig = getPropertiesFromClasspath(MAIN_CONFIG);
 		} catch (Exception e) {
 			LOG.error("Error reading " + MAIN_CONFIG, e);
 		}
@@ -80,13 +79,13 @@ public class Config {
 					String configPath = DataHelper.translate(mainConfig.getProperty(CONFIG_BASE + "." + configName, null));
 					
 					if (StringUtils.isNotEmpty(configPath)) {
-						instance.addProperties(configPath);
+						addProperties(configPath);
 					}
 				};
 				
 			}
 		}
-		instance.configChanged();
+		configChanged();
 	}
 
 	private void addProperties(String configPath) {
@@ -98,15 +97,15 @@ public class Config {
 				this.properties.add(props);
 			}
 		} catch (Exception e) {
-			this.openProperties.add(configPath);
+			//this.openProperties.add(configPath);
 		}
 	}
 
-	private static void initI18n() {
+	private void initI18n() {
 		// read I18n config from MAIN_CONFIG
 		Properties mainConfig = null;
 		try {
-			mainConfig = instance.getPropertiesFromClasspath(MAIN_CONFIG);
+			mainConfig = getPropertiesFromClasspath(MAIN_CONFIG);
 		} catch (Exception e) {
 			LOG.error("Error", e);
 		}
@@ -134,13 +133,17 @@ public class Config {
 	}
 
 	public static String getProperty(String key) {
-		if (instance.openProperties.size() > 0) {
-			instance.addOpenProperties();
+		LOG.debug("getProperty:" + key);
+		/*
+		if (getInstance().openProperties.size() > 0) {
+			getInstance().addOpenProperties();
 		}
+		*/
 		return getInstance()._getProperty(key);
 	}
 	
 	private String _getProperty(String key) {
+		LOG.debug("_getProperty:" + key);
 		for (Properties props : this.properties) {
 			String value = DataHelper.translate(props.getProperty(key));
 			if (value != null) {
@@ -150,6 +153,7 @@ public class Config {
 		return null;
 	}
 
+	/*
 	private void addOpenProperties() {
 		List<String> toRemove = new ArrayList<String>();
 		for (String configPath : this.openProperties) {
@@ -167,6 +171,7 @@ public class Config {
 			this.openProperties.remove(name);
 		}
 	}
+	*/
 
 	public static String getProperty(String key, String defaultValue) {
 		String value = getInstance()._getProperty(key);
@@ -193,18 +198,15 @@ public class Config {
 	public String toString() {
 		return this.properties.toString();
 	}
+	
 	public static Config getInstance() {
-		if (!initPerformed) {
-			init();
+		synchronized (instance) {
+			if (!initPerformed) {
+				instance.init();
+				initPerformed = true;
+			}
 		}
 		return instance;
-	}
-
-	public static boolean isInitPerformed() {
-		if (!initPerformed) {
-			init();
-		}
-		return initPerformed;
 	}
 
 }

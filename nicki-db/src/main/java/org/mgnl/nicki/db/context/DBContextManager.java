@@ -32,7 +32,7 @@ public class DBContextManager {
 	private Map<String, String> schemas = new HashMap<>();
 	private Map<String, DBProfile> profiles = new HashMap<>();
 
-	public static DBContextManager getInstance() {
+	public synchronized static DBContextManager getInstance() {
 		if (instance == null) {
 			instance = new DBContextManager();
 			instance.init();
@@ -59,6 +59,7 @@ public class DBContextManager {
 					}
 					
 					DBProfile profile = createProfile(contextName);
+					LOG.debug("init profile " + profile);
 					profiles.put(contextName, profile);
 					
 				} catch (Exception e) {
