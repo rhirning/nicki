@@ -48,7 +48,7 @@ public class I18n {
 	}
 	
 	private String getTranslatedText(String key) {
-		Config.isInitPerformed();
+		Config.getInstance();
 		for (String base : messageBases) {
 			try {
 				ResourceBundle texts = ResourceBundle.getBundle(base, ThreadContext.getLocale());
@@ -62,7 +62,7 @@ public class I18n {
 	}
 	
 	private String getTranslatedText(String key, String ... data) {
-		Config.isInitPerformed();
+		Config.getInstance();
 		String text = getText(key);
 		for (int i = 0; i < data.length; i++) {
 			String pattern = "${" + (i+1) + "}";

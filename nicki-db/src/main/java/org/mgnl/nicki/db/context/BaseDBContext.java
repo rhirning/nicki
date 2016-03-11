@@ -631,6 +631,7 @@ public class BaseDBContext
 	@Override
 	public Connection beginTransaction() throws SQLException, InitProfileException {
 		if (this.connection == null) {
+			LOG.debug("profile: " + this.profile);
 			this.connection = this.profile.getConnection();
 		}
 		return this.connection;
