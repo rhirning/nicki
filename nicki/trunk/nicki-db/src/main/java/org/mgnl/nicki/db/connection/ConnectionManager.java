@@ -151,7 +151,7 @@ public class ConnectionManager {
         LOG.info("NumIdle: " + pool.getNumIdle());
     }
 
-	public Connection getConnection() throws SQLException {
+	public synchronized Connection getConnection() throws SQLException {
 		return dataSource.getConnection();
 	}
 
