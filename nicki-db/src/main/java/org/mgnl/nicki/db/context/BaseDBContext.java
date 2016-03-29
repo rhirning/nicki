@@ -24,10 +24,12 @@ import org.mgnl.nicki.db.annotation.SubTable;
 import org.mgnl.nicki.db.annotation.Table;
 import org.mgnl.nicki.db.handler.ListSelectHandler;
 import org.mgnl.nicki.db.handler.SelectHandler;
+import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
 import org.mgnl.nicki.db.profile.DBProfile;
 import org.mgnl.nicki.db.profile.InitProfileException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 public class BaseDBContext
 		implements DBContext {
@@ -89,6 +91,16 @@ public class BaseDBContext
 		return loadObjects(bean, deepSearch, null, null);
 	}
 	
+	@Override
+	public <T> T loadObject(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
+		return loadObject(bean, deepSearch, null, null);
+	}
+	
+	@Override
+	public <T> boolean exists(T bean) throws SQLException, InitProfileException  {
+		return exists(bean, null);
+	}
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
@@ -113,6 +125,73 @@ public class BaseDBContext
 					}
 				}
 				return list;
+			}
+		} finally {
+			if (!inTransaction) {
+				try {
+					this.rollback();
+				} catch (NotInTransactionException e) {
+					;
+				}
+			}
+		}
+	}
+	
+	@Override
+	public <T> T loadObject(T bean, boolean deepSearch, String filter, String orderBy) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
+		boolean inTransaction = false;
+		if (this.connection != null) {
+			inTransaction = true;
+		} else {
+			this.beginTransaction();
+		}
+
+		try {
+			try (Statement stmt = this.connection.createStatement()) {
+				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
+				LOG.debug(searchStatement);
+				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
+					@SuppressWarnings("unchecked")
+					T result = (T) get(bean.getClass(), rs);
+					if (result != null && deepSearch){
+						addObjects(result, deepSearch);
+					}
+					return result;
+				}
+			}
+		} finally {
+			if (!inTransaction) {
+				try {
+					this.rollback();
+				} catch (NotInTransactionException e) {
+					;
+				}
+			}
+		}
+	}
+	
+	@Override
+	public <T> boolean exists(T bean, String filter) throws SQLException, InitProfileException  {
+		boolean inTransaction = false;
+		if (this.connection != null) {
+			inTransaction = true;
+		} else {
+			this.beginTransaction();
+		}
+
+		try {
+			try (Statement stmt = this.connection.createStatement()) {
+				String searchStatement = getLoadObjectsSearchStatement(bean, filter, null);
+				LOG.debug(searchStatement);
+				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
+					if (rs != null) {
+						boolean hasNext = rs.next();
+						if (hasNext) {
+							return true;
+						}
+					}
+				}
+				return false;
 			}
 		} finally {
 			if (!inTransaction) {
@@ -219,35 +298,39 @@ public class BaseDBContext
 		}
 	}
 
-	public <T> List<T> handle(Class<T> beanClass, ResultSet rs) throws SQLException, InstantiationException, IllegalAccessException {
+	private <T> List<T> handle(Class<T> beanClass, ResultSet rs) throws SQLException, InstantiationException, IllegalAccessException {
 		List<T> list = new ArrayList<>();
 		while (rs.next()) {
-			T entry = beanClass.newInstance();
-			for (Field field : beanClass.getDeclaredFields()) {
-				Attribute attribute = field.getAnnotation(Attribute.class);
-				if (attribute != null) {
-					try {
-						String setter = "set" + StringUtils.capitalize(field.getName());
-						Method method = beanClass.getMethod(setter, field.getType());
-						if (field.getType() == String.class) {
-							method.invoke(entry, StringUtils.trim(rs.getString(attribute.name())));
-						} else if (field.getType() == int.class || field.getType() == Integer.class) {
-							method.invoke(entry, rs.getInt(attribute.name()));
-						} else if (field.getType() == long.class || field.getType() == Long.class) {
-							method.invoke(entry, rs.getLong(attribute.name()));
-						} else if (field.getType() == Date.class) {
-							method.invoke(entry, rs.getTimestamp(attribute.name()));
-						}
-					} catch (NoSuchMethodException | SecurityException | IllegalAccessException
-							| IllegalArgumentException | InvocationTargetException e) {
-						LOG.error("Error handling ResultSet", e);
-					}
-				}
-			}
-			list.add(entry);
+			list.add(get(beanClass, rs));
 		}
 		return list;
 
+	}
+
+	private <T> T get(Class<T> beanClass, ResultSet rs) throws SQLException, InstantiationException, IllegalAccessException {
+		T entry = beanClass.newInstance();
+		for (Field field : beanClass.getDeclaredFields()) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null) {
+				try {
+					String setter = "set" + StringUtils.capitalize(field.getName());
+					Method method = beanClass.getMethod(setter, field.getType());
+					if (field.getType() == String.class) {
+						method.invoke(entry, StringUtils.trim(rs.getString(attribute.name())));
+					} else if (field.getType() == int.class || field.getType() == Integer.class) {
+						method.invoke(entry, rs.getInt(attribute.name()));
+					} else if (field.getType() == long.class || field.getType() == Long.class) {
+						method.invoke(entry, rs.getLong(attribute.name()));
+					} else if (field.getType() == Date.class) {
+						method.invoke(entry, rs.getTimestamp(attribute.name()));
+					}
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
+						| IllegalArgumentException | InvocationTargetException e) {
+					LOG.error("Error handling ResultSet", e);
+				}
+			}
+		}
+		return entry;
 	}
 	
 	protected String getLoadObjectsSearchStatement(Object bean, String filter, String orderBy) {
@@ -751,12 +834,20 @@ public class BaseDBContext
 
 	protected String getLongValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return ((Long) this.getValue(bean, field)).toString();
+		if (null != this.getValue(bean, field)) {
+			return ((Long) this.getValue(bean, field)).toString();
+		} else {
+			return null;
+		}
 	}
 
 	protected String getIntValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return ((Integer) this.getValue(bean, field)).toString();
+		if (null != this.getValue(bean, field)) {
+			return ((Integer) this.getValue(bean, field)).toString();
+		} else {
+			return null;
+		}
 	}
 
 	@Override
@@ -855,7 +946,11 @@ public class BaseDBContext
 
 	protected String getStringValue(Object bean, Field field) throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return "'" + (String) this.getValue(bean, field) + "'";
+		if (null != this.getValue(bean, field)) {
+			return "'" + (String) this.getValue(bean, field) + "'";
+		} else {
+			return null;
+		}
 	}
 
 	protected Object getValue(Object bean, Field field) throws NoSuchMethodException, SecurityException, IllegalAccessException,
@@ -976,5 +1071,23 @@ public class BaseDBContext
 	@Override
 	public String getSysDate() {
 		return "SYSDATE";
+	}
+
+	@Override
+	public void close() throws Exception {
+		synchronized (this) {
+			if (this.connection != null) {
+				this.rollback();
+				this.connection = null;
+			}
+		}
+	}
+
+	@Override
+	public int getSequenceNumber(String sequenceName) throws Exception {
+
+		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(sequenceName);
+		select(handler);
+		return handler.getResult();
 	}
 }
