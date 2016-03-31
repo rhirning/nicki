@@ -87,8 +87,8 @@ public class BaseDBContext
 	}
 	
 	@Override
-	public <T> List<T> loadObjects(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
-		return loadObjects(bean, deepSearch, null, null);
+	public <T> List<T> loadObjects(T bean, boolean deepSearch, String postInitMethod) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
+		return loadObjects(bean, deepSearch, null, null, postInitMethod);
 	}
 	
 	@Override
@@ -103,7 +103,7 @@ public class BaseDBContext
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
+	public <T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy, String postInitMethod) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
 		boolean inTransaction = false;
 		if (this.connection != null) {
 			inTransaction = true;
@@ -117,7 +117,7 @@ public class BaseDBContext
 				LOG.debug(searchStatement);
 				List<T> list = null;
 				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-					list = (List<T>) handle(bean.getClass(), rs);
+					list = (List<T>) handle(bean.getClass(), rs, postInitMethod);
 				}
 				if (list != null && deepSearch) {
 					for (T t : list) {
@@ -245,7 +245,7 @@ public class BaseDBContext
 		T subBean = getNewInstance(entryClass);
 		setPrimaryKey(subBean, primaryKey);
 		try {
-			List<T> subs = loadObjects(subBean, true);
+			List<T> subs = loadObjects(subBean, true, null);
 			if (subs != null && subs.size() > 0) {
 				String setter = "set" + StringUtils.capitalize(field.getName());
 				Method method = bean.getClass().getMethod(setter, entryClass);
@@ -260,7 +260,7 @@ public class BaseDBContext
 		T subBean = getNewInstance(entryClass);
 		setPrimaryKey(subBean, primaryKey);
 		try {
-			List<T> subs = loadObjects(subBean, true);
+			List<T> subs = loadObjects(subBean, true, null);
 			if (subs != null && subs.size() > 0) {
 				String setter = "set" + StringUtils.capitalize(field.getName());
 				Method method = bean.getClass().getMethod(setter, List.class);
@@ -298,10 +298,27 @@ public class BaseDBContext
 		}
 	}
 
-	private <T> List<T> handle(Class<T> beanClass, ResultSet rs) throws SQLException, InstantiationException, IllegalAccessException {
+	private <T> List<T> handle(Class<T> beanClass, ResultSet rs, String postInitMethod) throws SQLException, InstantiationException, IllegalAccessException {
+
+		Method postMethod = null;
+		if (StringUtils.isNotBlank(postInitMethod)) {
+			try {
+				postMethod = beanClass.getDeclaredMethod(postInitMethod);
+			} catch (NoSuchMethodException | SecurityException e) {
+				LOG.error("Invalid postInitMethod (" + postInitMethod + ") for class " + beanClass.getName(), e);
+			}
+		}
 		List<T> list = new ArrayList<>();
 		while (rs.next()) {
-			list.add(get(beanClass, rs));
+			T bean = get(beanClass, rs);
+			if (postMethod != null) {
+				try {
+					postMethod.invoke(bean);
+				} catch (IllegalArgumentException | InvocationTargetException e) {
+					LOG.error("Unable to execute portInitMethod (" + postInitMethod + ") for class " + beanClass.getName(), e);
+				}
+			}
+			list.add(bean);
 		}
 		return list;
 
@@ -765,7 +782,7 @@ public class BaseDBContext
 	private <T> T load(T bean) {
 		List<T> list = null;
 		try {
-			list = loadObjects(bean, true);
+			list = loadObjects(bean, true, null);
 		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
