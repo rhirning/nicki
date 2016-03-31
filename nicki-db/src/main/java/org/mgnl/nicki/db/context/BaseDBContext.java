@@ -87,8 +87,8 @@ public class BaseDBContext
 	}
 	
 	@Override
-	public <T> List<T> loadObjects(T bean, boolean deepSearch, String postInitMethod) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
-		return loadObjects(bean, deepSearch, null, null, postInitMethod);
+	public <T> List<T> loadObjects(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
+		return loadObjects(bean, deepSearch, null, null);
 	}
 	
 	@Override
@@ -103,7 +103,18 @@ public class BaseDBContext
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy, String postInitMethod) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
+	public <T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
+		Table table = bean.getClass().getAnnotation(Table.class);
+		if (table == null) {
+			try {
+				throw new NotSupportedException();
+			} catch (NotSupportedException e) {
+				LOG.error("Missing Table annotation", e);
+			}
+		}
+
+
+		
 		boolean inTransaction = false;
 		if (this.connection != null) {
 			inTransaction = true;
@@ -117,7 +128,7 @@ public class BaseDBContext
 				LOG.debug(searchStatement);
 				List<T> list = null;
 				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-					list = (List<T>) handle(bean.getClass(), rs, postInitMethod);
+					list = (List<T>) handle(bean.getClass(), rs, table.postInit());
 				}
 				if (list != null && deepSearch) {
 					for (T t : list) {
@@ -245,7 +256,7 @@ public class BaseDBContext
 		T subBean = getNewInstance(entryClass);
 		setPrimaryKey(subBean, primaryKey);
 		try {
-			List<T> subs = loadObjects(subBean, true, null);
+			List<T> subs = loadObjects(subBean, true);
 			if (subs != null && subs.size() > 0) {
 				String setter = "set" + StringUtils.capitalize(field.getName());
 				Method method = bean.getClass().getMethod(setter, entryClass);
@@ -260,7 +271,7 @@ public class BaseDBContext
 		T subBean = getNewInstance(entryClass);
 		setPrimaryKey(subBean, primaryKey);
 		try {
-			List<T> subs = loadObjects(subBean, true, null);
+			List<T> subs = loadObjects(subBean, true);
 			if (subs != null && subs.size() > 0) {
 				String setter = "set" + StringUtils.capitalize(field.getName());
 				Method method = bean.getClass().getMethod(setter, List.class);
@@ -782,7 +793,7 @@ public class BaseDBContext
 	private <T> T load(T bean) {
 		List<T> list = null;
 		try {
-			list = loadObjects(bean, true, null);
+			list = loadObjects(bean, true);
 		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
