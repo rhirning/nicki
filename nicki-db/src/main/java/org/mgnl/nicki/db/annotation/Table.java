@@ -10,4 +10,6 @@ import java.lang.annotation.Target;
 public @interface Table {
 
 	String name();
+
+	String postInit() default "";
 }

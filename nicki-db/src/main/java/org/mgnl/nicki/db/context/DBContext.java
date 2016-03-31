@@ -42,9 +42,9 @@ public interface DBContext extends AutoCloseable {
 
 	Object getColumn(Class<? extends Object> clazz, String string) throws NoSuchFieldException;
 
-	<T> List<T> loadObjects(T bean, boolean deepSearch, String postInitMethod) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
+	<T> List<T> loadObjects(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 
-	<T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy, String postInitMethod)
+	<T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy)
 			throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 
 	<T> boolean exists(T bean) throws SQLException, InitProfileException;
