@@ -150,6 +150,23 @@ public class BaseDBContext
 	
 	@Override
 	public <T> T loadObject(T bean, boolean deepSearch, String filter, String orderBy) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
+		Method postMethod = null;
+		Table table = bean.getClass().getAnnotation(Table.class);
+		if (table == null) {
+			try {
+				throw new NotSupportedException();
+			} catch (NotSupportedException e) {
+				LOG.error("Missing Table annotation", e);
+			}
+		}
+		if (StringUtils.isNotBlank(table.postInit())) {
+			try {
+				postMethod = bean.getClass().getDeclaredMethod(table.postInit());
+			} catch (NoSuchMethodException | SecurityException e) {
+				LOG.error("Invalid postInitMethod (" + table.postInit() + ") for class " + bean.getClass().getName(), e);
+			}
+		}
+		
 		boolean inTransaction = false;
 		if (this.connection != null) {
 			inTransaction = true;
@@ -164,6 +181,15 @@ public class BaseDBContext
 				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
 					@SuppressWarnings("unchecked")
 					T result = (T) get(bean.getClass(), rs);
+					if (postMethod != null) {
+						try {
+							postMethod.invoke(result);
+						} catch (Exception e) {
+							LOG.error("Unable to execute postInitMethod (" + table.postInit() + ") for class " + bean.getClass().getName(), e);
+						}
+					}
+
+					
 					if (result != null && deepSearch){
 						addObjects(result, deepSearch);
 					}
