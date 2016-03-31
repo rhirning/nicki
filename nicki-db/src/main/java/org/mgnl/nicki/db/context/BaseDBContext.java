@@ -325,8 +325,8 @@ public class BaseDBContext
 			if (postMethod != null) {
 				try {
 					postMethod.invoke(bean);
-				} catch (IllegalArgumentException | InvocationTargetException e) {
-					LOG.error("Unable to execute portInitMethod (" + postInitMethod + ") for class " + beanClass.getName(), e);
+				} catch (Exception e) {
+					LOG.error("Unable to execute porsInitMethod (" + postInitMethod + ") for class " + beanClass.getName(), e);
 				}
 			}
 			list.add(bean);
