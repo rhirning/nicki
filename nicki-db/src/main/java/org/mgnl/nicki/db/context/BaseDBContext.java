@@ -179,6 +179,7 @@ public class BaseDBContext
 				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
 				LOG.debug(searchStatement);
 				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
+					rs.next();
 					@SuppressWarnings("unchecked")
 					T result = (T) get(bean.getClass(), rs);
 					if (postMethod != null) {
