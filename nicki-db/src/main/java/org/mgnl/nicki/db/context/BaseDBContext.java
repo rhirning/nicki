@@ -62,6 +62,9 @@ public class BaseDBContext
 		try {
 			Long primaryKey = this._create(bean);
 			if (this.hasSubs(bean.getClass())) {
+				if (primaryKey == null) {
+					primaryKey = getPrimaryKey(bean);
+				}
 				for (Object sub : this.getSubs(bean, primaryKey)) {
 					this.create(sub);
 				}
@@ -86,6 +89,24 @@ public class BaseDBContext
 		}
 	}
 	
+	private Long getPrimaryKey(Object bean) {
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			if (field.getAnnotation(SubTable.class) != null) {
+				try {
+					if (field.getType() == long.class || field.getType() == Long.class) {
+						return (Long) this.getValue(bean, field);
+					} else if (field.getType() == int.class || field.getType() == Integer.class) {
+						return (Long) this.getValue(bean, field);
+					}
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					LOG.error("Error reading primary Key", e);
+				}
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public <T> List<T> loadObjects(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
 		return loadObjects(bean, deepSearch, null, null);
