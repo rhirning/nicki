@@ -185,7 +185,8 @@ public class BaseDBContext
 						try {
 							postMethod.invoke(result);
 						} catch (Exception e) {
-							LOG.error("Unable to execute postInitMethod (" + table.postInit() + ") for class " + bean.getClass().getName(), e);
+							LOG.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
+									+ result.getClass().getName(), e);
 						}
 					}
 
@@ -352,7 +353,7 @@ public class BaseDBContext
 				try {
 					postMethod.invoke(bean);
 				} catch (Exception e) {
-					LOG.error("Unable to execute porsInitMethod (" + postInitMethod + ") for class " + beanClass.getName(), e);
+					LOG.error("Unable to execute postInitMethod (" + postInitMethod + ") for class " + beanClass.getName(), e);
 				}
 			}
 			list.add(bean);
@@ -426,6 +427,37 @@ public class BaseDBContext
 			return sb.toString();
 		} catch (NotSupportedException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			LOG.error("Error creating load objects search statement ", e);
+			return e.getMessage();
+		}
+	}
+	
+	private String getReloadObjectsWhereClause(Object bean) {
+		try {
+			StringBuilder sb = new StringBuilder();
+			int count = 0;
+			for (Field field : bean.getClass().getDeclaredFields()) {
+				Attribute attribute = field.getAnnotation(Attribute.class);
+				if (attribute != null && attribute.primaryKey()) {
+					String getter = "get" + StringUtils.capitalize(field.getName());
+					Method method;
+					method = bean.getClass().getMethod(getter);
+					Object rawValue = method.invoke(bean);
+					String value = null;
+					if (rawValue != null) {
+						value = getStringValue(method.getReturnType(), rawValue);
+					}
+					if (value != null) {
+						if (count > 0) {
+							sb.append(" AND ");
+						}
+						count++;
+						sb.append(attribute.name()).append("=").append(value);
+					}
+				}
+			}
+			return sb.toString();
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+			LOG.error("Error creating reload objects search statement ", e);
 			return e.getMessage();
 		}
 	}
@@ -604,7 +636,7 @@ public class BaseDBContext
 				} catch (NothingToDoException e) {
 					LOG.error("Nothing to do");
 				}
-				return this.load(bean);
+				return this.reload(bean);
 			}
 		} finally {
 			if (!inTransaction) {
@@ -814,6 +846,22 @@ public class BaseDBContext
 				this.connection = null;
 			}
 		}
+	}
+
+	private <T> T reload(T bean) {
+		List<T> list = null;
+		try {
+			@SuppressWarnings("unchecked")
+			T b = (T) bean.getClass().newInstance();
+			list = loadObjects(b, true, getReloadObjectsWhereClause(bean), null);
+		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if (list != null && list.size() > 0) {
+			return list.get(0);
+		}
+		return null;
 	}
 
 	private <T> T load(T bean) {
