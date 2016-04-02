@@ -62,11 +62,10 @@ public class BaseDBContext
 		try {
 			Long primaryKey = this._create(bean);
 			if (this.hasSubs(bean.getClass())) {
-				if (primaryKey == null) {
-					primaryKey = getPrimaryKey(bean);
-				}
-				for (Object sub : this.getSubs(bean, primaryKey)) {
-					this.create(sub);
+				if (primaryKey != null) {
+					for (Object sub : this.getSubs(bean, primaryKey)) {
+						this.create(sub);
+					}
 				}
 			}
 
@@ -89,19 +88,11 @@ public class BaseDBContext
 		}
 	}
 	
-	private Long getPrimaryKey(Object bean) {
-		for (Field field : bean.getClass().getDeclaredFields()) {
-			if (field.getAnnotation(SubTable.class) != null) {
-				try {
-					if (field.getType() == long.class || field.getType() == Long.class) {
-						return (Long) this.getValue(bean, field);
-					} else if (field.getType() == int.class || field.getType() == Integer.class) {
-						return (Long) this.getValue(bean, field);
-					}
-				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException e) {
-					LOG.error("Error reading primary Key", e);
-				}
+	private String getSequence(Class<? extends Object> clazz) {
+		for (Field field : clazz.getDeclaredFields()) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null && attribute.primaryKey()) {
+				return StringUtils.stripToNull(attribute.sequence());
 			}
 		}
 		return null;
@@ -619,15 +610,29 @@ public class BaseDBContext
 	}
 
 	protected <T> Long _create(T bean) throws SQLException, NotSupportedException {
+		Long primaryKey = null;
+		String sequence = getSequence(bean.getClass());
+		if (StringUtils.isNotBlank(sequence)) {
+			try {
+				primaryKey = getSequenceNumber(sequence);
+				setPrimaryKey(bean, primaryKey);
+			} catch (Exception e) {
+				LOG.error("Could not use sequence " + sequence, e);
+			}
+		}
 		try (Statement stmt = this.connection.createStatement()) {
 			String statement = this.createInsertStatement(bean);
 			LOG.debug(statement);
 			stmt.executeUpdate(statement, Statement.RETURN_GENERATED_KEYS);
-			ResultSet generatedKeys = stmt.getGeneratedKeys();
-			if (generatedKeys != null && generatedKeys.next()) {
-				return new Long(generatedKeys.getLong(1));
+			if (primaryKey != null) {
+				return primaryKey;
 			} else {
-				return null;
+				ResultSet generatedKeys = stmt.getGeneratedKeys();
+				if (generatedKeys != null && generatedKeys.next()) {
+					return new Long(generatedKeys.getLong(1));
+				} else {
+					return null;
+				}
 			}
 		}
 
@@ -1208,7 +1213,7 @@ public class BaseDBContext
 	}
 
 	@Override
-	public int getSequenceNumber(String sequenceName) throws Exception {
+	public long getSequenceNumber(String sequenceName) throws Exception {
 
 		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(sequenceName);
 		select(handler);
