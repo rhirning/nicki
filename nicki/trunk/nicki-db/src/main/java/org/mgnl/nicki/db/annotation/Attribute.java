@@ -12,6 +12,8 @@ public @interface Attribute {
 	String name();
 
 	boolean autogen() default false;
+	
+	String sequence() default "";
 
 	boolean foreignKey() default false;
 
