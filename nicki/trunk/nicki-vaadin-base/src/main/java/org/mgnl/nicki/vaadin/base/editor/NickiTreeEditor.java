@@ -228,10 +228,18 @@ public class NickiTreeEditor extends CustomComponent {
 			public Action[] getActions(Object target, Object sender) {
 				if (target != null) {
 					if (isRoot((DynamicObject) target)) {
-						return rootActionsList.get(target.getClass());
+						for (Class<? extends DynamicObject> clazz : rootActionsList.keySet()) {
+							if (clazz.isAssignableFrom(target.getClass())) {
+								return rootActionsList.get(clazz);
+							}
+						}
 
 					} else {
-						return actionsList.get(target.getClass());
+						for (Class<? extends DynamicObject> clazz : actionsList.keySet()) {
+							if (clazz.isAssignableFrom(target.getClass())) {
+								return actionsList.get(clazz);
+							}
+						}
 					}
 				}
 				return null;
@@ -440,9 +448,9 @@ public class NickiTreeEditor extends CustomComponent {
 			List<Action> rootClassActions = new ArrayList<Action>();
 			Map<Action, Class<? extends DynamicObject>> map = new HashMap<Action, Class<? extends DynamicObject>>();
 			// treeActions
-			if (this.treeActions.containsKey(classDefinition)) {
-				for (TreeAction treeAction : this.treeActions
-						.get(classDefinition)) {
+			List<TreeAction> a = getTreeActions(classDefinition);
+			if(a != null && !a.isEmpty()) {
+				for (TreeAction treeAction : a) {
 					Action action = new Action(treeAction.getName());
 					classActions.add(action);
 					rootClassActions.add(action);
@@ -487,6 +495,16 @@ public class NickiTreeEditor extends CustomComponent {
 			actionsList.put(classDefinition,
 					classActions.toArray(new Action[] {}));
 		}
+	}
+
+	private List<TreeAction> getTreeActions(Class<? extends DynamicObject> classDefinition) {
+		List<TreeAction> list = new ArrayList<>();
+		for (Class<? extends DynamicObject> clazz : this.treeActions.keySet()) {
+			if (clazz.isAssignableFrom(classDefinition)) {
+				list.addAll(this.treeActions.get(clazz));
+			}
+		}
+		return list;
 	}
 
 	public Action[] getActions(Object object) {
