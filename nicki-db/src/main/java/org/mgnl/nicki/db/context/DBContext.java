@@ -2,9 +2,11 @@ package org.mgnl.nicki.db.context;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
 
+import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.handler.ListSelectHandler;
 import org.mgnl.nicki.db.handler.SelectHandler;
 import org.mgnl.nicki.db.profile.DBProfile;
@@ -65,6 +67,12 @@ public interface DBContext extends AutoCloseable {
 	<T> T loadObject(T bean, boolean deepSearch, String filter, String orderBy)
 			throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 	
-	long getSequenceNumber(String sequenceName) throws Exception;
+	int getSequenceNumber(String sequenceName) throws Exception;
+
+	String getDateValue(Date date, Attribute attribute);
+
+	String toDate(Date date);
+
+	Integer getGeneratedKey(Statement stmt) throws SQLException;
 
 }
