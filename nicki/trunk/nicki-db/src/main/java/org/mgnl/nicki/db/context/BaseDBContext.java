@@ -505,7 +505,7 @@ public class BaseDBContext
 		}
 	}
 
-	private Collection<Object> getSubs(Object bean, long primaryKey) {
+	private Collection<Object> getSubs(Object bean, int primaryKey) {
 		Collection<Object> list = new ArrayList<>();
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			try {
@@ -529,7 +529,7 @@ public class BaseDBContext
 					}
 				}
 				for (Object object : list) {
-					this.setPrimaryKey(object, primaryKey);
+					this.setForeignKey(object, primaryKey);
 				}
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
@@ -599,12 +599,12 @@ public class BaseDBContext
 		return list;
 	}
 
-	private void setPrimaryKey(Object bean, long primaryKey) throws NoSuchMethodException, SecurityException,
+	private void setForeignKey(Object bean, long primaryKey) throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(Attribute.class) != null) {
 				Attribute attribute = field.getAnnotation(Attribute.class);
-				if (attribute.primaryKey()) {
+				if (attribute.foreignKey()) {
 					String setter = "set" + StringUtils.capitalize(field.getName());
 					Method method = bean.getClass().getMethod(setter, field.getType());
 					method.invoke(bean, primaryKey);
