@@ -2,15 +2,11 @@ package org.mgnl.nicki.db.context.oracle;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
 
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.BaseDBContext;
 import org.mgnl.nicki.db.context.DBContext;
-import org.mgnl.nicki.db.context.NotSupportedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,34 +26,10 @@ public class OracleContext
 			return this.toTimestamp(date);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Could not parse date", e);
 		}
 
-		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	protected <T> Long _create(T bean) throws SQLException, NotSupportedException {
-		try (Statement stmt = this.getConnection().createStatement()) {
-			String statement = this.createInsertStatement(bean);
-			LOG.debug(statement);
-			String generatedColumns[] = this.getGeneratedKeys(bean);
-			if (generatedColumns != null) {
-				stmt.executeUpdate(statement, generatedColumns);
-				ResultSet generatedKeys = stmt.getGeneratedKeys();
-				if (generatedKeys != null && generatedKeys.next()) {
-					return new Long(generatedKeys.getLong(1));
-				} else {
-					return null;
-				}
-			} else {
-				stmt.executeUpdate(statement);
-				return null;
-			}
-		}
-
 	}
 
 	@Override
@@ -65,7 +37,7 @@ public class OracleContext
 		if (date != null) {
 			return "to_date('" + timestampOracle.format(date) + "','" + TIMESTAMP_ORACLE + "')";
 		} else {
-			return "''";
+			return null;
 		}
 	}
 }

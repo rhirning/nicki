@@ -5,6 +5,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.mgnl.nicki.db.data.DataType;
+
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface Attribute {
@@ -20,4 +22,6 @@ public @interface Attribute {
 	boolean now() default false;
 
 	boolean primaryKey() default false;
+	
+	DataType type() default DataType.DEFAULT;
 }

@@ -22,6 +22,7 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.annotation.SubTable;
 import org.mgnl.nicki.db.annotation.Table;
+import org.mgnl.nicki.db.data.DataType;
 import org.mgnl.nicki.db.handler.ListSelectHandler;
 import org.mgnl.nicki.db.handler.SelectHandler;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
@@ -60,7 +61,7 @@ public class BaseDBContext
 		}
 
 		try {
-			Long primaryKey = this._create(bean);
+			Integer primaryKey = this._create(bean);
 			if (this.hasSubs(bean.getClass())) {
 				if (primaryKey != null) {
 					for (Object sub : this.getSubs(bean, primaryKey)) {
@@ -88,7 +89,7 @@ public class BaseDBContext
 		}
 	}
 	
-	private String getSequence(Class<? extends Object> clazz) {
+	protected String getSequence(Class<? extends Object> clazz) {
 		for (Field field : clazz.getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
 			if (attribute != null && attribute.primaryKey()) {
@@ -333,17 +334,17 @@ public class BaseDBContext
 	}
 
 
-	private void setPrimaryKey(Object bean, Object primaryKey) {
+	protected void setPrimaryKey(Object bean, Object primaryKey) {
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
-			if (attribute != null && attribute.foreignKey()) {
+			if (attribute != null && attribute.primaryKey()) {
 				String setter = "set" + StringUtils.capitalize(field.getName());
 				try {
-					Method method = bean.getClass().getMethod(setter, primaryKey.getClass());
+					Method method = bean.getClass().getMethod(setter, field.getType());
 					method.invoke(bean, primaryKey);
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
-					LOG.error("Error reading primary key ", e);
+					LOG.error("Error setting primary key ", e);
 				}
 			}
 		}
@@ -421,7 +422,7 @@ public class BaseDBContext
 					Object rawValue = method.invoke(bean);
 					String value = null;
 					if (rawValue != null) {
-						value = getStringValue(method.getReturnType(), rawValue);
+						value = getStringValue(method.getReturnType(), rawValue, attribute);
 					}
 					if (value != null) {
 						if (count > 0) {
@@ -457,7 +458,7 @@ public class BaseDBContext
 					Object rawValue = method.invoke(bean);
 					String value = null;
 					if (rawValue != null) {
-						value = getStringValue(method.getReturnType(), rawValue);
+						value = getStringValue(method.getReturnType(), rawValue, attribute);
 					}
 					if (value != null) {
 						if (count > 0) {
@@ -475,12 +476,12 @@ public class BaseDBContext
 		}
 	}
 
-	protected String getStringValue(Class<?> type, Object value) {
+	protected String getStringValue(Class<?> type, Object value, Attribute attribute) {
 		try {
 			if (type == String.class) {
 				return "'" + (String) value + "'";
 			} else if (type == Date.class) {
-				return this.toTimestamp((Date) value);
+				return this.getDateValue((Date) value, attribute);
 			} else if (type == long.class || type == Long.class) {
 				return Long.toString((long) value);
 			} else if (type == int.class || type == Integer.class) {
@@ -490,6 +491,18 @@ public class BaseDBContext
 			LOG.error("Error converting", e);
 		}
 		return null;
+	}
+	
+
+	@Override
+	public String getDateValue(Date date, Attribute attribute) {
+		if (attribute.type() == DataType.TIMESTAMP) {
+			return this.toTimestamp(date);
+		} else if (attribute.type() == DataType.DATE) {
+			return this.toDate(date);
+		} else {
+			return null;
+		}
 	}
 
 	private Collection<Object> getSubs(Object bean, long primaryKey) {
@@ -591,7 +604,7 @@ public class BaseDBContext
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(Attribute.class) != null) {
 				Attribute attribute = field.getAnnotation(Attribute.class);
-				if (attribute.foreignKey()) {
+				if (attribute.primaryKey()) {
 					String setter = "set" + StringUtils.capitalize(field.getName());
 					Method method = bean.getClass().getMethod(setter, field.getType());
 					method.invoke(bean, primaryKey);
@@ -609,8 +622,8 @@ public class BaseDBContext
 		return false;
 	}
 
-	protected <T> Long _create(T bean) throws SQLException, NotSupportedException {
-		Long primaryKey = null;
+	protected <T> Integer _create(T bean) throws SQLException, NotSupportedException {
+		Integer primaryKey = null;
 		String sequence = getSequence(bean.getClass());
 		if (StringUtils.isNotBlank(sequence)) {
 			try {
@@ -620,19 +633,16 @@ public class BaseDBContext
 				LOG.error("Could not use sequence " + sequence, e);
 			}
 		}
-		try (Statement stmt = this.connection.createStatement()) {
+		try (Statement stmt = this.getConnection().createStatement()) {
 			String statement = this.createInsertStatement(bean);
 			LOG.debug(statement);
-			stmt.executeUpdate(statement, Statement.RETURN_GENERATED_KEYS);
-			if (primaryKey != null) {
-				return primaryKey;
+			String generatedColumns[] = this.getGeneratedKeys(bean);
+			if (generatedColumns != null) {
+				stmt.executeUpdate(statement, generatedColumns);
+				return getGeneratedKey(stmt);
 			} else {
-				ResultSet generatedKeys = stmt.getGeneratedKeys();
-				if (generatedKeys != null && generatedKeys.next()) {
-					return new Long(generatedKeys.getLong(1));
-				} else {
-					return null;
-				}
+				stmt.executeUpdate(statement);
+				return primaryKey;
 			}
 		}
 
@@ -1069,7 +1079,13 @@ public class BaseDBContext
 		return null;
 	}
 
+	@Override
 	public String toTimestamp(Date date) {
+		return "to_date('" + timestampOracle.format(date) + "','" + TIMESTAMP_ORACLE + "')";
+	}
+
+	@Override
+	public String toDate(Date date) {
 		return "to_date('" + timestampOracle.format(date) + "','" + TIMESTAMP_ORACLE + "')";
 	}
 
@@ -1213,10 +1229,20 @@ public class BaseDBContext
 	}
 
 	@Override
-	public long getSequenceNumber(String sequenceName) throws Exception {
+	public int getSequenceNumber(String sequenceName) throws Exception {
 
 		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(sequenceName);
 		select(handler);
 		return handler.getResult();
+	}
+
+	@Override
+	public Integer getGeneratedKey(Statement stmt) throws SQLException {
+		ResultSet generatedKeys = stmt.getGeneratedKeys();
+		if (generatedKeys != null && generatedKeys.next()) {
+			return new Integer(generatedKeys.getInt(1));
+		} else {
+			return null;
+		}		
 	}
 }
