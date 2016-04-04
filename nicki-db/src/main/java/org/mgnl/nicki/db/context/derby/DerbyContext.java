@@ -2,15 +2,13 @@ package org.mgnl.nicki.db.context.derby;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang.math.RandomUtils;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.BaseDBContext;
 import org.mgnl.nicki.db.context.DBContext;
-import org.mgnl.nicki.db.context.NotSupportedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,6 +17,11 @@ public class DerbyContext
 		implements DBContext {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DerbyContext.class);
+	public final static String TIMESTAMP_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	public static SimpleDateFormat timestampFormat = new SimpleDateFormat(TIMESTAMP_PATTERN);
+
+	public final static String DATE_PATTERN = "yyyy-MM-dd";
+	public static SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
 
 	@Override
 	public String getTimeStamp() {
@@ -37,45 +40,40 @@ public class DerbyContext
 		}
 		try {
 			Date date = (Date) this.getValue(bean, field);
-			return this.toTimestamp(date);
+			return getDateValue(date, attribute);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error creating date expression", e);
 		}
-
-		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	protected <T> Long _create(T bean) throws SQLException, NotSupportedException {
-		try (Statement stmt = this.getConnection().createStatement()) {
-			String statement = this.createInsertStatement(bean);
-			LOG.debug(statement);
-			String generatedColumns[] = this.getGeneratedKeys(bean);
-			if (generatedColumns != null) {
-				stmt.executeUpdate(statement, generatedColumns);
-				ResultSet generatedKeys = stmt.getGeneratedKeys();
-				if (generatedKeys != null && generatedKeys.next()) {
-					return new Long(generatedKeys.getLong(1));
-				} else {
-					return null;
-				}
-			} else {
-				stmt.executeUpdate(statement);
-				return null;
-			}
-		}
-
 	}
 
 	@Override
 	public String toTimestamp(Date date) {
 		if (date != null) {
-			return "timestamp('" + timestampOracle.format(date) + "')";
+			synchronized (timestampFormat) {
+				return "timestamp('" + timestampFormat.format(date) + "')";
+			}
 		} else {
-			return "''";
+			return null;
 		}
+	}
+
+
+	@Override
+	public String toDate(Date date) {
+		if (date != null) {
+			synchronized (dateFormat) {
+				return "'" + dateFormat.format(date) + "'";
+			}
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public int getSequenceNumber(String sequenceName) throws Exception {
+		
+		return RandomUtils.nextInt();
 	}
 }
