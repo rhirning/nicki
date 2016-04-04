@@ -5,7 +5,7 @@
 	<name>nicki-config-rhi</name>
 	<parent>
 		<artifactId>nicki-parent</artifactId>
-		<version>5.56</version>
+		<version>5.57-SNAPSHOT</version>
 		<groupId>org.mgnl.nicki</groupId>
 		<relativePath>..</relativePath>
 	</parent>
@@ -22,8 +22,8 @@
 		</dependency>
 	</dependencies>
 	<scm>
-		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent/nicki-parent-5.56/trunk</connection>
-		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent/nicki-parent-5.56/trunk</developerConnection>
-		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent/nicki-parent-5.56/trunk</url>
+		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</connection>
+		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</developerConnection>
+		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</url>
 	</scm>
 </project>
