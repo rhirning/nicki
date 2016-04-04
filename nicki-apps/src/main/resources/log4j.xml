@@ -21,6 +21,12 @@
 		<appender-ref ref="ConsoleAppender" />
 	</logger>
 
+	<logger name="org.mgnl.nicki.core.config.Config"
+		additivity="false">
+		<level value="info" />
+		<appender-ref ref="ConsoleAppender" />
+	</logger>
+
 	<logger name="org.mgnl.nicki.ldap"
 		additivity="false">
 		<level value="error" />
