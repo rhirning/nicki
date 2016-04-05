@@ -13,7 +13,7 @@ import org.mgnl.nicki.db.profile.DBProfile;
 import org.mgnl.nicki.db.profile.InitProfileException;
 
 public interface DBContext extends AutoCloseable {
-	<T> T create(T bean) throws SQLException, InitProfileException, NotSupportedException;
+	<T> void create(T bean) throws SQLException, InitProfileException, NotSupportedException;
 
 	<T> T update(T bean, String... columns) throws NotSupportedException, SQLException, InitProfileException;
 	

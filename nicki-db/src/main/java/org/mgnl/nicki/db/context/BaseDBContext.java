@@ -52,7 +52,7 @@ public class BaseDBContext
 	}
 
 	@Override
-	public <T> T create(T bean) throws SQLException, InitProfileException, NotSupportedException {
+	public <T> void create(T bean) throws SQLException, InitProfileException, NotSupportedException {
 		boolean inTransaction = false;
 		if (this.connection != null) {
 			inTransaction = true;
@@ -77,7 +77,7 @@ public class BaseDBContext
 					;
 				}
 			}
-			return this.load(bean);
+			//return this.load(bean);
 		} finally {
 			if (!inTransaction) {
 				try {
