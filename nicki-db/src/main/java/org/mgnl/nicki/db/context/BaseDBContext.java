@@ -61,7 +61,7 @@ public class BaseDBContext
 		}
 
 		try {
-			Integer primaryKey = this._create(bean);
+			Long primaryKey = this._create(bean);
 			if (this.hasSubs(bean.getClass())) {
 				if (primaryKey != null) {
 					for (Object sub : this.getSubs(bean, primaryKey)) {
@@ -257,20 +257,7 @@ public class BaseDBContext
 	}
 
 	private void addObjects(Object bean, boolean deepSearch) {
-		Object primaryKey = null;
-		for (Field field : bean.getClass().getDeclaredFields()) {
-			Attribute attribute = field.getAnnotation(Attribute.class);
-			if (attribute != null && attribute.primaryKey()) {
-				String getter = "get" + StringUtils.capitalize(field.getName());
-				try {
-					Method method = bean.getClass().getMethod(getter);
-					primaryKey = method.invoke(bean);
-				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException e) {
-					LOG.error("Error reading primary key ", e);
-				}
-			}
-		}
+		Long primaryKey = getPrimaryKey(bean);
 		if (primaryKey != null) {
 			for (Field field : bean.getClass().getDeclaredFields()) {
 				SubTable subTable = field.getAnnotation(SubTable.class);
@@ -293,6 +280,24 @@ public class BaseDBContext
 		
 	}
 
+	private Long getPrimaryKey(Object bean) {
+		Long primaryKey = null;
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null && attribute.primaryKey()) {
+				String getter = "get" + StringUtils.capitalize(field.getName());
+				try {
+					Method method = bean.getClass().getMethod(getter);
+					primaryKey = (Long) method.invoke(bean);
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					LOG.error("Error reading primary key ", e);
+				}
+			}
+		}
+		return primaryKey;
+	}
+
 	private <T> void addObject(Object bean, Field field, Class<T> entryClass, Object primaryKey) {
 		T subBean = getNewInstance(entryClass);
 		setPrimaryKey(subBean, primaryKey);
@@ -308,10 +313,10 @@ public class BaseDBContext
 		}
 	}
 
-	private <T> void addObjects(Object bean, Field field, Class<T> entryClass, Object primaryKey) {
+	private <T> void addObjects(Object bean, Field field, Class<T> entryClass, long primaryKey) {
 		T subBean = getNewInstance(entryClass);
-		setPrimaryKey(subBean, primaryKey);
 		try {
+			setForeignKey(subBean, primaryKey);
 			List<T> subs = loadObjects(subBean, true);
 			if (subs != null && subs.size() > 0) {
 				String setter = "set" + StringUtils.capitalize(field.getName());
@@ -505,7 +510,7 @@ public class BaseDBContext
 		}
 	}
 
-	private Collection<Object> getSubs(Object bean, int primaryKey) {
+	private Collection<Object> getSubs(Object bean, long primaryKey) {
 		Collection<Object> list = new ArrayList<>();
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			try {
@@ -622,8 +627,8 @@ public class BaseDBContext
 		return false;
 	}
 
-	protected <T> Integer _create(T bean) throws SQLException, NotSupportedException {
-		Integer primaryKey = null;
+	protected <T> Long _create(T bean) throws SQLException, NotSupportedException {
+		Long primaryKey = null;
 		String sequence = getSequence(bean.getClass());
 		if (StringUtils.isNotBlank(sequence)) {
 			try {
@@ -1229,7 +1234,7 @@ public class BaseDBContext
 	}
 
 	@Override
-	public int getSequenceNumber(String sequenceName) throws Exception {
+	public long getSequenceNumber(String sequenceName) throws Exception {
 
 		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(sequenceName);
 		select(handler);
@@ -1237,10 +1242,10 @@ public class BaseDBContext
 	}
 
 	@Override
-	public Integer getGeneratedKey(Statement stmt) throws SQLException {
+	public Long getGeneratedKey(Statement stmt) throws SQLException {
 		ResultSet generatedKeys = stmt.getGeneratedKeys();
 		if (generatedKeys != null && generatedKeys.next()) {
-			return new Integer(generatedKeys.getInt(1));
+			return generatedKeys.getLong(1);
 		} else {
 			return null;
 		}		

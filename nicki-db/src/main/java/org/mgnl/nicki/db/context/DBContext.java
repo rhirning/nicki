@@ -67,12 +67,12 @@ public interface DBContext extends AutoCloseable {
 	<T> T loadObject(T bean, boolean deepSearch, String filter, String orderBy)
 			throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 	
-	int getSequenceNumber(String sequenceName) throws Exception;
+	long getSequenceNumber(String sequenceName) throws Exception;
 
 	String getDateValue(Date date, Attribute attribute);
 
 	String toDate(Date date);
 
-	Integer getGeneratedKey(Statement stmt) throws SQLException;
+	Long getGeneratedKey(Statement stmt) throws SQLException;
 
 }
