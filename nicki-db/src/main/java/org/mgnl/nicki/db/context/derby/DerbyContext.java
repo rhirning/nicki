@@ -72,7 +72,7 @@ public class DerbyContext
 	}
 
 	@Override
-	public int getSequenceNumber(String sequenceName) throws Exception {
+	public long getSequenceNumber(String sequenceName) throws Exception {
 		
 		return RandomUtils.nextInt();
 	}
