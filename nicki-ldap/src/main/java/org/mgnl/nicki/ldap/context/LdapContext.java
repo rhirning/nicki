@@ -92,20 +92,29 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 	
 	public DynamicObject login(String username, String password) {
+		LOG.info("login: start");
 		DynamicObject user = loadObject(username);
 		if (user == null) {
+			LOG.info("login: loadObject not successful");
 			List<DynamicObject> list = loadObjects(Config.getProperty("nicki.users.basedn"), "cn=" + username);
+			
 			if (list != null && list.size() == 1) {
+				LOG.info("login: loadObjectssuccessful");
 				user = list.get(0);
 			} else {
+				LOG.info("login: loadObjects not successful");
 				LOG.debug("Loading Objects not successful: " 
 						+ ((list == null)?"null":"size=" + list.size()));
 			}
+		} else {
+			LOG.info("login: loadObject successful");
 		}
 		if (user != null) {
+			LOG.info("login: before getDirContex)");
 			LOG.debug("try login for user " + user.getDisplayName());
 			try {
 				getDirContext(user.getPath(), password);
+				LOG.info("login: after getDirContext");
 				return user;
 			} catch (Exception e) {
 				LOG.debug("Could not login user " + username, e);
@@ -113,6 +122,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		} else {
 			LOG.debug("could not load user " + username);
 		}
+		LOG.info("login: end");
 		return null;
 	}
 
