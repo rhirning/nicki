@@ -122,8 +122,8 @@ public class MainView extends CustomComponent {
 			Component headline = getHeadline();
 			contentLayout.addComponent(headline);
 			contentLayout.addComponent(view);
-			contentLayout.setExpandRatio(headline, 0.01f);
-			contentLayout.setExpandRatio(view, 0.99f);
+			//contentLayout.setExpandRatio(headline, 0.01f);
+			contentLayout.setExpandRatio(view, 1);
 		} else {
 			contentLayout.addComponent(view);
 		}
