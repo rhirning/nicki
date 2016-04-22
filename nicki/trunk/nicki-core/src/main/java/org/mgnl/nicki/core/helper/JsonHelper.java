@@ -32,8 +32,12 @@ import javax.json.JsonValue.ValueType;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.Format;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 public class JsonHelper {
+    private static final Logger LOG = LoggerFactory.getLogger(JsonHelper.class);
 	public final static String FORMAT_DISPLAY_DAY = "dd.MM.yyyy";
 	public final static String FORMAT_MILLI = "dd.MM.yyyy HH:mm:ss:SSS";
 	public static SimpleDateFormat formatDisplayDay = new SimpleDateFormat(FORMAT_DISPLAY_DAY);
@@ -625,6 +629,21 @@ public class JsonHelper {
 			return ((JsonString)value).getString();
 		}
 		return "";
+	}
+
+	public static <T> Collection<? extends T> toList(Class<T> clazz, JsonArray jsonArray) {
+		List<T> list = new ArrayList<>();
+		for (JsonValue jsonValue : jsonArray) {
+			if (jsonValue.getValueType() == ValueType.OBJECT) {
+				try {
+					T object = toBean(clazz, jsonValue.toString());
+					list.add(object);
+				} catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+					LOG.error("Could not parse list object: ", e.getMessage());
+				}
+			}
+		}
+		return list;
 	}
 
 }
