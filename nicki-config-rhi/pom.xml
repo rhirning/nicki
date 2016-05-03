@@ -10,6 +10,7 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
+	<!--
 		<dependency>
 			<groupId>de.deron</groupId>
 			<artifactId>deron-dynamic-objects</artifactId>
@@ -20,6 +21,7 @@
 			<version>${efg.version}</version>
 			<artifactId>efg-dynamic-objects</artifactId>
 		</dependency>
+	-->
 	</dependencies>
 	<scm>
 		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</connection>
