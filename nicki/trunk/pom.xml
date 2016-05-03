@@ -8,16 +8,20 @@
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
 	<properties>
+		<!-- 
 		<deron.version>1.37</deron.version>
 		<efg.version>1.22</efg.version>
+		-->
 		<project.build.sourceEncoding>iso-8859-1</project.build.sourceEncoding>
 		<vaadin.version>7.6.5</vaadin.version>
 	</properties>
 	<modules>
 		<module>nicki-app-menu</module>
 		<module>nicki-cache</module>
+		<!--
 		<module>nicki-config-efg</module>
 		<module>nicki-config-rhi</module>
+		-->
 		<module>nicki-core</module>
 		<module>nicki-db</module>
 		<module>nicki-dynamic-objects</module>
