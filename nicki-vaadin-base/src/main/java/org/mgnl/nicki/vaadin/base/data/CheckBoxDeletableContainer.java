@@ -22,7 +22,7 @@ public abstract class CheckBoxDeletableContainer<T extends Deletable> extends In
 		for (Object object : columns) {
 			addContainerProperty(object, String.class, "");
 		}
-		addContainerProperty("delete", Component.class, null);
+		addContainerProperty("delete", DeleteCheckBox.class, null);
 		for (T bean : collection) {
 			Item item = addItem(bean);
 			for (Object object : columns) {
@@ -31,7 +31,7 @@ public abstract class CheckBoxDeletableContainer<T extends Deletable> extends In
 				property.setValue(get(bean, (String) object));
 			}
 			@SuppressWarnings("unchecked")
-			Property<Component> editProperty = item.getItemProperty("delete");
+			Property<DeleteCheckBox<? extends Deletable>> editProperty = item.getItemProperty("delete");
 			if (bean.isDeletable()) {
 				editProperty.setValue(new DeleteCheckBox<T>(bean));
 			}
@@ -39,7 +39,7 @@ public abstract class CheckBoxDeletableContainer<T extends Deletable> extends In
 	}
 
 	@SuppressWarnings("serial")
-	public class DeleteCheckBox<T1 extends Deletable> extends CheckBox implements Property<Boolean> {
+	public class DeleteCheckBox<T1 extends Deletable> extends CheckBox implements Property<Boolean>, Comparable<DeleteCheckBox<? extends Deletable>> {
 		
 		public DeleteCheckBox(T1 bean) {
 			setData(bean);
@@ -61,6 +61,11 @@ public abstract class CheckBoxDeletableContainer<T extends Deletable> extends In
 					}
 				}
 			});
+		}
+
+		@Override
+		public int compareTo(DeleteCheckBox<? extends Deletable> o) {
+			return this.getValue().compareTo(o.getValue());
 		}
 		
 	}
