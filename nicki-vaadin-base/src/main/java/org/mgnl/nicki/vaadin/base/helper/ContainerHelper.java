@@ -2,8 +2,6 @@ package org.mgnl.nicki.vaadin.base.helper;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
@@ -28,7 +26,7 @@ public class ContainerHelper {
 		container.addContainerProperty(namedProperties, String.class, "");
 		return container;
 	}
-	 */
+	*/
 
 	public static <T extends Object> Container getListContainer(Collection<T> data, String... namedProperties) {
 		Container container = new IndexedContainer(data);
@@ -41,7 +39,7 @@ public class ContainerHelper {
 	public static <T extends Object> Container getTableContainer(Collection<T> data, String... namedProperties) {
 		return new TableContainer(data, namedProperties);
 	}
-
+	
 	public static <T extends Object> Container getDataContainer(T data, String[] properties, String i18nBase) {
 		Container container = new BeanItemContainer<ValuePair>(ValuePair.class);
 		for (String property : properties) {
@@ -49,17 +47,17 @@ public class ContainerHelper {
 		}
 		return container;
 	}
-
+	
 	private static <T extends Object> void addItem(Container container, T data, String name, String i18nBase) {
 		String translatedName = name;
 		if (i18nBase != null) {
 			translatedName = I18n.getText(i18nBase + "." + name);
 		}
 		try {
-
+			
 			if (data != null) {
 				container.addItem(new ValuePair(translatedName, BeanUtils.getProperty(data, name)));
-
+				
 			} else {
 				container.addItem(new ValuePair(translatedName, ""));
 			}
@@ -67,30 +65,15 @@ public class ContainerHelper {
 			LOG.error("Error", e);
 		}
 	}
-
+	
 	public static class TableContainer extends IndexedContainer implements Container {
 		private static final long serialVersionUID = 1495392912411015597L;
 
 		public <T extends Object> TableContainer(
 				Collection<? extends T> collection, String... namedProperties) throws IllegalArgumentException {
 			super();
-
-			Map<String, Class<? extends Object>> classes = new HashMap<>();
-
-			for (T bean : collection) {
-				for (String name : namedProperties) {
-					if (!classes.containsKey(name)) {
-						classes.put(name, get(bean, name).getClass());
-					} else if (!classes.get(name).equals(Object.class)
-							&& !classes.get(name).equals(
-									get(bean, name).getClass())) {
-						classes.put(name, Object.class);
-					}
-				}
-			}
-
 			for (String name : namedProperties) {
-				addContainerProperty(name, classes.containsKey(name) ? classes.get(name) : Object.class, "");
+				addContainerProperty(name, Comparable.class, "");
 			}
 			for (T bean : collection) {
 				Item item = addItem(bean);
