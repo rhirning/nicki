@@ -61,7 +61,7 @@ public class BaseDBContext
 		}
 
 		try {
-			Long primaryKey = this._create(bean);
+			PrimaryKey primaryKey = this._create(bean);
 			if (this.hasSubs(bean.getClass())) {
 				if (primaryKey != null) {
 					for (Object sub : this.getSubs(bean, primaryKey)) {
@@ -94,6 +94,16 @@ public class BaseDBContext
 			Attribute attribute = field.getAnnotation(Attribute.class);
 			if (attribute != null && attribute.primaryKey()) {
 				return StringUtils.stripToNull(attribute.sequence());
+			}
+		}
+		return null;
+	}
+	
+	protected Class<?> getPrimaryKeyType(Class<? extends Object> clazz) {
+		for (Field field : clazz.getDeclaredFields()) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null && attribute.primaryKey()) {
+				return field.getType();
 			}
 		}
 		return null;
@@ -257,7 +267,7 @@ public class BaseDBContext
 	}
 
 	private void addObjects(Object bean, boolean deepSearch) {
-		Long primaryKey = getPrimaryKey(bean);
+		PrimaryKey primaryKey = getPrimaryKey(bean);
 		if (primaryKey != null) {
 			for (Field field : bean.getClass().getDeclaredFields()) {
 				SubTable subTable = field.getAnnotation(SubTable.class);
@@ -280,15 +290,15 @@ public class BaseDBContext
 		
 	}
 
-	private Long getPrimaryKey(Object bean) {
-		Long primaryKey = null;
+	private PrimaryKey getPrimaryKey(Object bean) {
+		PrimaryKey primaryKey = null;
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
 			if (attribute != null && attribute.primaryKey()) {
 				String getter = "get" + StringUtils.capitalize(field.getName());
 				try {
 					Method method = bean.getClass().getMethod(getter);
-					primaryKey = (Long) method.invoke(bean);
+					primaryKey = new PrimaryKey(method.invoke(bean));
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
 					LOG.error("Error reading primary key ", e);
@@ -313,7 +323,7 @@ public class BaseDBContext
 		}
 	}
 
-	private <T> void addObjects(Object bean, Field field, Class<T> entryClass, long primaryKey) {
+	private <T> void addObjects(Object bean, Field field, Class<T> entryClass, PrimaryKey primaryKey) {
 		T subBean = getNewInstance(entryClass);
 		try {
 			setForeignKey(subBean, primaryKey);
@@ -510,7 +520,7 @@ public class BaseDBContext
 		}
 	}
 
-	private Collection<Object> getSubs(Object bean, long primaryKey) {
+	private Collection<Object> getSubs(Object bean, PrimaryKey primaryKey) {
 		Collection<Object> list = new ArrayList<>();
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			try {
@@ -604,7 +614,7 @@ public class BaseDBContext
 		return list;
 	}
 
-	private void setForeignKey(Object bean, long primaryKey) throws NoSuchMethodException, SecurityException,
+	private void setForeignKey(Object bean, PrimaryKey primaryKey) throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(Attribute.class) != null) {
@@ -612,7 +622,7 @@ public class BaseDBContext
 				if (attribute.foreignKey()) {
 					String setter = "set" + StringUtils.capitalize(field.getName());
 					Method method = bean.getClass().getMethod(setter, field.getType());
-					method.invoke(bean, primaryKey);
+					method.invoke(bean, primaryKey.getValue());
 				}
 			}
 		}
@@ -627,8 +637,8 @@ public class BaseDBContext
 		return false;
 	}
 
-	protected <T> Long _create(T bean) throws SQLException, NotSupportedException {
-		Long primaryKey = null;
+	protected <T> PrimaryKey _create(T bean) throws SQLException, NotSupportedException {
+		PrimaryKey primaryKey = null;
 		String sequence = getSequence(bean.getClass());
 		if (StringUtils.isNotBlank(sequence)) {
 			try {
@@ -644,7 +654,7 @@ public class BaseDBContext
 			String generatedColumns[] = this.getGeneratedKeys(bean);
 			if (generatedColumns != null) {
 				stmt.executeUpdate(statement, generatedColumns);
-				return getGeneratedKey(stmt);
+				return getGeneratedKey(stmt, getPrimaryKeyType(bean.getClass()));
 			} else {
 				stmt.executeUpdate(statement);
 				return primaryKey;
@@ -1234,20 +1244,16 @@ public class BaseDBContext
 	}
 
 	@Override
-	public long getSequenceNumber(String sequenceName) throws Exception {
+	public PrimaryKey getSequenceNumber(String sequenceName) throws Exception {
 
 		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(sequenceName);
 		select(handler);
-		return handler.getResult();
+		return new PrimaryKey(handler.getResult());
 	}
 
 	@Override
-	public Long getGeneratedKey(Statement stmt) throws SQLException {
+	public PrimaryKey getGeneratedKey(Statement stmt, Class<?> clazz) throws SQLException {
 		ResultSet generatedKeys = stmt.getGeneratedKeys();
-		if (generatedKeys != null && generatedKeys.next()) {
-			return generatedKeys.getLong(1);
-		} else {
-			return null;
-		}		
+		return new PrimaryKey(clazz, generatedKeys);
 	}
 }

@@ -74,7 +74,7 @@ public abstract class CheckBoxDeletableContainer<T extends Deletable> extends In
 		String methodName =  "get" + StringUtils.capitalize(name);
 		try {
 			Method method = object.getClass().getMethod(methodName, new Class[]{});
-			return (String) method.invoke(object, new Object[]{});
+			return (String) method.invoke(object);
 		} catch (Exception e) {
 		}
 		return "";
