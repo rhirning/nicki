@@ -31,10 +31,8 @@ import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle.STATUS;
 import org.mgnl.nicki.shop.base.objects.MultipleInstancesCatalogArticle;
 import com.vaadin.data.Item;
-import com.vaadin.event.Action;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -175,7 +173,6 @@ public class TwoTablesRenderer extends BaseTableRenderer implements ShopRenderer
 		resize();
 	}
 	
-	@SuppressWarnings("unchecked")
 	public void renderRight() {
 		// collect all articles
 		List<CatalogArticle> articles = shopViewerComponent.getAllArticles();
@@ -242,7 +239,6 @@ public class TwoTablesRenderer extends BaseTableRenderer implements ShopRenderer
 		
 	}
 
-	@SuppressWarnings("unchecked")
 	protected void hideEntry(Item item) {
 		/*
 		item.getItemProperty("dateFrom").setValue(null);
@@ -252,7 +248,6 @@ public class TwoTablesRenderer extends BaseTableRenderer implements ShopRenderer
 //		removeExcept(parent, event.getButton());
 	}
 
-	@SuppressWarnings("unchecked")
 	public void showEntry(Item item, CatalogArticle article, InventoryArticle inventoryArticle) {
 		SOURCE source = SOURCE.SHOP;
 		/*

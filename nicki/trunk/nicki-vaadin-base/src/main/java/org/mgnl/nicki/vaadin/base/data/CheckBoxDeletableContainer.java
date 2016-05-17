@@ -10,7 +10,6 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.Component;
 
 public abstract class CheckBoxDeletableContainer<T extends Deletable> extends IndexedContainer implements Container {
 	private static final long serialVersionUID = -5658914311396563600L;
