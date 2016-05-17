@@ -20,7 +20,6 @@
 package org.mgnl.nicki.shop.renderer;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.mgnl.nicki.shop.core.ShopViewerComponent;

@@ -45,7 +45,6 @@ import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.SSOAdapter.TYPE;
 import org.mgnl.nicki.idm.novell.jaas.UserAppAdapter;
 
@@ -102,6 +101,7 @@ public class IframePortlet extends GenericPortlet {
 		  }
 		  return args;
 	}
+	@SuppressWarnings("rawtypes")
 	private Map getParametersMap(RenderRequest request) {
 		Map<String, String> map = new HashMap<String, String>();
 		  UserAppAdapter uaa = new UserAppAdapter();
@@ -110,9 +110,7 @@ public class IframePortlet extends GenericPortlet {
 		  char passwd[] = uaa.getPassword(request);
 		  
 		  String credentials = new String(passwd);
-		  
-		  String args;
-		  
+		  		  
 		  if (uaa.getType() == TYPE.SAML) {
 			  map.put("nickiToken", credentials);
 		  } else {

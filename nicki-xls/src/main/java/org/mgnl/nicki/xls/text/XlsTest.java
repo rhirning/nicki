@@ -1,6 +1,5 @@
 package org.mgnl.nicki.xls.text;
 
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 

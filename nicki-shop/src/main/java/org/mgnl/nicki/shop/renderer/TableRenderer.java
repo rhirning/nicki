@@ -19,34 +19,26 @@
 */
 package org.mgnl.nicki.shop.renderer;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
-import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
-import org.mgnl.nicki.shop.renderer.BaseTableRenderer.ActionHandler;
-import org.mgnl.nicki.shop.renderer.BaseTableRenderer.ItemClickListener;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
-import org.mgnl.nicki.shop.base.inventory.Inventory.SOURCE;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle.STATUS;
 import org.mgnl.nicki.shop.base.objects.MultipleInstancesCatalogArticle;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 
 import com.vaadin.data.Item;
-import com.vaadin.event.Action;
 import com.vaadin.server.Sizeable.Unit;
 import com.vaadin.ui.AbstractComponent;
-import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Table;
 

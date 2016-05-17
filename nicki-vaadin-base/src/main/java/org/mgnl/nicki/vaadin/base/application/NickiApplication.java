@@ -77,6 +77,7 @@ public abstract class NickiApplication extends UI {
 	@Override
 	public void init(VaadinRequest vaadinRequest) {
 		AppContext.setRequest(vaadinRequest);
+		@SuppressWarnings("unchecked")
 		Map<String, String> map = (Map<String, String>) getSession().getSession().getAttribute(NickiServlet.NICKI_PARAMETERS);
 		AppContext.setRequestParameters(map);
 

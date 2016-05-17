@@ -35,8 +35,6 @@ package org.mgnl.nicki.idm.novell.shop.objects;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.JDOMException;
@@ -61,6 +59,7 @@ public class Mapping extends BaseDynamicObject {
 	private String contentType;
 	
 	
+	@SuppressWarnings("unchecked")
 	public List<NameValue> getMapping() throws JDOMException, IOException   {
 		List<NameValue> list = new ArrayList<NameValue>();
 
