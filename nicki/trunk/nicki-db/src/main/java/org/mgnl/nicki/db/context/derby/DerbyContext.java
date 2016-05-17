@@ -9,6 +9,7 @@ import org.apache.commons.lang.math.RandomUtils;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.BaseDBContext;
 import org.mgnl.nicki.db.context.DBContext;
+import org.mgnl.nicki.db.context.PrimaryKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -72,8 +73,8 @@ public class DerbyContext
 	}
 
 	@Override
-	public long getSequenceNumber(String sequenceName) throws Exception {
+	public PrimaryKey getSequenceNumber(String sequenceName) throws Exception {
 		
-		return RandomUtils.nextInt();
+		return new PrimaryKey(RandomUtils.nextInt());
 	}
 }
