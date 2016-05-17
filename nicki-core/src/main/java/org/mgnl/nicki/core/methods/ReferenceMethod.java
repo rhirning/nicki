@@ -57,6 +57,7 @@ public class ReferenceMethod implements TemplateMethodModel, Serializable {
 		this.reference = reference;
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (objects == null) {
 			objects = (List<DynamicObject>) context.loadReferenceObjects(this.reference.getClassDefinition(), this);

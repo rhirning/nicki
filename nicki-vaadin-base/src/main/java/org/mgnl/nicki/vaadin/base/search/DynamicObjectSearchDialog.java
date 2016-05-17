@@ -215,6 +215,7 @@ public class DynamicObjectSearchDialog<T extends DynamicObject> extends CustomCo
 		searcher.setDynamicObject(clazz, getSelected());
 	}
 
+	@SuppressWarnings("unchecked")
 	private T getSelected() {
 		return (T) table.getValue();
 	}

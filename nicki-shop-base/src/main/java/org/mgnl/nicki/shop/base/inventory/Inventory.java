@@ -20,7 +20,6 @@
 package org.mgnl.nicki.shop.base.inventory;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +35,6 @@ import org.mgnl.nicki.shop.base.objects.Cart;
 import org.mgnl.nicki.shop.base.objects.CartEntry;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
-import org.mgnl.nicki.shop.base.objects.CatalogArticleFactory;
 import org.mgnl.nicki.shop.base.objects.CartEntry.ACTION;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle.STATUS;
 import org.slf4j.Logger;

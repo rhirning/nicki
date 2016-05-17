@@ -15,8 +15,6 @@ import com.lowagie.text.pdf.PdfPTable;
 import java.awt.Color;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Iterator;
-
 import javax.xml.bind.JAXBElement;
 
 import org.apache.commons.lang.StringUtils;

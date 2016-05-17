@@ -47,8 +47,6 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
-import javax.json.JsonValue;
-
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.mgnl.nicki.core.context.NickiContext;
@@ -564,6 +562,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return nickiContext.getAdapter().getObjectClassFilter(this);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public JsonObjectBuilder toJsonObjectBuilder(AttributeMapper mapping) {
 		DataModel model = getModel();
@@ -585,7 +584,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 					if (dynAttribute.isMultiple()) {
 						Method getter = null;
 						try {
-							getter = getClass().getMethod(dynAttribute.getMultipleGetter(dynAttribute.getName()));
+							getter = getClass().getMethod(DynamicAttribute.getMultipleGetter(dynAttribute.getName()));
 						} catch (NoSuchMethodException | SecurityException e) {
 							LOG.debug("no getter for " + dynAttribute.getName());
 						}
@@ -610,7 +609,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 					} else {
 						Method getter = null;
 						try {
-							getter = getClass().getMethod(dynAttribute.getGetter(dynAttribute.getName()));
+							getter = getClass().getMethod(DynamicAttribute.getGetter(dynAttribute.getName()));
 						} catch (NoSuchMethodException | SecurityException e) {
 							LOG.debug("no getter for " + dynAttribute.getName());
 						}

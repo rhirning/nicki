@@ -299,7 +299,7 @@ public class NickiTreeEditor extends CustomComponent {
 
 	public void configureClass(Class<? extends DynamicObject> parentClass,
 			Icon icon, CREATE allowCreate, DELETE allowDelete,
-			RENAME allowRename, Class<? extends DynamicObject>... childClass) {
+			RENAME allowRename, @SuppressWarnings("unchecked") Class<? extends DynamicObject>... childClass) {
 
 		List<? extends DynamicObject> dynamicObjects;
 		try {
