@@ -103,7 +103,7 @@ public class JsonHelper {
 				try {
 					Method getter = getGetter(clazz, field);
 					if (getter != null) {
-						Object value = getter.invoke(bean, new Object[]{});
+						Object value = getter.invoke(bean);
 						if (value != null) {
 							if (value instanceof String) {
 								builder.add(field.getName(), (String) value);
@@ -218,7 +218,7 @@ public class JsonHelper {
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			try {
 				Method getter = getGetter(bean.getClass(), field);
-				Object value = getter.invoke(bean, new Object[]{});
+				Object value = getter.invoke(bean);
 				if (value instanceof String) {
 					builder.add(field.getName(), (String) value);
 				} else if (value instanceof Integer) {
