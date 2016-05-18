@@ -109,7 +109,7 @@ public class BasicDBHelper {
 		return handler.getResult();
 	}
 	
-	public static int getOrderSequenceNumber(DBProfile profile, String sequence) throws Exception {
+	public static long getOrderSequenceNumber(DBProfile profile, String sequence) throws Exception {
 		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(sequence);
 		select(profile, handler);
 		return handler.getResult();
