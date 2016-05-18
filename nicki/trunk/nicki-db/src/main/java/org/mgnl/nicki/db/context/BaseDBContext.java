@@ -308,7 +308,7 @@ public class BaseDBContext
 		return primaryKey;
 	}
 
-	private <T> void addObject(Object bean, Field field, Class<T> entryClass, Object primaryKey) {
+	private <T> void addObject(Object bean, Field field, Class<T> entryClass, PrimaryKey primaryKey) {
 		T subBean = getNewInstance(entryClass);
 		setPrimaryKey(subBean, primaryKey);
 		try {
@@ -349,14 +349,14 @@ public class BaseDBContext
 	}
 
 
-	protected void setPrimaryKey(Object bean, Object primaryKey) {
+	protected void setPrimaryKey(Object bean, PrimaryKey primaryKey) {
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
 			if (attribute != null && attribute.primaryKey()) {
 				String setter = "set" + StringUtils.capitalize(field.getName());
 				try {
 					Method method = bean.getClass().getMethod(setter, field.getType());
-					method.invoke(bean, primaryKey);
+					method.invoke(bean, primaryKey.getValue());
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
 					LOG.error("Error setting primary key ", e);
