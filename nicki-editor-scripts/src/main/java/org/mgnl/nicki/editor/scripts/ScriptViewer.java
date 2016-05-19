@@ -331,7 +331,7 @@ public class ScriptViewer extends CustomComponent implements ClassEditor {
 		resultObject.setImmediate(false);
 		resultObject.setWidth("100.0%");
 		resultObject.setHeight("-1px");
-		resultObject.setValue("Label");
+		resultObject.setValue("");
 		horizontalLayout_1.addComponent(resultObject);
 		
 		return horizontalLayout_1;
