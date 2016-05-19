@@ -5,27 +5,37 @@ import java.sql.SQLException;
 
 public class PrimaryKey {
 
-	private Object value;
+	private String value;
 	
 	public PrimaryKey(Class<?> clazz, ResultSet generatedKeys) throws SQLException {
 		if (clazz != null && generatedKeys != null && generatedKeys.next()) {
-			if (Long.class.isAssignableFrom(clazz)) {
-				this.value = generatedKeys.getLong(1);
-			} else if (String.class.isAssignableFrom(clazz)) {
-				this.value = generatedKeys.getString(1);
-			}
+			this.value = generatedKeys.getString(1);
 		}
 	}
 
-	public PrimaryKey(Object value) {
-		this.value = value;
+	public PrimaryKey(Object rawValue) {
+		if (rawValue instanceof String) {
+			value = (String) rawValue;
+		} else if (rawValue instanceof Long) {
+			value = Long.toString((long) rawValue);
+		} else if (rawValue instanceof Integer) {
+			value = Integer.toString((int) rawValue);
+		}
 	}
 
-	public Object getValue() {
+	public String getValue() {
 		return value;
 	}
 
-	public void setValue(Object value) {
+	public long getLong() {
+		return Long.parseLong(value);
+	}
+
+	public int getInt() {
+		return Integer.parseInt(value);
+	}
+
+	public void setValue(String value) {
 		this.value = value;
 	}
 
