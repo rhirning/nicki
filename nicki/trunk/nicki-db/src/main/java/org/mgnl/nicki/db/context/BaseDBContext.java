@@ -628,7 +628,13 @@ public class BaseDBContext
 				if (attribute.foreignKey()) {
 					String setter = "set" + StringUtils.capitalize(field.getName());
 					Method method = bean.getClass().getMethod(setter, field.getType());
-					method.invoke(bean, primaryKey.getValue());
+					if (Long.class.isAssignableFrom(field.getType())) {
+						method.invoke(bean, primaryKey.getLong());
+					} else if (Integer.class.isAssignableFrom(field.getType())) {
+						method.invoke(bean, primaryKey.getInt());
+					} else if (field.getType().isAssignableFrom(String.class)) {
+						method.invoke(bean, primaryKey.getValue());
+					} 
 				}
 			}
 		}
