@@ -66,8 +66,12 @@ public class Icon implements Serializable {
 	public static final Icon GLOBE = new Icon("../runo/icons/16/globe.png");
 	public static final Icon HELP = new Icon("../runo/icons/16/help.png");
 	public static final Icon LOCK = new Icon("../runo/icons/16/lock.png");
+	public static final Icon MINUS = new Icon("../icons/16/minus.png");
+	public static final Icon MINUS_SELECTED = new Icon("../icons/16/minus_selected.png");
 	public static final Icon NOTE = new Icon("../runo/icons/16/note.png");
 	public static final Icon OK = new Icon("../runo/icons/16/ok.png");
+	public static final Icon PLUS = new Icon("../icons/16/plus.png");
+	public static final Icon PLUS_SELECTED = new Icon("../icons/16/plus_selected.png");
 	public static final Icon RELOAD = new Icon("../runo/icons/16/reload.png");
 	public static final Icon SETTINGS = new Icon("../runo/icons/16/settings.png");
 	public static final Icon TRASH = new Icon("../runo/icons/16/trash.png");
