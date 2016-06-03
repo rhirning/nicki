@@ -650,5 +650,63 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 		return toJsonObjectBuilder(mapping).build();
 	}
 
+	// TODO only supports flat data
+	@Override
+	public void merge(JsonObject query, AttributeMapper mapping, String... attributes) {
+		DataModel model = getModel();
+		
+		// Delete missing entries which are in attributes list
+		if (attributes != null) {
+			for(String key : attributes) {
+				if (!query.containsKey(key)) {
+					String attributeName;
+					if (mapping != null) {
+						if (mapping.isStrict() && !mapping.hasExternal(key)) {
+							attributeName = null;
+							LOG.error("External '" + key + "' missing in AttributeMapper");
+						} else {
+							attributeName = mapping.toInternal(key);
+						}
+					} else {
+						attributeName = key;
+					}
+
+					put(attributeName, null);
+				}
+			}
+		}
+		
+		
+		for( String key : query.keySet()) {
+			if (attributes == null || attributes.length == 0 || DataHelper.contains(attributes, key)) {
+				String attributeName;
+				if (mapping != null) {
+					if (mapping.isStrict() && !mapping.hasExternal(key)) {
+						attributeName = null;
+						LOG.error("External '" + key + "' missing in AttributeMapper");
+					} else {
+						attributeName = mapping.toInternal(key);
+					}
+				} else {
+					attributeName = key;
+				}
+				
+				DynamicAttribute dynAttribute = model.getDynamicAttribute(attributeName);
+				if (dynAttribute != null) {
+					Class<?> type = dynAttribute.getType();
+					if (type == String.class) {
+						put(attributeName, query.getString(key));
+					} else if (type == Date.class) {
+						put(attributeName, query.getString(key));
+					} else if (type == Boolean.class) {
+						put(attributeName, query.getString(key));
+					} else{
+						put(attributeName, query.getString(key));
+					}
+				}
+			}
+		}
+	}
+
 
 }

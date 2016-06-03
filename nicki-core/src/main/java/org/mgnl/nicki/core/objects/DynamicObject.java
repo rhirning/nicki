@@ -206,4 +206,6 @@ public interface DynamicObject {
 	public JsonObjectBuilder toJsonObjectBuilder(AttributeMapper attributeMapper);
 	public JsonObject toJsonObject(AttributeMapper attributeMapper);
 
+	void merge(JsonObject query, AttributeMapper mapping, String... attributes);
+
 }

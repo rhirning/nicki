@@ -142,7 +142,11 @@ public class DataHelper {
 
 	
 	public static List<String> getList(String data, String separator) {
-		return new ArrayList<String>(Arrays.asList(StringUtils.split(data, separator)));
+		if (StringUtils.isNotBlank(data)) {
+			return new ArrayList<String>(Arrays.asList(StringUtils.split(data, separator)));
+		} else {
+			return new ArrayList<>();
+		}
 	}
 
 	public static Map<String, String> getMap(String data, String entrySeparator, String valueSeparator) {
