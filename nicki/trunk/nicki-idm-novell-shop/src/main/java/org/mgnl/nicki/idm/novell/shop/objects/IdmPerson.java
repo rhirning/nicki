@@ -500,7 +500,13 @@ public class IdmPerson extends Person implements Serializable {
 
 	public enum PERSONTYPE {
 
-		INTERNAL_USER("INTERNAL"), EXTERNAL_USER("EXTERNAL"), FUNCTIONAL_USER("FUNCTIONAL"), SECONDARY_USER("SECONDARY"), ADMIN_USER("ADMINACC"), NOT_SET("");
+		INTERNAL_USER("INTERNAL"),
+		EXTERNAL_USER("EXTERNAL"),
+		FUNCTIONAL_USER("FUNCTIONAL"),
+		SECONDARY_USER("SECONDARY"),
+		PROLIVE_USER("PROLIVE"),
+		ADMIN_USER("ADMINACC"),
+		NOT_SET("");
 		private final String type;
 
 		private PERSONTYPE(String type) {
@@ -520,6 +526,8 @@ public class IdmPerson extends Person implements Serializable {
 				return FUNCTIONAL_USER;
 			} else if (SECONDARY_USER.getValue().equals(type)) {
 				return SECONDARY_USER;
+			} else if (PROLIVE_USER.getValue().equals(type)) {
+				return PROLIVE_USER;
 			} else if (ADMIN_USER.getValue().equals(type)) {
 				return ADMIN_USER;
 			}
@@ -551,6 +559,10 @@ public class IdmPerson extends Person implements Serializable {
 
 	public void setOwner(IdmPerson owner) {
 		put(ATTRIBUTE_OWNER, owner.getId());
+	}
+
+	public void setMail(String mail) {
+		put(ATTRIBUTE_MAIL, mail);
 	}
 
 }
