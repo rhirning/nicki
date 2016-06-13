@@ -9,7 +9,6 @@
 package org.mgnl.nicki.pdf.model.template;
 
 import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
@@ -18,18 +17,19 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for table-row complex type.
+ * <p>Java class for list complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="table-row">
+ * &lt;complexType name="list">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="column" type="{}table-data" maxOccurs="unbounded"/>
+ *         &lt;element name="item" type="{}item" maxOccurs="unbounded"/>
  *       &lt;/sequence>
- *       &lt;attGroup ref="{}font-styling"/>
+ *       &lt;attribute name="ordered" type="{http://www.w3.org/2001/XMLSchema}boolean" />
+ *       &lt;attribute name="symbol" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/restriction>
  *   &lt;/complexContent>
  * &lt;/complexType>
@@ -38,119 +38,93 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "table-row", propOrder = {
-    "column"
+@XmlType(name = "list", propOrder = {
+    "item"
 })
-public class TableRow {
+public class List {
 
     @XmlElement(required = true)
-    protected List<TableData> column;
-    @XmlAttribute(name = "font")
-    protected String font;
-    @XmlAttribute(name = "size")
-    protected Integer size;
-    @XmlAttribute(name = "style")
-    protected String style;
+    protected java.util.List<Item> item;
+    @XmlAttribute(name = "ordered")
+    protected Boolean ordered;
+    @XmlAttribute(name = "symbol")
+    protected String symbol;
 
     /**
-     * Gets the value of the column property.
+     * Gets the value of the item property.
      * 
      * <p>
      * This accessor method returns a reference to the live list,
      * not a snapshot. Therefore any modification you make to the
      * returned list will be present inside the JAXB object.
-     * This is why there is not a <CODE>set</CODE> method for the column property.
+     * This is why there is not a <CODE>set</CODE> method for the item property.
      * 
      * <p>
      * For example, to add a new item, do as follows:
      * <pre>
-     *    getColumn().add(newItem);
+     *    getItem().add(newItem);
      * </pre>
      * 
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link TableData }
+     * {@link Item }
      * 
      * 
      */
-    public List<TableData> getColumn() {
-        if (column == null) {
-            column = new ArrayList<TableData>();
+    public java.util.List<Item> getItem() {
+        if (item == null) {
+            item = new ArrayList<Item>();
         }
-        return this.column;
+        return this.item;
     }
 
     /**
-     * Gets the value of the font property.
+     * Gets the value of the ordered property.
+     * 
+     * @return
+     *     possible object is
+     *     {@link Boolean }
+     *     
+     */
+    public Boolean isOrdered() {
+        return ordered;
+    }
+
+    /**
+     * Sets the value of the ordered property.
+     * 
+     * @param value
+     *     allowed object is
+     *     {@link Boolean }
+     *     
+     */
+    public void setOrdered(Boolean value) {
+        this.ordered = value;
+    }
+
+    /**
+     * Gets the value of the symbol property.
      * 
      * @return
      *     possible object is
      *     {@link String }
      *     
      */
-    public String getFont() {
-        return font;
+    public String getSymbol() {
+        return symbol;
     }
 
     /**
-     * Sets the value of the font property.
+     * Sets the value of the symbol property.
      * 
      * @param value
      *     allowed object is
      *     {@link String }
      *     
      */
-    public void setFont(String value) {
-        this.font = value;
-    }
-
-    /**
-     * Gets the value of the size property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link Integer }
-     *     
-     */
-    public Integer getSize() {
-        return size;
-    }
-
-    /**
-     * Sets the value of the size property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link Integer }
-     *     
-     */
-    public void setSize(Integer value) {
-        this.size = value;
-    }
-
-    /**
-     * Gets the value of the style property.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getStyle() {
-        return style;
-    }
-
-    /**
-     * Sets the value of the style property.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setStyle(String value) {
-        this.style = value;
+    public void setSymbol(String value) {
+        this.symbol = value;
     }
 
 }
