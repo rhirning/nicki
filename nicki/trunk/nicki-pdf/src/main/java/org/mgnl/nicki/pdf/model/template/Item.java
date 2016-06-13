@@ -20,20 +20,18 @@ import javax.xml.bind.annotation.XmlType;
 
 
 /**
- * <p>Java class for data complex type.
+ * <p>Java class for item complex type.
  * 
  * <p>The following schema fragment specifies the expected content contained within this class.
  * 
  * <pre>
- * &lt;complexType name="data">
+ * &lt;complexType name="item">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
- *         &lt;element name="text" type="{}text"/>
- *         &lt;element name="image" type="{}image"/>
- *         &lt;element name="table" type="{}table"/>
- *         &lt;element name="list" type="{}list"/>
- *         &lt;element name="link" type="{}link"/>
+ *         &lt;element name="title" type="{}text"/>
+ *         &lt;element name="text" type="{}text" maxOccurs="unbounded"/>
+ *         &lt;element name="list" type="{}list" maxOccurs="unbounded"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -43,16 +41,14 @@ import javax.xml.bind.annotation.XmlType;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "data", propOrder = {
+@XmlType(name = "item", propOrder = {
     "content"
 })
-public class Data {
+public class Item {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "table", type = JAXBElement.class),
-        @XmlElementRef(name = "image", type = JAXBElement.class),
         @XmlElementRef(name = "text", type = JAXBElement.class),
-        @XmlElementRef(name = "link", type = JAXBElement.class),
+        @XmlElementRef(name = "title", type = JAXBElement.class),
         @XmlElementRef(name = "list", type = JAXBElement.class)
     })
     @XmlMixed
@@ -76,11 +72,9 @@ public class Data {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link Image }{@code >}
-     * {@link JAXBElement }{@code <}{@link Table }{@code >}
+     * {@link JAXBElement }{@code <}{@link Text }{@code >}
      * {@link JAXBElement }{@code <}{@link Text }{@code >}
      * {@link JAXBElement }{@code <}{@link org.mgnl.nicki.pdf.model.template.List }{@code >}
-     * {@link JAXBElement }{@code <}{@link Link }{@code >}
      * {@link String }
      * 
      * 

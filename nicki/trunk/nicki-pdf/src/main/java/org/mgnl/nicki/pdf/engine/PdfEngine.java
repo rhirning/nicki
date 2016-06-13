@@ -106,7 +106,7 @@ public class PdfEngine extends PdfPageEventHelper {
 		Document document = initRenderEnvironment(template, os);
 		
 		document.open();
-		contentRenderer.render(data);
+		contentRenderer.render(document, data);
 		document.close();
 
 
@@ -120,7 +120,7 @@ public class PdfEngine extends PdfPageEventHelper {
 		com.lowagie.text.Document document = new com.lowagie.text.Document();
 		PdfWriter writer = PdfWriter.getInstance(document, os);
 		pageRenderer = new PageRenderer(writer, config);
-		contentRenderer = new ContentRenderer(document, config);
+		contentRenderer = new ContentRenderer(config);
 		writer.setPageEvent(this);
 		
 		document.setPageSize(getSize(template));
