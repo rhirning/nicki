@@ -38,6 +38,7 @@
          <xsd:element name="text" type="text"/>
          <xsd:element name="image" type="image"/>
          <xsd:element name="table" type="table"/>
+         <xsd:element name="list" type="list"/>
          <xsd:element name="link" type="link"/>
        </xsd:sequence>
  </xsd:complexType>
@@ -60,9 +61,18 @@
        <xsd:attribute name="annotation"/>
        <xsd:attribute name="color" type="xsd:string"/>
        <xsd:attribute name="background-color" type="xsd:string"/>
+       <xsd:attribute name="format" type="xsd:string"/>
      </xsd:extension>
    </xsd:simpleContent>
  </xsd:complexType>
+
+  <xsd:complexType name="item" mixed="true">
+    <xsd:sequence>
+      <xsd:element name="title" type="text" maxOccurs="1"/>
+      <xsd:element name="text" type="text" maxOccurs="unbounded"/>
+      <xsd:element name="list" type="list" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
 
   <xsd:complexType name="checkbox">
    <xsd:simpleContent>
@@ -98,6 +108,18 @@
        <xsd:attribute name="background-color" type="xsd:string"/>
      </xsd:extension>
    </xsd:simpleContent>
+ </xsd:complexType>
+ 
+ <xsd:complexType name="list">
+   <xsd:complexContent>
+     <xsd:restriction base="xsd:anyType">
+       <xsd:sequence>
+         <xsd:element name="item" type="item" maxOccurs="unbounded"/>
+       </xsd:sequence>
+       <xsd:attribute name="ordered" type="xsd:boolean"/>
+       <xsd:attribute name="symbol" type="xsd:string"/>
+     </xsd:restriction>
+   </xsd:complexContent>
  </xsd:complexType>
  
  <xsd:complexType name="table">

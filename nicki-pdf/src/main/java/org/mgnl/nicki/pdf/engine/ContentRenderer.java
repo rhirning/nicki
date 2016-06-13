@@ -3,10 +3,11 @@ package org.mgnl.nicki.pdf.engine;
 
 import com.lowagie.text.Anchor;
 import com.lowagie.text.BadElementException;
-import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
+import com.lowagie.text.ElementListener;
 import com.lowagie.text.Font;
+import com.lowagie.text.ListItem;
 import com.lowagie.text.Paragraph;
 import com.lowagie.text.Phrase;
 import com.lowagie.text.Rectangle;
@@ -15,6 +16,8 @@ import com.lowagie.text.pdf.PdfPTable;
 import java.awt.Color;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
+
 import javax.xml.bind.JAXBElement;
 
 import org.apache.commons.lang.StringUtils;
@@ -23,7 +26,9 @@ import org.mgnl.nicki.pdf.configuration.PdfConfiguration;
 import org.mgnl.nicki.pdf.model.template.Checkbox;
 import org.mgnl.nicki.pdf.model.template.Data;
 import org.mgnl.nicki.pdf.model.template.Image;
+import org.mgnl.nicki.pdf.model.template.Item;
 import org.mgnl.nicki.pdf.model.template.Link;
+import org.mgnl.nicki.pdf.model.template.List;
 import org.mgnl.nicki.pdf.model.template.Table;
 import org.mgnl.nicki.pdf.model.template.TableData;
 import org.mgnl.nicki.pdf.model.template.TableRow;
@@ -35,17 +40,15 @@ public class ContentRenderer {
 
 	private static final Logger log = LoggerFactory.getLogger(ContentRenderer.class);
 	private PdfConfiguration config;
-	private Document document;
 	
 	private static final float PADDING_TOP = 2f;
 	private static final float PADDING_BOTTOM = 4f;
 	
-	public ContentRenderer(Document document, PdfConfiguration config) {
-		this.document = document;
+	public ContentRenderer(PdfConfiguration config) {
 		this.config = config;
 	}
 
-	public void render(Data data) throws DocumentException, IOException {
+	public void render(ElementListener parent, Data data) throws DocumentException, IOException {
 		for (Object contentElement : data.getContent()) {
 			if (contentElement instanceof JAXBElement)
 			{
@@ -54,26 +57,146 @@ public class ContentRenderer {
 				
 				if (entry instanceof Image) {
 					log.debug("rendering image to document");
-					render((Image) entry);
+					render(parent, (Image) entry);
 					log.debug("finished rendering image to document");
 				} else if (entry instanceof Table) {
 					log.debug("rendering table to document");
-					render((Table) entry);
+					render(parent, (Table) entry);
 					log.debug("finished rendering table to document");
 				} else if (entry instanceof Text) {
 					log.debug("rendering text to document");
-					render((Text) entry);
+					render(parent, (Text) entry);
 					log.debug("finished rendering text to document");
 				} else if (entry instanceof Link) {
 					log.debug("rendering link to document");
-					render((Link) entry);
+					render(parent, (Link) entry);
+					log.debug("finished rendering link to document");
+				} else if (entry instanceof List) {
+					log.debug("rendering list to document");
+					render(parent, (List) entry);
 					log.debug("finished rendering link to document");
 				}
 			}
 		}
 	}
 
-	public void render(Image image) throws BadElementException, MalformedURLException, IOException, DocumentException {
+	public void render(ElementListener parent, List list) throws BadElementException, MalformedURLException, IOException, DocumentException {
+
+		com.lowagie.text.List pdfList = new com.lowagie.text.List(list.isOrdered() != null && list.isOrdered()? 
+				com.lowagie.text.List.ORDERED:com.lowagie.text.List.UNORDERED);
+		String symbol = list.getSymbol();
+		if (symbol != null) {
+			pdfList.setListSymbol(symbol);
+		}
+		for (Item item : list.getItem()) {
+			render(pdfList, item);
+		}
+
+		parent.add(pdfList);
+	}
+	
+	private void render(com.lowagie.text.List pdfList, Item item) throws DocumentException, IOException {
+		Text title = null;
+		ArrayList<Object> entries = new ArrayList<Object>();
+		for (Object contentElement : item.getContent()) {
+			if (contentElement instanceof JAXBElement) {
+				@SuppressWarnings("rawtypes")
+				JAXBElement entry = (JAXBElement) contentElement;
+
+				if (StringUtils.equals("title", entry.getName().getLocalPart())) {
+					title = (Text) entry.getValue();
+				} else {
+					entries.add(entry.getValue());
+				}
+			}
+		}
+
+		if (title != null) {
+			render(pdfList, title);
+			if (entries.size() > 0) {
+				com.lowagie.text.List subList = new com.lowagie.text.List(com.lowagie.text.List.UNORDERED);
+				//subList.setAutoindent(false);
+				subList.setSymbolIndent(10);
+				subList.setListSymbol("");
+				render(subList, entries);
+				pdfList.add(subList);
+			}
+		} else {
+			render(pdfList, entries);
+		}
+		
+	}
+
+	private void render(com.lowagie.text.List list, ArrayList<Object> entries) throws DocumentException, IOException {
+		for (Object object : entries) {
+			if (object instanceof Text) {
+				Text text = (Text) object;
+				render(list, text);
+			} else if (object instanceof List) {
+				List subList = (List) object;
+				ListItem listItem = new ListItem();
+				render(listItem, subList);
+				list.add(listItem);
+			}
+		}
+	}
+
+	private void render(ListItem listItem, List list) throws DocumentException, IOException {
+		com.lowagie.text.List pdfList = new com.lowagie.text.List(list.isOrdered() != null && list.isOrdered()? 
+				com.lowagie.text.List.ORDERED:com.lowagie.text.List.UNORDERED);
+		String symbol = list.getSymbol();
+		if (symbol != null) {
+			pdfList.setListSymbol(symbol);
+		}
+		for (Item item : list.getItem()) {
+			render(pdfList, item);
+		}
+
+		listItem.add(pdfList);	
+	}
+
+	private void render(com.lowagie.text.List list, Text text) throws DocumentException, IOException {
+		Font f = config.getFont(text.getFont(), text.getSize(), FontStyle.byName(text.getStyle()));
+		if (StringUtils.isNotBlank(text.getColor())) {
+			f.setColor(ContentRenderer.getColor(text.getColor()));
+		}
+		ListItem listItem = new ListItem(correctText(text), f);
+		list.add(listItem);
+	}
+
+	public String correctText(Text text) {
+		if (StringUtils.equals(text.getFormat(), "block")) {
+			StringBuilder sb = new StringBuilder();
+			String[] lines = StringUtils.split(text.getValue(), "\n");
+			for (String line : lines) {
+				String corrected = StringUtils.strip(line);
+				if (StringUtils.isNotBlank(corrected)) {
+					if (sb.length() > 0) {
+						sb.append(" ");
+					}
+					sb.append(corrected);
+				}
+			}
+			return sb.toString();
+		} else if (StringUtils.equals(text.getFormat(), "strip")) {
+			StringBuilder sb = new StringBuilder();
+			String[] lines = StringUtils.split(text.getValue(), "\n");
+			for (String line : lines) {
+				String corrected = StringUtils.strip(line);
+				if (StringUtils.isNotBlank(corrected)) {
+					if (sb.length() > 0) {
+						sb.append("\n");
+					}
+					sb.append(corrected);
+				}
+			}
+			return sb.toString();
+		} else {
+			return text.getValue();
+		}
+	}
+
+	public void render(ElementListener parent, Image image) throws BadElementException, MalformedURLException, IOException, DocumentException {
 		if (image == null) {
 			return;
 		}
@@ -86,25 +209,25 @@ public class ContentRenderer {
 		pdfImage.scaleAbsoluteHeight(config.transform(image.getHeight()));
 		pdfImage.scaleAbsoluteWidth(config.transform(image.getWidth()));
 
-		document.add(pdfImage);
+		parent.add(pdfImage);
 	}
 
-	public void render(Text text) throws BadElementException, MalformedURLException, IOException, DocumentException {
+	public void render(ElementListener parent, Text text) throws BadElementException, MalformedURLException, IOException, DocumentException {
 		Font f = config.getFont(text.getFont(), text.getSize(), FontStyle.byName(text.getStyle()));
 		if (StringUtils.isNotBlank(text.getColor())) {
 			f.setColor(ContentRenderer.getColor(text.getColor()));
 		}
-		Paragraph p = new Paragraph(text.getValue(), f);
-		document.add(p);
+		Paragraph p = new Paragraph(correctText(text), f);
+		parent.add(p);
 	}
 
-	public void render(Link link) throws BadElementException, MalformedURLException, IOException, DocumentException {
+	public void render(ElementListener parent, Link link) throws BadElementException, MalformedURLException, IOException, DocumentException {
 		Anchor a = new Anchor(link.getValue(), config.getFont(link.getFont(), link.getSize(), FontStyle.byName(link.getStyle())));
 		a.setReference(link.getReference());
-		document.add(a);
+		parent.add(a);
 	}
 
-	public void render(Table table) throws DocumentException, IOException {
+	public void render(ElementListener parent, Table table) throws DocumentException, IOException {
 		Color borderColor = getColor(table.getBorderColor());
 		int colCount = 0;
 		try {
@@ -162,7 +285,7 @@ public class ContentRenderer {
 				render(pdfTable, borderColor, f, td);
 			}
 		}
-		document.add(pdfTable);
+		parent.add(pdfTable);
 	}
 	
 
