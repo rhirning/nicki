@@ -46,6 +46,12 @@ import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.jdom.JDOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -150,6 +156,26 @@ public class XmlHelper implements java.io.Serializable {
 
 		return document;
 
+	}
+
+	public static Document getDocumentFromUrl(String url) throws SAXException, IOException, UnsupportedOperationException, ParserConfigurationException {
+		if (StringUtils.isBlank(url)) {
+			return null;
+		}
+		try(CloseableHttpClient httpclient = HttpClients.createDefault()) {
+			HttpGet httpGet = new HttpGet(url);
+			try (CloseableHttpResponse response1 = httpclient.execute(httpGet)) {
+				System.out.println(response1.getStatusLine());
+			    HttpEntity entity1 = response1.getEntity();
+			    // do something useful with the response body
+			    // and ensure it is fully consumed
+//			    EntityUtils.consume(entity1);
+				Document document = null;
+				document = getDocBuilder().parse(entity1.getContent());
+
+				return document;
+			}
+		}
 	}
 
 	private static String getXml(Document doc, Node node) {
