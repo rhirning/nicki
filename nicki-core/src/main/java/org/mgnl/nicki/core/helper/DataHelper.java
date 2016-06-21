@@ -44,6 +44,9 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.json.JsonArray;
+import javax.json.JsonString;
+import javax.json.JsonValue;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -288,6 +291,17 @@ public class DataHelper {
 		return formatDay.parse(stored);
 	}
 
+	
+	public static <T> boolean contains(T[] array, T entry) {
+		for (T t : array) {
+			if (t == entry) {
+				return true;
+			}
+		}
+		return false;
+		
+	}
+
 	public static boolean contains(String[] list, String entry) {
 		for (String listEntry : list) {
 			if (StringUtils.equals(entry, listEntry)) {
@@ -339,5 +353,19 @@ public class DataHelper {
 		} else {
 			return true;
 		}
+	}
+
+	public static Map<String, String> getMap(JsonArray registerInfo, String valueSeparator) {
+		Map<String, String> map = new HashMap<>();
+		if (registerInfo != null) {
+			for (JsonValue jsonValue : registerInfo) {
+				JsonString jsonString = (JsonString) jsonValue;
+				String [] value = StringUtils.split(jsonString.getString(), valueSeparator);
+				if (value != null && value.length == 2) {
+					map.put(value[0], value[1]);
+				}
+			}
+		}
+		return map;
 	}
 }
