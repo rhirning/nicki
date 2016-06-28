@@ -3,6 +3,7 @@ package org.mgnl.nicki.pdf.engine;
 
 import com.lowagie.text.Anchor;
 import com.lowagie.text.BadElementException;
+import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
 import com.lowagie.text.ElementListener;
@@ -23,6 +24,7 @@ import javax.xml.bind.JAXBElement;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.pdf.configuration.FontStyle;
 import org.mgnl.nicki.pdf.configuration.PdfConfiguration;
+import org.mgnl.nicki.pdf.model.template.Break;
 import org.mgnl.nicki.pdf.model.template.Checkbox;
 import org.mgnl.nicki.pdf.model.template.Data;
 import org.mgnl.nicki.pdf.model.template.Image;
@@ -40,6 +42,7 @@ public class ContentRenderer {
 
 	private static final Logger log = LoggerFactory.getLogger(ContentRenderer.class);
 	private PdfConfiguration config;
+	private Document document;
 	
 	private static final float PADDING_TOP = 2f;
 	private static final float PADDING_BOTTOM = 4f;
@@ -74,10 +77,18 @@ public class ContentRenderer {
 				} else if (entry instanceof List) {
 					log.debug("rendering list to document");
 					render(parent, (List) entry);
-					log.debug("finished rendering link to document");
+					log.debug("finished rendering list to document");
+				} else if (entry instanceof Break) {
+					log.debug("rendering break to document");
+					render(parent, (Break) entry);
+					log.debug("finished rendering break to document");
 				}
 			}
 		}
+	}
+
+	private void render(ElementListener parent, Break entry) {
+		this.document.newPage();
 	}
 
 	public void render(ElementListener parent, List list) throws BadElementException, MalformedURLException, IOException, DocumentException {
@@ -452,5 +463,9 @@ public class ContentRenderer {
 		cell.setBackgroundColor(backgroundColor);
 		
 		return cell;
+	}
+
+	public void setDocument(Document document) {
+		this.document =document;
 	}
 }

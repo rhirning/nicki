@@ -159,7 +159,7 @@ public abstract class NickiApplication extends UI {
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			LOG.error("Error", e.getMessage());
 		}
 		return null;
 	}
