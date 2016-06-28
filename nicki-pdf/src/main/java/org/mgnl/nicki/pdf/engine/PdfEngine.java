@@ -104,6 +104,7 @@ public class PdfEngine extends PdfPageEventHelper {
 		Data data = template.getDocument().getData();
 		
 		Document document = initRenderEnvironment(template, os);
+		contentRenderer.setDocument(document);
 		
 		document.open();
 		contentRenderer.render(document, data);

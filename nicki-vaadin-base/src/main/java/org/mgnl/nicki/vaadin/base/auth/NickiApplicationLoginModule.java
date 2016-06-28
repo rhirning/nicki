@@ -30,20 +30,17 @@
  * intact.
  *
  */
-package org.mgnl.nicki.idm.novell.jaas;
+package org.mgnl.nicki.vaadin.base.auth;
 
 import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.NameCallback;
-import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
-import org.mgnl.nicki.core.auth.NickiLoginCallbackHandler;
 import org.mgnl.nicki.core.auth.NickiLoginModule;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 
-public class PortalLoginModule extends NickiLoginModule implements LoginModule {
+public class NickiApplicationLoginModule extends NickiLoginModule implements LoginModule {
 
 	@Override
 	public boolean login() throws LoginException {
@@ -51,22 +48,17 @@ public class PortalLoginModule extends NickiLoginModule implements LoginModule {
 		if (getCallbackHandler() == null)
 			throw new LoginException("Error: no CallbackHandler available "
 					+ "to garner authentication information from the user");
-
-		if (getCallbackHandler() instanceof NickiLoginCallbackHandler) {
-			((NickiLoginCallbackHandler) getCallbackHandler()).setAdapter(new UserAppAdapter());
-		}
 		
 		Callback[] callbacks = new Callback[2];
 
 		try {
-			callbacks[0] = new NameCallback("name");
-			callbacks[1] = new PasswordCallback("password", false);
+			callbacks[0] = new CredentialsCallback();
 			getCallbackHandler().handle(callbacks);
 		} catch (Exception e) {
 			return false;
 		}
-		String username = ((NameCallback) callbacks[0]).getName();
-		String password = new String(((PasswordCallback) callbacks[1]).getPassword());
+		String username = ((CredentialsCallback) callbacks[0]).getName();
+		String password = new String(((CredentialsCallback) callbacks[0]).getPassword());
 		try {
 			setContext((login(new NickiPrincipal(username, password))));
 			setSucceeded(true);

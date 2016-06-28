@@ -39,9 +39,16 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.context.Target;
+import org.mgnl.nicki.core.context.TargetFactory;
+import org.mgnl.nicki.core.objects.DynamicObject;
+
 
 public abstract class NickiLoginModule implements LoginModule {
-
+	
 	// initial state
 	private Subject subject;
 	private CallbackHandler callbackHandler;
@@ -49,7 +56,9 @@ public abstract class NickiLoginModule implements LoginModule {
 	private Map<String, ?> options;
 
 	// configurable option
-	private boolean debug = false;
+	private boolean debug;
+	private String targetName;
+	private boolean useSystemContext;
 
 	// the authentication status
 	private boolean succeeded = false;
@@ -60,14 +69,17 @@ public abstract class NickiLoginModule implements LoginModule {
 	private String password;
 	
 	// Principal
-	private NickiPrincipal userPrincipal;
+	private NickiPrincipal userPrincipal;	
+	private NickiContext context;
 	
 	protected NickiLoginModule() {
 		
 	}
 
+	@Override
 	public abstract boolean login() throws LoginException;
 
+	@Override
 	public void initialize(Subject subject, CallbackHandler callbackHandler,
 			Map<String, ?> sharedState, Map<String, ?> options) {
 
@@ -79,8 +91,28 @@ public abstract class NickiLoginModule implements LoginModule {
 
 		// initialize any configured options
 		debug = "true".equalsIgnoreCase((String) options.get("debug"));
+		targetName = StringUtils.stripToNull((String) options.get("target"));
+	}
+	
+	protected NickiContext login(NickiPrincipal principal) throws InvalidPrincipalException {
+		Target target;
+		if (targetName != null) {
+			target = TargetFactory.getTarget(targetName);
+		} else {
+			target = TargetFactory.getDefaultTarget();
+		}
+		DynamicObject user = target.login(principal);
+		if (user != null) {
+			if (isUseSystemContext()) {
+				return AppContext.getSystemContext(target, user.getPath(), principal.getPassword());
+			} else {
+				return target.getNamedUserContext(user, principal.getPassword());
+			}
+		}
+		throw new InvalidPrincipalException();
 	}
 
+	@Override
 	public boolean commit() throws LoginException {
 		if (succeeded == false) {
 			return false;
@@ -106,6 +138,7 @@ public abstract class NickiLoginModule implements LoginModule {
 		}
 	}
 
+	@Override
 	public boolean abort() throws LoginException {
 		if (succeeded == false) {
 			return false;
@@ -114,6 +147,7 @@ public abstract class NickiLoginModule implements LoginModule {
 			succeeded = false;
 			username = null;
 			userPrincipal = null;
+			context = null;
 		} else {
 			// overall authentication succeeded and commit succeeded,
 			// but someone else's commit failed
@@ -122,6 +156,7 @@ public abstract class NickiLoginModule implements LoginModule {
 		return true;
 	}
 
+	@Override
 	public boolean logout() throws LoginException {
 		subject.getPrincipals().remove(userPrincipal);
 		succeeded = false;
@@ -135,16 +170,8 @@ public abstract class NickiLoginModule implements LoginModule {
 		return callbackHandler;
 	}
 
-	protected void setUsername(String username) {
-		this.username = username;
-	}
-
 	protected void setSucceeded(boolean succeeded) {
 		this.succeeded = succeeded;
-	}
-
-	protected void setPassword(String password) {
-		this.password = password;
 	}
 
 	protected Map<String, ?> getSharedState() {
@@ -157,6 +184,37 @@ public abstract class NickiLoginModule implements LoginModule {
 
 	protected boolean isDebug() {
 		return debug;
+	}
+
+	protected NickiContext getContext() {
+		return context;
+	}
+
+	protected void setContext(NickiContext nickiContext) {
+		this.context = nickiContext;
+	}
+
+	protected NickiPrincipal getUserPrincipal() {
+		return userPrincipal;
+	}
+
+	protected void setUserPrincipal(NickiPrincipal userPrincipal) {
+		this.userPrincipal = userPrincipal;
+		if (userPrincipal != null) {
+			this.username = userPrincipal.getName();
+			this.password = userPrincipal.getPassword();
+		} else {
+			this.username = null;
+			this.password = null;
+		}
+	}
+
+	protected String getTargetName() {
+		return targetName;
+	}
+
+	protected boolean isUseSystemContext() {
+		return useSystemContext;
 	}
 
 }
