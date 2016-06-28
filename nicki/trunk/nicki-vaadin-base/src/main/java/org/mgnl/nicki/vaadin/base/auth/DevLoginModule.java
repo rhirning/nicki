@@ -35,9 +35,7 @@ package org.mgnl.nicki.vaadin.base.auth;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
-import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.NickiLoginModule;
-import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.context.AppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,33 +43,26 @@ import org.slf4j.LoggerFactory;
 public class DevLoginModule extends NickiLoginModule implements LoginModule {
 	private static final Logger LOG = LoggerFactory.getLogger(DevLoginModule.class);
 
+	private String targetName;
 	@Override
 	public boolean login() throws LoginException {
-		// prompt for a user name and password
-		if (getCallbackHandler() == null)
-			throw new LoginException("Error: no CallbackHandler available "
-					+ "to garner authentication information from the user");
-		NickiPrincipal principal = null;
+
 		try {
-			 principal = AppContext.getSystemContext().getPrincipal();
+			if (this.targetName != null) {
+				setContext(AppContext.getSystemContext(this.targetName));
+			}
+			setUserPrincipal(getContext().getPrincipal());
+			setSucceeded(true);
+			return true;
 		} catch (Exception e) {
 			LOG.error("Error", e);
-		}
-		String username = principal.getName();
-		String password = principal.getPassword();
-
-		if (StringUtils.isNotEmpty(username) && StringUtils.isNotEmpty(password)) {
-			setSucceeded(true);
-			setUsername(username);
-			setPassword(password);
-			return true;
-		} else {
-			setSucceeded(false);
-			username = null;
-			password = null;
-			setUsername(username);
-			setPassword(password);
 			return false;
 		}
+	}
+	public String getTargetName() {
+		return targetName;
+	}
+	public void setTargetName(String targetName) {
+		this.targetName = targetName;
 	}
 }

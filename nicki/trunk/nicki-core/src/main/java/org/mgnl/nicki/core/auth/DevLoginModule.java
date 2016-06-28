@@ -30,49 +30,31 @@
  * intact.
  *
  */
-package org.mgnl.nicki.idm.novell.jaas;
+package org.mgnl.nicki.core.auth;
 
-import javax.security.auth.callback.Callback;
-import javax.security.auth.callback.NameCallback;
-import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
-import org.mgnl.nicki.core.auth.InvalidPrincipalException;
-import org.mgnl.nicki.core.auth.NickiLoginCallbackHandler;
 import org.mgnl.nicki.core.auth.NickiLoginModule;
-import org.mgnl.nicki.core.auth.NickiPrincipal;
+import org.mgnl.nicki.core.context.AppContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-public class PortalLoginModule extends NickiLoginModule implements LoginModule {
+public class DevLoginModule extends NickiLoginModule implements LoginModule {
+	private static final Logger LOG = LoggerFactory.getLogger(DevLoginModule.class);
 
 	@Override
 	public boolean login() throws LoginException {
-		// prompt for a user name and password
-		if (getCallbackHandler() == null)
-			throw new LoginException("Error: no CallbackHandler available "
-					+ "to garner authentication information from the user");
-
-		if (getCallbackHandler() instanceof NickiLoginCallbackHandler) {
-			((NickiLoginCallbackHandler) getCallbackHandler()).setAdapter(new UserAppAdapter());
-		}
-		
-		Callback[] callbacks = new Callback[2];
 
 		try {
-			callbacks[0] = new NameCallback("name");
-			callbacks[1] = new PasswordCallback("password", false);
-			getCallbackHandler().handle(callbacks);
-		} catch (Exception e) {
-			return false;
-		}
-		String username = ((NameCallback) callbacks[0]).getName();
-		String password = new String(((PasswordCallback) callbacks[1]).getPassword());
-		try {
-			setContext((login(new NickiPrincipal(username, password))));
+			if (this.getTargetName() != null) {
+				setContext(AppContext.getSystemContext(this.getTargetName()));
+			}
+			setUserPrincipal(getContext().getPrincipal());
 			setSucceeded(true);
 			return true;
-		} catch (InvalidPrincipalException e) {
-			setSucceeded(false);
+		} catch (Exception e) {
+			LOG.error("Error", e);
 			return false;
 		}
 	}
