@@ -216,6 +216,8 @@ public class DataHelper {
 		}
 		return result;
 	}
+	
+	@Deprecated
 	public static String translate(String text, String defaultValue) {
 		String result = text;
 		
@@ -223,22 +225,10 @@ public class DataHelper {
 			Matcher matcher = pattern.matcher(result);
 			if (matcher.find()) {
 				String name = matcher.group(1);
-				String value = System.getenv(name);
+				String value = Environment.getProperty(name);
 				if (StringUtils.isNotBlank(value)) {
 					result = StringUtils.replace(result, "${" + name + "}", value);
 					continue;
-				}
-				// Check JNDI environment
-				try {
-					Context initCtx = new InitialContext();
-					Context envCtx = (Context) initCtx.lookup("java:comp/env");
-					value = (String) envCtx.lookup(name);
-					if (StringUtils.isNotBlank(value)) {
-						result = StringUtils.replace(result, "${" + name + "}", value);
-						continue;
-					}
-				} catch (NamingException e) {
-					e.printStackTrace();
 				}
 				result = StringUtils.replace(result, "${" + name + "}", defaultValue);
 			} else {
@@ -367,5 +357,27 @@ public class DataHelper {
 			}
 		}
 		return map;
+	}
+	
+	public static String normalize(String text, boolean transliterate) {
+		if (text == null) {
+			return null;
+		} else {
+
+			if (transliterate) {
+				text = StringUtils.replace(text, "\u00c4", "AE");
+				text = StringUtils.replace(text, "\u00e4", "ae");
+				text = StringUtils.replace(text, "\u00d6", "OE");
+				text = StringUtils.replace(text, "\u00f6", "oe");
+				text = StringUtils.replace(text, "\u00dc", "UE");
+				text = StringUtils.replace(text, "\u00fc", "ue");
+				text = StringUtils.replace(text, "\u00df", "ss");
+			} else {
+				text = StringUtils.replace(text, "\u00df", "s");
+			}
+			text = java.text.Normalizer.normalize(text,	java.text.Normalizer.Form.NFD);
+			text = text.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
+			return org.apache.commons.lang.StringUtils.lowerCase(text);
+		}
 	}
 }
