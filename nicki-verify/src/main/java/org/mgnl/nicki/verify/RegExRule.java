@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 
 public class RegExRule extends Rule {

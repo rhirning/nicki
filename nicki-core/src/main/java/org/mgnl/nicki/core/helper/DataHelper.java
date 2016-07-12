@@ -47,10 +47,6 @@ import java.util.regex.Pattern;
 import javax.json.JsonArray;
 import javax.json.JsonString;
 import javax.json.JsonValue;
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
