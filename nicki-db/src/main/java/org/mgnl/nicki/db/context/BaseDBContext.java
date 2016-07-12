@@ -824,7 +824,7 @@ public class BaseDBContext
 		} finally {
 			if (!inTransaction) {
 				try {
-					this.rollback();
+					this.commit();
 				} catch (NotInTransactionException e) {
 					;
 				}
@@ -918,20 +918,6 @@ public class BaseDBContext
 			@SuppressWarnings("unchecked")
 			T b = (T) bean.getClass().newInstance();
 			list = loadObjects(b, true, getReloadObjectsWhereClause(bean), null);
-		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		if (list != null && list.size() > 0) {
-			return list.get(0);
-		}
-		return null;
-	}
-
-	private <T> T load(T bean) {
-		List<T> list = null;
-		try {
-			list = loadObjects(bean, true);
 		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
