@@ -96,7 +96,7 @@ public class MainView extends CustomComponent {
 		contentLayout = new VerticalLayout();
 		contentLayout.setImmediate(false);
 		contentLayout.setWidth("100.0%");
-		contentLayout.setHeight("-1");
+		contentLayout.setHeight("100.0%");
 		
 		return contentLayout;
 	}
