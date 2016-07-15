@@ -34,8 +34,6 @@ package org.mgnl.nicki.core.auth;
 
 import javax.security.auth.callback.CallbackHandler;
 
-import org.mgnl.nicki.core.auth.SSOAdapter;
-
 public abstract class NickiLoginCallbackHandler implements CallbackHandler {
 	private Object request;
 	private SSOAdapter adapter;

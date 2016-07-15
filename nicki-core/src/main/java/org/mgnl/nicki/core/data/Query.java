@@ -42,19 +42,19 @@ public interface Query {
 	
 	void addSearchValue(String key, String value);
 	
-	public List<String> getSearchValue(String key);
+	List<String> getSearchValue(String key);
 
-	public Map<String, List<String>> getSearchValues();
+	Map<String, List<String>> getSearchValues();
 	
-	public String getFilter();
+	String getFilter();
 	
-	public String getBaseDN();
+	String getBaseDN();
 
-	public Map<String, String> getResultAttributes();
+	Map<String, String> getResultAttributes();
 
-	public void setResultAttributes(Map<String, String> resultAttributes);
+	void setResultAttributes(Map<String, String> resultAttributes);
 	
-	public void addResultAttribute(String targetName, String displayName);
+	void addResultAttribute(String targetName, String displayName);
 
 
 }

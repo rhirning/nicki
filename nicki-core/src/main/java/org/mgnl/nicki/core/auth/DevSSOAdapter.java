@@ -32,12 +32,9 @@
  */
 package org.mgnl.nicki.core.auth;
 
-import org.mgnl.nicki.core.auth.SSOAdapter;
 import org.mgnl.nicki.core.context.AppContext;;
 
 public class DevSSOAdapter implements SSOAdapter {
-	private Object request;
-
 	public String getName(Object request) {
 		 try {
 			return AppContext.getSystemContext().getPrincipal().getName();
@@ -61,7 +58,6 @@ public class DevSSOAdapter implements SSOAdapter {
 
 	@Override
 	public void init(Object request) {
-		this.request = request;
 	}
 
 }
