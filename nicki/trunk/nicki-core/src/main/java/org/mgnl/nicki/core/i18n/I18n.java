@@ -56,6 +56,7 @@ public class I18n {
 					return texts.getString(key);
 				}
 			} catch (Exception e) {
+				continue;
 			}
 		}
 		return key;

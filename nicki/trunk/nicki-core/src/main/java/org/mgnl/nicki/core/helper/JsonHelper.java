@@ -137,6 +137,7 @@ public class JsonHelper {
 						}
 					}
 				} catch (Exception e) {
+					LOG.debug("Error using " + field.getName());
 				}
 			}
 		}
@@ -235,6 +236,7 @@ public class JsonHelper {
 					builder.add(field.getName(), toJsonObject(value));
 				}
 			} catch (Exception e) {
+				LOG.debug("Error using " + field.getName());
 			}
 		}
 		return builder.build();
@@ -266,7 +268,7 @@ public class JsonHelper {
 			Method method = clazz.getMethod(methodName, field.getType());
 			return method;
 		} catch (NoSuchMethodException | SecurityException e) {
-			;
+			LOG.debug("no setter for " + field.getName() + " in class " + clazz.getName());
 		}
 		/*
 		for (Method method : clazz.getDeclaredMethods()) {
@@ -290,7 +292,7 @@ public class JsonHelper {
 			Method method = clazz.getMethod(methodName, paramClazz);
 			return method;
 		} catch (NoSuchMethodException | SecurityException e) {
-			;
+			LOG.debug("no setter for " + field.getName() + " in class " + clazz.getName());
 		}
 		/*
 		for (Method method : clazz.getDeclaredMethods()) {
@@ -339,7 +341,7 @@ public class JsonHelper {
 		for (Field field : clazz.getDeclaredFields()) {
 			String key = field.getName();
 			if (data.containsKey(key)) {
-				// nothing to do key is correct
+				LOG.debug(key + ":  nothing to do key is correct");
 			} else if (data.containsKey(key.toLowerCase())) {
 				key = key.toLowerCase();
 			} else {

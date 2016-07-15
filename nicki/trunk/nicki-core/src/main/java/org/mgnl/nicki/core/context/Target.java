@@ -44,9 +44,12 @@ import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public class Target implements Serializable {
+	private static final Logger LOG = LoggerFactory.getLogger(Target.class);
 
 	private String targetName;
 	private String propertyBase;
@@ -79,7 +82,7 @@ public class Target implements Serializable {
 
 	@Override
 	public String toString() {
-		StringBuilder sb = new StringBuilder();;
+		StringBuilder sb = new StringBuilder();
 		sb.append("Target [").append(targetName).append("]:");
 		for (String dynamicObjectName : dynamicObjectsMap.keySet()) {
 			sb.append(" ").append(dynamicObjectName).append(":");
@@ -140,7 +143,7 @@ public class Target implements Serializable {
 			try {
 				return findDynamicObject(classDefinition);
 			} catch (Exception e1) {
-				// not found, so create a new one
+				LOG.debug(classDefinition.getName() + " not found, so create a new one");
 			}
 			try {
 				dynamicObject = classDefinition.newInstance();

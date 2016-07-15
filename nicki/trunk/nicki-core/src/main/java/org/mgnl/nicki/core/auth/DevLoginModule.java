@@ -35,7 +35,6 @@ package org.mgnl.nicki.core.auth;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
-import org.mgnl.nicki.core.auth.NickiLoginModule;
 import org.mgnl.nicki.core.context.AppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
