@@ -37,9 +37,7 @@ import java.util.Map;
 
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
-import org.mgnl.nicki.core.context.Context;
 import org.mgnl.nicki.core.context.NickiContext.READONLY;
-import org.mgnl.nicki.core.context.ThreadContext;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
 public class AppContext {
@@ -75,12 +73,12 @@ public class AppContext {
 	}
 	public static NickiContext getSystemContext(Target target, String username, String password) throws InvalidPrincipalException {
 		DynamicObject user = target.login(new NickiPrincipal(username, password));
-		return getSystemContext(target, user, READONLY.FALSE);
+		return getSystemContext(target, user);
 	}
 
 	public static NickiContext getSystemContext(String username, String password) throws InvalidPrincipalException {
 		DynamicObject user = TargetFactory.getDefaultTarget().login(new NickiPrincipal(username, password));
-		return getSystemContext(TargetFactory.getDefaultTarget(), user, READONLY.FALSE);
+		return getSystemContext(TargetFactory.getDefaultTarget(), user);
 	}
 
 	public static NickiContext getSystemContext() throws InvalidPrincipalException {
@@ -93,10 +91,10 @@ public class AppContext {
 				target.getProperty("securityCredentials"));
 		DynamicObject user = target.login(new NickiPrincipal(target.getProperty("securityPrincipal"),
 				target.getProperty("securityCredentials")));
-		return getSystemContext(target, user, READONLY.TRUE);
+		return getSystemContext(target, user);
 	}
 
-	private static NickiContext getSystemContext(Target target, DynamicObject user, READONLY readonly) throws InvalidPrincipalException {
+	private static NickiContext getSystemContext(Target target, DynamicObject user) throws InvalidPrincipalException {
 		if (target != null && user != null) {
 			return target.getSystemContext(user);
 		}

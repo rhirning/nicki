@@ -97,11 +97,9 @@ public class XMLBuilder {
 						for (Object objectValue : values) {
 							String value =  (String) objectValue;
 							Element valueNode = new Element("value");
-							if (dynamicAttribute.isForeignKey()) {
-								if (StringUtils.endsWith(value, this.path)) {
-									valueNode.setAttribute("internalLink", "true");
-									value = StringUtils.substringBeforeLast(value, "," + this.path);
-								}
+							if (dynamicAttribute.isForeignKey() && StringUtils.endsWith(value, this.path)) {
+								valueNode.setAttribute("internalLink", "true");
+								value = StringUtils.substringBeforeLast(value, "," + this.path);
 							}
 							valueNode.addContent(getText(value));
 							valuesNode.addContent(valueNode);
@@ -112,11 +110,9 @@ public class XMLBuilder {
 					if (StringUtils.isNotEmpty(value)) {
 						newNode.addContent(attributeNode);
 						Element valueNode = new Element("value");
-						if (dynamicAttribute.isForeignKey()) {
-							if (StringUtils.endsWith(value, this.path)) {
-								valueNode.setAttribute("internalLink", "true");
-								value = StringUtils.substringBeforeLast(value, "," + this.path);
-							}
+						if (dynamicAttribute.isForeignKey() && StringUtils.endsWith(value, this.path)) {
+							valueNode.setAttribute("internalLink", "true");
+							value = StringUtils.substringBeforeLast(value, "," + this.path);
 						}
 						valueNode.addContent(getText(value));
 						attributeNode.addContent(valueNode);

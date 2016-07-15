@@ -56,7 +56,6 @@ import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.methods.ChildrenMethod;
 import org.mgnl.nicki.core.methods.StructuredData;
-import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -100,7 +99,7 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 	}
 	
 	public boolean isNew() {
-		return (this.status == STATUS.NEW);
+		return this.status == STATUS.NEW;
 	}
 	
 	public boolean isComplete() {

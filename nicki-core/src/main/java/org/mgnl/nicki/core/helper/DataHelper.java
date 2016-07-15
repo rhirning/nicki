@@ -80,6 +80,7 @@ public class DataHelper {
 			try {
 				return Integer.parseInt(stringValue);
 			} catch (Exception e) {
+				LOG.debug("Error parsing " + stringValue);
 			}
 		}
 		return defaultValue;
@@ -373,7 +374,7 @@ public class DataHelper {
 			}
 			text = java.text.Normalizer.normalize(text,	java.text.Normalizer.Form.NFD);
 			text = text.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
-			return org.apache.commons.lang.StringUtils.lowerCase(text);
+			return StringUtils.lowerCase(text);
 		}
 	}
 }

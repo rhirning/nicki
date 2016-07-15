@@ -81,7 +81,7 @@ public class Config {
 					if (StringUtils.isNotEmpty(configPath)) {
 						addProperties(configPath);
 					}
-				};
+				}
 				
 			}
 		}
@@ -97,6 +97,7 @@ public class Config {
 				this.properties.add(props);
 			}
 		} catch (Exception e) {
+			LOG.error("Error reading properties at " + configPath);
 			//this.openProperties.add(configPath);
 		}
 	}
@@ -121,7 +122,7 @@ public class Config {
 							LOG.error("Error", e);
 						}
 					}
-				};
+				}
 				
 			}
 		}

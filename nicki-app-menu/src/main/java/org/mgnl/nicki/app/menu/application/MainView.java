@@ -55,7 +55,7 @@ public class MainView extends CustomComponent {
 //		navigation = new ButtonNavigation(this);
 		hsplit.setFirstComponent(navigation);
 		contentLayout = buildContentLayout();
-		hsplit.setSecondComponent(contentLayout);;
+		hsplit.setSecondComponent(contentLayout);
 
 	}
 
