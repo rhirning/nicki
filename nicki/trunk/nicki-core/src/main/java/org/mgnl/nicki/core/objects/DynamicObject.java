@@ -42,152 +42,152 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.helper.AttributeMapper;
 
 public interface DynamicObject {
-	public static final String ATTRIBUTE_NAME = "name";
-	public static final String SEPARATOR = "/";
+	static final String ATTRIBUTE_NAME = "name";
+	static final String SEPARATOR = "/";
 
-	public enum STATUS {
+	enum STATUS {
 		NEW,	// does not exist in target
 		EXISTS,	// exists in target, but is not loaded  
 		LOADED	// exists in target and is loaded
 	}; 
 
-//	public void initNew(String parentPath, String namingValue);
+//	void initNew(String parentPath, String namingValue);
 	
-	public String getNamingValue();
+	String getNamingValue();
 
-	public String getParentPath();
+	String getParentPath();
 
-//	public void initExisting(NickiContext context, String path);
+//	void initExisting(NickiContext context, String path);
 	
-//	public void init(ContextSearchResult rs) throws DynamicObjectException;
+//	void init(ContextSearchResult rs) throws DynamicObjectException;
 	
 //	private void init();
 	
-	public boolean isNew();
+	boolean isNew();
 	
-	public boolean isComplete();
+	boolean isComplete();
 
-	public boolean attributeIsNotEmpty(String namingAttribute) ;
+	boolean attributeIsNotEmpty(String namingAttribute) ;
 
-	public String getPath();
+	String getPath();
 
-	public String getId();
+	String getId();
 	
-	public DataModel getModel();
+	DataModel getModel();
 
-	public void setModel(DataModel model);
+	void setModel(DataModel model);
 
 	/*
 	private boolean checkAttribute(ContextSearchResult rs, String attribute,
 			String value);
 	*/
-	public void initDataModel();
+	void initDataModel();
 
-	public <T extends DynamicObject> T getForeignKeyObject(Class<T> classDefinition, String key);
+	<T extends DynamicObject> T getForeignKeyObject(Class<T> classDefinition, String key);
 
-	public <T extends DynamicObject> Collection<T> getForeignKeyObjects(Class<T> classDefinition, String key);
+	<T extends DynamicObject> Collection<T> getForeignKeyObjects(Class<T> classDefinition, String key);
 
-	public void loadChildren();
+	void loadChildren();
 	
-	public void unLoadChildren();
+	void unLoadChildren();
 		
-	public Collection<? extends DynamicObject> getAllChildren();
+	Collection<? extends DynamicObject> getAllChildren();
 
-	public <T extends DynamicObject> Collection<T>  getChildren(Class<T> classDefinition);
+	<T extends DynamicObject> Collection<T>  getChildren(Class<T> classDefinition);
 
-	public void addChild(String attribute, ChildFilter filter);
+	void addChild(String attribute, ChildFilter filter);
 	
-	public String getAttribute(String attributeName);
+	String getAttribute(String attributeName);
 
-	public Object get(String key);
+	Object get(String key);
 	
-	public Object get(Class<?> clazz, String key);
+	Object get(Class<?> clazz, String key);
 	
-	public void put(String key, Object value);
+	void put(String key, Object value);
 	
-	public void put(Class<?> clazz, String key, Object data);
+	void put(Class<?> clazz, String key, Object data);
 	
-	public void listen(String key, Object value, Object oldValue);
+	void listen(String key, Object value, Object oldValue);
 
-	public void remove(String key);
+	void remove(String key);
 
-	public void setOriginal(DynamicObject original);
+	void setOriginal(DynamicObject original);
 
 	// Schema
 	
 	
-	public void addObjectClass(String objectClass);
+	void addObjectClass(String objectClass);
 	
-	public void addAdditionalObjectClass(String objectClass);
+	void addAdditionalObjectClass(String objectClass);
 	
-	public void copyFrom(DynamicObject object);
+	void copyFrom(DynamicObject object);
 	
-	public String getName();
+	String getName();
 	
-	public void update() throws DynamicObjectException;
+	void update() throws DynamicObjectException;
 	
 	void update(String... attributeNames) throws DynamicObjectException;
 	
-	public DynamicObject create() throws DynamicObjectException;
+	DynamicObject create() throws DynamicObjectException;
 
-	public void delete() throws DynamicObjectException;
+	void delete() throws DynamicObjectException;
 
-	public DynamicObject rename(String newName) throws DynamicObjectException;
+	DynamicObject rename(String newName) throws DynamicObjectException;
 
-	public DynamicObject move(String newPath) throws DynamicObjectException;
+	DynamicObject move(String newPath) throws DynamicObjectException;
 
-	public DynamicAttribute getDynamicAttribute(String name);
+	DynamicAttribute getDynamicAttribute(String name);
 
-	public String getSlashPath(DynamicObject parent);
+	String getSlashPath(DynamicObject parent);
 
-	public String getSlashPath(String parentPath);
+	String getSlashPath(String parentPath);
 
-	public DynamicObject getParent();
+	DynamicObject getParent();
 
-	public <T extends DynamicObject> T getParent(Class<T> classDefinition);
+	<T extends DynamicObject> T getParent(Class<T> classDefinition);
 
-	public <T extends DynamicAttribute >void addAttribute(T dynAttribute);
+	<T extends DynamicAttribute >void addAttribute(T dynAttribute);
 
-	public void removeAttribute(String attributeName);
+	void removeAttribute(String attributeName);
 	
-	public void removeAdditionalObjectClass(String objectClass);
+	void removeAdditionalObjectClass(String objectClass);
 	
-	public void removeObjectClass(String objectClass);
+	void removeObjectClass(String objectClass);
 
-	public void setContext(NickiContext context);
+	void setContext(NickiContext context);
 
-	public NickiContext getContext();
+	NickiContext getContext();
 
-	public void merge(Map<DynamicAttribute, Object> changeAttributes);
+	void merge(Map<DynamicAttribute, Object> changeAttributes);
 	
-	public String getDisplayName();
+	String getDisplayName();
 
 	@Override
-	public boolean equals(Object obj);
+	boolean equals(Object obj);
 
 	@Override
-	public int hashCode();
+	int hashCode();
 
-	public String getInfo(String xml, String infoPath);
+	String getInfo(String xml, String infoPath);
 	
-	public String getLocalizedValue(String attributeName, String locale);
+	String getLocalizedValue(String attributeName, String locale);
 	
-	public String toString();
+	String toString();
 
-	public <T extends DynamicObject> T getWritable();
+	<T extends DynamicObject> T getWritable();
 
-	public <T extends DynamicObject> T getAs(Class<T> classDefinition,
+	<T extends DynamicObject> T getAs(Class<T> classDefinition,
 			DynamicObject dynamicObject);
 
-	public void clear(String key);
+	void clear(String key);
 
-	public boolean isModified();
+	boolean isModified();
 
-	public void setModified(boolean modified);
+	void setModified(boolean modified);
 	
-	public Map<String, Object> getMap();
+	Map<String, Object> getMap();
 	
-	public STATUS getStatus();
+	STATUS getStatus();
 
 	String getPath(String parentPath, String name);
 	
@@ -197,14 +197,14 @@ public interface DynamicObject {
 
 	void init(ContextSearchResult rs) throws DynamicObjectException;
 
-	public void setStatus(STATUS new1);
+	void setStatus(STATUS new1);
 
-	public void setParentPath(String parentPath);
+	void setParentPath(String parentPath);
 
-	public void setPath(String path);
+	void setPath(String path);
 	
-	public JsonObjectBuilder toJsonObjectBuilder(AttributeMapper attributeMapper);
-	public JsonObject toJsonObject(AttributeMapper attributeMapper);
+	JsonObjectBuilder toJsonObjectBuilder(AttributeMapper attributeMapper);
+	JsonObject toJsonObject(AttributeMapper attributeMapper);
 
 	void merge(JsonObject query, AttributeMapper mapping, String... attributes);
 

@@ -44,13 +44,9 @@ import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.BasicAttributes;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
-import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicReference;
-import org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY;
 
 @SuppressWarnings("serial")
 public class DataModel implements Serializable {
@@ -276,7 +272,7 @@ public class DataModel implements Serializable {
 	
 	public boolean childrenAllowed() {
 		try {
-			return (getChildren().keySet().size() > 0);
+			return getChildren().keySet().size() > 0;
 		} catch (Exception e) {
 			return false;
 		}
@@ -328,7 +324,7 @@ public class DataModel implements Serializable {
 		 *  - new: unique
 		**/
 		// path must exist
-		complete &= (StringUtils.isNotEmpty(dynamicObject.getPath()));
+		complete &= StringUtils.isNotEmpty(dynamicObject.getPath());
 
 		// parent must exist
 		complete &= dynamicObject.getContext().isExist(dynamicObject.getParentPath());
