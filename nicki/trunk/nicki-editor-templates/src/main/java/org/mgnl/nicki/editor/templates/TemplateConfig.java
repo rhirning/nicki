@@ -240,10 +240,8 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 			@Override
 			public InputStream getStream() {
 				StreamSource xlsStreamSource = null;
-				if (isComplete()) {
-					if (template.hasPart("xls")) {
-						xlsStreamSource = new XlsStreamSource(template, template.getContext(), params);
-					}
+				if (isComplete() && template.hasPart("xls")) {
+					xlsStreamSource = new XlsStreamSource(template, template.getContext(), params);
 				}
 				if (xlsStreamSource != null) {
 					return xlsStreamSource.getStream();

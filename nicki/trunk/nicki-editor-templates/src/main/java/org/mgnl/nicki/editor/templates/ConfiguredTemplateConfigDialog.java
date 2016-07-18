@@ -90,7 +90,7 @@ public class ConfiguredTemplateConfigDialog extends CustomComponent implements T
 						field.setInvalidAllowed(false);
 						mainLayout.addComponent(field);
 						DateHelper.init(field);
-						field.addValueChangeListener(new ParamInputListener(field, templateParameter.getName(), params, templateConfig));
+						field.addValueChangeListener(new ParamInputListener(templateParameter.getName(), params, templateConfig));
 					} else if (StringUtils.equalsIgnoreCase("string", templateParameter.getDataType())) {
 						TextField field = new TextField();
 						field.setCaption(templateParameter.getDisplayName());
@@ -99,7 +99,7 @@ public class ConfiguredTemplateConfigDialog extends CustomComponent implements T
 						field.setHeight("-1px");
 						field.setInvalidAllowed(false);
 						mainLayout.addComponent(field);
-						field.addValueChangeListener(new ParamInputListener(field, templateParameter.getName(), params, templateConfig));
+						field.addValueChangeListener(new ParamInputListener(templateParameter.getName(), params, templateConfig));
 					} else if (StringUtils.equalsIgnoreCase("static", templateParameter.getDataType())) {
 						params.put(templateParameter.getName(), templateParameter.getValue());
 					}

@@ -5,15 +5,12 @@ import java.util.Map;
 
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 // val					= values:value1,value2,value3
 
 @SuppressWarnings("serial")
 public class ValuesRule extends Rule {
 	static final public String SEPARATOR = ",";
-	private static Logger LOG = LoggerFactory.getLogger(ValuesRule.class);
 	private List<String> allowedValues;
 
 	public ValuesRule(String parameter) {

@@ -185,10 +185,8 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 
 
 	public void save() throws DynamicObjectException, NamingException {
-		if (template.isComplete()) {
-			if (!template.isNew()) {
-				template.update();
-			}
+		if (template.isComplete() && !template.isNew()) {
+			template.update();
 		}
 	}
 	
