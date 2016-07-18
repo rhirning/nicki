@@ -161,7 +161,7 @@ public class LdapSearchGroupWrapper {
 		Date today = new Date();
 		Date then = (Date) today.clone();
 
-		if (StringUtils.isBlank(str) || (!(StringUtils.startsWith(str, "+")) && !(StringUtils.startsWith(str, "-")))) {
+		if (StringUtils.isBlank(str) || (!StringUtils.startsWith(str, "+") && !StringUtils.startsWith(str, "-"))) {
 			return today;
 		}
 

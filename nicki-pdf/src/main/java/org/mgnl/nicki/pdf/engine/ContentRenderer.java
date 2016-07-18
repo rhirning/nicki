@@ -319,7 +319,7 @@ public class ContentRenderer {
 					LOG.debug("finished rendering text to document");
 				} else if (entry instanceof Link) {
 					LOG.debug("rendering link to document");
-					render(pdfTable, borderColor, f, (Link) entry);
+					render(pdfTable, borderColor, (Link) entry);
 					LOG.debug("finished rendering link to document");
 				} else if (entry instanceof Checkbox) {
 					LOG.debug("rendering link to document");
@@ -425,7 +425,7 @@ public class ContentRenderer {
 		pdfTable.addCell(cell);
 	}
 	
-	private void render(PdfPTable pdfTable, Color borderColor, Font f, Link link) throws DocumentException, IOException {
+	private void render(PdfPTable pdfTable, Color borderColor, Link link) throws DocumentException, IOException {
 		Anchor a = new Anchor(link.getValue(), config.getFont(link.getFont(), link.getSize(), FontStyle.byName(link.getStyle())));
 		a.setReference(link.getReference());
 		Color backgroundColor = getColor(link.getBackgroundColor());

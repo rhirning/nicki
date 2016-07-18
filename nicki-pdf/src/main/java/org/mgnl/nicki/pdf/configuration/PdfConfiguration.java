@@ -133,11 +133,11 @@ public class PdfConfiguration {
 	}
 
 	public float transform(float value) {
-		return (value / PdfConfiguration.MM_PER_USER_UNIT);
+		return value / PdfConfiguration.MM_PER_USER_UNIT;
 	}
 
 	public float unTransform(float value) {
-		return (value * PdfConfiguration.MM_PER_USER_UNIT);
+		return value * PdfConfiguration.MM_PER_USER_UNIT;
 	}
 	
 	public Image getImage(String relativePath) {

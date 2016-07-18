@@ -33,6 +33,8 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
 import java.util.HashMap;
+import java.util.List;
+
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
@@ -47,18 +49,14 @@ import org.mgnl.nicki.core.objects.BaseDynamicObject;
 @DynamicObject
 @ObjectClass("dynamicGroup")
 public class LdapSearchGroup extends BaseDynamicObject {
+	public static final String ATTRIBUTE_MEMBER = "member";
+	public static final String ATTRIBUTE_MEMBER_QUERY = "memberQuery";
 
 	@DynamicAttribute(externalName="cn", naming=true)
 	public String getName() {
 		return super.getName();
 	}
 	
-	@DynamicAttribute(externalName="member", readonly=true, foreignKey=Person.class)
-	private String[] member;
-	
-	@DynamicAttribute(externalName="memberQueryURL")
-	private String query;
-
 	public enum SEARCHSCOPE {
 
 		SUBORDINATES("base"),
@@ -104,6 +102,12 @@ public class LdapSearchGroup extends BaseDynamicObject {
 			initialized = true;
 		}
 	}
+		
+    @SuppressWarnings("unchecked")
+	@DynamicAttribute(externalName = "member", readonly=true, foreignKey=Person.class)
+    public List<String> getMember() {
+    	return (List<String>) get(ATTRIBUTE_MEMBER);
+    }
 
 	private void reload() {
 		String memberQuery = (String) get("query");
@@ -156,5 +160,14 @@ public class LdapSearchGroup extends BaseDynamicObject {
 	public String getSearchRoot() {
 		load();
 		return searchRoot;
+	}
+
+	@DynamicAttribute(externalName="memberQueryURL")
+	public String getMemberQuery() {
+		return getAttribute("memberQuery");
+	}
+
+	public void setMemberQuery(String memberQuery) {
+		this.put("memberQuery", memberQuery);
 	}
 }
