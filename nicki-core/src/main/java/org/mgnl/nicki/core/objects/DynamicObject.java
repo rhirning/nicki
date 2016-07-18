@@ -42,8 +42,8 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.helper.AttributeMapper;
 
 public interface DynamicObject {
-	static final String ATTRIBUTE_NAME = "name";
-	static final String SEPARATOR = "/";
+	String ATTRIBUTE_NAME = "name";
+	String SEPARATOR = "/";
 
 	enum STATUS {
 		NEW,	// does not exist in target

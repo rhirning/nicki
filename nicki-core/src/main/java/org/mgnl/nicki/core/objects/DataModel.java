@@ -47,9 +47,12 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public class DataModel implements Serializable {
+	private static final Logger LOG = LoggerFactory.getLogger(DataModel.class);
 
 	private Map<String, DynamicAttribute> attributes = new HashMap<String, DynamicAttribute>();
 	private List<String> objectClasses = new ArrayList<String>();
@@ -185,7 +188,11 @@ public class DataModel implements Serializable {
 							}
 						}
 					}
+				} else {
+					LOG.debug("ignore attribute (naming or multiple or readonly): " + dynAttribute.getName());
 				}
+			} else {
+				LOG.debug("ignore attribute: " + dynAttribute.getName());
 			}
 		}
 		
@@ -223,7 +230,11 @@ public class DataModel implements Serializable {
 							}
 						}
 					}
+				} else {
+					LOG.debug("ignore attribute (not multiple or readonly): " + dynAttribute.getName());
 				}
+			} else {
+				LOG.debug("ignore attribute: " + dynAttribute.getName());
 			}
 		}
 		
@@ -240,6 +251,8 @@ public class DataModel implements Serializable {
 					if (value != null) {
 						map.put(dynAttribute, value);
 					}
+				} else {
+					LOG.debug("unsupported type: " + dynAttribute.getType());
 				}
 			}
 		}
@@ -254,6 +267,8 @@ public class DataModel implements Serializable {
 					if (list != null && list.size() > 0) {
 						map.put(dynAttribute, list);
 					}
+				} else {
+					LOG.debug("unsupported type: " + dynAttribute.getType());
 				}
 			}
 		}
