@@ -108,6 +108,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 				login(user, password);
 				return user;
 			} catch (Exception e) {
+				LOG.error("Error", e);
 			}
 		}
 		return null;
@@ -115,6 +116,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	// TODO: implement login mechanism
 	private void login(DynamicObject user, String password) {
+		LOG.error("not implemented");
 	}
 
 	@Override
@@ -147,8 +149,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	// TODO implement
 	private void updateNode(Node node, DynamicObject dynamicObject) {
-
-		
+		LOG.error("not implemented");
 	}
 
 	public List<DynamicObject> search(JcrQueryHandler queryHandler) throws DynamicObjectException {
@@ -287,10 +288,9 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 		for (NodeIterator nodes = queryResult.getNodes(); nodes.hasNext();) {
 			  Node node = nodes.nextNode();
 			  DynamicObject dynamicObject = getDynamicObject(node);
-			  if (dynamicObject != null) {
-				  if (classDefinition == null ||classDefinition.isAssignableFrom(dynamicObject.getClass())) {
-					  list.add((T) dynamicObject);
-				  }
+			  if (dynamicObject != null
+					  && (classDefinition == null ||classDefinition.isAssignableFrom(dynamicObject.getClass()))) {
+				  list.add((T) dynamicObject);
 			  }
 		}
 		return list;
@@ -338,10 +338,9 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 			for (NodeIterator nodes = parent.getNodes(); nodes.hasNext();) {
 				  Node node = nodes.nextNode();
 				  DynamicObject dynamicObject = getDynamicObject(node);
-				  if (dynamicObject != null) {
-					  if (classDefinition == null ||classDefinition.isAssignableFrom(dynamicObject.getClass())) {
-						  list.add((T) dynamicObject);
-					  }
+				  if (dynamicObject != null
+						  && (classDefinition == null ||classDefinition.isAssignableFrom(dynamicObject.getClass()))) {
+					  list.add((T) dynamicObject);
 				  }
 			}
 		} catch (Exception e) {
@@ -357,6 +356,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 			DynamicObject dynamicObject = loadObject(path);
 			return (T) dynamicObject;
 		} catch (Exception e) {
+			LOG.error("Error", e);
 		}
 		return null;
 	}
@@ -405,6 +405,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 		try {
 			return session.itemExists(dn);
 		} catch (Exception e) {
+			LOG.error("Error", e);
 		}
 		return false;
 	}
