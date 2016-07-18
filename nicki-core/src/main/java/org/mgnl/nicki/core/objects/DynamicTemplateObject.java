@@ -35,8 +35,6 @@ package org.mgnl.nicki.core.objects;
 import java.util.List;
 
 import org.mgnl.nicki.core.methods.ChildrenMethod;
-import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 
 import freemarker.template.TemplateMethodModel;
