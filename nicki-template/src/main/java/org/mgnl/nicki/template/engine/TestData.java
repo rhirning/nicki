@@ -47,12 +47,10 @@ public class TestData {
 			for (String value : testData) {
 				String name = StringUtils.substringBefore(value, SEPARATOR);
 				String data = StringUtils.substringAfter(value, SEPARATOR);
-				if (StringUtils.equals(name, "target")) {
-					if (StringUtils.isNotEmpty(data)) {
-						Target t = TargetFactory.getTarget(data);
-						if (t != null) {
-							return t;
-						}
+				if (StringUtils.equals(name, "target") && StringUtils.isNotEmpty(data)) {
+					Target t = TargetFactory.getTarget(data);
+					if (t != null) {
+						return t;
 					}
 				}
 			}

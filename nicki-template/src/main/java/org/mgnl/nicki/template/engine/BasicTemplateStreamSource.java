@@ -56,11 +56,9 @@ public class BasicTemplateStreamSource {
 			if (template.hasPart("pdf")) {
 				templatePath += ".pdf.ftl";
 			}
-		} else if (type == TYPE.XLS) {
-			if (template.hasPart("xls")) {
-				templatePath += ".xls.ftl";
-			}
-		};
+		} else if (type == TYPE.XLS && template.hasPart("xls")) {
+			templatePath += ".xls.ftl";
+		}
 		if (StringUtils.contains(templatePath, "_")) {
 			templatePath = StringUtils.substringBefore(templatePath, "_");
 		}

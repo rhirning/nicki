@@ -36,7 +36,6 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.XsltRenderer;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.core.context.AppContext;
-import org.mgnl.nicki.template.engine.ConfigurationFactory;
 import org.mgnl.nicki.template.engine.ConfigurationFactory.TYPE;
 import org.mgnl.nicki.template.handler.TemplateHandler;
 import org.mgnl.nicki.template.pdf.PdfTemplateRenderer;
