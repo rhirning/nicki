@@ -8,12 +8,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.mgnl.nicki.xls.model.template.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class XlsTemplate {
 
-	private static final Logger log = LoggerFactory.getLogger(XlsTemplate.class);
 	private Document document = null;
 
 	public XlsTemplate(String templateContent) throws JAXBException {

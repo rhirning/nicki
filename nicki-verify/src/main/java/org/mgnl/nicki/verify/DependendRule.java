@@ -8,14 +8,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 // val					= dependend:confirmationType!!MAIL=min:1!max=14!!MOBILE=min:2!max:16!!
 
 @SuppressWarnings("serial")
 public class DependendRule extends Rule {
-	private static Logger LOG = LoggerFactory.getLogger(DependendRule.class);
 	private String attributName;
 	private Map<String, List<String>> rulesMap = new HashMap<>();
 	
