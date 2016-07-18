@@ -62,11 +62,9 @@ public class BaseDBContext
 
 		try {
 			PrimaryKey primaryKey = this._create(bean);
-			if (this.hasSubs(bean.getClass())) {
-				if (primaryKey != null) {
-					for (Object sub : this.getSubs(bean, primaryKey)) {
-						this.create(sub);
-					}
+			if (this.hasSubs(bean.getClass()) && primaryKey != null) {
+				for (Object sub : this.getSubs(bean, primaryKey)) {
+					this.create(sub);
 				}
 			}
 
@@ -74,7 +72,7 @@ public class BaseDBContext
 				try {
 					this.commit();
 				} catch (NotInTransactionException e) {
-					;
+					LOG.error("Error on commit", e);
 				}
 			}
 			//return this.load(bean);
@@ -83,7 +81,7 @@ public class BaseDBContext
 				try {
 					this.rollback();
 				} catch (NotInTransactionException e) {
-					;
+					LOG.error("Error on rollback", e);
 				}
 			}
 		}
@@ -165,7 +163,7 @@ public class BaseDBContext
 				try {
 					this.rollback();
 				} catch (NotInTransactionException e) {
-					;
+					LOG.error("Error on rollback", e);
 				}
 			}
 		}
@@ -226,7 +224,7 @@ public class BaseDBContext
 				try {
 					this.rollback();
 				} catch (NotInTransactionException e) {
-					;
+					LOG.error("Error on rollback", e);
 				}
 			}
 		}
@@ -260,7 +258,7 @@ public class BaseDBContext
 				try {
 					this.rollback();
 				} catch (NotInTransactionException e) {
-					;
+					LOG.error("Error on rollback", e);
 				}
 			}
 		}
@@ -694,7 +692,7 @@ public class BaseDBContext
 						try {
 							this.commit();
 						} catch (NotInTransactionException e) {
-							;
+							LOG.error("Error on commit", e);
 						}
 					}
 				} catch (NothingToDoException e) {
@@ -707,7 +705,7 @@ public class BaseDBContext
 				try {
 					this.rollback();
 				} catch (NotInTransactionException e) {
-					;
+					LOG.error("Error on rollnback", e);
 				}
 			}
 		}
@@ -730,7 +728,7 @@ public class BaseDBContext
 					try {
 						this.commit();
 					} catch (NotInTransactionException e) {
-						;
+						LOG.error("Error on commit", e);
 					}
 				}
 			}
@@ -739,7 +737,7 @@ public class BaseDBContext
 				try {
 					this.rollback();
 				} catch (NotInTransactionException e) {
-					;
+					LOG.error("Error on rollback", e);
 				}
 			}
 		}
@@ -765,7 +763,7 @@ public class BaseDBContext
 						try {
 							this.commit();
 						} catch (NotInTransactionException e) {
-							;
+							LOG.error("Error on commit", e);
 						}
 					}
 				} catch (NotSupportedException e) {
@@ -777,7 +775,7 @@ public class BaseDBContext
 				try {
 					this.rollback();
 				} catch (NotInTransactionException e) {
-					;
+					LOG.error("Error on rollback", e);
 				}
 			}
 		}
@@ -826,7 +824,7 @@ public class BaseDBContext
 				try {
 					this.commit();
 				} catch (NotInTransactionException e) {
-					;
+					LOG.error("Error committing", e);
 				}
 			}
 		}
@@ -855,7 +853,7 @@ public class BaseDBContext
 				try {
 					this.commit();
 				} catch (NotInTransactionException e) {
-					;
+					LOG.error("Error committing", e);
 				}
 			}
 		}
@@ -884,7 +882,7 @@ public class BaseDBContext
 				try {
 					this.connection.close();
 				} catch (SQLException e) {
-					;
+					LOG.error("Error closing connection", e);
 				}
 				this.connection = null;
 			}
@@ -905,7 +903,7 @@ public class BaseDBContext
 				try {
 					this.connection.close();
 				} catch (SQLException e) {
-					;
+					LOG.error("Error closing connection", e);
 				}
 				this.connection = null;
 			}
