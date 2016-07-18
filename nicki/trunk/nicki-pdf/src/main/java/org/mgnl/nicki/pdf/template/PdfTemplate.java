@@ -8,12 +8,9 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.mgnl.nicki.pdf.model.template.Document;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class PdfTemplate {
 
-	private static final Logger log = LoggerFactory.getLogger(PdfTemplate.class);
 	private Document document = null;
 
 	public PdfTemplate(String templateContent) throws JAXBException {
