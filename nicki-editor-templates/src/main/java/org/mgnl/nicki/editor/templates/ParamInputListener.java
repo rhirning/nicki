@@ -36,9 +36,6 @@ import java.util.Map;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
-import com.vaadin.ui.PopupDateField;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.TextField;
 
 @SuppressWarnings("serial")
 public class ParamInputListener implements ValueChangeListener {
@@ -47,15 +44,7 @@ public class ParamInputListener implements ValueChangeListener {
 	private Map<String, Object> map;
 	private TemplateConfig templateConfig;
 
-	public ParamInputListener(PopupDateField field, String name, Map<String, Object> map, TemplateConfig templateConfig) {
-		init(name, map, templateConfig);
-	}
-
-	public ParamInputListener(TextField field, String name, Map<String, Object> map, TemplateConfig templateConfig) {
-		init(name, map, templateConfig);
-	}
-
-	public ParamInputListener(Table rights, String name, Map<String, Object> map, TemplateConfig templateConfig) {
+	public ParamInputListener(String name, Map<String, Object> map, TemplateConfig templateConfig) {
 		init(name, map, templateConfig);
 	}
 

@@ -20,6 +20,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
@@ -111,7 +112,7 @@ public class TailViewer extends CustomComponent implements Serializable {
 				try {
 					numberOfLines = Long.valueOf(numberOfLinesField.getValue());
 				} catch (NumberFormatException e) {
-					//
+					Notification.show("Invalid numberOfLines", Type.TRAY_NOTIFICATION);
 				}
 				checkContainer();
 			}

@@ -264,6 +264,7 @@ public class BaseDBContext
 		}
 	}
 
+	// TODO Handle deepsearch properly
 	private void addObjects(Object bean, boolean deepSearch) {
 		PrimaryKey primaryKey = getPrimaryKey(bean);
 		if (primaryKey != null) {
