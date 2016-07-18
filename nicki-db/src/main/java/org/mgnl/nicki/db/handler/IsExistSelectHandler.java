@@ -55,10 +55,8 @@ public class IsExistSelectHandler extends NonLoggingSelectHandler implements Sel
 
 
 	public void handle(ResultSet rs) throws SQLException {
-		if (rs.next()) {
-			if (rs.getInt("anzahl") > 0) {
-				exist = true;
-			}
+		if (rs.next() &&  rs.getInt("anzahl") > 0) {
+			exist = true;
 		}
 	}
 
