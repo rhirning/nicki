@@ -35,7 +35,6 @@ package org.mgnl.nicki.vaadin.base.editor;
 import java.io.Serializable;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.vaadin.base.editor.EntryFilter;
 
 @SuppressWarnings("serial")
 public class ShowAllFilter implements EntryFilter, Serializable {

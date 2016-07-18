@@ -91,6 +91,7 @@ public class JndiSearchResult implements ContextSearchResult {
 			}
 		} catch (Exception e) {
 			// nothing to do
+			LOG.debug("Error", e);
 		}
 		return list;
 	}

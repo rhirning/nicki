@@ -123,13 +123,11 @@ public class Verify {
 				} else if (StringUtils.startsWith(params[i],"allowedMapValues:")) {
 					checkRule = new AllowedMapValuesRule(StringUtils.substringAfter(params[i], "allowedMapValues:"));
 				}
-				if (checkRule != null) {
-					if (!checkRule.evaluate(value, values)) {
-						if (sb.length() > 0) {
-							sb.append(", ");
-						}
-						sb.append(checkRule.getMessage());
+				if (checkRule != null && !checkRule.evaluate(value, values)) {
+					if (sb.length() > 0) {
+						sb.append(", ");
 					}
+					sb.append(checkRule.getMessage());
 				}
 			}
 			if (sb.length() > 0) {

@@ -115,8 +115,8 @@ public class PersonSelectorComponent extends CustomComponent {
 	}
 
 	public PersonSelectorComponent(Person user) {
-		LOG.debug("User = " + user.getName());
 		this.user = user;
+		LOG.debug("User = " + this.user.getName());
 		buildMainLayout();
 		searchResult.setSelectable(true);
 		setCompositionRoot(mainLayout);

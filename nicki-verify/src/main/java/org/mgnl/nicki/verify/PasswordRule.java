@@ -43,7 +43,7 @@ public class PasswordRule extends Rule {
 		if (min > 0 && min > getMin(value)) {
 			addMessage(I18n.getText(getI18nBase() + ".password.minlength",
 					Integer.toString(min)));
-			ok = false;;
+			ok = false;
 		}
 		return ok;
 	}

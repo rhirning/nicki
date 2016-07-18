@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 
 public class ContentRenderer {
 
-	private static final Logger log = LoggerFactory.getLogger(ContentRenderer.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ContentRenderer.class);
 	private PdfConfiguration config;
 	private Document document;
 	
@@ -59,35 +59,35 @@ public class ContentRenderer {
 				Object entry = ((JAXBElement) contentElement).getValue();
 				
 				if (entry instanceof Image) {
-					log.debug("rendering image to document");
+					LOG.debug("rendering image to document");
 					render(parent, (Image) entry);
-					log.debug("finished rendering image to document");
+					LOG.debug("finished rendering image to document");
 				} else if (entry instanceof Table) {
-					log.debug("rendering table to document");
+					LOG.debug("rendering table to document");
 					render(parent, (Table) entry);
-					log.debug("finished rendering table to document");
+					LOG.debug("finished rendering table to document");
 				} else if (entry instanceof Text) {
-					log.debug("rendering text to document");
+					LOG.debug("rendering text to document");
 					render(parent, (Text) entry);
-					log.debug("finished rendering text to document");
+					LOG.debug("finished rendering text to document");
 				} else if (entry instanceof Link) {
-					log.debug("rendering link to document");
+					LOG.debug("rendering link to document");
 					render(parent, (Link) entry);
-					log.debug("finished rendering link to document");
+					LOG.debug("finished rendering link to document");
 				} else if (entry instanceof List) {
-					log.debug("rendering list to document");
+					LOG.debug("rendering list to document");
 					render(parent, (List) entry);
-					log.debug("finished rendering list to document");
+					LOG.debug("finished rendering list to document");
 				} else if (entry instanceof Break) {
-					log.debug("rendering break to document");
-					render(parent, (Break) entry);
-					log.debug("finished rendering break to document");
+					LOG.debug("rendering break to document");
+					addBreak();
+					LOG.debug("finished rendering break to document");
 				}
 			}
 		}
 	}
 
-	private void render(ElementListener parent, Break entry) {
+	private void addBreak() {
 		this.document.newPage();
 	}
 
@@ -240,17 +240,18 @@ public class ContentRenderer {
 
 	public void render(ElementListener parent, Table table) throws DocumentException, IOException {
 		Color borderColor = getColor(table.getBorderColor());
-		int colCount = 0;
+		int colCount;
 		try {
 			colCount = table.getRow().get(0).getColumn().size();
 		} catch (Exception e) {
-			// no row
+			colCount = 0;
 		}
 		if (colCount == 0) {
 			try {
 				colCount = table.getHeader().getColumn().size();
 			} catch (Exception e) {
 				// no valid header
+				colCount = 0;
 			}
 		}
 		if (colCount == 0) {
@@ -309,27 +310,27 @@ public class ContentRenderer {
 				Object entry = ((JAXBElement) contentElement).getValue();
 				
 				if (entry instanceof Image) {
-					log.debug("rendering image to document");
-					render(pdfTable, borderColor, f, (Image) entry);
-					log.debug("finished rendering image to document");
+					LOG.debug("rendering image to document");
+					render(pdfTable, borderColor, (Image) entry);
+					LOG.debug("finished rendering image to document");
 				} else if (entry instanceof Text) {
-					log.debug("rendering text to document");
+					LOG.debug("rendering text to document");
 					render(pdfTable, borderColor, f, (Text) entry);
-					log.debug("finished rendering text to document");
+					LOG.debug("finished rendering text to document");
 				} else if (entry instanceof Link) {
-					log.debug("rendering link to document");
+					LOG.debug("rendering link to document");
 					render(pdfTable, borderColor, f, (Link) entry);
-					log.debug("finished rendering link to document");
+					LOG.debug("finished rendering link to document");
 				} else if (entry instanceof Checkbox) {
-					log.debug("rendering link to document");
-					render(pdfTable, borderColor, f, (Checkbox) entry);
-					log.debug("finished rendering checkbox to document");
+					LOG.debug("rendering link to document");
+					render(pdfTable, borderColor, (Checkbox) entry);
+					LOG.debug("finished rendering checkbox to document");
 				}
 			}
 		}
 	}
 	
-	private void render(PdfPTable pdfTable, Color borderColor, Font f, Image image) throws DocumentException, IOException {
+	private void render(PdfPTable pdfTable, Color borderColor, Image image) throws DocumentException, IOException {
 		if (image == null) {
 			return;
 		}
@@ -381,6 +382,7 @@ public class ContentRenderer {
 				int b = Integer.parseInt(StringUtils.substring(hex, 4, 6), 16);
 				return new Color(r,g,b);
 			} catch (Exception e) {
+				LOG.error("Error parsing color", e);
 			}
 		}
 		return new Color(255,255,255);
@@ -404,11 +406,11 @@ public class ContentRenderer {
 		}
 	}
 
-	private void render(PdfPTable pdfTable, Color borderColor, Font f, Checkbox checkbox) throws DocumentException, IOException {
+	private void render(PdfPTable pdfTable, Color borderColor, Checkbox checkbox) throws DocumentException, IOException {
 		PdfPCell cell = new PdfPCell();
+		cell.setBorderColor(borderColor);
 		if (StringUtils.isNotBlank(checkbox.getBackgroundColor())) {
 			Color color = getColor(checkbox.getBackgroundColor());
-			cell.setBorderColor(color);
 			cell.setBackgroundColor(color);
 		}
 		if (StringUtils.isNotBlank(checkbox.getAlign())) {
@@ -441,8 +443,8 @@ public class ContentRenderer {
 		PdfPCell cell = new PdfPCell(p);
 		
 		cell.disableBorderSide(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
-		cell.setHorizontalAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-		cell.setVerticalAlignment(com.lowagie.text.Element.ALIGN_MIDDLE);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setBorderColor(borderColor);
 		cell.setPaddingTop(PADDING_TOP);
 		cell.setPaddingBottom(PADDING_BOTTOM);
@@ -455,8 +457,8 @@ public class ContentRenderer {
 		PdfPCell cell = new PdfPCell(image);
 		
 		cell.disableBorderSide(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
-		cell.setHorizontalAlignment(com.lowagie.text.Element.ALIGN_CENTER);
-		cell.setVerticalAlignment(com.lowagie.text.Element.ALIGN_MIDDLE);
+		cell.setHorizontalAlignment(Element.ALIGN_CENTER);
+		cell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 		cell.setBorderColor(borderColor);
 		cell.setPaddingTop(PADDING_TOP);
 		cell.setPaddingBottom(PADDING_BOTTOM);

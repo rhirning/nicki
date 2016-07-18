@@ -16,13 +16,11 @@ public class MaxRule extends Rule {
 
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
-		if (maxValue != null) {
-			if (StringUtils.isNotEmpty(value)) {
-				try {
-					return maxValue >= getLong(value);
-				} catch (Exception e) {
-					return false;
-				}
+		if (maxValue != null &&  StringUtils.isNotEmpty(value)) {
+			try {
+				return maxValue >= getLong(value);
+			} catch (Exception e) {
+				return false;
 			}
 		}
 		return true;

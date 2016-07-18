@@ -88,11 +88,12 @@ public class DynamicObjectLdapAdapter implements DynamicObjectAdapter {
 			for (Object attributeValue : rs.getValues(attribute)) {
 				if (StringUtils.equalsIgnoreCase(value, (String) attributeValue)) {
 					return true;
+				}
 			}
-		}
+			return false;
 		} catch (Exception e) {
+			return false;
 		}
-		return false;
 	}
 
 	@Override
