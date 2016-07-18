@@ -39,8 +39,6 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.methods.ForeignKeyMethod;
 import org.mgnl.nicki.core.methods.ListForeignKeyMethod;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
-import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.context.NickiContext;
 
 @SuppressWarnings("serial")

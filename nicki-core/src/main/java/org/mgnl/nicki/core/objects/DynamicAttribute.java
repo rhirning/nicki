@@ -43,9 +43,6 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.OctetString;
 import org.mgnl.nicki.core.methods.ForeignKeyMethod;
 import org.mgnl.nicki.core.methods.ListForeignKeyMethod;
-import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,15 +93,13 @@ public class DynamicAttribute implements Serializable {
 			}
 		}
 		// optional
-		if (!isMandatory() && !isMultiple() && !isForeignKey()) {
-			if (rs.hasAttribute(getExternalName())) {
-				if (attributeClass == OctetString.class) {
-					dynamicObject.put(name, new OctetString((byte[]) rs.getValue(byte[].class, getExternalName())));
-				} else if (attributeClass == byte[].class) {
-					dynamicObject.put(name, rs.getValue(byte[].class, getExternalName()));
-				} else {
-					dynamicObject.put(name, rs.getValue(getType(), getExternalName()));
-				}
+		if (!isMandatory() && !isMultiple() && !isForeignKey() && rs.hasAttribute(getExternalName())) {
+			if (attributeClass == OctetString.class) {
+				dynamicObject.put(name, new OctetString((byte[]) rs.getValue(byte[].class, getExternalName())));
+			} else if (attributeClass == byte[].class) {
+				dynamicObject.put(name, rs.getValue(byte[].class, getExternalName()));
+			} else {
+				dynamicObject.put(name, rs.getValue(getType(), getExternalName()));
 			}
 		}
 		// optional list
@@ -138,7 +133,7 @@ public class DynamicAttribute implements Serializable {
 		Class<?> clazz = dynamicObject.getClass();
 		while (clazz.getSuperclass() != null) {
 			try {
-				setPropertyValue(clazz, dynamicObject, value);
+				BeanUtils.setProperty(dynamicObject, name, value);
 				return;
 			} catch (Exception e) {
 				LOG.debug(value.getClass().toString());
@@ -147,16 +142,6 @@ public class DynamicAttribute implements Serializable {
 		}
 		LOG.error("Class: " + dynamicObject.getClass() + ". Could not set Property " + name + " with value " + value);
 
-	}
-
-	private void setPropertyValue(Class<?> clazz, DynamicObject object, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		//object.put(name, value);
-		BeanUtils.setProperty(object, name, value);
-		/*
-		Field field = clazz.getField(name);
-		field.setAccessible(true);
-		field.set(object, value);
-		*/
 	}
 
 	public static String getGetter(String name) {

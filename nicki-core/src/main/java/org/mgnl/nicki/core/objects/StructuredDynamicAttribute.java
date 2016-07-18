@@ -39,9 +39,6 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.methods.ListStructuredForeignKeyMethod;
 import org.mgnl.nicki.core.methods.StructuredForeignKeyMethod;
-import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.mgnl.nicki.core.objects.DynamicAttribute;
-import org.mgnl.nicki.core.objects.DynamicObject;
 
 @SuppressWarnings("serial")
 public class StructuredDynamicAttribute extends DynamicAttribute implements Serializable {

@@ -37,7 +37,6 @@ import java.util.Map;
 
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
-import org.mgnl.nicki.core.context.NickiContext.READONLY;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
 public class AppContext {
