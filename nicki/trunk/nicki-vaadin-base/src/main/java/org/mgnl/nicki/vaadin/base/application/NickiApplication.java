@@ -90,12 +90,6 @@ public abstract class NickiApplication extends UI {
 		view.setWidth("100%");
 		setContent(view);
 		Page.getCurrent().setTitle(I18n.getText(getI18nBase() + ".main.title"));
-
-		// try getting context from session
-		try {
-			//this.nickiContext = (NickiContext) getRequest().getSession(false).getAttribute(ATTR_NICKI_CONTEXT);
-		} catch (Exception e) {
-		}
 		
 		if (nickiContext == null) {
 			// try SSO
@@ -266,13 +260,6 @@ public abstract class NickiApplication extends UI {
 
 	public void setNickiContext(NickiContext context) {
 		this.nickiContext = context;
-		if (getRequest() != null) {
-			try {
-				//getRequest().getSession(true).setAttribute(ATTR_NICKI_CONTEXT, this.nickiContext);
-			} catch (Exception e) {
-				LOG.error("Error", e);
-			}
-		}
 	}
 
 	public NickiContext getNickiContext() {

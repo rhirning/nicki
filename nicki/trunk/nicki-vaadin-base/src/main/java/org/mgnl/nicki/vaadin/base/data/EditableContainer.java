@@ -15,8 +15,7 @@ import com.vaadin.ui.Component;
 public abstract class EditableContainer<T extends Editable> extends IndexedContainer implements Container {
 	private static final long serialVersionUID = -5658914311396563600L;
 
-	public EditableContainer(Class<? super T> type,
-			Collection<? extends T> collection, Object columns[]) throws IllegalArgumentException {
+	public EditableContainer(Collection<? extends T> collection, Object columns[]) throws IllegalArgumentException {
 		super();
 		for (Object object : columns) {
 			addContainerProperty(object, String.class, "");
@@ -82,7 +81,7 @@ public abstract class EditableContainer<T extends Editable> extends IndexedConta
 			Method method = object.getClass().getMethod(methodName, new Class[]{});
 			return (String) method.invoke(object);
 		} catch (Exception e) {
+			return "";
 		}
-		return "";
 	}
 }

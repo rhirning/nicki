@@ -34,15 +34,15 @@ package org.mgnl.nicki.vaadin.base.command;
 
 public interface Command {
 
-	public void execute() throws CommandException;
+	void execute() throws CommandException;
 	
-	public String getTitle();
+	String getTitle();
 
-	public String getHeadline();
+	String getHeadline();
 
-	public String getCancelCaption();
+	String getCancelCaption();
 
-	public String getConfirmCaption();
+	String getConfirmCaption();
 
-	public String getErrorText();
+	String getErrorText();
 }
