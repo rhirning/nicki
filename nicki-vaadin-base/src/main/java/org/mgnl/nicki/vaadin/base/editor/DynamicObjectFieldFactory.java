@@ -96,10 +96,9 @@ public class DynamicObjectFieldFactory implements Serializable {
 	public void addFields(AbstractOrderedLayout layout, DynamicObject dynamicObject, boolean create) {
 		DataModel model = dynamicObject.getModel();
 		for (DynamicAttribute dynAttribute : model.getAttributes().values()) {
-			if (!dynAttribute.isNaming()) {
-				if (objectListener == null || objectListener.acceptAttribute(dynAttribute.getName())) {
-					layout.addComponent(createField(layout, dynamicObject, dynAttribute.getName(), create));
-				}
+			if (!dynAttribute.isNaming()
+					&& (objectListener == null || objectListener.acceptAttribute(dynAttribute.getName()))) {
+				layout.addComponent(createField(layout, dynamicObject, dynAttribute.getName(), create));
 			}
 		}
 	}

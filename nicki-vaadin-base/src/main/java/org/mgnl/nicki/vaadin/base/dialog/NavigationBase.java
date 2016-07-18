@@ -3,8 +3,6 @@ package org.mgnl.nicki.vaadin.base.dialog;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.mgnl.nicki.vaadin.base.dialog.NavigationSelector;
-
 import com.vaadin.data.Container;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.CustomComponent;

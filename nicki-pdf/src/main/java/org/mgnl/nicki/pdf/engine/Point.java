@@ -1,11 +1,6 @@
-package org.mgnl.nicki.pdf.engine;
-
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory; 
+package org.mgnl.nicki.pdf.engine; 
 
 public class Point {
-	private static final Logger log = LoggerFactory.getLogger(Point.class);
 	
 		float x, y;
 

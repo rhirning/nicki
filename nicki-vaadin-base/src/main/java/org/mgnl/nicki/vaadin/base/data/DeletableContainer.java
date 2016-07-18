@@ -93,7 +93,7 @@ public abstract class DeletableContainer<T extends Deletable> extends IndexedCon
 			Method method = object.getClass().getMethod(methodName, new Class[]{});
 			return (String) method.invoke(object);
 		} catch (Exception e) {
+			return "";
 		}
-		return "";
 	}
 }

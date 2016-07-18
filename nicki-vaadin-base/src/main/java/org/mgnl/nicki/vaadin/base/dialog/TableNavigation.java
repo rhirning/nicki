@@ -2,8 +2,6 @@ package org.mgnl.nicki.vaadin.base.dialog;
 
 import java.util.List;
 
-import org.mgnl.nicki.vaadin.base.dialog.NavigationSelector;
-
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.ui.Panel;

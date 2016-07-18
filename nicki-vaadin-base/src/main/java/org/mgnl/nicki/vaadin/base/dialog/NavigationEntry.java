@@ -33,9 +33,6 @@
 
 import java.io.Serializable;
 
-import org.mgnl.nicki.vaadin.base.dialog.View;
-
-
 public class NavigationEntry implements Serializable, NavigationElement {
 	private static final long serialVersionUID = 4285844482143266130L;
 	private String caption;

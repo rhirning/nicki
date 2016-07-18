@@ -49,7 +49,7 @@ public class DependendRule extends Rule {
 					Verify.getInstance().verifyRule(rule, value, values);
 				} catch (VerifyException e) {
 					addMessage(e.getMessage());
-					ok = false;;
+					ok = false;
 				}
 			}
 		}

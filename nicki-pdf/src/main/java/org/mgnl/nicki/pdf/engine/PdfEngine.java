@@ -62,7 +62,7 @@ public class PdfEngine extends PdfPageEventHelper {
 	}
 
 	@Override
-	public void onEndPage(PdfWriter writer, com.lowagie.text.Document document) {
+	public void onEndPage(PdfWriter writer, Document document) {
 		log.debug("end page called");
 		super.onStartPage(writer, document);
 		Page currentPage = null;
@@ -118,7 +118,7 @@ public class PdfEngine extends PdfPageEventHelper {
 		pages = template.getDocument().getPages().getPage();
 		pages.add(0, startPage);
 
-		com.lowagie.text.Document document = new com.lowagie.text.Document();
+		Document document = new Document();
 		PdfWriter writer = PdfWriter.getInstance(document, os);
 		pageRenderer = new PageRenderer(writer, config);
 		contentRenderer = new ContentRenderer(config);
