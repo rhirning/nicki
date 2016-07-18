@@ -11,12 +11,11 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.CheckBox;
 
-public abstract class CheckBoxDeletableContainer<T extends Deletable> extends IndexedContainer implements Container {
+public class CheckBoxDeletableContainer<T extends Deletable> extends IndexedContainer implements Container {
 	private static final long serialVersionUID = -5658914311396563600L;
 	
 
-	public CheckBoxDeletableContainer(Class<? super T> type,
-			Collection<? extends T> collection, Object columns[]) throws IllegalArgumentException {
+	public CheckBoxDeletableContainer(Collection<? extends T> collection, Object columns[]) throws IllegalArgumentException {
 		super();
 		for (Object object : columns) {
 			addContainerProperty(object, String.class, "");
@@ -50,7 +49,7 @@ public abstract class CheckBoxDeletableContainer<T extends Deletable> extends In
 			addValueChangeListener(new ValueChangeListener() {
 
 				@Override
-				public void valueChange(com.vaadin.data.Property.ValueChangeEvent event) {
+				public void valueChange(Property.ValueChangeEvent event) {
 					@SuppressWarnings("unchecked")
 					T1 bean = (T1) getData();
 					if ((boolean) event.getProperty().getValue()) {
@@ -75,7 +74,7 @@ public abstract class CheckBoxDeletableContainer<T extends Deletable> extends In
 			Method method = object.getClass().getMethod(methodName, new Class[]{});
 			return (String) method.invoke(object);
 		} catch (Exception e) {
+			return "";
 		}
-		return "";
 	}
 }

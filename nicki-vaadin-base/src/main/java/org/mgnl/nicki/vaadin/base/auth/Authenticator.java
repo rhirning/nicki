@@ -32,6 +32,7 @@ public class Authenticator {
 	              try {
 	                  Thread.sleep(3000);
 	              } catch (Exception e) {
+	            	  LOG.debug("Error", e);
 	                  // ignore
 	              }
 

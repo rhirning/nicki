@@ -18,8 +18,7 @@ public abstract class DeletableContainer<T extends Deletable> extends IndexedCon
 	private String deleteCaption;
 	private String undeleteCaption;
 
-	public DeletableContainer(Class<? super T> type,
-			Collection<? extends T> collection, Object columns[],
+	public DeletableContainer(Collection<? extends T> collection, Object columns[],
 			String deleteCaption, String undeleteCaption) throws IllegalArgumentException {
 		super();
 		this.deleteCaption = deleteCaption;
