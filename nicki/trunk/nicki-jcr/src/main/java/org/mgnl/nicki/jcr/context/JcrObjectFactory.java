@@ -109,12 +109,11 @@ public class JcrObjectFactory implements ObjectFactory {
 		for (String dynamicObjectName : target.getDynamicObjects()) {
 			@SuppressWarnings("unchecked")
 			T dynamicObject = (T) target.getDynamicObject(dynamicObjectName);
-			if (classDefinition == null || classDefinition.isAssignableFrom(dynamicObject.getClass())) {
-				if (dynamicObject.accept(node)) {
-					T result = getExistingDynamicObject(dynamicObject, path);
-					if (result != null) {
-						return result;
-					}
+			if ((classDefinition == null || classDefinition.isAssignableFrom(dynamicObject.getClass()))
+					&& dynamicObject.accept(node)) {
+				T result = getExistingDynamicObject(dynamicObject, path);
+				if (result != null) {
+					return result;
 				}
 			}
 		}

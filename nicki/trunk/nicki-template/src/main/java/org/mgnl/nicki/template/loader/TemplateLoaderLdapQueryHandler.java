@@ -29,8 +29,11 @@ import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.ldap.context.LdapContext;
 import org.mgnl.nicki.ldap.query.BasicLdapHandler;
 import org.mgnl.nicki.template.engine.Template;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
+	private static final Logger LOG = LoggerFactory.getLogger(TemplateLoaderLdapQueryHandler.class);
 	
 	public static final String TEMPLATE_NAME = "ou";
 	public static final String ATTRIBUTE_DATA = "nickiTemplateData";
@@ -70,6 +73,7 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 		try {
 			template.setData(getAttribute(rs, ATTRIBUTE_DATA));
 		} catch (Exception e) {
+			LOG.debug("Error", e);
 		}
 
 		for (Object value : rs.getValues(ATTRIBUTE_PART)) {

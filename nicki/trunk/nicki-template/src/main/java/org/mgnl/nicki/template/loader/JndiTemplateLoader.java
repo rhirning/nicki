@@ -33,6 +33,8 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.template.engine.Template;
 import org.mgnl.nicki.template.engine.TemplateDescriptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import freemarker.cache.TemplateLoader;
 
@@ -43,6 +45,7 @@ import freemarker.cache.TemplateLoader;
  *
  */
 public class JndiTemplateLoader implements TemplateLoader {
+	private static final Logger LOG = LoggerFactory.getLogger(JndiTemplateLoader.class);
 	
 	public static final String APPENDIX_SEP = ".";
 	public static final String LOCALE_SEP = "_";
@@ -127,6 +130,7 @@ public class JndiTemplateLoader implements TemplateLoader {
 			context.search(handler);
 			template = handler.getTemplate();
 		} catch (DynamicObjectException e) {
+			LOG.debug("Error", e);
 		}
 		if (template != null) {
 			this.templates.put(name, template);
