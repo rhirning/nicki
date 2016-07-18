@@ -17,7 +17,7 @@ public class DateToStringConverter implements Converter<String, Date> {
 	@Override
 	public Date convertToModel(String value,
 			Class<? extends Date> targetType, Locale locale)
-			throws com.vaadin.data.util.converter.Converter.ConversionException {
+			throws Converter.ConversionException {
 		try {
 			return DataHelper.dateFromDisplayDay(value);
 		} catch (ParseException e) {
@@ -29,7 +29,7 @@ public class DateToStringConverter implements Converter<String, Date> {
 	@Override
 	public String convertToPresentation(Date value,
 			Class<? extends String> targetType, Locale locale)
-			throws com.vaadin.data.util.converter.Converter.ConversionException {
+			throws Converter.ConversionException {
 		if (value != null) {
 			return DataHelper.getDisplayDay(value);
 		} else {

@@ -62,14 +62,13 @@ public class DynamicObjectSearchFieldFactory<T extends DynamicObject> implements
 	@SuppressWarnings("unchecked")
 	public Component createField(DynamicAttribute dynAttribute) {
 		DynamicAttributeSearchField<T> field = null;
-		if (StringUtils.isNotEmpty(dynAttribute.getEditorClass())) {
-			if (StringUtils.isNotBlank(dynAttribute.getSearchFieldClass())) {
-				try {
-					field = (DynamicAttributeSearchField<T>) Classes.newInstance(dynAttribute.getSearchFieldClass());
-				} catch (Exception e) {
-					field = null;
-					LOG.error("Error", e);
-				}
+		if (StringUtils.isNotEmpty(dynAttribute.getEditorClass())
+				&& StringUtils.isNotBlank(dynAttribute.getSearchFieldClass())) {
+			try {
+				field = (DynamicAttributeSearchField<T>) Classes.newInstance(dynAttribute.getSearchFieldClass());
+			} catch (Exception e) {
+				field = null;
+				LOG.error("Error", e);
 			}
 		}
 		if (field == null) {

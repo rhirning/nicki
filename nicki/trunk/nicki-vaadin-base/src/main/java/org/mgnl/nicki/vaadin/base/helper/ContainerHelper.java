@@ -92,8 +92,8 @@ public class ContainerHelper {
 			Method method = object.getClass().getMethod(methodName, new Class[]{});
 			return method.invoke(object);
 		} catch (Exception e) {
+			return null;
 		}
-		return null;
 	}
 
 }

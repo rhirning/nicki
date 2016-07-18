@@ -114,7 +114,7 @@ public class ProjectDataView extends CustomComponent implements ClassEditor {
 		mainLayout.addComponent(projectDirectory);
 		
 		// projectDescription
-		projectDescription = (TextArea) this.projectDescriptionField.getComponent(false);;
+		projectDescription = (TextArea) this.projectDescriptionField.getComponent(false);
 //		projectDescription.setWidth("400px");
 		projectDescription.setCaption("Projektbeschreibung");
 		mainLayout.addComponent(projectDescription);

@@ -354,8 +354,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			search(handler);
 			return handler.getList();
 		} catch (DynamicObjectException e) {
-		} 
-		return null;
+			return null;
+		}
 	}
 
 	public List<DynamicObject> loadReferenceObjects(Query query) {
@@ -364,8 +364,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			search(handler);
 			return handler.getList();
 		} catch (DynamicObjectException e) {
+			return null;
 		} 
-		return null;
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -376,8 +376,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			search(handler);
 			return (T) handler.getDynamicObject(); 
 		} catch (DynamicObjectException e) {
+			return null;
 		}
-		return null;
 	}
 
 	public void loadObject(DynamicObject dynamicObject) throws DynamicObjectException {
@@ -393,8 +393,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			search(handler);
 			return (List<T>) handler.getList();
 		} catch (DynamicObjectException e) {
+			return null;
 		} 
-		return null;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -405,8 +405,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			search(handler);
 			return (List<T>) handler.getList();
 		} catch (DynamicObjectException e) {
-		} 
-		return null;
+			return null;
+		}
 	}
 	
 	
@@ -418,8 +418,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			return loadObject(class1, path);
 		} catch (InstantiateDynamicObjectException e) {
 			LOG.error("Error", e);
+			return null;
 		}
-		return null;
 	}
 
 
@@ -447,6 +447,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 				dynamicObject.put(requester, attribute, handler.getLists().get(attribute));
 			}
 		} catch (DynamicObjectException e) {
+			return;
 		} 
 	}
 
@@ -459,8 +460,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			search(handler);
 			return (List<T>) handler.getList();
 		} catch (DynamicObjectException e) {
-		} 
-		return null;
+			return null;
+		}
 	}
 	
 	public boolean isExist(String dn) {
@@ -472,8 +473,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			search(handler);
 			return handler.isExist();
 		} catch (DynamicObjectException e) {
+			return false;
 		}
-		return false;
 	}
 
 

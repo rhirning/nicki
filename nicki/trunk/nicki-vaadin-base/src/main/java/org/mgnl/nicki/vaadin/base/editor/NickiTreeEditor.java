@@ -50,7 +50,6 @@ import org.mgnl.nicki.vaadin.base.components.EnterNameHandler;
 import org.mgnl.nicki.vaadin.base.components.NewClassEditor;
 import org.mgnl.nicki.vaadin.base.components.SimpleNewClassEditor;
 import org.mgnl.nicki.vaadin.base.data.TreeContainer;
-import org.mgnl.nicki.vaadin.base.editor.DynamicObjectViewer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -411,7 +410,7 @@ public class NickiTreeEditor extends CustomComponent {
 			window.setModal(true);
 			UI.getCurrent().addWindow(window);
 		} else {
-			// TODO: error!!
+			LOG.error("editor must be of type Window");
 		}
 
 	}

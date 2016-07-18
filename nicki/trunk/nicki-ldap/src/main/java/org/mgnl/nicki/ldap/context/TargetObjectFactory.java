@@ -95,12 +95,11 @@ public class TargetObjectFactory implements ObjectFactory, Serializable {
 		for (String dynamicObjectName : target.getDynamicObjects()) {
 			@SuppressWarnings("unchecked")
 			T dynamicObject = (T) target.getDynamicObject(dynamicObjectName);
-			if (classDefinition == null || classDefinition.isAssignableFrom(dynamicObject.getClass())) {
-				if (context.getAdapter().accept(dynamicObject, rs)) {
-					T result = getExistingDynamicObject(dynamicObject, dn);
-					if (result != null) {
-						return result;
-					}
+			if ((classDefinition == null || classDefinition.isAssignableFrom(dynamicObject.getClass()))
+					&& context.getAdapter().accept(dynamicObject, rs)) {
+				T result = getExistingDynamicObject(dynamicObject, dn);
+				if (result != null) {
+					return result;
 				}
 			}
 		}
