@@ -35,11 +35,11 @@ package org.mgnl.nicki.vaadin.base.editor;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
 public interface TreeAction {
-	public void execute(DynamicObject dynamicObject);
+	void execute(DynamicObject dynamicObject);
 
-	public String getName();
+	String getName();
 
-	public void close();
+	void close();
 	
-	public Class<? extends DynamicObject> getTargetClass();
+	Class<? extends DynamicObject> getTargetClass();
 }

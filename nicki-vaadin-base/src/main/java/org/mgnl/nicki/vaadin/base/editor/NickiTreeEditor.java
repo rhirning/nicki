@@ -289,7 +289,7 @@ public class NickiTreeEditor extends CustomComponent {
 	}
 
 	protected boolean isRoot(DynamicObject dynamicObject) {
-		return (dynamicObject == this.treeContainer.getRoot());
+		return dynamicObject == this.treeContainer.getRoot();
 	}
 
 	public void setClassIcon(Class<? extends DynamicObject> classDefinition,

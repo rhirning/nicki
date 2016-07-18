@@ -37,7 +37,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import com.vaadin.ui.Component;
 
 public interface ClassEditor extends Component {
-	public void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject);
-	public void save() throws Exception;
+	void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject);
+	void save() throws Exception;
 
 }

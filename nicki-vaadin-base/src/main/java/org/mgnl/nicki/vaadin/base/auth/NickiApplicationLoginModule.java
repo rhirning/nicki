@@ -60,7 +60,7 @@ public class NickiApplicationLoginModule extends NickiLoginModule implements Log
 		String username = ((CredentialsCallback) callbacks[0]).getName();
 		String password = new String(((CredentialsCallback) callbacks[0]).getPassword());
 		try {
-			setContext((login(new NickiPrincipal(username, password))));
+			setContext(login(new NickiPrincipal(username, password)));
 			setSucceeded(true);
 			return true;
 		} catch (InvalidPrincipalException e) {

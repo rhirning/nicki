@@ -19,7 +19,7 @@ public class PropertyStreamSource implements StreamSource {
 	@Override
 	public InputStream getStream() {
 		Object o = dynamicObject.get(attributeName);
-		String oc = o.getClass().getName();
+		//String oc = o.getClass().getName();
 		return new ByteArrayInputStream((byte[]) o);
 	}
 
