@@ -228,14 +228,6 @@ public class DynamicAttribute implements Serializable {
 		return readonly;
 	}
 
-	public void XXXsetStatic() {
-		staticAttribute = true;
-	}
-
-	public boolean XXXisStatic() {
-		return staticAttribute;
-	}
-
 	public Class<? extends DynamicObject> getForeignKeyClass() {
 		return foreignKeyClass;
 	}

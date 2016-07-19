@@ -87,15 +87,6 @@ public abstract class BasicJcrHandler implements JcrQueryHandler {
 	}
 
 
-
-	@Override
-	public List<DynamicObject> handle(QueryResult queryResult) throws DynamicObjectException {
-		return null;
-		
-	}
-
-
-
 	public NickiContext getContext() {
 		return context;
 	}

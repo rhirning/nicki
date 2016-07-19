@@ -61,7 +61,7 @@ public class BaseDBContext
 		}
 
 		try {
-			PrimaryKey primaryKey = this._create(bean);
+			PrimaryKey primaryKey = this.createInDB(bean);
 			if (this.hasSubs(bean.getClass()) && primaryKey != null) {
 				for (Object sub : this.getSubs(bean, primaryKey)) {
 					this.create(sub);
@@ -78,11 +78,7 @@ public class BaseDBContext
 			//return this.load(bean);
 		} finally {
 			if (!inTransaction) {
-				try {
-					this.rollback();
-				} catch (NotInTransactionException e) {
-					LOG.error("Error on rollback", e);
-				}
+				this.rollback();
 			}
 		}
 	}
@@ -160,11 +156,7 @@ public class BaseDBContext
 			}
 		} finally {
 			if (!inTransaction) {
-				try {
-					this.rollback();
-				} catch (NotInTransactionException e) {
-					LOG.error("Error on rollback", e);
-				}
+				this.rollback();
 			}
 		}
 	}
@@ -221,11 +213,7 @@ public class BaseDBContext
 			}
 		} finally {
 			if (!inTransaction) {
-				try {
-					this.rollback();
-				} catch (NotInTransactionException e) {
-					LOG.error("Error on rollback", e);
-				}
+				this.rollback();
 			}
 		}
 	}
@@ -255,11 +243,7 @@ public class BaseDBContext
 			}
 		} finally {
 			if (!inTransaction) {
-				try {
-					this.rollback();
-				} catch (NotInTransactionException e) {
-					LOG.error("Error on rollback", e);
-				}
+				this.rollback();
 			}
 		}
 	}
@@ -648,7 +632,7 @@ public class BaseDBContext
 		return false;
 	}
 
-	protected <T> PrimaryKey _create(T bean) throws SQLException, NotSupportedException {
+	protected <T> PrimaryKey createInDB(T bean) throws SQLException, NotSupportedException {
 		PrimaryKey primaryKey = null;
 		String sequence = getSequence(bean.getClass());
 		if (StringUtils.isNotBlank(sequence)) {
@@ -703,11 +687,7 @@ public class BaseDBContext
 			}
 		} finally {
 			if (!inTransaction) {
-				try {
-					this.rollback();
-				} catch (NotInTransactionException e) {
-					LOG.error("Error on rollnback", e);
-				}
+				this.rollback();
 			}
 		}
 	}
@@ -735,11 +715,7 @@ public class BaseDBContext
 			}
 		} finally {
 			if (!inTransaction) {
-				try {
-					this.rollback();
-				} catch (NotInTransactionException e) {
-					LOG.error("Error on rollback", e);
-				}
+				this.rollback();
 			}
 		}
 	}
@@ -773,11 +749,7 @@ public class BaseDBContext
 			}
 		} finally {
 			if (!inTransaction) {
-				try {
-					this.rollback();
-				} catch (NotInTransactionException e) {
-					LOG.error("Error on rollback", e);
-				}
+				this.rollback();
 			}
 		}
 	}
@@ -891,9 +863,10 @@ public class BaseDBContext
 	}
 
 	@Override
-	public void rollback() throws NotInTransactionException, SQLException {
+	public void rollback() throws SQLException {
 		if (this.connection == null) {
-			throw new NotInTransactionException();
+			// nothing to do
+			return;
 		}
 		try {
 			this.connection.rollback();

@@ -9,14 +9,14 @@ import org.mgnl.nicki.core.i18n.I18n;
 
 public class DateRule extends Rule {
 	private static final long serialVersionUID = 1L;
-	public static final String dateFormat = "dd.MM.yyyy";
-	public static final SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);
+	private static final String DATE_FORMAT = "dd.MM.yyyy";
+	private static final SimpleDateFormat FORMATTER = new SimpleDateFormat(DATE_FORMAT);
 
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		try {
-			synchronized (formatter) {
-				formatter.parse(value);
+			synchronized (FORMATTER) {
+				FORMATTER.parse(value);
 			}
 			String[] parts = StringUtils.split(value, ".");
 			Integer day = Integer.parseInt(parts[0]);

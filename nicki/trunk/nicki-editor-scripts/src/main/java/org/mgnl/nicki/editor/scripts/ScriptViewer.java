@@ -186,7 +186,7 @@ public class ScriptViewer extends CustomComponent implements ClassEditor {
 		}
 	}
 
-	String showScriptContext(String s, int lineNo, int context) {
+	String showScriptContext(String s, int lineNo, int context) throws IOException {
 		StringBuilder sb = new StringBuilder();
 		BufferedReader br = new BufferedReader(new StringReader(s));
 
@@ -194,11 +194,7 @@ public class ScriptViewer extends CustomComponent implements ClassEditor {
 		int endLine = lineNo + context;
 		for (int i = 1; i <= lineNo + context + 1; i++) {
 			if (i < beginLine) {
-				try {
-					br.readLine();
-				} catch (IOException e) {
-					throw new RuntimeException(e.toString());
-				}
+				br.readLine();
 				continue;
 			}
 			if (i > endLine)

@@ -63,12 +63,12 @@ public class LdapSearchGroup extends BaseDynamicObject {
 		OBJECT("one"),
 		SUBTREE("sub");
 		private String value;
-		private static final HashMap<String, SEARCHSCOPE> map = new HashMap<String, SEARCHSCOPE>();
+		private static final HashMap<String, SEARCHSCOPE> MAP = new HashMap<String, SEARCHSCOPE>();
 
 		static {
-			map.put("base", SUBORDINATES);
-			map.put("sub", SUBTREE);
-			map.put("one", OBJECT);
+			MAP.put("base", SUBORDINATES);
+			MAP.put("sub", SUBTREE);
+			MAP.put("one", OBJECT);
 		}
 
 		;
@@ -82,7 +82,7 @@ public class LdapSearchGroup extends BaseDynamicObject {
 		}
 
 		public static SEARCHSCOPE fromValue(String type) {
-			return map.get(type);
+			return MAP.get(type);
 		}
 	};
 	private String ldapSearch = "";

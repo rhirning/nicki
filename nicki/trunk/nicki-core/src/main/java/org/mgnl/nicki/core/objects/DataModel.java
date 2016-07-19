@@ -171,7 +171,7 @@ public class DataModel implements Serializable {
 
 		// single attributes (except namingAttribute)
 		for (DynamicAttribute dynAttribute : getAttributes().values()) {
-			if (attributeNames == null || DataHelper.contains(attributeNames, dynAttribute.getName())) {
+			if (attributeNames == null || attributeNames.length == 0 || DataHelper.contains(attributeNames, dynAttribute.getName())) {
 				if (!dynAttribute.isNaming()&& !dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
 					if (dynAttribute.getCreateOnly() == CREATEONLY.FALSE || createOnly == CREATEONLY.TRUE) {
 						if (dynAttribute.getType() == String.class) {
@@ -198,7 +198,7 @@ public class DataModel implements Serializable {
 		
 		// multi attributes
 		for (DynamicAttribute dynAttribute : getAttributes().values()) {
-			if (attributeNames == null || DataHelper.contains(attributeNames, dynAttribute.getName())) {
+			if (attributeNames == null || attributeNames.length == 0 || DataHelper.contains(attributeNames, dynAttribute.getName())) {
 				if (dynAttribute.isMultiple() && !dynAttribute.isReadonly()) {
 					if (dynAttribute.getCreateOnly() == CREATEONLY.FALSE || createOnly == CREATEONLY.TRUE) {
 						Attribute attribute = new BasicAttribute(dynAttribute.getExternalName());

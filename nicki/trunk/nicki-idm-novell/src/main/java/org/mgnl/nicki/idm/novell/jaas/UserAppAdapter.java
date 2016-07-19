@@ -57,9 +57,9 @@ import com.sssw.portal.api.EbiPortalContext;
 public class UserAppAdapter implements SSOAdapter {
 	private static final Logger LOG = LoggerFactory.getLogger(UserAppAdapter.class);
 
-	static String BASE_KEY = "com.sssw.fw.directory.realm.impl.jndildap.EboJndiLdapUserConnectionInfoHelper:";
-	static String USER_CREDENTIALS = BASE_KEY + "USER_CREDENTIALS";
-	static String USER_CONNECTION = BASE_KEY + "USER_DIRECTORY_CONNECTION";
+	static final String BASE_KEY = "com.sssw.fw.directory.realm.impl.jndildap.EboJndiLdapUserConnectionInfoHelper:";
+	static final String USER_CREDENTIALS = BASE_KEY + "USER_CREDENTIALS";
+	static final String USER_CONNECTION = BASE_KEY + "USER_DIRECTORY_CONNECTION";
 	
 	public static final String ATTRIBUTE_NAME_PORTAL_CONTEXT = "com.sssw.portal.api.EbiPortalContext";
 	private TYPE type = TYPE.UNKNOWN;

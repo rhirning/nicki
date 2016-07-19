@@ -307,7 +307,7 @@ public class Inventory implements Serializable {
 		return false;
 	}
 
-	public void setUser(Person user) {
+	private void setUser(Person user) {
 		this.user = user;
 	}
 
