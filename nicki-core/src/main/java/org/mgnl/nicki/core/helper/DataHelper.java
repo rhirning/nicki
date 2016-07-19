@@ -191,13 +191,13 @@ public class DataHelper {
 		return string;
 	}
 	
-	public static final String PATTERN = "\\$\\{(.*)\\}";
-	public static final Pattern pattern = Pattern.compile(PATTERN);
+	public static final String PATTERN_STRING = "\\$\\{(.*)\\}";
+	public static final Pattern PATTERN = Pattern.compile(PATTERN_STRING);
 	public static String translate(String text) {
 		String result = text;
 		
 		while (result != null) {
-			Matcher matcher = pattern.matcher(result);
+			Matcher matcher = PATTERN.matcher(result);
 			if (matcher.find()) {
 				String name = matcher.group(1);
 				String value = Environment.getProperty(name);
@@ -219,7 +219,7 @@ public class DataHelper {
 		String result = text;
 		
 		while (result != null) {
-			Matcher matcher = pattern.matcher(result);
+			Matcher matcher = PATTERN.matcher(result);
 			if (matcher.find()) {
 				String name = matcher.group(1);
 				String value = Environment.getProperty(name);

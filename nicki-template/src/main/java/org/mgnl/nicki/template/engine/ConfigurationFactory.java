@@ -34,7 +34,7 @@ import freemarker.template.Configuration;
 import freemarker.template.ObjectWrapper;
 
 public class ConfigurationFactory {
-	private static Logger LOG = LoggerFactory.getLogger(ConfigurationFactory.class);
+	private static final Logger LOG = LoggerFactory.getLogger(ConfigurationFactory.class);
 	
 	public enum TYPE {JNDI, CLASSPATH};
 

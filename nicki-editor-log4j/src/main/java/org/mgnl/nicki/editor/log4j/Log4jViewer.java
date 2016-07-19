@@ -23,7 +23,7 @@ import com.vaadin.ui.Table;
 
 public class Log4jViewer extends CustomComponent {
 	private static final long serialVersionUID = 6677098857979852467L;
-	private static org.slf4j.Logger LOG = LoggerFactory.getLogger(Log4jViewer.class);
+	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(Log4jViewer.class);
 	private Panel canvas;
 	private Table table;
 

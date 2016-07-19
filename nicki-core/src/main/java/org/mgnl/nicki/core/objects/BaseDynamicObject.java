@@ -62,7 +62,7 @@ import org.slf4j.LoggerFactory;
 import freemarker.template.TemplateMethodModel;
 
 @SuppressWarnings("serial")
-public abstract class BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
+public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
 	private static final Logger LOG = LoggerFactory.getLogger(BaseDynamicObject.class);
 	public static final String ATTRIBUTE_NAME = "name";
 	public static final String SEPARATOR = "/";
@@ -507,10 +507,6 @@ public abstract class BaseDynamicObject implements DynamicObject, Serializable, 
 
 	public void setParentPath(String parentPath) {
 		this.parentPath = parentPath;
-	}
-
-	@Override
-	public void initDataModel() {
 	}
 	
 	@Override

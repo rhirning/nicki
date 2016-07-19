@@ -45,7 +45,7 @@ import org.mgnl.nicki.core.util.Classes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TargetFactory {
+public final class TargetFactory {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TargetFactory.class);
 	public static final String PROPERTY_BASE = "nicki.targets";
@@ -117,7 +117,7 @@ public class TargetFactory {
 		if (dynamicObject.isAnnotated()) {
 			AnnotationHelper.initAnnotationDataModel(dynamicObject);
 		} else {
-			dynamicObject.initDataModel();
+			LOG.error("only annotated dynamic objects supported: " + dynamicObject.getClass().getName());
 		}
 	}
 	

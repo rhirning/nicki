@@ -81,7 +81,6 @@ public interface DynamicObject {
 	private boolean checkAttribute(ContextSearchResult rs, String attribute,
 			String value);
 	*/
-	void initDataModel();
 
 	<T extends DynamicObject> T getForeignKeyObject(Class<T> classDefinition, String key);
 

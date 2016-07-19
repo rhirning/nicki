@@ -13,7 +13,7 @@ import org.mgnl.nicki.ldap.objects.DynamicObjectLdapAdapter;
 public class LdapContextFactory implements ContextFactory, Serializable {
 
 	private static final long serialVersionUID = -5770837695968996467L;
-	private static final DynamicObjectAdapter adapter = new DynamicObjectLdapAdapter(); 
+	private static final DynamicObjectAdapter ADAPTER = new DynamicObjectLdapAdapter(); 
 	
 	@Override
 	public NickiContext getGuestContext(Target target) {
@@ -33,7 +33,7 @@ public class LdapContextFactory implements ContextFactory, Serializable {
 
 	@Override
 	public DynamicObjectAdapter getAdapter() {
-		return adapter;
+		return ADAPTER;
 	}
 
 }

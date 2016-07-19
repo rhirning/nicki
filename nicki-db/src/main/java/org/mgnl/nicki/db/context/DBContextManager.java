@@ -84,10 +84,10 @@ public class DBContextManager {
 	}
 	
 	public static DBContext getContext(String name) {
-		return getInstance()._getContext(name);
+		return getInstance().loadContext(name);
 	}
 	
-	private DBContext _getContext(String name) {
+	private DBContext loadContext(String name) {
 		try {
 			DBContext context = (DBContext) getClass().getClassLoader()
 					.loadClass(contextClassNames.get(name)).newInstance();

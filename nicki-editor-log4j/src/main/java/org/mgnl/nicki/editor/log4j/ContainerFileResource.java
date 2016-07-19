@@ -12,7 +12,7 @@ import com.vaadin.server.StreamResource.StreamSource;
 public class ContainerFileResource implements StreamSource {
 	private static final long serialVersionUID = -2366308187343189975L;
 
-	private static Logger LOG = LoggerFactory.getLogger(Log4jViewer.class);
+	private static final Logger LOG = LoggerFactory.getLogger(Log4jViewer.class);
 
 	TailViewer tailViewer;
 

@@ -63,7 +63,7 @@ public class JcrObjectFactory implements ObjectFactory {
 	}
 
 	public JcrDynamicObject getObject(Node node) throws InstantiateDynamicObjectException {
-		JcrDynamicObject object =  _getObject(node);
+		JcrDynamicObject object =  findObject(node);
 		object.setContext(context);
 		object.setNode(node);
 		return object;
@@ -71,7 +71,7 @@ public class JcrObjectFactory implements ObjectFactory {
 
 	
 	
-	private synchronized  JcrDynamicObject _getObject(Node node) throws InstantiateDynamicObjectException {
+	private synchronized  JcrDynamicObject findObject(Node node) throws InstantiateDynamicObjectException {
 		String path;
 		try {
 			path = node.getPath();
@@ -91,7 +91,7 @@ public class JcrObjectFactory implements ObjectFactory {
 	}
 
 	public <T extends JcrDynamicObject> T getObject(Node node, Class<T> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException {
-		T object =  _getObject(node, classDefinition);
+		T object =  findObject(node, classDefinition);
 		object.setContext(context);
 		object.setNode(node);
 		return object;
@@ -99,7 +99,7 @@ public class JcrObjectFactory implements ObjectFactory {
 
 	
 	
-	private synchronized <T extends JcrDynamicObject> T _getObject(Node node, Class<T> classDefinition) throws InstantiateDynamicObjectException {
+	private synchronized <T extends JcrDynamicObject> T findObject(Node node, Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		String path;
 		try {
 			path = node.getPath();

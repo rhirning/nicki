@@ -13,12 +13,12 @@ public enum FontStyle{
 		
 		private int style;
 		static class font {
-			static final Map<String, FontStyle> map = new HashMap<String, FontStyle>();
+			static final Map<String, FontStyle> MAP = new HashMap<String, FontStyle>();
 		}
 		
 		FontStyle(String name, int style) {
 			this.style = style;
-			font.map.put(name, this);
+			font.MAP.put(name, this);
 		}
 		
 		public int getFontStyle() {
@@ -27,7 +27,7 @@ public enum FontStyle{
 		
 		public static FontStyle byName(String name) {
 			if(name instanceof String)
-				return font.map.get(name.toLowerCase());
+				return font.MAP.get(name.toLowerCase());
 			else
 				return null;
 		}
