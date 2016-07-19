@@ -99,16 +99,6 @@ public class DynamicJcrAttribute extends DynamicAttribute implements Serializabl
 	}
 
 	@Override
-	public void XXXsetStatic() {
-
-	}
-
-	@Override
-	public boolean XXXisStatic() {
-		return false;
-	}
-
-	@Override
 	public Class<? extends DynamicObject> getForeignKeyClass() {
 		return null;
 	}

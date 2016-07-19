@@ -27,12 +27,12 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
+@SuppressWarnings("serial")
 public class TailViewer extends CustomComponent implements Serializable {
 
-	private static Logger LOG = LoggerFactory.getLogger(TailViewer.class);
+	private static final Logger LOG = LoggerFactory.getLogger(TailViewer.class);
 	static final Object VISIBLE_COLUMNS[] = {"value"};
 
-	private static final long serialVersionUID = 7750777204922803240L;
 	private VerticalLayout mainLayout;
 	private Panel panel;
 	private TextField path;
@@ -47,7 +47,7 @@ public class TailViewer extends CustomComponent implements Serializable {
 	private boolean end = true;
 	private long lastUse;
 	private String activePath = null;
-	private static final long timeout = 10 * 60 * 1000; // 10 Minutes
+	private static final long TIMEOUT = 10 * 60 * 1000; // 10 Minutes
 
 	public TailViewer() {
 		buildMainLayout();
@@ -191,7 +191,7 @@ public class TailViewer extends CustomComponent implements Serializable {
 		@Override
 		public void handle(String line) {
 			long now = new Date().getTime();
-			if (now - timeout > lastUse) {
+			if (now - TIMEOUT > lastUse) {
 				tailer.stop();
 				tailer = null;
 				LOG.debug("Timeout Tailer for File '" + activePath + "'");

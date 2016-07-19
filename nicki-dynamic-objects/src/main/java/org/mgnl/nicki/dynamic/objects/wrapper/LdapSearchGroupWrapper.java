@@ -111,8 +111,8 @@ public class LdapSearchGroupWrapper {
 	
 	
 	private LdapSearchGroup group = null;
-	private final static Pattern outer_regex = Pattern.compile("\\|\\[(.*?)\\](PRECISE|TIME|DAY)?\\|");
-	private final static Pattern inner_regex = Pattern.compile("([+-])(\\d+)(MONTH|DAY|HOUR|MIN)S?");
+	private final static Pattern OUTER_REGEX = Pattern.compile("\\|\\[(.*?)\\](PRECISE|TIME|DAY)?\\|");
+	private final static Pattern INNER_REGEX = Pattern.compile("([+-])(\\d+)(MONTH|DAY|HOUR|MIN)S?");
 
 	private String dateFormat = FORMAT.PRECISE.getValue();
 	
@@ -123,7 +123,7 @@ public class LdapSearchGroupWrapper {
 
 	public void setDynamicLdapSearch(String dynLdapSearch) {
 		String result = dynLdapSearch;
-		Matcher match = outer_regex.matcher(result);
+		Matcher match = OUTER_REGEX.matcher(result);
 		
 		if (!match.find()) {
 			group.setQueryComponents(group.getSearchRoot(), group.getSearchScope(), result);
@@ -165,7 +165,7 @@ public class LdapSearchGroupWrapper {
 			return today;
 		}
 
-		Matcher match = inner_regex.matcher(str);
+		Matcher match = INNER_REGEX.matcher(str);
 
 		if (match.matches()) {
 			int modifier = 1;

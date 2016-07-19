@@ -35,7 +35,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class XlsEngine {
-	private static final Logger log = LoggerFactory.getLogger(XlsEngine.class);
+	private static final Logger LOG = LoggerFactory.getLogger(XlsEngine.class);
 	public static final String HYPER_LINK = "HYPER_LINK";
 
 	private Workbook wb;
@@ -45,7 +45,7 @@ public class XlsEngine {
 	}
 
 	public void render(InputStream master, XlsTemplate xlsTemplate, OutputStream os) throws IOException {
-		log.debug("rendering xls");
+		LOG.debug("rendering xls");
 		//if (template.)
 		if (master != null) {
 			wb = new HSSFWorkbook(master);
@@ -75,13 +75,13 @@ public class XlsEngine {
 	}
 
 	private void createDefaultStyles() {
-		CellStyle hlink_style = wb.createCellStyle();
+		CellStyle hlinkStyle = wb.createCellStyle();
 		Font hlink_font = wb.createFont();
 		hlink_font.setUnderline(Font.U_SINGLE);
 		hlink_font.setColor(IndexedColors.BLUE.getIndex());
-		hlink_style.setFont(hlink_font);
+		hlinkStyle.setFont(hlink_font);
 
-		cellStyles.put(HYPER_LINK, hlink_style);
+		cellStyles.put(HYPER_LINK, hlinkStyle);
 
 	}
 
@@ -190,13 +190,13 @@ public class XlsEngine {
 									}
 
 									if (entry instanceof Text) {
-										log.debug("rendering text to document");
+										LOG.debug("rendering text to document");
 										render(cell, (Text) entry);
-										log.debug("finished rendering text to document");
+										LOG.debug("finished rendering text to document");
 									} else if (entry instanceof Link) {
-										log.debug("rendering link to document");
+										LOG.debug("rendering link to document");
 										render(cell, (Link) entry);
-										log.debug("finished rendering link to document");
+										LOG.debug("finished rendering link to document");
 									}
 								}
 

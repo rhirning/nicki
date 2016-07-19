@@ -44,12 +44,12 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class Config {
+public final class Config {
 	private static final Logger LOG = LoggerFactory.getLogger(Config.class);
-	private static String MAIN_CONFIG = "/META-INF/nicki/config.properties";
-	private static String CONFIG_BASE = "nicki.config";
-	private static String I18N_BASE = "nicki.i18n";
-	private static String SEPARATOR = ",";
+	private static final String MAIN_CONFIG = "/META-INF/nicki/config.properties";
+	private static final String CONFIG_BASE = "nicki.config";
+	private static final String I18N_BASE = "nicki.i18n";
+	private static final String SEPARATOR = ",";
 	private static Config instance = new Config();
 	private static boolean initPerformed;
 	private List<Properties> properties = new ArrayList<Properties>();
@@ -140,11 +140,11 @@ public class Config {
 			getInstance().addOpenProperties();
 		}
 		*/
-		return getInstance()._getProperty(key);
+		return getInstance().getAndTranslateProperty(key);
 	}
 	
-	private String _getProperty(String key) {
-		LOG.debug("_getProperty:" + key);
+	private String getAndTranslateProperty(String key) {
+		LOG.debug(key);
 		for (Properties props : this.properties) {
 			String value = DataHelper.translate(props.getProperty(key));
 			if (value != null) {
@@ -175,7 +175,7 @@ public class Config {
 	*/
 
 	public static String getProperty(String key, String defaultValue) {
-		String value = getInstance()._getProperty(key);
+		String value = getInstance().getAndTranslateProperty(key);
 		if (value != null) {
 			return value;
 		} else {

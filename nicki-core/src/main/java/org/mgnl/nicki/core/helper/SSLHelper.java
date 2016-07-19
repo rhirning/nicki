@@ -75,7 +75,7 @@ public class SSLHelper {
 		KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
 		//ks.load(null);
 		if (file.isFile() == false) {
-			char SEP = File.separatorChar;
+			final char SEP = File.separatorChar;
 			File dir = new File(System.getProperty("java.home") + SEP + "lib"
 					+ SEP + "security");
 			file = new File(dir, filename);

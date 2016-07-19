@@ -39,7 +39,7 @@ import com.vaadin.server.ThemeResource;
 
 
 @SuppressWarnings("serial")
-public class Icon implements Serializable {
+public final class Icon implements Serializable {
 	public static final Icon ARROW_DOWN = new Icon("../runo/icons/16/arrow-down.png");
 	public static final Icon ARROW_LEFT = new Icon("../runo/icons/16/arrow-left.png");
 	public static final Icon ARROW_RIGHT = new Icon("../runo/icons/16/arrow-right.png");

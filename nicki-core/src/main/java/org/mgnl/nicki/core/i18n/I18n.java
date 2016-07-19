@@ -40,7 +40,7 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.ThreadContext;
 
-public class I18n {
+public final class I18n {
 	private static I18n instance = new I18n();
 	
 	private List<String> messageBases = new ArrayList<String>();

@@ -153,7 +153,7 @@ public class ActionHelper {
 		return actionname + sdf.format(new Date());
 	}
 
-	protected void initDocument() {
+	protected final void initDocument() {
 		DocumentBuilderFactory domfactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = null;
 		try {

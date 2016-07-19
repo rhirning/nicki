@@ -45,7 +45,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JndiSearchResult implements ContextSearchResult {
-	Logger LOG = LoggerFactory.getLogger(JndiSearchResult.class);
+	private static final Logger LOG = LoggerFactory.getLogger(JndiSearchResult.class);
 	private SearchResult rs;
 
 	public JndiSearchResult(SearchResult rs) {

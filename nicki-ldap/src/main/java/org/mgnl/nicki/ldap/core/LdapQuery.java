@@ -77,7 +77,7 @@ public class LdapQuery implements Query {
 		}
 	}
 	
-	public void addSearchValue(String key, String value) {
+	public final void addSearchValue(String key, String value) {
 		if (StringUtils.isNotEmpty(key) && StringUtils.isNotEmpty(value)) {
 			if (!searchValues.containsKey(key)) {
 				this.searchValues.put(key, new ArrayList<String>());

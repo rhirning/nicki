@@ -51,7 +51,7 @@ public class StructuredDynamicReference extends DynamicAttribute implements Seri
 		super(name, name, attributeClass);
 		this.classDefinition = classDefinition;
 		setVirtual();
-		this.setBaseDn(baseDn);
+		this.baseDn = baseDn;
 		this.attributeName = attributeName;
 	}
 	public String getAttributeName() {

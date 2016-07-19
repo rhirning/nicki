@@ -46,7 +46,7 @@ public class NavigationCommandEntry {
 		return commandName;
 	}
 
-	public void setCommandName(String commandName) {
+	private void setCommandName(String commandName) {
 		this.commandName = commandName;
 	}
 

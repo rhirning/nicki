@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 
 @SuppressWarnings("serial")
 public class PasswordRule extends Rule {
-	private static Logger LOG = LoggerFactory.getLogger(PasswordRule.class);
+	private static final Logger LOG = LoggerFactory.getLogger(PasswordRule.class);
 	int complexity = 0;
 	int min = 6;
 	List<String> messages;

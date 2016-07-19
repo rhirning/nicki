@@ -48,7 +48,7 @@ public class ParamInputListener implements ValueChangeListener {
 		init(name, map, templateConfig);
 	}
 
-	public void init(String name, Map<String, Object> map, TemplateConfig templateConfig) {
+	private void init(String name, Map<String, Object> map, TemplateConfig templateConfig) {
 		this.name = name;
 		this.map = map;
 		this.templateConfig = templateConfig;

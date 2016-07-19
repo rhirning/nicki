@@ -14,38 +14,6 @@ public class GenericNodeDynamicObject extends NodeDynamicTemplateObject implemen
 	public static final String ATTRIBUTE_LANGUAGE = "language";
 	
 	@Override
-	public void initDataModel() {
-		/*
-		addObjectClass("Person");
-		DynamicAttribute dynAttribute = new DynamicAttribute(ATTRIBUTE_NAME, "cn",
-				String.class);
-		dynAttribute.setNaming();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_SURNAME, "name", String.class);
-		dynAttribute.setMandatory();
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_GIVENNAME, "givenName",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_FULLNAME, "fullName",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_LANGUAGE, "language",
-				String.class);
-		addAttribute(dynAttribute);
-
-		dynAttribute = new DynamicAttribute(ATTRIBUTE_PASSWORD, "password",
-				String.class);
-		addAttribute(dynAttribute);
-		*/
-
-	}
-
-	@Override
 	public boolean accept(Node node) {
 		return true;
 	}

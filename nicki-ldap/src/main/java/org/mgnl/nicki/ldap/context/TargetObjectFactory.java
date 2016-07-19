@@ -60,14 +60,14 @@ public class TargetObjectFactory implements ObjectFactory, Serializable {
 	}
 
 	public DynamicObject getObject(ContextSearchResult rs) throws InstantiateDynamicObjectException {
-		DynamicObject object =  _getObject(rs);
+		DynamicObject object =  findObject(rs);
 		object.setContext(context);
 		return object;
 	}
 
 	
 	
-	private synchronized  DynamicObject _getObject(ContextSearchResult rs) throws InstantiateDynamicObjectException {
+	private synchronized  DynamicObject findObject(ContextSearchResult rs) throws InstantiateDynamicObjectException {
 		String dn = rs.getNameInNamespace();
 		for (String dynamicObjectName : target.getDynamicObjects()) {
 			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);
@@ -83,14 +83,14 @@ public class TargetObjectFactory implements ObjectFactory, Serializable {
 
 	@Override
 	public <T extends DynamicObject> T getObject(ContextSearchResult rs, Class<T> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException {
-		T object =  _getObject(rs, classDefinition);
+		T object =  findObject(rs, classDefinition);
 		object.setContext(context);
 		return object;
 	}
 
 	
 	
-	private synchronized <T extends DynamicObject> T _getObject(ContextSearchResult rs, Class<T> classDefinition) throws InstantiateDynamicObjectException {
+	private synchronized <T extends DynamicObject> T findObject(ContextSearchResult rs, Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		String dn = rs.getNameInNamespace();
 		for (String dynamicObjectName : target.getDynamicObjects()) {
 			@SuppressWarnings("unchecked")

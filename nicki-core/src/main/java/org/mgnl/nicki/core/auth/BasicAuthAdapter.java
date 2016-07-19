@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 ;
 
 public class BasicAuthAdapter implements SSOAdapter {
-	private static Logger LOG = LoggerFactory.getLogger(BasicAuthAdapter.class);
+	private static final Logger LOG = LoggerFactory.getLogger(BasicAuthAdapter.class);
 
 	public String getName(Object request) {
 		return getAuthPart(request, 0);
@@ -53,7 +53,7 @@ public class BasicAuthAdapter implements SSOAdapter {
 		if (password != null) {
 			return password.toCharArray();
 		}
-		return null;
+		return new char[]{};
 	}
 
 	@Override
@@ -72,7 +72,8 @@ public class BasicAuthAdapter implements SSOAdapter {
 			final String pair = new String(decodedBytes);
 			final String[] userDetails = pair.split(":", 2);
 			return userDetails;
-		} return null;
+		}
+		return new String[]{};
 	}
 	
 	protected String getAuthPart(Object request, int num) {

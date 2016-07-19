@@ -71,13 +71,13 @@ public abstract class BaseAttributeListener implements ValueChangeListener {
 		}
 		return list;
 	}
-	public void setName(String name) {
+	private void setName(String name) {
 		this.name = name;
 	}
 	public String getName() {
 		return name;
 	}
-	public void setDynamicObject(DynamicObject dynamicObject) {
+	private void setDynamicObject(DynamicObject dynamicObject) {
 		this.dynamicObject = dynamicObject;
 	}
 	public DynamicObject getDynamicObject() {

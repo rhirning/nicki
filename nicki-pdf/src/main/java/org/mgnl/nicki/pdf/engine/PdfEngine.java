@@ -15,11 +15,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.Objects;
+
 import javax.xml.bind.JAXBException;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.util.Objects;
 import org.mgnl.nicki.pdf.configuration.PdfConfiguration;
 import org.mgnl.nicki.pdf.model.template.Data;
 import org.mgnl.nicki.pdf.model.template.Page;
