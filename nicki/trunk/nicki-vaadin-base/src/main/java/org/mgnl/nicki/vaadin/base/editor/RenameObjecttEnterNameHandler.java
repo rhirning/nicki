@@ -46,7 +46,7 @@ public class RenameObjecttEnterNameHandler extends EnterNameHandler implements S
 	private DynamicObject dynamicObject;
 
 	public RenameObjecttEnterNameHandler(NickiTreeEditor nickiEditor, DynamicObject dynamicObject) {
-		super();
+		super("");
 		this.editor = nickiEditor;
 		this.dynamicObject = dynamicObject;
 	}

@@ -57,7 +57,8 @@ public class PdfEngine extends PdfPageEventHelper {
 	public PdfEngine(InputStream configStream, String contextBasePath) throws JAXBException, DocumentException, IOException {
 		Objects.requireNonNull(configStream, "config-inputstream is null");
 
-		config = new PdfConfiguration(configStream, contextBasePath);		
+		config = new PdfConfiguration(configStream, contextBasePath);
+		config.init();
 		
 		Objects.requireNonNull(config, "configuration has not been loaded properly");
 	}

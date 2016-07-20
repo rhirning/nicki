@@ -32,13 +32,10 @@ public class Report {
 	 */
 	public static void main(String[] args) throws Exception {
 		if (args.length < 3) {
-			throw new Exception("Wrong number of arguments");
+			System.out.println("Wrong number of arguments");
+			return;
 		}
 		
-		if (args.length < 3) {
-			throw new Exception("Wrong number of arguments");
-		}
-
 		String userName = args[0];
 		String password = DataHelper.getPassword(args[1]);
 		String templateName = args[2];

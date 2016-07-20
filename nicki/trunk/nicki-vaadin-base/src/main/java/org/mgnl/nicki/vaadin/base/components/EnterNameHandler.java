@@ -35,11 +35,16 @@ package org.mgnl.nicki.vaadin.base.components;
 public abstract class EnterNameHandler {
 	
 	private EnterNameDialog dialog;
+	private String initialName;
+	
+	public EnterNameHandler(String initialName) {
+		this.initialName = initialName;
+	}
 	
 	public abstract void setName(String name) throws Exception;
 	
 	public String getName() {
-		return "";
+		return initialName;
 	}
 	
 	

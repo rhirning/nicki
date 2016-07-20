@@ -108,7 +108,7 @@ public class TableListAttributeField extends BaseDynamicAttributeField implement
 	protected void addEntry(Table table) {
 		EnterNameDialog dialog = new EnterNameDialog("nicki.editor.catalogs.entry.new",
 				I18n.getText("nicki.editor.catalogs.entry.new.window.title"));
-		dialog.setHandler(new NameHandler());
+		dialog.setHandler(new NameHandler(""));
 		dialog.setWidth(440, Unit.PIXELS);
 		dialog.setHeight(500, Unit.PIXELS);
 		dialog.setModal(true);
@@ -117,6 +117,10 @@ public class TableListAttributeField extends BaseDynamicAttributeField implement
 
 	private class NameHandler extends EnterNameHandler {
 		
+		public NameHandler(String initialName) {
+			super(initialName);
+		}
+
 		@Override
 		public void setName(String name) throws Exception {
 			addItem(name);

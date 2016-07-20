@@ -39,7 +39,7 @@ public class NavigationCommandEntry {
 	public NavigationCommandEntry(String commandName, Object[] data) {
 		super();
 		this.setCommandName(commandName);
-		this.setData(data);
+		this.data = data;
 	}
 
 	public String getCommandName() {
