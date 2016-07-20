@@ -44,7 +44,7 @@ public class NewEntryEnterNameHandler extends EnterNameHandler implements Serial
 	private Table table;
 
 	public NewEntryEnterNameHandler(Table table) {
-		super();
+		super("");
 		this.table = table;
 	}
 

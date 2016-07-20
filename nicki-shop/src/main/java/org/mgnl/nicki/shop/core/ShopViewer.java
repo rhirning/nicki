@@ -67,11 +67,11 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 
 	public ShopViewer(Person user, Shop shop, Person recipient, ShopParent parent, Cart cart) throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		this.showViewer = this;
-		this.setShopper(user);
+		this.shopper = user;
 		this.shop = shop;
-		this.setRecipient(recipient);
+		this.recipient = recipient;
 		this.parent = parent;
-		this.setCart(cart);
+		this.cart = cart;
 		if (cart != null) {
 			this.inventory = Inventory.fromCart(user, recipient, cart);
 		} else {
@@ -80,7 +80,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 		init();
 	}
 	
-	public void init() {
+	private void init() {
 		if (shop.getRenderer() != null) {
 			try {
 				this.renderer = (ShopRenderer) Classes.newInstance(shop.getRenderer());

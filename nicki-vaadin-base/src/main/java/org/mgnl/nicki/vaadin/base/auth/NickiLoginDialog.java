@@ -70,7 +70,7 @@ public class NickiLoginDialog extends CustomComponent {
 	private NickiCallbackHandler callbackHandler;
 
 	public NickiLoginDialog(NickiCallbackHandler callbackHandler) {
-		this.setCallbackHandler(callbackHandler);
+		this.callbackHandler = callbackHandler;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 

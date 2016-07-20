@@ -41,7 +41,7 @@ public class DataView extends CustomComponent {
 		this.titleString = titleString;
 		this.container = container;
 		this.length = length;
-		setI18nBase(i18nBase);
+		this.i18nBase = i18nBase;
 
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
@@ -107,7 +107,7 @@ public class DataView extends CustomComponent {
 		return mainLayout;
 	}
 
-	public String getI18nBase() {
+	private String getI18nBase() {
 		return i18nBase;
 	}
 

@@ -82,8 +82,8 @@ public class Inventory implements Serializable {
 
 	private void init() throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		for (CatalogArticle catalogArticle : Catalog.getCatalog().getAllArticles()) {
-			for (InventoryArticle inventoryArticle : catalogArticle.getInventoryArticles(getPerson())) {
-				addArticle(inventoryArticle);
+			for (InventoryArticle inventoryArticle : catalogArticle.getInventoryArticles(this.person)) {
+				addInventoryArticle(inventoryArticle);
 			}
 		}
 	}
@@ -102,6 +102,10 @@ public class Inventory implements Serializable {
 	}
 	
 	public void addArticle(InventoryArticle inventoryArticle) {
+		addInventoryArticle(inventoryArticle);
+	}
+	
+	private void addInventoryArticle(InventoryArticle inventoryArticle) {
 		if (inventoryArticle.getArticle().isMultiple()) {
 			addArticle(inventoryArticle.getArticle(), inventoryArticle.getSpecifier(), inventoryArticle);
 		} else {

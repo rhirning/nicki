@@ -66,7 +66,7 @@ public class IframePortlet extends GenericPortlet {
 		request.setAttribute("nickiParameters", getParameters(request));
 		request.setAttribute("nickiParametersMap", getParametersMap(request));
 		if (pageName == null || pageName.length() == 0) {
-			throw new NullPointerException("null or empty page name");
+			throw new PortletException("null or empty page name");
 		}
 		try {
 			PortletRequestDispatcher dispatcher = getPortletContext()

@@ -92,7 +92,7 @@ public class TestDataView extends CustomComponent {
 		});
 	}
 	
-	protected void addField(String name, String value) {
+	private void addField(String name, String value) {
 		TextField field = new TextField(name, value);
 		field.addValueChangeListener(listener);
 		field.setWidth("100%");
@@ -103,7 +103,7 @@ public class TestDataView extends CustomComponent {
 	protected void addNewField() {
 		EnterNameDialog newFieldWindow = new EnterNameDialog(messageKeyBase,
 				I18n.getText(messageKeyBase + ".window.title"));
-		newFieldWindow.setHandler(new NewFieldHandler());
+		newFieldWindow.setHandler(new NewFieldHandler(""));
 		newFieldWindow.setPositionX(300);
 		newFieldWindow.setPositionY(100);
 		newFieldWindow.setWidth(440, Unit.PIXELS);
@@ -113,6 +113,10 @@ public class TestDataView extends CustomComponent {
 	}
 	
 	public class NewFieldHandler extends EnterNameHandler implements Serializable {
+
+		public NewFieldHandler(String initialName) {
+			super(initialName);
+		}
 
 		public void setName(String name) {
 			addField(name, "");

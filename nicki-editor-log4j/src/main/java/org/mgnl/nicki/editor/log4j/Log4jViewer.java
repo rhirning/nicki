@@ -58,12 +58,12 @@ public class Log4jViewer extends CustomComponent {
 		table.setColumnHeader("comboBox", I18n.getText(application.getI18nBase() + ".column.level"));
 		table.addContainerProperty("saveButton", Button.class, null);
 		table.setColumnHeader("saveButton", "");
-		fillTable();
+		refreshTable();
 		setCompositionRoot(canvas);
 	}
 	
 
-    public void fillTable() {
+    private void refreshTable() {
     	LOG.debug("fill Table()");
     	table.removeAllItems();
     	addLoggerItem(Logger.getRootLogger());
@@ -72,6 +72,11 @@ public class Log4jViewer extends CustomComponent {
         	LOG.debug("Logger added: " + logger.getName());
         	addLoggerItem(logger);
 		}
+	}
+	
+
+    public void fillTable() {
+    	refreshTable();
 	}
 
 
