@@ -51,7 +51,7 @@ public class Shop implements ShopViewerComponent, Serializable {
 	private void load() {
 		Element root = document.getRootElement();
 		
-		this.setRenderer(StringUtils.trimToNull(root.getAttributeValue("renderer")));
+		this.renderer = StringUtils.trimToNull(root.getAttributeValue("renderer"));
 		
 		@SuppressWarnings("unchecked")
 		List<Element> pages = root.getChildren("page");

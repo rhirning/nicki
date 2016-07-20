@@ -46,7 +46,7 @@ public class NewObjectEnterNameHandler extends EnterNameHandler implements Seria
 
 	public NewObjectEnterNameHandler(NickiTreeEditor treeEditor, DynamicObject parent,
 			Class<? extends DynamicObject> classDefinition) {
-		super();
+		super("");
 		this.editor = treeEditor;
 		this.parent = parent;
 		this.classDefinition = classDefinition;

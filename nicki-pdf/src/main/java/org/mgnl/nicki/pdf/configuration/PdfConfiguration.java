@@ -31,17 +31,7 @@ public class PdfConfiguration {
 	//private Map<String, BaseFont> fonts = new HashMap<String, BaseFont>();
 	private Font defaultFont;
 	private String contextBasePath;
-	
-	public PdfConfiguration(String configuration, String contextBasePath) throws JAXBException, DocumentException, IOException {
-		config = unmarshal(Configuration.class, configuration);
-		if(!StringUtils.endsWith(contextBasePath, "/")) {
-			contextBasePath = contextBasePath + "/";
-		}
-		
-		this.contextBasePath = contextBasePath;
-		loadConfiguration();
-	}
-	
+
 	public PdfConfiguration(InputStream configuration, String contextBasePath) throws JAXBException, DocumentException, IOException {
 		config = unmarshal(Configuration.class, configuration);
 		if(!StringUtils.endsWith(contextBasePath, "/")) {
@@ -49,10 +39,9 @@ public class PdfConfiguration {
 		}
 		
 		this.contextBasePath = contextBasePath;
-		loadConfiguration();
 	}
 	
-	private void loadConfiguration() throws DocumentException, IOException {
+	public void init() throws DocumentException, IOException {
 		
 		for (org.mgnl.nicki.pdf.model.config.Font font : config.getFonts().getFont()) {
 			log.debug("registering font {}", contextBasePath + font.getValue());

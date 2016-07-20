@@ -201,11 +201,7 @@ public class ScriptViewer extends CustomComponent implements ClassEditor {
 				break;
 
 			String line;
-			try {
-				line = br.readLine();
-			} catch (IOException e) {
-				throw new RuntimeException(e.toString());
-			}
+			line = br.readLine();
 
 			if (line == null)
 				break;

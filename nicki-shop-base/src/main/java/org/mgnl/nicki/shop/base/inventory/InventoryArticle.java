@@ -45,14 +45,14 @@ public class InventoryArticle implements Serializable{
 
 	public InventoryArticle(CatalogArticle catalogArticle) {
 		this.catalogArticle = catalogArticle;
-		setStatus(STATUS.NEW);
+		this.status = STATUS.NEW;
 	}
 	
 
 	public InventoryArticle(CatalogArticle catalogArticle, String specifier) {
 		this.catalogArticle = catalogArticle;
 		this.specifier = specifier;
-		setStatus(STATUS.NEW);
+		this.status = STATUS.NEW;
 	}
 	
 	public String getDisplayName() {
@@ -69,28 +69,28 @@ public class InventoryArticle implements Serializable{
 		this.start = start;
 		this.end = end;
 		this.orgEnd = end;
-		setStatus(STATUS.PROVISIONED);
+		this.status = STATUS.PROVISIONED;
 		originalStatus = STATUS.PROVISIONED;
 	}
 
 	public InventoryArticle(CatalogArticle catalogArticle, String specifier, Date start, Date end) {
 		this.catalogArticle = catalogArticle;
-		this.setSpecifier(specifier);
+		this.specifier = specifier;
 		this.start = start;
 		this.end = end;
 		this.orgEnd = end;
-		setStatus(STATUS.PROVISIONED);
+		this.status = STATUS.PROVISIONED;
 		originalStatus = STATUS.PROVISIONED;
 	}
 	
 
 	public InventoryArticle(CatalogArticle catalogArticle, AssignedArticle assignedArticle) {
 		this.catalogArticle = catalogArticle;
-		this.setSpecifier(assignedArticle.getSpecifier());
+		this.specifier = assignedArticle.getSpecifier();
 		this.start = assignedArticle.getStart();
 		this.end = assignedArticle.getEnd();
 		this.orgEnd = end;
-		setStatus(STATUS.PROVISIONED);
+		this.status = STATUS.PROVISIONED;
 		originalStatus = STATUS.PROVISIONED;
 	}
 

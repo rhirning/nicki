@@ -35,7 +35,7 @@ public class DialogBase extends Window {
 
 
 
-	public void init() {
+	private void init() {
 
         layout = new VerticalLayout();
         layout.setWidth("100%");
