@@ -27,6 +27,7 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 		try {
 			return node.getProperty(key).toString();
 		} catch (Exception e) {
+			LOG.error("Error", e);
 		}
 		return null;
 	}

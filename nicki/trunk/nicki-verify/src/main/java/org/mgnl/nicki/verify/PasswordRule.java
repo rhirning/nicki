@@ -38,7 +38,7 @@ public class PasswordRule extends Rule {
 			addMessage(I18n.getText(getI18nBase() + ".password.complexity",
 					Integer.toString(getComplexity(value)), 
 					Integer.toString(complexity)));
-			ok = false;;
+			ok = false;
 		}
 		if (min > 0 && min > getMin(value)) {
 			addMessage(I18n.getText(getI18nBase() + ".password.minlength",

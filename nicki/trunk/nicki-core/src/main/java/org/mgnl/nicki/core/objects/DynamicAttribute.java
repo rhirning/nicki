@@ -62,7 +62,6 @@ public class DynamicAttribute implements Serializable {
 	private Class<? extends DynamicObject> foreignKeyClass;
 	private boolean virtual;
 	private boolean readonly;
-	private boolean staticAttribute;
 	private String editorClass;
 	private String searchFieldClass;
 	private String caption;
