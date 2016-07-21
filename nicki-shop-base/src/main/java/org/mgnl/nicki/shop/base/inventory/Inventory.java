@@ -201,8 +201,9 @@ public class Inventory implements Serializable {
 	private void removeArticle(String path, String specifier) {
 		Map<String, InventoryArticle> map = this.multiArticles.get(path);
 		if (map != null) {
-			if (map.containsKey(specifier));
-			map.remove(specifier);
+			if (map.containsKey(specifier)) {
+				map.remove(specifier);
+			}
 		}
 	}
 
@@ -408,11 +409,10 @@ public class Inventory implements Serializable {
 	public void modifyArticle(CatalogArticle catalogArticle, 
 			String oldSpecifier, String newSpecifier) {
 		InventoryArticle iArticle = getInventoryArticle(catalogArticle, oldSpecifier);
-		if (iArticle != null) {
-			if (iArticle.getStatus() == STATUS.NEW) {
-				removeArticle(catalogArticle.getPath(), oldSpecifier);
-				addArticle(catalogArticle, newSpecifier);
-			}
+		if (iArticle != null
+			&& iArticle.getStatus() == STATUS.NEW) {
+			removeArticle(catalogArticle.getPath(), oldSpecifier);
+			addArticle(catalogArticle, newSpecifier);
 		}
 	}
 
