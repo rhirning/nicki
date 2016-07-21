@@ -116,7 +116,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	// TODO: implement login mechanism
 	private void login(DynamicObject user, String password) {
-		LOG.error("not implemented");
+		LOG.error("not implemented: " + user + "/" + password);
 	}
 
 	@Override
@@ -149,7 +149,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	// TODO implement
 	private void updateNode(Node node, DynamicObject dynamicObject) {
-		LOG.error("not implemented");
+		LOG.error("not implemented: " + node + "/" + dynamicObject.getName());
 	}
 
 	public List<DynamicObject> search(JcrQueryHandler queryHandler) throws DynamicObjectException {

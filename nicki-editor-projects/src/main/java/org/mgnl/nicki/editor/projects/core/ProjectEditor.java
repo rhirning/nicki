@@ -88,6 +88,7 @@ public class ProjectEditor extends NickiApplication {
 		@Override
 		public void valueChange(DynamicObject dynamicObject,
 				String attributeName, String value) {
+			/* TODO
 			if (StringUtils.equals(attributeName, "member")) {
 				String namingValue = "";
 				if (StringUtils.isNotEmpty(value)) {
@@ -96,8 +97,9 @@ public class ProjectEditor extends NickiApplication {
 						namingValue = member.getNamingValue();
 					}
 				}
-// TODO				dynamicObject.initNew(dynamicObject.getParentPath(), namingValue);
+				dynamicObject.initNew(dynamicObject.getParentPath(), namingValue);
 			}
+			*/
 		}
 
 		public boolean acceptAttribute(String name) {

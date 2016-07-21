@@ -248,7 +248,6 @@ public class BaseDBContext
 		}
 	}
 
-	// TODO Handle deepsearch properly
 	private void addObjects(Object bean, boolean deepSearch) {
 		PrimaryKey primaryKey = getPrimaryKey(bean);
 		if (primaryKey != null) {
@@ -261,10 +260,10 @@ public class BaseDBContext
 						    ParameterizedType aType = (ParameterizedType) genericFieldType;
 						    Type[] fieldArgTypes = aType.getActualTypeArguments();
 							Class<?> entryClass = (Class<?>) fieldArgTypes[0];
-							addObjects(bean, field, entryClass, primaryKey);
+							addObjects(bean, field, entryClass, primaryKey, deepSearch);
 						}
 					} else {
-						addObject(bean, field, field.getType(), primaryKey);
+						addObject(bean, field, field.getType(), primaryKey, deepSearch);
 					}
 	
 				}
@@ -291,11 +290,11 @@ public class BaseDBContext
 		return primaryKey;
 	}
 
-	private <T> void addObject(Object bean, Field field, Class<T> entryClass, PrimaryKey primaryKey) {
+	private <T> void addObject(Object bean, Field field, Class<T> entryClass, PrimaryKey primaryKey, boolean deepSearch) {
 		T subBean = getNewInstance(entryClass);
 		setPrimaryKey(subBean, primaryKey);
 		try {
-			List<T> subs = loadObjects(subBean, true);
+			List<T> subs = loadObjects(subBean, deepSearch);
 			if (subs != null && subs.size() > 0) {
 				String setter = "set" + StringUtils.capitalize(field.getName());
 				Method method = bean.getClass().getMethod(setter, entryClass);
@@ -306,11 +305,11 @@ public class BaseDBContext
 		}
 	}
 
-	private <T> void addObjects(Object bean, Field field, Class<T> entryClass, PrimaryKey primaryKey) {
+	private <T> void addObjects(Object bean, Field field, Class<T> entryClass, PrimaryKey primaryKey, boolean deepSearch) {
 		T subBean = getNewInstance(entryClass);
 		try {
 			setForeignKey(subBean, primaryKey);
-			List<T> subs = loadObjects(subBean, true);
+			List<T> subs = loadObjects(subBean, deepSearch);
 			if (subs != null && subs.size() > 0) {
 				String setter = "set" + StringUtils.capitalize(field.getName());
 				Method method = bean.getClass().getMethod(setter, List.class);

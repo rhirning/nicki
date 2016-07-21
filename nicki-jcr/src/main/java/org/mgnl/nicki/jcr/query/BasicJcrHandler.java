@@ -32,18 +32,13 @@
  */
 package org.mgnl.nicki.jcr.query;
 
-import java.util.List;
-
 import javax.jcr.RepositoryException;
 import javax.jcr.Workspace;
 import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
-import javax.jcr.query.QueryResult;
-
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.context.JcrContext;
 import org.mgnl.nicki.jcr.context.JcrQueryHandler;
 

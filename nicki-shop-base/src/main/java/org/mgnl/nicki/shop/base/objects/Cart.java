@@ -46,11 +46,17 @@ import org.xml.sax.SAXException;
  *
  * @author cna
  */
+@SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("nickiCart")
 public class Cart extends BaseDynamicObject {
 
-	private static final long serialVersionUID = 3099728171406117766L;
+	public static final String ATTRIBUTE_DATA			= "data";
+	public static final String ATTRIBUTE_INITIATOR		= "initiator";
+	public static final String ATTRIBUTE_MANAGER		= "manager";
+	public static final String ATTRIBUTE_PROCESS_RESULT	= "processResult";
+	public static final String ATTRIBUTE_RECIPIENT		= "recipient";
+	public static final String ATTRIBUTE_SOURCE			= "source";
 
 	public enum CART_STATUS {
 
@@ -76,30 +82,51 @@ public class Cart extends BaseDynamicObject {
     private final static String ELEM_CART = "cart";
     private final static String ATTR_CATALOG = "catalog";
     
-    @DynamicAttribute(externalName="cn", naming=true)
-    private String name;
+	@DynamicAttribute(externalName = "cn", naming = true)
+	public String getName() {
+		return super.getName();
+	}
     @DynamicAttribute(externalName="nickiCartEntry")
     private String[] cartEntry;
-    @DynamicAttribute(externalName="nickiData")
-    private String data;
-    @DynamicAttribute(externalName="nickiInitiator", foreignKey=Person.class)
-    private String initiator;
-    @DynamicAttribute(externalName="nickiManager", foreignKey=Person.class)
-    private String manager;
+    
+	@DynamicAttribute(externalName = "nickiData")
+	public String getData() {
+		return getAttribute(ATTRIBUTE_DATA);
+	}
+
+	@DynamicAttribute(externalName="nickiInitiator", foreignKey=Person.class)
+	public Person getInitiator() {
+		return getContext().loadObject(Person.class, getAttribute(ATTRIBUTE_INITIATOR));
+	}
+	
+	@DynamicAttribute(externalName="nickiManager", foreignKey=Person.class)
+	public Person getManager() {
+		return getContext().loadObject(Person.class, getAttribute(ATTRIBUTE_MANAGER));
+	}
+
     @DynamicAttribute(externalName="nickiProcessDate")
     private String processdate;
-    @DynamicAttribute(externalName="nickiProcessResult")
-    private String processresult;
+    
+	@DynamicAttribute(externalName = "nickiProcessResult")
+	public String getProcessResult() {
+		return getAttribute(ATTRIBUTE_PROCESS_RESULT);
+	}
+
     @DynamicAttribute(externalName="nickiRecipient", foreignKey=Person.class)
-    private String recipient;
+	public Person getRecipient() {
+		return getContext().loadObject(Person.class, getAttribute(ATTRIBUTE_RECIPIENT));
+	}
     @DynamicAttribute(externalName="nickiRequestDate")
     private String requestdate;
     @DynamicAttribute(externalName="nickiStatus")
     private String cartStatus;
     @DynamicAttribute(externalName="nickiStatusFlag")
     private String[] statusFlag;
-    @DynamicAttribute(externalName="nickiSource")
-    private String source;
+    
+	@DynamicAttribute(externalName = "nickiSource")
+	public String getSource() {
+		return getAttribute(ATTRIBUTE_SOURCE);
+	}
 	
 
     @SuppressWarnings("unchecked")
@@ -272,10 +299,6 @@ public class Cart extends BaseDynamicObject {
         put("source", source);
     }
 
-    public String getSource() {
-        return (String) get("source");
-    }
-
     public void addCartEntry(CartEntry entry) {
         cartentries.add(entry);
 
@@ -289,16 +312,8 @@ public class Cart extends BaseDynamicObject {
         put("recipient", person!=null?person.getPath():null);
     }
 
-    public Person getRecipient() {
-        return getContext().loadObject(Person.class, (String) get("recipient"));
-    }
-
     public void setInitiator(Person person) {
         put("initiator", person!=null?person.getPath():null);
-    }
-
-    public Person getInitiator() {
-        return getContext().loadObject(Person.class, (String) get("initiator"));
     }
 
     public static List<Cart> getAllCarts(NickiContext ctx) {
@@ -319,10 +334,6 @@ public class Cart extends BaseDynamicObject {
 
         return sb.toString();
     }
-
-	public Person getManager() {
-		return getContext().loadObject(Person.class, (String) get("manager"));
-	}
 
 	public void setManager(Person person) {
 		put("manager", person!=null?person.getPath():null);
