@@ -249,25 +249,25 @@ public class TwoTablesRenderer extends BaseTableRenderer implements ShopRenderer
 	}
 
 	public void showEntry(Item item, CatalogArticle article, InventoryArticle inventoryArticle) {
-		SOURCE source = SOURCE.SHOP;
 		/*
+		SOURCE source = SOURCE.SHOP;
 		Date start = new Date();
 		Date end = null;
-		*/
-		boolean enabled = true;
 		boolean toEnabled = true;
+		boolean enabled = true;
+		
 		if (inventoryArticle != null && inventoryArticle.getStatus() != STATUS.NEW) {
-			/*
+			
 			start = inventoryArticle.getStart();
 			end = inventoryArticle.getEnd();
-			*/
+			
 			enabled = false;
 			source = inventoryArticle.getSource();
 			if (source == SOURCE.RULE) {
 				toEnabled = false;
 			}
 		}
-
+		*/
 		/*
 		item.getItemProperty("dateFrom").setValue(getStartDateComponent(inventoryArticle, enabled, start));
 		item.getItemProperty("dateTo").setValue(getEndDateComponent(inventoryArticle, toEnabled, end));

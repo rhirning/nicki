@@ -65,12 +65,10 @@ public class ListValueProvider extends BasicValueProvider implements ValueProvid
 		StringBuilder sb2 = new StringBuilder();
 		LdapHelper.addQuery(sb2, "nickiRule=" + getSelector().getName() + "=*", LOGIC.OR);
 		LdapHelper.negateQuery(sb2);
-		if (value == null) {
-			// nothing to add
-		} else if (value instanceof String) {
+		if (value != null && value instanceof String) {
 			String stringValue = (String) value;
 			LdapHelper.addQuery(sb2, "nickiRule=" + getSelector().getName() + "=" + stringValue, LOGIC.OR);
-		} else if (value instanceof List) {
+		} else if (value != null && value instanceof List) {
 			@SuppressWarnings("unchecked")
 			List<String> values = (List<String>) value;
 			for (String stringValue : values) {

@@ -29,11 +29,11 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import com.vaadin.data.util.IndexedContainer;
 
 public interface ShopContainer extends Serializable {
-	static final String PROPERTY_NAME = "name"; 
-	static final String PROPERTY_CATEGORY = "category"; 
-	static final String PROPERTY_STATUS = "status"; 
-	static final String PROPERTY_ICON = "icon"; 
-	static final String PROPERTY_PATH= "path"; 
+	String PROPERTY_NAME = "name"; 
+	String PROPERTY_CATEGORY = "category"; 
+	String PROPERTY_STATUS = "status"; 
+	String PROPERTY_ICON = "icon"; 
+	String PROPERTY_PATH= "path"; 
 		
 	IndexedContainer getArticles() throws DynamicObjectException;
 

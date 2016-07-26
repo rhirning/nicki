@@ -129,6 +129,7 @@ public class CatalogPage extends CatalogObject {
 		try {
 			return getParent(CatalogPage.class).getAllCategories();
 		} catch (Exception e) {
+			LOG.debug("Error", e);
 		}
 		return new ArrayList<String>();
 	}

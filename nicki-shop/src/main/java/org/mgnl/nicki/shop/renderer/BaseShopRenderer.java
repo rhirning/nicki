@@ -24,18 +24,13 @@ import java.util.List;
 
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Layout;
 import com.vaadin.ui.TextArea;
 
+@SuppressWarnings("serial")
 public abstract class BaseShopRenderer implements ShopRenderer {
-	private static final long serialVersionUID = -5984151970232783233L;
-
-	private static final Logger LOG = LoggerFactory.getLogger(BaseShopRenderer.class);
 	
 	private Inventory inventory;
 	private ShopRenderer parentRenderer;
