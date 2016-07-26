@@ -106,7 +106,7 @@ public class ArticleContainer implements Serializable{
 		}
 	}
 
-	public ArticleContainer(Shop shop) {
+	public ArticleContainer() {
 	}
 
 	private boolean isPageRef(Element pageElement) {

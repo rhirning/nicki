@@ -200,10 +200,8 @@ public class Inventory implements Serializable {
 
 	private void removeArticle(String path, String specifier) {
 		Map<String, InventoryArticle> map = this.multiArticles.get(path);
-		if (map != null) {
-			if (map.containsKey(specifier)) {
-				map.remove(specifier);
-			}
+		if (map != null && map.containsKey(specifier)) {
+			map.remove(specifier);
 		}
 	}
 

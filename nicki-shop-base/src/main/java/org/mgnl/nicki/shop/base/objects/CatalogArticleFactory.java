@@ -23,7 +23,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
-import org.mgnl.nicki.shop.base.objects.CatalogArticleFactory;
 
 public class CatalogArticleFactory {
 	private static CatalogArticleFactory instance = null;

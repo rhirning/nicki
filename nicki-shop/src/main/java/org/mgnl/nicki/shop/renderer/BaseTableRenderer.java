@@ -82,29 +82,26 @@ public abstract class BaseTableRenderer extends BaseShopRenderer implements Shop
 		private static final long serialVersionUID = -9121430140825156577L;
 
 		public void handleAction(Action action, Object sender, Object target) {
-			if (action == EDIT_ACTION) {
-				if (target instanceof InventoryArticle) {
-					InventoryArticle iArticle = (InventoryArticle) target;
-					editEntry(iArticle);
-					
-				}
+			if (action == EDIT_ACTION &&
+					target instanceof InventoryArticle) {
+				InventoryArticle iArticle = (InventoryArticle) target;
+				editEntry(iArticle);
 			}
 		}
 		
 		public Action[] getActions(Object target, Object sender) {
 			if (target instanceof InventoryArticle) {
 				InventoryArticle iArticle = (InventoryArticle) target;
-				if (iArticle.getArticle() instanceof MultipleInstancesCatalogArticle) {
-					if (iArticle.getStatus() == STATUS.NEW) {
-						return ACTIONS;
-					}
+				if (iArticle.getArticle() instanceof MultipleInstancesCatalogArticle &&
+						iArticle.getStatus() == STATUS.NEW) {
+					return ACTIONS;
 				}
 			} 
 			return NO_ACTIONS;
 		}
 	}
 
-	public class ItemClickListener implements com.vaadin.event.ItemClickEvent.ItemClickListener {
+	public class ItemClickListener implements ItemClickEvent.ItemClickListener {
 
 		@Override
 		public void itemClick(ItemClickEvent event) {

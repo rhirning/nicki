@@ -30,7 +30,6 @@ import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
-import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.editor.projects.directories.DirectoryEditor;
 import org.mgnl.nicki.editor.projects.members.MemberEditor;
 import org.mgnl.nicki.editor.projects.objects.Directory;
