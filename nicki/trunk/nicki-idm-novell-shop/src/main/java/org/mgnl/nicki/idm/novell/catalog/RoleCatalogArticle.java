@@ -67,8 +67,8 @@ public class RoleCatalogArticle extends CatalogArticle {
 		}
 		for (Role role : ((IdmPerson)person).getGroupRoles()) {
 			if (contains(role)) {
-				InventoryArticle iArticle = (new InventoryArticle(this, role.getStartTime(),
-						role.getEndTime()));
+				InventoryArticle iArticle = new InventoryArticle(this, role.getStartTime(),
+						role.getEndTime());
 				iArticle.setReadOnly(true);
 				inventoryArticles.add(iArticle);
 			}

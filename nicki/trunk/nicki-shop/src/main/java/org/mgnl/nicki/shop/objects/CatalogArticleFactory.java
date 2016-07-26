@@ -43,7 +43,7 @@ public class CatalogArticleFactory {
 		ObjectFactory objectFactory = AppContext.getSystemContext().getObjectFactory();
 		for (CatalogArticle catalogArticle : objectFactory.findDynamicObjects(CatalogArticle.class)) {
 			articles.add(catalogArticle);
-		};
+		}
 	}
 
 	public List<CatalogArticle> getArticles() {

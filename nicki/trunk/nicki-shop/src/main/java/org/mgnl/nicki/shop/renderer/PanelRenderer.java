@@ -25,9 +25,6 @@ import java.util.List;
 import org.mgnl.nicki.shop.core.ShopPage;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Panel;
@@ -35,7 +32,6 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class PanelRenderer extends BaseShopRenderer implements ShopRenderer {
-	private static final Logger LOG = LoggerFactory.getLogger(PanelRenderer.class);
 
 	private ShopViewerComponent shopViewerComponent;
 	private VerticalLayout layout;

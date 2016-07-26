@@ -28,7 +28,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.XMLHelper;
-import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
