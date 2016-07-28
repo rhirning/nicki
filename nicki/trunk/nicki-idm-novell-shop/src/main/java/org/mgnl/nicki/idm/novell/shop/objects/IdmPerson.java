@@ -174,6 +174,16 @@ public class IdmPerson extends Person implements Serializable {
 		return false;
 	}
 
+	@Override
+	public boolean hasGroup(String groupName) {
+		for (Group group : getGroups()) {
+			if (StringUtils.equalsIgnoreCase(group.getName(), groupName)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public boolean hasResource(Resource resource2) {
 		for (Resource resource : getResources()) {
 			if (StringUtils.equals(resource.getPath(), resource2.getPath())) {
