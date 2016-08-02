@@ -52,11 +52,12 @@ public class LdapSearchGroup extends BaseDynamicObject {
 	public static final String ATTRIBUTE_MEMBER = "member";
 	public static final String ATTRIBUTE_MEMBER_QUERY = "memberQuery";
 
+	@Override
 	@DynamicAttribute(externalName="cn", naming=true)
 	public String getName() {
 		return super.getName();
 	}
-	
+
 	public enum SEARCHSCOPE {
 
 		SUBORDINATES("base"),
@@ -92,8 +93,8 @@ public class LdapSearchGroup extends BaseDynamicObject {
 
 
 	private void load() {
-		if (initialized != true && StringUtils.isNotEmpty((String) get("query"))) {
-			String memberQuery = (String) get("query");
+		if ((initialized != true) && StringUtils.isNotEmpty((String) getMemberQuery())) {
+			String memberQuery = (String) getMemberQuery();
 
 			searchRoot = StringUtils.substringBetween(memberQuery, "///", "??");
 			searchScope = SEARCHSCOPE.fromValue(StringUtils.substringBetween(memberQuery, "??", "?"));
@@ -102,15 +103,15 @@ public class LdapSearchGroup extends BaseDynamicObject {
 			initialized = true;
 		}
 	}
-		
-    @SuppressWarnings("unchecked")
+
+	@SuppressWarnings("unchecked")
 	@DynamicAttribute(externalName = "member", readonly=true, foreignKey=Person.class)
-    public List<String> getMember() {
-    	return (List<String>) get(ATTRIBUTE_MEMBER);
-    }
+	public List<String> getMember() {
+		return (List<String>) get(ATTRIBUTE_MEMBER);
+	}
 
 	private void reload() {
-		String memberQuery = (String) get("query");
+		String memberQuery = (String) getMemberQuery();
 
 		searchRoot = StringUtils.substringBetween(memberQuery, "///", "??");
 		searchScope = SEARCHSCOPE.valueOf(StringUtils.upperCase(StringUtils.substringBetween(memberQuery, "??", "?")));
@@ -129,23 +130,25 @@ public class LdapSearchGroup extends BaseDynamicObject {
 
 	}
 
+	@Deprecated
 	public void setQueryURL(String memberQuery) {
-		put("query", memberQuery);
+		setMemberQuery(memberQuery);
 		reload();
 	}
-
+	
+	@Deprecated
 	public String getQuery() {
 		load();
 		return ldapSearch;
 	}
 
 	public void setQueryComponents(String searchRoot, SEARCHSCOPE searchScope, String ldapSearch) {
-		if (StringUtils.isNotBlank(searchRoot) && StringUtils.isNotBlank(ldapSearch) && null != searchScope) {
+		if (StringUtils.isNotBlank(searchRoot) && StringUtils.isNotBlank(ldapSearch) && (null != searchScope)) {
 			this.ldapSearch = ldapSearch;
 			this.searchRoot = searchRoot;
 			this.searchScope = searchScope;
 
-			put("query", getQueryURL());
+			setMemberQuery(getQueryURL());
 			initialized = true;
 		} else {
 			throw new IllegalArgumentException();
@@ -164,10 +167,10 @@ public class LdapSearchGroup extends BaseDynamicObject {
 
 	@DynamicAttribute(externalName="memberQueryURL")
 	public String getMemberQuery() {
-		return getAttribute("memberQuery");
+		return getAttribute(ATTRIBUTE_MEMBER_QUERY);
 	}
 
 	public void setMemberQuery(String memberQuery) {
-		this.put("memberQuery", memberQuery);
+		this.put(ATTRIBUTE_MEMBER_QUERY, memberQuery);
 	}
 }
