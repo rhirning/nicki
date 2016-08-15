@@ -64,8 +64,14 @@ public class Validation {
 		}
 	}
 
+	public static void notNull(Object value, String error) throws ValidationException {
+		if (value == null) {
+			throw new ValidationException(error);
+		}
+	}
+
 	public static void dateInFuture(Field<?> component, Date date, String error) throws ValidationException {
-		if (date == null || date.compareTo(new Date()) < 0) {
+		if ((date == null) || (date.compareTo(new Date()) < 0)) {
 			if (component != null) {
 				component.focus();
 			}
@@ -74,7 +80,7 @@ public class Validation {
 	}
 
 	public static void dateInPast(Field<?> component, Date date, String error) throws ValidationException {
-		if (date == null || date.compareTo(new Date()) > 0) {
+		if ((date == null) || (date.compareTo(new Date()) > 0)) {
 			if (component != null) {
 				component.focus();
 			}
