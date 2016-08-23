@@ -52,7 +52,7 @@ public class BaseDBContext
 	}
 
 	@Override
-	public <T> void create(T bean) throws SQLException, InitProfileException, NotSupportedException {
+	public <T> PrimaryKey create(T bean) throws SQLException, InitProfileException, NotSupportedException {
 		boolean inTransaction = false;
 		if (this.connection != null) {
 			inTransaction = true;
@@ -75,6 +75,7 @@ public class BaseDBContext
 					LOG.error("Error on commit", e);
 				}
 			}
+			return primaryKey;
 			//return this.load(bean);
 		} finally {
 			if (!inTransaction) {
@@ -1203,7 +1204,7 @@ public class BaseDBContext
 	}
 
 	@Override
-	public void close() throws Exception {
+	public void close() throws SQLException {
 		synchronized (this) {
 			if (this.connection != null) {
 				this.rollback();
