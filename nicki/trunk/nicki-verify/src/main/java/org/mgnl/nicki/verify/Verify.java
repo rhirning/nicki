@@ -59,9 +59,6 @@ public class Verify {
 	private static Verify instance;
 	
 	public Verify() {
-		if (attributeRules == null) {
-			loadAttributeRules();
-		}
 	}
 	
 	public static Verify getInstance() {
@@ -72,6 +69,9 @@ public class Verify {
 	}
 	
 	public void verify(String attributeName, String value, Map<String, String> values) throws VerifyException {
+		if (attributeRules == null) {
+			loadAttributeRules();
+		}
 		String rule = attributeRules.get(attributeName.toLowerCase());
 		
 		try {
@@ -82,7 +82,7 @@ public class Verify {
 			throw new VerifyException(sb.toString());
 		}
 	}
-	public void verifyRule(String rule, String value, Map<String, String> values) throws VerifyException {
+	public static void verifyRule(String rule, String value, Map<String, String> values) throws VerifyException {
 		
 		StringBuilder sb = new StringBuilder();
 		
