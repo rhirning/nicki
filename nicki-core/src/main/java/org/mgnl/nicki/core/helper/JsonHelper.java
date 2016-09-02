@@ -243,7 +243,7 @@ public class JsonHelper {
 	}
 
 	static String[] prefixes = new String[]{"get", "is"};
-	private static Method getGetter(Class<?> clazz, Field field) {
+	public static Method getGetter(Class<?> clazz, Field field) {
 		
 		for (String prefix : prefixes) {
 			String methodName = prefix + StringUtils.capitalize(field.getName());
@@ -262,7 +262,7 @@ public class JsonHelper {
 		}
 	}
 
-	private static Method getSetter(Class<?> clazz, Field field) {
+	public static Method getSetter(Class<?> clazz, Field field) {
 		String methodName = "set" + StringUtils.capitalize(field.getName());
 		try {
 			Method method = clazz.getMethod(methodName, field.getType());
@@ -286,7 +286,21 @@ public class JsonHelper {
 		}
 	}
 
-	private static Method getSetter(Class<?> clazz, Field field, Class<? extends Object> paramClazz) {
+	public static Field getField(Class<?> clazz, String name) {
+		try {
+			return clazz.getDeclaredField(name);
+		} catch (NoSuchFieldException | SecurityException e) {
+			LOG.debug("no field for " + name + " in class " + clazz.getName());
+		}
+		Class<?> superClass = clazz.getSuperclass();
+		if (superClass != null) {
+			return getField(superClass, name);
+		} else {
+			return null;
+		}
+	}
+
+	public static Method getSetter(Class<?> clazz, Field field, Class<? extends Object> paramClazz) {
 		String methodName = "set" + StringUtils.capitalize(field.getName());
 		try {
 			Method method = clazz.getMethod(methodName, paramClazz);

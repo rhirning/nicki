@@ -46,7 +46,7 @@ import com.vaadin.ui.Table;
 public class TableRenderer extends BaseTableRenderer implements ShopRenderer {
 
 	private ShopViewerComponent shopViewerComponent;
-	private Table table = null;
+	private Table table;
 
 	public AbstractComponent render(ShopViewerComponent shopViewerComponent, Inventory inventory) {
 		this.shopViewerComponent = shopViewerComponent;

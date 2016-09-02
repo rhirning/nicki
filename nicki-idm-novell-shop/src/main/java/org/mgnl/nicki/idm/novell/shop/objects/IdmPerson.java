@@ -83,11 +83,11 @@ public class IdmPerson extends Person implements Serializable {
 	public static final String ATTRIBUTE_MAIL = "mail";
 	public static final String ATTRIBUTE_PHONENUMBER = "phoneNumber";
 
-	private Collection<Group> assignedGroups = null;
-	private Collection<Role> assignedRoles = null;
-	private Collection<Role> groupRoles = null;
-	private Collection<Role> containerRoles = null;
-	private Collection<Resource> assignedResources = null;
+	private Collection<Group> assignedGroups;
+	private Collection<Role> assignedRoles;
+	private Collection<Role> groupRoles;
+	private Collection<Role> containerRoles;
+	private Collection<Resource> assignedResources;
 
 	@DynamicAttribute(externalName="nickiLastWorkingDay")
 	private String lastWorkingDay;

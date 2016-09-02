@@ -39,11 +39,11 @@ public class InventoryArticle implements Serializable{
 	private STATUS status;
 	private CatalogArticle catalogArticle;
 	private SOURCE source = SOURCE.NONE;
-	private Date start = null;
-	private Date end = null;
-	private Date orgEnd = null;
-	private String specifier = null;
-	private String comment = null;
+	private Date start;
+	private Date end;
+	private Date orgEnd;
+	private String specifier;
+	private String comment;
 	private boolean readOnly = false;
 
 	public InventoryArticle(CatalogArticle catalogArticle) {

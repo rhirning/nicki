@@ -37,7 +37,7 @@ import java.sql.SQLException;
 
 public class SequenceValueSelectHandler extends NonLoggingSelectHandler implements SelectHandler {
 	
-	private String sequenceName = null;
+	private String sequenceName;
 	private long result = -1;
 
 	public SequenceValueSelectHandler(String sequenceName) {

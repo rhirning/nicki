@@ -25,7 +25,7 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 
 public class CatalogArticleFactory {
-	private static CatalogArticleFactory instance = null;
+	private static CatalogArticleFactory instance;
 	Map<Class<?>, CatalogArticle> articleTypes = new HashMap<Class<?>, CatalogArticle>();
 	
 	public static CatalogArticleFactory getInstance() throws InvalidPrincipalException, InstantiateDynamicObjectException {

@@ -68,9 +68,9 @@ public abstract class NickiApplication extends UI {
 	public static final String JAAS_ENTRY = "Nicki";
 	public static final String ATTR_NICKI_CONTEXT = "NICKI_CONTEXT";
 
-	private NickiContext nickiContext = null;
-	private boolean useSystemContext = false;
-	private boolean useWelcomeDialog = false;
+	private NickiContext nickiContext;
+	private boolean useSystemContext;
+	private boolean useWelcomeDialog;
 
 	VerticalLayout view;
 

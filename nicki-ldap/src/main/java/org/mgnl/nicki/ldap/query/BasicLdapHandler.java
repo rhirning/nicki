@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 public abstract class BasicLdapHandler implements QueryHandler {
 	private static final Logger LOG = LoggerFactory.getLogger(BasicLdapHandler.class);
 	private NickiContext context;
-	private Class<? extends DynamicObject> classDefinition = null;
+	private Class<? extends DynamicObject> classDefinition;
 	private String filter;
 
 

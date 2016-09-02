@@ -37,7 +37,7 @@ import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 public class Shop implements ShopViewerComponent, Serializable {
 	private String renderer;
 	private List<ShopPage> pageList = new ArrayList<ShopPage>();
-	private Document document = null;
+	private Document document;
 	private Person shopper;
 	private Person recipient;
 

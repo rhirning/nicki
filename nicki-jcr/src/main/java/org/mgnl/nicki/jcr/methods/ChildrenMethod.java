@@ -51,7 +51,7 @@ public class ChildrenMethod implements Serializable, TemplateMethodModel {
 	private static final Logger LOG = LoggerFactory.getLogger(ChildrenMethod.class);
 
 	private static final long serialVersionUID = -81535049844368520L;
-	private List<? extends DynamicObject> objects = null;
+	private List<? extends DynamicObject> objects;
 	private String parent;
 	private ChildFilter filter;
 	private NickiContext context;

@@ -35,8 +35,8 @@ public class PdfEngine extends PdfPageEventHelper {
 	private static final Logger log = LoggerFactory.getLogger(PdfEngine.class);
 	
 	private PdfConfiguration config;
-	private PageRenderer pageRenderer = null;
-	private ContentRenderer contentRenderer = null;
+	private PageRenderer pageRenderer;
+	private ContentRenderer contentRenderer;
 	private List<Page> pages;
 
 	public static PdfEngine fromConfig(String configPropertyName, String contextBasePathPropertyName) throws JAXBException, DocumentException, IOException {

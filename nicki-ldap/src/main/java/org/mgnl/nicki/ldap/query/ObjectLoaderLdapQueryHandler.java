@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
 	private static final Logger LOG = LoggerFactory.getLogger(ObjectsLoaderQueryHandler.class);
 	
-	private String dn = null;
+	private String dn;
 	protected DynamicObject dynamicObject;
 
 	public DynamicObject getDynamicObject() {

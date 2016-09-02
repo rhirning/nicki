@@ -39,7 +39,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 	public static final String PATH_SEPARATOR = "/";
 	
 	static Logger logger = LoggerFactory.getLogger(JcrContext.class);
-	public JcrObjectFactory objectFactory = null;
+	public JcrObjectFactory objectFactory;
 
 	public JcrObjectFactory getJcrObjectFactory() {
 		if (this.objectFactory == null) {
@@ -47,8 +47,8 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 		}
 		return objectFactory;
 	}
-	private Session session= null;
-	private Node root = null;
+	private Session session;
+	private Node root;
 	private static boolean hasAdminUser = false;
 
 	public JcrContext(DynamicObjectAdapter adapter, Target target, READONLY readonly) {

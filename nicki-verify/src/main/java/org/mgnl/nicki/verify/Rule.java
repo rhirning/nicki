@@ -10,7 +10,7 @@ import org.apache.commons.lang.StringUtils;
 public abstract class Rule implements Serializable {
 	public static final String MAP_SEPARATOR = "!";
 	public static final String MAP_EQUAL = "=";
-	private String parameter = null;
+	private String parameter;
 	private Map<String, String> map = new HashMap<String, String>();
 	
 	public Rule() {

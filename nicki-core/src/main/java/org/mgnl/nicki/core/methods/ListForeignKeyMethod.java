@@ -49,7 +49,7 @@ public class ListForeignKeyMethod implements TemplateMethodModel, Serializable {
 
 	private static final long serialVersionUID = -81535049844368520L;
 	private static final Logger LOG = LoggerFactory.getLogger(ListForeignKeyMethod.class);
-	private List<DynamicObject> objects = null;
+	private List<DynamicObject> objects;
 	private List<Object> foreignKeys = new ArrayList<Object>();
 	private NickiContext context;
 	private Class<? extends DynamicObject> classDefinition;

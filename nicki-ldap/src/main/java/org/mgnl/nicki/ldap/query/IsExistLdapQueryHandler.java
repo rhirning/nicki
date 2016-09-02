@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
 public class IsExistLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
 	private static final Logger LOG = LoggerFactory.getLogger(IsExistLdapQueryHandler.class);
 	
-	private String dn = null;
+	private String dn;
 
 	private boolean exist = false;
 
