@@ -56,8 +56,8 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 	private DynamicObject dynamicObject;
 	private Button saveButton;
 	private boolean create;
-	private DynamicObjectValueChangeListener<String> listener = null;
-	private DynamicObject parent = null;
+	private DynamicObjectValueChangeListener<String> listener;
+	private DynamicObject parent;
 
 	@Deprecated
 	public DynamicObjectViewer(DynamicObject dynamicObject) {

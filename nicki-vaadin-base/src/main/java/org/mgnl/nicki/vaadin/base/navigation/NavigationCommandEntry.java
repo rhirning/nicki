@@ -33,8 +33,8 @@
 package org.mgnl.nicki.vaadin.base.navigation;
 
 public class NavigationCommandEntry {
-	private	String commandName = null;
-	private Object[] data = null;
+	private	String commandName;
+	private Object[] data;
 	
 	public NavigationCommandEntry(String commandName, Object[] data) {
 		super();

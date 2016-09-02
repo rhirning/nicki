@@ -7,7 +7,7 @@ import org.mgnl.nicki.core.i18n.I18n;
 
 public class MaxRule extends Rule {
 	private static final long serialVersionUID = 1L;
-	Long maxValue = null;
+	private Long maxValue;
 
 	public MaxRule(String parameter) {
 		setParameter(parameter);

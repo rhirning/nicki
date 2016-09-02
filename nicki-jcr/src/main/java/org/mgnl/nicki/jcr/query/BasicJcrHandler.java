@@ -44,7 +44,7 @@ import org.mgnl.nicki.jcr.context.JcrQueryHandler;
 
 public abstract class BasicJcrHandler implements JcrQueryHandler {
 	private NickiContext context;
-	private Class<? extends DynamicObject> classDefinition = null;
+	private Class<? extends DynamicObject> classDefinition;
 	private String statement;
 	public void setStatement(String statement) {
 		this.statement = statement;

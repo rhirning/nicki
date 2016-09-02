@@ -22,7 +22,7 @@ public class CacheResponseWrapper extends HttpServletResponseWrapper {
 	public static final int DEFAULT_THRESHOLD = 500 * 1024;
 
 	private final ServletOutputStream wrappedStream;
-	private PrintWriter wrappedWriter = null;
+	private PrintWriter wrappedWriter;
 	private final MultiMap headers = new MultiValueMap();
 	private int status = SC_OK;
 	private boolean isError;

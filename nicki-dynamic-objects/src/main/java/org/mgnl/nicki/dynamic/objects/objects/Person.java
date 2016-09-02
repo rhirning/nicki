@@ -66,9 +66,9 @@ public class Person extends BaseDynamicObject {
 	public static final String SEPARATOR_KEY = "|";
 	public static final String SEPARATOR_VALUE = "=";
 
-	private Collection<AssignedArticle> assignedArticles = null;
-	private Collection<Group> assignedGroups = null;
-	private Collection<String> attributeValues = null;
+	private Collection<AssignedArticle> assignedArticles;
+	private Collection<Group> assignedGroups;
+	private Collection<String> attributeValues;
 	private Map<String, String> catalogAttributes = new HashMap<String, String>();
 
 	@DynamicAttribute(externalName="isManager")

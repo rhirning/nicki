@@ -38,7 +38,7 @@ public class TailViewer extends CustomComponent implements Serializable {
 	private TextField path;
 	private HorizontalLayout inputPanel;
 	private Table table;
-	private Tailer tailer = null;
+	private Tailer tailer;
 	private TailerListener listener = new TailerListener();
 	private LinesContainer container = new LinesContainer();
 	private TextField numberOfLinesField;
@@ -46,7 +46,7 @@ public class TailViewer extends CustomComponent implements Serializable {
 	private CheckBox checkBox;
 	private boolean end = true;
 	private long lastUse;
-	private String activePath = null;
+	private String activePath;
 	private static final long TIMEOUT = 10 * 60 * 1000; // 10 Minutes
 
 	public TailViewer() {

@@ -20,7 +20,7 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 	private static final long serialVersionUID = -2552751504033170225L;
 	private Node node;
 
-	private String namingValue = null;
+	private String namingValue;
 
 	@Override
 	public Object get(String key) {

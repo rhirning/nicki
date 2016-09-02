@@ -47,8 +47,8 @@ public class TwoTablesRenderer extends BaseTableRenderer implements ShopRenderer
 	
 	private ShopViewerComponent shopViewerComponent;
 	private HorizontalLayout layout;
-	private Table leftTable = null;
-	private Table rightTable = null;
+	private Table leftTable;
+	private Table rightTable;
 
 	public AbstractComponent render(ShopViewerComponent shopViewerComponent, Inventory inventory) {
 		this.shopViewerComponent = shopViewerComponent;

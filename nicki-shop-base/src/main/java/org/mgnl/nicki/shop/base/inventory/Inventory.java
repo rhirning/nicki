@@ -62,7 +62,7 @@ public class Inventory implements Serializable {
 	private Person user;
 	private Person person;
 	
-	private String cartPath = null;
+	private String cartPath;
 
 	private Map<String, InventoryArticle> articles = new HashMap<String, InventoryArticle>();
 	

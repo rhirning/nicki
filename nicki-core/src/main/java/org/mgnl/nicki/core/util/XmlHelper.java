@@ -199,7 +199,7 @@ public class XmlHelper implements java.io.Serializable {
 /** @SuppressWarnings("serial")
 public class XmlHelper implements Serializable{
 
-    private static XmlHelper instance = null;
+    private static XmlHelper instance;
 
     private XmlHelper() {
         //navigator = XPathFactory.newInstance().newXPath();

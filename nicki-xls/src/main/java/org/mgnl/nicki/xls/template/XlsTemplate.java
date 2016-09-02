@@ -11,7 +11,7 @@ import org.mgnl.nicki.xls.model.template.Document;
 
 public class XlsTemplate {
 
-	private Document document = null;
+	private Document document;
 
 	public XlsTemplate(String templateContent) throws JAXBException {
 		document = unmarshal(Document.class, templateContent);

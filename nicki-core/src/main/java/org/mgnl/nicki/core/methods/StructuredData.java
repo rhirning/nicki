@@ -39,7 +39,7 @@ import org.mgnl.nicki.core.helper.XMLHelper;
 
 @SuppressWarnings("serial")
 public class StructuredData implements Serializable {
-	Document document = null;
+	private Document document;
 
 	public StructuredData(String xml) {
 		try {

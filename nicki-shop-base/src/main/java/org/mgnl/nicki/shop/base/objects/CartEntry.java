@@ -65,8 +65,8 @@ public class CartEntry {
     private InventoryArticle inventoryArticle;
     private String id;
     private ACTION action;
-    private Date start = null;
-    private Date end = null;
+    private Date start;
+    private Date end;
     private String specifier;
     private CART_ENTRY_STATUS status = CART_ENTRY_STATUS.NEW;
 
