@@ -67,16 +67,16 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 	public static final String ATTRIBUTE_NAME = "name";
 	public static final String SEPARATOR = "/";
 
-	private String path = null;
-	private String parentPath = null;
-	private DynamicObject original = null;
-	private DynamicObject parent = null;
+	private String path;
+	private String parentPath;
+	private DynamicObject original;
+	private DynamicObject parent;
 	private STATUS status;
-	private boolean modified = false;
-	private DataModel model = null;
+	private boolean modified;
+	private DataModel model;
 	
 	// cached attributes
-	private Map<String, Collection<DynamicObject>> childObjects = null;
+	private Map<String, Collection<DynamicObject>> childObjects;
 
 	// Map with the attribute values
 	private Map<String, Object> map = new HashMap<String, Object>();

@@ -15,7 +15,7 @@ public class TableNavigation extends NavigationBase implements Navigation {
 	private static final Object VISIBLE_COLUMNS[] = {"navigationCaption"};
 	private VerticalLayout layout;
 	private Table table;
-	private NavigationEntry selected = null;
+	private NavigationEntry selected;
 	
 	public TableNavigation(NavigationSelector mainView) {
 		super(mainView);

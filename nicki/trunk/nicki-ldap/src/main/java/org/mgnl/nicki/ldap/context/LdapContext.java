@@ -50,7 +50,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 
 	private static final long serialVersionUID = -3079627211615613041L;
 
-	private TargetObjectFactory objectFactory = null;
+	private TargetObjectFactory objectFactory;
 
 	public LdapContext(DynamicObjectAdapter adapter, Target target, READONLY readonly) {
 		super(adapter, target, readonly);

@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 public class CatalogPage extends CatalogObject {
 	private static final Logger LOG = LoggerFactory.getLogger(CatalogPage.class);
 	
-	private Provider provider = null;
+	private Provider provider;
 
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;

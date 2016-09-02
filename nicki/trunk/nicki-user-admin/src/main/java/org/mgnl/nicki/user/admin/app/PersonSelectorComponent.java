@@ -96,16 +96,16 @@ public class PersonSelectorComponent extends CustomComponent {
 
 	private NickiContext context;
 	private SelectPersonCommand command;
-	private Person user = null;
+	private Person user;
 
 	private boolean useActiveInactive;
 	private boolean showSelect = true;
 	private boolean showDetail = true;
 
-	private String filter = null;
-	private Object[] visibleCols = null;
+	private String filter;
+	private Object[] visibleCols;
 
-	private Window detailsWindow = null;
+	private Window detailsWindow;
 
 	public PersonSelectorComponent() {
 		buildMainLayout();

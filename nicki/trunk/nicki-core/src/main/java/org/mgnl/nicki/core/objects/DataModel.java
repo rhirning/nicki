@@ -57,13 +57,13 @@ public class DataModel implements Serializable {
 	private Map<String, DynamicAttribute> attributes = new HashMap<String, DynamicAttribute>();
 	private List<String> objectClasses = new ArrayList<String>();
 	private List<String> additionalObjectClasses = new ArrayList<String>();
-	private String namingAttribute = null;
+	private String namingAttribute;
 
-	private List<DynamicAttribute> mandatoryAttributes = null;
-	private List<DynamicAttribute> optionalAttributes = null;
-	private List<DynamicAttribute> listOptionalAttributes = null;
-	private List<DynamicAttribute> foreignKeys = null;
-	private List<DynamicAttribute> listForeignKeys = null;
+	private List<DynamicAttribute> mandatoryAttributes;
+	private List<DynamicAttribute> optionalAttributes;
+	private List<DynamicAttribute> listOptionalAttributes;
+	private List<DynamicAttribute> foreignKeys;
+	private List<DynamicAttribute> listForeignKeys;
 
 	private Map<String, ChildFilter> children = new HashMap<String, ChildFilter>();
 	private Map<String, DynamicReference> references = new HashMap<String, DynamicReference>();

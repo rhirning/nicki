@@ -46,10 +46,10 @@ import freemarker.template.TemplateMethodModel;
 public class ReferenceMethod implements TemplateMethodModel, Serializable {
 
 	private static final long serialVersionUID = -81535049844368520L;
-	List<DynamicObject> objects = null;
-	DynamicReference reference;
-	String path;
-	NickiContext context;
+	private List<DynamicObject> objects;
+	private DynamicReference reference;
+	private String path;
+	private NickiContext context;
 	
 	public ReferenceMethod(NickiContext context, ContextSearchResult rs, DynamicReference reference) {
 		this.context = context;

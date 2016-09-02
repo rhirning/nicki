@@ -46,10 +46,10 @@ public class Catalog extends CatalogObject{
 	public static final String PATH_SEPARATOR = "/";
 	private static long lastBuild = 0;
 	private static long buildInterval = 10*60*1000; // ms
-	private static Catalog instance = null;
+	private static Catalog instance;
 	
-	private List<CatalogPage> pages = null;
-	private List<CatalogArticle> articles = null;
+	private List<CatalogPage> pages;
+	private List<CatalogArticle> articles;
 
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;

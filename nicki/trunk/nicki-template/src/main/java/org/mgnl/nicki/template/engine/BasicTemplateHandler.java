@@ -38,14 +38,14 @@ import org.slf4j.LoggerFactory;
 public class BasicTemplateHandler implements TemplateHandler{
 	private static final Logger LOG = LoggerFactory.getLogger(BasicTemplateHandler.class);
 	
-	private Person person = null;
-	private NickiContext context = null;
+	private Person person;
+	private NickiContext context;
+
+	private Object params;
+	private Template template;
 	public NickiContext getContext() {
 		return context;
 	}
-
-	private Object params = null;
-	private Template template = null;
 	
 	public BasicTemplateHandler() {
 	}

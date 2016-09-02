@@ -39,9 +39,9 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 	public static final String ATTRIBUTE_DATA = "nickiTemplateData";
 	public static final String ATTRIBUTE_PART = "nickiTemplatePart";
 	public static final String PART_SEPARATOR = "=";
-	private String name = null;
-	private String dn = null;
-	private Template template = null;
+	private String name;
+	private String dn;
+	private Template template;
 
 	public TemplateLoaderLdapQueryHandler(NickiContext context, String name, String dn) {
 		super((LdapContext) context);

@@ -54,7 +54,7 @@ import com.vaadin.ui.Component;
 @SuppressWarnings("serial")
 public class DynamicObjectFieldFactory implements Serializable {
 	private static final Logger LOG = LoggerFactory.getLogger(DynamicObjectFieldFactory.class);
-	private DynamicObjectValueChangeListener<String> objectListener = null;
+	private DynamicObjectValueChangeListener<String> objectListener;
 	
 	public DynamicObjectFieldFactory(DynamicObjectValueChangeListener<String> objectListener) {
 		this.objectListener = objectListener;

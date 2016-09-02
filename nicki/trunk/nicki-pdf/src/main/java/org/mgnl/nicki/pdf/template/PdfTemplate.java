@@ -11,7 +11,7 @@ import org.mgnl.nicki.pdf.model.template.Document;
 
 public class PdfTemplate {
 
-	private Document document = null;
+	private Document document;
 
 	public PdfTemplate(String templateContent) throws JAXBException {
 		document = unmarshal(Document.class, templateContent);

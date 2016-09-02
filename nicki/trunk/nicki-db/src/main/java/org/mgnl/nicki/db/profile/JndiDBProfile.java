@@ -10,8 +10,8 @@ import javax.sql.DataSource;
 
 public class JndiDBProfile implements DBProfile {
 	String jndiEnvironment = "java:comp/env";
-	String dataSource = null;
-	private boolean autoCommit = false;
+	String dataSource;
+	private boolean autoCommit;
 	
 	public JndiDBProfile(String dataSource, boolean autoCommit) {
 		super();

@@ -37,8 +37,8 @@ import java.sql.SQLException;
 
 public class MaxIntValueSelectHandler extends NonLoggingSelectHandler implements SelectHandler {
 	
-	private String tableName = null;
-	private String column = null;
+	private String tableName;
+	private String column;
 	private int result = 1;
 
 	public MaxIntValueSelectHandler(String tableName, String column) {

@@ -37,8 +37,8 @@ import java.sql.SQLException;
 
 public class IsExistSelectHandler extends NonLoggingSelectHandler implements SelectHandler {
 	
-	private String tableName = null;
-	private String whereClause = null;
+	private String tableName;
+	private String whereClause;
 	private boolean exist = false;
 
 	public IsExistSelectHandler(String tableName, String whereClause) {

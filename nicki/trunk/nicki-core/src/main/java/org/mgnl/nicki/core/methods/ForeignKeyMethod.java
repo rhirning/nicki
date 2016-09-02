@@ -45,8 +45,8 @@ import freemarker.template.TemplateMethodModel;
 public class ForeignKeyMethod implements Serializable,TemplateMethodModel {
 
 	private static final long serialVersionUID = -5726598490077862331L;
-	private DynamicObject object = null;
-	private String foreignKey = null;
+	private DynamicObject object;
+	private String foreignKey;
 	private NickiContext context;
 	private Class<? extends DynamicObject> classDefinition;
 	

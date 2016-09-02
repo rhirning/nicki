@@ -56,7 +56,7 @@ public final class TargetFactory {
 	
 	private static TargetFactory instance = new TargetFactory();
 	private Map<String, Target> targets= new HashMap<String, Target>();
-	private String defaultTarget = null;
+	private String defaultTarget;
 		
 	private TargetFactory() {
 		super();

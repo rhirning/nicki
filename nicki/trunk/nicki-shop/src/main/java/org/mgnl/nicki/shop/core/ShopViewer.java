@@ -53,16 +53,16 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 	private static final Logger LOG = LoggerFactory.getLogger(ShopViewer.class);
 
 	private Person shopper;
-	private Person recipient = null;
-	private Inventory inventory = null;
+	private Person recipient;
+	private Inventory inventory;
 	private Shop shop;
 	private Button saveButton;
 	private Button rememberButton;
 	private Button showInventoryButton;
 	private Button showCartButton;
-	private ShopRenderer renderer = null;
+	private ShopRenderer renderer;
 	private ShopParent parent;
-	private Cart cart = null;
+	private Cart cart;
 	private ShopViewer showViewer;;
 
 	public ShopViewer(Person user, Shop shop, Person recipient, ShopParent parent, Cart cart) throws InvalidPrincipalException, InstantiateDynamicObjectException {

@@ -47,7 +47,7 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
 public abstract class BasicJcrContext extends BasicContext implements NickiContext {
 	public static final String PROPERTY_BASE = "nicki.ldap.";
 	public static final String TARGET_DEFAULT = "edir";
-	private Target target = null;
+	private Target target;
 	private NickiPrincipal principal;
 	private DynamicObject user;
 	private READONLY readonly;

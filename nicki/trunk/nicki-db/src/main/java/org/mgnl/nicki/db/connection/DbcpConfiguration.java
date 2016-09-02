@@ -38,13 +38,13 @@ import org.mgnl.nicki.core.helper.DataHelper;
 
 public class DbcpConfiguration {
 
-    private String dbDriverName = null;
-    private String dbUser = null;
-    private String dbPassword = null;
-    private String dbURI = null;
+    private String dbDriverName;
+    private String dbUser;
+    private String dbPassword;
+    private String dbURI;
 
-    private int dbPoolMinSize = 0;
-    private int dbPoolMaxSize = 0;
+    private int dbPoolMinSize;
+    private int dbPoolMaxSize;
 
     public DbcpConfiguration(String base) throws InvalidConfigurationException {
         dbDriverName = Config.getProperty(base + "driverClassName");

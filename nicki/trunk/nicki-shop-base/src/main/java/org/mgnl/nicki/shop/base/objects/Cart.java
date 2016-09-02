@@ -76,7 +76,7 @@ public class Cart extends BaseDynamicObject {
         }
     }
 	
-    private Catalog catalog = null;
+    private Catalog catalog;
     private List<CartEntry> cartentries = new ArrayList<CartEntry>();
     private final static String ELEM_CARTENTRY = "entry";
     private final static String ELEM_CART = "cart";

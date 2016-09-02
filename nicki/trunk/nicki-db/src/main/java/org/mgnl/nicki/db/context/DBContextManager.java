@@ -27,7 +27,7 @@ public class DBContextManager {
 	private static final String SEPARATOR = ",";
 	
 	
-	private static DBContextManager instance = null;
+	private static DBContextManager instance;
 	private Map<String, String> contextClassNames = new HashMap<>();
 	private Map<String, String> schemas = new HashMap<>();
 	private Map<String, DBProfile> profiles = new HashMap<>();

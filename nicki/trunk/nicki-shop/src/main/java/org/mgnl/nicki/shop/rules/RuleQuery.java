@@ -22,8 +22,8 @@ package org.mgnl.nicki.shop.rules;
 import org.apache.commons.lang.StringUtils;
 
 public class RuleQuery {
-	private String query = null;
-	private String baseDn = null;
+	private String query;
+	private String baseDn;
 	private boolean needQuery = false;
 	
 	public void setQuery(String query) {

@@ -84,7 +84,7 @@ public class NickiTreeEditor extends CustomComponent {
 	};
 
 	private NickiSelect selector;
-	private DynamicObject selectedObject = null;
+	private DynamicObject selectedObject;
 	private ClassEditor viewer;
 	private TreeContainer treeContainer;
 	private String messageKeyBase;

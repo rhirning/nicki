@@ -53,7 +53,7 @@ public class ValuedResourceCatalogArticle extends ResourceCatalogArticle impleme
 
 	private static final long serialVersionUID = -7208705030668378943L;
 	public static final String ATTRIBUTE_REQUEST_RESOURCE = "requestResource";
-	private CatalogValueProvider provider = null;
+	private CatalogValueProvider provider;
 
 	@DynamicAttribute(externalName="nickiProviderData")
 	public String getProviderData() {

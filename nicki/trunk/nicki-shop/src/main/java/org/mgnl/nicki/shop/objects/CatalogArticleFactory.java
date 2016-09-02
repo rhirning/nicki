@@ -29,7 +29,7 @@ import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 
 public class CatalogArticleFactory {
-	private static CatalogArticleFactory instance = null;
+	private static CatalogArticleFactory instance;
 	private List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
 	
 	public static CatalogArticleFactory getInstance() throws InvalidPrincipalException, InstantiateDynamicObjectException {

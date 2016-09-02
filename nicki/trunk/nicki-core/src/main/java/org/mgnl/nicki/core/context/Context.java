@@ -36,7 +36,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class Context {
-	private Object request = null;
+	private Object request;
 	private Locale locale = Locale.GERMAN;
 	private Map<String, String> parameterMap;
 
