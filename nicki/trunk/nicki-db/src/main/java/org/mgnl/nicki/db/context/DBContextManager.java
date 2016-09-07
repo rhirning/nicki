@@ -56,12 +56,7 @@ public class DBContextManager {
 					String schema = Config.getProperty(contextBase + PROPERTY_CONTEXT_SCHEMA);
 					if (StringUtils.isNotBlank(schema)) {
 						schemas.put(contextName, schema);
-					}
-					
-					DBProfile profile = createProfile(contextName);
-					LOG.debug("init profile " + profile);
-					profiles.put(contextName, profile);
-					
+					}					
 				} catch (Exception e) {
 					LOG.error("error init DBContexts", e);
 				}
@@ -95,12 +90,22 @@ public class DBContextManager {
 				context.setSchema(schemas.get(name));
 			}
 			context.setSchema(schemas.get(name));
-			context.setProfile(profiles.get(name));
+			context.setProfile(getProfile(name));
 			return context;
-		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | InvalidConfigurationException e) {
 			LOG.error("error loading DBContext " + name, e);
 		}
 		return null;
+	}
+	
+	private DBProfile getProfile(String contextName) throws InvalidConfigurationException {
+		if (!this.profiles.containsKey(contextName)) {
+			DBProfile profile = createProfile(contextName);
+			LOG.debug("init profile " + profile);
+			this.profiles.put(contextName, profile);
+
+		}
+		return this.profiles.get(contextName);
 	}
 	
 	
