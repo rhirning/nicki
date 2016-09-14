@@ -164,7 +164,7 @@ public class XmlHelper implements java.io.Serializable {
 		try(CloseableHttpClient httpclient = HttpClients.createDefault()) {
 			HttpGet httpGet = new HttpGet(url);
 			try (CloseableHttpResponse response1 = httpclient.execute(httpGet)) {
-				System.out.println(response1.getStatusLine());
+				//System.out.println(response1.getStatusLine());
 			    HttpEntity entity1 = response1.getEntity();
 			    // do something useful with the response body
 			    // and ensure it is fully consumed
