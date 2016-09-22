@@ -35,6 +35,7 @@ package org.mgnl.nicki.vaadin.base.application;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.auth.SSOAdapter;
 import org.mgnl.nicki.core.config.Config;
@@ -69,6 +70,7 @@ public abstract class NickiApplication extends UI {
 	public static final String ATTR_NICKI_CONTEXT = "NICKI_CONTEXT";
 
 	private NickiContext nickiContext;
+	private Context context;
 	private boolean useSystemContext;
 	private boolean useWelcomeDialog;
 
@@ -93,9 +95,9 @@ public abstract class NickiApplication extends UI {
 		
 		if (nickiContext == null) {
 			// try SSO
-			setNickiContext(loginSSO());
+			loginSSO();
 		}
-		if (nickiContext != null) {
+		if (context != null) {
 			try {
 				start();
 				return;
@@ -109,28 +111,13 @@ public abstract class NickiApplication extends UI {
 	}
 	
 	public void logout() {
-		setNickiContext(null);
+		setContext(null);
 		Component loginDialog = new LoginDialog(this);
 		getView().removeAllComponents();
 		getView().addComponent(loginDialog);
 	}
 
-	/*
-	public NickiContext loginSSO() {
-		try {
-			LoginContext loginContext = new LoginContext(JAAS_SSO_ENTRY, new NickiSSOLoginCallbackHandler(getRequest()));
-			loginContext.login();
-			NickiPrincipal principal = (NickiPrincipal) loginContext.getSubject().getPrincipals().iterator().next();
-			if (principal != null && getTarget().login(principal) != null) {
-				return getTarget().getNamedUserContext(principal, READONLY.FALSE);
-			}
-		} catch (Exception e) {
-		}
-		return null;
-	}
-	*/
-
-	public NickiContext loginSSO() {
+	private void loginSSO() {
 		try {
 			String ssoLoginClass = Config.getProperty("nicki.login.sso");
 			if (StringUtils.isNotEmpty(ssoLoginClass)) {
@@ -142,12 +129,7 @@ public abstract class NickiApplication extends UI {
 					if (principal != null) {
 						DynamicObject user = getTarget().login(principal);
 						if (user != null) {
-							if (isUseSystemContext()) {
-								NickiContext ctx = AppContext.getSystemContext(getTarget(), user.getPath(), principal.getPassword());
-								return ctx;
-							} else {
-								return getTarget().getNamedUserContext(user, principal.getPassword());
-							}
+							setContext(getContext(user, principal.getPassword()));
 						}
 					}
 				}
@@ -155,7 +137,33 @@ public abstract class NickiApplication extends UI {
 		} catch (Exception e) {
 			LOG.error("Error", e.getMessage());
 		}
-		return null;
+	}
+
+	private Context getContext(DynamicObject user, String password) throws InvalidPrincipalException, TargetException {
+		Context context = new Context();
+		if (isUseSystemContext()) {
+			context.setLoginContext(AppContext.getSystemContext(getTarget(), user.getPath(), password));
+		} else {
+			context.setLoginContext(getTarget().getNamedUserContext(user, password));
+		}
+		TargetContext targetContext = getClass().getAnnotation(TargetContext.class);
+		try {
+			if (targetContext == null) {
+				context.setContext(context.getLoginContext());
+			} else {
+				context.setContext(AppContext.getSystemContext(targetContext.value()));
+			}
+			if (context.getContext() == null) {
+				Notification.show(I18n.getText("nicki.application.error.invalid.target", targetContext.value()),
+						Type.ERROR_MESSAGE);
+				return null;
+			}
+		} catch (InvalidPrincipalException e) {
+			throw e;
+		} catch (Exception e1) {
+			throw new TargetException("Invalid Target");
+		}
+		return context;
 	}
 
 	public Object getRequest() {
@@ -167,15 +175,10 @@ public abstract class NickiApplication extends UI {
 			NickiPrincipal principal = new NickiPrincipal(name, password);
 			if (principal != null) {
 				DynamicObject user = getTarget().login(principal);
-				if (principal != null) {
-					if (isUseSystemContext()) {
-						setNickiContext(AppContext.getSystemContext(getTarget(),
-								user.getPath(), password));
-					} else {
-						setNickiContext(getTarget().getNamedUserContext(user, password));
-					}
-					return true;
+				if (user != null) {
+					setContext(getContext(user, principal.getPassword()));
 				}
+				return true;
 			}
 		} catch (Exception e) {
 			LOG.debug("Login failed, user=" + name, e);
@@ -189,7 +192,7 @@ public abstract class NickiApplication extends UI {
 		if (isUseWelcomeDialog()) {
 			getView().addComponent(new WelcomeDialog(this));
 		}
-		if (isAllowed(this.nickiContext.getUser())) {
+		if (isAllowed(this.context.getLoginContext().getUser())) {
 			Component editor = getEditor();
 			getView().addComponent(editor);
 			editor.setSizeFull();
@@ -297,5 +300,36 @@ public abstract class NickiApplication extends UI {
 	@Override
 	public String getTheme() {
 		return Config.getProperty("nicki.application.theme", "reindeer");
+	}
+	
+	private class Context {
+		private NickiContext context;
+		private NickiContext loginContext;
+
+		public NickiContext getContext() {
+			return this.context;
+		}
+
+		public void setContext(NickiContext context) {
+			this.context = context;
+		}
+
+		public NickiContext getLoginContext() {
+			return this.loginContext;
+		}
+
+		public void setLoginContext(NickiContext loginContext) {
+			this.loginContext = loginContext;
+		}
+
+	}
+
+	public void setContext(Context context) {
+		this.context = context;
+		if (context != null) {
+			this.nickiContext = context.getContext();
+		} else {
+			this.nickiContext = null;
+		}
 	}
 }
