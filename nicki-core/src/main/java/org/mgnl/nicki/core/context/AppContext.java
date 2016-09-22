@@ -86,11 +86,15 @@ public class AppContext {
 
 	public static NickiContext getSystemContext(String targetName) throws InvalidPrincipalException {
 		Target target = TargetFactory.getTarget(targetName);
-		new NickiPrincipal(target.getProperty("securityPrincipal"),
-				target.getProperty("securityCredentials"));
-		DynamicObject user = target.login(new NickiPrincipal(target.getProperty("securityPrincipal"),
-				target.getProperty("securityCredentials")));
-		return getSystemContext(target, user);
+		if (target != null) {
+			new NickiPrincipal(target.getProperty("securityPrincipal"),
+					target.getProperty("securityCredentials"));
+			DynamicObject user = target.login(new NickiPrincipal(target.getProperty("securityPrincipal"),
+					target.getProperty("securityCredentials")));
+			return getSystemContext(target, user);
+		} else {
+			return null;
+		}
 	}
 
 	private static NickiContext getSystemContext(Target target, DynamicObject user) throws InvalidPrincipalException {
