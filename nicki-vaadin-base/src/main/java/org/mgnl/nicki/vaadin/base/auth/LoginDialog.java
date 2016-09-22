@@ -100,6 +100,7 @@ public class LoginDialog extends CustomComponent {
 				count++;
 				if (count > MAX_COUNT) {
 					Notification.show(I18n.getText("nicki.application.error.too.many.attempts"), Type.HUMANIZED_MESSAGE);
+					return;
 				}
 				if (application.login(StringUtils.stripToEmpty(getUsername()), StringUtils.stripToEmpty(getPassword()))) {
 					try {

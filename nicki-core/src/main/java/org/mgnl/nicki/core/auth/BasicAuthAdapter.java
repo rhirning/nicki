@@ -88,7 +88,7 @@ public class BasicAuthAdapter implements SSOAdapter {
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Error reading Basic Authentication data", e);
+			LOG.error("Error reading Basic Authentication data", e.getMessage());
 		}
 		return null;
 	}

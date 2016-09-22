@@ -177,8 +177,8 @@ public abstract class NickiApplication extends UI {
 				DynamicObject user = getTarget().login(principal);
 				if (user != null) {
 					setContext(getContext(user, principal.getPassword()));
+					return true;
 				}
-				return true;
 			}
 		} catch (Exception e) {
 			LOG.debug("Login failed, user=" + name, e);
