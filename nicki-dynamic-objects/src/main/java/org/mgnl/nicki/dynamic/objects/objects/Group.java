@@ -33,6 +33,7 @@
 package org.mgnl.nicki.dynamic.objects.objects;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.mgnl.nicki.core.annotation.DynamicAttribute;
@@ -72,6 +73,11 @@ public class Group extends BaseDynamicObject {
     public List<String> getMember() {
     	return (List<String>) get(ATTRIBUTE_MEMBER);
     }
+    
+
+	public Collection<Person> getMembers() {
+		return getForeignKeyObjects(Person.class, "member");
+	}
 
 	public void addMember(String path) {
 		List<String> list = getMember();
