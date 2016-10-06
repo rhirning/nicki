@@ -639,6 +639,8 @@ public class JsonHelper {
 			}
 			sb.append("]");
 			return sb.toString();
+		} else if (value.getValueType() == ValueType.OBJECT) {
+			return value.toString();
 		} else if (value.getValueType() == ValueType.NUMBER) {
 			return Long.toString(((JsonNumber)value).longValue());
 		} else if (value.getValueType() == ValueType.STRING) {
