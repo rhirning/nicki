@@ -22,8 +22,6 @@ package org.mgnl.nicki.shop.base.objects;
 import java.util.Date;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -32,7 +30,6 @@ import org.w3c.dom.Element;
  * @author cna
  */
 public class CartEntry {
-	private static final Logger LOG = LoggerFactory.getLogger(CartEntry.class);
     public static final String ATTR_ID = "id";
     public static final String ATTR_ACTION = "action";
     public static final String ATTR_SPECIFIER = "specifier";
