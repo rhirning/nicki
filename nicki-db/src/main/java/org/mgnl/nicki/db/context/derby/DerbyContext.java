@@ -5,6 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.math.RandomUtils;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.BaseDBContext;
@@ -80,7 +81,14 @@ public class DerbyContext
 		select(handler);
 		return new PrimaryKey(handler.getResult());
 	}
-
+	
+	protected String getQualifiedName(String name) {
+		if (!StringUtils.contains(name, '.') && this.getSchema() != null) {
+			return this.getSchema() + "." + name;
+		} else {
+			return name;
+		}
+	}
 	
 	public PrimaryKey XXXgetSequenceNumber(String sequenceName) throws Exception {
 		
