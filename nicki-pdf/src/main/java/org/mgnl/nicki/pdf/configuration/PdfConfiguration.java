@@ -5,7 +5,6 @@ import com.lowagie.text.DocumentException;
 import com.lowagie.text.Font;
 import com.lowagie.text.FontFactory;
 import com.lowagie.text.Image;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,10 +56,6 @@ public class PdfConfiguration {
 				config.getFonts().getDefault().getSize(), 
 				FontStyle.byName(config.getFonts().getDefault().getStyle()));
 		
-	}
-	
-	private <T> T unmarshal(Class<T> docClass, String templateContent) throws JAXBException {
-		return unmarshal(docClass, new ByteArrayInputStream(templateContent.getBytes()));
 	}
 
 	private <T> T unmarshal(Class<T> docClass, InputStream inputStream)

@@ -981,11 +981,7 @@ public class BaseDBContext
 		if (table == null) {
 			throw new NotSupportedException();
 		}
-		if (this.schema != null) {
-			return this.schema + "." + table.name();
-		} else {
-			return table.name();
-		}
+		return getQualifiedName(table.name());
 	}
 
 	@Override
@@ -1216,9 +1212,17 @@ public class BaseDBContext
 	@Override
 	public PrimaryKey getSequenceNumber(String sequenceName) throws Exception {
 
-		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(sequenceName);
+		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(getQualifiedName(sequenceName));
 		select(handler);
 		return new PrimaryKey(handler.getResult());
+	}
+	
+	protected String getQualifiedName(String name) {
+		if (!StringUtils.contains(name, '.') && this.schema != null) {
+			return this.schema + "." + name;
+		} else {
+			return name;
+		}
 	}
 
 	@Override

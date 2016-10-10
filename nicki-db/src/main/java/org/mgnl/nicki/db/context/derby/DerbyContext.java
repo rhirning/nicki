@@ -10,6 +10,7 @@ import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.BaseDBContext;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.PrimaryKey;
+import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -74,6 +75,14 @@ public class DerbyContext
 
 	@Override
 	public PrimaryKey getSequenceNumber(String sequenceName) throws Exception {
+
+		SequenceValueSelectHandler handler = new DerbySequenceValueSelectHandler(getQualifiedName(sequenceName));
+		select(handler);
+		return new PrimaryKey(handler.getResult());
+	}
+
+	
+	public PrimaryKey XXXgetSequenceNumber(String sequenceName) throws Exception {
 		
 		return new PrimaryKey(RandomUtils.nextInt());
 	}

@@ -46,7 +46,7 @@ public class DependendRule extends Rule {
 		if (rules != null) {
 			for (String rule : rules) {
 				try {
-					Verify.getInstance().verifyRule(rule, value, values);
+					Verify.verifyRule(rule, value, values);
 				} catch (VerifyException e) {
 					addMessage(e.getMessage());
 					ok = false;
