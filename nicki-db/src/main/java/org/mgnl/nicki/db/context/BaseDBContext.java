@@ -1219,9 +1219,9 @@ public class BaseDBContext
 	
 	protected String getQualifiedName(String name) {
 		if (!StringUtils.contains(name, '.') && this.schema != null) {
-			return this.schema + "." + name;
+			return "\"" + this.schema + "\".\"" + name + "\"";
 		} else {
-			return name;
+			return "\"" + name + "\"";
 		}
 	}
 

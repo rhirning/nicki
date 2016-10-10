@@ -35,7 +35,12 @@ package org.mgnl.nicki.db.handler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class SequenceValueSelectHandler extends NonLoggingSelectHandler implements SelectHandler {
+	
+	private static final Logger LOG = LoggerFactory.getLogger(SequenceValueSelectHandler.class);
 	
 	private String sequenceName;
 	private long result = -1;
@@ -46,7 +51,9 @@ public class SequenceValueSelectHandler extends NonLoggingSelectHandler implemen
 
 
 	public String getSearchStatement() {
-		return "select " + getSequenceName() + ".nextval from dual";
+		String statement = "select " + getSequenceName() + ".nextval from dual";
+		LOG.debug(statement);
+		return statement;
 	}
 
 

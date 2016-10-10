@@ -34,16 +34,21 @@ package org.mgnl.nicki.db.context.derby;
 
 import org.mgnl.nicki.db.handler.SelectHandler;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DerbySequenceValueSelectHandler extends SequenceValueSelectHandler implements SelectHandler {
-	
+
+	private static final Logger LOG = LoggerFactory.getLogger(DerbySequenceValueSelectHandler.class);
 
 	public DerbySequenceValueSelectHandler(String sequenceName) {
 		super(sequenceName);
 	}
 
 	public String getSearchStatement() {
-		return "VALUES NEXT VALUE FOR " + getSequenceName();
+		String statement = "VALUES NEXT VALUE FOR " + getSequenceName();
+		LOG.debug(statement);
+		return statement;
 	}
 }
 
