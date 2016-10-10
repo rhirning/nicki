@@ -30,13 +30,10 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 @DynamicObject
 @ObjectClass("nickiCatalogArticle")
 public class CatalogArticle extends CatalogObject {
-	private static final Logger LOG = LoggerFactory.getLogger(CatalogArticle.class);
 	private static final long serialVersionUID = 2340086861870174607L;
 	public static enum TYPE {RESOURCE, ROLE, ARTICLE};
 	public static final String CAPTION_START = "nicki.rights.attribute.dateFrom.label";

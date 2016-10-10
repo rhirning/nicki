@@ -30,40 +30,20 @@
  * intact.
  *
  */
-package org.mgnl.nicki.db.handler;
+package org.mgnl.nicki.db.context.derby;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import org.mgnl.nicki.db.handler.SelectHandler;
+import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
 
-public class SequenceValueSelectHandler extends NonLoggingSelectHandler implements SelectHandler {
+public class DerbySequenceValueSelectHandler extends SequenceValueSelectHandler implements SelectHandler {
 	
-	private String sequenceName;
-	private long result = -1;
 
-	public SequenceValueSelectHandler(String sequenceName) {
-		this.sequenceName = sequenceName;
+	public DerbySequenceValueSelectHandler(String sequenceName) {
+		super(sequenceName);
 	}
-
 
 	public String getSearchStatement() {
-		return "select " + getSequenceName() + ".nextval from dual";
-	}
-
-
-	public void handle(ResultSet rs) throws SQLException {
-		if (rs.next()) {
-			result = rs.getLong(1);
-		}
-	}
-
-
-	public long getResult() {
-		return result;
-	}
-
-
-	public String getSequenceName() {
-		return sequenceName;
+		return "VALUES NEXT VALUE FOR " + getSequenceName();
 	}
 }
 
