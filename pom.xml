@@ -34,6 +34,7 @@
 		<module>nicki-editor-templates</module>
 		<module>nicki-idm-novell</module>
 		<module>nicki-idm-novell-shop</module>
+		<module>nicki-idm-novell-ws</module>
 		<module>nicki-jcr</module>
 		<module>nicki-jcr-apps</module>
 		<module>nicki-ldap</module>
