@@ -52,7 +52,7 @@ public abstract class Rule implements Serializable {
 
 	private void initMap() {
 		map.clear();
-		if (this.parameter != null && StringUtils.contains(this.parameter, MAP_SEPARATOR)) {
+		if (this.parameter != null) {
 			String [] entries = StringUtils.split(parameter, MAP_SEPARATOR);
 			for (String entry : entries) {
 				if (StringUtils.contains(entry, MAP_EQUAL)) {

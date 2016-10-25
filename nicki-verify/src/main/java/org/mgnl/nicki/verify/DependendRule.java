@@ -8,11 +8,14 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 // val					= dependend:confirmationType!!MAIL=min:1!max=14!!MOBILE=min:2!max:16!!
 
 @SuppressWarnings("serial")
 public class DependendRule extends Rule {
+	private static final Logger LOG = LoggerFactory.getLogger(DependendRule.class);
 	private String attributName;
 	private Map<String, List<String>> rulesMap = new HashMap<>();
 	
@@ -38,8 +41,13 @@ public class DependendRule extends Rule {
 	public boolean evaluate(String value, Map<String, String> values) {
 		boolean ok = true;
 		
-		String attributeValue = values.get(attributName);
-		List<String> rules = rulesMap.get(attributeValue);
+		List<String> rules = null;
+		try {
+			String attributeValue = readAttributeValue(values, this.attributName);
+			rules = readAttributeValue(rulesMap, attributeValue);
+		} catch (Exception e) {
+			LOG.error("Error reading dependend rule for " + this.attributName, e);
+		}
 		if (rules == null) {
 			rules = rulesMap.get("*");
 		}
@@ -56,6 +64,19 @@ public class DependendRule extends Rule {
 		return ok;
 	}
 	
+	private <T> T readAttributeValue(Map<String, T> values, String name) {
+		if (name == null || values == null || values.size() == 0) {
+			return null;
+		} else {
+			for (String key : values.keySet()) {
+				if (StringUtils.equalsIgnoreCase(name, key)) {
+					return values.get(key);
+				}
+			}
+		}
+		return null;
+	}
+
 	private void addMessage(String text) {
 		if (messages == null) {
 			messages = new ArrayList<String>();
