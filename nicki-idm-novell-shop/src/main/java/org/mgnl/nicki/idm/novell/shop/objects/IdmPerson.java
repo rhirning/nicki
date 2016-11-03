@@ -516,6 +516,8 @@ public class IdmPerson extends Person implements Serializable {
 		SECONDARY_USER("SECONDARY"),
 		PROLIVE_USER("PROLIVE"),
 		ADMIN_USER("ADMINACC"),
+		WEST_USER("WEST"),
+		NORTH_USER("NORTH"),
 		NOT_SET("");
 		private final String type;
 
