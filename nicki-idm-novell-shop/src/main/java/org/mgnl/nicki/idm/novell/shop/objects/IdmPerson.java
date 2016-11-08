@@ -542,6 +542,10 @@ public class IdmPerson extends Person implements Serializable {
 				return PROLIVE_USER;
 			} else if (ADMIN_USER.getValue().equals(type)) {
 				return ADMIN_USER;
+			} else if (WEST_USER.getValue().equals(type)) {
+				return WEST_USER;
+			} else if (NORTH_USER.getValue().equals(type)) {
+				return NORTH_USER;
 			}
 
 			return NOT_SET;
