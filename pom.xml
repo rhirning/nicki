@@ -39,6 +39,7 @@
 		<module>nicki-jcr-apps</module>
 		<module>nicki-ldap</module>
 		<module>nicki-lucene-search</module>
+		<module>nicki-mail-extract</module>
 		<module>nicki-pdf</module>
 		<module>nicki-portlets</module>
 		<module>nicki-reports</module>
