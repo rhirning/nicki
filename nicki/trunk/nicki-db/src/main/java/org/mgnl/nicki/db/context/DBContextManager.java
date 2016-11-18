@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.db.connection.InvalidConfigurationException;
 import org.mgnl.nicki.db.profile.DBCPProfile;
 import org.mgnl.nicki.db.profile.DBProfile;
@@ -84,8 +85,8 @@ public class DBContextManager {
 	
 	private DBContext loadContext(String name) {
 		try {
-			DBContext context = (DBContext) getClass().getClassLoader()
-					.loadClass(contextClassNames.get(name)).newInstance();
+			DBContext context = Classes.newInstance(contextClassNames.get(name));
+
 			if (schemas.containsKey(name)) {
 				context.setSchema(schemas.get(name));
 			}
