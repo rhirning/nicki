@@ -34,8 +34,8 @@ package org.mgnl.nicki.jcr.context;
 
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.context.BasicContext;
+import org.mgnl.nicki.core.context.DynamicObjectFactory;
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.context.ObjectFactory;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.DynamicObject;
@@ -83,7 +83,7 @@ public abstract class BasicJcrContext extends BasicContext implements NickiConte
 
 	abstract public JcrObjectFactory getJcrObjectFactory();
 	
-	public ObjectFactory getObjectFactory() {
+	public DynamicObjectFactory getObjectFactory() {
 		return getJcrObjectFactory();
 	}
 

@@ -74,7 +74,7 @@ public interface NickiContext extends Serializable {
 	DynamicObject moveObject(DynamicObject dynamicObject, String newPath) throws DynamicObjectException;
 	DynamicObject renameObject(DynamicObject dynamicObject, String newName) throws DynamicObjectException;
 //	void search(QueryHandler queryHandler) throws DynamicObjectException;
-	ObjectFactory getObjectFactory();
+	DynamicObjectFactory getObjectFactory();
 	NickiPrincipal getPrincipal() throws DynamicObjectException;
 	DynamicObject login(String user, String password);
 	DynamicObject getUser();

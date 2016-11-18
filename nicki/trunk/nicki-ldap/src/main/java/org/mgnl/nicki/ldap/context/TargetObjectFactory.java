@@ -38,7 +38,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.context.ObjectFactory;
+import org.mgnl.nicki.core.context.DynamicObjectFactory;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
@@ -47,7 +47,7 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class TargetObjectFactory implements ObjectFactory, Serializable {
+public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 	private static final Logger LOG = LoggerFactory.getLogger(TargetObjectFactory.class);
 	private static final long serialVersionUID = 4047428469649718133L;
 	private NickiContext context;
