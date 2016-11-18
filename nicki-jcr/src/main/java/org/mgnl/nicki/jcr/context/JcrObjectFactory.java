@@ -40,7 +40,7 @@ import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.context.ObjectFactory;
+import org.mgnl.nicki.core.context.DynamicObjectFactory;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
@@ -50,7 +50,7 @@ import org.mgnl.nicki.jcr.objects.JcrDynamicObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class JcrObjectFactory implements ObjectFactory {
+public class JcrObjectFactory implements DynamicObjectFactory {
 	private static final Logger LOG = LoggerFactory.getLogger(JcrObjectFactory.class);
 
 	private JcrContext context;

@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.context.AppContext;
-import org.mgnl.nicki.core.context.ObjectFactory;
+import org.mgnl.nicki.core.context.DynamicObjectFactory;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 
@@ -40,7 +40,7 @@ public class CatalogArticleFactory {
 	}
 
 	public CatalogArticleFactory() throws InvalidPrincipalException, InstantiateDynamicObjectException {
-		ObjectFactory objectFactory = AppContext.getSystemContext().getObjectFactory();
+		DynamicObjectFactory objectFactory = AppContext.getSystemContext().getObjectFactory();
 		for (CatalogArticle catalogArticle : objectFactory.findDynamicObjects(CatalogArticle.class)) {
 			articles.add(catalogArticle);
 		}
