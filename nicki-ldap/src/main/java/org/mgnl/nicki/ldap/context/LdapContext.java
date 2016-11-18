@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.BasicContext;
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.context.ObjectFactory;
+import org.mgnl.nicki.core.context.DynamicObjectFactory;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.data.QueryHandler;
@@ -423,7 +423,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 
-	public ObjectFactory getObjectFactory() {
+	public DynamicObjectFactory getObjectFactory() {
 		return getLdapObjectFactory();
 	}
 
