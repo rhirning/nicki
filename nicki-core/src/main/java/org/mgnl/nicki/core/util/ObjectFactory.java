@@ -16,6 +16,14 @@ public class ObjectFactory<T> {
 	private String propertyBase;
 
 
+	/**
+	 * ObjectFactory with configured object classes
+	 * Each object has a NAME. All names are configured in the property with name propertyBase + ".objects"
+	 * The object classe are  configured as
+	 * 		propertyBase + ".objects." NAME
+	 * 
+	 * @param propertyBase Name of the property base
+	 */
 	public ObjectFactory(String propertyBase) {
 		this.propertyBase = propertyBase;
 		initObjects();
