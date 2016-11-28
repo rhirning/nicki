@@ -41,8 +41,8 @@ import java.util.Map;
 import javax.naming.NamingException;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.template.engine.TemplateParameter;
@@ -101,7 +101,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 	 * visual editor.
 	 */
 	@Override
-	public void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject) {
+	public void setDynamicObject(NickiTreeEditor nickiEditor, TreeData dynamicObject) {
 		this.editor = nickiEditor;
 		this.template = (Template) dynamicObject;
 		params = new HashMap<String, Object>();

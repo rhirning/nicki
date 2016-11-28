@@ -32,7 +32,7 @@
  */
 package org.mgnl.nicki.vaadin.base.components;
 
-import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.vaadin.base.editor.NewObjectEnterNameHandler;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 
@@ -46,7 +46,7 @@ public class SimpleNewClassEditor extends EnterNameDialog implements NewClassEdi
 		this.treeEditor = nickiEditor;
 	}
 
-	public void init(DynamicObject parent, Class<? extends DynamicObject> classDefinition) {
+	public void init(TreeData parent, Class<? extends TreeData> classDefinition) {
 		setHandler( new NewObjectEnterNameHandler(treeEditor, parent, classDefinition));
 	}
 }

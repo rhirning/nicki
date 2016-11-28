@@ -34,9 +34,7 @@ package org.mgnl.nicki.vaadin.base.editor;
 
 import java.util.Collection;
 
-import org.mgnl.nicki.core.objects.DynamicObject;
-
-
+import org.mgnl.nicki.core.data.TreeData;
 import com.vaadin.event.Action.Handler;
 import com.vaadin.ui.Tree;
 import com.vaadin.ui.Tree.ExpandListener;
@@ -59,7 +57,7 @@ public class TreeSelector extends BasicNickiSelector implements NickiSelect {
 
 
 	@Override
-	public void expandItem(DynamicObject object) {
+	public void expandItem(TreeData object) {
 		component.expandItem(object);
 	}
 
@@ -74,7 +72,7 @@ public class TreeSelector extends BasicNickiSelector implements NickiSelect {
 	}
 
 	@Override
-	public void collapseItemsRecursively(DynamicObject startItemId) {
+	public void collapseItemsRecursively(TreeData startItemId) {
 		component.collapseItemsRecursively(startItemId);
 	}
 

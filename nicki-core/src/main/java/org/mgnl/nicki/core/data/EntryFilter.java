@@ -30,13 +30,10 @@
  * intact.
  *
  */
-package org.mgnl.nicki.vaadin.base.editor;
-
-import org.mgnl.nicki.core.objects.DynamicObject;
-
+package org.mgnl.nicki.core.data;
 
 public interface EntryFilter {
 
-	<T extends DynamicObject> boolean accepts(T object);
+	<T extends TreeData> boolean accepts(T object);
 
 }

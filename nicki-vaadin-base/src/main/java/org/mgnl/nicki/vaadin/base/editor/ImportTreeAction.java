@@ -37,6 +37,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.util.XMLImporter;
@@ -64,7 +65,7 @@ public class ImportTreeAction extends BaseTreeAction implements  Upload.Succeede
 	private Window previewWindow;
 	private NickiContext context;
 	private String i18nBase;
-	private DynamicObject dynamicObject;
+	private TreeData dynamicObject;
 	private TreeEditor treeEditor;
 
 
@@ -80,7 +81,7 @@ public class ImportTreeAction extends BaseTreeAction implements  Upload.Succeede
 		setCompositionRoot(mainLayout);
 	}
 
-	public void execute(DynamicObject dynamicObject) {
+	public void execute(TreeData dynamicObject) {
 		this.dynamicObject = dynamicObject;
 		
 		importComponent.setCaption(I18n.getText(i18nBase + ".import.caption"));

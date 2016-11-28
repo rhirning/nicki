@@ -30,18 +30,18 @@
  * intact.
  *
  */
-package org.mgnl.nicki.editor.templates;
+package org.mgnl.nicki.editor.scripts;
 
 
+import java.io.Serializable;
 
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.data.DataProvider;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
-import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.core.context.Target;
-import org.mgnl.nicki.core.context.TargetFactory;
-import org.mgnl.nicki.core.data.DataProvider;
-import org.mgnl.nicki.vaadin.base.application.AccessGroup;
+import org.mgnl.nicki.dynamic.objects.objects.Script;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
 import org.mgnl.nicki.vaadin.base.editor.ExportTreeAction;
@@ -51,45 +51,44 @@ import org.mgnl.nicki.vaadin.base.editor.ShowAllFilter;
 import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
 
 import com.vaadin.ui.Component;
+import com.vaadin.ui.CustomComponent;
 
-@AccessGroup(name = {"nickiAdmins", "IDM-Development"})
-public class TemplateEditor extends NickiApplication {
-
-	private static final long serialVersionUID = -8245147689512577915L;
-    
-
+@SuppressWarnings("serial")
+public class ScriptEditorComponent extends CustomComponent implements Serializable {
+	private NickiApplication nickiApplication;
+	
+	public ScriptEditorComponent(NickiApplication nickiApplication) {
+		this.nickiApplication = nickiApplication;
+		setCompositionRoot(getEditor());
+		setSizeFull();
+	}
+	
 	@SuppressWarnings("unchecked")
-	@Override
-	public Component getEditor() {
-		TemplateViewer templateViewer = new TemplateViewer();
+	private Component getEditor() {
+		ScriptViewer scriptViewer = new ScriptViewer(AppContext.getRequest());
 
-		DataProvider dataProvider = new DynamicObjectRoot(getTemplatesRoot(), new ShowAllFilter());
-		TreeEditor editor = new TreeEditor(this, getNickiContext(), dataProvider, getI18nBase());
-		editor.configureClass(Org.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, Org.class, Template.class );
-		editor.configureClass(Template.class, Icon.DOCUMENT, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
-		editor.setClassEditor(Template.class, templateViewer);
-		editor.addAction(new PreviewTemplate(getNickiContext(), Template.class, I18n.getText(getI18nBase() + ".action.preview"), getI18nBase()));
+		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.scripts.basedn"), new ShowAllFilter());
+		TreeEditor editor = new TreeEditor(getNickiApplication(), getNickiContext(), treeDataProvider, getI18nBase());
+		editor.configureClass(Org.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, Org.class, Script.class );
+		editor.configureClass(Script.class, Icon.DOCUMENT, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
+		editor.setClassEditor(Script.class, scriptViewer);
 		editor.addAction(new ImportTreeAction(editor, Org.class, I18n.getText(getI18nBase() + ".action.import"), getI18nBase()));
 		editor.addAction(new ExportTreeAction(getNickiContext(), Org.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
-		editor.addAction(new ExportTreeAction(getNickiContext(), Template.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
+		editor.addAction(new ExportTreeAction(getNickiContext(), Script.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
 		editor.initActions();
-
+		editor.setHeight("100%");
 		return editor;
 	}
 
-	@Override
-	public Target getTarget() {
-		return TargetFactory.getDefaultTarget();
-	}
-
-	@Override
 	public String getI18nBase() {
-		return "nicki.editor.templates";
+		return "nicki.editor.script";
 	}
 
-	public String getTemplatesRoot() {
-		return Config.getProperty("nicki.templates.basedn");
+	public NickiContext getNickiContext() {
+		return getNickiApplication().getNickiContext();
 	}
 
-
+	public NickiApplication getNickiApplication() {
+		return nickiApplication;
+	}
 }

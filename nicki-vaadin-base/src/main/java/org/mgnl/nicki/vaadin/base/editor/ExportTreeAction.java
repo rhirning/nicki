@@ -34,6 +34,7 @@ package org.mgnl.nicki.vaadin.base.editor;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.slf4j.Logger;
@@ -71,7 +72,7 @@ public class ExportTreeAction extends BaseTreeAction {
 
 	/*- VaadinEditorProperties={"grid":"RegularGrid,20","showGrid":true,"snapToGrid":true,"snapToObject":true,"movingGuides":false,"snappingDistance":10} */
 
-	public ExportTreeAction(NickiContext context, Class<? extends DynamicObject> classDefinition,
+	public ExportTreeAction(NickiContext context, Class<? extends TreeData> classDefinition,
 			String name, String i18nBase) {
 		super(classDefinition, name);
 		this.context = context;
@@ -80,7 +81,7 @@ public class ExportTreeAction extends BaseTreeAction {
 		setCompositionRoot(mainLayout);
 	}
 
-	public void execute(DynamicObject dynamicObject) {
+	public void execute(TreeData dynamicObject) {
 		
 		close.addClickListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 5971264029558549251L;
