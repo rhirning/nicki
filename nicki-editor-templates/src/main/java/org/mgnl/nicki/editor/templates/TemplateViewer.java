@@ -34,10 +34,10 @@ package org.mgnl.nicki.editor.templates;
 
 import javax.naming.NamingException;
 
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.components.SimpleEditor;
 import org.mgnl.nicki.vaadin.base.components.SimplePropertyEditor;
 import org.mgnl.nicki.vaadin.base.components.TestDataView;
@@ -81,7 +81,7 @@ public class TemplateViewer extends CustomComponent implements ClassEditor {
 	public TemplateViewer() {
 	}
 	
-	public void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject) {
+	public void setDynamicObject(NickiTreeEditor nickiEditor, TreeData dynamicObject) {
 		this.editor = nickiEditor;
 		this.template = (Template) dynamicObject;
 		buildEditor();

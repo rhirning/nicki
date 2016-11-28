@@ -22,8 +22,9 @@ package org.mgnl.nicki.editor.projects.core;
 import java.io.Serializable;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.data.EntryFilter;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.editor.projects.objects.Project;
-import org.mgnl.nicki.vaadin.base.editor.EntryFilter;
 
 @SuppressWarnings("serial")
 public class ProjectFilter implements EntryFilter, Serializable {
@@ -34,7 +35,7 @@ public class ProjectFilter implements EntryFilter, Serializable {
 		this.user = user;
 	}
 
-	public boolean accepts(DynamicObject object) {
+	public boolean accepts(TreeData object) {
 		if (object instanceof Project) {
 			Project project = (Project) object;
 			if (!project.isProjectLeader(user) && !project.isProjectDeputyLeader(user)) {

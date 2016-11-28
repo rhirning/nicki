@@ -37,8 +37,8 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.vaadin.base.editor.BaseTreeAction;
 import org.slf4j.Logger;
@@ -79,7 +79,7 @@ public class PreviewTemplate extends BaseTreeAction {
 	 * visual editor.
 	 * @param localeString 
 	 */
-	public PreviewTemplate(NickiContext context, Class<? extends DynamicObject> classDefinition,
+	public PreviewTemplate(NickiContext context, Class<? extends TreeData> classDefinition,
 			String name, String i18nBase) {
 		super(classDefinition, name);
 		this.context = context;
@@ -105,7 +105,7 @@ public class PreviewTemplate extends BaseTreeAction {
 		UI.getCurrent().removeWindow(previewWindow);
 	}
 
-	public void execute(DynamicObject dynamicObject) {
+	public void execute(TreeData dynamicObject) {
 		Template template = (Template) dynamicObject;
 		showResultDialog(template, params);
 	}

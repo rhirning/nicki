@@ -30,19 +30,53 @@
  * intact.
  *
  */
-package org.mgnl.nicki.vaadin.base.editor;
+package org.mgnl.nicki.core.data;
 
-import java.util.Collection;
+import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.data.TreeData;
 
 
-public interface DataProvider {
+@SuppressWarnings("serial")
+public class FileSystemRoot implements DataProvider, Serializable {
+	private String root;
+	private EntryFilter entryFilter;
 
-	Collection<? extends DynamicObject> getChildren(NickiContext context);
-	DynamicObject getRoot(NickiContext context);
-	String getMessage();
-	EntryFilter getEntryFilter();
+	public FileSystemRoot(String root, EntryFilter entryFilter) {
+		super();
+		this.root = root;
+		this.entryFilter = entryFilter;
+	}
+
+	public List<? extends TreeData> getChildren(NickiContext context) {
+		
+		List<? extends TreeData> list = getRoot(context).getAllChildren();
+		Collections.sort(list, new Comparator<TreeData>() {
+
+			@Override
+			public int compare(TreeData o1, TreeData o2) {
+				// TODO Auto-generated method stub
+				return StringUtils.lowerCase(o1.getName()).compareTo(StringUtils.lowerCase(o2.getName()));
+			}
+		});
+		return list;
+	}
+
+	public TreeData getRoot(NickiContext context) {
+		return new FileEntry(this.root);
+	}
+
+	public String getMessage() {
+		return "";
+	}
+
+	public EntryFilter getEntryFilter() {
+		return this.entryFilter;
+	}
 
 }

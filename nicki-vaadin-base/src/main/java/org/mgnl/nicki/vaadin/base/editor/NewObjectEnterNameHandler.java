@@ -34,18 +34,19 @@ package org.mgnl.nicki.vaadin.base.editor;
 
 import java.io.Serializable;
 
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.components.EnterNameHandler;
 
 @SuppressWarnings("serial")
 public class NewObjectEnterNameHandler extends EnterNameHandler implements Serializable {
 	private NickiTreeEditor editor;
-	private DynamicObject parent;
-	private Class<? extends DynamicObject> classDefinition;
+	private TreeData parent;
+	private Class<? extends TreeData> classDefinition;
 	
 
-	public NewObjectEnterNameHandler(NickiTreeEditor treeEditor, DynamicObject parent,
-			Class<? extends DynamicObject> classDefinition) {
+	public NewObjectEnterNameHandler(NickiTreeEditor treeEditor, TreeData parent,
+			Class<? extends TreeData> classDefinition) {
 		super("");
 		this.editor = treeEditor;
 		this.parent = parent;

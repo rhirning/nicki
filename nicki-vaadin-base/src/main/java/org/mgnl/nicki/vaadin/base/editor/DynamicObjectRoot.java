@@ -41,6 +41,9 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.data.DataProvider;
+import org.mgnl.nicki.core.data.EntryFilter;
+import org.mgnl.nicki.core.data.TreeData;
 
 
 @SuppressWarnings("serial")
@@ -54,7 +57,7 @@ public class DynamicObjectRoot implements DataProvider, Serializable {
 		this.entryFilter = entryFilter;
 	}
 
-	public List<? extends DynamicObject> getChildren(NickiContext context) {
+	public List<? extends TreeData> getChildren(NickiContext context) {
 		List<? extends DynamicObject> list = context.loadChildObjects(baseDn, new ChildFilter());
 		Collections.sort(list, new Comparator<DynamicObject>() {
 

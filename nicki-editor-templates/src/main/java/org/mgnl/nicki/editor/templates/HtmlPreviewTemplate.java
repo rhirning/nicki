@@ -36,8 +36,8 @@ package org.mgnl.nicki.editor.templates;
 import java.util.Map;
 
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.vaadin.base.editor.BaseTreeAction;
 import org.mgnl.nicki.vaadin.base.editor.LinkResource;
@@ -80,7 +80,7 @@ public class HtmlPreviewTemplate extends BaseTreeAction {
 		UI.getCurrent().removeWindow(previewWindow);
 	}
 
-	public void execute(DynamicObject dynamicObject) {
+	public void execute(TreeData dynamicObject) {
 		Template template = (Template) dynamicObject;
 		showResultDialog(template, params);
 	}

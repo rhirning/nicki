@@ -19,8 +19,8 @@
 */
 package org.mgnl.nicki.editor.projects.core;
 
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.editor.projects.objects.Project;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
@@ -73,7 +73,7 @@ public class ProjectDataView extends CustomComponent implements ClassEditor {
 	}
 
 	public void setDynamicObject(NickiTreeEditor nickiEditor,
-			DynamicObject dynamicObject) {
+			TreeData dynamicObject) {
 		this.project = (Project) dynamicObject;
 		this.projectNameField = new AttributeTextField();
 		this.projectNameField.init("name", project, null);

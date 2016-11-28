@@ -35,6 +35,7 @@ package org.mgnl.nicki.vaadin.base.editor;
 import java.io.Serializable;
 
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.vaadin.base.components.EnterNameHandler;
 
@@ -43,9 +44,9 @@ import com.vaadin.ui.UI;
 @SuppressWarnings("serial")
 public class RenameObjecttEnterNameHandler extends EnterNameHandler implements Serializable {
 	private NickiTreeEditor editor;
-	private DynamicObject dynamicObject;
+	private TreeData dynamicObject;
 
-	public RenameObjecttEnterNameHandler(NickiTreeEditor nickiEditor, DynamicObject dynamicObject) {
+	public RenameObjecttEnterNameHandler(NickiTreeEditor nickiEditor, TreeData dynamicObject) {
 		super("");
 		this.editor = nickiEditor;
 		this.dynamicObject = dynamicObject;
@@ -56,8 +57,8 @@ public class RenameObjecttEnterNameHandler extends EnterNameHandler implements S
 	}
 
 	public void setName(String name) throws DynamicObjectException {
-		DynamicObject parent = editor.getParent(dynamicObject);
-		dynamicObject.rename(name);
+		TreeData parent = editor.getParent(dynamicObject);
+		dynamicObject.renameObject(name);
 		editor.reloadChildren(parent);
 	}
 

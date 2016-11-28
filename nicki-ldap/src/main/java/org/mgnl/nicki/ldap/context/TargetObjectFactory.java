@@ -41,6 +41,7 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.DynamicObjectFactory;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
@@ -128,7 +129,7 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 	}
 	
 	@SuppressWarnings("unchecked")
-	public <T extends DynamicObject> List<T> findDynamicObjects(Class<T> classDefinition) {
+	public <T extends TreeData> List<T> findDynamicObjects(Class<T> classDefinition) {
 		List<T> list = new ArrayList<T>();
 		for (String dynamicObjectName : target.getDynamicObjects()) {
 			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);

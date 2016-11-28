@@ -39,7 +39,10 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.data.DataProvider;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.data.InvalidActionException;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
@@ -84,32 +87,32 @@ public class NickiTreeEditor extends CustomComponent {
 	};
 
 	private NickiSelect selector;
-	private DynamicObject selectedObject;
+	private TreeData selectedObject;
 	private ClassEditor viewer;
 	private TreeContainer treeContainer;
 	private String messageKeyBase;
 	private DataProvider treeDataProvider;
 	private String treeTitle;
 
-	private Map<Class<? extends DynamicObject>, List<Class<? extends DynamicObject>>> children
-		= new HashMap<Class<? extends DynamicObject>, List<Class<? extends DynamicObject>>>();
+	private Map<Class<? extends TreeData>, List<Class<? extends TreeData>>> children
+		= new HashMap<>();
 
-	private Map<Class<? extends DynamicObject>, Map<Action, Class<? extends DynamicObject>>> actions = new HashMap<Class<? extends DynamicObject>, Map<Action, Class<? extends DynamicObject>>>();
-	private Map<Class<? extends DynamicObject>, Action[]> actionsList = new HashMap<Class<? extends DynamicObject>, Action[]>();
-	private Map<Class<? extends DynamicObject>, Action[]> rootActionsList = new HashMap<Class<? extends DynamicObject>, Action[]>();
-	private Map<Action, Class<? extends DynamicObject>> deleteActions = new HashMap<Action, Class<? extends DynamicObject>>();
-	private Map<Action, Class<? extends DynamicObject>> renameActions = new HashMap<Action, Class<? extends DynamicObject>>();
+	private Map<Class<? extends TreeData>, Map<Action, Class<? extends TreeData>>> actions = new HashMap<>();
+	private Map<Class<? extends TreeData>, Action[]> actionsList = new HashMap<>();
+	private Map<Class<? extends TreeData>, Action[]> rootActionsList = new HashMap<>();
+	private Map<Action, Class<? extends TreeData>> deleteActions = new HashMap<>();
+	private Map<Action, Class<? extends TreeData>> renameActions = new HashMap<>();
 	private Action refreshAction;
 
-	private List<Class<? extends DynamicObject>> allowCreate = new ArrayList<Class<? extends DynamicObject>>();
-	private List<Class<? extends DynamicObject>> allowDelete = new ArrayList<Class<? extends DynamicObject>>();
-	private List<Class<? extends DynamicObject>> allowRename = new ArrayList<Class<? extends DynamicObject>>();
-	private Map<Class<? extends DynamicObject>, List<TreeAction>> treeActions = new HashMap<Class<? extends DynamicObject>, List<TreeAction>>();
+	private List<Class<? extends TreeData>> allowCreate = new ArrayList<>();
+	private List<Class<? extends TreeData>> allowDelete = new ArrayList<>();
+	private List<Class<? extends TreeData>> allowRename = new ArrayList<>();
+	private Map<Class<? extends TreeData>, List<TreeAction>> treeActions = new HashMap<>();
 
 	private Map<Action, TreeAction> treeActionMap = new HashMap<Action, TreeAction>();
 
-	private Map<Class<? extends DynamicObject>, ClassEditor> classEditors = new HashMap<Class<? extends DynamicObject>, ClassEditor>();
-	private Map<Class<? extends DynamicObject>, NewClassEditor> newClassEditors = new HashMap<Class<? extends DynamicObject>, NewClassEditor>();
+	private Map<Class<? extends TreeData>, ClassEditor> classEditors = new HashMap<>();
+	private Map<Class<? extends TreeData>, NewClassEditor> newClassEditors = new HashMap<>();
 	private NickiContext context;
 	private NickiApplication application;
 	private HorizontalSplitPanel hsplit;
@@ -144,7 +147,7 @@ public class NickiTreeEditor extends CustomComponent {
 		selector.setSelectable(true);
 		selector.addListener(new Property.ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
-				DynamicObject selected = (DynamicObject) selector.getValue();
+				TreeData selected = (TreeData) selector.getValue();
 				if (selected == null) {
 					if (viewer != null && selectedObject.isModified()) {
 						try {
@@ -170,14 +173,19 @@ public class NickiTreeEditor extends CustomComponent {
 				if (selected == null || isRoot(selected)) {
 					hideClassEditor();
 				} else {
-					for (Class<? extends DynamicObject> clazz : classEditors.keySet()) {
+					for (Class<? extends TreeData> clazz : classEditors.keySet()) {
 						if (clazz.isAssignableFrom(selected.getClass())) {
 							ClassEditor classEditor = classEditors.get(clazz);
 							showClassEditor(classEditor, selected);
 							return;
 						}
 					}
-					showClassEditor(new DynamicObjectViewer(), selected);
+					if (DynamicObject.class.isAssignableFrom(selected.getClass())) {
+						showClassEditor(new DynamicObjectViewer(), selected);
+					} else {
+						showClassEditor(new TreeDataViewer(), selected);
+						
+					}
 					/*
 					if (classEditors.containsKey(selected.getClass())) {
 						ClassEditor classEditor = classEditors.get(selected
@@ -195,46 +203,46 @@ public class NickiTreeEditor extends CustomComponent {
 
 			public void handleAction(Action action, Object sender, Object target) {
 				if (action == refreshAction) {
-					refresh((DynamicObject) target);
+					refresh((TreeData) target);
 				}
 				if (deleteActions.containsKey(action)) {
 					if (target.getClass() == deleteActions.get(action)) {
 						getNickiApplication().confirm(
 								new DeleteCommand(nickiEditor,
-										(DynamicObject) target));
+										(TreeData) target));
 					}
 				} else if (renameActions.containsKey(action)) {
 					if (target.getClass() == renameActions.get(action)) {
 						try {
-							if (!isRoot((DynamicObject) target)) {
-								renameItem((DynamicObject) target);
+							if (!isRoot((TreeData) target)) {
+								renameItem((TreeData) target);
 							}
 						} catch (Exception e) {
 							LOG.error("Error", e);
 						}
 					}
 				} else if (treeActionMap.containsKey(action)) {
-					treeActionMap.get(action).execute((DynamicObject) target);
+					treeActionMap.get(action).execute((TreeData) target);
 				} else if (actions.containsKey(target.getClass())) {
-					Map<Action, Class<? extends DynamicObject>> map = actions
+					Map<Action, Class<? extends TreeData>> map = actions
 							.get(target.getClass());
 					if (map.containsKey(action)) {
-						create((DynamicObject) target, map.get(action));
+						create((TreeData) target, map.get(action));
 					}
 				}
 			}
 
 			public Action[] getActions(Object target, Object sender) {
 				if (target != null) {
-					if (isRoot((DynamicObject) target)) {
-						for (Class<? extends DynamicObject> clazz : rootActionsList.keySet()) {
+					if (isRoot((TreeData) target)) {
+						for (Class<? extends TreeData> clazz : rootActionsList.keySet()) {
 							if (clazz.isAssignableFrom(target.getClass())) {
 								return rootActionsList.get(clazz);
 							}
 						}
 
 					} else {
-						for (Class<? extends DynamicObject> clazz : actionsList.keySet()) {
+						for (Class<? extends TreeData> clazz : actionsList.keySet()) {
 							if (clazz.isAssignableFrom(target.getClass())) {
 								return actionsList.get(clazz);
 							}
@@ -248,13 +256,13 @@ public class NickiTreeEditor extends CustomComponent {
 		selector.addListener(new Tree.ExpandListener() {
 
 			public void nodeExpand(ExpandEvent event) {
-				DynamicObject object = (DynamicObject) event.getItemId();
+				TreeData object = (TreeData) event.getItemId();
 				treeContainer.loadChildren(object);
 			}
 		});
 	}
 	
-	public void showClassEditor(ClassEditor classEditor, DynamicObject selected) {
+	public void showClassEditor(ClassEditor classEditor, TreeData selected) {
 
 		classEditor.setDynamicObject(getEditor(), selected);
 		viewer = classEditor;
@@ -273,7 +281,7 @@ public class NickiTreeEditor extends CustomComponent {
 		return this;
 	}
 
-	public void refresh(DynamicObject object) {
+	public void refresh(TreeData object) {
 		if (selectedObject != null) {
 			selector.unselect(selectedObject);
 			setSelectedObject(null);
@@ -287,57 +295,75 @@ public class NickiTreeEditor extends CustomComponent {
 		selector.expandItem(object);
 	}
 
-	protected boolean isRoot(DynamicObject dynamicObject) {
+	protected boolean isRoot(TreeData dynamicObject) {
 		return dynamicObject == this.treeContainer.getRoot();
 	}
 
-	public void setClassIcon(Class<? extends DynamicObject> classDefinition,
+	public void setClassIcon(Class<? extends TreeData> classDefinition,
 			Icon icon) {
 		this.treeContainer.setClassIcon(classDefinition, icon);
 	}
 
-	public void configureClass(Class<? extends DynamicObject> parentClass,
-			Icon icon, CREATE allowCreate, DELETE allowDelete,
-			RENAME allowRename, @SuppressWarnings("unchecked") Class<? extends DynamicObject>... childClass) {
+	public void configureClass(Class<? extends TreeData> parentClass,
+			Icon icon, CREATE allowCreate, DELETE allowDelete, RENAME allowRename,
+			@SuppressWarnings("unchecked") Class<? extends TreeData>... childClass) {
 
-		List<? extends DynamicObject> dynamicObjects;
-		try {
-			dynamicObjects = getNickiContext().getObjectFactory()
-					.findDynamicObjects(parentClass);
-		} catch (InstantiateDynamicObjectException e) {
-			dynamicObjects = new ArrayList<DynamicObject>();
+		List<TreeData> dynamicObjects = new ArrayList<>();
+		
+		if (DynamicObject.class.isAssignableFrom(parentClass)) {
+			try {
+				for (TreeData treeData : getNickiContext().getObjectFactory()
+						.findDynamicObjects(parentClass)) {
+					dynamicObjects.add(treeData);
+				}
+			} catch (InstantiateDynamicObjectException e) {
+				LOG.error("Error configuring parent class " + parentClass.getName(), e);
+				return;
+			}			
+		} else {
+			try {
+				dynamicObjects.add(parentClass.newInstance());
+			} catch (InstantiationException | IllegalAccessException e) {
+				LOG.error("Error configuring parent class " + parentClass.getName(), e);
+				return;
+			}
 		}
 
-		for (DynamicObject dynamicObject : dynamicObjects) {
+		for (Object object : dynamicObjects) {
+			TreeData treeData = (TreeData) object;
 			if (icon != null) {
-				setClassIcon(dynamicObject.getClass(), icon);
+				setClassIcon(treeData.getClass(), icon);
 			}
 			if (allowCreate == CREATE.ALLOW) {
-				this.allowCreate.add(dynamicObject.getClass());
+				this.allowCreate.add(treeData.getClass());
 			}
 			if (allowDelete == DELETE.ALLOW) {
-				this.allowDelete.add(dynamicObject.getClass());
+				this.allowDelete.add(treeData.getClass());
 			}
 			if (allowRename == RENAME.ALLOW) {
-				this.allowRename.add(dynamicObject.getClass());
+				this.allowRename.add(treeData.getClass());
 			}
 
-			List<Class<? extends DynamicObject>> list = children
-					.get(dynamicObject.getClass());
+			List<Class<? extends TreeData>> list = children
+					.get(treeData.getClass());
 			if (list == null) {
-				list = new ArrayList<Class<? extends DynamicObject>>();
-				children.put(dynamicObject.getClass(), list);
+				list = new ArrayList<>();
+				children.put(treeData.getClass(), list);
 			}
-			for (int i = 0; i < childClass.length; i++) {
-				try {
-					List<? extends DynamicObject> childObjects = getNickiContext()
-							.getObjectFactory().findDynamicObjects(
-									childClass[i]);
-					for (DynamicObject childObject : childObjects) {
-						list.add(childObject.getClass());
+			for (int i = 0; i < childClass.length; i++) {				
+				if (DynamicObject.class.isAssignableFrom(childClass[i])) {
+					try {
+						for (TreeData childObject :  getNickiContext()
+								.getObjectFactory().findDynamicObjects(
+										childClass[i])) {
+							list.add(childObject.getClass());
+						}
+					} catch (InstantiateDynamicObjectException e) {
+						LOG.error("Error configuring child class " + parentClass.getName(), e);
+						continue;
 					}
-				} catch (InstantiateDynamicObjectException e) {
-					LOG.error("Error", e);
+				} else {
+					list.add(childClass[i]);
 				}
 			}
 }
@@ -353,12 +379,12 @@ public class NickiTreeEditor extends CustomComponent {
 		actions.add(treeAction);
 	}
 
-	public void setClassEditor(Class<? extends DynamicObject> classdefinition,
+	public void setClassEditor(Class<? extends TreeData> classdefinition,
 			ClassEditor classEditor) {
 		this.classEditors.put(classdefinition, classEditor);
 	}
 
-	protected void renameItem(DynamicObject target) {
+	protected void renameItem(TreeData target) {
 		EnterNameHandler handler = new RenameObjecttEnterNameHandler(this,
 				target);
 		EnterNameDialog dialog = new EnterNameDialog(messageKeyBase + ".rename",
@@ -371,8 +397,8 @@ public class NickiTreeEditor extends CustomComponent {
 		UI.getCurrent().addWindow(dialog);
 	}
 
-	protected void create(DynamicObject parent,
-			Class<? extends DynamicObject> classDefinition) {
+	protected void create(TreeData parent,
+			Class<? extends TreeData> classDefinition) {
 		treeContainer.loadChildren(parent);
 		try {
 			addDynamicObject(parent, classDefinition);
@@ -389,8 +415,8 @@ public class NickiTreeEditor extends CustomComponent {
 		selector.setItemIconPropertyId(TreeContainer.PROPERTY_ICON);
 	}
 
-	private void addDynamicObject(DynamicObject parent,
-			Class<? extends DynamicObject> classDefinition)
+	private void addDynamicObject(TreeData parent,
+			Class<? extends TreeData> classDefinition)
 			throws InstantiateDynamicObjectException, DynamicObjectException {
 		NewClassEditor editor;
 		if (this.newClassEditors.get(classDefinition) != null) {
@@ -416,20 +442,18 @@ public class NickiTreeEditor extends CustomComponent {
 	}
 
 	public void setNewClassEditor(
-			Class<? extends DynamicObject> classDefinition,
+			Class<? extends TreeData> classDefinition,
 			NewClassEditor newClassEditor) {
 		this.newClassEditors.put(classDefinition, newClassEditor);
 	}
 
-	protected <T extends DynamicObject> boolean create(DynamicObject parent,
+	protected <T extends TreeData> boolean create(TreeData parent,
 			Class<T> classDefinition, String name)
-			throws InstantiateDynamicObjectException, DynamicObjectException {
+			throws InstantiateDynamicObjectException, DynamicObjectException, InvalidActionException {
 		T dynamicObject = null;
-		dynamicObject = context.createDynamicObject(classDefinition,
-				parent.getPath(), name);
+		dynamicObject = parent.createChild(classDefinition, name);
 		if (dynamicObject != null) {
-			treeContainer.addItem(dynamicObject, parent, dynamicObject
-					.getModel().childrenAllowed());
+			treeContainer.addItem(dynamicObject, parent, dynamicObject.childrenAllowed());
 			return true;
 		}
 		return false;
@@ -441,11 +465,11 @@ public class NickiTreeEditor extends CustomComponent {
 		refreshAction = new Action(I18n.getText(this.messageKeyBase
 				+ ".action.refresh"));
 
-		for (Class<? extends DynamicObject> classDefinition : this.children
+		for (Class<? extends TreeData> classDefinition : this.children
 				.keySet()) {
 			List<Action> classActions = new ArrayList<Action>();
 			List<Action> rootClassActions = new ArrayList<Action>();
-			Map<Action, Class<? extends DynamicObject>> map = new HashMap<Action, Class<? extends DynamicObject>>();
+			Map<Action, Class<? extends TreeData>> map = new HashMap<>();
 			// treeActions
 			List<TreeAction> a = getTreeActions(classDefinition);
 			if(a != null && !a.isEmpty()) {
@@ -457,7 +481,7 @@ public class NickiTreeEditor extends CustomComponent {
 				}
 			}
 			if (this.children.get(classDefinition) != null) {
-				for (Class<? extends DynamicObject> childClassPattern : this.children
+				for (Class<? extends TreeData> childClassPattern : this.children
 						.get(classDefinition)) {
 					if (this.allowCreate.contains(childClassPattern)) {
 						Action childAction = new Action(
@@ -496,9 +520,9 @@ public class NickiTreeEditor extends CustomComponent {
 		}
 	}
 
-	private List<TreeAction> getTreeActions(Class<? extends DynamicObject> classDefinition) {
+	private List<TreeAction> getTreeActions(Class<? extends TreeData> classDefinition) {
 		List<TreeAction> list = new ArrayList<>();
-		for (Class<? extends DynamicObject> clazz : this.treeActions.keySet()) {
+		for (Class<? extends TreeData> clazz : this.treeActions.keySet()) {
 			if (clazz.isAssignableFrom(classDefinition)) {
 				list.addAll(this.treeActions.get(clazz));
 			}
@@ -510,44 +534,44 @@ public class NickiTreeEditor extends CustomComponent {
 		return actionsList.get(object.getClass());
 	}
 
-	public DynamicObject getSelectedObject() {
+	public TreeData getSelectedObject() {
 		return selectedObject;
 	}
 
-	public void setSelectedObject(DynamicObject selectedObject) {
+	public void setSelectedObject(TreeData selectedObject) {
 		this.selectedObject = selectedObject;
 	}
 
-	public void addChild(DynamicObject parent, DynamicObject child) {
+	public void addChild(TreeData parent, TreeData child) {
 		this.treeContainer.addChild(parent, child);
 	}
 
-	public DynamicObject getParent(DynamicObject child) {
+	public TreeData getParent(TreeData child) {
 		return this.treeContainer.getParent(child);
 	}
 
-	public void reloadChildren(DynamicObject parent) {
+	public void reloadChildren(TreeData parent) {
 		hideClassEditor();
 		parent.unLoadChildren();
 		this.treeContainer.removeChildren(parent);
 		this.treeContainer.loadChildren(parent);
 	}
 
-	public List<Class<? extends DynamicObject>> getAllowedChildren(
-			Class<? extends DynamicObject> classDefinition) {
+	public List<Class<? extends TreeData>> getAllowedChildren(
+			Class<? extends TreeData> classDefinition) {
 		return this.children.get(classDefinition);
 	}
 
-	public boolean isParent(DynamicObject parent, DynamicObject object) {
+	public boolean isParent(TreeData parent, TreeData object) {
 		return this.treeContainer.isParent(parent, object);
 	}
 
-	public void moveObject(DynamicObject object, DynamicObject target)
+	public void moveObject(TreeData object, TreeData target)
 			throws DynamicObjectException {
 		this.treeContainer.setParent(object, target);
 	}
 
-	public String getClassName(Class<? extends DynamicObject> classDefinition) {
+	public String getClassName(Class<? extends TreeData> classDefinition) {
 		return StringUtils.substringAfterLast(classDefinition.getName(), ".");
 	}
 
@@ -557,7 +581,7 @@ public class NickiTreeEditor extends CustomComponent {
 		}
 	}
 
-	public void collapse(DynamicObject object) {
+	public void collapse(TreeData object) {
 		selector.collapseItemsRecursively(object);
 	}
 

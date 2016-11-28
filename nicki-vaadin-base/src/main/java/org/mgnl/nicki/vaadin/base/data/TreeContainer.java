@@ -38,11 +38,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.mgnl.nicki.vaadin.base.editor.EntryFilter;
+import org.mgnl.nicki.core.data.DataProvider;
+import org.mgnl.nicki.core.data.EntryFilter;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
-import org.mgnl.nicki.vaadin.base.editor.DataProvider;
 
 import com.vaadin.data.Item;
 import com.vaadin.data.Property;
@@ -57,9 +57,9 @@ public class TreeContainer implements Serializable {
 	
 	private HierarchicalContainer container = new HierarchicalContainer();
 	private String name;
-	private DynamicObject root;
+	private TreeData root;
 	private DataProvider treeDataProvider;
-	private Map<Class<? extends DynamicObject>, Icon> classIcons= new HashMap<Class<? extends DynamicObject>, Icon>();
+	private Map<Class<? extends TreeData>, Icon> classIcons= new HashMap<>();
 	private EntryFilter entryFilter;
 	private NickiContext context;
 	
@@ -87,12 +87,12 @@ public class TreeContainer implements Serializable {
 	    return container;
 	}
 	
-	public void setClassIcon(Class<? extends DynamicObject> classDefinition, Icon icon) {
+	public void setClassIcon(Class<? extends TreeData> classDefinition, Icon icon) {
 		this.classIcons.put(classDefinition, icon);
 	}
 
 	@SuppressWarnings("unchecked")
-	public Item addItem(DynamicObject object) {
+	public Item addItem(TreeData object) {
 		if (this.entryFilter.accepts(object)) {
 			Item item = container.addItem(object);
 			item.getItemProperty(PROPERTY_NAME).setValue(object.getDisplayName());
@@ -106,47 +106,47 @@ public class TreeContainer implements Serializable {
 		return null;
 	}
 
-	public void loadChildren(DynamicObject object) {
+	public void loadChildren(TreeData parent) {
 		@SuppressWarnings("unchecked")
-		Property<Boolean> loaded = container.getItem(object).getItemProperty(PROPERTY_LOADED);
+		Property<Boolean> loaded = container.getItem(parent).getItemProperty(PROPERTY_LOADED);
 		if (!loaded.getValue()) {
-			if (object == this.root) {
-			    Collection<? extends DynamicObject> objects = this.treeDataProvider.getChildren(context);
+			if (parent == this.root) {
+			    Collection<? extends TreeData> objects = this.treeDataProvider.getChildren(context);
 			    if (objects != null) {
-				    for (DynamicObject p : objects) {
+				    for (TreeData p : objects) {
 						if (this.entryFilter.accepts(p)) {
 							addItem(p, root, true);
-							boolean childrenAllowed = p.getModel().childrenAllowed();
+							boolean childrenAllowed = p.childrenAllowed();
 							container.setChildrenAllowed(p, childrenAllowed);
 						}
 					}
 			    }
 
 			} else {
-				addChildren(object, object.getAllChildren());
+				addChildren(parent, parent.getAllChildren());
 			}
 		}
 		loaded.setValue(true);
 	}
 	
 	public void addChildren(Object parent,
-			Collection<? extends DynamicObject> children) {
-		for (DynamicObject p : children) {
+			Collection<? extends TreeData> children) {
+		for (TreeData p : children) {
 			if (this.entryFilter.accepts(p)) {
 				addChild(parent, p);
 			}
 		}
 	}
 
-	public void addChild(Object parent, DynamicObject child) {
+	public void addChild(Object parent, TreeData child) {
 		if (this.entryFilter.accepts(child)) {
-			boolean childrenAllowed = child.getModel().childrenAllowed();
+			boolean childrenAllowed = child.childrenAllowed();
 			addItem(child, parent, childrenAllowed);
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	public void addItem(DynamicObject object, Object parent, boolean childrenAllowed) {
+	public void addItem(TreeData object, Object parent, boolean childrenAllowed) {
 		if (this.entryFilter.accepts(object)) {
 			Item item = container.addItem(object);
 			if (item != null) {
@@ -163,27 +163,27 @@ public class TreeContainer implements Serializable {
 		}
 	}
 
-	public DynamicObject getRoot() {
+	public TreeData getRoot() {
 		return root;
 	}
 
-	public void setParent(DynamicObject object, DynamicObject parent) throws DynamicObjectException {
+	public void setParent(TreeData object, TreeData parent) throws DynamicObjectException {
 		container.setParent(object, parent);
-		String newPath = object.getContext().getAdapter().getPath(object, parent.getPath(), object.getNamingValue());
-		object.move(newPath);
+		String newPath = object.getChildPath(parent, object);
+		object.moveTo(newPath);
 	}
 
-	public DynamicObject getParent(DynamicObject child) {
-		return (DynamicObject) container.getParent(child);
+	public TreeData getParent(TreeData child) {
+		return (TreeData) container.getParent(child);
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void removeChildren(DynamicObject parent) {
+	public void removeChildren(TreeData parent) {
 		if (parent != null) {
 			Item item = container.getItem(parent);
 			if (item != null) {
 				while (container.getChildren(parent)!= null && container.getChildren(parent).size() > 0) {
-					DynamicObject child = (DynamicObject) container.getChildren(parent).iterator().next();
+					TreeData child = (TreeData) container.getChildren(parent).iterator().next();
 					container.removeItemRecursively(child);
 				}
 				item.getItemProperty(PROPERTY_LOADED).setValue(false);
@@ -191,9 +191,9 @@ public class TreeContainer implements Serializable {
 		}
 	}
 	
-	public boolean isParent(DynamicObject parent,
-			DynamicObject child) {
-		DynamicObject object = child;
+	public boolean isParent(TreeData parent,
+			TreeData child) {
+		TreeData object = child;
 		while (object != null) {
 			if (object == parent) {
 				return true;

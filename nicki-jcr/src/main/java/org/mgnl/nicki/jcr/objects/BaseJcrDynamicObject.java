@@ -5,6 +5,7 @@ import javax.jcr.RepositoryException;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObject;
@@ -81,7 +82,7 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 	}
 
 	@Override
-	public String getSlashPath(DynamicObject parent) {
+	public String getSlashPath(TreeData parent) {
 		if (parent != null) {
 			return getSlashPath(parent.getPath());
 		} else {
