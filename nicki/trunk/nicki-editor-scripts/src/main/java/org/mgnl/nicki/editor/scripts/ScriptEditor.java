@@ -34,23 +34,11 @@ package org.mgnl.nicki.editor.scripts;
 
 
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.dynamic.objects.objects.Org;
-import org.mgnl.nicki.dynamic.objects.objects.Script;
 import org.mgnl.nicki.vaadin.base.application.AccessGroup;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
-import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
-import org.mgnl.nicki.vaadin.base.editor.ExportTreeAction;
-import org.mgnl.nicki.vaadin.base.editor.Icon;
-import org.mgnl.nicki.vaadin.base.editor.ImportTreeAction;
-import org.mgnl.nicki.vaadin.base.editor.ShowAllFilter;
-import org.mgnl.nicki.vaadin.base.editor.DataProvider;
-import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
-
 import com.vaadin.ui.Component;
 
 @AccessGroup(name = {"nickiAdmins", "IDM-Development"})
@@ -62,23 +50,9 @@ public class ScriptEditor extends NickiApplication {
 		setUseWelcomeDialog(DataHelper.booleanOf(Config.getProperty("nicki.projects.useWelcomeDialog", "false")));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Component getEditor() {
-		ScriptViewer scriptViewer = new ScriptViewer(AppContext.getRequest());
-		//scriptViewer.setRequest(getRequest());
-		//scriptViewer.setResponse(getResponse());
-
-		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.scripts.basedn"), new ShowAllFilter());
-		TreeEditor editor = new TreeEditor(this, getNickiContext(), treeDataProvider, getI18nBase());
-		editor.configureClass(Org.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, Org.class, Script.class );
-		editor.configureClass(Script.class, Icon.DOCUMENT, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);
-		editor.setClassEditor(Script.class, scriptViewer);
-		editor.addAction(new ImportTreeAction(editor, Org.class, I18n.getText(getI18nBase() + ".action.import"), getI18nBase()));
-		editor.addAction(new ExportTreeAction(getNickiContext(), Org.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
-		editor.addAction(new ExportTreeAction(getNickiContext(), Script.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
-		editor.initActions();
-		return editor;
+		return new ScriptEditorComponent(this);
 	}
 
 	@Override

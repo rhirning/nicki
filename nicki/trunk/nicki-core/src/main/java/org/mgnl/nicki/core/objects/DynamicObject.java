@@ -33,15 +33,17 @@
 package org.mgnl.nicki.core.objects;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.helper.AttributeMapper;
 
-public interface DynamicObject {
+public interface DynamicObject extends TreeData {
 	String ATTRIBUTE_NAME = "name";
 	String SEPARATOR = "/";
 
@@ -90,7 +92,7 @@ public interface DynamicObject {
 	
 	void unLoadChildren();
 		
-	Collection<? extends DynamicObject> getAllChildren();
+	List<? extends DynamicObject> getAllChildren();
 
 	<T extends DynamicObject> Collection<T>  getChildren(Class<T> classDefinition);
 
@@ -137,7 +139,7 @@ public interface DynamicObject {
 
 	DynamicAttribute getDynamicAttribute(String name);
 
-	String getSlashPath(DynamicObject parent);
+	String getSlashPath(TreeData parent);
 
 	String getSlashPath(String parentPath);
 

@@ -32,12 +32,12 @@
  */
 package org.mgnl.nicki.vaadin.base.editor;
 
-import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.data.TreeData;
 
 import com.vaadin.ui.Component;
 
 public interface ClassEditor extends Component {
-	void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject);
+	void setDynamicObject(NickiTreeEditor nickiEditor, TreeData dynamicObject);
 	void save() throws Exception;
 
 }

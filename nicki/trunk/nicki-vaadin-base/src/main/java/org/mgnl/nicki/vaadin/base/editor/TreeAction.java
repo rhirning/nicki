@@ -32,14 +32,14 @@
  */
 package org.mgnl.nicki.vaadin.base.editor;
 
-import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.data.TreeData;
 
 public interface TreeAction {
-	void execute(DynamicObject dynamicObject);
+	void execute(TreeData dynamicObject);
 
 	String getName();
 
 	void close();
 	
-	Class<? extends DynamicObject> getTargetClass();
+	Class<? extends TreeData> getTargetClass();
 }

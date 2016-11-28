@@ -42,7 +42,7 @@ import java.io.StringReader;
 import javax.naming.NamingException;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Script;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
@@ -115,7 +115,7 @@ public class ScriptViewer extends CustomComponent implements ClassEditor {
 	}
 
 	public void setDynamicObject(NickiTreeEditor nickiEditor,
-			DynamicObject dynamicObject) {
+			TreeData dynamicObject) {
 		this.script = (Script) dynamicObject;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);

@@ -30,13 +30,20 @@
  * intact.
  *
  */
-package org.mgnl.nicki.vaadin.base.command;
+package org.mgnl.nicki.core.data;
 
-@SuppressWarnings("serial")
-public class CommandException extends Exception {
+import java.util.Collection;
 
-	public CommandException(Exception e) {
-		super(e);
-	}
+import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.data.TreeData;
+
+
+public interface DataProvider {
+
+	Collection<? extends TreeData> getChildren(NickiContext context);
+	TreeData getRoot(NickiContext context);
+	String getMessage();
+	EntryFilter getEntryFilter();
 
 }

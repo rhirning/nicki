@@ -36,58 +36,38 @@ package org.mgnl.nicki.vaadin.base.editor;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.data.InvalidActionException;
 import org.mgnl.nicki.core.data.TreeData;
-import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.components.NewClassEditor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
-public class DynamicObjectViewer extends CustomComponent implements NewClassEditor, ClassEditor {
-	private static final Logger LOG = LoggerFactory.getLogger(DynamicObjectViewer.class);
+public class TreeDataViewer extends CustomComponent implements NewClassEditor, ClassEditor {
+	private static final Logger LOG = LoggerFactory.getLogger(TreeDataViewer.class);
 
 	private VerticalLayout mainLayout;
-	private DynamicObject dynamicObject;
-	private Button saveButton;
+	private TreeData dynamicObject;
 	private boolean create;
-	private DynamicObjectValueChangeListener<String> listener;
-	private DynamicObject parent;
+	private TreeData parent;
 
-	@Deprecated
-	public DynamicObjectViewer(DynamicObject dynamicObject) {
+	public TreeDataViewer() {
+	}
+
+	public void setDynamicObject(NickiTreeEditor nickiEditor, TreeData dynamicObject) {
+		LOG.debug("DynamicObject: " + dynamicObject);
 		this.dynamicObject = dynamicObject;
 		this.create = false;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 	}
-
-	public DynamicObjectViewer() {
-	}
-
-	public void setDynamicObject(NickiTreeEditor nickiEditor, TreeData dynamicObject) {
-		LOG.debug("DynamicObject: " + dynamicObject);
-		this.dynamicObject = (DynamicObject) dynamicObject;
-		this.create = false;
-		buildMainLayout();
-		setCompositionRoot(mainLayout);
-	}
 	
-	public DynamicObjectViewer(DynamicObjectValueChangeListener<String> listener) {
-		this.listener = listener;
-	}
-	
-	public void init(TreeData parent, Class<? extends TreeData> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException {
-		this.parent = (DynamicObject) parent;
+	public void init(TreeData parent, Class<? extends TreeData> classDefinition) throws InstantiateDynamicObjectException {
+		this.parent = parent;
 		try {
-			this.dynamicObject = (DynamicObject) this.parent.createChild(classDefinition, "");
+			this.dynamicObject = this.parent.createChild(classDefinition, "");
 		} catch (InvalidActionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,39 +85,16 @@ public class DynamicObjectViewer extends CustomComponent implements NewClassEdit
 		mainLayout.setWidth("100%");
 		Label label = new Label(dynamicObject.getClass().getName());
 		mainLayout.addComponent(label);
-		DynamicObjectFieldFactory factory = new DynamicObjectFieldFactory(listener);
-		factory.addFields(mainLayout, dynamicObject, create);
-		
-		saveButton = new Button(I18n.getText("nicki.editor.generic.button.save"));
-		saveButton.addClickListener(new Button.ClickListener() {
-			
-			public void buttonClick(ClickEvent event) {
-				save();
-			}
-		});
-
-		mainLayout.addComponent(saveButton);
 		return mainLayout;
-	}
-
-	public void save() {
-		try {
-			if (create) {
-				dynamicObject.create();
-			} else {
-				Notification.show(I18n.getText("nicki.editor.save.info"));
-				dynamicObject.update();
-			}
-			if (listener != null) {
-				listener.close(this);
-				listener.refresh(this.parent);
-			}
-		} catch (Exception e) {
-			LOG.error("Error", e);
-		}
 	}
 
 	public boolean isCreate() {
 		return create;
+	}
+
+	@Override
+	public void save() throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -51,6 +51,7 @@ import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.helper.AttributeMapper;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.PathHelper;
@@ -303,15 +304,23 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 		return context.renameObject(this, newName);
 	}
 
+	public void renameObject(String newName) throws DynamicObjectException {
+		context.renameObject(this, newName);
+	}
+
 	public DynamicObject move(String newPath) throws DynamicObjectException {
 		return context.moveObject(this, newPath);
+	}
+
+	public void moveTo(String newPath) throws DynamicObjectException {
+		context.moveObject(this, newPath);
 	}
 
 	public DynamicAttribute getDynamicAttribute(String name) {
 		return getModel().getDynamicAttribute(name);
 	}
 
-	public String getSlashPath(DynamicObject parent) {
+	public String getSlashPath(TreeData parent) {
 		if (parent != null) {
 			return getSlashPath(parent.getPath());
 		} else {
@@ -492,9 +501,9 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 		return childObjects.get(key);
 	}
 	
-	public Collection<? extends DynamicObject> getAllChildren() {
+	public List<? extends DynamicObject> getAllChildren() {
 		loadChildren();
-		Collection<DynamicObject> list = new ArrayList<DynamicObject>();
+		List<DynamicObject> list = new ArrayList<DynamicObject>();
 		for (String key : childObjects.keySet()) {
 			list.addAll(getChildren(key));
 		}
@@ -701,6 +710,36 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 				}
 			}
 		}
+	}
+
+	@Override
+	public boolean childrenAllowed() {
+		return getModel().childrenAllowed();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T extends TreeData> T createChild(Class<T> classDefinition, String name) {
+		try {
+			return (T) createDynamicObjectChild((Class<DynamicObject>) classDefinition, name);
+		} catch (InstantiateDynamicObjectException | DynamicObjectException e) {
+			LOG.error("Error creating child");
+		}
+		return null;
+
+	}
+
+	public DynamicObject createDynamicObjectChild(Class<DynamicObject> classDefinition, String name) throws InstantiateDynamicObjectException, DynamicObjectException {
+
+		return context.createDynamicObject(classDefinition,
+				getPath(), name);
+	}
+
+	@Override
+	public String getChildPath(TreeData parent, TreeData child) {
+
+		DynamicObject object = (DynamicObject) child;
+		return object.getContext().getAdapter().getPath(object, parent.getPath(), object.getNamingValue());
 	}
 
 

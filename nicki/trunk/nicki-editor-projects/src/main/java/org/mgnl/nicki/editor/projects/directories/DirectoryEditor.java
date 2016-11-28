@@ -19,8 +19,8 @@
 */
 package org.mgnl.nicki.editor.projects.directories;
 
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.editor.projects.objects.Directory;
 import org.mgnl.nicki.editor.projects.objects.Member;
 import org.mgnl.nicki.editor.projects.objects.Project;
@@ -63,7 +63,7 @@ public class DirectoryEditor extends CustomComponent implements ClassEditor {
 	private Directory directory;
 	private VerticalLayout membersLayout;
 
-	public void setDynamicObject(NickiTreeEditor nickiEditor, DynamicObject dynamicObject) {
+	public void setDynamicObject(NickiTreeEditor nickiEditor, TreeData dynamicObject) {
 		this.nickiEditor = nickiEditor;
 		this.directory = (Directory) dynamicObject;
 		buildMainLayout();

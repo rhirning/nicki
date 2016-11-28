@@ -39,7 +39,7 @@ import javax.naming.NamingException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.editor.jcr.PropertyWrapper.PROPERTY_TYPE;
 import org.mgnl.nicki.jcr.objects.JcrDynamicObject;
@@ -100,7 +100,7 @@ public class NodeViewer extends CustomComponent implements ClassEditor {
 	}
 
 	public void setDynamicObject(NickiTreeEditor nickiEditor,
-			DynamicObject dynamicObject) {
+			TreeData dynamicObject) {
 		this.node = (JcrDynamicObject) dynamicObject;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);

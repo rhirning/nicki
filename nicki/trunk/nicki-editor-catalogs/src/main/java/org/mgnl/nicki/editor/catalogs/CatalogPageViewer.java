@@ -32,8 +32,8 @@
  */
 package org.mgnl.nicki.editor.catalogs;
 
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 import org.mgnl.nicki.vaadin.base.components.EnterNameDialog;
@@ -87,7 +87,7 @@ public class CatalogPageViewer extends CustomComponent implements ClassEditor {
 	}
 
 	public void setDynamicObject(NickiTreeEditor nickiEditor,
-			DynamicObject dynamicObject) {
+			TreeData dynamicObject) {
 		this.page = (CatalogPage) dynamicObject;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);

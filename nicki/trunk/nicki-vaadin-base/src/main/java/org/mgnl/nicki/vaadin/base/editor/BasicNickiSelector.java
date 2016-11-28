@@ -34,6 +34,7 @@ package org.mgnl.nicki.vaadin.base.editor;
 
 import java.util.Collection;
 
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,15 +67,15 @@ public abstract class BasicNickiSelector implements NickiSelect {
 		component.setImmediate(immediate);
 	}
 
-	public DynamicObject getValue() {
-		return (DynamicObject) component.getValue();
+	public TreeData getValue() {
+		return (TreeData) component.getValue();
 	}
 
 	public void addListener(ValueChangeListener listener) {
 		component.addValueChangeListener(listener);
 	}
 
-	public void unselect(DynamicObject object) {
+	public void unselect(TreeData object) {
 		component.unselect(object);
 	}
 
@@ -103,7 +104,7 @@ public abstract class BasicNickiSelector implements NickiSelect {
 	}
 	
 	@Override
-	public void expandItem(DynamicObject object) {
+	public void expandItem(TreeData object) {
 		LOG.debug("not implemented");
 	}
 
@@ -124,7 +125,7 @@ public abstract class BasicNickiSelector implements NickiSelect {
 	}
 
 	@Override
-	public void collapseItemsRecursively(DynamicObject startItemId) {
+	public void collapseItemsRecursively(TreeData startItemId) {
 		LOG.debug("not implemented");
 	}
 

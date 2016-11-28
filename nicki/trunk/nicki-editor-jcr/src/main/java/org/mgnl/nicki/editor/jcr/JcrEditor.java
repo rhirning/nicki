@@ -36,6 +36,7 @@ package org.mgnl.nicki.editor.jcr;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
+import org.mgnl.nicki.core.data.DataProvider;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.jcr.objects.GenericNodeDynamicObject;
@@ -46,7 +47,6 @@ import org.mgnl.nicki.vaadin.base.editor.ExportTreeAction;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 import org.mgnl.nicki.vaadin.base.editor.ImportTreeAction;
 import org.mgnl.nicki.vaadin.base.editor.ShowAllFilter;
-import org.mgnl.nicki.vaadin.base.editor.DataProvider;
 import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
 
 import com.vaadin.ui.Component;

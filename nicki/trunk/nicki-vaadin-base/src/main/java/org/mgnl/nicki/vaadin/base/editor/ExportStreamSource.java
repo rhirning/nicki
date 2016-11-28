@@ -38,6 +38,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 import org.mgnl.nicki.core.context.NickiContext;
+import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.util.XMLBuilder;
 import org.slf4j.Logger;
@@ -50,11 +51,11 @@ public class ExportStreamSource implements StreamSource{
 	private static final Logger LOG = LoggerFactory.getLogger(ExportStreamSource.class);
 
 	private static final long serialVersionUID = -8068031351212191141L;
-	private DynamicObject dynamicObject;
+	private TreeData dynamicObject;
 	private NickiContext context;
 	private boolean selfOnly;
 	
-	public ExportStreamSource(DynamicObject dynamicObject, NickiContext context, boolean selfOnly) {
+	public ExportStreamSource(TreeData dynamicObject, NickiContext context, boolean selfOnly) {
 		this.dynamicObject = dynamicObject;
 		this.context = context;
 		this.selfOnly = selfOnly;

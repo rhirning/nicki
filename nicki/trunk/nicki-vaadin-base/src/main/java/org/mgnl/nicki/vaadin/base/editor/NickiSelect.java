@@ -35,7 +35,7 @@ package org.mgnl.nicki.vaadin.base.editor;
 import java.io.Serializable;
 import java.util.Collection;
 
-import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.data.TreeData;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -56,7 +56,7 @@ public interface NickiSelect extends Serializable {
 
 	void setSelectable(boolean b);
 
-	DynamicObject getValue();
+	TreeData getValue();
 
 	void addListener(ValueChangeListener listener);
 
@@ -64,9 +64,9 @@ public interface NickiSelect extends Serializable {
 
 	void removeItem(Object target);
 
-	void unselect(DynamicObject objectbject);
+	void unselect(TreeData objectbject);
 
-	void expandItem(DynamicObject object);
+	void expandItem(TreeData object);
 
 	void addListener(ExpandListener listener);
 
@@ -82,7 +82,7 @@ public interface NickiSelect extends Serializable {
 
 	void expandItemsRecursively(Object id);
 
-	void collapseItemsRecursively(DynamicObject startItemId);
+	void collapseItemsRecursively(TreeData startItemId);
 
 
 }

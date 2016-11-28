@@ -20,14 +20,18 @@
 package org.mgnl.nicki.shop.rules;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.vaadin.base.editor.EntryFilter;
+import org.mgnl.nicki.core.data.EntryFilter;
+import org.mgnl.nicki.core.data.TreeData;
 
 public class OrgOnlyFilter implements EntryFilter {
 
 	@Override
-	public <T extends DynamicObject> boolean accepts(T dynamicObject) {
-		if (dynamicObject.getModel().getObjectClasses().contains("organizationalUnit")) {
-			return true;
+	public <T extends TreeData> boolean accepts(T object) {
+		if (object instanceof DynamicObject) {
+			DynamicObject dynamicObject = (DynamicObject) object;
+			if (dynamicObject.getModel().getObjectClasses().contains("organizationalUnit")) {
+				return true;
+			}
 		}
 		return false;
 	}
