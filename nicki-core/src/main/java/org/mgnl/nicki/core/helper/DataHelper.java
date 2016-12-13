@@ -74,6 +74,12 @@ public class DataHelper {
 	public static SimpleDateFormat formatTimestamp = new SimpleDateFormat(FORMAT_TIMESTAMP);
 	public static SimpleDateFormat formatGermanTimestamp = new SimpleDateFormat(FORMAT_GERMAN_TIMESTAMP);
 
+	/**
+	 * Extracts an Integer from a String
+	 * @param stringValue String containing the Integer
+	 * @param defaultValue default value if parsing does not work
+	 * @return the Integer
+	 */
 	public static int getInteger(String stringValue, int defaultValue) {
 		stringValue = StringUtils.strip(stringValue);
 		if (StringUtils.isNotEmpty(stringValue) && StringUtils.isNumeric(stringValue)) {
@@ -86,6 +92,11 @@ public class DataHelper {
 		return defaultValue;
 	}
 
+	/**
+	 * Makes a boolean out of a String. The value is true if the String is: "J", "Y", "1", or "TRUE" (case insensitive)
+	 * @param value String to read
+	 * @return the boolean value
+	 */
 	public static boolean booleanOf(String value) {
 
 		if (StringUtils.equalsIgnoreCase(value, "J")
@@ -98,34 +109,55 @@ public class DataHelper {
 		return false;
 	}
 	
+	/**
+	 * Returns the first non blank entry of the String array.
+	 * @param strings the String array
+	 * @return the first non empty entry
+	 */
 	public static String getValue(String[] strings) {
 		if (strings == null) {
 			return null;
 		}
-		for (int i = 0; i < strings.length; i++) {
-			if (StringUtils.isNotEmpty(strings[i])) {
-				return strings[i];
+		for (String entry : strings) {
+			if (StringUtils.isNotBlank(entry)) {
+				return entry;
 			}
 		}
 		return null;
 	}
 
+	/**
+	 * Checks if all entries of the String array are blank.
+	 * @param strings the String array
+	 * @return boolean
+	 */
 	public static boolean isEmpty(String[] strings) {
 		if (strings == null) {
 			return true;
 		}
-		for (int i = 0; i < strings.length; i++) {
-			if (StringUtils.isNotEmpty(strings[i])) {
+		for (String entry : strings) {
+			if (StringUtils.isNotBlank(entry)) {
 				return false;
 			}
 		}
 		return true;
 	}
 
+
+	/**
+	 * Checks if not all entries of the String array are blank.
+	 * @param strings the String array
+	 * @return boolean
+	 */
 	public static boolean isNotEmpty(String[] strings) {
 		return !isEmpty(strings);
 	}
 
+	/**
+	 * Simplifies a Map<String, String[]> by using only the first value of the String Arrays
+	 * @param pMap Map<String, String[]>
+	 * @return Map<String, String>
+	 */
 	public static Map<String, String> getSimpleMap(Map<String, String[]> pMap) {
 		Map<String, String> map = new HashMap<String, String>();
 		for (String key : pMap.keySet()) {
@@ -136,17 +168,47 @@ public class DataHelper {
 		return map;
 	}
 
+	/**
+	 * Removes all "'" and removes control characters (char <= 32) from both ends of this String
+	 * @param text  the String to be trimmed, may be null
+	 * @return the trimmed string, null if null String input
+	 */
 	public static String cleanup(String text) {
 		return StringUtils.trim(StringUtils.remove(text, "'"));
 	}
-
 	
-	public static List<String> getList(String data, String separator) {
-		if (StringUtils.isNotBlank(data)) {
-			return new ArrayList<String>(Arrays.asList(StringUtils.split(data, separator)));
-		} else {
-			return new ArrayList<>();
+	/**
+	 * Splits a String into a String array. Other than String.split each delimiter is recognized, so that empty values are possible / allowed.
+	 * <br/><br/>
+	 * Input: "1|2||3|4|5" with delimiter "|" results in {"1", "2", "", "3", "4", "5"}
+	 * @param data input String
+	 * @param separator delimiter
+	 * @return String array
+	 */
+	public static String[] toStringArray(String data, String separator) {
+		return getList(data, separator).toArray(new String[]{});
+	}
+	
+	/**
+	 * Splits a String into a List<String>. Other than String.split each delimiter is recognized, so that empty values are possible / allowed.
+	 * <br/><br/>
+	 * Input: "1|2||3|4|5" with delimiter "|" results in {"1", "2", "", "3", "4", "5"}
+	 * @param data input String
+	 * @param separator delimiter
+	 * @return List<String>
+	 */
+	public static List<String> getList(String dataAsString, String separator) {
+		String data = dataAsString;
+		List<String> values = new ArrayList<>();
+		while (StringUtils.contains(data, separator)) {
+			values.add(StringUtils.trimToNull(StringUtils.substringBefore(data, separator)));
+			data = StringUtils.substringAfter(data, separator);
 		}
+		if (StringUtils.isNotBlank(data)) {
+			values.add(StringUtils.trimToNull(data));
+		}
+
+		return values;
 	}
 
 	public static Map<String, String> getMap(String data, String entrySeparator, String valueSeparator) {
