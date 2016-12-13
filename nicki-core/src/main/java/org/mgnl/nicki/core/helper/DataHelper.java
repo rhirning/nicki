@@ -201,11 +201,11 @@ public class DataHelper {
 		String data = dataAsString;
 		List<String> values = new ArrayList<>();
 		while (StringUtils.contains(data, separator)) {
-			values.add(StringUtils.trimToNull(StringUtils.substringBefore(data, separator)));
+			values.add(StringUtils.trimToEmpty(StringUtils.substringBefore(data, separator)));
 			data = StringUtils.substringAfter(data, separator);
 		}
 		if (StringUtils.isNotBlank(data)) {
-			values.add(StringUtils.trimToNull(data));
+			values.add(StringUtils.trimToEmpty(data));
 		}
 
 		return values;
