@@ -21,8 +21,17 @@
 			<version>6.49-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>com.netiq.common</groupId>
+			<artifactId>i18n-common</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.novell.userapp</groupId>
 			<artifactId>IDMfw</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.novell.userapp</groupId>
+			<artifactId>IDMfw-bin</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
@@ -40,11 +49,11 @@
 			<artifactId>dirxml_misc</artifactId>
 			<scope>provided</scope>
 		</dependency>
-		<dependency>
+		<!-- dependency>
 			<groupId>com.novell.dirxml</groupId>
 			<artifactId>nxsl</artifactId>
 			<scope>provided</scope>
-		</dependency>
+		</dependency -->
 		<dependency>
 			<groupId>com.novell.userapp</groupId>
 			<artifactId>wssdk</artifactId>

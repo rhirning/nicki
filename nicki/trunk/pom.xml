@@ -13,6 +13,7 @@
 		<efg.version>1.22</efg.version>
 		-->
 		<project.build.sourceEncoding>iso-8859-1</project.build.sourceEncoding>
+		<idm.version>4.5</idm.version>
 		<vaadin.version>7.7.0</vaadin.version>
 	</properties>
 	<modules>
@@ -97,45 +98,55 @@
 				<version>2.0.8</version>
 			</dependency>
 			<dependency>
+				<groupId>com.netiq.common</groupId>
+				<artifactId>i18n-common</artifactId>
+				<version>0.8.0.1</version>
+			</dependency>
+			<dependency>
 				<groupId>com.novell.dirxml</groupId>
 				<artifactId>dirxml_misc</artifactId>
-				<version>3.6.1</version>
+				<version>${idm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novell.dirxml</groupId>
 				<artifactId>nxsl</artifactId>
-				<version>3.6.1</version>
+				<version>${idm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novell.userapp</groupId>
 				<artifactId>IDMcommon</artifactId>
-				<version>3.7</version>
+				<version>${idm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novell.userapp</groupId>
 				<artifactId>IDMfw</artifactId>
-				<version>3.7</version>
+				<version>${idm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.novell.userapp</groupId>
+				<artifactId>IDMfw-bin</artifactId>
+				<version>${idm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novell.userapp</groupId>
 				<artifactId>IDMsec</artifactId>
-				<version>3.7</version>
+				<version>${idm.version}</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
 				<groupId>com.novell.userapp</groupId>
 				<artifactId>UIRegistry</artifactId>
-				<version>3.7</version>
+				<version>${idm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novell.userapp</groupId>
 				<artifactId>wssdk</artifactId>
-				<version>3.6.1</version>
+				<version>${idm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novell.userapp</groupId>
 				<artifactId>workflow</artifactId>
-				<version>3.6.1</version>
+				<version>${idm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.vaadin</groupId>
