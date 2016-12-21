@@ -288,7 +288,8 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		// common part: create layout
 		mainLayout = new VerticalLayout();
 		mainLayout.setMargin(true);
-		mainLayout.setHeight("100%");
+		mainLayout.setSpacing(true);
+		mainLayout.setHeight("-1px");
 		mainLayout.setWidth("100%");
 
 		// top-level component properties
@@ -312,7 +313,6 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		HorizontalLayout horizontalLayout = new HorizontalLayout();
 		horizontalLayout.setSpacing(true);
 		horizontalLayout.setHeight(40, Unit.PIXELS);
-		mainLayout.addComponent(horizontalLayout);
 
 		previewButton = new Button();
 		previewButton.setWidth("-1px");
@@ -361,6 +361,8 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		pdfButton.setImmediate(true);
 		horizontalLayout.addComponent(pdfButton);
 
+		mainLayout.addComponent(horizontalLayout);
+		
 		return mainLayout;
 	}
 
