@@ -13,9 +13,9 @@ import com.novell.soa.af.impl.soap.ProvisioningService;
 import com.novell.soa.ws.portable.Stub;
 
 public class TestWS {
-	private static String USERNAME = "cn=padmin,ou=users,o=utopia";
-	private static String PASSWORD = "N0v3ll";
-	private static String URL = "http://172.17.2.91:8080/IDM/provisioning/service";
+	private static String USERNAME = "cn=admin,ou=sa,o=system";
+	private static String PASSWORD = "netiq000";
+	private static String URL = "http://172.17.2.91:8180/IDMProv/provisioning/service?wsdl";
 
 	public static void main(String[] args) throws NamingException, ServiceException, RemoteException, AdminException {
 		InitialContext ctx = new InitialContext();
