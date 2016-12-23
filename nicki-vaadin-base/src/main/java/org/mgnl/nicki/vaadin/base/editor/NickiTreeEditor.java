@@ -66,9 +66,10 @@ import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.Tree;
+import com.vaadin.ui.Tree.ExpandEvent;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
-import com.vaadin.ui.Tree.ExpandEvent;
+import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class NickiTreeEditor extends CustomComponent {
@@ -142,6 +143,7 @@ public class NickiTreeEditor extends CustomComponent {
 		selectorComponent.setSizeFull();
 
 		hsplit.setFirstComponent(selectorComponent);
+		hsplit.addStyleName(ValoTheme.SPLITPANEL_LARGE);
 
 		selector.setImmediate(true);
 		selector.setSelectable(true);
