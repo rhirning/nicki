@@ -82,7 +82,7 @@ public class DerbyContext
 		return new PrimaryKey(handler.getResult());
 	}
 	
-	protected String getQualifiedName(String name) {
+	public String getQualifiedName(String name) {
 		if (!StringUtils.contains(name, '.') && this.getSchema() != null) {
 			return this.getSchema() + "." + name;
 		} else {
