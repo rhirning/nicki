@@ -42,6 +42,7 @@ public interface DBContext extends AutoCloseable {
 	void setSchema(String schema);
 	String getSchema();
 	
+	String getQualifiedName(String name);
 	String getQualifiedTableName(Class<? extends Object> clazz) throws NotSupportedException;
 
 	Object getColumn(Class<? extends Object> clazz, String string) throws NoSuchFieldException;

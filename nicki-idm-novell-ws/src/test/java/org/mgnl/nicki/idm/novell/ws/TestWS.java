@@ -13,7 +13,7 @@ import com.novell.soa.af.impl.soap.ProvisioningService;
 import com.novell.soa.ws.portable.Stub;
 
 public class TestWS {
-	private static String USERNAME = "cn=admin,ou=sa,o=system";
+	private static String USERNAME = "cn=uaadmin,ou=sa,o=data";
 	private static String PASSWORD = "netiq000";
 	private static String URL = "http://172.17.2.91:8180/IDMProv/provisioning/service?wsdl";
 

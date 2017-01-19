@@ -815,7 +815,9 @@ public class BaseDBContext
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
 				if (handler.isLoggingEnabled()) {
-					LOG.debug(handler.getSearchStatement());
+					if (LOG.isDebugEnabled()) {
+						LOG.debug(handler.getSearchStatement());
+					}
 				}
 				try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
 					handler.handle(rs);
@@ -1217,7 +1219,7 @@ public class BaseDBContext
 		return new PrimaryKey(handler.getResult());
 	}
 	
-	protected String getQualifiedName(String name) {
+	public String getQualifiedName(String name) {
 		if (!StringUtils.contains(name, '.') && this.schema != null) {
 			return "\"" + this.schema + "\".\"" + name + "\"";
 		} else {

@@ -72,6 +72,16 @@ public class JsonHelper {
 		}
 		return builder.build();
 	}
+	
+	public static Map<String, String> toMap(JsonObject data) {
+		Map<String, String> map = new HashMap<>();
+		if (data != null) {
+			for (String key : data.keySet()) {
+				map .put(key, data.getString(key));
+			}
+		}
+		return map;
+	}
 	public static JsonObject toJsonObject(Properties data) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		Enumeration<?> keys = data.propertyNames();
