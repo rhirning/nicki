@@ -41,6 +41,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.idm.novell.catalog.ResourceCatalogArticle;
 import org.mgnl.nicki.idm.novell.catalog.RoleCatalogArticle;
+import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.slf4j.Logger;
@@ -176,13 +177,11 @@ public class IdmPerson extends Person implements Serializable {
 
 	@Override
 	public boolean hasGroup(String groupName) {
-		for (Group group : getGroups()) {
-			if (StringUtils.equalsIgnoreCase(group.getName(), groupName)) {
-				return true;
-			}
-		}
-		return false;
+		@SuppressWarnings("unchecked")
+		Collection<String> foreignKeys = (Collection<String>) get("memberOf");
+		return LdapHelper.containsName(foreignKeys, groupName);
 	}
+
 
 	public boolean hasResource(Resource resource2) {
 		for (Resource resource : getResources()) {

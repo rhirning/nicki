@@ -149,7 +149,7 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 		}
 		return objects;
 	}
-	
+
 	public <T extends DynamicObject> Collection<T>  getChildren(Class<T> classDefinition) {
 		init();
 		return getContext().loadChildObjects(classDefinition, this, "");
