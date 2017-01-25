@@ -32,6 +32,7 @@
  */
 package org.mgnl.nicki.ldap.helper;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.naming.directory.Attribute;
@@ -82,6 +83,20 @@ public class LdapHelper extends PathHelper {
 	public static String getNamingValue(String path) {
 		return StringUtils.strip(StringUtils.substringAfter(StringUtils.substringBefore(path, ","), "="));
 	}
+	
+	public static boolean containsName(Collection<String> dns, String name) {
+		if (dns != null) {
+			for (String path : dns) {
+				String namingValue = getNamingValue(path);
+				if (StringUtils.equalsIgnoreCase(name, namingValue)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+
 
 	public static void negateQuery(StringBuilder sb) {
 		if (sb.length() > 0) {
