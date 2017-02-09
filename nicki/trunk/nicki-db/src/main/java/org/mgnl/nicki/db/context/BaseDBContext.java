@@ -132,33 +132,19 @@ public class BaseDBContext
 		}
 
 
-		
-		boolean inTransaction = false;
-		if (this.connection != null) {
-			inTransaction = true;
-		} else {
-			this.beginTransaction();
-		}
-
-		try {
-			try (Statement stmt = this.connection.createStatement()) {
-				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
-				LOG.debug(searchStatement);
-				List<T> list = null;
-				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-					list = (List<T>) handle(bean.getClass(), rs, table.postInit());
-				}
-				if (list != null && deepSearch) {
-					for (T t : list) {
-						addObjects(t, deepSearch);
-					}
-				}
-				return list;
+		try (Statement stmt = this.connection.createStatement()) {
+			String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
+			LOG.debug(searchStatement);
+			List<T> list = null;
+			try (ResultSet rs = stmt.executeQuery(searchStatement)) {
+				list = (List<T>) handle(bean.getClass(), rs, table.postInit());
 			}
-		} finally {
-			if (!inTransaction) {
-				this.rollback();
+			if (list != null && deepSearch) {
+				for (T t : list) {
+					addObjects(t, deepSearch);
+				}
 			}
+			return list;
 		}
 	}
 	
@@ -180,72 +166,46 @@ public class BaseDBContext
 				LOG.error("Invalid postInitMethod (" + table.postInit() + ") for class " + bean.getClass().getName(), e);
 			}
 		}
-		
-		boolean inTransaction = false;
-		if (this.connection != null) {
-			inTransaction = true;
-		} else {
-			this.beginTransaction();
-		}
 
-		try {
-			try (Statement stmt = this.connection.createStatement()) {
-				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
-				LOG.debug(searchStatement);
-				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-					rs.next();
-					@SuppressWarnings("unchecked")
-					T result = (T) get(bean.getClass(), rs);
-					if (postMethod != null) {
-						try {
-							postMethod.invoke(result);
-						} catch (Exception e) {
-							LOG.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
-									+ result.getClass().getName(), e);
-						}
+		try (Statement stmt = this.connection.createStatement()) {
+			String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
+			LOG.debug(searchStatement);
+			try (ResultSet rs = stmt.executeQuery(searchStatement)) {
+				rs.next();
+				@SuppressWarnings("unchecked")
+				T result = (T) get(bean.getClass(), rs);
+				if (postMethod != null) {
+					try {
+						postMethod.invoke(result);
+					} catch (Exception e) {
+						LOG.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
+								+ result.getClass().getName(), e);
 					}
-
-					
-					if (result != null && deepSearch){
-						addObjects(result, deepSearch);
-					}
-					return result;
 				}
-			}
-		} finally {
-			if (!inTransaction) {
-				this.rollback();
+
+				
+				if (result != null && deepSearch){
+					addObjects(result, deepSearch);
+				}
+				return result;
 			}
 		}
 	}
 	
 	@Override
 	public <T> boolean exists(T bean, String filter) throws SQLException, InitProfileException  {
-		boolean inTransaction = false;
-		if (this.connection != null) {
-			inTransaction = true;
-		} else {
-			this.beginTransaction();
-		}
-
-		try {
-			try (Statement stmt = this.connection.createStatement()) {
-				String searchStatement = getLoadObjectsSearchStatement(bean, filter, null);
-				LOG.debug(searchStatement);
-				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-					if (rs != null) {
-						boolean hasNext = rs.next();
-						if (hasNext) {
-							return true;
-						}
+		try (Statement stmt = this.connection.createStatement()) {
+			String searchStatement = getLoadObjectsSearchStatement(bean, filter, null);
+			LOG.debug(searchStatement);
+			try (ResultSet rs = stmt.executeQuery(searchStatement)) {
+				if (rs != null) {
+					boolean hasNext = rs.next();
+					if (hasNext) {
+						return true;
 					}
 				}
-				return false;
 			}
-		} finally {
-			if (!inTransaction) {
-				this.rollback();
-			}
+			return false;
 		}
 	}
 
@@ -775,61 +735,28 @@ public class BaseDBContext
 
 	@Override
 	public <T> List<T> select(Class<T> clazz, ListSelectHandler<T> handler) throws SQLException, InitProfileException {
-		boolean inTransaction = false;
-		if (this.connection != null) {
-			inTransaction = true;
-		} else {
-			this.beginTransaction();
-		}
 
-		try {
-			try (Statement stmt = this.connection.createStatement()) {
-				if (handler.isLoggingEnabled()) {
-					LOG.debug(handler.getSearchStatement());
-				}
-				try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
-					handler.handle(rs);
-					return handler.getResults();
-				}
+		try (Statement stmt = this.connection.createStatement()) {
+			if (handler.isLoggingEnabled()) {
+				LOG.debug(handler.getSearchStatement());
 			}
-		} finally {
-			if (!inTransaction) {
-				try {
-					this.commit();
-				} catch (NotInTransactionException e) {
-					LOG.error("Error committing", e);
-				}
+			try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
+				handler.handle(rs);
+				return handler.getResults();
 			}
 		}
 	}
 
 	@Override
 	public void select(SelectHandler handler) throws SQLException, InitProfileException {
-		boolean inTransaction = false;
-		if (this.connection != null) {
-			inTransaction = true;
-		} else {
-			this.beginTransaction();
-		}
-
-		try {
-			try (Statement stmt = this.connection.createStatement()) {
-				if (handler.isLoggingEnabled()) {
-					if (LOG.isDebugEnabled()) {
-						LOG.debug(handler.getSearchStatement());
-					}
-				}
-				try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
-					handler.handle(rs);
+		try (Statement stmt = this.connection.createStatement()) {
+			if (handler.isLoggingEnabled()) {
+				if (LOG.isDebugEnabled()) {
+					LOG.debug(handler.getSearchStatement());
 				}
 			}
-		} finally {
-			if (!inTransaction) {
-				try {
-					this.commit();
-				} catch (NotInTransactionException e) {
-					LOG.error("Error committing", e);
-				}
+			try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
+				handler.handle(rs);
 			}
 		}
 	}
