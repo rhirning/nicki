@@ -132,19 +132,33 @@ public class BaseDBContext
 		}
 
 
-		try (Statement stmt = this.connection.createStatement()) {
-			String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
-			LOG.debug(searchStatement);
-			List<T> list = null;
-			try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-				list = (List<T>) handle(bean.getClass(), rs, table.postInit());
-			}
-			if (list != null && deepSearch) {
-				for (T t : list) {
-					addObjects(t, deepSearch);
+		
+		boolean inTransaction = false;
+		if (this.connection != null) {
+			inTransaction = true;
+		} else {
+			this.beginTransaction();
+		}
+
+		try {
+			try (Statement stmt = this.connection.createStatement()) {
+				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
+				LOG.debug(searchStatement);
+				List<T> list = null;
+				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
+					list = (List<T>) handle(bean.getClass(), rs, table.postInit());
 				}
+				if (list != null && deepSearch) {
+					for (T t : list) {
+						addObjects(t, deepSearch);
+					}
+				}
+				return list;
 			}
-			return list;
+		} finally {
+			if (!inTransaction) {
+				this.closeConnection();
+			}
 		}
 	}
 	
@@ -166,46 +180,72 @@ public class BaseDBContext
 				LOG.error("Invalid postInitMethod (" + table.postInit() + ") for class " + bean.getClass().getName(), e);
 			}
 		}
+		
+		boolean inTransaction = false;
+		if (this.connection != null) {
+			inTransaction = true;
+		} else {
+			this.beginTransaction();
+		}
 
-		try (Statement stmt = this.connection.createStatement()) {
-			String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
-			LOG.debug(searchStatement);
-			try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-				rs.next();
-				@SuppressWarnings("unchecked")
-				T result = (T) get(bean.getClass(), rs);
-				if (postMethod != null) {
-					try {
-						postMethod.invoke(result);
-					} catch (Exception e) {
-						LOG.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
-								+ result.getClass().getName(), e);
+		try {
+			try (Statement stmt = this.connection.createStatement()) {
+				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
+				LOG.debug(searchStatement);
+				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
+					rs.next();
+					@SuppressWarnings("unchecked")
+					T result = (T) get(bean.getClass(), rs);
+					if (postMethod != null) {
+						try {
+							postMethod.invoke(result);
+						} catch (Exception e) {
+							LOG.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
+									+ result.getClass().getName(), e);
+						}
 					}
-				}
 
-				
-				if (result != null && deepSearch){
-					addObjects(result, deepSearch);
+					
+					if (result != null && deepSearch){
+						addObjects(result, deepSearch);
+					}
+					return result;
 				}
-				return result;
+			}
+		} finally {
+			if (!inTransaction) {
+				this.closeConnection();
 			}
 		}
 	}
 	
 	@Override
 	public <T> boolean exists(T bean, String filter) throws SQLException, InitProfileException  {
-		try (Statement stmt = this.connection.createStatement()) {
-			String searchStatement = getLoadObjectsSearchStatement(bean, filter, null);
-			LOG.debug(searchStatement);
-			try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-				if (rs != null) {
-					boolean hasNext = rs.next();
-					if (hasNext) {
-						return true;
+		boolean inTransaction = false;
+		if (this.connection != null) {
+			inTransaction = true;
+		} else {
+			this.beginTransaction();
+		}
+
+		try {
+			try (Statement stmt = this.connection.createStatement()) {
+				String searchStatement = getLoadObjectsSearchStatement(bean, filter, null);
+				LOG.debug(searchStatement);
+				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
+					if (rs != null) {
+						boolean hasNext = rs.next();
+						if (hasNext) {
+							return true;
+						}
 					}
 				}
+				return false;
 			}
-			return false;
+		} finally {
+			if (!inTransaction) {
+				this.closeConnection();
+			}
 		}
 	}
 
@@ -735,28 +775,53 @@ public class BaseDBContext
 
 	@Override
 	public <T> List<T> select(Class<T> clazz, ListSelectHandler<T> handler) throws SQLException, InitProfileException {
+		boolean inTransaction = false;
+		if (this.connection != null) {
+			inTransaction = true;
+		} else {
+			this.beginTransaction();
+		}
 
-		try (Statement stmt = this.connection.createStatement()) {
-			if (handler.isLoggingEnabled()) {
-				LOG.debug(handler.getSearchStatement());
+		try {
+			try (Statement stmt = this.connection.createStatement()) {
+				if (handler.isLoggingEnabled()) {
+					LOG.debug(handler.getSearchStatement());
+				}
+				try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
+					handler.handle(rs);
+					return handler.getResults();
+				}
 			}
-			try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
-				handler.handle(rs);
-				return handler.getResults();
+		} finally {
+			if (!inTransaction) {
+				this.closeConnection();
 			}
 		}
 	}
 
 	@Override
 	public void select(SelectHandler handler) throws SQLException, InitProfileException {
-		try (Statement stmt = this.connection.createStatement()) {
-			if (handler.isLoggingEnabled()) {
-				if (LOG.isDebugEnabled()) {
-					LOG.debug(handler.getSearchStatement());
+		boolean inTransaction = false;
+		if (this.connection != null) {
+			inTransaction = true;
+		} else {
+			this.beginTransaction();
+		}
+
+		try {
+			try (Statement stmt = this.connection.createStatement()) {
+				if (handler.isLoggingEnabled()) {
+					if (LOG.isDebugEnabled()) {
+						LOG.debug(handler.getSearchStatement());
+					}
+				}
+				try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
+					handler.handle(rs);
 				}
 			}
-			try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
-				handler.handle(rs);
+		} finally {
+			if (!inTransaction) {
+				this.closeConnection();
 			}
 		}
 	}
@@ -802,15 +867,20 @@ public class BaseDBContext
 		} finally {
 			// Always make sure result sets and statements are closed,
 			// and the connection is returned to the pool
-			if (this.connection != null) {
-				try {
-					this.connection.close();
-				} catch (SQLException e) {
-					LOG.error("Error closing connection", e);
-				}
-				this.connection = null;
-			}
+			closeConnection();
 		}
+	}
+	
+	private void closeConnection() {
+		if (this.connection != null) {
+			try {
+				this.connection.close();
+			} catch (SQLException e) {
+				LOG.error("Error closing connection", e);
+			}
+			this.connection = null;
+		}
+		
 	}
 
 	private <T> T reload(T bean) {
