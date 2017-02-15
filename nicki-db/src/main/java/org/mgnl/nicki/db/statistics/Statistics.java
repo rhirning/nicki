@@ -2,6 +2,7 @@ package org.mgnl.nicki.db.statistics;
 
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Map;
 
 import org.mgnl.nicki.core.helper.JsonHelper;
@@ -34,15 +35,15 @@ public class Statistics {
 	
 	private StatisticsDefinition definition;
 	
-	public Map<String, String> execute(Map<String, String> input) throws StatisticsException {
+	public Map<String, String> execute(Map<String, String> input) throws StatisticsException, MissingDataException {
 		DBContext dbContext = DBContextManager.getContext(context);
-		StatisticsSelectHandler handler = new StatisticsSelectHandler(dbContext, definition, input);
 		try {
+			StatisticsSelectHandler handler = new StatisticsSelectHandler(dbContext, definition, input);
 			dbContext.select(handler);
-		} catch (SQLException | InitProfileException e) {
+			return handler.getResult();
+		} catch (SQLException | InitProfileException | ParseException e) {
 			throw new StatisticsException(e);
 		}
-		return handler.getResult();
 	}
 
 	public String getCategory() {

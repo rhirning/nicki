@@ -22,7 +22,7 @@ public class StatisticsManager {
 		return getInstance().executeStatistics(businessCategory, statisticName, input);
 	}
 	
-	private Map<String, String> executeStatistics(String businessCategory, String statisticName, Map<String, String> input) throws InvalidStatisticsException, StatisticsException {
+	private Map<String, String> executeStatistics(String businessCategory, String statisticName, Map<String, String> input) throws InvalidStatisticsException, StatisticsException, MissingDataException {
 		if (!isAvailable(businessCategory, statisticName) ) {
 			throw new InvalidStatisticsException(businessCategory + "/" + statisticName);
 		}
