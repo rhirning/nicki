@@ -3,6 +3,7 @@ package org.mgnl.nicki.db.statistics;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.handler.SelectHandler;
 import org.slf4j.Logger;
@@ -19,31 +21,26 @@ public class StatisticsSelectHandler implements SelectHandler {
 	private static final Logger LOG = LoggerFactory.getLogger(StatisticsSelectHandler.class);
 	private DBContext dbContext;
 	private StatisticsDefinition definition;
-	private Map<String, String> values;
 	private Map<String, String> result = new HashMap<>();
 	private Map<String, Variable> inputVariables = new HashMap<>();
 	private Map<String, Variable> outputVariables = new HashMap<>();
+	private String searchStatement;
 	
-	public StatisticsSelectHandler(DBContext dbContext, StatisticsDefinition definition, Map<String, String> values) {
+	public StatisticsSelectHandler(DBContext dbContext, StatisticsDefinition definition, Map<String, String> values) throws ParseException, MissingDataException {
 		this.dbContext = dbContext;
 		this.definition = definition;
-		this.values = values;
 		for (Variable inputVariable : definition.getInput()) {
 			inputVariables.put(inputVariable.getName(), inputVariable);
 		}
 		for (Variable outputVariable : definition.getOutput()) {
 			outputVariables.put(outputVariable.getName(), outputVariable);
 		}
+		this.searchStatement = parseQuery(definition.getQuery(), definition.getInput(), values); 
 	}
 
 	@Override
 	public String getSearchStatement() {
-		try {
-			return parseQuery(definition.getQuery(), definition.getInput(), values);
-		} catch (ParseException e) {
-			LOG.error("Error parsing query", e);
-			return null;
-		}
+		return this.searchStatement;
 	}
 
 	/**
@@ -52,8 +49,10 @@ public class StatisticsSelectHandler implements SelectHandler {
 	 * @param variables 
 	 * @return
 	 * @throws ParseException 
+	 * @throws MissingDataException 
 	 */
-	private String parseQuery(String query, List<Variable> variables, Map<String, String> values) throws ParseException {
+	private String parseQuery(String query, List<Variable> variables, Map<String, String> values) throws ParseException, MissingDataException {
+		List<String> missing = new ArrayList<>();
 		String result = query;
 		// search variables
 		String varRegex ="\\$\\{(\\w*)\\}";
@@ -63,7 +62,14 @@ public class StatisticsSelectHandler implements SelectHandler {
 		while (m.find()) {
 			String key = m.group(1);
 			Variable variable = inputVariables.get(key);
+			if (StringUtils.isBlank(values.get(key))) {
+				missing.add(key);
+			}
 			result = StringUtils.replace(result, "${" + key + "}", variable.toString(dbContext, values.get(key)));
+		}
+		
+		if (missing.size() > 0) {
+			throw new MissingDataException(DataHelper.getAsString(missing, ","));
 		}
 		
 		String contextRegex = "\\$\\{context.table\\((\\w*)\\)\\}";
