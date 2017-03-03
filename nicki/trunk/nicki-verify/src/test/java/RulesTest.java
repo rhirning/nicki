@@ -7,6 +7,7 @@ import java.util.Map;
 import org.junit.Test;
 import org.mgnl.nicki.verify.annotations.JavaRules;
 import org.mgnl.nicki.verify.annotations.MissingAttribute;
+import org.mgnl.nicki.verify.annotations.ReferencedError;
 
 import test.TestRule;
 
@@ -16,7 +17,7 @@ public class RulesTest {
 	public void test() throws MissingAttribute {
 		Map<String, Object> data = new HashMap<>();
 		data.put("userId", "Thing");
-		List<String> errors = JavaRules.evaluate(data, TestRule.class);
+		List<ReferencedError> errors = JavaRules.evaluate(data, TestRule.class);
 		assertNotEquals("Anzahl Fehler", 0, errors.size());
 		System.out.println(errors);
 	}
@@ -25,7 +26,7 @@ public class RulesTest {
 	public void test2() throws MissingAttribute, ClassNotFoundException {
 		Map<String, Object> data = new HashMap<>();
 		data.put("userId", "Thing");
-		List<String> errors = JavaRules.evaluate(data, "test.TestRule");
+		List<ReferencedError> errors = JavaRules.evaluate(data, "test.TestRule");
 		assertNotEquals("Anzahl Fehler", 0, errors.size());
 		System.out.println(errors);
 	}
