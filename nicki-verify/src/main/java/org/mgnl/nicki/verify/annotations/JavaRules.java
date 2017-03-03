@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.mgnl.nicki.verify.VerifyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JavaRules {
 	private static final Logger LOG = LoggerFactory.getLogger(JavaRules.class);
 	
-	public static List<String> evaluate(Map<String, Object> data, String ...classNames) throws MissingAttribute, ClassNotFoundException {
+	public static List<ReferencedError> evaluate(Map<String, Object> data, String ...classNames) throws MissingAttribute, ClassNotFoundException {
 		List<Class<?>> classes = new ArrayList<>();
 		for (String className : classNames) {
 			classes.add(Class.forName(className));
@@ -21,8 +20,8 @@ public class JavaRules {
 		return evaluate(data, classes.toArray(new Class[]{}));
 	}
 	
-	public static List<String> evaluate(Map<String, Object> data, Class<?> ...classes) throws MissingAttribute {
-		List<String> errors = new ArrayList<>();
+	public static List<ReferencedError> evaluate(Map<String, Object> data, Class<?> ...classes) throws MissingAttribute {
+		List<ReferencedError> errors = new ArrayList<>();
 		for (Class<?> clazz : classes) {
 			try {
 				errors.addAll(evaluateClass(data, clazz));
@@ -33,8 +32,8 @@ public class JavaRules {
 		return errors;
 	}
 
-	private static <T> List<String> evaluateClass(Map<String, Object> data, Class<T> clazz) throws InstantiationException, IllegalAccessException, MissingAttribute {
-		List<String> errors = new ArrayList<>();
+	private static <T> List<ReferencedError> evaluateClass(Map<String, Object> data, Class<T> clazz) throws InstantiationException, IllegalAccessException, MissingAttribute {
+		List<ReferencedError> errors = new ArrayList<>();
 		checkAttributes(clazz, data);
 		T instance = clazz.newInstance();
 		Method[] methods = clazz.getDeclaredMethods();
@@ -46,8 +45,8 @@ public class JavaRules {
 					} catch (IllegalArgumentException e) {
 						LOG.error("invalid method " + clazz.getName() + "." + method.getName() + ": " + e.getClass());
 					} catch (InvocationTargetException e) {
-						if (e.getTargetException() instanceof VerifyException) {
-							VerifyException verifyException = (VerifyException) e.getTargetException();
+						if (e.getTargetException() instanceof ReferenceVerifyException) {
+							ReferenceVerifyException verifyException = (ReferenceVerifyException) e.getTargetException();
 							errors.addAll(verifyException.getErrors());
 						}
 					}
