@@ -1,4 +1,4 @@
-package org.mgnl.nicki.verify.annotations;
+package org.mgnl.nicki.verify.classes;
 
 import java.util.ArrayList;
 import java.util.List;
