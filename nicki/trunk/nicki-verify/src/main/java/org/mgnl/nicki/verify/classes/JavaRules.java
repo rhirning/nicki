@@ -1,18 +1,21 @@
-package org.mgnl.nicki.verify.annotations;
+package org.mgnl.nicki.verify.classes;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.mgnl.nicki.verify.annotations.Attribute;
+import org.mgnl.nicki.verify.annotations.VerifyRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JavaRules {
 	private static final Logger LOG = LoggerFactory.getLogger(JavaRules.class);
 	
-	public static List<ReferencedError> evaluate(Map<String, Object> data, String ...classNames) throws MissingAttribute, ClassNotFoundException {
+	public static List<ReferencedError> evaluate(Map<String, Object> data, String ...classNames) throws MissingAttributeException, ClassNotFoundException {
 		List<Class<?>> classes = new ArrayList<>();
 		for (String className : classNames) {
 			classes.add(Class.forName(className));
@@ -20,7 +23,7 @@ public class JavaRules {
 		return evaluate(data, classes.toArray(new Class[]{}));
 	}
 	
-	public static List<ReferencedError> evaluate(Map<String, Object> data, Class<?> ...classes) throws MissingAttribute {
+	public static List<ReferencedError> evaluate(Map<String, Object> data, Class<?> ...classes) throws MissingAttributeException {
 		List<ReferencedError> errors = new ArrayList<>();
 		for (Class<?> clazz : classes) {
 			try {
@@ -32,16 +35,16 @@ public class JavaRules {
 		return errors;
 	}
 
-	private static <T> List<ReferencedError> evaluateClass(Map<String, Object> data, Class<T> clazz) throws InstantiationException, IllegalAccessException, MissingAttribute {
+	private static <T> List<ReferencedError> evaluateClass(Map<String, Object> data, Class<T> clazz) throws InstantiationException, IllegalAccessException, MissingAttributeException {
 		List<ReferencedError> errors = new ArrayList<>();
-		checkAttributes(clazz, data);
 		T instance = clazz.newInstance();
+		injectData(instance, data);
 		Method[] methods = clazz.getDeclaredMethods();
 		if (methods != null) {
 			for (Method method : methods) {
 				if (method.isAnnotationPresent(VerifyRule.class)) {
 					try {
-						method.invoke(instance, data);
+						method.invoke(instance);
 					} catch (IllegalArgumentException e) {
 						LOG.error("invalid method " + clazz.getName() + "." + method.getName() + ": " + e.getClass());
 					} catch (InvocationTargetException e) {
@@ -56,14 +59,15 @@ public class JavaRules {
 		return errors;
 	}
 
-	private static void checkAttributes(Class<?> clazz, Map<String, Object> data) throws MissingAttribute {
-		if (clazz.isAnnotationPresent(Verify.class)) {
-			Verify verify = clazz.getAnnotation(Verify.class);
-			for (Attribute attribute : verify.value()) {
-				if (!data.containsKey(attribute.name()) ||
-						!(attribute.type().isAssignableFrom(data.get(attribute.name()).getClass()))) {
-					throw new MissingAttribute(attribute.name());
+	private static <T> void injectData(T instance, Map<String, Object> data) throws MissingAttributeException, IllegalArgumentException, IllegalAccessException {
+		for (Field field : instance.getClass().getDeclaredFields()) {
+			if (field.isAnnotationPresent(Attribute.class)) {
+				if (!data.containsKey(field.getName()) ||
+						!(field.getType().isAssignableFrom(data.get(field.getName()).getClass()))) {
+					throw new MissingAttributeException(field.getName());
 				}
+				field.setAccessible(true);
+				field.set(instance, data.get(field.getName()));
 			}
 		}
 	}
