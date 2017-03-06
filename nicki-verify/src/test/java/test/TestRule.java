@@ -1,41 +1,39 @@
 package test;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.verify.annotations.Attribute;
-import org.mgnl.nicki.verify.annotations.ReferenceVerifyException;
-import org.mgnl.nicki.verify.annotations.ReferencedError;
-import org.mgnl.nicki.verify.annotations.Verify;
+import org.mgnl.nicki.verify.classes.ReferenceVerifyException;
+import org.mgnl.nicki.verify.classes.ReferencedError;
+import org.mgnl.nicki.verify.classes.ReferencedError.TYPE;
 import org.mgnl.nicki.verify.annotations.VerifyRule;
 
-@Verify({@Attribute(name="userId", type=String.class)  })
 public class TestRule {
-
+	@Attribute
+	private String userId;
+	
 	@VerifyRule
-	public void attributeAvailableTest(Map<String, Object> data) {
+	public void attributeAvailableTest() {
 		System.out.println("attributeAvailableTest");
+		System.out.println("userId=" + userId);
 		
 	}
 	
 	@VerifyRule
-	public void attributeTest(Map<String, Object> data) throws ReferenceVerifyException {
+	public void attributeTest() throws ReferenceVerifyException {
 		System.out.println("attributeTest");
-		String userId = (String) data.get("userId");
 		if (! StringUtils.equals(userId, "rhirning")) {
-			throw new ReferenceVerifyException(new ReferencedError("Fehler 1", "userId is wrong"));
+			throw new ReferenceVerifyException(new ReferencedError(TYPE.ERROR, "userId", "userId is wrong"));
 		}
 		
 	}
 	
 	@VerifyRule
-	public void errorListTest(Map<String, Object> data) throws ReferenceVerifyException {
+	public void errorListTest() throws ReferenceVerifyException {
 		System.out.println("errorListTest");
 		List<ReferencedError> errors = new ArrayList<>();
-		String userId = (String) data.get("userId");
 		if (! StringUtils.equals(userId, "rhirning")) {
-			errors.add(new ReferencedError("Fehler2", "userId is wrong"));
+			errors.add(new ReferencedError(TYPE.ERROR, "userId", "userId is wrong"));
 		}
 		if (errors.size() > 0) {
 			throw new ReferenceVerifyException(errors);
@@ -43,6 +41,4 @@ public class TestRule {
 		
 	}
 	
-	
-
 }
