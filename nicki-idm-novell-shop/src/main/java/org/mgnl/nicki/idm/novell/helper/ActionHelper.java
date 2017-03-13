@@ -55,7 +55,6 @@ public class ActionHelper {
 	private Document doc;
 	private String target;
 	private String actionname;
-        protected static final SimpleDateFormat STANDARD_DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
 
 	public enum DN_FORMAT {
 

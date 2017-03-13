@@ -36,7 +36,6 @@ public class BaseDBContext
 		implements DBContext {
 	public final static String TIMESTAMP_ORACLE = "YYYY-MM-DD HH24:MI:SS";
 	public final static String TIMESTAMP_FOR_ORACLE = "yyyy-MM-dd HH:mm:ss";
-	public static SimpleDateFormat timestampOracle = new SimpleDateFormat(TIMESTAMP_FOR_ORACLE);
 	private static final Logger LOG = LoggerFactory.getLogger(BaseDBContext.class);
 	private DBProfile profile;
 	private Connection connection;
@@ -1061,12 +1060,12 @@ public class BaseDBContext
 
 	@Override
 	public String toTimestamp(Date date) {
-		return "to_date('" + timestampOracle.format(date) + "','" + TIMESTAMP_ORACLE + "')";
+		return "to_date('" + new SimpleDateFormat(TIMESTAMP_FOR_ORACLE).format(date) + "','" + TIMESTAMP_ORACLE + "')";
 	}
 
 	@Override
 	public String toDate(Date date) {
-		return "to_date('" + timestampOracle.format(date) + "','" + TIMESTAMP_ORACLE + "')";
+		return "to_date('" + new SimpleDateFormat(TIMESTAMP_FOR_ORACLE).format(date) + "','" + TIMESTAMP_ORACLE + "')";
 	}
 
 	protected String getStringValue(Object bean, Field field) throws NoSuchMethodException, SecurityException,

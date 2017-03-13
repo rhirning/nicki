@@ -10,14 +10,11 @@ import org.mgnl.nicki.core.i18n.I18n;
 public class DateRule extends Rule {
 	private static final long serialVersionUID = 1L;
 	private static final String DATE_FORMAT = "dd.MM.yyyy";
-	private static final SimpleDateFormat FORMATTER = new SimpleDateFormat(DATE_FORMAT);
 
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		try {
-			synchronized (FORMATTER) {
-				FORMATTER.parse(value);
-			}
+			new SimpleDateFormat(DATE_FORMAT).parse(value);
 			String[] parts = StringUtils.split(value, ".");
 			Integer day = Integer.parseInt(parts[0]);
 			if (day < 1 || day > 31) {

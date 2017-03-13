@@ -94,7 +94,7 @@ public class InventoryViewer extends CustomComponent {
 				item.getItemProperty("article").setValue(iArticle.getArticle().getDisplayName()
 						+ ": " + iArticle.getSpecifier());
 				if (iArticle.getStart() != null) {
-					item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(iArticle.getStart()));
+					item.getItemProperty("start").setValue(DataHelper.getDisplayDay(iArticle.getStart()));
 				}
 			}
 		}
@@ -112,7 +112,7 @@ public class InventoryViewer extends CustomComponent {
 			}
 			item.getItemProperty("article").setValue(articleEntry);
 			if (iArticle.getStart() != null) {
-				item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(iArticle.getStart()));
+				item.getItemProperty("start").setValue(DataHelper.getDisplayDay(iArticle.getStart()));
 			}
 		}
 	}

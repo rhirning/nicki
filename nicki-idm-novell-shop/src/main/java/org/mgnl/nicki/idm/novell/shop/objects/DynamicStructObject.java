@@ -71,7 +71,7 @@ public abstract class DynamicStructObject extends BaseDynamicObject {
 	public Date getDateInfo(String infoPath) {
 		try {
 			String info = StringUtils.chomp(getInfo(infoPath), "Z");
-			return DataHelper.formatTime.parse(info);
+			return DataHelper.timeFromString(info);
 		} catch (Exception e) {
 			return null;
 		}

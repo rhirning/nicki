@@ -31,7 +31,6 @@ import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.annotation.Format;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,8 +39,6 @@ public class JsonHelper {
     private static final Logger LOG = LoggerFactory.getLogger(JsonHelper.class);
 	public final static String FORMAT_DISPLAY_DAY = "dd.MM.yyyy";
 	public final static String FORMAT_MILLI = "dd.MM.yyyy HH:mm:ss:SSS";
-	public static SimpleDateFormat formatDisplayDay = new SimpleDateFormat(FORMAT_DISPLAY_DAY);
-	public static SimpleDateFormat formatMilli = new SimpleDateFormat(FORMAT_MILLI);
 	public static Map<Class<?>, Class<?>> primitiveMap = new HashMap<>();
 	static {
 		primitiveMap.put(Boolean.class, boolean.class);
@@ -124,7 +121,7 @@ public class JsonHelper {
 							} else if (value instanceof Boolean) {
 								builder.add(field.getName(), Boolean.toString((Boolean) value).toUpperCase());
 							} else if (value instanceof Date) {
-								String format = getAnnotationData(field, Format.class, "value");
+								String format = getAnnotationData(field, "Format", "value");
 								/*
 								if (field.getAnnotation(Format.class) != null) {
 									format = field.getAnnotation(Format.class).value();
@@ -154,6 +151,21 @@ public class JsonHelper {
 		
 	}
 
+	private static String getAnnotationData(Field field, String className, String methodName) {
+		for (Annotation annotation: field.getAnnotations()) {
+			if (StringUtils.equals(annotation.annotationType().getSimpleName(), className)) {
+				try {
+					Method method = annotation.annotationType().getMethod(methodName);
+					return (String) method.invoke(annotation);
+				} catch (Exception  e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
+	}
+
+	/*
 	private static String getAnnotationData(Field field, Class<?> clazz, String methodName) {
 		for (Annotation annotation: field.getAnnotations()) {
 			if (clazz == annotation.getClass()) {
@@ -167,13 +179,14 @@ public class JsonHelper {
 		}
 		return null;
 	}
+	*/
 	
 	private static boolean contains(String[] attributes, String name) {
 		return Arrays.asList(attributes).contains(name);
 	}
 	
 	public static String getDisplayDay(Date value) {
-		return formatDisplayDay.format(value);
+		return new SimpleDateFormat(FORMAT_DISPLAY_DAY).format(value);
 	}
 	
 	public static String getDateString(Date value, String formatString) {
@@ -182,7 +195,7 @@ public class JsonHelper {
 	}
 	
 	public static Date dateFromDisplayDay(String stored) throws ParseException {
-		return formatDisplayDay.parse(stored);
+		return new SimpleDateFormat(FORMAT_DISPLAY_DAY).parse(stored);
 	}
 	
 	public static Date dateFromDateString(String stored, String formatString) throws ParseException {
@@ -191,11 +204,11 @@ public class JsonHelper {
 	}
 	
 	public static String getMilli(Date value) {
-		return formatMilli.format(value);
+		return new SimpleDateFormat(FORMAT_MILLI).format(value);
 	}
 
 	public static Date dateFromMilli(String stored) throws ParseException {
-		return formatMilli.parse(stored);
+		return new SimpleDateFormat(FORMAT_MILLI).parse(stored);
 	}
 	
 	private static JsonArray toJsonArray(Collection<?> value) {
@@ -375,7 +388,7 @@ public class JsonHelper {
 			if (key != null) {
 				try {
 					if (field.getType() == Date.class) {
-						String format = getAnnotationData(field, Format.class, "value");
+						String format = getAnnotationData(field, "Format", "value");
 						/*
 						if (field.getAnnotation(Format.class) != null) {
 							format = field.getAnnotation(Format.class).value();
