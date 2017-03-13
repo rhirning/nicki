@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.JsonHelper;
 import org.mgnl.nicki.db.context.DBContext;
 
@@ -25,27 +26,27 @@ public class Variable {
 		DATE {
 			@Override
 			String toString(DBContext dbContext, String value) throws ParseException {
-				Date date = JsonHelper.dateFromDisplayDay(value);
+				Date date = DataHelper.dateFromDisplayDay(value);
 				return dbContext.toDate(date);
 			}
 
 			@Override
 			String toString(ResultSet resultSet, String name) throws SQLException {
 				Date date = resultSet.getDate(name);
-				return JsonHelper.getDisplayDay(date);
+				return DataHelper.getDisplayDay(date);
 			}
 		},
 		TIMESTAMP {
 			@Override
 			String toString(DBContext dbContext, String value) throws ParseException {
-				Date timestamp = JsonHelper.dateFromMilli(value);
+				Date timestamp = DataHelper.milliFromString(value);
 				return dbContext.toDate(timestamp);
 			}
 
 			@Override
 			String toString(ResultSet resultSet, String name) throws SQLException {
 				Date date = resultSet.getTimestamp(name);
-				return JsonHelper.getMilli(date);
+				return DataHelper.getMilli(date);
 			}
 		},
 		INTEGER {

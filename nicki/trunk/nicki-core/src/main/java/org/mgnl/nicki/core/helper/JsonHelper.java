@@ -37,8 +37,6 @@ import org.slf4j.LoggerFactory;
 
 public class JsonHelper {
     private static final Logger LOG = LoggerFactory.getLogger(JsonHelper.class);
-	public final static String FORMAT_DISPLAY_DAY = "dd.MM.yyyy";
-	public final static String FORMAT_MILLI = "dd.MM.yyyy HH:mm:ss:SSS";
 	public static Map<Class<?>, Class<?>> primitiveMap = new HashMap<>();
 	static {
 		primitiveMap.put(Boolean.class, boolean.class);
@@ -130,7 +128,7 @@ public class JsonHelper {
 								if (format != null) {
 									builder.add(field.getName(), getDateString((Date) value, format));
 								} else {
-									builder.add(field.getName(), getMilli((Date) value));
+									builder.add(field.getName(), DataHelper.getMilli((Date) value));
 								}
 							} else if (value instanceof Collection<?>) {
 								builder.add(field.getName(), toJsonArray((Collection<?>) value));
@@ -185,30 +183,14 @@ public class JsonHelper {
 		return Arrays.asList(attributes).contains(name);
 	}
 	
-	public static String getDisplayDay(Date value) {
-		return new SimpleDateFormat(FORMAT_DISPLAY_DAY).format(value);
-	}
-	
 	public static String getDateString(Date value, String formatString) {
 		SimpleDateFormat format = new SimpleDateFormat(formatString);
 		return format.format(value);
 	}
 	
-	public static Date dateFromDisplayDay(String stored) throws ParseException {
-		return new SimpleDateFormat(FORMAT_DISPLAY_DAY).parse(stored);
-	}
-	
 	public static Date dateFromDateString(String stored, String formatString) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat(formatString);
 		return format.parse(stored);
-	}
-	
-	public static String getMilli(Date value) {
-		return new SimpleDateFormat(FORMAT_MILLI).format(value);
-	}
-
-	public static Date dateFromMilli(String stored) throws ParseException {
-		return new SimpleDateFormat(FORMAT_MILLI).parse(stored);
 	}
 	
 	private static JsonArray toJsonArray(Collection<?> value) {
@@ -398,7 +380,7 @@ public class JsonHelper {
 							setProperty(bean, field, dateFromDateString(data.getString(key),
 									format));
 						} else {
-							setProperty(bean, field, dateFromMilli(data.getString(key)));
+							setProperty(bean, field, DataHelper.milliFromString(data.getString(key)));
 						}
 						//} catch (Exception e) {
 						//	setProperty(bean, field, dateFromDisplayDay(data.getString(key)));
