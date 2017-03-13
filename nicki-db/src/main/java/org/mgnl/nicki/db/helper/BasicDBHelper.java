@@ -50,9 +50,6 @@ import org.slf4j.LoggerFactory;
 public class BasicDBHelper {
 	private static final Logger LOG = LoggerFactory.getLogger(BasicDBHelper.class);
 	public final static String DATE_FORMAT = "yyyy-MM-dd";
-	public final static String TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss Z";
-	public static SimpleDateFormat format = new SimpleDateFormat(DATE_FORMAT);
-	public static SimpleDateFormat timestampFormat = new SimpleDateFormat(TIMESTAMP_FORMAT);
 	public final static String COLUMN_SEPARATOR = ", ";
 
 	public static void executeUpdate(DBProfile profile, String statement) throws Exception {
@@ -116,12 +113,12 @@ public class BasicDBHelper {
 	}
 
 	public static String toString(Date date) {
-		return format.format(date);
+		return new SimpleDateFormat(DATE_FORMAT).format(date);
 		
 	}
 
 	public static String toDate(Date date) {
-		return "to_date('" + format.format(date) + "','" + DATE_FORMAT + "')";
+		return "to_date('" + new SimpleDateFormat(DATE_FORMAT).format(date) + "','" + DATE_FORMAT + "')";
 		
 	}
 

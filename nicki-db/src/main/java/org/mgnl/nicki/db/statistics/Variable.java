@@ -25,27 +25,27 @@ public class Variable {
 		DATE {
 			@Override
 			String toString(DBContext dbContext, String value) throws ParseException {
-				Date date = JsonHelper.formatDisplayDay.parse(value);
+				Date date = JsonHelper.dateFromDisplayDay(value);
 				return dbContext.toDate(date);
 			}
 
 			@Override
 			String toString(ResultSet resultSet, String name) throws SQLException {
 				Date date = resultSet.getDate(name);
-				return JsonHelper.formatDisplayDay.format(date);
+				return JsonHelper.getDisplayDay(date);
 			}
 		},
 		TIMESTAMP {
 			@Override
 			String toString(DBContext dbContext, String value) throws ParseException {
-				Date timestamp = JsonHelper.formatMilli.parse(value);
+				Date timestamp = JsonHelper.dateFromMilli(value);
 				return dbContext.toDate(timestamp);
 			}
 
 			@Override
 			String toString(ResultSet resultSet, String name) throws SQLException {
 				Date date = resultSet.getTimestamp(name);
-				return JsonHelper.formatMilli.format(date);
+				return JsonHelper.getMilli(date);
 			}
 		},
 		INTEGER {

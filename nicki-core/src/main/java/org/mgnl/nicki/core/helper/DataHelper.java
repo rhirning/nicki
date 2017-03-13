@@ -67,12 +67,6 @@ public class DataHelper {
 	public final static String FORMAT_GERMAN_TIMESTAMP = "dd.MM.yyyy HH:mm:ss";
 
         
-	public static SimpleDateFormat formatDay = new SimpleDateFormat(FORMAT_DAY);
-	public static SimpleDateFormat formatDisplayDay = new SimpleDateFormat(FORMAT_DISPLAY_DAY);
-	public static SimpleDateFormat formatTime = new SimpleDateFormat(FORMAT_TIME);
-	public static SimpleDateFormat formatMilli = new SimpleDateFormat(FORMAT_MILLI);
-	public static SimpleDateFormat formatTimestamp = new SimpleDateFormat(FORMAT_TIMESTAMP);
-	public static SimpleDateFormat formatGermanTimestamp = new SimpleDateFormat(FORMAT_GERMAN_TIMESTAMP);
 
 	/**
 	 * Extracts an Integer from a String
@@ -320,24 +314,58 @@ public class DataHelper {
 		return false;
 	}
 
+	// FORMAT_DAY = "yyyyMMdd"
 	public static String getDay(Date value) {
-		return formatDay.format(value);
-	}
-
-	public static String getMilli(Date value) {
-		return formatMilli.format(value);
-	}
-
-	public static String getDisplayDay(Date value) {
-		return formatDisplayDay.format(value);
-	}
-
-	public static Date dateFromDisplayDay(String stored) throws ParseException {
-		return formatDisplayDay.parse(stored);
+		return new SimpleDateFormat(FORMAT_DAY).format(value);
 	}
 
 	public static Date dateFromString(String stored) throws ParseException {
-		return formatDay.parse(stored);
+		return new SimpleDateFormat(FORMAT_DAY).parse(stored);
+	}
+
+	// FORMAT_MILLI = "dd.MM.yyyy HH:mm:ss:SSS"
+	public static String getMilli(Date value) {
+		return new SimpleDateFormat(FORMAT_MILLI).format(value);
+	}
+
+	public static Date milliFromString(String stored) throws ParseException {
+		return new SimpleDateFormat(FORMAT_MILLI).parse(stored);
+	}
+
+	// FORMAT_DISPLAY_DAY = "dd.MM.yyyy"
+	public static String getDisplayDay(Date value) {
+		return new SimpleDateFormat(FORMAT_DISPLAY_DAY).format(value);
+	}
+
+	public static Date dateFromDisplayDay(String stored) throws ParseException {
+		return new SimpleDateFormat(FORMAT_DISPLAY_DAY).parse(stored);
+	}
+	
+	// FORMAT_TIME = "yyyyMMddHHmmss"
+	public static String getTime(Date value) {
+		return new SimpleDateFormat(FORMAT_TIME).format(value);
+	}
+
+	public static Date timeFromString(String stored) throws ParseException {
+		return new SimpleDateFormat(FORMAT_TIME).parse(stored);
+	}
+	
+	// FORMAT_TIMESTAMP = "yyyy-MM-dd HH:mm:ss Z"
+	public static String getTimestamp(Date value) {
+		return new SimpleDateFormat(FORMAT_TIMESTAMP).format(value);
+	}
+
+	public static Date timestampFromString(String stored) throws ParseException {
+		return new SimpleDateFormat(FORMAT_TIMESTAMP).parse(stored);
+	}
+	
+	// FORMAT_GERMAN_TIMESTAMP = "dd.MM.yyyy HH:mm:ss"
+	public static String getGermanTimestamp(Date value) {
+		return new SimpleDateFormat(FORMAT_GERMAN_TIMESTAMP).format(value);
+	}
+
+	public static Date germanTimestampFromString(String stored) throws ParseException {
+		return new SimpleDateFormat(FORMAT_GERMAN_TIMESTAMP).parse(stored);
 	}
 
 	
