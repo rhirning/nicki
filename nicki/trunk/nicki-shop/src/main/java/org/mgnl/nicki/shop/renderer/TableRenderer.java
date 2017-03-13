@@ -169,7 +169,7 @@ public class TableRenderer extends BaseTableRenderer implements ShopRenderer {
 		item.getItemProperty("title").setValue(iArticle.getDisplayName());
 		item.getItemProperty("checkbox").setValue(checkBox);
 		if (iArticle.getStart() != null) {
-			item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(iArticle.getStart()));
+			item.getItemProperty("start").setValue(DataHelper.getDisplayDay(iArticle.getStart()));
 		}
 
 		return item;
@@ -199,7 +199,7 @@ public class TableRenderer extends BaseTableRenderer implements ShopRenderer {
 
 		if (inventoryArticle != null) {
 			if (inventoryArticle.getStart() != null) {
-				item.getItemProperty("start").setValue(DataHelper.formatDisplayDay.format(inventoryArticle.getStart()));
+				item.getItemProperty("start").setValue(DataHelper.getDisplayDay(inventoryArticle.getStart()));
 			}
 			if (inventoryArticle.getStatus() != InventoryArticle.STATUS.DELETED) {
 				checkBox.setValue(true);

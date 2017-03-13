@@ -2,6 +2,7 @@ package org.mgnl.nicki.db.context.oracle;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.mgnl.nicki.db.annotation.Attribute;
@@ -35,7 +36,7 @@ public class OracleContext
 	@Override
 	public String toTimestamp(Date date) {
 		if (date != null) {
-			return "to_date('" + timestampOracle.format(date) + "','" + TIMESTAMP_ORACLE + "')";
+			return "to_date('" + new SimpleDateFormat(TIMESTAMP_FOR_ORACLE).format(date) + "','" + TIMESTAMP_ORACLE + "')";
 		} else {
 			return null;
 		}

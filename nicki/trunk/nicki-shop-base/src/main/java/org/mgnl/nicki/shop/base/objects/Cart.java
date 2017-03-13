@@ -234,20 +234,20 @@ public class Cart extends BaseDynamicObject {
     }
 
     public void setRequestDate(Date date) {
-        put("requestdate", DataHelper.formatMilli.format(date));
+        put("requestdate", DataHelper.getMilli(date));
     }
 
     public Date getRequestDate() throws ParseException {
-        return DataHelper.formatMilli.parse((String) get("requestdate"));
+        return DataHelper.milliFromString((String) get("requestdate"));
     }
 
     public void setProcessDate(Date date) {
-        put("processdate", DataHelper.formatMilli.format(date));
+        put("processdate", DataHelper.getMilli(date));
     }
 
     public Date getProcessDate() throws ParseException {
     	if (get("processdate")!= null) {
-    		return DataHelper.formatMilli.parse((String) get("processdate"));
+    		return DataHelper.milliFromString((String) get("processdate"));
     	} else {
     		return null;
     	}

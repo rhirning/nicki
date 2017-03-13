@@ -222,7 +222,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public void setBirthDate(Date value) {
 		if (value != null) {
-			put(ATTRIBUTE_BIRTHDATE, DataHelper.formatDay.format(value));
+			put(ATTRIBUTE_BIRTHDATE, DataHelper.getDay(value));
 		} else {
 			clear(ATTRIBUTE_BIRTHDATE);
 		}
@@ -230,7 +230,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public void setQuitDate(Date value) {
 		if (value != null) {
-			put(ATTRIBUTE_QUITDATE, DataHelper.formatDay.format(value));
+			put(ATTRIBUTE_QUITDATE, DataHelper.getDay(value));
 		} else {
 			clear(ATTRIBUTE_QUITDATE);
 		}
@@ -238,7 +238,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public void setActivationDate(Date value) {
 		if (value != null) {
-			put(ATTRIBUTE_ACTIVATIONDATE, DataHelper.formatDay.format(value));
+			put(ATTRIBUTE_ACTIVATIONDATE, DataHelper.getDay(value));
 		} else {
 			clear(ATTRIBUTE_ACTIVATIONDATE);
 		}
@@ -246,7 +246,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public void setEntryDate(Date value) {
 		if (value != null) {
-			put(ATTRIBUTE_ENTRYDATE, DataHelper.formatDay.format(value));
+			put(ATTRIBUTE_ENTRYDATE, DataHelper.getDay(value));
 		} else {
 			clear(ATTRIBUTE_ENTRYDATE);
 		}
@@ -254,7 +254,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public void setOuChangeDate(Date value) {
 		if (value != null) {
-			put(ATTRIBUTE_OUCHANGEDATE, DataHelper.formatDay.format(value));
+			put(ATTRIBUTE_OUCHANGEDATE, DataHelper.getDay(value));
 		} else {
 			clear(ATTRIBUTE_OUCHANGEDATE);
 		}
@@ -262,7 +262,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public void setOuTransferDate(Date value) {
 		if (value != null) {
-			put(ATTRIBUTE_OUTRANSFERDATE, DataHelper.formatDay.format(value));
+			put(ATTRIBUTE_OUTRANSFERDATE, DataHelper.getDay(value));
 		} else {
 			clear(ATTRIBUTE_OUTRANSFERDATE);
 		}
@@ -278,7 +278,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public void setLastWorkingDay(Date date) {
 		if (date != null) {
-			put(ATTRIBUTE_LASTWORKINGDAY, DataHelper.formatDay.format(date));
+			put(ATTRIBUTE_LASTWORKINGDAY, DataHelper.getDay(date));
 		} else {
 			clear(ATTRIBUTE_LASTWORKINGDAY);
 		}
@@ -286,7 +286,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public Date getQuitDate() {
 		try {
-			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_QUITDATE));
+			return DataHelper.dateFromString((String) get(ATTRIBUTE_QUITDATE));
 		} catch (Exception ex) {
 			return null;
 		}
@@ -294,7 +294,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public Date getActivationDate() {
 		try {
-			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_ACTIVATIONDATE));
+			return DataHelper.dateFromString((String) get(ATTRIBUTE_ACTIVATIONDATE));
 		} catch (Exception ex) {
 			return null;
 		}
@@ -302,7 +302,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public Date getEntryDate() {
 		try {
-			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_ENTRYDATE));
+			return DataHelper.dateFromString((String) get(ATTRIBUTE_ENTRYDATE));
 		} catch (Exception ex) {
 			return null;
 		}
@@ -310,7 +310,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public Date getBirthDate() {
 		try {
-			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_BIRTHDATE));
+			return DataHelper.dateFromString((String) get(ATTRIBUTE_BIRTHDATE));
 		} catch (Exception ex) {
 			return null;
 		}
@@ -318,7 +318,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public Date getOuChangeDate() {
 		try {
-			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_OUCHANGEDATE));
+			return DataHelper.dateFromString((String) get(ATTRIBUTE_OUCHANGEDATE));
 		} catch (Exception ex) {
 			return null;
 		}
@@ -326,7 +326,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public Date getOuTransferDate() {
 		try {
-			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_OUTRANSFERDATE));
+			return DataHelper.dateFromString((String) get(ATTRIBUTE_OUTRANSFERDATE));
 		} catch (Exception ex) {
 			return null;
 		}
@@ -343,7 +343,7 @@ public class IdmPerson extends Person implements Serializable {
 
 	public Date getLastWorkingDay() {
 		try {
-			return DataHelper.formatDay.parse((String) get(ATTRIBUTE_LASTWORKINGDAY));
+			return DataHelper.dateFromString((String) get(ATTRIBUTE_LASTWORKINGDAY));
 		} catch (Exception ex) {
 			return null;
 		}

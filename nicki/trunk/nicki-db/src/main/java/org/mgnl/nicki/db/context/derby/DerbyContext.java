@@ -21,10 +21,7 @@ public class DerbyContext
 
 	private static final Logger LOG = LoggerFactory.getLogger(DerbyContext.class);
 	public final static String TIMESTAMP_PATTERN = "yyyy-MM-dd HH:mm:ss";
-	public static SimpleDateFormat timestampFormat = new SimpleDateFormat(TIMESTAMP_PATTERN);
-
 	public final static String DATE_PATTERN = "yyyy-MM-dd";
-	public static SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
 
 	@Override
 	public String getTimeStamp() {
@@ -54,9 +51,7 @@ public class DerbyContext
 	@Override
 	public String toTimestamp(Date date) {
 		if (date != null) {
-			synchronized (timestampFormat) {
-				return "timestamp('" + timestampFormat.format(date) + "')";
-			}
+			return "timestamp('" + new SimpleDateFormat(TIMESTAMP_PATTERN).format(date) + "')";
 		} else {
 			return null;
 		}
@@ -66,9 +61,7 @@ public class DerbyContext
 	@Override
 	public String toDate(Date date) {
 		if (date != null) {
-			synchronized (dateFormat) {
-				return "'" + dateFormat.format(date) + "'";
-			}
+			return "'" + new SimpleDateFormat(DATE_PATTERN).format(date) + "'";
 		} else {
 			return null;
 		}
