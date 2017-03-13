@@ -1,20 +1,19 @@
 package org.mgnl.nicki.verify;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 
 public class DateRule extends Rule {
 	private static final long serialVersionUID = 1L;
-	private static final String DATE_FORMAT = "dd.MM.yyyy";
 
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		try {
-			new SimpleDateFormat(DATE_FORMAT).parse(value);
+			DataHelper.dateFromDisplayDay(value);
 			String[] parts = StringUtils.split(value, ".");
 			Integer day = Integer.parseInt(parts[0]);
 			if (day < 1 || day > 31) {
