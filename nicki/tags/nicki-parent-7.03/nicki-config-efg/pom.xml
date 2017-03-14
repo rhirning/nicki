@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>nicki-config-efg</artifactId>
+	<name>nicki-config-efg</name>
+	<parent>
+		<artifactId>nicki-parent</artifactId>
+		<version>6.03-SNAPSHOT</version>
+		<groupId>org.mgnl.nicki</groupId>
+		<relativePath>..</relativePath>
+	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>org.mgnl.nicki</groupId>
+			<artifactId>nicki-dynamic-objects</artifactId>
+			<version>6.03-SNAPSHOT</version>
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>de.deron</groupId>
+			<artifactId>deron-dynamic-objects</artifactId>
+			<version>${deron.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>de.deron.projects.efg</groupId>
+			<version>${efg.version}</version>
+			<artifactId>efg-dynamic-objects</artifactId>
+		</dependency>
+		-->
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</connection>
+		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</developerConnection>
+		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</url>
+	</scm>
+</project>
