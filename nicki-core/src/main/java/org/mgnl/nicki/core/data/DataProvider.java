@@ -35,7 +35,6 @@ package org.mgnl.nicki.core.data;
 import java.util.Collection;
 
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.data.TreeData;
 
 

@@ -35,7 +35,6 @@ package org.mgnl.nicki.vaadin.base.command;
 import org.mgnl.nicki.core.data.InvalidActionException;
 import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
 

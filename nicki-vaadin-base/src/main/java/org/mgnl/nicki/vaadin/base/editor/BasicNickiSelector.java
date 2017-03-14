@@ -35,7 +35,6 @@ package org.mgnl.nicki.vaadin.base.editor;
 import java.util.Collection;
 
 import org.mgnl.nicki.core.data.TreeData;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
