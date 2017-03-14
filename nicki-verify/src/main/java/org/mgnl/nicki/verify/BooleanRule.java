@@ -17,14 +17,14 @@ public class BooleanRule extends Rule {
 
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
-		if (booleanValue != null && StringUtils.isNotEmpty(value)) {
+		if (booleanValue != null) {
 			try {
 				return booleanValue == DataHelper.booleanOf(value);
 			} catch (Exception e) {
 				return false;
 			}
 		}
-		return true;
+		return false;
 	}
 	
 	@Override
