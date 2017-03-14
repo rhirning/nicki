@@ -4,18 +4,9 @@ import java.io.Serializable;
 import java.rmi.RemoteException;
 
 import javax.naming.InitialContext;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-
 import org.mgnl.nicki.core.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import com.novell.soa.af.impl.soap.AdminException;
 import com.novell.soa.af.impl.soap.ProcessArray;
 import com.novell.soa.af.impl.soap.Provisioning;

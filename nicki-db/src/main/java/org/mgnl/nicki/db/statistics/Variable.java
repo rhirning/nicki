@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.util.Date;
 
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.core.helper.JsonHelper;
 import org.mgnl.nicki.db.context.DBContext;
 
 public class Variable {

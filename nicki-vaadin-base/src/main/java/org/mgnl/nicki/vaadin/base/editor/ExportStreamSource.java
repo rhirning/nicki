@@ -39,7 +39,6 @@ import java.io.Writer;
 
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.TreeData;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.util.XMLBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
