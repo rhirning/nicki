@@ -36,7 +36,6 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.mgnl.nicki.core.objects.DynamicObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
