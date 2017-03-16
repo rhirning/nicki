@@ -76,7 +76,7 @@ public class DataHelper {
 	 */
 	public static int getInteger(String stringValue, int defaultValue) {
 		stringValue = StringUtils.strip(stringValue);
-		if (StringUtils.isNotEmpty(stringValue) && StringUtils.isNumeric(stringValue)) {
+		if (StringUtils.isNotEmpty(stringValue)) {
 			try {
 				return Integer.parseInt(stringValue);
 			} catch (Exception e) {
