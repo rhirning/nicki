@@ -84,7 +84,8 @@ public class Verify {
 			throw new VerifyException(sb.toString());
 		}
 	}
-	public static List<Rule> getRules(String rule) throws VerifyException {
+	
+	public static List<Rule> getRules(String rule) {
 		List<Rule> rules = new ArrayList<>();
 		
 		if (StringUtils.isNotBlank(rule)) {
