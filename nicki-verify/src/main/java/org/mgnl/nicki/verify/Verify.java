@@ -1,7 +1,9 @@
 package org.mgnl.nicki.verify;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -82,9 +84,8 @@ public class Verify {
 			throw new VerifyException(sb.toString());
 		}
 	}
-	public static void verifyRule(String rule, String value, Map<String, String> values) throws VerifyException {
-		
-		StringBuilder sb = new StringBuilder();
+	public static List<Rule> getRules(String rule) throws VerifyException {
+		List<Rule> rules = new ArrayList<>();
 		
 		if (StringUtils.isNotBlank(rule)) {
 			String params[] = rule.split("\\|");
@@ -123,7 +124,22 @@ public class Verify {
 				} else if (StringUtils.startsWith(params[i],"allowedMapValues:")) {
 					checkRule = new AllowedMapValuesRule(StringUtils.substringAfter(params[i], "allowedMapValues:"));
 				}
-				if (checkRule != null && !checkRule.evaluate(value, values)) {
+				if (checkRule != null) {
+					rules.add(checkRule);
+				}
+			}
+		}
+		return rules;
+	}
+
+	public static void verifyRule(String rule, String value, Map<String, String> values) throws VerifyException {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		if (StringUtils.isNotBlank(rule)) {
+			List<Rule> rules = getRules(rule);
+			for (Rule checkRule : rules) {
+				if (!checkRule.evaluate(value, values)) {
 					if (sb.length() > 0) {
 						sb.append(", ");
 					}
