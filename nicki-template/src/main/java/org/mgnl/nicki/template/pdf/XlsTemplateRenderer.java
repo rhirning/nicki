@@ -34,6 +34,7 @@ public class XlsTemplateRenderer extends Thread implements Runnable {
 	InputStream in;
 	OutputStream out;
 	Template template;
+	byte[] master;
 
 	public XlsTemplateRenderer(Template template, InputStream in, OutputStream out) {
 		super();
@@ -41,15 +42,24 @@ public class XlsTemplateRenderer extends Thread implements Runnable {
 		this.in = in;
 		this.out = out;
 	}
+
+	public XlsTemplateRenderer(byte[] master, InputStream in, OutputStream out) {
+		super();
+		this.master = master;
+		this.in = in;
+		this.out = out;
+	}
 	public void run() {
 		try {
 			XlsEngine engine = new XlsEngine();
 			XlsTemplate template = new XlsTemplate(in);
-			InputStream master = null;
-			if (this.template.getFile() != null) {
-				master = new ByteArrayInputStream(this.template.getFile());
+			InputStream masterIn = null;
+			if (master != null) {
+				masterIn = new ByteArrayInputStream(master);
+			} else if (this.template != null && this.template.getFile() != null) {
+				masterIn = new ByteArrayInputStream(this.template.getFile());
 			}
-			engine.render(master, template, out);
+			engine.render(masterIn, template, out);
 			out.flush();
 			out.close();
 		} catch (Exception e) {

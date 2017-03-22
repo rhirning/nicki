@@ -58,15 +58,6 @@ public class TemplateEngine {
 
 	private Configuration cfg;
 	private static Map<ConfigurationFactory.TYPE, TemplateEngine> instances = new HashMap<>();
-	static {
-		Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(ConfigurationFactory.TYPE.JNDI,
-					Config.getProperty(PROPERTY_BASE_DN));
-			instances.put(TYPE.JNDI, new TemplateEngine(cfg));
-		
-		cfg = ConfigurationFactory.getInstance().getConfiguration(ConfigurationFactory.TYPE.CLASSPATH,
-					Config.getProperty(PROPERTY_BASE, "/META-INF/templates"));
-		instances.put(TYPE.CLASSPATH, new TemplateEngine(cfg));
-	}
 
 	public TemplateEngine(Configuration cfg) {
 		this.cfg = cfg;
@@ -155,6 +146,17 @@ public class TemplateEngine {
 		return pis;
 	}
 
+	public InputStream executeTemplateAsXls(byte[] master, String templateName,
+			Map<String, Object> dataModel) throws IOException,
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+	    PipedOutputStream pos = new PipedOutputStream();
+	    PipedInputStream pis = new PipedInputStream(pos);
+	    
+		XlsTemplateRenderer renderer = new XlsTemplateRenderer(master, executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos);
+		renderer.start();
+		return pis;
+	}
+
 	public InputStream executeTemplateAsCsv(String templateName,
 			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
@@ -181,7 +183,22 @@ public class TemplateEngine {
 		return instances.get(ConfigurationFactory.TYPE.JNDI);
 	}
 	public static TemplateEngine getInstance(ConfigurationFactory.TYPE type) {
+		if (!instances.containsKey(type)) {
+			load(type);
+		}
 		return instances.get(type);
+	}
+
+	private static void load(TYPE type) {
+		if (type == TYPE.JNDI) { 
+			Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(ConfigurationFactory.TYPE.JNDI,
+						Config.getProperty(PROPERTY_BASE_DN));
+				instances.put(TYPE.JNDI, new TemplateEngine(cfg));
+		} else if (type == TYPE.CLASSPATH) {
+			Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(ConfigurationFactory.TYPE.CLASSPATH,
+						Config.getProperty(PROPERTY_BASE, "/META-INF/templates"));
+			instances.put(TYPE.CLASSPATH, new TemplateEngine(cfg));
+		}
 	}
 
 }
