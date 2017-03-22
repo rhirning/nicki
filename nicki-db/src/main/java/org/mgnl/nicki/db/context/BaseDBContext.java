@@ -659,6 +659,11 @@ public class BaseDBContext
 
 	@Override
 	public <T> T update(T bean, String... columns) throws SQLException, InitProfileException, NotSupportedException {
+		return updateWhere(bean, null, columns);
+	}
+
+	@Override
+	public <T> T updateWhere(T bean, String where, String... columns) throws SQLException, InitProfileException, NotSupportedException {
 		boolean inTransaction = false;
 		if (this.connection != null) {
 			inTransaction = true;
@@ -668,10 +673,11 @@ public class BaseDBContext
 
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
+				int count = 0;
 				try {
-					String statement = this.createUpdateStatement(bean, columns);
+					String statement = this.createUpdateWhereStatement(bean, where, columns);
 					LOG.debug(statement);
-					stmt.executeUpdate(statement);
+					count = stmt.executeUpdate(statement);
 					if (!inTransaction) {
 						try {
 							this.commit();
@@ -682,7 +688,11 @@ public class BaseDBContext
 				} catch (NothingToDoException e) {
 					LOG.error("Nothing to do");
 				}
-				return this.reload(bean);
+				if (count == 1) {
+					return this.reload(bean);
+				} else {
+					return null;
+				}
 			}
 		} finally {
 			if (!inTransaction) {
@@ -1086,6 +1096,10 @@ public class BaseDBContext
 
 	@Override
 	public <T> String createUpdateStatement(T bean, String... columns) throws NotSupportedException, NothingToDoException {
+		return createUpdateWhereStatement(bean, null, columns);
+	}
+
+	protected <T> String createUpdateWhereStatement(T bean, String where, String... columns) throws NotSupportedException, NothingToDoException {
 		/**
 		 * update SCHEMA.TABLE set a=' ', b=' ', c=' ' where clause;
 		 */
@@ -1099,6 +1113,9 @@ public class BaseDBContext
 		}
 
 		StringBuilder whereClause = new StringBuilder();
+		if (StringUtils.isNotBlank(where)) {
+			whereClause.append(where);
+		}
 		Map<String, String> columnValues = new HashMap<>();
 
 		for (Field field : bean.getClass().getDeclaredFields()) {

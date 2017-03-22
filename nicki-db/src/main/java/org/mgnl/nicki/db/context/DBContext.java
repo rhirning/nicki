@@ -17,6 +17,8 @@ public interface DBContext extends AutoCloseable {
 
 	<T> T update(T bean, String... columns) throws NotSupportedException, SQLException, InitProfileException;
 	
+	<T> T updateWhere(T bean, String whereClause, String... columns) throws NotSupportedException, SQLException, InitProfileException;
+	
 	<T> void delete(T bean) throws SQLException, InitProfileException;
 
 	<T> List<T> select(Class<T> clazz, ListSelectHandler<T> handler) throws SQLException, InitProfileException;

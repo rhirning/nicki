@@ -68,7 +68,7 @@ public class UserAppAdapter implements SSOAdapter {
 	public void init(Object request) {
 		String credentials = new String(getPassword(request));
 		if (StringUtils.length(credentials) > 100 &&
-				  Base64.isArrayByteBase64(credentials.getBytes())) {
+				  Base64.isBase64(credentials.getBytes())) {
 			type = TYPE.SAML;
 		} else if (StringUtils.length(credentials) > 0) {
 			type = TYPE.BASIC;
