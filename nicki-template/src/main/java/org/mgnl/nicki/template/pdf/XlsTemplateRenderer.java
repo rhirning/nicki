@@ -23,7 +23,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.mgnl.nicki.dynamic.objects.objects.Template;
+import org.mgnl.nicki.dynamic.objects.objects.EngineTemplate;
 import org.mgnl.nicki.xls.engine.XlsEngine;
 import org.mgnl.nicki.xls.template.XlsTemplate;
 import org.slf4j.Logger;
@@ -33,10 +33,10 @@ public class XlsTemplateRenderer extends Thread implements Runnable {
 	private static final Logger LOG = LoggerFactory.getLogger(XlsTemplateRenderer.class);
 	InputStream in;
 	OutputStream out;
-	Template template;
+	EngineTemplate template;
 	byte[] master;
 
-	public XlsTemplateRenderer(Template template, InputStream in, OutputStream out) {
+	public XlsTemplateRenderer(EngineTemplate template, InputStream in, OutputStream out) {
 		super();
 		this.template = template;
 		this.in = in;

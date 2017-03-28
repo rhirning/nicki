@@ -43,7 +43,7 @@ import org.mgnl.nicki.core.objects.BaseDynamicObject;
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass({"nickiTemplate", "organizationalUnit"})
-public class Template extends BaseDynamicObject {
+public class Template extends BaseDynamicObject implements EngineTemplate {
 
 	public static final String ATTRIBUTE_DATA = "data";
 	public static final String ATTRIBUTE_PARAMS = "params";
