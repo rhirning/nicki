@@ -34,6 +34,7 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.XsltRenderer;
+import org.mgnl.nicki.dynamic.objects.objects.EngineTemplate;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.template.engine.ConfigurationFactory.TYPE;
@@ -135,7 +136,7 @@ public class TemplateEngine {
 		return pis;
 	}
 
-	public InputStream executeTemplateAsXls(org.mgnl.nicki.dynamic.objects.objects.Template template, String templateName,
+	public InputStream executeTemplateAsXls(EngineTemplate template, String templateName,
 			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
 	    PipedOutputStream pos = new PipedOutputStream();
