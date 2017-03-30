@@ -10,7 +10,7 @@
 	<properties>
 		<project.build.sourceEncoding>iso-8859-1</project.build.sourceEncoding>
 		<idm.version>4.5</idm.version>
-		<vaadin.version>7.7.0</vaadin.version>
+		<vaadin.version>7.7.7</vaadin.version>
 	</properties>
 	<modules>
 		<module>nicki-app-menu</module>
