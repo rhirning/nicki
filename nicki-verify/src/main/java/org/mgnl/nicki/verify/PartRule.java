@@ -26,7 +26,7 @@ public class PartRule extends Rule {
 			list.add(listEntry);
 			for (int i = 0; i < entry.length(); i++) {
 				String pos = StringUtils.substring(entry, i, i+1);
-				Integer value = Integer.parseUnsignedInt(pos);
+				Integer value = Integer.parseInt(pos);
 				listEntry.add(value);
 			}
 		}
