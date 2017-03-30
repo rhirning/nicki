@@ -85,52 +85,60 @@ public class Verify {
 		}
 	}
 	
-	public static List<Rule> getRules(String rule) {
-		List<Rule> rules = new ArrayList<>();
+	public static List<Rule> getRules(String orgRules) {
+		String separator = "|";
+		String rules = orgRules;
+		if (StringUtils.startsWith(orgRules, "separator:")) {
+			String rest = StringUtils.substringAfter(orgRules, "separator:");
+			separator = StringUtils.substring(rest, 0, 1);
+			rules = StringUtils.substring(rest, 1);
+		}
+		List<Rule> rulesList = new ArrayList<>();
 		
-		if (StringUtils.isNotBlank(rule)) {
-			String params[] = rule.split("\\|");
-			for (int i = 0; i < params.length; i++) {
+		if (StringUtils.isNotBlank(rules)) {
+			for (String rule : StringUtils.split(rules, separator)) {
 				Rule checkRule = null;
-				if (StringUtils.equals("required", params[i])) {
+				if (StringUtils.equals("required", rule)) {
 					checkRule = new RequiredRule();
-				} else if (StringUtils.startsWith(params[i],"boolean:")) {
-					checkRule = new BooleanRule(StringUtils.substringAfter(params[i], "boolean:"));
-				} else if (StringUtils.equals("date", params[i])) {
+				} else if (StringUtils.startsWith(rule,"boolean:")) {
+					checkRule = new BooleanRule(StringUtils.substringAfter(rule, "boolean:"));
+				} else if (StringUtils.equals("date", rule)) {
 					checkRule = new DateRule();
-				} else if (StringUtils.equals("digits", params[i])) {
+				} else if (StringUtils.equals("digits", rule)) {
 					checkRule = new DigitsRule();
-				} else if (StringUtils.equals("email", params[i])) {
+				} else if (StringUtils.equals("email", rule)) {
 					checkRule = new EmailRule();
-				} else if (StringUtils.equals("number", params[i])) {
+				} else if (StringUtils.equals("number", rule)) {
 					checkRule = new NumberRule();
-				} else if (StringUtils.startsWith(params[i],"min:")) {
-					checkRule = new MinRule(StringUtils.substringAfter(params[i], "min:"));
-				} else if (StringUtils.startsWith(params[i],"max:")) {
-					checkRule = new MaxRule(StringUtils.substringAfter(params[i], "max:"));
-				} else if (StringUtils.startsWith(params[i],"minlength:")) {
-					checkRule = new MinLengthRule(StringUtils.substringAfter(params[i], "minlength:"));
-				} else if (StringUtils.startsWith(params[i],"maxlength:")) {
-					checkRule = new MaxLengthRule(StringUtils.substringAfter(params[i], "maxlength:"));
-				} else if (StringUtils.startsWith(params[i],"regex:")) {
-					checkRule = new RegExRule(StringUtils.substringAfter(params[i], "regex:"));
-				} else if (StringUtils.startsWith(params[i],"password:")) {
-					checkRule = new PasswordRule(StringUtils.substringAfter(params[i], "password:"));
-				} else if (StringUtils.startsWith(params[i],"dependend:")) {
-					checkRule = new DependendRule(StringUtils.substringAfter(params[i], "dependend:"));
-				} else if (StringUtils.startsWith(params[i],"values:")) {
-					checkRule = new ValuesRule(StringUtils.substringAfter(params[i], "values:"));
-				} else if (StringUtils.startsWith(params[i],"allowedMapKeys:")) {
-					checkRule = new AllowedMapKeysRule(StringUtils.substringAfter(params[i], "allowedMapKeys:"));
-				} else if (StringUtils.startsWith(params[i],"allowedMapValues:")) {
-					checkRule = new AllowedMapValuesRule(StringUtils.substringAfter(params[i], "allowedMapValues:"));
+				} else if (StringUtils.startsWith(rule,"min:")) {
+					checkRule = new MinRule(StringUtils.substringAfter(rule, "min:"));
+				} else if (StringUtils.startsWith(rule,"max:")) {
+					checkRule = new MaxRule(StringUtils.substringAfter(rule, "max:"));
+				} else if (StringUtils.startsWith(rule,"minlength:")) {
+					checkRule = new MinLengthRule(StringUtils.substringAfter(rule, "minlength:"));
+				} else if (StringUtils.startsWith(rule,"maxlength:")) {
+					checkRule = new MaxLengthRule(StringUtils.substringAfter(rule, "maxlength:"));
+				} else if (StringUtils.startsWith(rule,"regex:")) {
+					checkRule = new RegExRule(StringUtils.substringAfter(rule, "regex:"));
+				} else if (StringUtils.startsWith(rule,"password:")) {
+					checkRule = new PasswordRule(StringUtils.substringAfter(rule, "password:"));
+				} else if (StringUtils.startsWith(rule,"dependend:")) {
+					checkRule = new DependendRule(StringUtils.substringAfter(rule, "dependend:"));
+				} else if (StringUtils.startsWith(rule,"values:")) {
+					checkRule = new ValuesRule(StringUtils.substringAfter(rule, "values:"));
+				} else if (StringUtils.startsWith(rule,"allowedMapKeys:")) {
+					checkRule = new AllowedMapKeysRule(StringUtils.substringAfter(rule, "allowedMapKeys:"));
+				} else if (StringUtils.startsWith(rule,"allowedMapValues:")) {
+					checkRule = new AllowedMapValuesRule(StringUtils.substringAfter(rule, "allowedMapValues:"));
+				} else if (StringUtils.startsWith(rule,"part:")) {
+					checkRule = new PartRule(StringUtils.substringAfter(rule, "part:"));
 				}
 				if (checkRule != null) {
-					rules.add(checkRule);
+					rulesList.add(checkRule);
 				}
 			}
 		}
-		return rules;
+		return rulesList;
 	}
 
 	public static void verifyRule(String rule, String value, Map<String, String> values) throws VerifyException {
