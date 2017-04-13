@@ -612,6 +612,8 @@ public class BaseDBContext
 					Method method = bean.getClass().getMethod(setter, field.getType());
 					if (Long.class.isAssignableFrom(field.getType())) {
 						method.invoke(bean, primaryKey.getLong());
+					} else if (long.class.isAssignableFrom(field.getType())) {
+						method.invoke(bean, primaryKey.getLong());
 					} else if (Integer.class.isAssignableFrom(field.getType())) {
 						method.invoke(bean, primaryKey.getInt());
 					} else if (field.getType().isAssignableFrom(String.class)) {
