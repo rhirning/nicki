@@ -61,6 +61,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.VerticalLayout;
@@ -91,29 +92,32 @@ public class DirectoryEditor extends CustomComponent implements ClassEditor {
 		this.fileEntry = (FileEntry) dynamicObject;
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
-		
-		Collection<File> files = Arrays.asList(this.fileEntry.getFile().listFiles(new FileFilter() {
-			
-			@Override
-			public boolean accept(File pathname) {
-				return pathname.isFile();
+		if (this.fileEntry != null && this.fileEntry.getFile() != null) {
+			File list[] = this.fileEntry.getFile().listFiles(new FileFilter() {
+				
+				@Override
+				public boolean accept(File pathname) {
+					return pathname.isFile();
+				}
+			});
+			if (list != null && list.length > 0) {
+				Collection<File> files = Arrays.asList(list);
+				
+				BeanItemContainer<File> container = new BeanItemContainer<>(File.class, files);
+				table.setContainerDataSource(container);
+				table.setVisibleColumns("name");
+				table.setSelectable(true);
+				table.setImmediate(true);
+				table.addValueChangeListener(new Property.ValueChangeListener() {
+					
+					@Override
+					public void valueChange(ValueChangeEvent event) {
+						File itemId = (File) event.getProperty().getValue();
+						showItem(itemId);
+					}
+				});
 			}
-		}));
-		
-		BeanItemContainer<File> container = new BeanItemContainer<>(File.class, files);
-		table.setContainerDataSource(container);
-		table.setVisibleColumns("name");
-		table.setSelectable(true);
-		table.setImmediate(true);
-		table.addValueChangeListener(new Property.ValueChangeListener() {
-			
-			@Override
-			public void valueChange(ValueChangeEvent event) {
-				File itemId = (File) event.getProperty().getValue();
-				showItem(itemId);
-			}
-		});
-
+		}
 	}
 
 	protected void showItem(final File file) {
@@ -144,14 +148,23 @@ public class DirectoryEditor extends CustomComponent implements ClassEditor {
 		FileDownloader fileDownloader = new FileDownloader(streamResource);
 		fileDownloader.extend(downloadButton);
 		
-		Button uploadButton = new Button("Upload");
-		buttonLayout.addComponent(uploadButton);
+		Panel panel = new Panel();
+		panel.setWidth("100%");
+		panel.setHeight("100%");
+		VerticalLayout panelLayout = new VerticalLayout();
+		panelLayout.setWidth("100%");
+		panelLayout.setHeight("100%");
+		panel.setContent(panelLayout);
 		
 		final TextArea textArea = new TextArea();
 		textArea.setWidth("100%");
 		textArea.setHeight("100%");
-		propertiesLayout.addComponent(textArea);
-		propertiesLayout.setExpandRatio(textArea, 1.f);
+		panelLayout.addComponent(textArea);
+		panelLayout.setExpandRatio(textArea, 1.f);
+		
+		
+		propertiesLayout.addComponent(panel);
+		propertiesLayout.setExpandRatio(panel, 1.f);
 		viewButton.addClickListener(new Button.ClickListener() {
 			
 			@Override
