@@ -78,6 +78,7 @@ public class TemplateEditorComponent extends CustomComponent implements Serializ
 		editor.addAction(new ExportTreeAction(getNickiContext(), Org.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
 		editor.addAction(new ExportTreeAction(getNickiContext(), Template.class, I18n.getText(getI18nBase() + ".action.export"), getI18nBase()));
 		editor.initActions();
+		editor.setHeight("100%");
 
 		return editor;
 	}
