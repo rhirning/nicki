@@ -26,6 +26,7 @@ public class Log4jViewer extends CustomComponent {
 	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(Log4jViewer.class);
 	private Panel canvas;
 	private Table table;
+	private NickiApplication application;
 
     /**
      * The root appender.
@@ -45,21 +46,27 @@ public class Log4jViewer extends CustomComponent {
 
     
 	public Log4jViewer(NickiApplication application) {
+		this.application = application;
 		canvas = new Panel();
 		canvas.setSizeFull();
 		table = new Table();
 		table.setSizeFull();
 		canvas.setContent(table);
 		table.addContainerProperty("title", String.class, "");
-		table.setColumnHeader("title", I18n.getText(application.getI18nBase() + ".column.title"));
+		table.setColumnHeader("title", I18n.getText(getI18nBase() + ".column.title"));
 		table.addContainerProperty("inherited", String.class, "");
-		table.setColumnHeader("inherited", I18n.getText(application.getI18nBase() + ".column.inherited"));
+		table.setColumnHeader("inherited", I18n.getText(getI18nBase() + ".column.inherited"));
 		table.addContainerProperty("comboBox", ComboBox.class, null);
-		table.setColumnHeader("comboBox", I18n.getText(application.getI18nBase() + ".column.level"));
+		table.setColumnHeader("comboBox", I18n.getText(getI18nBase() + ".column.level"));
 		table.addContainerProperty("saveButton", Button.class, null);
 		table.setColumnHeader("saveButton", "");
 		refreshTable();
 		setCompositionRoot(canvas);
+		setSizeFull();
+	}
+
+	public String getI18nBase() {
+		return this.application.getI18nBase();
 	}
 	
 

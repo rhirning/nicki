@@ -46,9 +46,11 @@ public class FileEntry implements TreeData {
 	@Override
 	public List<TreeData> getAllChildren() {
 		List<TreeData> children = new ArrayList<>();
-		for (File child : this.file.listFiles()) {
-			if (child.isDirectory()) {
-				children.add(new FileEntry(child));
+		if (this.file.listFiles() != null) {
+			for (File child : this.file.listFiles()) {
+				if (child.isDirectory()) {
+					children.add(new FileEntry(child));
+				}
 			}
 		}
 		return children;
