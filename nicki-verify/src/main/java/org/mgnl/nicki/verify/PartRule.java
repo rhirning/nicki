@@ -8,6 +8,34 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.text.StrTokenizer;
 import org.mgnl.nicki.core.i18n.I18n;
 
+/**
+ * Überprüft, ob in einer geordneten Liste die benötigten Teile vorhanden sind.
+ * Hierzu werden die gültigen Kombinationen festgelegt.
+ * <p>
+ * Beispiel: 024 bedeutet dass NUR die Elemente 0,2,4 vorhanden sein müssen<p>
+ * 
+ * Die Liste wird als String mit einem Separator (Standard: "|") geliefert.
+ * 
+ * Die gültigen Part-Kombinationen sind durch Komma getrennt.
+ * Der Listen-Separator kann auch vor den gültigen Kombinationen (getrennt mit ":") definiert werden<p>
+ * 
+ * Beispiele:<br>
+ * Parameter: 024,01<br>
+ * <table>
+ * <tr><td>J|1|2|3</td><td>falsch</td></tr>
+ * <tr><td>J|1</td><td>wahr</td></tr>
+ * <tr><td>J||sdf||1</td><td>wahr</td></tr>
+ * </table>
+ * <p>
+ * Parameter: ;:024,01
+ * <table>
+ * <tr><td>J;1;2;3</td><td>falsch</td></tr>
+ * <tr><td>J;1</td><td>wahr</td></tr>
+ * <tr><td>J;;sdf;;1</td><td>wahr</td></tr>
+ * </table>
+ * @author rhirning
+ *
+ */
 public class PartRule extends Rule {
 	private String separator = "|";
 	private List<List<Integer>> list = new ArrayList<>();
