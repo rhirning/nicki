@@ -733,6 +733,7 @@ public class BaseDBContext
 
 	@Override
 	public <T> void delete(T bean) throws SQLException, InitProfileException {
+
 		boolean inTransaction = false;
 		if (this.connection != null) {
 			inTransaction = true;
@@ -744,7 +745,21 @@ public class BaseDBContext
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
 				try {
-					String statement = this.createDeleteStatement(bean);
+					String statement = null;
+					PrimaryKey primaryKey = getPrimaryKey(bean);
+					if (primaryKey != null) {
+						try {
+							@SuppressWarnings("unchecked")
+							T deleteBean = (T) bean.getClass().newInstance();
+							setPrimaryKey(deleteBean, primaryKey);
+							statement = this.createDeleteStatement(deleteBean);
+						} catch (InstantiationException | IllegalAccessException e) {
+							LOG.error("Eror creating deleteBean", e);
+						}
+					}
+					if (statement == null) {
+						statement = this.createDeleteStatement(bean);
+					}
 					LOG.debug(statement);
 					stmt.executeUpdate(statement);
 					if (!inTransaction) {
@@ -1162,7 +1177,7 @@ public class BaseDBContext
 		if (table == null) {
 			throw new NotSupportedException();
 		}
-
+		
 		StringBuilder whereClause = new StringBuilder();
 
 		for (Field field : bean.getClass().getDeclaredFields()) {
