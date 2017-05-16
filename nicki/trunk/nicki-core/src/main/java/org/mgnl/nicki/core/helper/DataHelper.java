@@ -370,9 +370,11 @@ public class DataHelper {
 
 	
 	public static <T> boolean contains(T[] array, T entry) {
-		for (T t : array) {
-			if (t == entry) {
-				return true;
+		if (array != null) {
+			for (T t : array) {
+				if (t == entry) {
+					return true;
+				}
 			}
 		}
 		return false;
