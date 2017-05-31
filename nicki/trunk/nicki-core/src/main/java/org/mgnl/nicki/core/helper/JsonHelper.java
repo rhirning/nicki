@@ -1,5 +1,7 @@
 package org.mgnl.nicki.core.helper;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -340,6 +342,11 @@ public class JsonHelper {
 	 */
 	public static <T> T toBean(Class<T> beanClazz, String stringData) throws IllegalAccessException, InvocationTargetException, InstantiationException {
 		JsonReader reader = Json.createReader(new StringReader(stringData));
+		JsonObject data = reader.readObject();
+		return toBean(beanClazz, data);
+	}
+	public static <T> T toBean(Class<T> beanClazz, InputStream inputStream) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+		JsonReader reader = Json.createReader(new InputStreamReader(inputStream));
 		JsonObject data = reader.readObject();
 		return toBean(beanClazz, data);
 	}
