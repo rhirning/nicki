@@ -41,13 +41,13 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 		String configPath = ctx.getInitParameter("jobConfig");
 		if (StringUtils.isNotBlank(configPath)) {
 			try {
-				JobConfigurations syncConfigurations = JsonHelper.toBean(JobConfigurations.class,
+				JobConfigurations jobConfigurations = JsonHelper.toBean(JobConfigurations.class,
 						getClass().getResourceAsStream(configPath));
 				// Grab the Scheduler instance from the Factory
 				scheduler = StdSchedulerFactory.getDefaultScheduler();
 
-				if (syncConfigurations.getJobConfig() != null) {
-					for (JobConfig syncConfig : syncConfigurations.getJobConfig()) {
+				if (jobConfigurations.getJobConfig() != null) {
+					for (JobConfig syncConfig : jobConfigurations.getJobConfig()) {
 						if (syncConfig.isActive()) {
 							Job jobClass = Classes.newInstance(syncConfig.getJobClassName());
 							JobDetail job = JobBuilder.newJob(jobClass.getClass()).withIdentity(syncConfig.getName(), syncConfig.getGroup()).build();
