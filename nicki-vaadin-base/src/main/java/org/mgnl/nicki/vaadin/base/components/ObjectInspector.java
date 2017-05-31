@@ -1,5 +1,7 @@
 package org.mgnl.nicki.vaadin.base.components;
 
+import java.lang.reflect.AccessibleObject;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,64 +24,86 @@ public class ObjectInspector extends CustomComponent {
 	private HierarchicalContainer container;
 
 	private static final long serialVersionUID = 3256191025469832300L;
-	public ObjectInspector(Object object) {
+	public ObjectInspector(Object... objects) {
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 		
-		initTree(object);
+		initTree(objects);
 
 	}
 
 	@SuppressWarnings("unchecked")
-	private void initTree(Object object) {
+	private void initTree(Object... objects) {
 		container = new HierarchicalContainer();
 		container.addContainerProperty("name", String.class, null);
+		container.addContainerProperty("type", String.class, null);
 		container.addContainerProperty("value", String.class, null);
 		
-		container.addItem(object);
-		container.getContainerProperty(object, "name").setValue("Object");
-		container.getContainerProperty(object, "value").setValue(object.toString());
-		tree.setContainerDataSource(container);
-		
-		if (hasChildren(object)) {
-			tree.setChildrenAllowed(object, true);
-		} else {
-			tree.setChildrenAllowed(object, false);
+		for (Object object : objects) {
+			ObjectWrapper objectWrapper = new ObjectWrapper(object);
+			container.addItem(objectWrapper);
+			container.getContainerProperty(objectWrapper, "name").setValue("Object");
+			container.getContainerProperty(objectWrapper, "type").setValue(object.getClass().getSimpleName());
+			container.getContainerProperty(objectWrapper, "value").setValue(object.toString());
+			if (hasChildren(objectWrapper)) {
+				tree.setChildrenAllowed(objectWrapper, true);
+			} else {
+				tree.setChildrenAllowed(objectWrapper, false);
+			}
 		}
+		tree.setContainerDataSource(container);
+		tree.setColumnWidth("name", 200);
+		tree.setColumnWidth("type", 120);
+		
 		
 		tree.addExpandListener(new Tree.ExpandListener() {
 			private static final long serialVersionUID = 8148298861638159882L;
 
 			@Override
 			public void nodeExpand(ExpandEvent event) {
-				Object object = event.getItemId();
-				if (hasChildren(object) && !container.hasChildren(object)) {
-					addChildren(object);
+				ObjectWrapper objectWrapper = (ObjectWrapper) event.getItemId();
+				if (hasChildren(objectWrapper) && !container.hasChildren(objectWrapper)) {
+					addChildren(objectWrapper);
 				}
 			}
 		});
 	}
 
-	protected void addChildren(Object object) {
-		Map<String, Object> attributes = getAttributes(object);
+	protected void addChildren(ObjectWrapper objectWrapper) {
+		Map<String, Object> attributes = getAttributes(objectWrapper);
 		for (String name : attributes.keySet()) {
-			container.addItem(attributes.get(name));
-			container.setParent(attributes.get(name), object);
+			Object child = attributes.get(name);
+			ObjectWrapper o = new ObjectWrapper(child);
+			if (child != null) {
+				container.addItem(o);
+				container.setParent(o, objectWrapper);
+				container.getContainerProperty(o, "name").setValue(name);
+				container.getContainerProperty(o, "type").setValue(child.getClass().getSimpleName());
+				container.getContainerProperty(o, "value").setValue(child.toString());
+			}
 		}
 	}
 
-	private boolean hasChildren(Object object) {
-		return getAttributes(object).size() > 0;
+	private boolean hasChildren(ObjectWrapper objectWrapper) {
+		return getAttributes(objectWrapper).size() > 0;
 	}
 
-	private Map<String, Object> getAttributes(Object object) {
+	private Map<String, Object> getAttributes(ObjectWrapper objectWrapper) {
 		Map<String, Object> map = new HashMap<>();
-		for (Field field : object.getClass().getFields()) {
+		AccessibleObject.setAccessible(objectWrapper.getObject().getClass().getDeclaredFields(), true);
+		for (Field field : objectWrapper.getObject().getClass().getDeclaredFields()) {
 			try {
-				map.put(field.getName(), field.get(object));
+				field.setAccessible(true);
+				map.put(field.getName(), field.get(objectWrapper.getObject()));
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			}
+		}
+		if (objectWrapper.getObject().getClass().isArray()) {
+			int length = Array.getLength(objectWrapper.getObject());
+		    for (int i = 0; i < length; i ++) {
+				map.put("" + i, Array.get(objectWrapper.getObject(), i));
 			}
 		}
 		return map;
@@ -106,6 +130,18 @@ public class ObjectInspector extends CustomComponent {
 		mainLayout.addComponent(tree);
 		
 		return mainLayout;
+	}
+	
+	private class ObjectWrapper {
+		private Object object;
+
+		public ObjectWrapper(Object object) {
+			this.object = object;
+		}
+
+		public Object getObject() {
+			return object;
+		}
 	}
 
 }

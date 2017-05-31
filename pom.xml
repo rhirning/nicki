@@ -16,7 +16,7 @@
 		<module>nicki-app-menu</module>
 		<module>nicki-apps</module>
 		<module>nicki-cache</module>
-		<module>nicki-core</module>
+		<module>nicki-cron</module>
 		<module>nicki-db</module>
 		<module>nicki-dynamic-objects</module>
 		<module>nicki-dynamic-objects-ad</module>
@@ -36,6 +36,7 @@
 		<module>nicki-pdf</module>
 		<module>nicki-portlets</module>
 		<module>nicki-reports</module>
+		<module>nicki-scheduler</module>
 		<module>nicki-search</module>
 		<module>nicki-shop</module>
 		<module>nicki-shop-base</module>
@@ -215,9 +216,9 @@
 				<version>1.2.17</version>
 			</dependency>
 			<dependency>
-				<groupId>net.sf.ehcache</groupId>
-				<artifactId>ehcache-core</artifactId>
-				<version>2.6.2</version>
+				<groupId>org.ehcache</groupId>
+				<artifactId>ehcache</artifactId>
+				<version>3.3.1</version>
 			</dependency>
 			<dependency>
 			    <groupId>org.apache.httpcomponents</groupId>
@@ -288,6 +289,16 @@
 				<groupId>org.jdom</groupId>
 				<artifactId>jdom</artifactId>
 				<version>1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.quartz-scheduler</groupId>
+				<artifactId>quartz</artifactId>
+				<version>2.2.1</version>
+			</dependency>
+			<dependency>
+				<groupId>org.quartz-scheduler</groupId>
+				<artifactId>quartz-jobs</artifactId>
+				<version>2.2.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>

@@ -16,18 +16,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
+import org.ehcache.Cache;
+import org.ehcache.CacheManager;
+import org.ehcache.config.builders.CacheConfigurationBuilder;
+import org.ehcache.config.builders.CacheManagerBuilder;
+import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import net.sf.ehcache.Cache;
-import net.sf.ehcache.CacheManager;
-import net.sf.ehcache.Element;
 
 public class CacheFilter implements Filter {
 
 	List<Pattern> patterns;
 	private CacheManager cacheManager;
-	private Cache cache;
+	private Cache<String, CachedEntry> cache;
 
 	private static final Logger LOG = LoggerFactory
 			.getLogger(CacheFilter.class);
@@ -65,10 +66,13 @@ public class CacheFilter implements Filter {
 			}
 		}
 
-		cacheManager = CacheManager.create(CacheFilter.class
-				.getResource(configFile));
+		cacheManager = CacheManagerBuilder.newCacheManagerBuilder()
+				.withCache(cacheName,
+						CacheConfigurationBuilder.newCacheConfigurationBuilder(String.class, CachedEntry.class, ResourcePoolsBuilder.heap(10)))
+				.build();
+				
 
-		cache = cacheManager.getCache(cacheName);
+		cache = cacheManager.getCache(cacheName, String.class, CachedEntry.class);
 
 	}
 
@@ -98,9 +102,8 @@ public class CacheFilter implements Filter {
 		}
 
 		// is cached Object available?
-		Element element = cache.get(cacheKey);
-		if (element != null) {
-			CachedEntry cachedEntry = (CachedEntry) element.getObjectValue();
+		CachedEntry cachedEntry = cache.get(cacheKey);
+		if (cachedEntry != null) {
 			cachedEntry.replay(response);
 			LOG.debug("Delivered from Cache: " + cacheKey);
 			return;
@@ -119,18 +122,18 @@ public class CacheFilter implements Filter {
 			return;
 		}
 
-		CachedEntry cachedEntry = makeCachedEntry(responseWrapper);
+		cachedEntry = makeCachedEntry(responseWrapper);
 
 		if (cachedEntry == null) {
 			// put null to unblock the cache
-			cache.put(new Element(cacheKey, null));
+			cache.put(cacheKey, null);
 			return;
 		}
 
 		cachedEntry.replay(response);
 
 		LOG.debug("Write to Cache: " + cacheKey);
-		cache.put(new Element(cacheKey, cachedEntry));
+		cache.put(cacheKey, cachedEntry);
 
 	}
 
