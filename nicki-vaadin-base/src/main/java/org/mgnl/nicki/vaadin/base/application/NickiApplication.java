@@ -47,6 +47,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
+import org.mgnl.nicki.vaadin.base.auth.ApplicationLoginDialog;
 import org.mgnl.nicki.vaadin.base.auth.LoginDialog;
 import org.mgnl.nicki.vaadin.base.command.Command;
 import org.mgnl.nicki.vaadin.base.components.ConfirmDialog;
@@ -106,13 +107,28 @@ public abstract class NickiApplication extends UI {
 			}
 		}
 
-		Component loginDialog = new LoginDialog(this);
-		getView().addComponent(loginDialog);
+		showLoginDialog();
 	}
 	
 	public void logout() {
 		setContext(null);
-		Component loginDialog = new LoginDialog(this);
+		showLoginDialog();
+	}
+	
+	private void showLoginDialog() {
+		LoginDialog loginDialog = null;
+		String loginClass = Config.getProperty("nicki.application.login.class");
+		if (StringUtils.isNotBlank(loginClass)) {
+		try {
+				loginDialog = Classes.newInstance(loginClass);
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+				LOG.error("Error creatin LoginDialog " + loginClass,e.getMessage());
+			}
+		}
+		if (loginDialog == null) {
+			loginDialog = new ApplicationLoginDialog();
+		}
+		loginDialog.setApplication(this);
 		getView().removeAllComponents();
 		getView().addComponent(loginDialog);
 	}
