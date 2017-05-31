@@ -16,7 +16,6 @@
 		<module>nicki-app-menu</module>
 		<module>nicki-apps</module>
 		<module>nicki-cache</module>
-		<module>nicki-cron</module>
 		<module>nicki-db</module>
 		<module>nicki-dynamic-objects</module>
 		<module>nicki-dynamic-objects-ad</module>
