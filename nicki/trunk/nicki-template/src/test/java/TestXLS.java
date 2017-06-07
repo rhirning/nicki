@@ -7,8 +7,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.commons.io.IOUtils;
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
-import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.template.engine.ConfigurationFactory.TYPE;
 import org.mgnl.nicki.template.engine.ConfigurationFactory;
 import org.mgnl.nicki.template.engine.TemplateEngine;
 import org.xml.sax.SAXException;

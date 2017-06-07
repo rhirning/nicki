@@ -5,12 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.ehcache.Cache;
 import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
-import org.ehcache.expiry.Expiry;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.JsonHelper;
 import org.slf4j.Logger;
@@ -27,7 +25,6 @@ public class I18nCache {
     private static final Logger LOG = LoggerFactory.getLogger(I18nCache.class);
 	private static I18nCache instance = new I18nCache();
 	private Map<String, TopicCacheConfiguration> caches = new HashMap<>();
-	private boolean valid;
 	private CacheManager cacheManager;
 
 	public I18nCache() {
