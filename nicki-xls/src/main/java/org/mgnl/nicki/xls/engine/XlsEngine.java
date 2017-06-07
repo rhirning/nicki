@@ -12,10 +12,13 @@ import java.util.Map;
 import javax.xml.bind.JAXBElement;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.poi.common.usermodel.HyperlinkType;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Hyperlink;
 import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
@@ -125,28 +128,35 @@ public class XlsEngine {
 	}
 
 	public enum ALIGN {
-		ALIGN_GENERAL			(CellStyle.ALIGN_GENERAL),
-		ALIGN_LEFT				(CellStyle.ALIGN_LEFT),
-		ALIGN_CENTER			(CellStyle.ALIGN_CENTER),
-		ALIGN_RIGHT				(CellStyle.ALIGN_RIGHT),
-		ALIGN_FILL				(CellStyle.ALIGN_FILL),
-		ALIGN_JUSTIFY			(CellStyle.ALIGN_JUSTIFY),
-		ALIGN_CENTER_SELECTION	(CellStyle.ALIGN_CENTER_SELECTION),
-		VERTICAL_TOP			(CellStyle.VERTICAL_TOP),
-		VERTICAL_BOTTOM			(CellStyle.VERTICAL_BOTTOM),
-		VERTICAL_CENTER			(CellStyle.VERTICAL_CENTER),
-		VERTICAL_JUSTIFY		(CellStyle.VERTICAL_JUSTIFY);
+		ALIGN_GENERAL			(HorizontalAlignment.GENERAL),
+		ALIGN_LEFT				(HorizontalAlignment.LEFT),
+		ALIGN_CENTER			(HorizontalAlignment.CENTER),
+		ALIGN_RIGHT				(HorizontalAlignment.RIGHT),
+		ALIGN_FILL				(HorizontalAlignment.FILL),
+		ALIGN_JUSTIFY			(HorizontalAlignment.JUSTIFY),
+		ALIGN_CENTER_SELECTION	(HorizontalAlignment.CENTER_SELECTION),
+		VERTICAL_TOP			(VerticalAlignment.TOP),
+		VERTICAL_BOTTOM			(VerticalAlignment.BOTTOM),
+		VERTICAL_MIDDLE			(VerticalAlignment.CENTER),
+		VERTICAL_JUSTIFY		(VerticalAlignment.JUSTIFY);
 
-		short value;
-		ALIGN(short value) {
-			this.value = value;
+		HorizontalAlignment hValue;
+		VerticalAlignment vValue;
+		ALIGN(HorizontalAlignment hValue) {
+			this.hValue = hValue;
+		}
+		ALIGN(VerticalAlignment vValue) {
+			this.vValue = vValue;
 		}
 
 		private static void setAlign(CellStyle cellStyle, String alignString, String pattern) {
 			for (ALIGN align : values()) {
 				String name = StringUtils.substringAfter(align.name(), pattern);
-				if (StringUtils.equalsIgnoreCase(name, alignString)) {
-					cellStyle.setAlignment(align.value);
+				if (StringUtils.equalsIgnoreCase(name, alignString) && align.hValue != null) {
+					cellStyle.setAlignment(align.hValue);
+				}
+				if (StringUtils.equalsIgnoreCase(name, alignString) && align.vValue != null) {
+					cellStyle.setVerticalAlignment(align.vValue);
 				}
 			}
 		}
@@ -211,7 +221,7 @@ public class XlsEngine {
 	}
 
 	private void render(Cell cell, Link entry) {
-		Hyperlink link = wb.getCreationHelper().createHyperlink(Hyperlink.LINK_URL);
+		Hyperlink link = wb.getCreationHelper().createHyperlink(HyperlinkType.URL);
 		link.setAddress(entry.getReference());
 		cell.setHyperlink(link);
 		cell.setCellStyle(cellStyles.get(HYPER_LINK));
