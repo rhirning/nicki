@@ -84,18 +84,23 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 		
 	private NickiContext context;
 	
+	private boolean init;
+	
 	protected BaseDynamicObject() {
 		// removed: must be called in TargetObjectFactory
 		//		initDataModel();
 	}
 	
-	public void init() {
-		if (status == STATUS.EXISTS) {
-			try {
-				this.context.loadObject(this);
-			} catch (DynamicObjectException e) {
-				LOG.error("Error", e);
+	public synchronized void init() {
+		if (!init) {
+			if (status == STATUS.EXISTS) {
+				try {
+					this.context.loadObject(this);
+				} catch (DynamicObjectException e) {
+					LOG.error("Error", e);
+				}
 			}
+			init = true;
 		}
 	}
 	
