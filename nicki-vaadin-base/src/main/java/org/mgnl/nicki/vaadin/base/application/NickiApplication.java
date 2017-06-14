@@ -32,9 +32,16 @@
  */
 package org.mgnl.nicki.vaadin.base.application;
 
+import java.security.Principal;
 import java.util.Map;
+import java.util.Set;
+
+import javax.security.auth.Subject;
+import javax.security.auth.login.LoginContext;
+import javax.security.auth.login.LoginException;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.auth.DynamicObjectPrincipal;
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.auth.SSOAdapter;
@@ -94,9 +101,14 @@ public abstract class NickiApplication extends UI {
 		setContent(view);
 		Page.getCurrent().setTitle(I18n.getText(getI18nBase() + ".main.title"));
 		
+		/*
 		if (nickiContext == null) {
 			// try SSO
 			loginSSO();
+		}
+		*/
+		if (context == null) {
+			loginJAAS();
 		}
 		if (context != null) {
 			try {
@@ -132,14 +144,32 @@ public abstract class NickiApplication extends UI {
 		getView().removeAllComponents();
 		getView().addComponent(loginDialog);
 	}
+	
+	private void loginJAAS() {
+		try {
+			
+			LoginContext loginContext = new LoginContext(Config.getProperty("nicki.login.context.name", "nicki"), new Subject());
+			loginContext.login();
+			Set<Principal> principals = loginContext.getSubject().getPrincipals();
+			if (principals != null && principals.size() > 0) {
+				DynamicObjectPrincipal dynamicObjectPrincipal = (DynamicObjectPrincipal) principals.iterator().next();
+				Context context = new Context();
+				context.setLoginContext(dynamicObjectPrincipal.getLoginContext());
+				context.setContext(dynamicObjectPrincipal.getContext());
+				setContext(context);
+			}
+		} catch (LoginException e) {
+			LOG.error(e.getMessage());
+		}
+	}
 
 	private void loginSSO() {
 		try {
 			String ssoLoginClass = Config.getProperty("nicki.login.sso");
 			if (StringUtils.isNotEmpty(ssoLoginClass)) {
 				SSOAdapter adapter = (SSOAdapter) Classes.newInstance(ssoLoginClass);
-				String name = adapter.getName(getRequest());
-				char[] password = adapter.getPassword(getRequest());
+				String name = adapter.getName();
+				char[] password = adapter.getPassword();
 				if (name != null && password != null) {
 					NickiPrincipal principal = new NickiPrincipal(name, new String(password));
 					if (principal != null) {

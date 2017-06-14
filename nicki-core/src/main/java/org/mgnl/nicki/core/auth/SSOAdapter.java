@@ -38,8 +38,8 @@ public interface SSOAdapter {
 		SAML,
 		UNKNOWN
 	}
-	String getName(Object request);
-	char[] getPassword(Object request);
+	void setRequest(Object request);
+	String getName();
+	char[] getPassword();
 	TYPE getType();
-	void init(Object request);
 }

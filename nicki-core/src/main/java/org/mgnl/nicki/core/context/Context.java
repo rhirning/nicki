@@ -38,6 +38,7 @@ import java.util.Map;
 public class Context {
 	private Object request;
 	private Locale locale = Locale.GERMAN;
+	private String userId;
 	private Map<String, String> parameterMap;
 
 	public Object getRequest() {
@@ -64,6 +65,14 @@ public class Context {
 	
 	public Map<String, String> getRequestParameters() {
 		return this.parameterMap;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 }

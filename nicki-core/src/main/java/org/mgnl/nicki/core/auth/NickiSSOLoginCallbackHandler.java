@@ -52,10 +52,10 @@ public class NickiSSOLoginCallbackHandler extends NickiLoginCallbackHandler impl
 		for (int i = 0; i < callbacks.length; i++) {
 			if (callbacks[i] instanceof NameCallback) {
 				NameCallback callback = (NameCallback) callbacks[i];
-				callback.setName(getAdapter().getName(getRequest()));
+				callback.setName(getAdapter().getName());
 			} else 	if (callbacks[i] instanceof PasswordCallback) {
 				PasswordCallback callback = (PasswordCallback) callbacks[i];
-				callback.setPassword(getAdapter().getPassword(getRequest()));
+				callback.setPassword(getAdapter().getPassword());
 			} else {
 				throw new UnsupportedCallbackException(callbacks[i],
 						"Unrecognized Callback");

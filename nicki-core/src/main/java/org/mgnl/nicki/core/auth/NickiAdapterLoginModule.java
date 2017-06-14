@@ -35,26 +35,52 @@ package org.mgnl.nicki.core.auth;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
-import org.mgnl.nicki.core.context.AppContext;
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.util.Classes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DevLoginModule extends NickiLoginModule implements LoginModule {
-	private static final Logger LOG = LoggerFactory.getLogger(DevLoginModule.class);
-
+public class NickiAdapterLoginModule extends NickiLoginModule implements LoginModule {
+	private static final Logger LOG = LoggerFactory.getLogger(NickiAdapterLoginModule.class);
+	
+	private SSOAdapter adapter;
+	
 	@Override
 	public boolean login() throws LoginException {
+		LOG.debug("Using " + getClass().getCanonicalName() +  " with Adapter " + getAdapter().getClass().getCanonicalName());
 
+		NickiPrincipal principal;
 		try {
-			if (this.getTargetName() != null) {
-				setContext(AppContext.getSystemContext(this.getTargetName()));
+			if (StringUtils.isBlank(getAdapter().getName()) || getAdapter().getPassword() == null) {
+				LOG.debug("No valid principal");
 			}
-			setUserPrincipal(getContext().getPrincipal());
-			setSucceeded(true);
-			return true;
+		} catch (Exception e1) {
+			LOG.debug("No valid principal");
+		}
+		try {
+			principal = new NickiPrincipal(getAdapter().getName(), new String(getAdapter().getPassword()));
+			setContext(login(principal));
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			LOG.debug("Invalid Principal", e);
 			return false;
 		}
+
+		// TODO: separate context / loginContext
+		DynamicObjectPrincipal dynamicObjectPrincipal = new DynamicObjectPrincipal(principal, getContext(), getContext());
+		setPrincipal(dynamicObjectPrincipal);
+		setSucceeded(true);
+		return true;
+	}
+
+	private SSOAdapter getAdapter() {
+		if (this.adapter == null) {
+			String adapterClass =(String) getOptions().get("adapter");
+			try {
+				this.adapter = Classes.newInstance(adapterClass);
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+				LOG.error("Could not create adapter " + adapterClass, e);
+			}
+		}
+		return adapter;
 	}
 }
