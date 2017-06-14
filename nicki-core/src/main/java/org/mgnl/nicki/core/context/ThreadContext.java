@@ -62,4 +62,12 @@ public class ThreadContext {
 	public static void setLocale(Locale locale) {
 		getInstance().setLocale(locale);
 	}
+
+	public static String getUserId() {
+		return getInstance().getUserId();
+	}
+
+	public static void setUserId(String locale) {
+		getInstance().setUserId(locale);
+	}
 }

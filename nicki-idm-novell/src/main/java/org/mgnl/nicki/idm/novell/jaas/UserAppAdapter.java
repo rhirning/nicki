@@ -43,6 +43,7 @@ import javax.portlet.PortletSession;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.SSOAdapter;
+import org.mgnl.nicki.core.context.AppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -63,10 +64,24 @@ public class UserAppAdapter implements SSOAdapter {
 	
 	public static final String ATTRIBUTE_NAME_PORTAL_CONTEXT = "com.sssw.portal.api.EbiPortalContext";
 	private TYPE type = TYPE.UNKNOWN;
-	
+
+	private Object request;
 	@Override
-	public void init(Object request) {
-		String credentials = new String(getPassword(request));
+	public void setRequest(Object request) {
+		this.request = request;
+		
+	}
+	
+	public Object getRequest() {
+		if (this.request != null) {
+			return this.request;
+		} else {
+			return AppContext.getRequest();
+		}
+	}
+
+	public void init() {
+		String credentials = new String(getPassword());
 		if (StringUtils.length(credentials) > 100 &&
 				  Base64.isBase64(credentials.getBytes())) {
 			type = TYPE.SAML;
@@ -77,10 +92,10 @@ public class UserAppAdapter implements SSOAdapter {
 		}
 	}
 	
-	public  List<String> getGroups(Object request) {
+	public  List<String> getGroups() {
 		List<String> list = new ArrayList<String>();
 		try {
-			EbiRealmUser user = EboDirectoryHelper.getEbiRealmUser(getContext(request));
+			EbiRealmUser user = EboDirectoryHelper.getEbiRealmUser(getContext());
 			Set<EbiRealmGroup> groups = user.getGroups();
 			for (EbiRealmGroup group : groups) {
 				list.add(group.getName());
@@ -92,12 +107,12 @@ public class UserAppAdapter implements SSOAdapter {
 	}
 	
 
-	private EboUserCredentials getUserCredentials(Object request) {
-		return ((EboUserCredentials)getContext(request).getValue(USER_CREDENTIALS));
+	private EboUserCredentials getUserCredentials() {
+		return ((EboUserCredentials)getContext().getValue(USER_CREDENTIALS));
 	}
 	
-	public char[] getPassword(Object request) {
-		EboUserCredentials credentials = getUserCredentials(request);
+	public char[] getPassword() {
+		EboUserCredentials credentials = getUserCredentials();
 		return decrypt(credentials).toCharArray();
 	}
 	
@@ -116,18 +131,18 @@ public class UserAppAdapter implements SSOAdapter {
 	/** user DN like 
 	 * cn=padmin,ou=users,o=utopia
 	 */
-	public String getName(Object request) {
+	public String getName() {
 		String userName = null;
 		try {
-			userName = EboDirectoryHelper.getUserID(getContext(request));
+			userName = EboDirectoryHelper.getUserID(getContext());
 		} catch (EboUnrecoverableSystemException e) {
 			LOG.error("Error", e);
 		}
 		return userName;
 	}
 
-	public String getUserId(Object request) {
-		String userDn = getName(request);
+	public String getUserId() {
+		String userDn = getName();
 		if (StringUtils.isNotEmpty(userDn)) {
 			userDn = StringUtils.substringAfter(userDn, "=");
 			userDn = StringUtils.substringBefore(userDn, ",");
@@ -139,47 +154,48 @@ public class UserAppAdapter implements SSOAdapter {
 	}
 	
 	public boolean isInGroup(Object request, String group) {
-		return getGroups(request).contains(group);
+		return getGroups().contains(group);
 	}
 	
-	private EbiPortalContext getContext(Object request) {
-		PortletRequest pRequest = (PortletRequest) request;
+	private EbiPortalContext getContext() {
+		PortletRequest pRequest = (PortletRequest) getRequest();
 		return (EbiPortalContext) pRequest.getAttribute(ATTRIBUTE_NAME_PORTAL_CONTEXT);
 	}
 
 	private PortletRequest getRequest(Object request) {
 		return (PortletRequest) request;
 	}
-	private PortletSession getSession(Object request) {
-		return getRequest(request).getPortletSession(true);
+	private PortletSession getSession() {
+		return getRequest(getRequest()).getPortletSession(true);
 	}
 
-	public Object getAttributeFromRequest(Object request, String key) {
-		return getRequest(request).getAttribute(key);
-	}
-
-
-	public Object getAttributeFromSession(Object request, String key) {
-		return getSession(request).getAttribute(key);
+	public Object getAttributeFromRequest(String key) {
+		return getRequest(getRequest()).getAttribute(key);
 	}
 
 
-	public void setAttributeInRequest(Object request, String key, Object object) {
-		getRequest(request).setAttribute(key, object);
+	public Object getAttributeFromSession(String key) {
+		return getSession().getAttribute(key);
 	}
 
 
-	public void setAttributeInSession(Object request, String key, Object object) {
-		getSession(request).setAttribute(key, object);
+	public void setAttributeInRequest(String key, Object object) {
+		getRequest(getRequest()).setAttribute(key, object);
 	}
 
 
-	public String getSessionId(Object request) {
-		return getSession(request).getId();
+	public void setAttributeInSession(String key, Object object) {
+		getSession().setAttribute(key, object);
+	}
+
+
+	public String getSessionId() {
+		return getSession().getId();
 	}
 
 	@Override
 	public TYPE getType() {
+		init();
 		return type;
 	}
 	

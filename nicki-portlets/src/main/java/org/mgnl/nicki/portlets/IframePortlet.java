@@ -85,9 +85,9 @@ public class IframePortlet extends GenericPortlet {
 	
 	private String getParameters(RenderRequest request) {
 		  UserAppAdapter uaa = new UserAppAdapter();
-		  uaa.init(request);
-		  String user = uaa.getName(request);
-		  char passwd[] = uaa.getPassword(request);
+		  uaa.setRequest(request);
+		  String user = uaa.getName();
+		  char passwd[] = uaa.getPassword();
 		  
 		  String credentials = new String(passwd);
 		  
@@ -105,9 +105,9 @@ public class IframePortlet extends GenericPortlet {
 	private Map getParametersMap(RenderRequest request) {
 		Map<String, String> map = new HashMap<String, String>();
 		  UserAppAdapter uaa = new UserAppAdapter();
-		  uaa.init(request);
-		  String user = uaa.getName(request);
-		  char passwd[] = uaa.getPassword(request);
+		  uaa.setRequest(request);
+		  String user = uaa.getName();
+		  char passwd[] = uaa.getPassword();
 		  
 		  String credentials = new String(passwd);
 		  		  

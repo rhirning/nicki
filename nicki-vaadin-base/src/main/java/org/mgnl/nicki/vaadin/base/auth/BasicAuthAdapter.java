@@ -32,40 +32,26 @@
  */
 package org.mgnl.nicki.vaadin.base.auth;
 
-import javax.security.auth.login.LoginException;
-import javax.security.auth.spi.LoginModule;
+import javax.servlet.ServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
-import org.mgnl.nicki.core.auth.DynamicObjectPrincipal;
-import org.mgnl.nicki.core.auth.NickiLoginModule;
-import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.core.auth.SSOAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class DevLoginModule extends NickiLoginModule implements LoginModule {
-	private static final Logger LOG = LoggerFactory.getLogger(DevLoginModule.class);
+import com.vaadin.server.VaadinServletRequest;
 
-	private String targetName;
-	@Override
-	public boolean login() throws LoginException {
 
-		try {
-			if (this.targetName != null) {
-				setContext(AppContext.getSystemContext(this.targetName));
-			}
-			// TODO: separate context / loginContext
-			DynamicObjectPrincipal dynamicObjectPrincipal = new DynamicObjectPrincipal(getContext().getPrincipal(), getContext(), getContext());
-			setPrincipal(dynamicObjectPrincipal);
-			setSucceeded(true);
-			return true;
-		} catch (Exception e) {
-			LOG.error("Error", e);
-			return false;
+public class BasicAuthAdapter extends org.mgnl.nicki.core.auth.BasicAuthAdapter implements SSOAdapter {
+	private static final Logger LOG = LoggerFactory.getLogger(BasicAuthAdapter.class);
+
+	
+	public Object getRequest() {
+		if (super.getRequest() instanceof VaadinServletRequest) {
+			return ((VaadinServletRequest) super.getRequest()).getHttpServletRequest();
+		} else {
+			return super.getRequest();
 		}
 	}
-	public String getTargetName() {
-		return targetName;
-	}
-	public void setTargetName(String targetName) {
-		this.targetName = targetName;
-	}
+	
 }

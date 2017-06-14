@@ -67,6 +67,14 @@ public class AppContext {
 		return getInstance().getLocale();
 	}
 
+	public static void setUserId(String userId) {
+		getInstance().setUserId(userId);
+	}
+
+	public static String getUserId() {
+		return getInstance().getUserId();
+	}
+
 	public static void setLocale(Locale locale) {
 		getInstance().setLocale(locale);
 	}

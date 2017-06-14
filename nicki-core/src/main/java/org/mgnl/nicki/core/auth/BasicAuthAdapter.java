@@ -36,20 +36,21 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.context.AppContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-;
 
 public class BasicAuthAdapter implements SSOAdapter {
 	private static final Logger LOG = LoggerFactory.getLogger(BasicAuthAdapter.class);
+	private Object request;
 
-	public String getName(Object request) {
-		return getAuthPart(request, 0);
+	public String getName() {
+		return getAuthPart(0);
 	}
 
-	public char[] getPassword(Object request) {
-		String password = getAuthPart(request, 1);
+	public char[] getPassword() {
+		String password = getAuthPart(1);
 		if (password != null) {
 			return password.toCharArray();
 		}
@@ -62,7 +63,16 @@ public class BasicAuthAdapter implements SSOAdapter {
 	}
 
 	@Override
-	public void init(Object request) {
+	public void setRequest(Object request) {
+		this.request = request;
+	}
+	
+	public Object getRequest() {
+		if (this.request != null) {
+			return this.request;
+		} else {
+			return AppContext.getRequest();
+		}
 	}
 
 	protected String[] decode(final String encodedString) {
@@ -76,10 +86,10 @@ public class BasicAuthAdapter implements SSOAdapter {
 		return new String[]{};
 	}
 	
-	protected String getAuthPart(Object request, int num) {
+	protected String getAuthPart(int num) {
 		try {
-			if (request instanceof HttpServletRequest) {
-				HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+			if (getRequest() instanceof HttpServletRequest) {
+				HttpServletRequest httpServletRequest = (HttpServletRequest) getRequest();
 				String header = httpServletRequest.getHeader("Authorization");
 				String encodedCredentials = StringUtils.substringAfter(header, " ");
 				String[] decodedCredentials = decode(encodedCredentials);
