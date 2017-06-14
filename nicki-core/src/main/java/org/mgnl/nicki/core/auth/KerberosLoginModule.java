@@ -2,7 +2,6 @@ package org.mgnl.nicki.core.auth;
 
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
-import java.util.Base64;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -14,6 +13,8 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
@@ -137,7 +138,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 	 * @return copy of token
 	 */
 	byte[] decodeToken(String token) {
-		return (null == token) ? EMPTY_BYTE_ARRAY : Base64.getDecoder().decode(token);
+		return (null == token) ? EMPTY_BYTE_ARRAY : Base64.decodeBase64(token);
 	}
 
 	@Override

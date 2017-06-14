@@ -18,14 +18,8 @@
 
 package org.mgnl.nicki.spnego;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.security.PrivilegedActionException;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Enumeration;
-import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.logging.Level;
@@ -35,13 +29,11 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.kerberos.KerberosPrincipal;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
-
+import org.apache.commons.codec.binary.Base64;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
@@ -437,7 +429,7 @@ public final class SpnegoAuthenticator {
             }
 
             resp.setHeader(Constants.AUTHN_HEADER, Constants.NEGOTIATE_HEADER 
-                    + ' ' + Base64.getEncoder().encode(token));
+                    + ' ' + Base64.encodeBase64(token));
 
             if (!context.isEstablished()) {
                 LOGGER.fine("context not established");

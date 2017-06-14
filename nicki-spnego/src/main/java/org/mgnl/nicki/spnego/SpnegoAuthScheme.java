@@ -18,8 +18,7 @@
 
 package org.mgnl.nicki.spnego;
 
-import java.util.Base64;
-
+import org.apache.commons.codec.binary.Base64;
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 
 /**
@@ -112,6 +111,6 @@ final class SpnegoAuthScheme {
      * @return copy of token
      */
     byte[] getToken() {
-        return (null == this.token) ? EMPTY_BYTE_ARRAY : Base64.getDecoder().decode(this.token);
+        return (null == this.token) ? EMPTY_BYTE_ARRAY : Base64.decodeBase64(this.token);
     }
 }
