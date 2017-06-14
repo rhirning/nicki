@@ -26,7 +26,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.security.PrivilegedActionException;
 import java.util.ArrayList;
-import java.util.Base64;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,7 @@ import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
-
+import org.apache.commons.codec.binary.Base64;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
@@ -406,7 +405,7 @@ public final class SpnegoHttpURLConnection {
             this.conn.setRequestMethod(this.requestMethod);
 
             this.conn.setRequestProperty(Constants.AUTHZ_HEADER
-                , Constants.NEGOTIATE_HEADER + ' ' + Base64.getEncoder().encode(data));
+                , Constants.NEGOTIATE_HEADER + ' ' + Base64.encodeBase64(data));
 
             if (null != dooutput && dooutput.size() > 0) {
                 this.conn.setDoOutput(true);
