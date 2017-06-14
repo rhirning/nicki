@@ -35,7 +35,7 @@ package org.mgnl.nicki.core.auth;
 import org.mgnl.nicki.core.context.AppContext;;
 
 public class DevSSOAdapter implements SSOAdapter {
-	public String getName(Object request) {
+	public String getName() {
 		 try {
 			return AppContext.getSystemContext().getPrincipal().getName();
 		} catch (Exception e) {
@@ -43,7 +43,7 @@ public class DevSSOAdapter implements SSOAdapter {
 		}
 	}
 
-	public char[] getPassword(Object request) {
+	public char[] getPassword() {
 		 try {
 				return AppContext.getSystemContext().getPrincipal().getPassword().toCharArray();
 			} catch (Exception e) {
@@ -57,7 +57,7 @@ public class DevSSOAdapter implements SSOAdapter {
 	}
 
 	@Override
-	public void init(Object request) {
+	public void setRequest(Object request) {
 	}
 
 }

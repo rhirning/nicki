@@ -57,6 +57,8 @@ public class IframeAdapter implements SSOAdapter {
 	private boolean isInit = false;
 	private TYPE type = TYPE.UNKNOWN;
 	
+	private Object request;
+	
 	private String password;
 	private String name;
 
@@ -65,8 +67,7 @@ public class IframeAdapter implements SSOAdapter {
 		return type;
 	}
 
-	@Override
-	public void init(Object request) {
+	public void init() {
 		if (!isInit) {
 			String encodedToken = null;
 			String encodedPassword = null;
@@ -121,21 +122,21 @@ public class IframeAdapter implements SSOAdapter {
 		return list;
 	}
 	
-	public char[] getPassword(Object request) {
-		init(request);
+	public char[] getPassword() {
+		init();
 		return password.toCharArray();
 	}
 	/** user DN like 
 	 * cn=padmin,ou=users,o=utopia
 	 */
-	public String getName(Object request) {
-		init(request);
+	public String getName() {
+		init();
 		return name;
 	}
 
-	public String getUserId(Object request) {
-		init(request);
-		String userDn = getName(request);
+	public String getUserId() {
+		init();
+		String userDn = getName();
 		if (StringUtils.isNotEmpty(userDn)) {
 			userDn = StringUtils.substringAfter(userDn, "=");
 			userDn = StringUtils.substringBefore(userDn, ",");
@@ -188,6 +189,19 @@ public class IframeAdapter implements SSOAdapter {
 		sb.append("IframeAdapter: type=").append(type).append("|name=").append(name);
 		sb.append("|password=").append(password);
 		return sb.toString();
+	}
+
+	@Override
+	public void setRequest(Object request) {
+		this.request = request;
+	}
+	
+	public Object getRequest() {
+		if (this.request != null) {
+			return this.request;
+		} else {
+			return AppContext.getRequest();
+		}
 	}
 	
 	

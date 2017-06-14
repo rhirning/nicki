@@ -36,10 +36,10 @@ public final class HelloKDC {
     public static void main(final String[] args) throws Exception {
  
     	// Domain (pre-authentication) account
-        final String username = "xxxxxxx";
+        final String username = "rhirning";
         
         // Password for the pre-auth acct.
-        final String password = "password";
+        final String password = "M34mandelboot";
         
         // Name of our krb5 config file
         final String krbfile = "D:/work/svn/nicki/nicki-core/src/test/resources/krb5.conf";

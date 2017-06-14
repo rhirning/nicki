@@ -32,6 +32,7 @@
  */
 package org.mgnl.nicki.core.auth;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.security.auth.Subject;
@@ -40,14 +41,18 @@ import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public abstract class NickiLoginModule implements LoginModule {
+	private static final Logger LOG = LoggerFactory.getLogger(NickiLoginModule.class);
 	
 	// initial state
 	private Subject subject;
@@ -63,14 +68,10 @@ public abstract class NickiLoginModule implements LoginModule {
 	// the authentication status
 	private boolean succeeded = false;
 	private boolean commitSucceeded = false;
-
-	// username and password
-	private String username;
-	private String password;
 	
-	// Principal
-	private NickiPrincipal userPrincipal;	
+	// Principal	
 	private NickiContext context;
+	private DynamicObjectPrincipal principal;
 	
 	protected NickiLoginModule() {
 		
@@ -82,7 +83,6 @@ public abstract class NickiLoginModule implements LoginModule {
 	@Override
 	public void initialize(Subject subject, CallbackHandler callbackHandler,
 			Map<String, ?> sharedState, Map<String, ?> options) {
-
 
 		this.subject = subject;
 		this.callbackHandler = callbackHandler;
@@ -112,6 +112,25 @@ public abstract class NickiLoginModule implements LoginModule {
 		throw new InvalidPrincipalException();
 	}
 
+	protected DynamicObject loadUser(String userId) {
+		List<? extends DynamicObject> list = null;
+		try {
+			list = AppContext.getSystemContext().loadObjects(Config.getProperty("nicki.users.basedn"), "cn=" + userId);
+		} catch (InvalidPrincipalException e) {
+			LOG.error("Invalid SystemContext", e);
+		}
+		
+		if (list != null && list.size() == 1) {
+			LOG.info("login: loadObjects successful");
+			return list.get(0);
+		} else {
+			LOG.info("login: loadObjects not successful");
+			LOG.debug("Loading Objects not successful: " 
+					+ ((list == null)?"null":"size=" + list.size()));
+			return null;
+		}
+	}
+
 	@Override
 	public boolean commit() throws LoginException {
 		if (succeeded == false) {
@@ -120,18 +139,9 @@ public abstract class NickiLoginModule implements LoginModule {
 			// add a Principal (authenticated identity)
 			// to the Subject
 
-			// assume the user we authenticated is the SamplePrincipal
-			try {
-				userPrincipal = new NickiPrincipal(username, password);
-			} catch (InvalidPrincipalException e) {
-				throw new LoginException(e.getMessage());
+			if (!subject.getPrincipals().contains(this.principal)) {
+				subject.getPrincipals().add(this.principal);
 			}
-			if (!subject.getPrincipals().contains(userPrincipal)) {
-				subject.getPrincipals().add(userPrincipal);
-			}
-
-			// in any case, clean out state
-			username = null;
 
 			commitSucceeded = true;
 			return true;
@@ -145,8 +155,7 @@ public abstract class NickiLoginModule implements LoginModule {
 		} else if (succeeded == true && commitSucceeded == false) {
 			// login succeeded but overall authentication failed
 			succeeded = false;
-			username = null;
-			userPrincipal = null;
+			principal = null;
 			context = null;
 		} else {
 			// overall authentication succeeded and commit succeeded,
@@ -158,11 +167,10 @@ public abstract class NickiLoginModule implements LoginModule {
 
 	@Override
 	public boolean logout() throws LoginException {
-		subject.getPrincipals().remove(userPrincipal);
+		subject.getPrincipals().remove(principal);
 		succeeded = false;
 		succeeded = commitSucceeded;
-		username = null;
-		userPrincipal = null;
+		principal = null;
 		return true;
 	}
 
@@ -194,27 +202,28 @@ public abstract class NickiLoginModule implements LoginModule {
 		this.context = nickiContext;
 	}
 
-	protected NickiPrincipal getUserPrincipal() {
-		return userPrincipal;
-	}
-
-	protected void setUserPrincipal(NickiPrincipal userPrincipal) {
-		this.userPrincipal = userPrincipal;
-		if (userPrincipal != null) {
-			this.username = userPrincipal.getName();
-			this.password = userPrincipal.getPassword();
-		} else {
-			this.username = null;
-			this.password = null;
-		}
-	}
-
 	protected String getTargetName() {
 		return targetName;
 	}
 
 	protected boolean isUseSystemContext() {
 		return useSystemContext;
+	}
+
+	public DynamicObjectPrincipal getDynamicObjectPrincipal() {
+		return principal;
+	}
+
+	public void setPrincipal(DynamicObjectPrincipal dynamicObjectPrincipal) {
+		if (this.subject == null) {
+			this.subject = new Subject();
+			this.subject.getPrincipals().add(dynamicObjectPrincipal);
+		}
+		this.principal = dynamicObjectPrincipal;
+	}
+
+	public Subject getSubject() {
+		return subject;
 	}
 
 }
