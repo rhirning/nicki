@@ -59,7 +59,8 @@ public final class LogFilter implements Filter {
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         List<String> headerNames = new ArrayList<>();
-        Enumeration enumeration = httpRequest.getHeaderNames();
+        @SuppressWarnings("rawtypes")
+		Enumeration enumeration = httpRequest.getHeaderNames();
         boolean hasAuthorization = false;
         while (enumeration.hasMoreElements()) {
         	String headerName = (String) enumeration.nextElement();
