@@ -32,14 +32,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.commons.codec.binary.Base64;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
@@ -126,7 +126,7 @@ import org.ietf.jgss.GSSException;
  */
 public final class SpnegoHttpURLConnection {
 
-    private static final Logger LOGGER = Logger.getLogger(Constants.LOGGER_NAME);
+    private static final Logger LOG = LoggerFactory.getLogger(SpnegoHttpURLConnection.class);
     
     /** GSSContext is not thread-safe. */
     private static final Lock LOCK = new ReentrantLock();
@@ -426,12 +426,12 @@ public final class SpnegoHttpURLConnection {
             
             // app servers will not return a WWW-Authenticate on 302, (and 30x...?)
             if (null == scheme) {
-                LOGGER.fine("SpnegoProvider.getAuthScheme(...) returned null.");
+                LOG.debug("SpnegoProvider.getAuthScheme(...) returned null.");
                 
             // client requesting to skip context loop if 200 and mutualAuth=false
             } else if (this.conn.getResponseCode() == HttpURLConnection.HTTP_OK
                     && !this.mutualAuth) {
-                LOGGER.fine("SpnegoProvider.getAuthScheme(...) returned null.");
+                LOG.debug("SpnegoProvider.getAuthScheme(...) returned null.");
                 
             } else {
                 data = scheme.getToken();
@@ -446,7 +446,7 @@ public final class SpnegoHttpURLConnection {
 
                     // TODO : support context loops where i>1
                     if (null != data) {
-                        LOGGER.warning("Server requested context loop: " + data.length);
+                        LOG.warn("Server requested context loop: " + data.length);
                     }
                     
                 } else {
@@ -478,7 +478,7 @@ public final class SpnegoHttpURLConnection {
                     SpnegoHttpURLConnection.LOCK.unlock();
                 }
             } catch (GSSException gsse) {
-                LOGGER.log(Level.WARNING, "call to dispose context failed.", gsse);
+                LOG.warn("call to dispose context failed.", gsse);
             }
         }
         
@@ -486,7 +486,7 @@ public final class SpnegoHttpURLConnection {
             try {
                 this.credential.dispose();
             } catch (final GSSException gsse) {
-                LOGGER.log(Level.WARNING, "call to dispose credential failed.", gsse);
+                LOG.warn("call to dispose credential failed.", gsse);
             }
         }
         
@@ -494,7 +494,7 @@ public final class SpnegoHttpURLConnection {
             try {
                 this.loginContext.logout();
             } catch (final LoginException lex) {
-                LOGGER.log(Level.WARNING, "call to logout context failed.", lex);
+                LOG.warn("call to logout context failed.", lex);
             }
         }
     }
