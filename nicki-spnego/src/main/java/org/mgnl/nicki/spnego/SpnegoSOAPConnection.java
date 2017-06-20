@@ -25,7 +25,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.security.PrivilegedActionException;
-import java.util.logging.Logger;
 
 import javax.security.auth.login.LoginException;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -43,7 +42,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
 import org.w3c.dom.Document;
@@ -134,8 +134,8 @@ import org.xml.sax.SAXException;
 public class SpnegoSOAPConnection extends SOAPConnection {
     
     /** Default LOGGER. */
-    private static final Logger LOGGER = 
-        Logger.getLogger(SpnegoSOAPConnection.class.getName());
+    private static final Logger LOG = 
+        LoggerFactory.getLogger(SpnegoSOAPConnection.class);
 
     private final transient SpnegoHttpURLConnection conn;
     
@@ -243,7 +243,7 @@ public class SpnegoSOAPConnection extends SOAPConnection {
     public final SOAPMessage call(final SOAPMessage request, final Object endpoint)
         throws SOAPException {
         
-        LOGGER.finer("endpoint=" + endpoint);
+        LOG.debug("endpoint=" + endpoint);
         
         SOAPMessage message = null;
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -395,11 +395,11 @@ public class SpnegoSOAPConnection extends SOAPConnection {
         
         final NodeList children = soapBody.getChildNodes();
         
-        LOGGER.finer("number of children=" + children.getLength());
+        LOG.debug("number of children=" + children.getLength());
 
         for (int i = 0; i < children.getLength(); i++) {
             
-            LOGGER.finest("child[" + i + "]=" + children.item(i).getLocalName());
+            LOG.debug("child[" + i + "]=" + children.item(i).getLocalName());
             
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 

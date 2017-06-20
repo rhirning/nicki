@@ -35,10 +35,12 @@ package org.mgnl.nicki.core.context;
 import java.util.Locale;
 import java.util.Map;
 
+import org.mgnl.nicki.core.objects.DynamicObject;
+
 public class Context {
 	private Object request;
 	private Locale locale = Locale.GERMAN;
-	private String userId;
+	private DynamicObject user;
 	private Map<String, String> parameterMap;
 
 	public Object getRequest() {
@@ -67,12 +69,12 @@ public class Context {
 		return this.parameterMap;
 	}
 
-	public String getUserId() {
-		return userId;
+	public DynamicObject getUser() {
+		return user;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setUser(DynamicObject user) {
+		this.user = user;
 	}
 
 }
