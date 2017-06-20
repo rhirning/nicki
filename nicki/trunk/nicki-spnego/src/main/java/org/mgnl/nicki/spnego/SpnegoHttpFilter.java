@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 import javax.security.auth.login.LoginException;
 import javax.servlet.Filter;
@@ -38,8 +37,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.ietf.jgss.GSSException;
+import org.mgnl.nicki.core.auth.InvalidPrincipalException;
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.core.objects.DynamicObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Http Servlet Filter that provides <a
@@ -185,12 +190,10 @@ import org.mgnl.nicki.core.context.AppContext;
  * 
  */
 public final class SpnegoHttpFilter implements Filter {
-
-    private static final Logger LOGGER = Logger.getLogger(Constants.LOGGER_NAME);
+	private static final Logger LOG = LoggerFactory.getLogger(SpnegoHttpFilter.class);
 
     private static final String SESSION_NO_USER = "NICKI_SESSION_NO_USER";
-    private static final String SESSION_USER_ID = "NICKI_SESSION_USER_ID";
-    private static final String SESSION_ENTRY = "NICKI_SESSION_ENTRY";
+    private static final String SESSION_USER = "NICKI_SESSION_USER";
 
     /** Object for performing Basic and SPNEGO authentication. */
     private transient SpnegoAuthenticator authenticator;
@@ -215,7 +218,7 @@ public final class SpnegoHttpFilter implements Filter {
             final SpnegoFilterConfig config = SpnegoFilterConfig.getInstance();
             this.excludeDirs.addAll(config.getExcludeDirs());
             
-            LOGGER.info("excludeDirs=" + this.excludeDirs);
+            LOG.info("excludeDirs=" + this.excludeDirs);
             
             // pre-authenticate
             this.authenticator = new SpnegoAuthenticator(config);
@@ -274,29 +277,29 @@ public final class SpnegoHttpFilter implements Filter {
 
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
         
-        LOGGER.finest("Request: " + httpRequest.getServletPath());
+        LOG.debug("Request: " + httpRequest.getServletPath() + ", ThreadId=" + Thread.currentThread().getId());
         //String browserType = (String) httpRequest.getHeader("User-Agent");
-        //LOGGER.finest("User-Agent: " + browserType);
+        //LOG.debug("User-Agent: " + browserType);
         
         final SpnegoHttpServletResponse spnegoResponse = new SpnegoHttpServletResponse(
                 (HttpServletResponse) response);
 
         // skip authentication if session is already authenticated
-        if (httpRequest.getSession() != null) {
-        	if (httpRequest.getSession().getAttribute(SESSION_USER_ID) != null) {
-        		AppContext.setUserId((String) httpRequest.getSession().getAttribute(SESSION_USER_ID));
-                LOGGER.finest("Authenticated user: " + AppContext.getUserId());
+        if (httpRequest.getSession(false) != null) {
+        	if (httpRequest.getSession().getAttribute(SESSION_USER) != null) {
+        		AppContext.setUser((DynamicObject) httpRequest.getSession(false).getAttribute(SESSION_USER));
+                LOG.debug("Authenticated user: " + AppContext.getUser().getDisplayName());
 	            chain.doFilter(request, response);
 	            return;
-        	} else if (httpRequest.getSession().getAttribute(SESSION_NO_USER) != null) {
-                LOGGER.finest("no authenticated user");
+        	} else if (httpRequest.getSession(false).getAttribute(SESSION_NO_USER) != null) {
+                LOG.debug("no authenticated user");
 	            chain.doFilter(request, response);
 	            return;
         	}
         }
         // skip authentication if resource is in the list of directories to exclude
         if (exclude(httpRequest.getContextPath(), httpRequest.getServletPath())) {
-            LOGGER.finest("excluded: " + httpRequest.getServletPath());
+            LOG.debug("excluded: " + httpRequest.getServletPath());
             chain.doFilter(request, response);
             return;
         }
@@ -304,50 +307,48 @@ public final class SpnegoHttpFilter implements Filter {
         // client/caller principal
         final SpnegoPrincipal principal;
         try {
-            if (httpRequest.getSession(false) != null && httpRequest.getSession(false).getAttribute(SESSION_USER_ID) != null) {
-            	httpRequest.getSession(false).removeAttribute(SESSION_USER_ID);
+            if (httpRequest.getSession(false) != null && httpRequest.getSession(false).getAttribute(SESSION_USER) != null) {
+            	httpRequest.getSession().removeAttribute(SESSION_USER);
+                httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
             }
             principal = this.authenticator.authenticate(httpRequest, spnegoResponse);
         } catch (GSSException gsse) {
-            LOGGER.severe("HTTP Authorization Header="
+            LOG.error("HTTP Authorization Header="
                 + httpRequest.getHeader(Constants.AUTHZ_HEADER));
             throw new ServletException(gsse);
         } catch (Exception e) {
             httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
-            LOGGER.finest("Authentication not successful: " + e.getMessage());
+            LOG.debug("Authentication not successful: " + e.getMessage());
             chain.doFilter(request, response);
             return;
         }
 
         // context/auth loop not yet complete
         if (spnegoResponse.isStatusSet()) {
-        	if (httpRequest.getSession(false) != null && httpRequest.getSession(false).getAttribute(SESSION_ENTRY) != null) {
-        		LOGGER.finest("Second authenticate request");
-                httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
+        	if (httpRequest.getSession(false) != null) {
+        		LOG.debug("Second authenticate request");
                 chain.doFilter(request, response);
         	} else {
-        		LOGGER.finest("First authenticate request");
-        		httpRequest.getSession().setAttribute(SESSION_ENTRY, "1"); 
+        		LOG.debug("First authenticate request");
         	}
             return;
         }
 
         // assert
         if (null == principal) {
-            LOGGER.finest("Principal was null.");
-            httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
+            LOG.debug("Principal was null.");
             chain.doFilter(request, response);
             return;
         }
 
-        LOGGER.fine("principal=" + principal);
+        LOG.debug("principal=" + principal);
         
         final SpnegoHttpServletRequest spnegoRequest = 
                 new SpnegoHttpServletRequest(httpRequest, principal, this.accessControl);
                 
         // site wide authZ check (if enabled)
         if (!isAuthorized((HttpServletRequest) spnegoRequest)) {
-            LOGGER.info("Principal Not AuthoriZed: " + principal);
+            LOG.info("Principal Not AuthoriZed: " + principal);
             if (this.page403.isEmpty()) {
                 spnegoResponse.setStatus(HttpServletResponse.SC_FORBIDDEN, true);  
             } else {
@@ -356,11 +357,53 @@ public final class SpnegoHttpFilter implements Filter {
             return;            
         }
         
-        AppContext.setUserId(principal.getName());
-        httpRequest.getSession().setAttribute(SESSION_USER_ID, principal.getName());
+        try {
+			AppContext.setUser(login(principal.getName()));
+			httpRequest.getSession().setAttribute(SESSION_USER, AppContext.getUser());
+            httpRequest.getSession().removeAttribute(SESSION_NO_USER);
+		} catch (LoginException e) {
+			AppContext.setUser(null);
+			LOG.debug("Invalid user " + principal.getName());
+		}
 
         chain.doFilter(spnegoRequest, response);
     }
+    
+	public DynamicObject login(String userId) throws LoginException {
+		if (StringUtils.isBlank(userId)) {
+			throw new LoginException("missing userId");
+		}
+		if (StringUtils.contains(userId, "@")) {
+			userId = StringUtils.substringBefore(userId, "@");
+		}
+		DynamicObject user = loadUser(userId);
+		if (user == null) {
+			LOG.debug("Invalid user " + userId);
+			throw new LoginException("Invalid user " + userId);
+		}
+		
+		LOG.debug("user ok " + user.getPath());
+		return user;
+	}
+
+	protected DynamicObject loadUser(String userId) {
+		List<? extends DynamicObject> list = null;
+		try {
+			list = AppContext.getSystemContext().loadObjects(Config.getProperty("nicki.users.basedn"), "cn=" + userId);
+		} catch (InvalidPrincipalException e) {
+			LOG.error("Invalid SystemContext", e);
+		}
+		
+		if (list != null && list.size() == 1) {
+			LOG.info("login: loadObjects successful");
+			return list.get(0);
+		} else {
+			LOG.info("login: loadObjects not successful");
+			LOG.debug("Loading Objects not successful: " 
+					+ ((list == null)?"null":"size=" + list.size()));
+			return null;
+		}
+	}
     
     private boolean isAuthorized(final HttpServletRequest request) {
         if (null != this.sitewide && null != this.accessControl

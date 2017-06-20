@@ -34,6 +34,8 @@ package org.mgnl.nicki.core.context;
 
 import java.util.Locale;
 
+import org.mgnl.nicki.core.objects.DynamicObject;
+
 public class ThreadContext {
     /**
      * The thread local variable holding the current context
@@ -63,11 +65,11 @@ public class ThreadContext {
 		getInstance().setLocale(locale);
 	}
 
-	public static String getUserId() {
-		return getInstance().getUserId();
+	public static DynamicObject getUser() {
+		return getInstance().getUser();
 	}
 
-	public static void setUserId(String locale) {
-		getInstance().setUserId(locale);
+	public static void setUser(DynamicObject user) {
+		getInstance().setUser(user);
 	}
 }

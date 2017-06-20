@@ -22,8 +22,6 @@ import java.io.IOException;
 import java.security.PrivilegedActionException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.kerberos.KerberosPrincipal;
@@ -33,6 +31,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.apache.commons.codec.binary.Base64;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
@@ -85,7 +85,7 @@ import org.ietf.jgss.GSSManager;
  */
 public final class SpnegoAuthenticator {
 
-    private static final Logger LOGGER = Logger.getLogger(Constants.LOGGER_NAME);
+    private static final Logger LOG = LoggerFactory.getLogger(SpnegoAuthenticator.class);
     
     /** GSSContext is not thread-safe. */
     private static final Lock LOCK = new ReentrantLock();
@@ -131,7 +131,7 @@ public final class SpnegoAuthenticator {
     public SpnegoAuthenticator(final SpnegoFilterConfig config) 
         throws LoginException, GSSException, PrivilegedActionException {
 
-        LOGGER.fine("config=" + config);
+        LOG.debug("config=" + config);
 
         this.allowBasic = config.isBasicAllowed();
         this.allowUnsecure = config.isUnsecureAllowed();  
@@ -172,7 +172,7 @@ public final class SpnegoAuthenticator {
         , final SpnegoFilterConfig config) throws LoginException
         , GSSException, PrivilegedActionException {
 
-        LOGGER.fine("loginModuleName=" + loginModuleName);
+        LOG.debug("loginModuleName=" + loginModuleName);
 
         this.allowBasic = config.isBasicAllowed();
         this.allowUnsecure = config.isUnsecureAllowed();  
@@ -245,25 +245,25 @@ public final class SpnegoAuthenticator {
         // NOTE: this may also occur if we do not allow Basic Auth and
         // the client only supports Basic Auth
         if (null == scheme) {
-            LOGGER.finer("scheme null.");
+            LOG.debug("scheme null.");
             return null;
         } else {
-        	LOGGER.finest("scheme: " + scheme.getScheme());
+        	LOG.debug("scheme: " + scheme.getScheme());
         }
 
         // NEGOTIATE scheme
         if (scheme.isNegotiateScheme()) {
             principal = doSpnegoAuth(scheme, resp);
-        	LOGGER.finest("principal(SPNEGO): " + (principal == null?null:principal.getName()));
+        	LOG.debug("principal(SPNEGO): " + (principal == null?null:principal.getName()));
             
         // BASIC scheme
         } else if (scheme.isBasicScheme()) {
             // check if we allow Basic Auth AND if can be un-secure
             if (basicSupported) {
                 principal = doBasicAuth(scheme, resp);
-            	LOGGER.finest("principal(BASIC): " + (principal == null?null:principal.getName()));
+            	LOG.debug("principal(BASIC): " + (principal == null?null:principal.getName()));
             } else {
-                LOGGER.severe("allowBasic=" + this.allowBasic 
+                LOG.error("allowBasic=" + this.allowBasic 
                         + "; allowUnsecure=" + this.allowUnsecure
                         + "; req.isSecure()=" + req.isSecure());
                 throw new UnsupportedOperationException("Basic Auth not allowed"
@@ -292,14 +292,14 @@ public final class SpnegoAuthenticator {
             try {
                 this.serverCredentials.dispose();
             } catch (GSSException e) {
-                LOGGER.log(Level.WARNING, "Dispose failed.", e);
+                LOG.warn("Dispose failed.", e);
             }
         }
         if (null != this.loginContext) {
             try {
                 this.loginContext.logout();
             } catch (LoginException lex) {
-                LOGGER.log(Level.WARNING, "Logout failed.", lex);
+                LOG.warn("Logout failed.", lex);
             }
         }
     }
@@ -320,7 +320,7 @@ public final class SpnegoAuthenticator {
         final byte[] data = scheme.getToken();
 
         if (0 == data.length) {
-            LOGGER.finer("Basic Auth data was NULL.");
+            LOG.debug("Basic Auth data was NULL.");
             return null;
         }
 
@@ -350,18 +350,18 @@ public final class SpnegoAuthenticator {
             final LoginContext cntxt = new LoginContext(this.clientModuleName, handler);
 
             // validate username/password by login/logout
-            LOGGER.finest("vor login");
+            LOG.debug("vor login");
             cntxt.login();
-            LOGGER.finest("nach login / vor logout");
+            LOG.debug("nach login / vor logout");
             cntxt.logout();
-            LOGGER.finest("nach logout");
+            LOG.debug("nach logout");
 
             principal = new SpnegoPrincipal(username + '@' 
                     + this.serverPrincipal.getRealm()
                     , KerberosPrincipal.KRB_NT_PRINCIPAL);
 
         } catch (LoginException lex) {
-            LOGGER.fine(lex.getMessage() + ": Login failed. username=" + username);
+            LOG.debug(lex.getMessage() + ": Login failed. username=" + username);
 
             resp.setHeader(Constants.AUTHN_HEADER, Constants.NEGOTIATE_HEADER);
             resp.addHeader(Constants.AUTHN_HEADER, Constants.BASIC_HEADER 
@@ -405,7 +405,7 @@ public final class SpnegoAuthenticator {
         final byte[] gss = scheme.getToken();
 
         if (0 == gss.length) {
-            LOGGER.finer("GSS data was NULL.");
+            LOG.debug("GSS data was NULL.");
             return null;
         }
 
@@ -424,7 +424,7 @@ public final class SpnegoAuthenticator {
             }
 
             if (null == token) {
-                LOGGER.finer("Token was NULL.");
+                LOG.debug("Token was NULL.");
                 return null;
             }
 
@@ -432,7 +432,7 @@ public final class SpnegoAuthenticator {
                     + ' ' + Base64.encodeBase64(token));
 
             if (!context.isEstablished()) {
-                LOGGER.fine("context not established");
+                LOG.debug("context not established");
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED, true);
                 return null;
             }

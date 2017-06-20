@@ -26,12 +26,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.security.auth.login.AppConfigurationEntry;
 import javax.security.auth.login.Configuration;
-import javax.servlet.FilterConfig;
 
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
@@ -66,9 +63,7 @@ import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
  *
  */
 public final class SpnegoFilterConfig { // NOPMD
-    
-    private static final Logger LOGGER = Logger.getLogger(Constants.LOGGER_NAME);
-    
+        
     private static final String MISSING_PROPERTY = 
         "Servlet Filter init param(s) in web.xml missing: ";
     
@@ -112,9 +107,6 @@ public final class SpnegoFilterConfig { // NOPMD
      */
     private SpnegoFilterConfig() throws FileNotFoundException
         , URISyntaxException {
-
-        // specify logging level
-        setLogLevel(getInitParameter(Constants.LOGGER_LEVEL));
         
         // check if exists
         assert loginConfExists(getInitParameter(Constants.LOGIN_CONF));
@@ -457,39 +449,6 @@ public final class SpnegoFilterConfig { // NOPMD
         
         this.allowBasic = Boolean.parseBoolean(basic);
         this.allowUnsecure = Boolean.parseBoolean(unsecure);
-    }
-
-    /**
-     * Specify the logging level.
-     * 
-     * @param level logging level
-     */
-    private void setLogLevel(final String level) {
-        if (null != level) {
-            switch (Integer.parseInt(level)) {
-                case 1:
-                    LOGGER.setLevel(Level.FINEST);
-                    break;
-                case 2:
-                    LOGGER.setLevel(Level.FINER);
-                    break;
-                case 3:
-                    LOGGER.setLevel(Level.FINE);
-                    break;
-                case 4:
-                    LOGGER.setLevel(Level.CONFIG);
-                    break;
-                case 6:
-                    LOGGER.setLevel(Level.WARNING);
-                    break;
-                case 7:
-                    LOGGER.setLevel(Level.SEVERE);
-                    break;
-                default :
-                    LOGGER.setLevel(Level.INFO);
-                    break;
-            }
-        }
     }
     
     /**

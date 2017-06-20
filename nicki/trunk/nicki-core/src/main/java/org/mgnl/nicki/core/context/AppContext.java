@@ -67,12 +67,12 @@ public class AppContext {
 		return getInstance().getLocale();
 	}
 
-	public static void setUserId(String userId) {
-		getInstance().setUserId(userId);
+	public static void setUser(DynamicObject user) {
+		getInstance().setUser(user);
 	}
 
-	public static String getUserId() {
-		return getInstance().getUserId();
+	public static DynamicObject getUser() {
+		return getInstance().getUser();
 	}
 
 	public static void setLocale(Locale locale) {
