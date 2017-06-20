@@ -69,6 +69,7 @@ public class ObjectInspector extends CustomComponent {
 		});
 	}
 
+	@SuppressWarnings("unchecked")
 	protected void addChildren(ObjectWrapper objectWrapper) {
 		Map<String, Object> attributes = getAttributes(objectWrapper);
 		for (String name : attributes.keySet()) {
