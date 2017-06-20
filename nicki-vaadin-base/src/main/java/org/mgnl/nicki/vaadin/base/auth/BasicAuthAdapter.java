@@ -32,20 +32,11 @@
  */
 package org.mgnl.nicki.vaadin.base.auth;
 
-import javax.servlet.ServletRequest;
-import javax.servlet.http.HttpServletRequest;
-
 import org.mgnl.nicki.core.auth.SSOAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.vaadin.server.VaadinServletRequest;
 
 
 public class BasicAuthAdapter extends org.mgnl.nicki.core.auth.BasicAuthAdapter implements SSOAdapter {
-	private static final Logger LOG = LoggerFactory.getLogger(BasicAuthAdapter.class);
-
-	
 	public Object getRequest() {
 		if (super.getRequest() instanceof VaadinServletRequest) {
 			return ((VaadinServletRequest) super.getRequest()).getHttpServletRequest();
