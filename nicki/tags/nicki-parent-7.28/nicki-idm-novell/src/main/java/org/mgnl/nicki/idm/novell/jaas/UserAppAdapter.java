@@ -1,0 +1,203 @@
+/**
+ * This file Copyright (c) 2003-2011 Dr. Ralf Hirning
+ * All rights reserved.
+ *
+ *
+ * This file is dual-licensed under both the GNU General
+ * Public License and an individual license with Dr. Ralf
+ * Hirning.
+ *
+ * This file is distributed in the hope that it will be
+ * useful, but AS-IS and WITHOUT ANY WARRANTY; without even the
+ * implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE, TITLE, or NONINFRINGEMENT.
+ * Redistribution, except as permitted by whichever of the GPL
+ * or the individual license, is prohibited.
+ *
+ * 1. For the GPL license (GPL), you can redistribute and/or
+ * modify this file under the terms of the GNU General
+ * Public License, Version 3, as published by the Free Software
+ * Foundation.  You should have received a copy of the GNU
+ * General Public License, Version 3 along with this program;
+ * if not, write to the Free Software Foundation, Inc., 51
+ * Franklin St, Fifth Floor, Boston, MA 02110-1301 USA.
+ *
+ * 2. For the individual license, this file and the accompanying
+ * materials are made available under the terms of the
+ * individual license.
+ *
+ * Any modifications to this file must keep this entire header
+ * intact.
+ *
+ */
+package org.mgnl.nicki.idm.novell.jaas;
+
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import javax.portlet.PortletRequest;
+import javax.portlet.PortletSession;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.auth.SSOAdapter;
+import org.mgnl.nicki.core.context.AppContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.sssw.fw.directory.api.EbiRealmGroup;
+import com.sssw.fw.directory.api.EbiRealmUser;
+import com.sssw.fw.directory.client.EboDirectoryHelper;
+import com.sssw.fw.directory.core.EboUserCredentials;
+import com.sssw.fw.exception.EboUnrecoverableSystemException;
+import com.sssw.portal.api.EbiPortalContext;
+
+
+public class UserAppAdapter implements SSOAdapter {
+	private static final Logger LOG = LoggerFactory.getLogger(UserAppAdapter.class);
+
+	static final String BASE_KEY = "com.sssw.fw.directory.realm.impl.jndildap.EboJndiLdapUserConnectionInfoHelper:";
+	static final String USER_CREDENTIALS = BASE_KEY + "USER_CREDENTIALS";
+	static final String USER_CONNECTION = BASE_KEY + "USER_DIRECTORY_CONNECTION";
+	
+	public static final String ATTRIBUTE_NAME_PORTAL_CONTEXT = "com.sssw.portal.api.EbiPortalContext";
+	private TYPE type = TYPE.UNKNOWN;
+
+	private Object request;
+	@Override
+	public void setRequest(Object request) {
+		this.request = request;
+		
+	}
+	
+	public Object getRequest() {
+		if (this.request != null) {
+			return this.request;
+		} else {
+			return AppContext.getRequest();
+		}
+	}
+
+	public void init() {
+		String credentials = new String(getPassword());
+		if (StringUtils.length(credentials) > 100 &&
+				  Base64.isBase64(credentials.getBytes())) {
+			type = TYPE.SAML;
+		} else if (StringUtils.length(credentials) > 0) {
+			type = TYPE.BASIC;
+		} else {
+			type = TYPE.UNKNOWN;
+		}
+	}
+	
+	public  List<String> getGroups() {
+		List<String> list = new ArrayList<String>();
+		try {
+			EbiRealmUser user = EboDirectoryHelper.getEbiRealmUser(getContext());
+			Set<EbiRealmGroup> groups = user.getGroups();
+			for (EbiRealmGroup group : groups) {
+				list.add(group.getName());
+			}
+		} catch (Exception e) {
+			LOG.error("Error", e);
+		}
+		return list;
+	}
+	
+
+	private EboUserCredentials getUserCredentials() {
+		return ((EboUserCredentials)getContext().getValue(USER_CREDENTIALS));
+	}
+	
+	public char[] getPassword() {
+		EboUserCredentials credentials = getUserCredentials();
+		return decrypt(credentials).toCharArray();
+	}
+	
+	private String decrypt(EboUserCredentials credentials) {
+		Class<?> c = credentials.getClass();
+		try {
+			Method m = c.getDeclaredMethod("decrypt", new Class[]{String.class});
+			m.setAccessible(true);
+			return (String) m.invoke(credentials, new Object[]{credentials.getEncPassword()});
+		} catch (Exception e) {
+			LOG.error("Error", e);
+		}
+		return null;
+	}
+
+	/** user DN like 
+	 * cn=padmin,ou=users,o=utopia
+	 */
+	public String getName() {
+		String userName = null;
+		try {
+			userName = EboDirectoryHelper.getUserID(getContext());
+		} catch (EboUnrecoverableSystemException e) {
+			LOG.error("Error", e);
+		}
+		return userName;
+	}
+
+	public String getUserId() {
+		String userDn = getName();
+		if (StringUtils.isNotEmpty(userDn)) {
+			userDn = StringUtils.substringAfter(userDn, "=");
+			userDn = StringUtils.substringBefore(userDn, ",");
+			userDn = StringUtils.strip(userDn);
+		} else {
+			userDn = null;
+		}
+		return userDn;
+	}
+	
+	public boolean isInGroup(Object request, String group) {
+		return getGroups().contains(group);
+	}
+	
+	private EbiPortalContext getContext() {
+		PortletRequest pRequest = (PortletRequest) getRequest();
+		return (EbiPortalContext) pRequest.getAttribute(ATTRIBUTE_NAME_PORTAL_CONTEXT);
+	}
+
+	private PortletRequest getRequest(Object request) {
+		return (PortletRequest) request;
+	}
+	private PortletSession getSession() {
+		return getRequest(getRequest()).getPortletSession(true);
+	}
+
+	public Object getAttributeFromRequest(String key) {
+		return getRequest(getRequest()).getAttribute(key);
+	}
+
+
+	public Object getAttributeFromSession(String key) {
+		return getSession().getAttribute(key);
+	}
+
+
+	public void setAttributeInRequest(String key, Object object) {
+		getRequest(getRequest()).setAttribute(key, object);
+	}
+
+
+	public void setAttributeInSession(String key, Object object) {
+		getSession().setAttribute(key, object);
+	}
+
+
+	public String getSessionId() {
+		return getSession().getId();
+	}
+
+	@Override
+	public TYPE getType() {
+		init();
+		return type;
+	}
+	
+	
+}
