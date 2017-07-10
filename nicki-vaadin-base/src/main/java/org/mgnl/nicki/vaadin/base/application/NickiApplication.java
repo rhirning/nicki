@@ -44,6 +44,7 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.DynamicObjectPrincipal;
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
+import org.mgnl.nicki.core.auth.SSOAdapter;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.NickiContext;
@@ -100,14 +101,14 @@ public abstract class NickiApplication extends UI {
 		setContent(view);
 		Page.getCurrent().setTitle(I18n.getText(getI18nBase() + ".main.title"));
 		
-		/*
+
 		if (nickiContext == null) {
 			// try SSO
 			loginSSO();
 		}
-		*/
+		
 		if (context == null) {
-			loginJAAS();
+		//	loginJAAS();
 		}
 		if (context != null) {
 			try {
@@ -162,7 +163,7 @@ public abstract class NickiApplication extends UI {
 		}
 	}
 
-	/*
+	
 	private void loginSSO() {
 		try {
 			String ssoLoginClass = Config.getProperty("nicki.login.sso");
@@ -184,7 +185,7 @@ public abstract class NickiApplication extends UI {
 			LOG.error("Error", e.getMessage());
 		}
 	}
-	*/
+	
 
 	private Context getContext(DynamicObject user, String password) throws InvalidPrincipalException, TargetException {
 		Context context = new Context();
