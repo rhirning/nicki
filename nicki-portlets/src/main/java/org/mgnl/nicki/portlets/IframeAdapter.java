@@ -74,12 +74,12 @@ public class IframeAdapter implements SSOAdapter {
 			String encodedName = null;
 			if (AppContext.getRequestParameters() != null) {
 				encodedToken = AppContext.getRequestParameters().get("nickiToken");
-				encodedPassword = getRequest(request).getParameter("nickiPassword");
-				encodedName = getRequest(request).getParameter("nickiName");
+				encodedPassword = getRequest(AppContext.getRequest()).getParameter("nickiPassword");
+				encodedName = getRequest(AppContext.getRequest()).getParameter("nickiName");
 			} else {
-				encodedToken = getRequest(request).getParameter("nickiToken");
-				encodedPassword = getRequest(request).getParameter("nickiPassword");
-				encodedName = getRequest(request).getParameter("nickiName");
+				encodedToken = getRequest(AppContext.getRequest()).getParameter("nickiToken");
+				encodedPassword = getRequest(AppContext.getRequest()).getParameter("nickiPassword");
+				encodedName = getRequest(AppContext.getRequest()).getParameter("nickiName");
 			}
 			LOG.debug("encodedToken=" + encodedToken);
 			LOG.debug("encodedPassword=" + encodedPassword);
