@@ -1,0 +1,126 @@
+<document>
+	<styles>
+		<style name="right" align="RIGHT" />
+		<style name="left" align="LEFT" />
+		<style name="center" align="CENTER" vertical-align="CENTER" />
+		<style name="bottom" vertical-align="BOTTOM" />
+		<style name="top" vertical-align="TOP" />
+	</styles>
+	<pages>
+		<page name="First Page">
+			<box style="left" x="1" y="2">
+				<text>Westfälische Provinzial Versicherung Aktiengesellschaft -
+					Provinzial-Allee 1 - 48159 Münster</text>
+			</box>
+			<box x="1" y="3">
+				<text>Anke Seidlitz</text>
+			</box>
+			<box style="left" x="2" y="2">
+				<text>Westfälische Provinzial Versicherung Aktiengesellschaft
+					Amtsgericht Münster
+					HRB 6144
+					Sitz der Gesellschaft: Münster
+				</text>
+			</box>
+			<box x="3" y="2">
+				<text>Vorsitzender des Aufsichtsrats:
+					Dr. Wolfgang Kirsch
+				</text>
+			</box>
+			<box style="top" x="4" y="2">
+				<text>Vorstand:
+					Ulrich Rüther (Vorsitzender)
+					Gerd Borggrebe
+					Dr. Ulrich Lüxmann-Ellinghaus
+					Dr. Thomas Niemöller
+					Markus Reinhard
+					Stefan Richter
+				</text>
+			</box>
+		</page>
+		<page name="sheet 2">
+			<table x="2" y="3">
+				<row>
+					<column style="center">
+						<text>Rechtename</text>
+					</column>
+					<column>
+						<text>Beschreibung</text>
+					</column>
+					<column>
+						<text>Wert</text>
+					</column>
+					<column>
+						<text>Wert-Beschreibung</text>
+					</column>
+					<column>
+						<text>Kategorie</text>
+					</column>
+					<column>
+						<text>Kennung</text>
+					</column>
+				</row>
+				<row>
+					<column style="center">
+						<text>SCT008-3-2</text>
+					</column>
+					<column>
+						<text style="right">Rechts Fahren</text>
+					</column>
+					<column>
+						<text>true</text>
+					</column>
+					<column>
+						<text></text>
+					</column>
+					<column>
+						<text>CAT1</text>
+					</column>
+					<column>
+						<text>${user!}</text>
+					</column>
+				</row>
+				<row>
+					<column style="center">
+						<text>SCT008-3-2</text>
+					</column>
+					<column>
+						<text style="left">LinksFahren</text>
+					</column>
+					<column>
+						<text>true</text>
+					</column>
+					<column>
+						<text></text>
+					</column>
+					<column>
+						<text>CAT1</text>
+					</column>
+					<column>
+						<text>${user!}</text>
+					</column>
+				</row>
+				<row>
+					<column style="center">
+						<text>SCT008-3-2</text>
+					</column>
+					<column>
+						<text style="left">LinksFahren</text>
+					</column>
+					<column>
+						<text>true</text>
+					</column>
+					<column>
+						<text></text>
+					</column>
+					<column>
+						<text>=2+3</text>
+					</column>
+					<column>
+						<text>${user!}</text>
+					</column>
+				</row>
+			</table>
+		</page>
+	</pages>
+</document>
