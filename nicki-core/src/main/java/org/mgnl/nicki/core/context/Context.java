@@ -41,6 +41,7 @@ public class Context {
 	private Object request;
 	private Locale locale = Locale.GERMAN;
 	private DynamicObject user;
+	private byte[] credentials;
 	private Map<String, String> parameterMap;
 
 	public Object getRequest() {
@@ -75,6 +76,14 @@ public class Context {
 
 	public void setUser(DynamicObject user) {
 		this.user = user;
+	}
+
+	public byte[] getCredentials() {
+		return credentials;
+	}
+
+	public void setCredentials(byte[] credentials) {
+		this.credentials = credentials;
 	}
 
 }
