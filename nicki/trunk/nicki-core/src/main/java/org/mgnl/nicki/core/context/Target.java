@@ -53,6 +53,7 @@ public class Target implements Serializable {
 
 	private String targetName;
 	private String propertyBase;
+	private String securityAuthentication;
 	private List<String> dynamicObjects;
 	private Map<Class<? extends DynamicObject>, DynamicObject> allDynamicObjectsMap = new HashMap<Class<? extends DynamicObject>, DynamicObject>();
 	private Map<String, DynamicObject> dynamicObjectsMap;
@@ -61,6 +62,7 @@ public class Target implements Serializable {
 	public Target(String targetName, String propertyBase) {
 		this.targetName = targetName;
 		this.propertyBase = propertyBase;
+		this.securityAuthentication = getProperty("securityAuthentication", "GSSAPI");
 	}
 
 	public void setDynamicObjectsMap(Map<String, DynamicObject> initDynamicObjectsMap) {
@@ -187,4 +189,7 @@ public class Target implements Serializable {
 
 	}
 
+	public String getSecurityAuthentication() {
+		return securityAuthentication;
+	}
 }

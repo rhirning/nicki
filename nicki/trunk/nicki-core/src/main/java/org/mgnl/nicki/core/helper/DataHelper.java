@@ -49,6 +49,7 @@ import javax.json.JsonString;
 import javax.json.JsonValue;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.objects.DynamicObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -390,6 +391,15 @@ public class DataHelper {
 		return false;
 	}
 
+	public static boolean containsIgnoreCase(String[] list, String entry) {
+		for (String listEntry : list) {
+			if (StringUtils.equalsIgnoreCase(entry, listEntry)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public static boolean contains(String list, String entry) {
 		if (list != null) {
 			for (String listEntry : StringUtils.split(list)) {
@@ -468,5 +478,18 @@ public class DataHelper {
 			text = text.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
 			return StringUtils.lowerCase(text);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T extends DynamicObject> List<DynamicObject> filter(List<DynamicObject> list, Class<T> clazz) {
+		List<DynamicObject> result = new ArrayList<>();
+		if (list != null) {
+			for (DynamicObject entry : list) {
+				if (clazz.isAssignableFrom(entry.getClass())) {
+					result.add((T) entry);
+				}
+			}
+		}
+		return result;
 	}
 }

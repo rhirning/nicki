@@ -359,27 +359,29 @@ public final class SpnegoHttpFilter implements Filter {
         
         try {
 			AppContext.setUser(login(principal.getName()));
+			AppContext.setCredentials(principal.getCredential());
 			httpRequest.getSession().setAttribute(SESSION_USER, AppContext.getUser());
             httpRequest.getSession().removeAttribute(SESSION_NO_USER);
 		} catch (LoginException e) {
 			AppContext.setUser(null);
+			AppContext.setCredentials(null);
 			LOG.debug("Invalid user " + principal.getName());
 		}
 
         chain.doFilter(spnegoRequest, response);
     }
     
-	public DynamicObject login(String userId) throws LoginException {
-		if (StringUtils.isBlank(userId)) {
+	public DynamicObject login(String name) throws LoginException {
+		if (StringUtils.isBlank(name)) {
 			throw new LoginException("missing userId");
 		}
-		if (StringUtils.contains(userId, "@")) {
-			userId = StringUtils.substringBefore(userId, "@");
+		if (StringUtils.contains(name, "@")) {
+			name = StringUtils.substringBefore(name, "@");
 		}
-		DynamicObject user = loadUser(userId);
+		DynamicObject user = loadUser(name);
 		if (user == null) {
-			LOG.debug("Invalid user " + userId);
-			throw new LoginException("Invalid user " + userId);
+			LOG.debug("Invalid user " + name);
+			throw new LoginException("Invalid user " + name);
 		}
 		
 		LOG.debug("user ok " + user.getPath());

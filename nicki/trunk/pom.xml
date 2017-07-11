@@ -133,12 +133,12 @@
 			</dependency>
 			<dependency>
 				<groupId>com.novell.userapp</groupId>
-				<artifactId>wssdk</artifactId>
+				<artifactId>workflow</artifactId>
 				<version>${idm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novell.userapp</groupId>
-				<artifactId>workflow</artifactId>
+				<artifactId>wssdk</artifactId>
 				<version>${idm.version}</version>
 			</dependency>
 			<dependency>
@@ -182,6 +182,11 @@
 				<version>${vaadin.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>javax.jcr</groupId>
+				<artifactId>jcr</artifactId>
+				<version>2.0</version>
+			</dependency>
+			<dependency>
 				<groupId>javax.json</groupId>
 				<artifactId>javax.json-api</artifactId>
 				<version>1.0</version>
@@ -217,9 +222,9 @@
 				<version>1.2.17</version>
 			</dependency>
 			<dependency>
-				<groupId>org.ehcache</groupId>
-				<artifactId>ehcache</artifactId>
-				<version>3.3.1</version>
+				<groupId>org.apache.activemq</groupId>
+				<artifactId>activemq-all</artifactId>
+				<version>5.14.5</version>
 			</dependency>
 			<dependency>
 			    <groupId>org.apache.httpcomponents</groupId>
@@ -267,6 +272,11 @@
 				<version>2.0b4</version>
 			</dependency>
 			<dependency>
+				<groupId>org.ehcache</groupId>
+				<artifactId>ehcache</artifactId>
+				<version>3.3.1</version>
+			</dependency>
+			<dependency>
 				<groupId>org.freemarker</groupId>
 				<artifactId>freemarker</artifactId>
 				<version>2.3.16</version>
@@ -280,11 +290,6 @@
 				<groupId>org.jaxen</groupId>
 				<artifactId>jaxen</artifactId>
 				<version>1.1.1</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.jcr</groupId>
-				<artifactId>jcr</artifactId>
-				<version>2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jdom</groupId>

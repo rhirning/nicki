@@ -108,7 +108,7 @@ public abstract class NickiApplication extends UI {
 		}
 		
 		if (context == null) {
-		//	loginJAAS();
+			loginJAAS();
 		}
 		if (context != null) {
 			try {

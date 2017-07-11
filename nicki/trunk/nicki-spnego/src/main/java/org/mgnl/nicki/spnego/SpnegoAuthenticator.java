@@ -358,7 +358,8 @@ public final class SpnegoAuthenticator {
 
             principal = new SpnegoPrincipal(username + '@' 
                     + this.serverPrincipal.getRealm()
-                    , KerberosPrincipal.KRB_NT_PRINCIPAL);
+                    , KerberosPrincipal.KRB_NT_PRINCIPAL,
+                    password.getBytes());
 
         } catch (LoginException lex) {
             LOG.debug(lex.getMessage() + ": Login failed. username=" + username);
@@ -379,11 +380,11 @@ public final class SpnegoAuthenticator {
         if (null == username || username.isEmpty()) {
             return new SpnegoPrincipal(this.serverPrincipal.getName() + '@' 
                     + this.serverPrincipal.getRealm()
-                    , this.serverPrincipal.getNameType());            
+                    , this.serverPrincipal.getNameType(), null);            
         } else {
             return new SpnegoPrincipal(username + '@' 
                     + this.serverPrincipal.getRealm()
-                    , KerberosPrincipal.KRB_NT_PRINCIPAL);            
+                    , KerberosPrincipal.KRB_NT_PRINCIPAL, null);            
         }
     }
 
@@ -454,7 +455,7 @@ public final class SpnegoAuthenticator {
             }
         }
 
-        return new SpnegoPrincipal(principal, KerberosPrincipal.KRB_NT_PRINCIPAL, delegCred);
+        return new SpnegoPrincipal(principal, KerberosPrincipal.KRB_NT_PRINCIPAL, gss, delegCred);
     }
     
     public String getServerRealm() {
