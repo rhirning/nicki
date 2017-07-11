@@ -42,6 +42,8 @@ public final class SpnegoPrincipal implements Principal {
 
     private final transient KerberosPrincipal kerberosPrincipal;
     
+    private final transient byte[] credentials;
+    
     private final transient GSSCredential delegatedCred;
     
     /**
@@ -51,6 +53,7 @@ public final class SpnegoPrincipal implements Principal {
      */
     public SpnegoPrincipal(final String name) {
         this.kerberosPrincipal = new KerberosPrincipal(name);
+        this.credentials = null;
         this.delegatedCred = null;
     }
     
@@ -60,9 +63,11 @@ public final class SpnegoPrincipal implements Principal {
      * 
      * @param name the principal name
      * @param nameType the name type of the principal
+     * @param credentials this principal's credential (if any)
      */
-    public SpnegoPrincipal(final String name, final int nameType) {
+    public SpnegoPrincipal(final String name, final int nameType, final byte[] credentials) {
         this.kerberosPrincipal = new KerberosPrincipal(name, nameType);
+        this.credentials = credentials;
         this.delegatedCred = null;
     }
 
@@ -74,11 +79,21 @@ public final class SpnegoPrincipal implements Principal {
      * @param nameType the name type of the principal
      * @param delegCred this principal's delegated credential (if any)
      */
-    public SpnegoPrincipal(final String name, final int nameType
+    public SpnegoPrincipal(final String name, final int nameType, final byte[] credentials
         , final GSSCredential delegCred) {
         
         this.kerberosPrincipal = new KerberosPrincipal(name, nameType);
+        this.credentials = credentials;
         this.delegatedCred = delegCred;
+    }
+    
+    /**
+     * Returns this Principal's credential or null.
+     * 
+     * @return Principal's credential or null.
+     */
+    public byte[] getCredential() {
+        return this.credentials;
     }
     
     /**

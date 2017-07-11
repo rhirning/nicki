@@ -64,7 +64,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (password.length() < 100) {
 			env.put(Context.SECURITY_AUTHENTICATION, getTarget().getProperty("securityAuthentication"));
 		} else {
-			env.put(Context.SECURITY_AUTHENTICATION, getTarget().getProperty("ticketSecurityAuthentication", "SAML"));
+			env.put(Context.SECURITY_AUTHENTICATION, getTarget().getProperty("ticketSecurityAuthentication",
+					getTarget().getSecurityAuthentication()));
 		}
 		env.put(Context.SECURITY_PRINCIPAL, name);
 		env.put(Context.SECURITY_CREDENTIALS, password);
