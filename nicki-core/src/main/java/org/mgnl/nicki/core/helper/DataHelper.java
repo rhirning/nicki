@@ -384,7 +384,7 @@ public class DataHelper {
 
 	public static boolean contains(String[] list, String entry) {
 		for (String listEntry : list) {
-			if (StringUtils.equals(entry, listEntry)) {
+			if (StringUtils.equalsIgnoreCase(entry, listEntry)) {
 				return true;
 			}
 		}

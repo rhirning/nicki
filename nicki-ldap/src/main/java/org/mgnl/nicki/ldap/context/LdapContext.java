@@ -91,7 +91,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			throw new DynamicObjectException(e);
 		}
 	}
-	
+
+	@Override
 	public DynamicObject login(String username, String password) {
 		LOG.info("login: start");
 		DynamicObject user = loadObject(username);
@@ -161,6 +162,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	@Override
 	public void search(QueryHandler queryHandler) throws DynamicObjectException {
 		DirContext ctx = null;
 		NamingEnumeration<SearchResult> results = null;
@@ -198,6 +200,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	@Override
 	public void updateObject(DynamicObject dynamicObject) throws DynamicObjectException {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
@@ -221,6 +224,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	@Override
 	public void updateObject(DynamicObject dynamicObject, String[] attributeNames) throws DynamicObjectException {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
@@ -251,6 +255,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 
+	@Override
 	public void deleteObject(DynamicObject dynamicObject)
 			throws DynamicObjectException {
 		if (this.isReadonly()) {
@@ -274,6 +279,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	@Override
 	public DynamicObject moveObject(DynamicObject dynamicObject, String newPath)
 			throws DynamicObjectException {
 		if (this.isReadonly()) {
@@ -300,6 +306,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	@Override
 	public DynamicObject renameObject(DynamicObject dynamicObject,
 			String newName) throws DynamicObjectException {
 		if (this.isReadonly()) {
@@ -310,7 +317,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 
-
+	@Override
 	public DynamicObject loadObject(String path) {
 		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler(this, path);
 		try {
@@ -321,7 +328,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 		return null;
 	}
-
+	
+	@Override
 	public List<DynamicObject> loadObjects(String baseDn, String filter) {
 		try {
 			ObjectsLoaderQueryHandler handler = new ObjectsLoaderQueryHandler(this, baseDn, filter);
@@ -333,6 +341,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		return null;
 	}
 
+	@Override
 	public List<DynamicObject> loadChildObjects(String parent,
 			ChildFilter filter) {
 		try {
@@ -359,6 +368,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	@Override
 	public List<DynamicObject> loadReferenceObjects(Query query) {
 		try {
 			ObjectsLoaderQueryHandler handler = new ObjectsLoaderQueryHandler(this, query);
@@ -369,6 +379,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		} 
 	}
 	
+	@Override
 	@SuppressWarnings("unchecked")
 	public 	<T extends DynamicObject> T loadObject(Class<T> classDefinition, String path) {
 		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler(this, path);
@@ -381,11 +392,13 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	@Override
 	public void loadObject(DynamicObject dynamicObject) throws DynamicObjectException {
 		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler(dynamicObject);
 		search(handler);
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadObjects(Class<T> classDefinition, String baseDn, String filter) {
 		try {
@@ -398,6 +411,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		} 
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadChildObjects(Class<T> classDefinition, String parent,	String filter) {
 		try {
@@ -410,7 +424,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 	
-	
+
+	@Override
 	public <T extends DynamicObject> T loadChildObject(Class<T> class1, DynamicObject parent, String namingValue) {
 		try {
 			String namingAttribute = 
@@ -424,6 +439,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 
+	@Override
 	public DynamicObjectFactory getObjectFactory() {
 		return getLdapObjectFactory();
 	}
@@ -436,10 +452,12 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 
+	@Override
 	public <T extends DynamicObject> List<T> loadChildObjects(Class<T> class1, DynamicObject parent, String filter) {
 		return loadChildObjects(class1, parent.getPath(), filter);
 	}
 
+	@Override
 	public void loadAttributes(DynamicObject dynamicObject, Class<?> requester, String[] attributes) throws DynamicObjectException {
 		try {
 			AttributeLoaderLdapQueryHandler handler = new AttributeLoaderLdapQueryHandler(dynamicObject, attributes);
@@ -453,6 +471,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, Query query) {
 		try {
@@ -464,7 +483,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			return null;
 		}
 	}
-	
+
+	@Override
 	public boolean isExist(String dn) {
 		if (StringUtils.isEmpty(dn)) {
 			return false;
