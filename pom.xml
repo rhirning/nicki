@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mgnl.nicki</groupId>
 	<artifactId>nicki-parent</artifactId>
-	<version>7.31</version>
+	<version>7.32-SNAPSHOT</version>
 	<name>nicki-parent</name>
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
@@ -391,9 +391,9 @@
 		</license>
 	</licenses>
 	<scm>
-		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.31</connection>
-		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.31</developerConnection>
-		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.31</url>
+		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</connection>
+		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</developerConnection>
+		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</url>
 	</scm>
 	<distributionManagement>
 		<repository>
