@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>7.34-SNAPSHOT</version>
+		<version>7.34</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
@@ -61,8 +61,8 @@
 		</dependency>
 	</dependencies>
 	<scm>
-		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</connection>
-		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</developerConnection>
-		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</url>
+		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.34/trunk</connection>
+		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.34/trunk</developerConnection>
+		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.34/trunk</url>
 	</scm>
 </project>
