@@ -32,6 +32,7 @@
  */
 package org.mgnl.nicki.vaadin.base.application;
 
+import java.io.Serializable;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Set;
@@ -350,7 +351,7 @@ public abstract class NickiApplication extends UI {
 		return Config.getProperty("nicki.application.theme", "reindeer");
 	}
 	
-	private class Context {
+	private class Context implements Serializable {
 		private NickiContext context;
 		private NickiContext loginContext;
 
