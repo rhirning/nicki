@@ -1,4 +1,4 @@
-package org.mgnl.nicki.mq;
+package org.mgnl.nicki.mq.broker;
 
 import java.io.File;
 import java.util.ArrayList;
