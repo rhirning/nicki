@@ -18,6 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.sql.DataSource;
+
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.annotation.SubTable;
@@ -1261,5 +1263,10 @@ public class BaseDBContext
 	public PrimaryKey getGeneratedKey(Statement stmt, Class<?> clazz) throws SQLException {
 		ResultSet generatedKeys = stmt.getGeneratedKeys();
 		return new PrimaryKey(clazz, generatedKeys);
+	}
+
+	@Override
+	public DataSource getDataSource() {
+		return new JDBCDataSource(this);
 	}
 }
