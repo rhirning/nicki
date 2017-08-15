@@ -86,6 +86,7 @@ public class DBContextManager {
 	private DBContext loadContext(String name) {
 		try {
 			DBContext context = Classes.newInstance(contextClassNames.get(name));
+			context.setName(name);
 
 			if (schemas.containsKey(name)) {
 				context.setSchema(schemas.get(name));
