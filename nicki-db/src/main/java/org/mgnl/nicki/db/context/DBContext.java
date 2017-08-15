@@ -84,4 +84,6 @@ public interface DBContext extends AutoCloseable {
 	
 	DataSource getDataSource();
 
+	void setName(String name);
+
 }
