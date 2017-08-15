@@ -6,6 +6,8 @@ import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
 
+import javax.sql.DataSource;
+
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.handler.ListSelectHandler;
 import org.mgnl.nicki.db.handler.SelectHandler;
@@ -79,5 +81,7 @@ public interface DBContext extends AutoCloseable {
 	String toDate(Date date);
 
 	PrimaryKey getGeneratedKey(Statement stmt, Class<?> clazz) throws SQLException;
+	
+	DataSource getDataSource();
 
 }
