@@ -9,17 +9,18 @@ import java.util.logging.Logger;
 import javax.sql.DataSource;
 
 import org.mgnl.nicki.db.context.DBContext;
+import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.profile.InitProfileException;
 
 public class JDBCDataSource implements DataSource {
 
 	private PrintWriter logWriter;
 	private int loginTimeout;
-	private DBContext dbContext;
+	private String context;
 
-	public JDBCDataSource(DBContext dbContext) {
+	public JDBCDataSource(String context) {
 		super();
-		this.dbContext = dbContext;
+		this.context = context;
 	}
 
 	@Override
@@ -67,6 +68,7 @@ public class JDBCDataSource implements DataSource {
 
 	@Override
 	public Connection getConnection(String username, String password) throws SQLException {
+		DBContext dbContext = DBContextManager.getContext(this.context);
 		if (dbContext != null) {
 			try {
 				return dbContext.beginTransaction();
@@ -76,6 +78,14 @@ public class JDBCDataSource implements DataSource {
 		} else {
 			throw new SQLException("invalid DBContext configuration");
 		}
+	}
+
+	public String getContext() {
+		return context;
+	}
+
+	public void setContext(String context) {
+		this.context = context;
 	}
 
 }

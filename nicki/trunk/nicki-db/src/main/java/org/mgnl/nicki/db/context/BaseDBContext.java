@@ -39,6 +39,7 @@ public class BaseDBContext
 	public final static String TIMESTAMP_ORACLE = "YYYY-MM-DD HH24:MI:SS";
 	public final static String TIMESTAMP_FOR_ORACLE = "yyyy-MM-dd HH:mm:ss";
 	private static final Logger LOG = LoggerFactory.getLogger(BaseDBContext.class);
+	private String name;
 	private DBProfile profile;
 	private Connection connection;
 
@@ -1267,6 +1268,11 @@ public class BaseDBContext
 
 	@Override
 	public DataSource getDataSource() {
-		return new JDBCDataSource(this);
+		return new JDBCDataSource(this.name);
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
 	}
 }
