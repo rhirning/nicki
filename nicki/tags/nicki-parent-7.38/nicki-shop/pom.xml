@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>nicki-shop</artifactId>
+	<name>nicki-shop</name>
+	<parent>
+		<artifactId>nicki-parent</artifactId>
+		<groupId>org.mgnl.nicki</groupId>
+		<version>7.38</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>org.mgnl.nicki</groupId>
+			<artifactId>nicki-vaadin-base</artifactId>
+			<version>7.38</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mgnl.nicki</groupId>
+			<artifactId>nicki-dynamic-objects</artifactId>
+			<version>7.38</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mgnl.nicki</groupId>
+			<artifactId>nicki-ldap</artifactId>
+			<version>7.38</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mgnl.nicki</groupId>
+			<artifactId>nicki-shop-base</artifactId>
+			<version>7.38</version>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.38/trunk</connection>
+		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.38/trunk</developerConnection>
+		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.38/trunk</url>
+	</scm>
+</project>
