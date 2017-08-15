@@ -6,15 +6,16 @@ import java.util.List;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.sql.DataSource;
 
 import org.apache.activemq.broker.BrokerPlugin;
 import org.apache.activemq.broker.BrokerService;
 import org.apache.activemq.security.AuthenticationUser;
 import org.apache.activemq.security.SimpleAuthenticationPlugin;
-import org.apache.activemq.store.PListStore;
 import org.apache.activemq.store.PersistenceAdapter;
+import org.apache.activemq.store.jdbc.JDBCPersistenceAdapter;
 import org.apache.activemq.store.kahadb.KahaDBPersistenceAdapter;
-import org.apache.activemq.store.kahadb.plist.PListStoreImpl;
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.slf4j.Logger;
@@ -34,7 +35,6 @@ public class ActiveMQContextListener implements ServletContextListener {
 				broker = new BrokerService();
 				broker.setPlugins(getPlugins());
 				broker.setPersistenceAdapter(getPersistenceAdapter());
-				broker.setTempDataStore(getTempDataStore());
 				broker.addConnector(Config.getProperty("nicki.mq.connector"));
 				
 				broker.start();
@@ -47,16 +47,29 @@ public class ActiveMQContextListener implements ServletContextListener {
 		}
 	}
 
-	private PListStore getTempDataStore() {
-		PListStoreImpl store = new PListStoreImpl();
-		store.setDirectory(new File(Config.getProperty("nicki.mq.tempstore")));
-		return store;
-	}
-
-	private PersistenceAdapter getPersistenceAdapter() {
+	private PersistenceAdapter getKahaDBPersistenceAdapter() {
 		KahaDBPersistenceAdapter persistenceAdapter = new KahaDBPersistenceAdapter();
 		persistenceAdapter.setDirectory(new File(Config.getProperty("nicki.mq.store")));
 		return persistenceAdapter;
+	}
+
+	private PersistenceAdapter getJDBCPersistenceAdapter() {
+		JDBCPersistenceAdapter persistenceAdapter = new JDBCPersistenceAdapter();
+		if (DataHelper.booleanOf(Config.getProperty("nicki.mq.tables.create", "FALSE"))) {
+			persistenceAdapter.setCreateTablesOnStartup(true);
+		}
+		DataSource dataSource = new JDBCDataSource(Config.getProperty("nicki.mq.context"));
+		persistenceAdapter.setDataSource(dataSource);
+		return persistenceAdapter;
+	}
+
+	private PersistenceAdapter getPersistenceAdapter() {
+		String persistenceType = Config.getProperty("nicki.mq.persistenceType", "kaha");
+		if (StringUtils.equalsIgnoreCase("JDBC", persistenceType)) {
+			return getJDBCPersistenceAdapter();
+		} else {
+			return getKahaDBPersistenceAdapter();
+		}
 	}
 
 	@Override
