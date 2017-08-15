@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import javax.sql.DataSource;
 
 import org.apache.activemq.broker.BrokerPlugin;
 import org.apache.activemq.broker.BrokerService;
@@ -18,6 +17,8 @@ import org.apache.activemq.store.kahadb.KahaDBPersistenceAdapter;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.db.context.DBContext;
+import org.mgnl.nicki.db.context.DBContextManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,8 +59,8 @@ public class ActiveMQContextListener implements ServletContextListener {
 		if (DataHelper.booleanOf(Config.getProperty("nicki.mq.tables.create", "FALSE"))) {
 			persistenceAdapter.setCreateTablesOnStartup(true);
 		}
-		DataSource dataSource = new JDBCDataSource(Config.getProperty("nicki.mq.context"));
-		persistenceAdapter.setDataSource(dataSource);
+		DBContext dbContext = DBContextManager.getContext(Config.getProperty("nicki.mq.context"));
+		persistenceAdapter.setDataSource(dbContext.getDataSource());
 		return persistenceAdapter;
 	}
 
