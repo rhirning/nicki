@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<fonts>
+	<!-- 
+		<font name="pnw-news-gothic">pdf/fonts/NewsGothforPNW.ttf</font>
+	-->
+		<default font="Helvetica" size="8" style="normal" />
+	</fonts>
+</configuration>
