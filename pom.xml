@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mgnl.nicki</groupId>
 	<artifactId>nicki-parent</artifactId>
@@ -154,21 +155,12 @@
 				<artifactId>vaadin-client-compiled</artifactId>
 				<version>${vaadin.version}</version>
 			</dependency>
-			<!--
-			  Needed when using the widgetset optimizer (custom ConnectorBundleLoaderFactory).
-			  
-			  For widgetset compilation, vaadin-client-compiler is automatically added on the
-			  compilation classpath by vaadin-maven-plugin so normally there is no need for an
-			  explicit dependency.
-			-->
-			<!--
-			<dependency>
-				<groupId>com.vaadin</groupId>
-				<artifactId>vaadin-client-compiler</artifactId>
-				<version>${vaadin.version}</version>
-				<scope>provided</scope>
-			</dependency>
-			-->
+			<!-- Needed when using the widgetset optimizer (custom ConnectorBundleLoaderFactory). 
+				For widgetset compilation, vaadin-client-compiler is automatically added 
+				on the compilation classpath by vaadin-maven-plugin so normally there is 
+				no need for an explicit dependency. -->
+			<!-- <dependency> <groupId>com.vaadin</groupId> <artifactId>vaadin-client-compiler</artifactId> 
+				<version>${vaadin.version}</version> <scope>provided</scope> </dependency> -->
 			<dependency>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-client</artifactId>
@@ -250,9 +242,9 @@
 				<version>2.4.3</version>
 			</dependency>
 			<dependency>
-			    <groupId>org.apache.lucene</groupId>
-			    <artifactId>lucene-analyzers-common</artifactId>
-			    <version>5.5.2</version>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-analyzers-common</artifactId>
+				<version>5.5.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
@@ -260,9 +252,9 @@
 				<version>5.5.2</version>
 			</dependency>
 			<dependency>
-			    <groupId>org.apache.lucene</groupId>
-			    <artifactId>lucene-queryparser</artifactId>
-			    <version>5.5.2</version>
+				<groupId>org.apache.lucene</groupId>
+				<artifactId>lucene-queryparser</artifactId>
+				<version>5.5.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>
@@ -270,9 +262,9 @@
 				<version>3.16</version>
 			</dependency>
 			<dependency>
-			    <groupId>org.apache.poi</groupId>
-			    <artifactId>poi-ooxml</artifactId>
-			    <version>3.16</version>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml</artifactId>
+				<version>3.16</version>
 			</dependency>
 			<dependency>
 				<groupId>org.beanshell</groupId>
@@ -290,9 +282,9 @@
 				<version>2.3.16</version>
 			</dependency>
 			<dependency>
-			    <groupId>org.glassfish</groupId>
-			    <artifactId>javax.json</artifactId>
-			    <version>1.0.4</version>
+				<groupId>org.glassfish</groupId>
+				<artifactId>javax.json</artifactId>
+				<version>1.0.4</version>
 			</dependency>
 			<dependency>
 				<groupId>org.jaxen</groupId>
@@ -344,8 +336,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.3.2</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>
