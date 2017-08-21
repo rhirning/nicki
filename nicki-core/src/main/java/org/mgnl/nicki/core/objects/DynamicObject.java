@@ -159,7 +159,7 @@ public interface DynamicObject extends TreeData {
 
 	NickiContext getContext();
 
-	void merge(Map<DynamicAttribute, Object> changeAttributes);
+	List<String> merge(Map<DynamicAttribute, Object> changeAttributes);
 	
 	String getDisplayName();
 
@@ -207,6 +207,6 @@ public interface DynamicObject extends TreeData {
 	JsonObjectBuilder toJsonObjectBuilder(AttributeMapper attributeMapper);
 	JsonObject toJsonObject(AttributeMapper attributeMapper);
 
-	void merge(JsonObject query, AttributeMapper mapping, String... attributes);
+	List<String> merge(JsonObject query, AttributeMapper mapping, String... attributes);
 
 }
