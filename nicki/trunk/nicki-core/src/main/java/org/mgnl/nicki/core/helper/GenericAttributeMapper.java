@@ -22,15 +22,23 @@ public class GenericAttributeMapper  implements AttributeMapper{
 	private Collection<String> hiddenExternalAttributes = new ArrayList<String>();
 	private Collection<String> externalAttributes = new ArrayList<String>();
 	
+	protected GenericAttributeMapper() {
+	}
+	
 	public GenericAttributeMapper(String pathToMap, String configBase) {
 		Properties properties = new Properties() ;
 		try {
 			properties.load(GenericAttributeMapper.class.getResourceAsStream(pathToMap));
-			for (Entry<Object, Object> entry : properties.entrySet()) {
-				add((String) entry.getKey(), (String) entry.getValue());
-			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+		init(properties, configBase);
+	}
+	
+	protected void init(Properties properties, String configBase) {
+
+		for (Entry<Object, Object> entry : properties.entrySet()) {
+			add((String) entry.getKey(), (String) entry.getValue());
 		}
 		
 		List<String> rawHiddenExternalAttributes = DataHelper.getList(Config.getProperty(configBase + ".attributes.hidden"), ",");

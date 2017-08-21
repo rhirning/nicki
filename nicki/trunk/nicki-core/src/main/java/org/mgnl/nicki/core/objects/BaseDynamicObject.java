@@ -372,11 +372,14 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 		return context;
 	}
 
-	public void merge(Map<DynamicAttribute, Object> changeAttributes) {
+	@Override
+	public List<String> merge(Map<DynamicAttribute, Object> changeAttributes) {
+		List<String> modifiedAttributes = new ArrayList<>();
 		for (DynamicAttribute dynamicAttribute : changeAttributes.keySet()) {
 			put(dynamicAttribute.getName(), changeAttributes.get(dynamicAttribute));
 		}
-	};
+		return modifiedAttributes;
+	}
 	
 	public String getDisplayName() {
 		return getName();
@@ -661,7 +664,8 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 
 	// TODO only supports flat data
 	@Override
-	public void merge(JsonObject query, AttributeMapper mapping, String... attributes) {
+	public List<String> merge(JsonObject query, AttributeMapper mapping, String... attributes) {
+		List<String> modifiedAttributes = new ArrayList<>();
 		DataModel model = getModel();
 		
 		// Delete missing entries which are in attributes list
@@ -681,6 +685,7 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 					}
 
 					put(attributeName, null);
+					modifiedAttributes.add(attributeName);
 				}
 			}
 		}
@@ -712,9 +717,11 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 					} else{
 						put(attributeName, query.getString(key));
 					}
+					modifiedAttributes.add(attributeName);
 				}
 			}
 		}
+		return modifiedAttributes;
 	}
 
 	@Override
