@@ -6,29 +6,29 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>7.39-SNAPSHOT</version>
+		<version>7.39</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-cache</artifactId>
-			<version>7.39-SNAPSHOT</version>
+			<version>7.39</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-vaadin-base</artifactId>
-			<version>7.39-SNAPSHOT</version>
+			<version>7.39</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-jcr</artifactId>
-			<version>7.39-SNAPSHOT</version>
+			<version>7.39</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-dynamic-objects</artifactId>
-			<version>7.39-SNAPSHOT</version>
+			<version>7.39</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -37,8 +37,8 @@
 		</dependency>
 	</dependencies>
 	<scm>
-		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</connection>
-		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</developerConnection>
-		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</url>
+		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.39/trunk</connection>
+		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.39/trunk</developerConnection>
+		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.39/trunk</url>
 	</scm>
 </project>
