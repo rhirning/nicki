@@ -1,0 +1,19 @@
+1. Schema:
+- objectClass
+- attributeName
+- dataType
+- length
+- mandatory
+
+2. Objects:
+- id
+- objectClass
+- name
+- path
+
+2. Daten
+- id
+- attributeName
+- value
+- createTimestamp
+- modifiedTimestamp
