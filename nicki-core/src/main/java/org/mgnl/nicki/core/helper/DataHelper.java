@@ -271,6 +271,27 @@ public class DataHelper {
 		return result;
 	}
 	
+	public static String translate(String text, Map<String, String> parameterMap) {
+		String result = text;
+		
+		while (result != null) {
+			Matcher matcher = PATTERN.matcher(result);
+			if (matcher.find()) {
+				String name = matcher.group(1);
+				String value = parameterMap.get(name);
+				if (StringUtils.isNotBlank(value)) {
+					result = StringUtils.replace(result, "${" + name + "}", value);
+					continue;
+				} else {
+					result = StringUtils.replace(result, "${" + name + "}", name);
+				}
+			} else {
+				break;
+			}
+		}
+		return result;
+	}
+	
 	@Deprecated
 	public static String translate(String text, String defaultValue) {
 		String result = text;

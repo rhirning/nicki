@@ -663,6 +663,12 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 	}
 
 	// TODO only supports flat data
+	/*
+	 * String... attributes		Names in Json query
+	 * (non-Javadoc)
+	 * @see org.mgnl.nicki.core.objects.DynamicObject#merge(javax.json.JsonObject, org.mgnl.nicki.core.helper.AttributeMapper, java.lang.String[])
+	 */
+	
 	@Override
 	public List<String> merge(JsonObject query, AttributeMapper mapping, String... attributes) {
 		List<String> modifiedAttributes = new ArrayList<>();
@@ -671,21 +677,19 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 		// Delete missing entries which are in attributes list
 		if (attributes != null) {
 			for(String key : attributes) {
+				String internalName = key;
+				if (mapping != null && mapping.hasInternal(key)) {
+					internalName = mapping.toInternal(key);
+				}
 				if (!query.containsKey(key)) {
-					String attributeName;
 					if (mapping != null) {
-						if (mapping.isStrict() && !mapping.hasExternal(key)) {
-							attributeName = null;
+						if (mapping.isStrict() && !mapping.hasInternal(key)) {
 							LOG.error("External '" + key + "' missing in AttributeMapper");
-						} else {
-							attributeName = mapping.toInternal(key);
 						}
-					} else {
-						attributeName = key;
 					}
 
-					put(attributeName, null);
-					modifiedAttributes.add(attributeName);
+					put(internalName, null);
+					modifiedAttributes.add(internalName);
 				}
 			}
 		}
@@ -697,7 +701,7 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 				if (mapping != null) {
 					if (mapping.isStrict() && !mapping.hasExternal(key)) {
 						attributeName = null;
-						LOG.error("External '" + key + "' missing in AttributeMapper");
+						LOG.info("External '" + key + "' missing in AttributeMapper");
 					} else {
 						attributeName = mapping.toInternal(key);
 					}
