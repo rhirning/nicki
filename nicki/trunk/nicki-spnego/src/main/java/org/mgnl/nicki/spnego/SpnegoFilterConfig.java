@@ -34,10 +34,9 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 
 /**
- * Class that applies/enforces web.xml init params.
+ * Class that applies/enforces Nicki Config init params.
  * 
- * <p>These properties are set in the servlet's init params 
- * in the web.xml file.</>
+ * <p>These properties are set in Nicki Config.</>
  * 
  * <p>This class also validates if a keyTab should be used 
  * and if all of the LoginModule options have been set.</p>
@@ -50,7 +49,7 @@ import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
  * 
  * <p>The class should be used as a Singleton:<br />
  * <code>
- * SpnegoFilterConfig config = SpnegoFilterConfig.getInstance(filter);
+ * SpnegoFilterConfig config = SpnegoFilterConfig.getInstance();
  * </code>
  * </p>
  * 
@@ -65,7 +64,7 @@ import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 public final class SpnegoFilterConfig { // NOPMD
         
     private static final String MISSING_PROPERTY = 
-        "Servlet Filter init param(s) in web.xml missing: ";
+        "Servlet Filter init param(s) Nicki Config missing: ";
     
     private static transient SpnegoFilterConfig instance = null;
 
@@ -183,19 +182,19 @@ public final class SpnegoFilterConfig { // NOPMD
         // get login module options
         final Map<String, ?> opt = entry.getOptions();
         
-        // assert
-        if (!opt.isEmpty()) {
-            for (Map.Entry<String, ?> option : opt.entrySet()) {
-                // do not allow client modules to have any options
-                // unless they are jboss options
-                if (!option.getKey().startsWith("jboss")) {
-                    throw new UnsupportedOperationException("Login Module for client must not "
-                            + "specify any options: " + opt.size()
-                            + "; moduleName=" + moduleName
-                            + "; options=" + opt.toString());                    
-                }
-            }
-        }
+//        // assert
+//        if (!opt.isEmpty()) {
+//            for (Map.Entry<String, ?> option : opt.entrySet()) {
+//                // do not allow client modules to have any options
+//                // unless they are jboss options
+//                if (!option.getKey().startsWith("jboss")) {
+//                    throw new UnsupportedOperationException("Login Module for client must not "
+//                            + "specify any options: " + opt.size()
+//                            + "; moduleName=" + moduleName
+//                            + "; options=" + opt.toString());                    
+//                }
+//            }
+//        }
     }
     
     /**
