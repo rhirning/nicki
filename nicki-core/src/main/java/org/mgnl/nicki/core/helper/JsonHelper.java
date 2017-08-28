@@ -676,4 +676,12 @@ public class JsonHelper {
 		return list;
 	}
 
+	public static Collection<String> toList(JsonArray jsonArray) {
+		List<String> list = new ArrayList<>();
+		for (int i = 0; i < jsonArray.size(); i++) {
+			list.add(jsonArray.getString(i));
+		}
+		return list;
+	}
+
 }

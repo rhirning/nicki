@@ -514,6 +514,7 @@ public class IdmPerson extends Person implements Serializable {
 		FUNCTIONAL_USER("FUNCTIONAL"),
 		SECONDARY_USER("SECONDARY"),
 		PROLIVE_USER("PROLIVE"),
+		MAKLER_USER("MAKLER"),
 		ADMIN_USER("ADMINACC"),
 		WEST_USER("WEST"),
 		NORTH_USER("NORTH"),
@@ -539,6 +540,8 @@ public class IdmPerson extends Person implements Serializable {
 				return SECONDARY_USER;
 			} else if (PROLIVE_USER.getValue().equals(type)) {
 				return PROLIVE_USER;
+			} else if (MAKLER_USER.getValue().equals(type)) {
+				return MAKLER_USER;
 			} else if (ADMIN_USER.getValue().equals(type)) {
 				return ADMIN_USER;
 			} else if (WEST_USER.getValue().equals(type)) {
