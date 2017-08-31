@@ -52,6 +52,7 @@ public class ActiveMQContextListener implements ServletContextListener {
 				broker.setPlugins(getPlugins());
 				broker.setPersistenceAdapter(getPersistenceAdapter());
 				broker.addConnector(Config.getProperty("nicki.mq.connector"));
+				broker.setUseJmx(DataHelper.booleanOf(Config.getProperty("nicki.mq.usejmx", "FALSE")));
 				
 				broker.start();
 				LOG.info("ActiveMQ loaded succesfully");
