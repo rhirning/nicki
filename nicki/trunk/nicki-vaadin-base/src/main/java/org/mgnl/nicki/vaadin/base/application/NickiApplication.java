@@ -94,18 +94,18 @@ public abstract class NickiApplication extends UI {
 		
 		if (context == null) {
 			// set login.conf
-	        System.out.println("login.conf: " + System.getProperty("java.security.auth.login.config"));
-
+//	        System.out.println("login.conf: " + System.getProperty("java.security.auth.login.config"));
+//
 //	        if(System.getProperty("java.security.auth.login.config") == null) {
-	            String jaasConfigFile = null;
-	            URL jaasConfigURL = this.getClass().getClassLoader().getResource("login.conf");
-	            if(jaasConfigURL != null) {
-	                jaasConfigFile = jaasConfigURL.getFile();
-	            }
-	            System.setProperty("java.security.auth.login.config", jaasConfigFile);
-		        System.out.println("login.conf: " + System.getProperty("java.security.auth.login.config"));
+//	            String jaasConfigFile = null;
+//	            URL jaasConfigURL = this.getClass().getClassLoader().getResource("login.conf");
+//	            if(jaasConfigURL != null) {
+//	                jaasConfigFile = jaasConfigURL.getFile();
+//	            }
+//	            System.setProperty("java.security.auth.login.config", jaasConfigFile);
+//		        System.out.println("login.conf: " + System.getProperty("java.security.auth.login.config"));
 //	        }
-			loginJAAS();
+//			loginJAAS();
 		}
 		if (context != null) {
 			try {
