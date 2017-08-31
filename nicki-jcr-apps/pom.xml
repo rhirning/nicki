@@ -3,7 +3,7 @@
 	<artifactId>nicki-jcr-apps</artifactId>
 	<parent>
 		<artifactId>nicki-parent</artifactId>
-		<version>7.41-SNAPSHOT</version>
+		<version>7.41</version>
 		<groupId>org.mgnl.nicki</groupId>
 		<relativePath>..</relativePath>
 	</parent>
@@ -16,37 +16,37 @@
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-catalogs</artifactId>
-			<version>7.41-SNAPSHOT</version>
+			<version>7.41</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-jcr</artifactId>
-			<version>7.41-SNAPSHOT</version>
+			<version>7.41</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-scripts</artifactId>
-			<version>7.41-SNAPSHOT</version>
+			<version>7.41</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-templates</artifactId>
-			<version>7.41-SNAPSHOT</version>
+			<version>7.41</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-reports</artifactId>
-			<version>7.41-SNAPSHOT</version>
+			<version>7.41</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-cache</artifactId>
-			<version>7.41-SNAPSHOT</version>
+			<version>7.41</version>
 		</dependency>
 	</dependencies>
 	<scm>
-		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</connection>
-		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</developerConnection>
-		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/trunk</url>
+		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.41/trunk</connection>
+		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.41/trunk</developerConnection>
+		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.41/trunk</url>
 	</scm>
 </project>
