@@ -1,0 +1,12 @@
+{
+	"consumers" : [
+		{
+			"name"			: "Test",
+			"start"			: true,
+			"destination"	: "JOBS.DAM",
+			"base"			: "nicki.mq",
+			"selector"		: "",
+			"listener"		: ""
+		}
+	]
+}

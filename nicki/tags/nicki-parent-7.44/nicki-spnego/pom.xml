@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>nicki-spnego</artifactId>
+	<name>nicki-spnego</name>
+	<parent>
+		<artifactId>nicki-parent</artifactId>
+		<groupId>org.mgnl.nicki</groupId>
+		<version>7.44</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>org.mgnl.nicki</groupId>
+			<artifactId>nicki-core</artifactId>
+			<version>7.44</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<scm>
+		<connection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.44/trunk</connection>
+		<developerConnection>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.44/trunk</developerConnection>
+		<url>scm:svn:https://svn.nicki-tools.de/nicki/nicki/tags/nicki-parent-7.44/trunk</url>
+	</scm>
+</project>
