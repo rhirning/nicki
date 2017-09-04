@@ -72,9 +72,8 @@ public class ActiveMQContextListener implements ServletContextListener {
 
 	private PersistenceAdapter getJDBCPersistenceAdapter() {
 		JDBCPersistenceAdapter persistenceAdapter = new JDBCPersistenceAdapter();
-		if (DataHelper.booleanOf(Config.getProperty("nicki.mq.tables.create", "FALSE"))) {
-			persistenceAdapter.setCreateTablesOnStartup(true);
-		}
+		persistenceAdapter.setCreateTablesOnStartup(DataHelper.booleanOf(Config.getProperty("nicki.mq.tables.create", "FALSE")));
+
 		DBContext dbContext = DBContextManager.getContext(Config.getProperty("nicki.mq.context"));
 		persistenceAdapter.setDataSource(dbContext.getDataSource());
 		return persistenceAdapter;
