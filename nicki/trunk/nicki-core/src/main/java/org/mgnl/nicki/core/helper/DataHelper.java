@@ -32,6 +32,7 @@ import javax.json.JsonString;
 import javax.json.JsonValue;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -230,7 +231,9 @@ public class DataHelper {
 		}
 		return string;
 	}
-	
+
+	public static final String CONFIG_PATTERN_STRING = "\\%\\{(.*)\\}";
+	public static final Pattern CONFIG_PATTERN = Pattern.compile(CONFIG_PATTERN_STRING);
 	public static final String PATTERN_STRING = "\\$\\{(.*)\\}";
 	public static final Pattern PATTERN = Pattern.compile(PATTERN_STRING);
 	public static String translate(String text) {
@@ -246,6 +249,22 @@ public class DataHelper {
 					continue;
 				} else {
 					result = StringUtils.replace(result, "${" + name + "}", name);
+				}
+			} else {
+				break;
+			}
+		}
+		
+		while (result != null) {
+			Matcher matcher = CONFIG_PATTERN.matcher(result);
+			if (matcher.find()) {
+				String name = matcher.group(1);
+				String value = Config.getProperty(name);
+				if (StringUtils.isNotBlank(value)) {
+					result = StringUtils.replace(result, "%{" + name + "}", value);
+					continue;
+				} else {
+					result = StringUtils.replace(result, "%{" + name + "}", name);
 				}
 			} else {
 				break;
@@ -267,6 +286,22 @@ public class DataHelper {
 					continue;
 				} else {
 					result = StringUtils.replace(result, "${" + name + "}", name);
+				}
+			} else {
+				break;
+			}
+		}
+		
+		while (result != null) {
+			Matcher matcher = CONFIG_PATTERN.matcher(result);
+			if (matcher.find()) {
+				String name = matcher.group(1);
+				String value = Config.getProperty(name);
+				if (StringUtils.isNotBlank(value)) {
+					result = StringUtils.replace(result, "%{" + name + "}", value);
+					continue;
+				} else {
+					result = StringUtils.replace(result, "%{" + name + "}", name);
 				}
 			} else {
 				break;
