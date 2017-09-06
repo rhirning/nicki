@@ -32,12 +32,6 @@
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
 	</dependencies>
-	<scm>
-		<connection>scm:git:https://github.com/rhirning/nicki</connection>
-		<developerConnection>scm:git:https://github.com/rhirning/nicki</developerConnection>
-		<url>scm:git:https://github.com/rhirning/nicki</url>
-	  <tag>HEAD</tag>
-  </scm>
 	<name>nicki-scheduler</name>
 </project>
 

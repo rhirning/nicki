@@ -26,10 +26,4 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-	<scm>
-		<connection>scm:git:https://github.com/rhirning/nicki</connection>
-		<developerConnection>scm:git:https://github.com/rhirning/nicki</developerConnection>
-		<url>scm:git:https://github.com/rhirning/nicki</url>
-	  <tag>HEAD</tag>
-  </scm>
 </project>
