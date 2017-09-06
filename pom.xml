@@ -353,11 +353,20 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.3</version>
+				<version>2.5.1</version>
+
+				<dependencies>
+					<dependency>
+						<groupId>org.apache.maven.scm</groupId>
+						<artifactId>maven-scm-provider-gitexe</artifactId>
+						<version>1.9.2</version>
+					</dependency>
+				</dependencies>
+
 				<configuration>
-					<tagBase>https://svn.nicki-tools.de/nicki/nicki/tags</tagBase>
-					<autoversionsubmodules>true</autoversionsubmodules>
-					<useReleaseProfile>false</useReleaseProfile>
+					<checkModificationExcludes>
+						<checkModificationExclude>pom.xml</checkModificationExclude>
+					</checkModificationExcludes>
 				</configuration>
 			</plugin>
 			<plugin>
