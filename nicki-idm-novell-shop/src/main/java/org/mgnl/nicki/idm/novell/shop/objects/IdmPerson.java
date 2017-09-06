@@ -79,6 +79,7 @@ public class IdmPerson extends Person implements Serializable {
 	public static final String ATTRIBUTE_WORKFORCEID = "workforceId";
 	public static final String ATTRIBUTE_MAIL = "mail";
 	public static final String ATTRIBUTE_PHONENUMBER = "phoneNumber";
+	public static final String ATTRIBUTE_USERPASSWORD = "userPassword";
 
 	private Collection<Group> assignedGroups;
 	private Collection<Role> assignedRoles;
@@ -140,7 +141,8 @@ public class IdmPerson extends Person implements Serializable {
 	private String mail;
 	@DynamicAttribute(externalName="telephoneNumber")
 	private String phoneNumber;
-
+	@DynamicAttribute(externalName = "userPassword")
+	private String userPassword;
 
 
 
@@ -578,5 +580,10 @@ public class IdmPerson extends Person implements Serializable {
 	public void setMail(String mail) {
 		put(ATTRIBUTE_MAIL, mail);
 	}
-
+	
+	public void setUserPassword(String pwd) {
+		if (StringUtils.isNotBlank(pwd)) {
+			this.put(ATTRIBUTE_USERPASSWORD, pwd);
+		}
+	}
 }
