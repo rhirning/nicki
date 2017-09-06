@@ -431,7 +431,6 @@
 		<connection>scm:git:https://github.com/rhirning/nicki</connection>
 		<developerConnection>scm:git:https://github.com/rhirning/nicki</developerConnection>
 		<url>scm:git:https://github.com/rhirning/nicki</url>
-		<tag>HEAD</tag>
 	</scm>
 	<distributionManagement>
 		<repository>
