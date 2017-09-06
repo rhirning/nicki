@@ -6,24 +6,24 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>7.47-SNAPSHOT</version>
+		<version>7.47</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-vaadin-base</artifactId>
-			<version>7.47-SNAPSHOT</version>
+			<version>7.47</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-template</artifactId>
-			<version>7.47-SNAPSHOT</version>
+			<version>7.47</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-templates</artifactId>
-			<version>7.47-SNAPSHOT</version>
+			<version>7.47</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -35,5 +35,6 @@
 		<connection>scm:git:https://github.com/rhirning/nicki</connection>
 		<developerConnection>scm:git:https://github.com/rhirning/nicki</developerConnection>
 		<url>scm:git:https://github.com/rhirning/nicki</url>
-	</scm>
+	  <tag>nicki-parent-7.47</tag>
+  </scm>
 </project>
