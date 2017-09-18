@@ -1,19 +1,26 @@
-/**
- * Copyright © 2017 Ralf Hirning (ralf@hirning.de)
- *
+
+package org.mgnl.nicki.verify;
+
+/*-
+ * #%L
+ * nicki-verify
+ * %%
+ * Copyright (C) 2017 Ralf Hirning
+ * %%
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ * #L%
  */
-package org.mgnl.nicki.verify;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +31,15 @@ import org.apache.commons.lang.text.StrTokenizer;
 import org.mgnl.nicki.core.i18n.I18n;
 
 /**
- * Überprüft, ob in einer geordneten Liste die benötigten Teile vorhanden sind.
- * Hierzu werden die gültigen Kombinationen festgelegt.
+ * ?berpr?ft, ob in einer geordneten Liste die ben?tigten Teile vorhanden sind.
+ * Hierzu werden die g?ltigen Kombinationen festgelegt.
  * <p>
- * Beispiel: 024 bedeutet dass NUR die Elemente 0,2,4 vorhanden sein müssen<p>
+ * Beispiel: 024 bedeutet dass NUR die Elemente 0,2,4 vorhanden sein m?ssen<p>
  * 
  * Die Liste wird als String mit einem Separator (Standard: "|") geliefert.
  * 
- * Die gültigen Part-Kombinationen sind durch Komma getrennt.
- * Der Listen-Separator kann auch vor den gültigen Kombinationen (getrennt mit ":") definiert werden<p>
+ * Die g?ltigen Part-Kombinationen sind durch Komma getrennt.
+ * Der Listen-Separator kann auch vor den g?ltigen Kombinationen (getrennt mit ":") definiert werden<p>
  * 
  * Beispiele:<br>
  * Parameter: 024,01<br>

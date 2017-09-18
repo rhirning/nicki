@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mgnl.nicki</groupId>
 	<artifactId>nicki-parent</artifactId>
@@ -7,6 +8,9 @@
 	<name>nicki-parent</name>
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
+	<organization>
+		<name>Ralf Hirning</name>
+	</organization>
 	<properties>
 		<project.build.sourceEncoding>iso-8859-1</project.build.sourceEncoding>
 		<idm.version>4.5</idm.version>
@@ -384,34 +388,42 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.1.0</version>
 			</plugin>
-			<!-- plugin>
-				<groupId>com.mycila</groupId>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>3.0</version>
+				<version>1.14</version>
 				<configuration>
-					<header>com/mycila/maven/plugin/license/templates/APACHE-2.txt</header>
-					<properties>
-						<owner>Ralf Hirning</owner>
-						<email>ralf@hirning.de</email>
-					</properties>
+					<verbose>true</verbose>
+					<addSvnKeyWords>false</addSvnKeyWords>
+					<licenseName>apache_v2</licenseName>
 					<excludes>
-						<exclude>**/README</exclude>
-						<exclude>**/src/test/resources/**</exclude>
-						<exclude>**/src/main/resources/**</exclude>
+						<exclude>**/*.png</exclude>
+						<exclude>**/*.txt</exclude>
 						<exclude>**/*.properties</exclude>
+						<exclude>**/*.json</exclude>
 						<exclude>**/*.xml</exclude>
-						<exclude>**/.pmd</exclude>
+						<exclude>**/*.css</exclude>
+						<exclude>**/*.xsl</exclude>
+						<exclude>**/*.ftl</exclude>
 					</excludes>
 				</configuration>
 				<executions>
 					<execution>
+						<id>first</id>
 						<goals>
-							<goal>check</goal>
+							<goal>update-file-header</goal>
 						</goals>
+						<phase>process-sources</phase>
+						<configuration>
+							<licenseName>apache_v2</licenseName>
+							<roots>
+								<root>src/main/java</root>
+								<root>src/test</root>
+							</roots>
+						</configuration>
 					</execution>
 				</executions>
-			</plugin -->
-
+			</plugin>
 		</plugins>
 		<resources>
 			<resource>
