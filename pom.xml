@@ -384,7 +384,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<version>3.1.0</version>
 			</plugin>
-			<plugin>
+			<!-- plugin>
 				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>
 				<version>3.0</version>
@@ -410,7 +410,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin -->
 
 		</plugins>
 		<resources>
