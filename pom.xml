@@ -393,7 +393,7 @@
 				<artifactId>license-maven-plugin</artifactId>
 				<version>1.14</version>
 				<configuration>
-					<verbose>true</verbose>
+					<verbose>false</verbose>
 					<addSvnKeyWords>false</addSvnKeyWords>
 					<licenseName>apache_v2</licenseName>
 					<excludes>
