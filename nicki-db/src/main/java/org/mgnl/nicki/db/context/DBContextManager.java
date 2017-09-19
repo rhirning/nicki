@@ -67,36 +67,33 @@ public class DBContextManager {
 		contextClassNames.clear();
 		schemas.clear();
 		profiles.clear();
-		String contextsConfigurations = Config.getProperty(PROPERTY_CONTEXTS);
-		if (StringUtils.isNotEmpty(contextsConfigurations)) {
-			for (String contextName : DataHelper.getList(contextsConfigurations, SEPARATOR)) {
-				try {
-					String contextBase = PROPERTY_CONTEXT_BASE + "." + contextName + ".";
-					String contextClassName = Config.getProperty(contextBase
-							+ PROPERTY_CONTEXT_CLASS_NAME);
-					contextClassNames.put(contextName, contextClassName);
-					
-					String schema = Config.getProperty(contextBase + PROPERTY_CONTEXT_SCHEMA);
-					if (StringUtils.isNotBlank(schema)) {
-						schemas.put(contextName, schema);
-					}					
-				} catch (Exception e) {
-					LOG.error("error init DBContexts", e);
-				}
+		for (String contextName : Config.getList(PROPERTY_CONTEXTS, SEPARATOR)) {
+			try {
+				String contextBase = PROPERTY_CONTEXT_BASE + "." + contextName + ".";
+				String contextClassName = Config.getString(contextBase
+						+ PROPERTY_CONTEXT_CLASS_NAME);
+				contextClassNames.put(contextName, contextClassName);
+				
+				String schema = Config.getString(contextBase + PROPERTY_CONTEXT_SCHEMA);
+				if (StringUtils.isNotBlank(schema)) {
+					schemas.put(contextName, schema);
+				}					
+			} catch (Exception e) {
+				LOG.error("error init DBContexts", e);
 			}
 		}
 	}
 
 	private DBProfile createProfile(String contextName) throws InvalidConfigurationException {
 		String contextBase = PROPERTY_CONTEXT_BASE + "." + contextName + ".";
-		String type  = Config.getProperty(contextBase + PROPERTY_CONTEXT_CONNECTION_TYPE);
+		String type  = Config.getString(contextBase + PROPERTY_CONTEXT_CONNECTION_TYPE);
 		boolean autoCommit  = DataHelper.booleanOf(Config.getProperty(contextBase + PROPERTY_CONTEXT_AUTO_COMMIT, "false")) ;
 		
 		if (StringUtils.equals("dbcp", type)) {
 			String profileConfigBase = contextBase + "dbcp.";
 			return new DBCPProfile(profileConfigBase, autoCommit);
 		} else {
-			String dataSource = Config.getProperty(contextBase + PROPERTY_CONTEXT_DATA_SOURCE);
+			String dataSource = Config.getString(contextBase + PROPERTY_CONTEXT_DATA_SOURCE);
 			return new JndiDBProfile(dataSource, autoCommit);
 		}
 	}

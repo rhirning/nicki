@@ -273,7 +273,7 @@ public class PersonSelectorComponent extends CustomComponent {
 
 
 	protected Collection<Person> searchAll() {
-		String baseDn = Config.getProperty("nicki.users.basedn");
+		String baseDn = Config.getString("nicki.users.basedn");
 
 		StringBuilder filter = new StringBuilder();
 		addQuery(filter, "cn", userId.getValue(), LdapHelper.LOGIC.AND, WILDCARD.YES);

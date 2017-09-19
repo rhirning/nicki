@@ -395,7 +395,7 @@ public final class SpnegoHttpFilter implements Filter {
 	protected DynamicObject loadUser(String userId) {
 		List<? extends DynamicObject> list = null;
 		try {
-			list = AppContext.getSystemContext().loadObjects(Config.getProperty("nicki.users.basedn"), "cn=" + userId);
+			list = AppContext.getSystemContext().loadObjects(Config.getString("nicki.users.basedn"), "cn=" + userId);
 		} catch (InvalidPrincipalException e) {
 			LOG.error("Invalid SystemContext", e);
 		}

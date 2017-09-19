@@ -241,7 +241,7 @@ public class AnnotationHelper {
 						.getAnnotation(DynamicReferenceAttribute.class);
 				DynamicReference dynAttribute = new DynamicReference(dAttribute.reference(),
 						field.getName(),
-						Config.getProperty(dAttribute.baseProperty()),
+						Config.getString(dAttribute.baseProperty()),
 						dAttribute.externalName(),
 						field.getType());
 				dynAttribute.setType(dAttribute.type());
@@ -390,7 +390,7 @@ public class AnnotationHelper {
 							.getAnnotation(DynamicReferenceAttribute.class);
 					DynamicReference dynAttribute = new DynamicReference(dAttribute.reference(),
 							getName(method.getName()),
-							Config.getProperty(dAttribute.baseProperty()),
+							Config.getString(dAttribute.baseProperty()),
 							dAttribute.externalName(),
 							method.getReturnType());
 					dynAttribute.setType(dAttribute.type());

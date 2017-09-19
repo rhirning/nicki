@@ -177,7 +177,7 @@ public final class SpnegoFilterConfig { // NOPMD
     }
 
 	private String getInitParameter(String key) {
-		return Config.getProperty(key);
+		return Config.getString(key);
 	}
 
 	private void doClientModule(final String moduleName) {

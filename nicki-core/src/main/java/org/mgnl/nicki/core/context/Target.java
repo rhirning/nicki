@@ -65,7 +65,7 @@ public class Target implements Serializable {
 	}
 	
 	public String getProperty(String appendix) {
-		return Config.getProperty(propertyBase + "." + appendix);
+		return Config.getString(propertyBase + "." + appendix);
 	}
 	
 	public String getProperty(String appendix, String defaultValue) {

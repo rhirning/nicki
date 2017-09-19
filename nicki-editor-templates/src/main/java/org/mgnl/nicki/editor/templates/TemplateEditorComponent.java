@@ -78,7 +78,7 @@ public class TemplateEditorComponent extends CustomComponent implements Serializ
 	}
 
 	public String getTemplatesRoot() {
-		return Config.getProperty("nicki.templates.basedn");
+		return Config.getString("nicki.templates.basedn");
 	}
 
 	public NickiContext getNickiContext() {

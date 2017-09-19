@@ -57,7 +57,7 @@ public class ScriptEditorComponent extends CustomComponent implements Serializab
 	private Component getEditor() {
 		ScriptViewer scriptViewer = new ScriptViewer(AppContext.getRequest());
 
-		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.scripts.basedn"), new ShowAllFilter());
+		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getString("nicki.scripts.basedn"), new ShowAllFilter());
 		TreeEditor editor = new TreeEditor(getNickiApplication(), getNickiContext(), treeDataProvider, getI18nBase());
 		editor.configureClass(Org.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, Org.class, Script.class );
 		editor.configureClass(Script.class, Icon.DOCUMENT, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW);

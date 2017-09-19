@@ -133,7 +133,7 @@ public abstract class NickiApplication extends UI {
 	
 	private void showLoginDialog() {
 		LoginDialog loginDialog = null;
-		String loginClass = Config.getProperty("nicki.application.login.class");
+		String loginClass = Config.getString("nicki.application.login.class");
 		if (StringUtils.isNotBlank(loginClass)) {
 		try {
 				loginDialog = Classes.newInstance(loginClass);
@@ -170,7 +170,7 @@ public abstract class NickiApplication extends UI {
 	
 	private void loginSSO() {
 		try {
-			String ssoLoginClass = Config.getProperty("nicki.login.sso");
+			String ssoLoginClass = Config.getString("nicki.login.sso");
 			if (StringUtils.isNotEmpty(ssoLoginClass)) {
 				SSOAdapter adapter = (SSOAdapter) Classes.newInstance(ssoLoginClass);
 				String name = adapter.getName();

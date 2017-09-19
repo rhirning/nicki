@@ -52,7 +52,7 @@ public class TemplateEditor extends NickiApplication {
 	}
 
 	public String getTemplatesRoot() {
-		return Config.getProperty("nicki.templates.basedn");
+		return Config.getString("nicki.templates.basedn");
 	}
 
 

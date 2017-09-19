@@ -65,7 +65,7 @@ public class BrokerThread extends Thread implements Runnable {
 			broker = new BrokerService();
 			broker.setPlugins(getPlugins());
 			broker.setPersistenceAdapter(getPersistenceAdapter());
-			broker.addConnector(Config.getProperty("nicki.mq.connector"));
+			broker.addConnector(Config.getString("nicki.mq.connector"));
 			broker.setUseJmx(DataHelper.booleanOf(Config.getProperty("nicki.mq.usejmx", "FALSE")));
 
 			broker.start();
@@ -106,11 +106,11 @@ public class BrokerThread extends Thread implements Runnable {
 	public SimpleAuthenticationPlugin getAuthenticationPlugin() {
 		SimpleAuthenticationPlugin plugin = new SimpleAuthenticationPlugin();
 		List<AuthenticationUser> users = new ArrayList<>();
-		users.add(new AuthenticationUser("producer", Config.getProperty("nicki.mq.user.password.producer"),
+		users.add(new AuthenticationUser("producer", Config.getString("nicki.mq.user.password.producer"),
 				"publishers,consumers"));
-		users.add(new AuthenticationUser("consumer", Config.getProperty("nicki.mq.user.password.consumer"),
+		users.add(new AuthenticationUser("consumer", Config.getString("nicki.mq.user.password.consumer"),
 				"publishers,consumers"));
-		users.add(new AuthenticationUser("admin", Config.getProperty("nicki.mq.user.password.admin"),
+		users.add(new AuthenticationUser("admin", Config.getString("nicki.mq.user.password.admin"),
 				"admins,publishers,consumers"));
 		plugin.setUsers(users);
 
@@ -119,7 +119,7 @@ public class BrokerThread extends Thread implements Runnable {
 
 	private PersistenceAdapter getKahaDBPersistenceAdapter() {
 		KahaDBPersistenceAdapter persistenceAdapter = new KahaDBPersistenceAdapter();
-		persistenceAdapter.setDirectory(new File(Config.getProperty("nicki.mq.store")));
+		persistenceAdapter.setDirectory(new File(Config.getString("nicki.mq.store")));
 		return persistenceAdapter;
 	}
 
@@ -128,7 +128,7 @@ public class BrokerThread extends Thread implements Runnable {
 		persistenceAdapter
 				.setCreateTablesOnStartup(DataHelper.booleanOf(Config.getProperty("nicki.mq.tables.create", "FALSE")));
 
-		DBContext dbContext = DBContextManager.getContext(Config.getProperty("nicki.mq.context"));
+		DBContext dbContext = DBContextManager.getContext(Config.getString("nicki.mq.context"));
 		persistenceAdapter.setDataSource(dbContext.getDataSource());
 		return persistenceAdapter;
 	}

@@ -67,14 +67,14 @@ public class RuleManager {
 	public static List<CatalogArticle> getArticles(Person person) {
 		String query = getArticleQuery(person);
 		return person.getContext().loadObjects(CatalogArticle.class,
-				Config.getProperty("nicki.catalogs.basedn"), query);
+				Config.getString("nicki.catalogs.basedn"), query);
 	}
 	
 	public static String getArticleQuery(Person person) {
 		StringBuilder sb = new StringBuilder();
 		LdapHelper.addQuery(sb, "nickiRule=*", LOGIC.AND);
 		List<Selector> selectors = person.getContext().loadChildObjects(Selector.class, 
-				Config.getProperty("nicki.selectors.basedn"), ""); 
+				Config.getString("nicki.selectors.basedn"), ""); 
 		for (Selector selector : selectors) {
 			Object value = person.get(selector.getName());
 			if (selector.hasValueProvider()) {
@@ -150,7 +150,7 @@ public class RuleManager {
 		LdapHelper.negateQuery(sb);
 		LdapHelper.addQuery(sb, planned, LOGIC.AND);
 		List<CatalogArticle> missingArticles = person.getContext().loadObjects(CatalogArticle.class,
-				Config.getProperty("nicki.catalogs.basedn"), sb.toString());
+				Config.getString("nicki.catalogs.basedn"), sb.toString());
 		if (missingArticles != null && missingArticles.size() > 0) {
 			for (CatalogArticle article : missingArticles) {
 				changeSet.addToMissing(person, article);
@@ -163,7 +163,7 @@ public class RuleManager {
 		LdapHelper.negateQuery(sb);
 		LdapHelper.addQuery(sb, assigned, LOGIC.AND);
 		List<CatalogArticle> surplusArticles = person.getContext().loadObjects(CatalogArticle.class,
-				Config.getProperty("nicki.catalogs.basedn"), sb.toString());
+				Config.getString("nicki.catalogs.basedn"), sb.toString());
 		if (surplusArticles != null && surplusArticles.size() > 0) {
 			for (CatalogArticle article : surplusArticles) {
 				changeSet.addToSurplus(person, article);
@@ -223,13 +223,13 @@ public class RuleManager {
 			LdapHelper.addQuery(sb, activeFilter, LOGIC.AND);
 		}
 
-		ruleQuery.setBaseDn(Config.getProperty("nicki.users.basedn"));
+		ruleQuery.setBaseDn(Config.getString("nicki.users.basedn"));
 		ruleQuery.setQuery(sb.toString());
 		return ruleQuery;
 	}
 
 	private static Selector getSelector(CatalogArticle article, String selectorName) {
-		return article.getContext().loadObject(Selector.class, "cn=" + selectorName + "," + Config.getProperty("nicki.selectors.basedn"));
+		return article.getContext().loadObject(Selector.class, "cn=" + selectorName + "," + Config.getString("nicki.selectors.basedn"));
 	}
 
 	public static String getPersonQuery(CatalogArticle article, String selectorName, String value) {
@@ -258,7 +258,7 @@ public class RuleManager {
 		if (changeSet != null && changeSet.isNotEmpty()) {
 			Cart cart = user.getContext().getObjectFactory().getDynamicObject(Cart.class);
 
-			cart.getContext().getAdapter().initNew(cart, Config.getProperty("nicki.carts.basedn"),
+			cart.getContext().getAdapter().initNew(cart, Config.getString("nicki.carts.basedn"),
 					Long.toString(new Date().getTime()));
 			cart.setInitiator(user);
 			cart.setRecipient(person);
@@ -281,7 +281,7 @@ public class RuleManager {
 		if (changeSet != null && changeSet.isNotEmpty()) {
 			for (ArticleChange article : changeSet.getChanges()) {
 				Cart cart = user.getContext().getObjectFactory().getDynamicObject(Cart.class);
-				cart.getContext().getAdapter().initNew(cart, Config.getProperty("nicki.carts.basedn"),
+				cart.getContext().getAdapter().initNew(cart, Config.getString("nicki.carts.basedn"),
 						Long.toString(new Date().getTime()));
 				cart.setInitiator(user);
 				cart.setRecipient(article.getPerson());

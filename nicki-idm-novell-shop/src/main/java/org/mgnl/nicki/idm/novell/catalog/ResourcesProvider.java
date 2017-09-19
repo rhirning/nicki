@@ -40,7 +40,7 @@ public class ResourcesProvider implements Provider, Serializable {
 		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
 		String filter = page.getAttribute("providerData");
 		List<Resource> resources = catalogPage.getContext().loadObjects(Resource.class,
-				Config.getProperty("nicki.resources.basedn"), filter);
+				Config.getString("nicki.resources.basedn"), filter);
 		if (resources != null && resources.size() > 0) {
 			for (Resource resource : resources) {
 				articles.add(new VirtualResourceCatalogArticle(resource, catalogPage));

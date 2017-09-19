@@ -77,6 +77,23 @@ public class DataHelper {
 		}
 		return defaultValue;
 	}
+	/**
+	 * Extracts an Long from a String
+	 * @param stringValue String containing the Long
+	 * @param defaultValue default value if parsing does not work
+	 * @return the Long
+	 */
+	public static long getLong(String stringValue, long defaultValue) {
+		stringValue = StringUtils.strip(stringValue);
+		if (StringUtils.isNotEmpty(stringValue)) {
+			try {
+				return Long.parseLong(stringValue);
+			} catch (Exception e) {
+				LOG.debug("Error parsing " + stringValue);
+			}
+		}
+		return defaultValue;
+	}
 
 	/**
 	 * Makes a boolean out of a String. The value is true if the String is: "J", "Y", "1", or "TRUE" (case insensitive)
@@ -181,7 +198,7 @@ public class DataHelper {
 	 * Input: "1|2||3|4|5" with delimiter "|" results in {"1", "2", "", "3", "4", "5"}
 	 * @param data input String
 	 * @param separator delimiter
-	 * @return List<String>
+	 * @return List<String> (not null)
 	 */
 	public static List<String> getList(String dataAsString, String separator) {
 		String data = dataAsString;
@@ -266,7 +283,7 @@ public class DataHelper {
 			Matcher matcher = CONFIG_PATTERN.matcher(result);
 			if (matcher.find()) {
 				String name = matcher.group(1);
-				String value = Config.getProperty(name);
+				String value = Config.getString(name);
 				if (StringUtils.isNotBlank(value)) {
 					result = StringUtils.replace(result, "%{" + name + "}", value);
 					continue;
@@ -303,7 +320,7 @@ public class DataHelper {
 			Matcher matcher = CONFIG_PATTERN.matcher(result);
 			if (matcher.find()) {
 				String name = matcher.group(1);
-				String value = Config.getProperty(name);
+				String value = Config.getString(name);
 				if (StringUtils.isNotBlank(value)) {
 					result = StringUtils.replace(result, "%{" + name + "}", value);
 					continue;

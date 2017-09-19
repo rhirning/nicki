@@ -98,8 +98,8 @@ public class PasswordRule extends Rule {
 		return "email";
 	}
 	enum SET {
-		LOWER_CASE("abcdefghijklmnopqrstuvwxyz???"),
-		UPPER_CASE("ABCDEFGHIJKLMNOPQRSTUVWXYZ???"),
+		LOWER_CASE("abcdefghijklmnopqrstuvwxyz\u00c4\u00d6\u00dc"),
+		UPPER_CASE("ABCDEFGHIJKLMNOPQRSTUVWXYZ\u00e4\u00f6\u00fc"),
 		DIGITS("0123456789"),
 		SPECIAL(
 			    // ASCII symbols

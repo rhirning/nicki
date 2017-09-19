@@ -184,7 +184,7 @@ public class Verify {
 	}
 
 	private void loadAttributeRules() {
-		String path = Config.getProperty("nicki.verify.rules.path");
+		String path = Config.getString("nicki.verify.rules.path");
 		attributeRules = new HashMap<String, String>();
 		try {
 			Properties props = getPropertiesFromClasspath(path);

@@ -53,7 +53,7 @@ public class BasicTemplateStreamSource {
 		this.template = template;
 		this.params = params;
 		// render template
-		String parentPath = Config.getProperty("nicki.templates.basedn");
+		String parentPath = Config.getString("nicki.templates.basedn");
 		templatePath = template.getSlashPath(parentPath);
 		if (type == TYPE.PDF) {
 			if (template.hasPart("pdf")) {

@@ -51,7 +51,7 @@ public class I18nCache {
 
 	public I18nCache() {
 		cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build();
-		String configFile = Config.getProperty("nicki.i18n.cache.config");
+		String configFile = Config.getString("nicki.i18n.cache.config");
 		try {
 			CacheConfiguration cacheConfiguration = JsonHelper.toBean(CacheConfiguration.class, getClass().getResourceAsStream(configFile));
 			if (cacheConfiguration != null && cacheConfiguration.getCache() != null) {

@@ -320,7 +320,7 @@ public class Cart extends BaseDynamicObject {
     }
 
     public static List<Cart> getAllCarts(NickiContext ctx) {
-        return ctx.loadChildObjects(Cart.class, Config.getProperty("nicki.carts.basedn"), null);
+        return ctx.loadChildObjects(Cart.class, Config.getString("nicki.carts.basedn"), null);
     }
 
     @Override

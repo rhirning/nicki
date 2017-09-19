@@ -53,8 +53,8 @@ public class ConsumerThread extends Thread implements Runnable {
 
 	public void run() {
 		try {
-			ConnectionFactory factory = new ActiveMQConnectionFactory(Config.getProperty(consumer.getBase() + ".connector"));
-			connection = factory.createConnection("consumer", Config.getProperty(consumer.getBase() + ".user.password.consumer"));
+			ConnectionFactory factory = new ActiveMQConnectionFactory(Config.getString(consumer.getBase() + ".connector"));
+			connection = factory.createConnection("consumer", Config.getString(consumer.getBase() + ".user.password.consumer"));
 			connection.start();
 
 			session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);

@@ -61,7 +61,7 @@ public class CartManager {
 		}
 		LdapHelper.addQuery(query, "nickiRecipient=" + personDn, LOGIC.AND);
 
-		return Catalog.getCatalog().getContext().loadObjects(Cart.class, Config.getProperty("nicki.carts.basedn"), query.toString());
+		return Catalog.getCatalog().getContext().loadObjects(Cart.class, Config.getString("nicki.carts.basedn"), query.toString());
 	}
 	
 	public void updateCarts(String personDn, String permissionDn, String specifier, ACTION cartEntryAction,

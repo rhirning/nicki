@@ -54,7 +54,7 @@ public class OrgValueProvider extends BasicValueProvider implements ValueProvide
 	private TreeContainer treeContainer;
 	private OptionGroup optionGroup;
 	private HorizontalLayout layout;
-	private String userBaseDn = Config.getProperty("nicki.users.basedn");
+	private String userBaseDn = Config.getString("nicki.users.basedn");
 	private String userBasePath = LdapHelper.getSlashPath(null, userBaseDn);
 
 	public OrgValueProvider() {

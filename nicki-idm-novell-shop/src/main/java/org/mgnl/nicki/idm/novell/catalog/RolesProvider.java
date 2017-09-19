@@ -39,7 +39,7 @@ public class RolesProvider implements Provider, Serializable {
 		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
 		String filter = page.getAttribute("providerData");
 		List<Role> roles = catalogPage.getContext().loadObjects(Role.class,
-				Config.getProperty("nicki.roles.basedn"), filter);
+				Config.getString("nicki.roles.basedn"), filter);
 		if (roles != null && roles.size() > 0) {
 			for (Role role : roles) {
 				articles.add(getCatalogArticle(role, catalogPage));

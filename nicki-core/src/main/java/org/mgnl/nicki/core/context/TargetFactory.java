@@ -50,12 +50,11 @@ public final class TargetFactory {
 		
 	private TargetFactory() {
 		super();
-		String targetNamesString = Config.getProperty(PROPERTY_BASE);
+		String targetNamesString = Config.getString(PROPERTY_BASE);
 		if (StringUtils.isNotEmpty(targetNamesString)) {
-			String targetNames[] = StringUtils.split(targetNamesString, SEPARATOR);
-			defaultTarget = targetNames[0];
-			for (int i = 0; i < targetNames.length; i++) {
-				String targetName = targetNames[i];
+			List<String> targetNames = Config.getList(PROPERTY_BASE, SEPARATOR);
+			defaultTarget = targetNames.get(0);
+			for (String targetName : targetNames) {
 				String base = PROPERTY_BASE + "." + targetName;
 				Target target = new Target(targetName, base);
 				initDynamicObjects(target);
@@ -72,7 +71,7 @@ public final class TargetFactory {
 
 	private void initContextFactory(Target target) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		String base = PROPERTY_BASE + "." + target.getName() + "." + PROPERTY_FACTORY;
-		String factoryClassName = Config.getProperty(base);
+		String factoryClassName = Config.getString(base);
 		ContextFactory contextFactory = Classes.newInstance(factoryClassName);
 		target.setContextFactory(contextFactory);
 	}
@@ -82,17 +81,16 @@ public final class TargetFactory {
 		List<String> dynamicObjects = new ArrayList<String>();
 		Map<String, DynamicObject> map = new HashMap<String, DynamicObject>();
 		String base = PROPERTY_BASE + "." + target.getName() + "." + PROPERTY_OBJECTS;
-		String objectsNames = Config.getProperty(base);
+		String objectsNames = Config.getString(base);
 		if (StringUtils.isNotEmpty(objectsNames)) {
-			String objects[] = StringUtils.split(objectsNames, SEPARATOR);
-			for (int i = 0; i < objects.length; i++) {
-				String className = Config.getProperty(base + "." + objects[i]);
+			for (String entry : Config.getList(base, SEPARATOR)) {
+				String className = Config.getString(base + "." + entry);
 				try {
 					DynamicObject dynamicObject = getDynamicObject(className);
 					initDataModel(dynamicObject);
-					map.put(objects[i], dynamicObject);
+					map.put(entry, dynamicObject);
 					
-					dynamicObjects.add(objects[i]);
+					dynamicObjects.add(entry);
 				} catch (Exception e) {
 					LOG.error("Error", e);
 				}

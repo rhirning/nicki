@@ -37,10 +37,10 @@ public class DbcpConfiguration {
     private int dbPoolMaxSize;
 
     public DbcpConfiguration(String base) throws InvalidConfigurationException {
-        dbDriverName = Config.getProperty(base + "driverClassName");
-        dbUser = Config.getProperty(base + "username");
-        dbPassword = DataHelper.getPassword(Config.getProperty(base + "password"));
-        dbURI = Config.getProperty(base + "url");
+        dbDriverName = Config.getString(base + "driverClassName");
+        dbUser = Config.getString(base + "username");
+        dbPassword = DataHelper.getPassword(Config.getString(base + "password"));
+        dbURI = Config.getString(base + "url");
         dbPoolMinSize = 
         	Integer.parseInt(Config.getProperty(base + "minActive", "1"));
         dbPoolMaxSize = 

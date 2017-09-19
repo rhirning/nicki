@@ -53,7 +53,7 @@ public class CatalogEditor extends NickiApplication {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Component getEditor() {
-		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getProperty("nicki.catalogs.basedn"), new ShowAllFilter());
+		DataProvider treeDataProvider = new DynamicObjectRoot(Config.getString("nicki.catalogs.basedn"), new ShowAllFilter());
 		TreeEditor editor = new TreeEditor(this, getNickiContext(), treeDataProvider, getI18nBase());
 		editor.configureClass(Org.class, null, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Catalog.class);
 		editor.configureClass(Catalog.class, Icon.FOLDER, TreeEditor.CREATE.ALLOW, TreeEditor.DELETE.ALLOW, TreeEditor.RENAME.ALLOW, CatalogPage.class);

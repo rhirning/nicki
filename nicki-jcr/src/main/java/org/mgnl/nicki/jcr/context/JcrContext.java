@@ -120,7 +120,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 		DynamicObject user = loadObject(username);
 		if (user == null) {
 			// TODO: how to find objects?
-			List<DynamicObject> list = loadObjects(Config.getProperty("nicki.users.basedn"), "cn=" + username);
+			List<DynamicObject> list = loadObjects(Config.getString("nicki.users.basedn"), "cn=" + username);
 			if (list != null && list.size() == 1) {
 				user = list.get(0);
 			}

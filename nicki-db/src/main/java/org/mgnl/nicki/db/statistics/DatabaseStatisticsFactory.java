@@ -38,7 +38,7 @@ public class DatabaseStatisticsFactory implements StatisticsFactory {
 
 	@Override
 	public Collection<Statistics> load() {
-		String contextName = Config.getProperty(context);
+		String contextName = Config.getString(context);
 		DBContext dbContext = DBContextManager.getContext(contextName);
 		Statistics statistics = new Statistics();
 		Collection<Statistics> collection = null;

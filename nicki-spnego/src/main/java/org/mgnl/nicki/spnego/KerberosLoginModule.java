@@ -168,9 +168,9 @@ public class KerberosLoginModule extends NickiLoginModule {
 	@Override
 	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
 			Map<String, ?> options) {
-		String preauthUsername = Config.getProperty("nicki.spnego.kerberos.preauth.username");
-		String preauthPassword = Config.getProperty("nicki.spnego.kerberos.preauth.password");
-		String serverLoginModule = Config.getProperty("nicki.spnego.kerberos.server.loginmodule");
+		String preauthUsername = Config.getString("nicki.spnego.kerberos.preauth.username");
+		String preauthPassword = Config.getString("nicki.spnego.kerberos.preauth.password");
+		String serverLoginModule = Config.getString("nicki.spnego.kerberos.server.loginmodule");
 
 		final CallbackHandler handler = getUsernamePasswordHandler(preauthUsername, preauthPassword);
 

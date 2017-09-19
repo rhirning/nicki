@@ -109,7 +109,7 @@ public class RuleEditor extends DialogBase {
 		});
 		selector.setNullSelectionAllowed(false);
 		List<Selector> selectorList = 
-			this.dynamicObject.getContext().loadChildObjects(Selector.class, Config.getProperty("nicki.selectors.basedn"),
+			this.dynamicObject.getContext().loadChildObjects(Selector.class, Config.getString("nicki.selectors.basedn"),
 					null);
 		int count = 0;
 		for (Selector s : selectorList) {

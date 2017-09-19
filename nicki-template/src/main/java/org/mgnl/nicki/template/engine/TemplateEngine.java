@@ -196,7 +196,7 @@ public class TemplateEngine {
 	private static void load(TYPE type) {
 		if (type == TYPE.JNDI) { 
 			Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(ConfigurationFactory.TYPE.JNDI,
-						Config.getProperty(PROPERTY_BASE_DN));
+						Config.getString(PROPERTY_BASE_DN));
 				instances.put(TYPE.JNDI, new TemplateEngine(cfg));
 		} else if (type == TYPE.CLASSPATH) {
 			Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(ConfigurationFactory.TYPE.CLASSPATH,

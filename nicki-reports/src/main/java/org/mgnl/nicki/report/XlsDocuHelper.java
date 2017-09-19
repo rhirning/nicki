@@ -68,7 +68,7 @@ public class XlsDocuHelper {
 		for (int i = parts.length -1 ; i >= 0; i--) {
 			sb.append("ou=").append(parts[i]).append(",");
 		}
-		sb.append(Config.getProperty("nicki.templates.basedn"));
+		sb.append(Config.getString("nicki.templates.basedn"));
 		
 		String templateDn = sb.toString();
 		Template template = AppContext.getSystemContext().loadObject(Template.class, templateDn);

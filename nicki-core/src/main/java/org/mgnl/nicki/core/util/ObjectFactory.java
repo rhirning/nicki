@@ -25,7 +25,6 @@ package org.mgnl.nicki.core.util;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,18 +57,14 @@ public class ObjectFactory<T> {
 	private void initObjects() {
 		objectsMap = new HashMap<>();
 		String base = this.propertyBase + "." + PROPERTY_OBJECTS;
-		String objectsNamesString = Config.getProperty(base);
-		if (StringUtils.isNotEmpty(objectsNamesString)) {
-			String objectNames[] = StringUtils.split(objectsNamesString, SEPARATOR);
-			for (String objectName : objectNames) {
-				String className = Config.getProperty(base + "." + objectName);
-				try {
-					T object = Classes.newInstance(className);
-					objectsMap.put(objectName, object);
-					
-				} catch (Exception e) {
-					LOG.error("Error", e);
-				}
+		for (String objectName : Config.getList(base, SEPARATOR)) {
+			String className = Config.getString(base + "." + objectName);
+			try {
+				T object = Classes.newInstance(className);
+				objectsMap.put(objectName, object);
+				
+			} catch (Exception e) {
+				LOG.error("Error", e);
 			}
 		}
 	}

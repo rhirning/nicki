@@ -29,8 +29,10 @@ import java.util.List;
 import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.auth.SSOAdapter;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.core.util.Classes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -123,14 +125,78 @@ public final class Config {
 		listener.configChanged();
 	}
 
+	/**
+	 * returns the property value from the configured config
+	 * @param key Key to the property
+	 * @return property value or null if property is not defined
+	 * @deprecated use getString(..), getInteger(..), getLong(..), getBoolean(..), getList(..), getClassInstance(..) instead
+	 */
+	@Deprecated
 	public static String getProperty(String key) {
 		LOG.debug("getProperty:" + key);
-		/*
-		if (getInstance().openProperties.size() > 0) {
-			getInstance().addOpenProperties();
-		}
-		*/
 		return getInstance().getAndTranslateProperty(key);
+	}
+	
+	public static <T> T getClassInstance(String key) {
+
+		String className = Config.getProperty(key);
+		if (StringUtils.isNotEmpty(className)) {
+			try {
+				return Classes.newInstance(className);
+			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
+				LOG.error("Could not create class instance for " + className + ":" + e.getMessage());
+			}
+		}
+		return null;
+	}
+
+	public static String getString(String key, String defaultValue) {
+		String value = getInstance().getAndTranslateProperty(key);
+		return value != null ? value : defaultValue;
+	}
+
+	public static String getString(String key) {
+		return StringUtils.stripToNull(getInstance().getAndTranslateProperty(key));
+	}
+
+	public static int getInteger(String key, int defaultValue) {
+		String value = getInstance().getAndTranslateProperty(key);
+		return value != null ? DataHelper.getInteger(value, defaultValue) : defaultValue;
+	}
+
+	public static int getInteger(String key) {
+		return getInteger(key, 0);
+	}
+	
+	public static long getLong(String key, long defaultValue) {
+		String value = getInstance().getAndTranslateProperty(key);
+		return value != null ? DataHelper.getLong(value, defaultValue) : defaultValue;
+	}
+	
+	public static long getLong(String key) {
+		return getLong(key, 0);
+	}
+	
+	/**
+	 * Splits a String into a List<String>. Other than String.split each delimiter is recognized, so that empty values are possible / allowed.
+	 * <br/><br/>
+	 * Input: "1|2||3|4|5" with delimiter "|" results in {"1", "2", "", "3", "4", "5"}
+	 * @param key key in config properties
+	 * @param separator delimiter
+	 * @return List<String> (not null)
+	 */
+	public static List<String> getList(String key, String separator) {
+		String value = getInstance().getAndTranslateProperty(key);
+		return DataHelper.getList(value, separator);
+	}
+	
+	public static boolean getBoolean(String key, boolean defaultValue) {
+		String value = getInstance().getAndTranslateProperty(key);
+		return value != null ? DataHelper.booleanOf(value) : defaultValue;
+	}
+	
+	public static boolean getBoolean(String key) {
+		return getBoolean(key, false);
 	}
 	
 	private String getAndTranslateProperty(String key) {

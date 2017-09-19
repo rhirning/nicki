@@ -34,7 +34,6 @@ import java.util.Properties;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.AttributeMapper;
-import org.mgnl.nicki.core.helper.DataHelper;
 
 public class GenericAttributeMapper  implements AttributeMapper{
 	
@@ -63,7 +62,7 @@ public class GenericAttributeMapper  implements AttributeMapper{
 			add((String) entry.getKey(), (String) entry.getValue());
 		}
 		
-		List<String> rawHiddenExternalAttributes = DataHelper.getList(Config.getProperty(configBase + ".attributes.hidden"), ",");
+		List<String> rawHiddenExternalAttributes = Config.getList(configBase + ".attributes.hidden", ",");
 		for (String attribute : rawHiddenExternalAttributes) {
 			String internal = toInternalName(attribute);
 			String external = toExternalName(internal);

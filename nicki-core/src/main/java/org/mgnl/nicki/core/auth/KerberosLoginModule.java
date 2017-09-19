@@ -252,11 +252,11 @@ public class KerberosLoginModule extends NickiLoginModule {
 		}
 
 		private synchronized void init() {
-            System.setProperty("java.security.krb5.conf", Config.getProperty("nicki.kerberos.krb5.conf"));
+            System.setProperty("java.security.krb5.conf", Config.getString("nicki.kerberos.krb5.conf"));
 
-			String preauthUsername = Config.getProperty("nicki.kerberos.preauth.username");
-			String preauthPassword = Config.getProperty("nicki.kerberos.preauth.password");
-			String serverLoginModule = Config.getProperty("nicki.kerberos.server.loginmodule");
+			String preauthUsername = Config.getString("nicki.kerberos.preauth.username");
+			String preauthPassword = Config.getString("nicki.kerberos.preauth.password");
+			String serverLoginModule = Config.getString("nicki.kerberos.server.loginmodule");
 
 			final CallbackHandler handler = getUsernamePasswordHandler(preauthUsername, preauthPassword);
 

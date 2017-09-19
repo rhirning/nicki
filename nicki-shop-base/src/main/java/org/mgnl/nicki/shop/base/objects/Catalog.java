@@ -109,7 +109,7 @@ public class Catalog extends CatalogObject{
 
 	private static void load() {
 		try {
-			instance = AppContext.getSystemContext().loadObject(Catalog.class, Config.getProperty("nicki.catalog"));
+			instance = AppContext.getSystemContext().loadObject(Catalog.class, Config.getString("nicki.catalog"));
 		} catch (InvalidPrincipalException e) {
 			LOG.error("Error", e);
 			instance = null;
