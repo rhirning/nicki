@@ -705,5 +705,9 @@ public class JsonHelper {
 		}
 		return list;
 	}
+	
+	public static JsonObject copy(JsonObject jsonObject) {
+		return JsonHelper.toJsonObject(jsonObject.toString());
+	}
 
 }

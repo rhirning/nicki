@@ -48,7 +48,7 @@ public class BrokerThread extends Thread implements Runnable {
 	private BrokerService broker;
 
 	public BrokerThread() {
-		super();
+		setDaemon(true);
 	}
 
 	public void run() {

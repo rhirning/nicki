@@ -1,6 +1,12 @@
 
 package org.mgnl.nicki.core.helper;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+
 /*-
  * #%L
  * nicki-core
@@ -555,4 +561,64 @@ public class DataHelper {
 		}
 		return result;
 	}
+	
+    public static byte[] toByteArray(Object obj) {
+        byte[] bytes = null;
+        ByteArrayOutputStream bos = null;
+        ObjectOutputStream oos = null;
+        try {
+            bos = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(bos);
+            oos.writeObject(obj);
+            oos.flush();
+            bytes = bos.toByteArray();
+        } catch (IOException e) {
+        	LOG.error("Error serializing object: " + e.getMessage());
+		} finally {
+            if (oos != null) {
+                try {
+					oos.close();
+				} catch (IOException e) {
+		        	LOG.error("Error closing ObjectOutputStream", e);
+				}
+            }
+            if (bos != null) {
+                try {
+					bos.close();
+				} catch (IOException e) {
+		        	LOG.error("Error closing ByteArrayOutputStream", e);
+				}
+            }
+        }
+        return bytes;
+    }
+
+    public static Object toObject(byte[] bytes) {
+        Object obj = null;
+        ByteArrayInputStream bis = null;
+        ObjectInputStream ois = null;
+        try {
+            bis = new ByteArrayInputStream(bytes);
+            ois = new ObjectInputStream(bis);
+            obj = ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+        	LOG.error("Error creating object from ByteArray", e);
+		} finally {
+            if (bis != null) {
+                try {
+					bis.close();
+				} catch (IOException e) {
+		        	LOG.error("Error closing ByteArrayInputStream", e);
+				}
+            }
+            if (ois != null) {
+                try {
+					ois.close();
+				} catch (IOException e) {
+		        	LOG.error("Error closing ObjectInputStream", e);
+				}
+            }
+        }
+        return obj;
+    }
 }
