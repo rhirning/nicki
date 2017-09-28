@@ -1,6 +1,8 @@
 
 package org.mgnl.nicki.core.auth;
 
+import java.net.URL;
+
 /*-
  * #%L
  * nicki-core
@@ -251,9 +253,22 @@ public class KerberosLoginModule extends NickiLoginModule {
 			}
 		}
 
-		private synchronized void init() {
-            System.setProperty("java.security.krb5.conf", Config.getString("nicki.kerberos.krb5.conf"));
-
+		private synchronized void init() {        
+	        // specify krb5 conf as a System property
+	        if (null == Config.getString(Constants.KRB5_CONF)) {
+	            throw new IllegalArgumentException(
+	                    "MISSING_PROPERTY " + Constants.KRB5_CONF);
+	        } else {
+	            String krbConfigFile = null;
+	            URL krbConfigURL = this.getClass().getClassLoader().getResource(Config.getString(Constants.KRB5_CONF));
+	            if(krbConfigURL != null) {
+	                krbConfigFile = krbConfigURL.getFile();
+	                System.setProperty("java.security.krb5.conf", krbConfigFile);
+	    	        System.out.println("krb.conf: " + System.getProperty("java.security.krb5.conf"));
+	            }
+	            LOG.debug(Constants.KRB5_CONF + "=" + Config.getString(Constants.KRB5_CONF) + ":" + krbConfigURL);
+	        }
+	        
 			String preauthUsername = Config.getString("nicki.kerberos.preauth.username");
 			String preauthPassword = Config.getString("nicki.kerberos.preauth.password");
 			String serverLoginModule = Config.getString("nicki.kerberos.server.loginmodule");
@@ -275,5 +290,29 @@ public class KerberosLoginModule extends NickiLoginModule {
 			return serverCredentials;
 		}		
 	}
+
+    public static final class Constants {        
+        /** 
+         * The location of the login.conf file.</p>
+         */
+        public static final String LOGIN_CONF = "spnego.login.conf";
+        
+        /**
+         * <p>The location of the krb5.conf file. On Windows, this file will 
+         * sometimes be named krb5.ini and reside <code>%WINDOWS_ROOT%/krb5.ini</code> 
+         * here.</p>
+         * 
+         * <p>By default, Java looks for the file in these locations and order:
+         * <li>System Property (java.security.krb5.conf)</li>
+         * <li>%JAVA_HOME%/lib/security/krb5.conf</li>
+         * <li>%WINDOWS_ROOT%/krb5.ini</li>
+         * </p>
+         */
+        public static final String KRB5_CONF = "spnego.krb5.conf";
+
+    	public static final String JAAS_SSO_ENTRY = "NickiSSO";
+    	public static final String JAAS_ENTRY = "Nicki";
+    	public static final String ATTR_NICKI_CONTEXT = "NICKI_CONTEXT";
+    }
 
 }

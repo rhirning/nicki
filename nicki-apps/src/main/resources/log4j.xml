@@ -53,7 +53,13 @@
 
 	<logger name="org.mgnl.nicki.spnego"
 		additivity="false">
-		<level value="error" />
+		<level value="debug" />
+		<appender-ref ref="ConsoleAppender" />
+	</logger>
+
+	<logger name="org.mgnl.nicki.vaadin.base.application"
+		additivity="false">
+		<level value="debug" />
 		<appender-ref ref="ConsoleAppender" />
 	</logger>
 

@@ -214,70 +214,83 @@ public final class SpnegoHttpFilter implements Filter {
     /** directories which should not be authenticated irrespective of filter-mapping. */
     private final transient List<String> excludeDirs = new ArrayList<String>();
     
+    private boolean active;
+    
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
+    	this.active = Config.getBoolean("spnego.kerberos.active", false);
 
-        try {
-            // set some System properties
-            final SpnegoFilterConfig config = SpnegoFilterConfig.getInstance();
-            this.excludeDirs.addAll(config.getExcludeDirs());
-            
-            LOG.info("excludeDirs=" + this.excludeDirs);
-            
-            // pre-authenticate
-            this.authenticator = new SpnegoAuthenticator(config);
-            
-            // authorization
-            final Properties props = SpnegoHttpFilter.toProperties(filterConfig);
-            if (!props.getProperty("spnego.authz.class", "").isEmpty()) {
-                props.put("spnego.server.realm", this.authenticator.getServerRealm());
-                this.page403 = props.getProperty("spnego.authz.403", "").trim();
-                this.sitewide = props.getProperty("spnego.authz.sitewide", "").trim();
-                this.sitewide = (this.sitewide.isEmpty()) ? null : this.sitewide;
-                this.accessControl = (UserAccessControl) Class.forName(
-                        props.getProperty("spnego.authz.class")).newInstance();
-                this.accessControl.init(props);                
-            }
-            
-        } catch (final LoginException lex) {
-            throw new ServletException(lex);
-        } catch (final GSSException gsse) {
-            throw new ServletException(gsse);
-        } catch (final PrivilegedActionException pae) {
-            throw new ServletException(pae);
-        } catch (final FileNotFoundException fnfe) {
-            throw new ServletException(fnfe);
-        } catch (final URISyntaxException uri) {
-            throw new ServletException(uri);
-        } catch (InstantiationException iex) {
-            throw new ServletException(iex);
-        } catch (IllegalAccessException iae) {
-            throw new ServletException(iae);
-        } catch (ClassNotFoundException cnfe) {
-            throw new ServletException(cnfe);
-        }
+    	if (active) {
+	        try {
+	            // set some System properties
+	            final SpnegoFilterConfig config = SpnegoFilterConfig.getInstance();
+	            this.excludeDirs.addAll(config.getExcludeDirs());
+	            
+	            LOG.info("excludeDirs=" + this.excludeDirs);
+	            
+	            // pre-authenticate
+	            this.authenticator = new SpnegoAuthenticator(config);
+	            
+	            // authorization
+	            final Properties props = SpnegoHttpFilter.toProperties(filterConfig);
+	            if (!props.getProperty("spnego.authz.class", "").isEmpty()) {
+	                props.put("spnego.server.realm", this.authenticator.getServerRealm());
+	                this.page403 = props.getProperty("spnego.authz.403", "").trim();
+	                this.sitewide = props.getProperty("spnego.authz.sitewide", "").trim();
+	                this.sitewide = (this.sitewide.isEmpty()) ? null : this.sitewide;
+	                this.accessControl = (UserAccessControl) Class.forName(
+	                        props.getProperty("spnego.authz.class")).newInstance();
+	                this.accessControl.init(props);                
+	            }
+	            
+	        } catch (final LoginException lex) {
+	            throw new ServletException(lex);
+	        } catch (final GSSException gsse) {
+	            throw new ServletException(gsse);
+	        } catch (final PrivilegedActionException pae) {
+	            throw new ServletException(pae);
+	        } catch (final FileNotFoundException fnfe) {
+	            throw new ServletException(fnfe);
+	        } catch (final URISyntaxException uri) {
+	            throw new ServletException(uri);
+	        } catch (InstantiationException iex) {
+	            throw new ServletException(iex);
+	        } catch (IllegalAccessException iae) {
+	            throw new ServletException(iae);
+	        } catch (ClassNotFoundException cnfe) {
+	            throw new ServletException(cnfe);
+	        }
+    	} else {
+    		LOG.info("Kerberos not activated");
+    	}
     }
 
     @Override
     public void destroy() {
-        this.page403 = null;
-        this.sitewide = null;
-        if (null != this.excludeDirs) {
-            this.excludeDirs.clear();
-        }
-        if (null != this.accessControl) {
-            this.accessControl.destroy();
-            this.accessControl = null;
-        }
-        if (null != this.authenticator) {
-            this.authenticator.dispose();
-            this.authenticator = null;
-        }
+    	if (active) {
+	        this.page403 = null;
+	        this.sitewide = null;
+	        if (null != this.excludeDirs) {
+	            this.excludeDirs.clear();
+	        }
+	        if (null != this.accessControl) {
+	            this.accessControl.destroy();
+	            this.accessControl = null;
+	        }
+	        if (null != this.authenticator) {
+	            this.authenticator.dispose();
+	            this.authenticator = null;
+	        }
+    	}
     }
 
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response
         , final FilterChain chain) throws IOException, ServletException {
+    	if (!active) {
+    		chain.doFilter(request, response);
+    		return;
+    	}
 
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
         

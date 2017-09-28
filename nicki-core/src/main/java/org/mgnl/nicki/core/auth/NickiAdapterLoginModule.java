@@ -37,6 +37,9 @@ public class NickiAdapterLoginModule extends NickiLoginModule implements LoginMo
 	
 	@Override
 	public boolean login() throws LoginException {
+		if (this.adapter == null) {
+			return false;
+		}
 		LOG.debug("Using " + getClass().getCanonicalName() +  " with Adapter " + getAdapter().getClass().getCanonicalName());
 
 		NickiPrincipal principal;
@@ -68,7 +71,7 @@ public class NickiAdapterLoginModule extends NickiLoginModule implements LoginMo
 			try {
 				this.adapter = Classes.newInstance(adapterClass);
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				LOG.error("Could not create adapter " + adapterClass, e);
+				LOG.error("Could not create adapter " + adapterClass, e.getMessage());
 			}
 		}
 		return adapter;

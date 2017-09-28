@@ -45,6 +45,11 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
+			<artifactId>nicki-portlets</artifactId>
+			<version>7.56-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-idm-novell-shop</artifactId>
 			<version>7.56-SNAPSHOT</version>
 		</dependency>

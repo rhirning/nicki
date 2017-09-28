@@ -65,9 +65,6 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("serial")
 public abstract class NickiApplication extends UI {
 	private static final Logger LOG = LoggerFactory.getLogger(NickiApplication.class);
-	public static final String JAAS_SSO_ENTRY = "NickiSSO";
-	public static final String JAAS_ENTRY = "Nicki";
-	public static final String ATTR_NICKI_CONTEXT = "NICKI_CONTEXT";
 
 	private NickiContext nickiContext;
 	private Context context;
@@ -96,23 +93,24 @@ public abstract class NickiApplication extends UI {
 
 		if (nickiContext == null) {
 			// try SSO
-			loginSSO();
+			// loginSSO();
 		}
 		
 		if (context == null) {
-			// set login.conf
-//	        System.out.println("login.conf: " + System.getProperty("java.security.auth.login.config"));
-//
-//	        if(System.getProperty("java.security.auth.login.config") == null) {
-//	            String jaasConfigFile = null;
-//	            URL jaasConfigURL = this.getClass().getClassLoader().getResource("login.conf");
-//	            if(jaasConfigURL != null) {
-//	                jaasConfigFile = jaasConfigURL.getFile();
-//	            }
-//	            System.setProperty("java.security.auth.login.config", jaasConfigFile);
-//		        System.out.println("login.conf: " + System.getProperty("java.security.auth.login.config"));
-//	        }
-//			loginJAAS();
+
+	        // specify login conf as a System property
+	        if (null == Config.getString(Constants.LOGIN_CONF)) {
+	        	LOG.error(Constants.LOGIN_CONF + " missing in env.properties");
+	        } else {
+	            String jaasConfigFile = null;
+	            URL jaasConfigURL = this.getClass().getClassLoader().getResource(Config.getString(Constants.LOGIN_CONF));
+	            if(jaasConfigURL != null) {
+	                jaasConfigFile = jaasConfigURL.getFile();
+	                System.setProperty("java.security.auth.login.config", jaasConfigFile);
+	            }
+	            LOG.debug(Constants.LOGIN_CONF + "=" + Config.getString(Constants.LOGIN_CONF) + ":" + jaasConfigFile);
+	        }
+			loginJAAS();
 		}
 		if (context != null) {
 			try {
@@ -384,4 +382,28 @@ public abstract class NickiApplication extends UI {
 			this.nickiContext = null;
 		}
 	}
+
+    public static final class Constants {        
+        /** 
+         * The location of the login.conf file.</p>
+         */
+        public static final String LOGIN_CONF = "spnego.login.conf";
+        
+        /**
+         * <p>The location of the krb5.conf file. On Windows, this file will 
+         * sometimes be named krb5.ini and reside <code>%WINDOWS_ROOT%/krb5.ini</code> 
+         * here.</p>
+         * 
+         * <p>By default, Java looks for the file in these locations and order:
+         * <li>System Property (java.security.krb5.conf)</li>
+         * <li>%JAVA_HOME%/lib/security/krb5.conf</li>
+         * <li>%WINDOWS_ROOT%/krb5.ini</li>
+         * </p>
+         */
+        public static final String KRB5_CONF = "spnego.krb5.conf";
+
+    	public static final String JAAS_SSO_ENTRY = "NickiSSO";
+    	public static final String JAAS_ENTRY = "Nicki";
+    	public static final String ATTR_NICKI_CONTEXT = "NICKI_CONTEXT";
+    }
 }
