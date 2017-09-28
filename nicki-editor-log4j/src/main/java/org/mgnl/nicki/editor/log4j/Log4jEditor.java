@@ -39,7 +39,7 @@ public class Log4jEditor extends NickiApplication {
 	
 	public Log4jEditor() {
 		super();
-		setUseWelcomeDialog(DataHelper.booleanOf(Config.getProperty("nicki.projects.useWelcomeDialog", "false")));
+		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.log4j.useWelcomeDialog", false));
 	}
 
 	@Override

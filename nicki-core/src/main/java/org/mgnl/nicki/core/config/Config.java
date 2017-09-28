@@ -229,7 +229,14 @@ public final class Config {
 		}
 	}
 	*/
-
+	/**
+	 * returns the property value from the configured config or the defaultValue if not available
+	 * @param key Key to the property
+	 * @param defaultValue default value
+	 * @return property value or null if property is not defined
+	 * @deprecated use getString(..), getInteger(..), getLong(..), getBoolean(..), getList(..), getClassInstance(..) instead
+	 */
+	@Deprecated
 	public static String getProperty(String key, String defaultValue) {
 		String value = getInstance().getAndTranslateProperty(key);
 		if (value != null) {

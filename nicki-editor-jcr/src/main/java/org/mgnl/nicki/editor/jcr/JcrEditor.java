@@ -47,7 +47,7 @@ public class JcrEditor extends NickiApplication {
 	
 	public JcrEditor() {
 		super();
-		setUseWelcomeDialog(DataHelper.booleanOf(Config.getProperty("nicki.projects.useWelcomeDialog", "false")));
+		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.jcr.useWelcomeDialog", false));
 	}
 
 	@SuppressWarnings("unchecked")

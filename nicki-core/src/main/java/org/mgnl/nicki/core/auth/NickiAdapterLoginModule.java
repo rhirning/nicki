@@ -37,7 +37,7 @@ public class NickiAdapterLoginModule extends NickiLoginModule implements LoginMo
 	
 	@Override
 	public boolean login() throws LoginException {
-		if (this.adapter == null) {
+		if (getAdapter() == null) {
 			return false;
 		}
 		LOG.debug("Using " + getClass().getCanonicalName() +  " with Adapter " + getAdapter().getClass().getCanonicalName());

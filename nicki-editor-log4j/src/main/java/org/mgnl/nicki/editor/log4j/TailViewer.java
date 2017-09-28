@@ -208,7 +208,7 @@ public class TailViewer extends CustomComponent implements Serializable {
 		LOG.debug("Tailer for File '" + activePath + "' started");
 	}
 
-	class TailerListener extends TailerListenerAdapter {
+	class TailerListener extends TailerListenerAdapter implements Serializable {
 
 		@Override
 		public void handle(String line) {

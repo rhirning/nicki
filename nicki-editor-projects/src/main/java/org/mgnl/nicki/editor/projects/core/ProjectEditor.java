@@ -55,7 +55,7 @@ public class ProjectEditor extends NickiApplication {
 	public ProjectEditor() {
 		super();
 		setUseSystemContext(true);
-		setUseWelcomeDialog(DataHelper.booleanOf(Config.getProperty("nicki.projects.useWelcomeDialog", "false")));
+		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.projects.useWelcomeDialog", false));
 	}
 
 	@SuppressWarnings("unchecked")

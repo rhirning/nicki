@@ -47,7 +47,7 @@ public class CatalogEditor extends NickiApplication {
 
 	public CatalogEditor() {
 		super();
-		setUseWelcomeDialog(DataHelper.booleanOf(Config.getProperty("nicki.projects.useWelcomeDialog", "false")));
+		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.catalog.useWelcomeDialog", false));
 	}
 
 	@SuppressWarnings("unchecked")

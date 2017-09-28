@@ -37,7 +37,7 @@ public class ScriptEditor extends NickiApplication {
 	
 	public ScriptEditor() {
 		super();
-		setUseWelcomeDialog(DataHelper.booleanOf(Config.getProperty("nicki.projects.useWelcomeDialog", "false")));
+		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.scripts.useWelcomeDialog", false));
 	}
 
 	@Override

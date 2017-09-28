@@ -40,7 +40,7 @@ public class UserAdmin extends NickiApplication {
 	
 	public UserAdmin() {
 		super();
-		setUseWelcomeDialog(DataHelper.booleanOf(Config.getProperty("nicki.projects.useWelcomeDialog", "false")));
+		setUseWelcomeDialog(Config.getBoolean("nicki.app.admin.user.useWelcomeDialog", false));
 	}
 
 	@Override

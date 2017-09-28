@@ -125,6 +125,7 @@ public abstract class NickiApplication extends UI {
 	}
 	
 	public void logout() {
+		AppContext.setUser(null);
 		setContext(null);
 		showLoginDialog();
 	}
@@ -149,8 +150,9 @@ public abstract class NickiApplication extends UI {
 	
 	private void loginJAAS() {
 		try {
+			LOG.debug("LoginContext=" + Config.getString("nicki.login.context.name"));
 			
-			LoginContext loginContext = new LoginContext(Config.getProperty("nicki.login.context.name", "nicki"), new Subject());
+			LoginContext loginContext = new LoginContext(Config.getString("nicki.login.context.name"), new Subject());
 			loginContext.login();
 			Set<Principal> principals = loginContext.getSubject().getPrincipals();
 			if (principals != null && principals.size() > 0) {
@@ -165,7 +167,7 @@ public abstract class NickiApplication extends UI {
 		}
 	}
 
-	
+	@Deprecated
 	private void loginSSO() {
 		try {
 			String ssoLoginClass = Config.getString("nicki.login.sso");

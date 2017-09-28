@@ -36,6 +36,11 @@ public class TemplateEditor extends NickiApplication {
 
 	private static final long serialVersionUID = -8245147689512577915L;
     
+	public TemplateEditor() {
+		super();
+		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.templates.useWelcomeDialog", false));
+	}
+
 	@Override
 	public Component getEditor() {
 		return new TemplateEditorComponent(this);
