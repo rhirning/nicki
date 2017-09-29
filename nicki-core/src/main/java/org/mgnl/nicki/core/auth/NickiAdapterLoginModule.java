@@ -43,13 +43,11 @@ public class NickiAdapterLoginModule extends NickiLoginModule implements LoginMo
 		LOG.debug("Using " + getClass().getCanonicalName() +  " with Adapter " + getAdapter().getClass().getCanonicalName());
 
 		NickiPrincipal principal;
-		try {
-			if (StringUtils.isBlank(getAdapter().getName()) || getAdapter().getPassword() == null) {
-				LOG.debug("No valid principal");
-			}
-		} catch (Exception e1) {
+		if (StringUtils.isBlank(getAdapter().getName()) || getAdapter().getPassword() == null) {
 			LOG.debug("No valid principal");
+			return false;
 		}
+		
 		try {
 			principal = new NickiPrincipal(getAdapter().getName(), new String(getAdapter().getPassword()));
 			setContext(login(principal));

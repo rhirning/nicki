@@ -36,6 +36,7 @@ import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,6 +83,7 @@ public abstract class NickiLoginModule implements LoginModule {
 		// initialize any configured options
 		debug = "true".equalsIgnoreCase((String) options.get("debug"));
 		targetName = StringUtils.stripToNull((String) options.get("target"));
+		useSystemContext = DataHelper.booleanOf(StringUtils.stripToNull((String) options.get("useSystemContext")));
 	}
 	
 	protected NickiContext login(NickiPrincipal principal) throws InvalidPrincipalException {
@@ -103,6 +105,9 @@ public abstract class NickiLoginModule implements LoginModule {
 	}
 
 	protected DynamicObject loadUser(String userId) {
+		if (StringUtils.contains(userId, "@")) {
+			userId = StringUtils.substringBefore(userId, "@");
+		}
 		List<? extends DynamicObject> list = null;
 		try {
 			list = AppContext.getSystemContext().loadObjects(Config.getString("nicki.users.basedn"), "cn=" + userId);
@@ -207,12 +212,16 @@ public abstract class NickiLoginModule implements LoginModule {
 	public void setPrincipal(DynamicObjectPrincipal dynamicObjectPrincipal) {
 		if (this.subject == null) {
 			this.subject = new Subject();
-			this.subject.getPrincipals().add(dynamicObjectPrincipal);
+			LOG.debug("create new Subject");
+		} else {
+			LOG.debug("Subject exists");
 		}
+		this.subject.getPrincipals().add(dynamicObjectPrincipal);
 		this.principal = dynamicObjectPrincipal;
 	}
 
 	public Subject getSubject() {
+		LOG.debug("getSubject: " + subject);
 		return subject;
 	}
 

@@ -1,7 +1,7 @@
 
 package org.mgnl.nicki.core.auth;
 
-import java.net.URL;
+
 
 /*-
  * #%L
@@ -26,7 +26,6 @@ import java.net.URL;
 
 import java.security.PrivilegedActionException;
 import java.security.PrivilegedExceptionAction;
-import java.util.Map;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import javax.security.auth.Subject;
@@ -34,6 +33,7 @@ import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
+import javax.security.auth.kerberos.KerberosPrincipal;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +55,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class KerberosLoginModule extends NickiLoginModule {
-	private static final Logger LOG = LoggerFactory.getLogger(KerberosLoginModule.class);
+	static final Logger LOG = LoggerFactory.getLogger(KerberosLoginModule.class);
+	public static final String PREAUTH_USER_CONF = "spnego.preauth.username";
+    public static final String PREAUTH_PASSWORD_CONF = "spnego.preauth.password";
+    public static final String SERVER_LOGIN_MODULE_CONF = "spnego.server.loginmodule";
+    
 	/** GSSContext is not thread-safe. */
 	private static final Lock LOCK = new ReentrantLock();
 	
@@ -91,7 +95,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 
 	@Override
 	public boolean login() throws LoginException {
-		LOG.error("Using " + getClass().getCanonicalName());
+		LOG.debug("Using " + getClass().getCanonicalName());
 		HttpServletRequest request = (HttpServletRequest) AppContext.getRequest();
 		if (request instanceof HttpServletRequest) {
 			HttpServletRequest req = (HttpServletRequest) request;
@@ -101,7 +105,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 				return false;
 			} else if (header.startsWith(NEGOTIATE_HEADER)) {
 				final String negotiateHeader = header.substring(NEGOTIATE_HEADER.length() + 1);
-				final String principal;
+				final SpnegoPrincipal principal;
 				final byte[] gss = decodeToken(negotiateHeader);
 
 				if (0 == gss.length) {
@@ -110,6 +114,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 				}
 
 				GSSContext context = null;
+		        GSSCredential delegCred = null;
 				try {
 					byte[] token = null;
 
@@ -122,19 +127,34 @@ public class KerberosLoginModule extends NickiLoginModule {
 							LOG.debug("Token was NULL.");
 							return false;
 						}
-						principal = context.getSrcName().toString();
-						DynamicObject user = loadUser(principal);
-						setContext(user.getContext().getTarget().getSystemContext(user));
-
-						// TODO: separate context / loginContext
-						DynamicObjectPrincipal dynamicObjectPrincipal = new DynamicObjectPrincipal(principal,
-								getContext(), getContext());
-						setPrincipal(dynamicObjectPrincipal);
-						setSucceeded(true);
+			            
+			            if (context.getCredDelegState()) {
+			                delegCred = context.getDelegCred();
+			            }
+						String principalId = context.getSrcName().toString();
+						principal = new SpnegoPrincipal(principalId, KerberosPrincipal.KRB_NT_PRINCIPAL, gss, delegCred);
+						LOG.debug("principal=" + principal);
+						DynamicObject user = loadUser(principal.getName());
+						if (user != null) {
+							try {
+								setContext(user.getContext().getTarget().getSystemContext(user));
+							} catch (InvalidPrincipalException e) {
+								LOG.debug("Error validation context for user " + user.getDisplayName(), e);
+								return false;
+							}
+							// TODO: separate context / loginContext
+							DynamicObjectPrincipal dynamicObjectPrincipal = new DynamicObjectPrincipal(user.getName(),
+									getContext(), getContext());
+							setPrincipal(dynamicObjectPrincipal);
+							setSucceeded(true);
+							LOG.debug("login successful:  " + principal);
+							return true;
+						} else {
+							LOG.debug("user not found in directory: " + principal);
+						}
+						
 					} catch (GSSException e) {
 						LOG.error("Error with token", e);
-					} catch (InvalidPrincipalException e) {
-						LOG.error("Error with SystemCredentials", e);
 					} finally {
 						LOCK.unlock();
 					}
@@ -155,19 +175,14 @@ public class KerberosLoginModule extends NickiLoginModule {
 		}
 		return false;
 	}
-
+	
 	/**
 	 * Returns a copy of byte[].
 	 * 
 	 * @return copy of token
 	 */
-	byte[] decodeToken(String token) {
+	private byte[] decodeToken(String token) {
 		return (null == token) ? EMPTY_BYTE_ARRAY : Base64.decodeBase64(token);
-	}
-
-	@Override
-	public void initialize(Subject subject, CallbackHandler callbackHandler, Map<String, ?> sharedState,
-			Map<String, ?> options) {
 	}
 
 	/**
@@ -201,7 +216,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 	 */
 	public static CallbackHandler getUsernamePasswordHandler(final String username, final String password) {
 
-		LOG.debug("username=" + username + "; password=" + password.hashCode());
+		LOG.debug("preauth: username=" + username + "; password=" + password.hashCode());
 
 		final CallbackHandler handler = new CallbackHandler() {
 			public void handle(final Callback[] callback) {
@@ -253,25 +268,10 @@ public class KerberosLoginModule extends NickiLoginModule {
 			}
 		}
 
-		private synchronized void init() {        
-	        // specify krb5 conf as a System property
-	        if (null == Config.getString(Constants.KRB5_CONF)) {
-	            throw new IllegalArgumentException(
-	                    "MISSING_PROPERTY " + Constants.KRB5_CONF);
-	        } else {
-	            String krbConfigFile = null;
-	            URL krbConfigURL = this.getClass().getClassLoader().getResource(Config.getString(Constants.KRB5_CONF));
-	            if(krbConfigURL != null) {
-	                krbConfigFile = krbConfigURL.getFile();
-	                System.setProperty("java.security.krb5.conf", krbConfigFile);
-	    	        System.out.println("krb.conf: " + System.getProperty("java.security.krb5.conf"));
-	            }
-	            LOG.debug(Constants.KRB5_CONF + "=" + Config.getString(Constants.KRB5_CONF) + ":" + krbConfigURL);
-	        }
-	        
-			String preauthUsername = Config.getString("nicki.kerberos.preauth.username");
-			String preauthPassword = Config.getString("nicki.kerberos.preauth.password");
-			String serverLoginModule = Config.getString("nicki.kerberos.server.loginmodule");
+		private synchronized void init() {
+			String preauthUsername = Config.getString(PREAUTH_USER_CONF);
+			String preauthPassword = Config.getString(PREAUTH_PASSWORD_CONF);
+			String serverLoginModule = Config.getString(SERVER_LOGIN_MODULE_CONF, "spnego-server");
 
 			final CallbackHandler handler = getUsernamePasswordHandler(preauthUsername, preauthPassword);
 
@@ -282,7 +282,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 
 				this.serverCredentials = getServerCredential(loginContext.getSubject());
 			} catch (LoginException | PrivilegedActionException e) {
-				LOG.error("Error initializing", e);
+				LOG.error("Error initializing KerberosLoginModule", e);
 			}
 		}
 
@@ -290,29 +290,5 @@ public class KerberosLoginModule extends NickiLoginModule {
 			return serverCredentials;
 		}		
 	}
-
-    public static final class Constants {        
-        /** 
-         * The location of the login.conf file.</p>
-         */
-        public static final String LOGIN_CONF = "spnego.login.conf";
-        
-        /**
-         * <p>The location of the krb5.conf file. On Windows, this file will 
-         * sometimes be named krb5.ini and reside <code>%WINDOWS_ROOT%/krb5.ini</code> 
-         * here.</p>
-         * 
-         * <p>By default, Java looks for the file in these locations and order:
-         * <li>System Property (java.security.krb5.conf)</li>
-         * <li>%JAVA_HOME%/lib/security/krb5.conf</li>
-         * <li>%WINDOWS_ROOT%/krb5.ini</li>
-         * </p>
-         */
-        public static final String KRB5_CONF = "spnego.krb5.conf";
-
-    	public static final String JAAS_SSO_ENTRY = "NickiSSO";
-    	public static final String JAAS_ENTRY = "Nicki";
-    	public static final String ATTR_NICKI_CONTEXT = "NICKI_CONTEXT";
-    }
 
 }

@@ -234,6 +234,7 @@ public final class SpnegoHttpFilter implements Filter {
 	            // authorization
 	            final Properties props = SpnegoHttpFilter.toProperties(filterConfig);
 	            if (!props.getProperty("spnego.authz.class", "").isEmpty()) {
+	            	LOG.debug("spnego.authz.class = " + props.getProperty("spnego.authz.class", ""));
 	                props.put("spnego.server.realm", this.authenticator.getServerRealm());
 	                this.page403 = props.getProperty("spnego.authz.403", "").trim();
 	                this.sitewide = props.getProperty("spnego.authz.sitewide", "").trim();
@@ -241,6 +242,9 @@ public final class SpnegoHttpFilter implements Filter {
 	                this.accessControl = (UserAccessControl) Class.forName(
 	                        props.getProperty("spnego.authz.class")).newInstance();
 	                this.accessControl.init(props);                
+	            } else {
+	            	LOG.debug("spnego.authz.class empty");
+	            	
 	            }
 	            
 	        } catch (final LoginException lex) {
@@ -287,7 +291,7 @@ public final class SpnegoHttpFilter implements Filter {
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response
         , final FilterChain chain) throws IOException, ServletException {
-    	if (!active) {
+    	if (!active || active) {
     		chain.doFilter(request, response);
     		return;
     	}

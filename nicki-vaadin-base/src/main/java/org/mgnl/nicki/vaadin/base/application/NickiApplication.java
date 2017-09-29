@@ -23,7 +23,6 @@ package org.mgnl.nicki.vaadin.base.application;
 
 
 import java.io.Serializable;
-import java.net.URL;
 import java.security.Principal;
 import java.util.Map;
 import java.util.Set;
@@ -98,6 +97,7 @@ public abstract class NickiApplication extends UI {
 		
 		if (context == null) {
 
+			/*
 	        // specify login conf as a System property
 	        if (null == Config.getString(Constants.LOGIN_CONF)) {
 	        	LOG.error(Constants.LOGIN_CONF + " missing in env.properties");
@@ -110,6 +110,7 @@ public abstract class NickiApplication extends UI {
 	            }
 	            LOG.debug(Constants.LOGIN_CONF + "=" + Config.getString(Constants.LOGIN_CONF) + ":" + jaasConfigFile);
 	        }
+	        */
 			loginJAAS();
 		}
 		if (context != null) {
@@ -155,6 +156,7 @@ public abstract class NickiApplication extends UI {
 			LoginContext loginContext = new LoginContext(Config.getString("nicki.login.context.name"), new Subject());
 			loginContext.login();
 			Set<Principal> principals = loginContext.getSubject().getPrincipals();
+			LOG.debug("principals: " + principals);
 			if (principals != null && principals.size() > 0) {
 				DynamicObjectPrincipal dynamicObjectPrincipal = (DynamicObjectPrincipal) principals.iterator().next();
 				Context context = new Context();

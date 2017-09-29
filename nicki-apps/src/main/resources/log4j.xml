@@ -9,18 +9,6 @@
 		</layout>
 	</appender>
 
-	<logger name="org.mgnl.nicki.cache"
-		additivity="false">
-		<level value="error" />
-		<appender-ref ref="ConsoleAppender" />
-	</logger>
-
-	<logger name="org.mgnl.nicki.core"
-		additivity="false">
-		<level value="error" />
-		<appender-ref ref="ConsoleAppender" />
-	</logger>
-
 	<logger name="org.mgnl.nicki.core.config.Config"
 		additivity="false">
 		<level value="info" />
@@ -33,33 +21,9 @@
 		<appender-ref ref="ConsoleAppender" />
 	</logger>
 
-	<logger name="org.mgnl.nicki.shop"
-		additivity="false">
-		<level value="error" />
-		<appender-ref ref="ConsoleAppender" />
-	</logger>
-
-	<logger name="org.mgnl.nicki.vaadin"
-		additivity="false">
-		<level value="error" />
-		<appender-ref ref="ConsoleAppender" />
-	</logger>
-
 	<logger name="org.mgnl.nicki.core.auth"
 		additivity="false">
 		<level value="error" />
-		<appender-ref ref="ConsoleAppender" />
-	</logger>
-
-	<logger name="org.mgnl.nicki.spnego"
-		additivity="false">
-		<level value="debug" />
-		<appender-ref ref="ConsoleAppender" />
-	</logger>
-
-	<logger name="org.mgnl.nicki.vaadin.base.application"
-		additivity="false">
-		<level value="debug" />
 		<appender-ref ref="ConsoleAppender" />
 	</logger>
 
