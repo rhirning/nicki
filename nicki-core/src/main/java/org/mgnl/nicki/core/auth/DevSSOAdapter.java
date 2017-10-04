@@ -22,11 +22,15 @@ package org.mgnl.nicki.core.auth;
  */
 
 
-import org.mgnl.nicki.core.context.AppContext;;
+import org.mgnl.nicki.core.context.AppContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;;
 
 public class DevSSOAdapter implements SSOAdapter {
+	static final Logger LOG = LoggerFactory.getLogger(DevSSOAdapter.class);
 	public String getName() {
 		 try {
+			LOG.debug("name=" + AppContext.getSystemContext().getPrincipal().getName());
 			return AppContext.getSystemContext().getPrincipal().getName();
 		} catch (Exception e) {
 			return null;

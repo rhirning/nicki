@@ -90,12 +90,7 @@ public abstract class NickiApplication extends UI {
 		Page.getCurrent().setTitle(I18n.getText(getI18nBase() + ".main.title"));
 		
 
-		if (nickiContext == null) {
-			// try SSO
-			// loginSSO();
-		}
-		
-		if (context == null) {
+		if (Config.getBoolean("nicki.application.auth.jaas")) {
 
 			/*
 	        // specify login conf as a System property
@@ -112,6 +107,9 @@ public abstract class NickiApplication extends UI {
 	        }
 	        */
 			loginJAAS();
+		} else {
+			// try SSO
+			loginSSO();
 		}
 		if (context != null) {
 			try {
@@ -161,15 +159,20 @@ public abstract class NickiApplication extends UI {
 				DynamicObjectPrincipal dynamicObjectPrincipal = (DynamicObjectPrincipal) principals.iterator().next();
 				Context context = new Context();
 				context.setLoginContext(dynamicObjectPrincipal.getLoginContext());
-				context.setContext(dynamicObjectPrincipal.getContext());
+				if (isUseSystemContext()) {
+					context.setContext(AppContext.getSystemContext(getTarget(),
+							dynamicObjectPrincipal.getLoginContext().getPrincipal().getName(),
+							dynamicObjectPrincipal.getLoginContext().getPrincipal().getPassword()));
+				} else {
+					context.setContext(dynamicObjectPrincipal.getContext());					
+				}
 				setContext(context);
 			}
-		} catch (LoginException e) {
+		} catch (LoginException | InvalidPrincipalException | DynamicObjectException e) {
 			LOG.error(e.getMessage());
 		}
 	}
 
-	@Deprecated
 	private void loginSSO() {
 		try {
 			String ssoLoginClass = Config.getString("nicki.login.sso");
