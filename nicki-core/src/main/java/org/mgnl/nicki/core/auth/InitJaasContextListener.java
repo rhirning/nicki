@@ -7,6 +7,7 @@ import javax.security.auth.login.Configuration;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,30 +25,37 @@ public class InitJaasContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
         
         // specify krb5 conf as a System property
-        if (null == getInitParameter(KRB5_CONF)) {
-            throw new IllegalArgumentException("Missing config: " + KRB5_CONF);
-        } else {
-            String krbConfigFile = null;
-            URL krbConfigURL = this.getClass().getClassLoader().getResource(getInitParameter(KRB5_CONF));
-            if(krbConfigURL != null) {
-                krbConfigFile = krbConfigURL.getFile();
-                System.setProperty(PROPERTY_KRB5_CONF, krbConfigFile);
-            }
-            LOG.info(PROPERTY_KRB5_CONF + "=" + getInitParameter(KRB5_CONF) + ":" + krbConfigURL);
+    	String krbSystemProperty = System.getProperty(PROPERTY_KRB5_CONF);
+    	if (StringUtils.isBlank(krbSystemProperty)) {
+	        if (null == getInitParameter(KRB5_CONF)) {
+	            throw new IllegalArgumentException("Missing config: " + KRB5_CONF);
+	        } else {
+	            String krbConfigFile = null;
+	            URL krbConfigURL = this.getClass().getClassLoader().getResource(getInitParameter(KRB5_CONF));
+	            if(krbConfigURL != null) {
+	                krbConfigFile = krbConfigURL.getFile();
+	                System.setProperty(PROPERTY_KRB5_CONF, krbConfigFile);
+	            }
+        	}
         }
+        LOG.info(PROPERTY_KRB5_CONF + "=" + System.getProperty(PROPERTY_KRB5_CONF));
 
         // specify login conf as a System property
-        if (null == getInitParameter(LOGIN_CONF)) {
-            throw new IllegalArgumentException("Missing config: " + LOGIN_CONF);
-        } else {
-            String jaasConfigFile = null;
-            URL jaasConfigURL = this.getClass().getClassLoader().getResource(getInitParameter(LOGIN_CONF));
-            if(jaasConfigURL != null) {
-                jaasConfigFile = jaasConfigURL.getFile();
-                System.setProperty(PROPERTY_LOGIN_CONF, jaasConfigFile);
-            }
-            LOG.info(PROPERTY_LOGIN_CONF + "=" + getInitParameter(LOGIN_CONF) + ":" + jaasConfigFile);
+    	String jaasConfigSystemProperty = System.getProperty(PROPERTY_LOGIN_CONF);
+    	if (StringUtils.isBlank(jaasConfigSystemProperty)) {
+		    if (null == getInitParameter(LOGIN_CONF)) {
+		        throw new IllegalArgumentException("Missing config: " + LOGIN_CONF);
+		    } else {
+	            String jaasConfigFile = null;
+	            URL jaasConfigURL = this.getClass().getClassLoader().getResource(getInitParameter(LOGIN_CONF));
+	            if(jaasConfigURL != null) {
+	                jaasConfigFile = jaasConfigURL.getFile();
+	                System.setProperty(PROPERTY_LOGIN_CONF, jaasConfigFile);
+	            }
+        	}
         }
+        LOG.info(PROPERTY_LOGIN_CONF + "=" + System.getProperty(PROPERTY_LOGIN_CONF));
+        
         checkModule(Config.getString(CONTEXT_CONF));
 	}
 
