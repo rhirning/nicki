@@ -50,6 +50,7 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.auth.NickiLoginModule;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -136,19 +137,32 @@ public class KerberosLoginModule extends NickiLoginModule {
 						LOG.debug("principal=" + principal);
 						DynamicObject user = loadUser(principal.getName());
 						if (user != null) {
-							try {
-								setContext(user.getContext().getTarget().getSystemContext(user));
-							} catch (InvalidPrincipalException e) {
-								LOG.debug("Error validation context for user " + user.getDisplayName(), e);
-								return false;
+							NickiContext loginContext;
+							NickiContext nickiContext;
+							if (isUseSystemContext()) {
+								try {
+									loginContext = user.getContext().getTarget().getNamedUserContext(user,
+											new String(principal.getCredential()));
+									nickiContext = user.getContext().getTarget().getSystemContext(user);
+								} catch (InvalidPrincipalException e) {
+									LOG.debug("login not successful: " + principal, e);
+									return false;
+								}
+							} else {
+								loginContext = login(principal.getName(), principal.getCredential());
+								nickiContext = loginContext;
 							}
-							// TODO: separate context / loginContext
-							DynamicObjectPrincipal dynamicObjectPrincipal = new DynamicObjectPrincipal(user.getName(),
-									getContext(), getContext());
-							setPrincipal(dynamicObjectPrincipal);
-							setSucceeded(true);
-							LOG.debug("login successful:  " + principal);
-							return true;
+							if (loginContext != null && nickiContext != null) {
+								setLoginContext(loginContext);
+								DynamicObjectPrincipal dynamicObjectPrincipal = new DynamicObjectPrincipal(user.getName(),
+										loginContext, nickiContext);
+								setPrincipal(dynamicObjectPrincipal);
+								setSucceeded(true);
+								LOG.debug("login successful:  " + principal);
+								return true;
+							} else {
+								LOG.debug("login not successful: " + principal);
+							}
 						} else {
 							LOG.debug("user not found in directory: " + principal);
 						}

@@ -124,7 +124,6 @@ public abstract class NickiApplication extends UI {
 	}
 	
 	public void logout() {
-		AppContext.setUser(null);
 		setContext(null);
 		showLoginDialog();
 	}
@@ -150,25 +149,28 @@ public abstract class NickiApplication extends UI {
 	private void loginJAAS() {
 		try {
 			LOG.debug("LoginContext=" + Config.getString("nicki.login.context.name"));
+
+			String contextName;
+			if (isUseSystemContext() && Config.getString("nicki.login.context.name.system") != null) {
+				contextName = Config.getString("nicki.login.context.name.system");
+			} else {
+				contextName = Config.getString("nicki.login.context.name");
+			}
 			
-			LoginContext loginContext = new LoginContext(Config.getString("nicki.login.context.name"), new Subject());
+			LoginContext loginContext = new LoginContext(contextName, new Subject());
 			loginContext.login();
 			Set<Principal> principals = loginContext.getSubject().getPrincipals();
 			LOG.debug("principals: " + principals);
 			if (principals != null && principals.size() > 0) {
 				DynamicObjectPrincipal dynamicObjectPrincipal = (DynamicObjectPrincipal) principals.iterator().next();
 				Context context = new Context();
+				LOG.debug("loginContext: " + dynamicObjectPrincipal.getLoginContext().toString());
 				context.setLoginContext(dynamicObjectPrincipal.getLoginContext());
-				if (isUseSystemContext()) {
-					context.setContext(AppContext.getSystemContext(getTarget(),
-							dynamicObjectPrincipal.getLoginContext().getPrincipal().getName(),
-							dynamicObjectPrincipal.getLoginContext().getPrincipal().getPassword()));
-				} else {
-					context.setContext(dynamicObjectPrincipal.getContext());					
-				}
+				LOG.debug("nickiContext: " + dynamicObjectPrincipal.getContext().toString());
+				context.setContext(dynamicObjectPrincipal.getContext());					
 				setContext(context);
 			}
-		} catch (LoginException | InvalidPrincipalException | DynamicObjectException e) {
+		} catch (LoginException e) {
 			LOG.error(e.getMessage());
 		}
 	}

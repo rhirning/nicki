@@ -28,6 +28,7 @@ import javax.security.auth.spi.LoginModule;
 import org.mgnl.nicki.core.auth.DynamicObjectPrincipal;
 import org.mgnl.nicki.core.auth.NickiLoginModule;
 import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,10 +41,11 @@ public class DevLoginModule extends NickiLoginModule implements LoginModule {
 
 		try {
 			if (this.targetName != null) {
-				setContext(AppContext.getSystemContext(this.targetName));
+				setLoginContext(AppContext.getSystemContext(this.targetName));
 			}
-			// TODO: separate context / loginContext
-			DynamicObjectPrincipal dynamicObjectPrincipal = new DynamicObjectPrincipal(getContext().getPrincipal(), getContext(), getContext());
+			NickiContext context = isUseSystemContext() ? AppContext.getSystemContext(getLoginContext().getPrincipal().getName(),
+					getLoginContext().getPrincipal().getPassword()): getLoginContext();
+			DynamicObjectPrincipal dynamicObjectPrincipal = new DynamicObjectPrincipal(getLoginContext().getPrincipal(), getLoginContext(), context);
 			setPrincipal(dynamicObjectPrincipal);
 			setSucceeded(true);
 			return true;

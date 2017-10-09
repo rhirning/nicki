@@ -149,12 +149,12 @@ public final class SpnegoFilterConfig { // NOPMD
         }
         
         // check if exists and no options specified
-        doClientModule(getInitParameter(Constants.CLIENT_MODULE));
-        LOG.debug(Constants.CLIENT_MODULE + "=" + getInitParameter(Constants.CLIENT_MODULE));
+        doClientModule(getInitParameter(Constants.CLIENT_MODULE, "spnego-client"));
+        LOG.debug(Constants.CLIENT_MODULE + "=" + getInitParameter(Constants.CLIENT_MODULE, "spnego-client"));
         
         // determine if all req. met to use keyTab
-        doServerModule(getInitParameter(Constants.SERVER_MODULE));
-        LOG.debug(Constants.SERVER_MODULE + "=" + getInitParameter(Constants.SERVER_MODULE));
+        doServerModule(getInitParameter(Constants.SERVER_MODULE, "spnego-server"));
+        LOG.debug(Constants.SERVER_MODULE + "=" + getInitParameter(Constants.SERVER_MODULE, "spnego-server"));
         
         // if username/password provided, don't use key tab 
         setUsernamePassword(getInitParameter(Constants.PREAUTH_USERNAME)
@@ -192,6 +192,10 @@ public final class SpnegoFilterConfig { // NOPMD
 
 	private String getInitParameter(String key) {
 		return Config.getString(key);
+	}
+
+	private String getInitParameter(String key, String defaultValue) {
+		return Config.getString(key, defaultValue);
 	}
 
 	private void doClientModule(final String moduleName) {

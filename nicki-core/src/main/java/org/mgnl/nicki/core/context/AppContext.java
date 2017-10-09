@@ -57,22 +57,6 @@ public class AppContext {
 		return getInstance().getLocale();
 	}
 
-	public static void setUser(DynamicObject user) {
-		getInstance().setUser(user);
-	}
-
-	public static DynamicObject getUser() {
-		return getInstance().getUser();
-	}
-
-	public static void setCredentials(byte[] credentials) {
-		getInstance().setCredentials(credentials);
-	}
-
-	public static byte[] getCredentials() {
-		return getInstance().getCredentials();
-	}
-
 	public static void setLocale(Locale locale) {
 		getInstance().setLocale(locale);
 	}

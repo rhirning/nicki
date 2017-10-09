@@ -26,6 +26,8 @@ import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.util.Classes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,16 +50,18 @@ public class NickiAdapterLoginModule extends NickiLoginModule implements LoginMo
 			return false;
 		}
 		
+		NickiContext context;
 		try {
 			principal = new NickiPrincipal(getAdapter().getName(), new String(getAdapter().getPassword()));
-			setContext(login(principal));
+			setLoginContext(login(principal));
+			context = isUseSystemContext() ? AppContext.getSystemContext(principal.getName(),
+					principal.getPassword()): getLoginContext();
 		} catch (Exception e) {
 			LOG.debug("Invalid Principal", e);
 			return false;
 		}
 
-		// TODO: separate context / loginContext
-		DynamicObjectPrincipal dynamicObjectPrincipal = new DynamicObjectPrincipal(principal, getContext(), getContext());
+		DynamicObjectPrincipal dynamicObjectPrincipal = new DynamicObjectPrincipal(principal, getLoginContext(), context);
 		setPrincipal(dynamicObjectPrincipal);
 		setSucceeded(true);
 		return true;

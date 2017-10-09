@@ -61,7 +61,7 @@ public abstract class NickiLoginModule implements LoginModule {
 	private boolean commitSucceeded = false;
 	
 	// Principal	
-	private NickiContext context;
+	private NickiContext loginContext;
 	private DynamicObjectPrincipal principal;
 	
 	protected NickiLoginModule() {
@@ -102,6 +102,30 @@ public abstract class NickiLoginModule implements LoginModule {
 			}
 		}
 		throw new InvalidPrincipalException();
+	}
+	
+	public NickiContext login(String name, byte[] credential) {
+		try {
+			NickiPrincipal principal = new NickiPrincipal(name, new String(credential));
+			if (principal != null) {
+				DynamicObject user = getTarget().login(principal);
+				if (user != null) {
+					LOG.debug("Login sucessful, user=" + user);
+					return getTarget().getNamedUserContext(user, new String(credential));
+				}
+			}
+		} catch (Exception e) {
+			LOG.debug("Login failed, user=" + name, e);
+		}
+		return null;
+	}
+
+	private Target getTarget() {
+		if (targetName != null) {
+			return TargetFactory.getTarget(targetName);
+		} else {
+			return TargetFactory.getDefaultTarget();
+		}
 	}
 
 	protected DynamicObject loadUser(String userId) {
@@ -151,7 +175,7 @@ public abstract class NickiLoginModule implements LoginModule {
 			// login succeeded but overall authentication failed
 			succeeded = false;
 			principal = null;
-			context = null;
+			loginContext = null;
 		} else {
 			// overall authentication succeeded and commit succeeded,
 			// but someone else's commit failed
@@ -189,12 +213,12 @@ public abstract class NickiLoginModule implements LoginModule {
 		return debug;
 	}
 
-	protected NickiContext getContext() {
-		return context;
+	protected NickiContext getLoginContext() {
+		return loginContext;
 	}
 
-	protected void setContext(NickiContext nickiContext) {
-		this.context = nickiContext;
+	protected void setLoginContext(NickiContext loginContext) {
+		this.loginContext = loginContext;
 	}
 
 	protected String getTargetName() {

@@ -116,19 +116,24 @@ public final class SpnegoProvider {
         
         if (null == scheme || scheme.getToken().length == 0) {
             LOG.debug("Header Token was NULL");
-            resp.setHeader(Constants.AUTHN_HEADER, Constants.NEGOTIATE_HEADER);
-
-            if (basicSupported) {
-                resp.addHeader(Constants.AUTHN_HEADER,
-                    Constants.BASIC_HEADER + " realm=\"" + realm + '\"');
-            } else {
-                LOG.debug("Basic NOT offered: Not Enabled or SSL Required.");
-            }
-
-            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED, true);
-            
-            return null;
-            
+        	if (req.getSession().getAttribute(SpnegoHttpFilter.SESSION_AUTH_REQUEST) == null) {
+	            resp.setHeader(Constants.AUTHN_HEADER, Constants.NEGOTIATE_HEADER);
+	            //req.getSession(true).setAttribute(SESSION_AUTH_REQUEST, "1");
+	
+	            if (basicSupported) {
+	                resp.addHeader(Constants.AUTHN_HEADER,
+	                    Constants.BASIC_HEADER + " realm=\"" + realm + '\"');
+	            } else {
+	                LOG.debug("Basic NOT offered: Not Enabled or SSL Required.");
+	            }
+	
+	            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED, true);
+	            
+	            return null;
+        	} else {
+        		// Not authenticated, but no further try
+        		return SpnegoAuthScheme.getNotSupportedScheme();
+        	}
         }
         
         // assert

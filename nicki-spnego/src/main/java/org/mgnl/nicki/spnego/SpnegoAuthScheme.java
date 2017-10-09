@@ -51,9 +51,11 @@ final class SpnegoAuthScheme {
     
     /** true if Negotiate scheme. */
     private final transient boolean negotiateScheme;
-    
+
     /** true if NTLM token. */
     private final transient boolean ntlm;
+    
+    private boolean notSupported;
 
     /**
      * 
@@ -116,5 +118,15 @@ final class SpnegoAuthScheme {
      */
     byte[] getToken() {
         return (null == this.token) ? EMPTY_BYTE_ARRAY : Base64.decodeBase64(this.token);
+    }
+    
+    public static SpnegoAuthScheme getNotSupportedScheme() {
+    	SpnegoAuthScheme scheme = new SpnegoAuthScheme("NotSupported", null);
+    	scheme.notSupported = true;
+    	return scheme;
+    }
+    
+    boolean isNotSupported() {
+    	return notSupported;
     }
 }

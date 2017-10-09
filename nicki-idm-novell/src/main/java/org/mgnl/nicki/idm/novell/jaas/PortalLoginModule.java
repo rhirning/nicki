@@ -58,7 +58,7 @@ public class PortalLoginModule extends NickiLoginModule implements LoginModule {
 		String username = ((NameCallback) callbacks[0]).getName();
 		String password = new String(((PasswordCallback) callbacks[1]).getPassword());
 		try {
-			setContext(login(new NickiPrincipal(username, password)));
+			setLoginContext(login(new NickiPrincipal(username, password)));
 			setSucceeded(true);
 			return true;
 		} catch (InvalidPrincipalException e) {

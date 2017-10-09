@@ -54,12 +54,4 @@ public class ThreadContext {
 	public static void setLocale(Locale locale) {
 		getInstance().setLocale(locale);
 	}
-
-	public static DynamicObject getUser() {
-		return getInstance().getUser();
-	}
-
-	public static void setUser(DynamicObject user) {
-		getInstance().setUser(user);
-	}
 }

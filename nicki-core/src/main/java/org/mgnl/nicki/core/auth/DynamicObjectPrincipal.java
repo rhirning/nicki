@@ -63,6 +63,14 @@ public class DynamicObjectPrincipal implements Principal {
 	public NickiContext getContext() {
 		return context;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("loginUser: ").append(loginContext.getUser());
+		sb.append(", user: ").append(context.getUser());
+		return sb.toString();
+	}
 	
 
 }

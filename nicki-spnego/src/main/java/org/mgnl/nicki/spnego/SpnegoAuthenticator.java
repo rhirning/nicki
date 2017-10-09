@@ -225,10 +225,11 @@ public final class SpnegoAuthenticator {
      * @return null if auth not complete else SpnegoPrincipal of client
      * @throws GSSException 
      * @throws IOException 
+     * @throws NotSupportedException 
      */
     public SpnegoPrincipal authenticate(final HttpServletRequest req
         , final SpnegoHttpServletResponse resp) throws GSSException
-        , IOException {
+        , IOException, NotSupportedException {
                 
         // Skip auth if localhost
         if (this.allowLocalhost && this.isLocalhost(req)) {
@@ -253,6 +254,9 @@ public final class SpnegoAuthenticator {
             return null;
         } else {
         	LOG.debug("scheme: " + scheme.getScheme());
+        	if (scheme.isNotSupported()) {
+        		throw new NotSupportedException();
+        	}
         }
 
         // NEGOTIATE scheme

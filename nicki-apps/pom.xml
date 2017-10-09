@@ -10,12 +10,17 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
-			<artifactId>nicki-editor-catalogs</artifactId>
+			<artifactId>nicki-dynamic-objects</artifactId>
 			<version>7.62-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
-			<artifactId>nicki-user-admin</artifactId>
+			<artifactId>nicki-dynamic-objects-ad</artifactId>
+			<version>7.62-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mgnl.nicki</groupId>
+			<artifactId>nicki-editor-catalogs</artifactId>
 			<version>7.62-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -40,7 +45,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
-			<artifactId>nicki-reports</artifactId>
+			<artifactId>nicki-idm-novell-shop</artifactId>
 			<version>7.62-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -50,17 +55,17 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
-			<artifactId>nicki-idm-novell-shop</artifactId>
+			<artifactId>nicki-reports</artifactId>
 			<version>7.62-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
-			<artifactId>nicki-dynamic-objects</artifactId>
+			<artifactId>nicki-spnego</artifactId>
 			<version>7.62-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
-			<artifactId>nicki-dynamic-objects-ad</artifactId>
+			<artifactId>nicki-user-admin</artifactId>
 			<version>7.62-SNAPSHOT</version>
 		</dependency>
 		<dependency>
