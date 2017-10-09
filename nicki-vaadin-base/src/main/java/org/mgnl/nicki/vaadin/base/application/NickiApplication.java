@@ -151,7 +151,8 @@ public abstract class NickiApplication extends UI {
 			LOG.debug("LoginContext=" + Config.getString("nicki.login.context.name"));
 
 			String contextName;
-			if (isUseSystemContext() && Config.getString("nicki.login.context.name.system") != null) {
+			if ((isUseSystemContext() || Config.getBoolean("nicki.application.auth.jaas.useSystem") )
+					&& Config.getString("nicki.login.context.name.system") != null) {
 				contextName = Config.getString("nicki.login.context.name.system");
 			} else {
 				contextName = Config.getString("nicki.login.context.name");
