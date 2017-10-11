@@ -42,9 +42,9 @@ public class DbcpConfiguration {
         dbPassword = DataHelper.getPassword(Config.getString(base + "password"));
         dbURI = Config.getString(base + "url");
         dbPoolMinSize = 
-        	Integer.parseInt(Config.getProperty(base + "minActive", "1"));
+        	Config.getInteger(base + "minActive", 1);
         dbPoolMaxSize = 
-        	Integer.parseInt(Config.getProperty(base + "maxActive", "5"));
+        	Config.getInteger(base + "maxActive", 5);
         if (!isValid()) {
         	throw new InvalidConfigurationException();
         }

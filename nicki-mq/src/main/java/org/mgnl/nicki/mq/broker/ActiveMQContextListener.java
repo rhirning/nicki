@@ -26,7 +26,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.helper.DataHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +35,7 @@ public class ActiveMQContextListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		boolean startBroker = DataHelper.booleanOf(Config.getProperty("nicki.mq.broker.start", "FALSE"));
+		boolean startBroker = Config.getBoolean("nicki.mq.broker.start", false);
 		if (startBroker) {
 			LOG.info("Load ActiveMQ");
 			BrokerThread brokerThread = new BrokerThread();

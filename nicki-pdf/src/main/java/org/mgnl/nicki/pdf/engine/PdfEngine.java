@@ -60,9 +60,9 @@ public class PdfEngine extends PdfPageEventHelper {
 	private List<Page> pages;
 
 	public static PdfEngine fromConfig(String configPropertyName, String contextBasePathPropertyName) throws JAXBException, DocumentException, IOException {
-		String configValue = Config.getProperty(configPropertyName, "<configuration><fonts><default font=\"Helvetica\" size=\"8\" style=\"normal\"/></fonts></configuration>");
+		String configValue = Config.getString(configPropertyName, "<configuration><fonts><default font=\"Helvetica\" size=\"8\" style=\"normal\"/></fonts></configuration>");
 		ByteArrayInputStream bais = new ByteArrayInputStream(configValue.getBytes());
-		return new PdfEngine(bais, Config.getProperty(contextBasePathPropertyName, "/"));
+		return new PdfEngine(bais, Config.getString(contextBasePathPropertyName, "/"));
 	}
 
 	public static PdfEngine fromResource(String configResource, String contextBasePath) throws JAXBException, DocumentException, IOException {

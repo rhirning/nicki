@@ -30,7 +30,6 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.data.DataProvider;
-import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Org;
@@ -41,6 +40,7 @@ import org.mgnl.nicki.editor.projects.objects.Member;
 import org.mgnl.nicki.editor.projects.objects.Project;
 
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
+import org.mgnl.nicki.vaadin.base.application.SystemContext;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectValueChangeListener;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectViewer;
@@ -50,11 +50,11 @@ import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
 import com.vaadin.ui.Component;
 
 @SuppressWarnings("serial")
+@SystemContext
 public class ProjectEditor extends NickiApplication {
 
 	public ProjectEditor() {
 		super();
-		setUseSystemContext(true);
 		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.projects.useWelcomeDialog", false));
 	}
 

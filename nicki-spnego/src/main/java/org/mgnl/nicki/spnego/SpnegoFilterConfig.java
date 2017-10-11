@@ -211,6 +211,7 @@ public final class SpnegoFilterConfig { // NOPMD
  
         // we only expect one entry
         final AppConfigurationEntry entry = config.getAppConfigurationEntry(moduleName)[0];
+        LOG.debug("AppConfigurationEntry: " + entry);
         
         // get login module options
 //        final Map<String, ?> opt = entry.getOptions();

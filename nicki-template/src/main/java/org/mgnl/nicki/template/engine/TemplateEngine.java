@@ -200,7 +200,7 @@ public class TemplateEngine {
 				instances.put(TYPE.JNDI, new TemplateEngine(cfg));
 		} else if (type == TYPE.CLASSPATH) {
 			Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(ConfigurationFactory.TYPE.CLASSPATH,
-						Config.getProperty(PROPERTY_BASE, "/META-INF/templates"));
+						Config.getString(PROPERTY_BASE, "/META-INF/templates"));
 			instances.put(TYPE.CLASSPATH, new TemplateEngine(cfg));
 		}
 	}

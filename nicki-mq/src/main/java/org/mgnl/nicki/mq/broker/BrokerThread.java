@@ -35,7 +35,6 @@ import org.apache.activemq.store.jdbc.JDBCPersistenceAdapter;
 import org.apache.activemq.store.kahadb.KahaDBPersistenceAdapter;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.slf4j.Logger;
@@ -53,7 +52,7 @@ public class BrokerThread extends Thread implements Runnable {
 
 	public void run() {
 		// wait
-		int wait = DataHelper.getInteger(Config.getProperty("nicki.mq.broker.wait", "10"), 10);
+		int wait = Config.getInteger("nicki.mq.broker.wait", 10);
 		LOG.info("Waiting " + wait + " seconds before starting broker");
 		try {
 			Thread.sleep(1000 * wait);
@@ -66,7 +65,7 @@ public class BrokerThread extends Thread implements Runnable {
 			broker.setPlugins(getPlugins());
 			broker.setPersistenceAdapter(getPersistenceAdapter());
 			broker.addConnector(Config.getString("nicki.mq.connector"));
-			broker.setUseJmx(DataHelper.booleanOf(Config.getProperty("nicki.mq.usejmx", "FALSE")));
+			broker.setUseJmx(Config.getBoolean("nicki.mq.usejmx", false));
 
 			broker.start();
 			LOG.info("ActiveMQ loaded succesfully");
@@ -126,7 +125,7 @@ public class BrokerThread extends Thread implements Runnable {
 	private PersistenceAdapter getJDBCPersistenceAdapter() {
 		JDBCPersistenceAdapter persistenceAdapter = new JDBCPersistenceAdapter();
 		persistenceAdapter
-				.setCreateTablesOnStartup(DataHelper.booleanOf(Config.getProperty("nicki.mq.tables.create", "FALSE")));
+				.setCreateTablesOnStartup(Config.getBoolean("nicki.mq.tables.create", false));
 
 		DBContext dbContext = DBContextManager.getContext(Config.getString("nicki.mq.context"));
 		persistenceAdapter.setDataSource(dbContext.getDataSource());
@@ -134,7 +133,7 @@ public class BrokerThread extends Thread implements Runnable {
 	}
 
 	private PersistenceAdapter getPersistenceAdapter() {
-		String persistenceType = Config.getProperty("nicki.mq.persistenceType", "kaha");
+		String persistenceType = Config.getString("nicki.mq.persistenceType", "kaha");
 		if (StringUtils.equalsIgnoreCase("JDBC", persistenceType)) {
 			return getJDBCPersistenceAdapter();
 		} else {

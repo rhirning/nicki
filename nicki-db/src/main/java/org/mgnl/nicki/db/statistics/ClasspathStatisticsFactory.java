@@ -47,7 +47,7 @@ public class ClasspathStatisticsFactory implements StatisticsFactory {
 	@Override
 	public Collection<Statistics> load() {
 		Collection<Statistics> collection = new ArrayList<>();
-		String path = Config.getProperty(propertyKey, "/META-INF/nicki/statistics.json");
+		String path = Config.getString(propertyKey, "/META-INF/nicki/statistics.json");
 		JsonArray array = null;
 		try {
 			array = buildFromResource(path);

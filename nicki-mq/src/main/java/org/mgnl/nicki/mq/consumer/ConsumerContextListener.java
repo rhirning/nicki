@@ -28,7 +28,6 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.JsonHelper;
 import org.mgnl.nicki.mq.model.Consumer;
 import org.mgnl.nicki.mq.model.ConsumerConfig;
@@ -42,7 +41,7 @@ public class ConsumerContextListener implements ServletContextListener {
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
-		boolean startConsumer = DataHelper.booleanOf(Config.getProperty("nicki.mq.consumer.start", "FALSE"));
+		boolean startConsumer = Config.getBoolean("nicki.mq.consumer.start", false);
 		if (startConsumer) {
 			String configPath = sce.getServletContext().getInitParameter("mq.config");
 			ConsumerConfig consumerConfig = null;

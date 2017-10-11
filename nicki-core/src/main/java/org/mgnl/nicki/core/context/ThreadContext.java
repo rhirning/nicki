@@ -24,8 +24,6 @@ package org.mgnl.nicki.core.context;
 
 import java.util.Locale;
 
-import org.mgnl.nicki.core.objects.DynamicObject;
-
 public class ThreadContext {
     /**
      * The thread local variable holding the current context

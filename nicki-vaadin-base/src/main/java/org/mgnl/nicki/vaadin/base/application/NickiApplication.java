@@ -333,12 +333,17 @@ public abstract class NickiApplication extends UI {
 	
 	public abstract String getI18nBase();
 
+	@Deprecated
 	public void setUseSystemContext(boolean useSystemContext) {
 		this.useSystemContext = useSystemContext;
 	}
 
 	public boolean isUseSystemContext() {
-		return useSystemContext;
+		if (this.getClass().getAnnotation(SystemContext.class) != null) {
+			return true;
+		} else {
+			return useSystemContext;
+		}
 	}
 
 	public void setUseWelcomeDialog(boolean useWelcomeDialog) {
@@ -359,7 +364,7 @@ public abstract class NickiApplication extends UI {
 
 	@Override
 	public String getTheme() {
-		return Config.getProperty("nicki.application.theme", "reindeer");
+		return Config.getString("nicki.application.theme", "reindeer");
 	}
 	
 	private class Context implements Serializable {

@@ -27,7 +27,6 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.db.connection.InvalidConfigurationException;
 import org.mgnl.nicki.db.profile.DBCPProfile;
@@ -87,7 +86,7 @@ public class DBContextManager {
 	private DBProfile createProfile(String contextName) throws InvalidConfigurationException {
 		String contextBase = PROPERTY_CONTEXT_BASE + "." + contextName + ".";
 		String type  = Config.getString(contextBase + PROPERTY_CONTEXT_CONNECTION_TYPE);
-		boolean autoCommit  = DataHelper.booleanOf(Config.getProperty(contextBase + PROPERTY_CONTEXT_AUTO_COMMIT, "false")) ;
+		boolean autoCommit  = Config.getBoolean(contextBase + PROPERTY_CONTEXT_AUTO_COMMIT, false) ;
 		
 		if (StringUtils.equals("dbcp", type)) {
 			String profileConfigBase = contextBase + "dbcp.";

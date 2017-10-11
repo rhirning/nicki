@@ -33,7 +33,7 @@ public class Classes {
 
     @SuppressWarnings("unchecked")
     private static <C> Class<C> forName(String className) throws ClassNotFoundException {
-    	String effectiveClassName = Config.getProperty(className, className);
+    	String effectiveClassName = Config.getString(className, className);
         Class<C> loadedClass = null;
         try {
             loadedClass = (Class<C>) Class.forName(effectiveClassName);

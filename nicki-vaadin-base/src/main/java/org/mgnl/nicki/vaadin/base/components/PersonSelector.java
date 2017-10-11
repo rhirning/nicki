@@ -143,7 +143,7 @@ public class PersonSelector extends CustomComponent {
 		} else {
 			searchResult.setSelectable(true);
 		}
-		Query query = context.getQuery(Config.getProperty(USER_BASE, USER_BASE_DEFAULT));
+		Query query = context.getQuery(Config.getString(USER_BASE, USER_BASE_DEFAULT));
 		query.addResultAttribute("fullName","fullName");
 		query.addResultAttribute("cn","userId");
 		query.addSearchValue("objectclass", "Person");

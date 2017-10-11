@@ -62,7 +62,7 @@ public class StatisticsManager {
 
 	private void init() {
 		statisticsMap = new HashMap<>();
-		String factoryClass = Config.getProperty("nicki.db.statistics.factory", "org.mgnl.nicki.db.statistics.ClasspathStatisticsFactory");
+		String factoryClass = Config.getString("nicki.db.statistics.factory", "org.mgnl.nicki.db.statistics.ClasspathStatisticsFactory");
 		try {
 			StatisticsFactory factory = Classes.newInstance(factoryClass);
 			for (Statistics statistics : factory.load()) {
