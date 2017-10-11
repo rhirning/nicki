@@ -22,16 +22,12 @@ package org.mgnl.nicki.spnego;
  */
 
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.security.PrivilegedActionException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
-import javax.security.auth.login.LoginException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -244,22 +240,10 @@ public final class SpnegoHttpFilter implements Filter {
 	            	
 	            }
 	            
-	        } catch (final LoginException lex) {
-	            throw new ServletException(lex);
-	        } catch (final GSSException gsse) {
-	            throw new ServletException(gsse);
-	        } catch (final PrivilegedActionException pae) {
-	            throw new ServletException(pae);
-	        } catch (final FileNotFoundException fnfe) {
-	            throw new ServletException(fnfe);
-	        } catch (final URISyntaxException uri) {
-	            throw new ServletException(uri);
-	        } catch (InstantiationException iex) {
-	            throw new ServletException(iex);
-	        } catch (IllegalAccessException iae) {
-	            throw new ServletException(iae);
-	        } catch (ClassNotFoundException cnfe) {
-	            throw new ServletException(cnfe);
+	        } catch (final Exception e) {
+	        	LOG.error("Error inizializing SpnegoHttpFilter", e);
+	    		LOG.info("Kerberos not activated");
+	        	this.active = false;
 	        }
     	} else {
     		LOG.info("Kerberos not activated");
