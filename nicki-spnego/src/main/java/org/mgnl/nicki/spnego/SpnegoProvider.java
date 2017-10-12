@@ -134,8 +134,6 @@ public final class SpnegoProvider {
         		// Not authenticated, but no further try
         		return SpnegoAuthScheme.getNotSupportedScheme();
         	}
-        } else {
-        	req.getSession().setAttribute(SpnegoHttpFilter.SESSION_AUTH_HEADER, req.getHeader(Constants.AUTHZ_HEADER));
         }
         
         // assert

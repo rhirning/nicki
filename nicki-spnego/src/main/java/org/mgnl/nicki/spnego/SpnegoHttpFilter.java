@@ -37,8 +37,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.ietf.jgss.GSSException;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -287,7 +289,12 @@ public final class SpnegoHttpFilter implements Filter {
         
         final SpnegoHttpServletResponse spnegoResponse = new SpnegoHttpServletResponse(
                 (HttpServletResponse) response);
+    	String authHeader = httpRequest.getHeader(Constants.AUTHZ_HEADER);
 
+    	if (StringUtils.isNotBlank(authHeader)) {
+        	httpRequest.getSession().setAttribute(SpnegoHttpFilter.SESSION_AUTH_HEADER, authHeader);
+    	}
+    	
         // skip authentication if session is already authenticated
     	if (httpRequest.getSession().getAttribute(SESSION_USER) != null) {
             LOG.debug("Authenticated user: " + httpRequest.getSession().getAttribute(SESSION_USER));
