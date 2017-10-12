@@ -93,6 +93,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 	 * </p>
 	 */
 	public static final String NEGOTIATE_HEADER = "Negotiate";
+    public static final String SESSION_AUTH_HEADER = "NICKI_SESSION_AUTH_HEADER";
 
 	@Override
 	public boolean login() throws LoginException {
@@ -100,11 +101,20 @@ public class KerberosLoginModule extends NickiLoginModule {
 		HttpServletRequest request = (HttpServletRequest) AppContext.getRequest();
 		if (request instanceof HttpServletRequest) {
 			HttpServletRequest req = (HttpServletRequest) request;
-			String header = req.getHeader(AUTHZ_HEADER);
+			String header = req.getHeader(AUTHZ_HEADER);;
+			if (StringUtils.isBlank(header) && req.getSession(false) != null) {
+				header = (String) req.getSession().getAttribute(SESSION_AUTH_HEADER);
+			}
+			LOG.debug("Authorization header: " + header);
 			if (StringUtils.isBlank(header)) {
 				LOG.debug("authorization header was missing/null");
 				return false;
 			} else if (header.startsWith(NEGOTIATE_HEADER)) {
+				try {
+					Thread.sleep(10);
+				} catch (InterruptedException e1) {
+					LOG.debug("interrupt");
+				}
 				final String negotiateHeader = header.substring(NEGOTIATE_HEADER.length() + 1);
 				final SpnegoPrincipal principal;
 				final byte[] gss = decodeToken(negotiateHeader);

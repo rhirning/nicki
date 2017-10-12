@@ -190,6 +190,7 @@ public final class SpnegoHttpFilter implements Filter {
 
     private static final String SESSION_NO_USER = "NICKI_SESSION_NO_USER";
     private static final String SESSION_USER = "NICKI_SESSION_USER";
+    public static final String SESSION_AUTH_HEADER = "NICKI_SESSION_AUTH_HEADER";
 	public static final String SESSION_AUTH_REQUEST = "NICKI_SESSION_AUTH_REQUEST";
 
     /** Object for performing Basic and SPNEGO authentication. */
