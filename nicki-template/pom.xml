@@ -6,29 +6,29 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>7.64-SNAPSHOT</version>
+		<version>7.65-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-dynamic-objects</artifactId>
-			<version>7.64-SNAPSHOT</version>
+			<version>7.65-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-ldap</artifactId>
-			<version>7.64-SNAPSHOT</version>
+			<version>7.65-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-pdf</artifactId>
-			<version>7.64-SNAPSHOT</version>
+			<version>7.65-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-xls</artifactId>
-			<version>7.64-SNAPSHOT</version>
+			<version>7.65-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.xhtmlrenderer</groupId>
