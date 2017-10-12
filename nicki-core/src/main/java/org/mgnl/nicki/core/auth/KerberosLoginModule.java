@@ -94,6 +94,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 	 */
 	public static final String NEGOTIATE_HEADER = "Negotiate";
     public static final String SESSION_AUTH_HEADER = "NICKI_SESSION_AUTH_HEADER";
+    private static final String SESSION_USER = "NICKI_SESSION_USER";
 
 	@Override
 	public boolean login() throws LoginException {
@@ -101,100 +102,107 @@ public class KerberosLoginModule extends NickiLoginModule {
 		HttpServletRequest request = (HttpServletRequest) AppContext.getRequest();
 		if (request instanceof HttpServletRequest) {
 			HttpServletRequest req = (HttpServletRequest) request;
+			String authenticatedUser = (String) req.getSession().getAttribute(SESSION_USER);
 			String header = req.getHeader(AUTHZ_HEADER);;
-			if (StringUtils.isBlank(header) && req.getSession(false) != null) {
-				header = (String) req.getSession().getAttribute(SESSION_AUTH_HEADER);
-			}
-			LOG.debug("Authorization header: " + header);
 			if (StringUtils.isBlank(header)) {
-				LOG.debug("authorization header was missing/null");
-				return false;
-			} else if (header.startsWith(NEGOTIATE_HEADER)) {
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e1) {
-					LOG.debug("interrupt");
+				header = (String) req.getSession().getAttribute(SESSION_AUTH_HEADER);
+				if (StringUtils.isNotBlank(header)) {
+					LOG.debug("Authorization header: " + header);
 				}
-				final String negotiateHeader = header.substring(NEGOTIATE_HEADER.length() + 1);
-				final SpnegoPrincipal principal;
-				final byte[] gss = decodeToken(negotiateHeader);
-
-				if (0 == gss.length) {
-					LOG.debug("GSS data was NULL.");
+			}
+			DynamicObject user = null;
+			byte credentials[] = null;
+			if (StringUtils.isNotBlank(authenticatedUser)) {
+				LOG.debug("Authenticated user: " + authenticatedUser);
+				user = loadUser(authenticatedUser);
+			} else {
+				if (StringUtils.isBlank(header)) {
+					user = null;
+					LOG.debug("authorization header was missing/null");
 					return false;
-				}
-
-				GSSContext context = null;
-		        GSSCredential delegCred = null;
-				try {
-					byte[] token = null;
-
-					LOCK.lock();
-					try {
-						context = MANAGER.createContext(kerberosConfig.getServerCredentials());
-						token = context.acceptSecContext(gss, 0, gss.length);
-
-						if (null == token) {
-							LOG.debug("Token was NULL.");
-							return false;
-						}
-			            
-			            if (context.getCredDelegState()) {
-			                delegCred = context.getDelegCred();
-			            }
-						String principalId = context.getSrcName().toString();
-						principal = new SpnegoPrincipal(principalId, KerberosPrincipal.KRB_NT_PRINCIPAL, gss, delegCred);
-						LOG.debug("principal=" + principal);
-						DynamicObject user = loadUser(principal.getName());
-						if (user != null) {
-							NickiContext loginContext;
-							NickiContext nickiContext;
-							if (isUseSystemContext()) {
-								try {
-									loginContext = user.getContext().getTarget().getNamedUserContext(user,
-											new String(principal.getCredential()));
-									nickiContext = user.getContext().getTarget().getSystemContext(user);
-								} catch (InvalidPrincipalException e) {
-									LOG.debug("login not successful: " + principal, e);
-									return false;
-								}
-							} else {
-								loginContext = login(principal.getName(), principal.getCredential());
-								nickiContext = loginContext;
-							}
-							if (loginContext != null && nickiContext != null) {
-								setLoginContext(loginContext);
-								DynamicObjectPrincipal dynamicObjectPrincipal = new DynamicObjectPrincipal(user.getName(),
-										loginContext, nickiContext);
-								setPrincipal(dynamicObjectPrincipal);
-								setSucceeded(true);
-								LOG.debug("login successful:  " + principal);
-								return true;
-							} else {
-								LOG.debug("login not successful: " + principal);
-							}
-						} else {
-							LOG.debug("user not found in directory: " + principal);
-						}
-						
-					} catch (GSSException e) {
-						LOG.error("Error with token", e);
-					} finally {
-						LOCK.unlock();
+				} else if (header.startsWith(NEGOTIATE_HEADER)) {
+					final String negotiateHeader = header.substring(NEGOTIATE_HEADER.length() + 1);
+					final SpnegoPrincipal principal;
+					final byte[] gss = decodeToken(negotiateHeader);
+		
+					if (0 == gss.length) {
+						LOG.debug("GSS data was NULL.");
+						return false;
 					}
-
-				} finally {
-					if (null != context) {
+		
+					GSSContext context = null;
+			        GSSCredential delegCred = null;
+					try {
+						byte[] token = null;
+		
 						LOCK.lock();
 						try {
-							context.dispose();
+							context = MANAGER.createContext(kerberosConfig.getServerCredentials());
+							token = context.acceptSecContext(gss, 0, gss.length);
+		
+							if (null == token) {
+								LOG.debug("Token was NULL.");
+								return false;
+							}
+				            
+				            if (context.getCredDelegState()) {
+				                delegCred = context.getDelegCred();
+				            }
+							String principalId = context.getSrcName().toString();
+							principal = new SpnegoPrincipal(principalId, KerberosPrincipal.KRB_NT_PRINCIPAL, gss, delegCred);
+							LOG.debug("principal=" + principal);
+							credentials = principal.getCredential();
+							user = loadUser(principal.getName());
+							
 						} catch (GSSException e) {
-							LOG.error("Error disposing context", e);
+							LOG.error("Error with token", e);
 						} finally {
 							LOCK.unlock();
 						}
+		
+					} finally {
+						if (null != context) {
+							LOCK.lock();
+							try {
+								context.dispose();
+							} catch (GSSException e) {
+								LOG.error("Error disposing context", e);
+							} finally {
+								LOCK.unlock();
+							}
+						}
 					}
 				}
+			}
+			if (user != null) {
+				NickiContext loginContext;
+				NickiContext nickiContext;
+				if (isUseSystemContext()) {
+					try {
+						loginContext = user.getContext().getTarget().getNamedUserContext(user,
+								credentials!=null?new String(credentials):"unknown");
+						nickiContext = user.getContext().getTarget().getSystemContext(user);
+					} catch (InvalidPrincipalException e) {
+						LOG.debug("login not successful: " + user, e);
+						return false;
+					}
+				} else {
+					loginContext = login(user.getName(), credentials);
+					nickiContext = loginContext;
+				}
+				if (loginContext != null && nickiContext != null) {
+					setLoginContext(loginContext);
+					DynamicObjectPrincipal dynamicObjectPrincipal = new DynamicObjectPrincipal(user.getName(),
+							loginContext, nickiContext);
+					setPrincipal(dynamicObjectPrincipal);
+					setSucceeded(true);
+					LOG.debug("login successful:  " + user);
+					return true;
+				} else {
+					LOG.debug("login not successful: " + user);
+				}
+			} else {
+				LOG.debug("no valid user");
 			}
 		}
 		return false;

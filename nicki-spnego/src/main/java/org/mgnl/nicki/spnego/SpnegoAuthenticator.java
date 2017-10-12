@@ -261,7 +261,7 @@ public final class SpnegoAuthenticator {
 
         // NEGOTIATE scheme
         if (scheme.isNegotiateScheme()) {
-        	boolean doAuthenticate = false;
+        	boolean doAuthenticate = true;
         	if (doAuthenticate) {
         		principal = doSpnegoAuth(scheme, resp);
             	LOG.debug("principal(SPNEGO): " + (principal == null?null:principal.getName()));
