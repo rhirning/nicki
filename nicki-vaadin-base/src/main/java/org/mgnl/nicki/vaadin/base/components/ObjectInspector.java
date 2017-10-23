@@ -62,15 +62,17 @@ public class ObjectInspector extends CustomComponent {
 		container.addContainerProperty("value", String.class, null);
 		
 		for (Object object : objects) {
-			ObjectWrapper objectWrapper = new ObjectWrapper(object);
-			container.addItem(objectWrapper);
-			container.getContainerProperty(objectWrapper, "name").setValue("Object");
-			container.getContainerProperty(objectWrapper, "type").setValue(object.getClass().getSimpleName());
-			container.getContainerProperty(objectWrapper, "value").setValue(object.toString());
-			if (hasChildren(objectWrapper)) {
-				tree.setChildrenAllowed(objectWrapper, true);
-			} else {
-				tree.setChildrenAllowed(objectWrapper, false);
+			if (object != null) {
+				ObjectWrapper objectWrapper = new ObjectWrapper(object);
+				container.addItem(objectWrapper);
+				container.getContainerProperty(objectWrapper, "name").setValue("Object");
+				container.getContainerProperty(objectWrapper, "type").setValue(object.getClass().getSimpleName());
+				container.getContainerProperty(objectWrapper, "value").setValue(object.toString());
+				if (hasChildren(objectWrapper)) {
+					tree.setChildrenAllowed(objectWrapper, true);
+				} else {
+					tree.setChildrenAllowed(objectWrapper, false);
+				}
 			}
 		}
 		tree.setContainerDataSource(container);

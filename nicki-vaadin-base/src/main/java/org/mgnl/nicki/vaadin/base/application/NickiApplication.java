@@ -179,6 +179,7 @@ public abstract class NickiApplication extends UI {
 	private void loginSSO() {
 		try {
 			String ssoLoginClass = Config.getString("nicki.login.sso");
+			LOG.debug("ssoLoginClass=" + ssoLoginClass);
 			if (StringUtils.isNotEmpty(ssoLoginClass)) {
 				SSOAdapter adapter = (SSOAdapter) Classes.newInstance(ssoLoginClass);
 				String name = adapter.getName();

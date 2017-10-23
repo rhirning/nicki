@@ -27,12 +27,15 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class NavigationHelper {
 	private static final Logger LOG = LoggerFactory.getLogger(NavigationHelper.class);
+	private static String COMMAND_SEPARATOR = "|";
 
 	public static void executeCommands(Object object, NavigationCommand command) {
 		List<NavigationCommandEntry> toBeRemoved = new ArrayList<NavigationCommandEntry>();
@@ -74,5 +77,62 @@ public class NavigationHelper {
 		}
 		
 	}
+	
+	public static String encode(NavigationCommand command) {
+		return Base64.encodeBase64String(toString(command).getBytes());
+	}
+	
+	private static String toString(NavigationCommand command) {
+		StringBuilder sb = new StringBuilder();
+		for (NavigationCommandEntry commandEntry : command.getEntries()) {
+			if (sb.length() > 0) {
+				sb.append(COMMAND_SEPARATOR );
+			}
+			sb.append(toString(commandEntry));
+		}
+		return sb.toString();
+	}
+
+	private static StringBuilder toString(NavigationCommandEntry commandEntry) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(commandEntry.getCommandName());
+		if (commandEntry.getData() != null && commandEntry.getData().length > 0) {
+			sb.append("(");
+			boolean first = true;
+			for (Object data : commandEntry.getData()) {
+				if (!first) {
+					sb.append(",");
+				}
+				sb.append(data.toString());
+				first = false;
+			}
+			sb.append(")");
+		}
+		return sb;
+	}
+	
+	public static NavigationCommand decode(String string) {
+		return commandFromString(new String(Base64.decodeBase64(string)));
+	}
+
+	private static NavigationCommand commandFromString(String string) {
+		NavigationCommand command = new NavigationCommand();
+		for (String entry : DataHelper.getList(string, COMMAND_SEPARATOR)) {
+			NavigationCommandEntry commandEntry = commandEntryFromString(entry);
+			if (commandEntry != null) {
+				command.add(commandEntry);
+			}
+		}
+		return command;
+	}
+
+	private static NavigationCommandEntry commandEntryFromString(String entry) {
+		String commandName = StringUtils.substringBefore(entry, "(");
+		String rest = StringUtils.substringAfter(entry, "(");
+		String params = StringUtils.substringBeforeLast(rest, ")");
+		NavigationCommandEntry commandEntry = new NavigationCommandEntry(commandName, DataHelper.toStringArray(params, ","));
+		return commandEntry;
+	}
+
 
 }

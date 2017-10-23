@@ -31,6 +31,9 @@ public class NavigationCommand {
 	public void add(String commandName, Object... data) {
 		entries.add(new NavigationCommandEntry(commandName, data));
 	}
+	public void add(NavigationCommandEntry commandEntry) {
+		entries.add(commandEntry);
+	}
 
 	public List<NavigationCommandEntry> getEntries() {
 		return entries;
