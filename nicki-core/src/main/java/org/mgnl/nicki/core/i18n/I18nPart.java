@@ -54,27 +54,31 @@ public class I18nPart {
 	}
 
 	public String simpleTranslate(String input) {
-		for (String key : map.keySet()) {
-			if (StringUtils.contains(input, key)) {
-				return StringUtils.replace(input, key, map.get(key));
+		if (input != null) {
+			for (String key : map.keySet()) {
+				if (StringUtils.contains(input, key)) {
+					return StringUtils.replace(input, key, map.get(key));
+				}
 			}
 		}
 		return input;
 	}
 
 	public String translate(String input) {
-		for (String key : map.keySet()) {
-			Pattern pattern = Pattern.compile(key);
-			Matcher matcher = pattern.matcher(input);
-			if (matcher.matches()) {
-				String value = map.get(key);
-				for (int i = 1; i < 10; i++) {
-					String var = "${" + i + "}";
-					if (matcher.groupCount()>= i && StringUtils.contains(value, var)) {
-						value = StringUtils.replace(value, var, matcher.group(i));
+		if (input != null) {
+			for (String key : map.keySet()) {
+				Pattern pattern = Pattern.compile(key);
+				Matcher matcher = pattern.matcher(input);
+				if (matcher.matches()) {
+					String value = map.get(key);
+					for (int i = 1; i < 10; i++) {
+						String var = "${" + i + "}";
+						if (matcher.groupCount()>= i && StringUtils.contains(value, var)) {
+							value = StringUtils.replace(value, var, matcher.group(i));
+						}
 					}
+					return value;
 				}
-				return value;
 			}
 		}
 		return input;
