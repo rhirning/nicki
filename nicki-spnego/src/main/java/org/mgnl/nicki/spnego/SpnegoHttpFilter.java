@@ -40,7 +40,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.ietf.jgss.GSSException;
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
