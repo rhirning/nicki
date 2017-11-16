@@ -31,5 +31,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.TYPE})
 public @interface AccessGroup {
 	String[] name();
+	String[] configName() default {};
 	Class<? extends AccessGroupEvaluator> evaluator() default DefaultGroupEvaluator.class;
 }

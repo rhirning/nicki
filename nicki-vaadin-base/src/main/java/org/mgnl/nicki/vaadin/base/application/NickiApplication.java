@@ -273,6 +273,7 @@ public abstract class NickiApplication extends UI {
 			try {
 				AccessRoleEvaluator roleEvaluator = roleAnnotation.evaluator().newInstance();
 				allowed = roleEvaluator.hasRole((Person) user, roleAnnotation.name());
+				allowed |= roleEvaluator.hasRole((Person) user, Config.getStringValues(roleAnnotation.configName()));
 			} catch (Exception e) {
 				LOG.error("Could not create AccessRoleEvaluator", e);
 				allowed = false;
@@ -282,6 +283,9 @@ public abstract class NickiApplication extends UI {
 			try {
 				AccessGroupEvaluator groupEvaluator = groupAnnotation.evaluator().newInstance();
 				allowed = groupEvaluator.isMemberOf((Person) user, groupAnnotation.name());
+				if (groupAnnotation.configName() != null && groupAnnotation.configName().length > 0) {
+					allowed |= groupEvaluator.isMemberOf((Person) user, Config.getStringValues(groupAnnotation.configName()));
+				}
 			} catch (Exception e) {
 				LOG.error("Could not create AccessGroupEvaluator", e);
 				allowed = false;

@@ -272,4 +272,17 @@ public final class Config {
 		return instance;
 	}
 
+	public static String[] getStringValues(String[] configNames) {
+		List<String> list = new ArrayList<>();
+		if (configNames != null && configNames.length > 0) {
+			for (String key : configNames) {
+				String value = Config.getString(key, null);
+				if (StringUtils.isNotBlank(value)) {
+					list.add(value);
+				}
+			}
+		}
+		return list.toArray(new String[0]);
+	}
+
 }

@@ -27,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.vaadin.base.application.AccessGroup;
@@ -165,6 +166,7 @@ public class MainView extends CustomComponent implements NavigationSelector {
 			try {
 				AccessRoleEvaluator roleEvaluator = roleAnnotation.evaluator().newInstance();
 				allowed = roleEvaluator.hasRole(user, roleAnnotation.name());
+				allowed |= roleEvaluator.hasRole(user, Config.getStringValues(roleAnnotation.configName()));
 			} catch (Exception e) {
 				LOG.error("Could not create AccessRoleEvaluator", e);
 				allowed = false;
@@ -174,6 +176,9 @@ public class MainView extends CustomComponent implements NavigationSelector {
 			try {
 				AccessGroupEvaluator groupEvaluator = groupAnnotation.evaluator().newInstance();
 				allowed = groupEvaluator.isMemberOf( user, groupAnnotation.name());
+				if (groupAnnotation.configName() != null && groupAnnotation.configName().length > 0) {
+					allowed |= groupEvaluator.isMemberOf(user, Config.getStringValues(groupAnnotation.configName()));
+				}
 			} catch (Exception e) {
 				LOG.error("Could not create AccessGroupEvaluator", e);
 				allowed = false;

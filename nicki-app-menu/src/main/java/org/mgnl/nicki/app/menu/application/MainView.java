@@ -21,7 +21,6 @@ package org.mgnl.nicki.app.menu.application;
  * #L%
  */
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,6 +31,7 @@ import org.mgnl.nicki.app.menu.navigation.NavigationEntry;
 import org.mgnl.nicki.app.menu.navigation.NavigationFolder;
 import org.mgnl.nicki.app.menu.navigation.NavigationLabel;
 import org.mgnl.nicki.app.menu.navigation.TableNavigation;
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.vaadin.base.application.AccessGroup;
@@ -73,8 +73,8 @@ public class MainView extends CustomComponent {
 		setCompositionRoot(mainLayout);
 		hsplit.setSplitPosition(250, Unit.PIXELS);
 		navigation = new TableNavigation(this);
-//		navigation = new ListSelectNavigation(this);
-//		navigation = new ButtonNavigation(this);
+		// navigation = new ListSelectNavigation(this);
+		// navigation = new ButtonNavigation(this);
 		hsplit.setFirstComponent(navigation);
 		contentLayout = buildContentLayout();
 		hsplit.setSecondComponent(contentLayout);
@@ -89,15 +89,15 @@ public class MainView extends CustomComponent {
 		mainLayout.setWidth("100%");
 		mainLayout.setHeight("100%");
 		mainLayout.setMargin(false);
-		
+
 		// top-level component properties
 		setWidth("100.0%");
 		setHeight("100.0%");
-		
+
 		// hsplit
 		hsplit = buildHsplit();
 		mainLayout.addComponent(hsplit);
-		
+
 		return mainLayout;
 	}
 
@@ -108,7 +108,7 @@ public class MainView extends CustomComponent {
 		hsplit.setImmediate(false);
 		hsplit.setWidth("100.0%");
 		hsplit.setHeight("100.0%");
-		
+
 		return hsplit;
 	}
 
@@ -119,12 +119,12 @@ public class MainView extends CustomComponent {
 		contentLayout.setImmediate(false);
 		contentLayout.setWidth("100.0%");
 		contentLayout.setHeight("100.0%");
-		
+
 		return contentLayout;
 	}
 
 	public boolean show(NavigationEntry entry) {
-		
+
 		// TODO check is navigation change is allowed
 		if (activeView != null && activeView.isModified()) {
 			Notification.show(I18n.getText("pva.cms.client.message.modified"), Type.HUMANIZED_MESSAGE);
@@ -144,7 +144,7 @@ public class MainView extends CustomComponent {
 			Component headline = getHeadline();
 			contentLayout.addComponent(headline);
 			contentLayout.addComponent(view);
-			//contentLayout.setExpandRatio(headline, 0.01f);
+			// contentLayout.setExpandRatio(headline, 0.01f);
 			contentLayout.setExpandRatio(view, 1);
 		} else {
 			contentLayout.addComponent(view);
@@ -161,7 +161,7 @@ public class MainView extends CustomComponent {
 
 	public void addNavigationEntry(String labelCaption, String caption, View view) {
 		if (isAllowed(view.getClass(), this.user)) {
-			NavigationFolder folder= getNavigationFolder(labelCaption);
+			NavigationFolder folder = getNavigationFolder(labelCaption);
 			NavigationEntry entry = new NavigationEntry(caption, view);
 			folder.addEntry(entry);
 		}
@@ -169,7 +169,7 @@ public class MainView extends CustomComponent {
 
 	public void addNavigationSeparator() {
 
-		NavigationFolder folder= new NavigationFolder();
+		NavigationFolder folder = new NavigationFolder();
 		navigationFolders.add(folder);
 	}
 
@@ -188,17 +188,18 @@ public class MainView extends CustomComponent {
 	public void initNavigation() {
 		navigation.init(navigationFolders);
 	}
-	
+
 	static public boolean isAllowed(Class<?> clazz, Person user) {
 		boolean allowed = false;
 		AccessRole roleAnnotation = clazz.getAnnotation(AccessRole.class);
 		AccessGroup groupAnnotation = clazz.getAnnotation(AccessGroup.class);
 		if (roleAnnotation == null && groupAnnotation == null) {
-			allowed =  true;
-		} else if (roleAnnotation != null){
+			allowed = true;
+		} else if (roleAnnotation != null) {
 			try {
 				AccessRoleEvaluator roleEvaluator = roleAnnotation.evaluator().newInstance();
 				allowed = roleEvaluator.hasRole(user, roleAnnotation.name());
+				allowed |= roleEvaluator.hasRole(user, Config.getStringValues(roleAnnotation.configName()));
 			} catch (Exception e) {
 				LOG.error("Could not create AccessRoleEvaluator", e);
 				allowed = false;
@@ -207,7 +208,10 @@ public class MainView extends CustomComponent {
 		if (!allowed && groupAnnotation != null) {
 			try {
 				AccessGroupEvaluator groupEvaluator = groupAnnotation.evaluator().newInstance();
-				allowed = groupEvaluator.isMemberOf( user, groupAnnotation.name());
+				allowed = groupEvaluator.isMemberOf(user, groupAnnotation.name());
+				if (groupAnnotation.configName() != null && groupAnnotation.configName().length > 0) {
+					allowed |= groupEvaluator.isMemberOf(user, Config.getStringValues(groupAnnotation.configName()));
+				}
 			} catch (Exception e) {
 				LOG.error("Could not create AccessGroupEvaluator", e);
 				allowed = false;
