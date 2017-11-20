@@ -84,12 +84,11 @@ public class JavaRules {
 	private static <T> void injectData(T instance, Map<String, Object> data) throws MissingAttributeException, IllegalArgumentException, IllegalAccessException {
 		for (Field field : instance.getClass().getDeclaredFields()) {
 			if (field.isAnnotationPresent(Attribute.class)) {
-				if (!data.containsKey(field.getName()) || data.get(field.getName()) == null ||
-						!(field.getType().isAssignableFrom(data.get(field.getName()).getClass()))) {
-					throw new MissingAttributeException(field.getName());
+				if (data.containsKey(field.getName()) && data.get(field.getName()) != null &&
+						field.getType().isAssignableFrom(data.get(field.getName()).getClass())) {
+					field.setAccessible(true);
+					field.set(instance, data.get(field.getName()));
 				}
-				field.setAccessible(true);
-				field.set(instance, data.get(field.getName()));
 			}
 		}
 	}
