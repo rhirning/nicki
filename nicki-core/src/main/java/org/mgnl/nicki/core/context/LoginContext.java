@@ -20,7 +20,7 @@ package org.mgnl.nicki.core.context;
  * #L%
  */
 
-class LoginContext {
+public class LoginContext {
 	private NickiContext context;
 	private NickiContext loginContext;
 
