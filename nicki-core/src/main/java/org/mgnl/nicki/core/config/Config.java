@@ -138,7 +138,7 @@ public final class Config {
 	
 	public static <T> T getClassInstance(String key) {
 
-		String className = Config.getProperty(key);
+		String className = getInstance().getAndTranslateProperty(key);
 		if (StringUtils.isNotEmpty(className)) {
 			try {
 				return Classes.newInstance(className);
