@@ -356,7 +356,18 @@ public abstract class NickiApplication extends UI {
 	}
 
 	public boolean isUseWelcomeDialog() {
-		return useWelcomeDialog;
+		if (useWelcomeDialog) {
+			return true;
+		}
+		ShowWelcomeDialog showWelcomeDialog = this.getClass().getAnnotation(ShowWelcomeDialog.class);
+		if (showWelcomeDialog != null) {
+			if (StringUtils.isNotBlank(showWelcomeDialog.configKey())) {
+				return Config.getBoolean(showWelcomeDialog.configKey(), false);
+			} else if (showWelcomeDialog.group() != null && showWelcomeDialog.group().length > 0) {
+				// TODO
+			}
+		}
+		return false;
 	}
 
 	public void confirm(Command command) {

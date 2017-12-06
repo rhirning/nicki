@@ -122,6 +122,11 @@ public class JsonHelper {
 		return reader.readObject();
 	}
 
+	public static JsonArray toJsonArray(String stringData) {
+		JsonReader reader = Json.createReader(new StringReader(stringData));
+		return reader.readArray();
+	}
+
 	private static <T> void fillJsonObject(JsonObjectBuilder builder, Class<?> clazz, T bean, String... attributes) {
 		Class<?> superClass = clazz.getSuperclass();
 		if (superClass != null) {

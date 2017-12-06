@@ -668,12 +668,12 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 		if (attributes != null) {
 			for(String key : attributes) {
 				String internalName = key;
-				if (mapping != null && mapping.hasInternal(key)) {
+				if (mapping != null && mapping.hasExternal(key)) {
 					internalName = mapping.toInternal(key);
 				}
 				if (!query.containsKey(key)) {
 					if (mapping != null) {
-						if (mapping.isStrict() && !mapping.hasInternal(key)) {
+						if (mapping.isStrict() && !mapping.hasExternal(key)) {
 							LOG.error("External '" + key + "' missing in AttributeMapper");
 						}
 					}
