@@ -29,16 +29,20 @@ import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.vaadin.base.application.AccessGroup;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
+import org.mgnl.nicki.vaadin.base.application.ShowWelcomeDialog;
+
 import com.vaadin.ui.Component;
 
 @AccessGroup(name = {"nickiAdmins", "IDM-Development"})
+@ShowWelcomeDialog(
+		configKey="nicki.app.editor.templates.useWelcomeDialog",
+		groupsConfigName="nicki.app.editor.templates.useWelcomeDialogGroups")
 public class TemplateEditor extends NickiApplication {
 
 	private static final long serialVersionUID = -8245147689512577915L;
     
 	public TemplateEditor() {
 		super();
-		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.templates.useWelcomeDialog", false));
 	}
 
 	@Override

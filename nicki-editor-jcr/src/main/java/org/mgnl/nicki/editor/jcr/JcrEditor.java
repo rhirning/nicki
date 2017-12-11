@@ -23,7 +23,6 @@ package org.mgnl.nicki.editor.jcr;
 
 
 
-import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.data.DataProvider;
@@ -31,6 +30,7 @@ import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.jcr.objects.GenericNodeDynamicObject;
 import org.mgnl.nicki.vaadin.base.application.AccessGroup;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
+import org.mgnl.nicki.vaadin.base.application.ShowWelcomeDialog;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
 import org.mgnl.nicki.vaadin.base.editor.ExportTreeAction;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
@@ -42,11 +42,13 @@ import com.vaadin.ui.Component;
 
 @AccessGroup(name = {"nickiAdmins", "IDM-Development"})
 @SuppressWarnings("serial")
+@ShowWelcomeDialog(
+		configKey="nicki.app.editor.jcr.useWelcomeDialog",
+		groupsConfigName="nicki.app.editor.jcr.useWelcomeDialogGroups")
 public class JcrEditor extends NickiApplication {
 	
 	public JcrEditor() {
 		super();
-		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.jcr.useWelcomeDialog", false));
 	}
 
 	@SuppressWarnings("unchecked")

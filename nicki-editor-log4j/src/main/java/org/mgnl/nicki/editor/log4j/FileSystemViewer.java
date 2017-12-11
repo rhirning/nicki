@@ -30,6 +30,7 @@ import org.mgnl.nicki.core.data.DataProvider;
 import org.mgnl.nicki.core.data.FileEntry;
 import org.mgnl.nicki.core.data.FileSystemRoot;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
+import org.mgnl.nicki.vaadin.base.application.ShowWelcomeDialog;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 import org.mgnl.nicki.vaadin.base.editor.ShowAllFilter;
 import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
@@ -38,6 +39,9 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 
 @SuppressWarnings("serial")
+@ShowWelcomeDialog(
+		configKey="nicki.app.viewer.filesystem.useWelcomeDialog",
+		groupsConfigName="nicki.app.viewer.filesystem.useWelcomeDialogGroups")
 public class FileSystemViewer extends CustomComponent implements Serializable {
 	private NickiApplication nickiApplication;
 	

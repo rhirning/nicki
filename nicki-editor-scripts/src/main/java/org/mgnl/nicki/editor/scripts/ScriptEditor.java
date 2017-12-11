@@ -23,20 +23,23 @@ package org.mgnl.nicki.editor.scripts;
 
 
 
-import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.vaadin.base.application.AccessGroup;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
+import org.mgnl.nicki.vaadin.base.application.ShowWelcomeDialog;
+
 import com.vaadin.ui.Component;
 
 @AccessGroup(name = {"nickiAdmins", "IDM-Development"})
 @SuppressWarnings("serial")
+@ShowWelcomeDialog(
+		configKey="nicki.app.editor.scripts.useWelcomeDialog",
+		groupsConfigName="nicki.app.editor.scripts.useWelcomeDialogGroups")
 public class ScriptEditor extends NickiApplication {
 	
 	public ScriptEditor() {
 		super();
-		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.scripts.useWelcomeDialog", false));
 	}
 
 	@Override

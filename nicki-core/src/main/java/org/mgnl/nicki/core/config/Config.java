@@ -285,4 +285,8 @@ public final class Config {
 		return list.toArray(new String[0]);
 	}
 
+	public static boolean exists(String key) {
+		return StringUtils.isNotBlank(getString(key));
+	}
+
 }

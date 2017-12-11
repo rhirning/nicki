@@ -40,6 +40,7 @@ import org.mgnl.nicki.editor.projects.objects.Member;
 import org.mgnl.nicki.editor.projects.objects.Project;
 
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
+import org.mgnl.nicki.vaadin.base.application.ShowWelcomeDialog;
 import org.mgnl.nicki.vaadin.base.application.SystemContext;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectValueChangeListener;
@@ -51,11 +52,13 @@ import com.vaadin.ui.Component;
 
 @SuppressWarnings("serial")
 @SystemContext
+@ShowWelcomeDialog(
+		configKey="nicki.app.editor.projects.useWelcomeDialog",
+		groupsConfigName="nicki.app.editor.projects.useWelcomeDialogGroups")
 public class ProjectEditor extends NickiApplication {
 
 	public ProjectEditor() {
 		super();
-		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.projects.useWelcomeDialog", false));
 	}
 
 	@SuppressWarnings("unchecked")

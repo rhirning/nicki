@@ -23,22 +23,25 @@ package org.mgnl.nicki.editor.log4j;
 
 
 
-import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.vaadin.base.application.AccessGroup;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
+import org.mgnl.nicki.vaadin.base.application.ShowWelcomeDialog;
+
 import com.vaadin.ui.Component;
 import com.vaadin.ui.TabSheet;
 
 @SuppressWarnings("serial")
 @AccessGroup(name = {"nickiAdmins", "IDM-Development"})
+@ShowWelcomeDialog(
+		configKey="nicki.app.editor.log4j.useWelcomeDialog",
+		groupsConfigName="nicki.app.editor.log4j.useWelcomeDialogGroups")
 public class Log4jEditor extends NickiApplication {
 	
 	public Log4jEditor() {
 		super();
-		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.log4j.useWelcomeDialog", false));
 	}
 
 	@Override

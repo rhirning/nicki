@@ -33,6 +33,7 @@ import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 import org.mgnl.nicki.vaadin.base.application.AccessGroup;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
+import org.mgnl.nicki.vaadin.base.application.ShowWelcomeDialog;
 import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 import org.mgnl.nicki.vaadin.base.editor.ShowAllFilter;
@@ -42,11 +43,13 @@ import com.vaadin.ui.Component;
 
 @AccessGroup(name = {"nickiAdmins", "IDM-Development"})
 @SuppressWarnings("serial")
+@ShowWelcomeDialog(
+		configKey="nicki.app.editor.catalog.useWelcomeDialog",
+		groupsConfigName="nicki.app.editor.catalog.useWelcomeDialogGroups")
 public class CatalogEditor extends NickiApplication {
 
 	public CatalogEditor() {
 		super();
-		setUseWelcomeDialog(Config.getBoolean("nicki.app.editor.catalog.useWelcomeDialog", false));
 	}
 
 	@SuppressWarnings("unchecked")

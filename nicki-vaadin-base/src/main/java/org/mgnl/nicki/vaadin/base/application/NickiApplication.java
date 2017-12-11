@@ -361,10 +361,49 @@ public abstract class NickiApplication extends UI {
 		}
 		ShowWelcomeDialog showWelcomeDialog = this.getClass().getAnnotation(ShowWelcomeDialog.class);
 		if (showWelcomeDialog != null) {
-			if (StringUtils.isNotBlank(showWelcomeDialog.configKey())) {
-				return Config.getBoolean(showWelcomeDialog.configKey(), false);
-			} else if (showWelcomeDialog.group() != null && showWelcomeDialog.group().length > 0) {
-				// TODO
+			if (Config.exists(showWelcomeDialog.configKey())) {
+				return Config.getBoolean(showWelcomeDialog.configKey());
+			} else {
+				if (showWelcomeDialog.groups() != null && showWelcomeDialog.groups().length > 0) {
+					try {
+						AccessGroupEvaluator groupEvaluator = showWelcomeDialog.groupEvaluator().newInstance();
+						if (groupEvaluator.isMemberOf((Person) context.loginContext.getUser(), showWelcomeDialog.groups())) {
+							return true;
+						}
+					} catch (InstantiationException | IllegalAccessException e) {
+						LOG.error("Could not create AccessGroupEvaluator", e);
+					}
+				}
+				if (StringUtils.isNotBlank(showWelcomeDialog.groupsConfigName())) {
+					try {
+						AccessGroupEvaluator groupEvaluator = showWelcomeDialog.groupEvaluator().newInstance();
+						if (groupEvaluator.isMemberOf((Person) context.loginContext.getUser(), Config.getList(showWelcomeDialog.groupsConfigName(), ",").toArray(new String[0]))) {
+							return true;
+						}
+					} catch (InstantiationException | IllegalAccessException e) {
+						LOG.error("Could not create AccessGroupEvaluator", e);
+					}
+				}
+				if (showWelcomeDialog.roles() != null && showWelcomeDialog.roles().length > 0) {
+					try {
+						AccessRoleEvaluator roleEvaluator = showWelcomeDialog.roleEvaluator().newInstance();
+						if (roleEvaluator.hasRole((Person) context.loginContext.getUser(), showWelcomeDialog.roles())) {
+							return true;
+						}
+					} catch (InstantiationException | IllegalAccessException e) {
+						LOG.error("Could not create AccessRoleEvaluator", e);
+					}
+				}
+				if (StringUtils.isNotBlank(showWelcomeDialog.rolesConfigName())) {
+					try {
+						AccessRoleEvaluator roleEvaluator = showWelcomeDialog.roleEvaluator().newInstance();
+						if (roleEvaluator.hasRole((Person) context.loginContext.getUser(), Config.getList(showWelcomeDialog.rolesConfigName(), ",").toArray(new String[0]))) {
+							return true;
+						}
+					} catch (InstantiationException | IllegalAccessException e) {
+						LOG.error("Could not create AccessRoleEvaluator", e);
+					}
+				}
 			}
 		}
 		return false;

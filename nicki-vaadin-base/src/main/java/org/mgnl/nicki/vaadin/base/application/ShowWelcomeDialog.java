@@ -30,7 +30,13 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface ShowWelcomeDialog {
-	String[] group() default {};
 	String configKey() default "";
-	Class<? extends AccessGroupEvaluator> evaluator() default DefaultGroupEvaluator.class;
+	
+	String[] groups() default {};
+	Class<? extends AccessGroupEvaluator> groupEvaluator() default DefaultGroupEvaluator.class;
+	String groupsConfigName() default "";
+	
+	String[] roles() default {};
+	Class<? extends AccessRoleEvaluator> roleEvaluator() default DefaultRoleEvaluator.class;
+	String rolesConfigName() default "";
 }
