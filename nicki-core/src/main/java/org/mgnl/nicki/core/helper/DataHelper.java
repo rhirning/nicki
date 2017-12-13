@@ -109,7 +109,9 @@ public class DataHelper {
 	public static boolean booleanOf(String value) {
 
 		if (StringUtils.equalsIgnoreCase(value, "J")
+				|| StringUtils.equalsIgnoreCase(value, "Ja")
 				|| StringUtils.equalsIgnoreCase(value, "Y")
+				|| StringUtils.equalsIgnoreCase(value, "YES")
 				|| StringUtils.equalsIgnoreCase(value, "1")
 				|| StringUtils.equalsIgnoreCase(value, "TRUE")
 				) {
