@@ -1,6 +1,10 @@
 
 package org.mgnl.nicki.db.context;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 /*-
  * #%L
  * nicki-db
@@ -22,34 +26,66 @@ package org.mgnl.nicki.db.context;
  */
 
 
-import org.apache.commons.lang.StringUtils;
 
-public class ColumnsAndValues {
+
+public class ColumnsAndValues extends HashMap<String, String> {
+	private static final long serialVersionUID = -712686267178848355L;
 	public final static String COLUMN_SEPARATOR = ", ";
-	private String columns;
-	private String values;
+	public final static String PREP_VALUE = "?";
+	private List<String> names = new ArrayList<>();
 	
-	public ColumnsAndValues(String columns, String values) {
-		this.columns = columns;
-		this.values = values;
-	}
-
-	public void add(String  name, String value) {
-		if (StringUtils.isNotEmpty(columns)) {
-			columns += COLUMN_SEPARATOR;
-			values += COLUMN_SEPARATOR;
-		}
-		columns += name;
-		values += value;
+	public String add(String  name, String value) {
+		names.add(name);
+		return super.put(name, value);
 
 	}
+	
 
 	public String getColumns() {
-		return columns;
+		StringBuilder sb = new StringBuilder();
+		for (String name : names) {
+			if (sb.length() > 0) {
+				sb.append(COLUMN_SEPARATOR);
+			}
+			sb.append(name);
+		}
+		return sb.toString();
 	}
 
 	public String getValues() {
-		return values;
+		StringBuilder sb = new StringBuilder();
+		for (String name : names) {
+			if (sb.length() > 0) {
+				sb.append(COLUMN_SEPARATOR);
+			}
+			sb.append(get(name));
+		}
+		return sb.toString();
 	}
 
+	public String getPreparedValues() {
+		StringBuilder sb = new StringBuilder();
+		for (@SuppressWarnings("unused") String name : names) {
+			if (sb.length() > 0) {
+				sb.append(COLUMN_SEPARATOR);
+			}
+			sb.append(PREP_VALUE);
+		}
+		return sb.toString();
+	}
+
+	public List<String> getNames() {
+		return names;
+	}
+
+	public int size() {
+		return names.size();
+	}
+
+
+	@Override
+	public String put(String key, String value) {
+		// TODO Auto-generated method stub
+		return add(key, value);
+	}
 }

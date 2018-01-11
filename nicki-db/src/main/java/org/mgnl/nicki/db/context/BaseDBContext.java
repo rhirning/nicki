@@ -28,18 +28,18 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
@@ -61,6 +61,7 @@ public class BaseDBContext
 	public final static String TIMESTAMP_ORACLE = "YYYY-MM-DD HH24:MI:SS";
 	public final static String TIMESTAMP_FOR_ORACLE = "yyyy-MM-dd HH:mm:ss";
 	private static final Logger LOG = LoggerFactory.getLogger(BaseDBContext.class);
+	public enum PREPARED {TRUE, FALSE}
 	private String name;
 	private DBProfile profile;
 	private Connection connection;
@@ -669,19 +670,191 @@ public class BaseDBContext
 				LOG.error("Could not use sequence " + sequence, e);
 			}
 		}
-		try (Statement stmt = this.getConnection().createStatement()) {
-			String statement = this.createInsertStatement(bean);
-			LOG.debug(statement);
+		
+		if (usePreparedStatement(bean)) {
 			String generatedColumns[] = this.getGeneratedKeys(bean);
 			if (generatedColumns != null) {
-				stmt.executeUpdate(statement, generatedColumns);
-				return getGeneratedKey(stmt, getPrimaryKeyType(bean.getClass()));
+				try (PreparedStatement pstmt = getPreparedInsertStatement(bean, generatedColumns)) {
+					pstmt.executeUpdate();
+					return getGeneratedKey(pstmt, getPrimaryKeyType(bean.getClass()));
+				}
 			} else {
-				stmt.executeUpdate(statement);
-				return primaryKey;
+				try (PreparedStatement pstmt = getPreparedInsertStatement(bean)) {
+					pstmt.executeUpdate();
+					return primaryKey;
+				}
+			}
+			
+		} else {	
+			try (Statement stmt = this.getConnection().createStatement()) {
+				String statement = this.createInsertStatement(bean);
+				LOG.debug(statement);
+				String generatedColumns[] = this.getGeneratedKeys(bean);
+				if (generatedColumns != null) {
+					stmt.executeUpdate(statement, generatedColumns);
+					return getGeneratedKey(stmt, getPrimaryKeyType(bean.getClass()));
+				} else {
+					stmt.executeUpdate(statement);
+					return primaryKey;
+				}
 			}
 		}
+	}
 
+	private void fillPreparedStatement(PreparedStatement pstmt, Object bean, String... columns) throws SQLException {
+
+		List<String> cols= null;
+		if (columns != null && columns.length > 0) {
+			cols = Arrays.asList(columns);
+		}
+		
+		int pos = 0;
+
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			if (cols == null || cols.contains(field.getName())) {
+				if (field.getAnnotation(Attribute.class) != null) {
+					Attribute attribute = field.getAnnotation(Attribute.class);
+					if (!attribute.autogen()) {
+						try {
+							String value = null;
+							if (field.getType() == String.class) {
+								pos++;
+								value = getValue(bean, String.class, field, attribute);
+								pstmt.setString(pos, getValue(bean, String.class, field, attribute));
+//								pstmt.setString(pos, this.getStringValue(bean, field));
+							} else if (field.getType() == Date.class) {
+								pos++;
+								if (attribute.type() == DataType.TIMESTAMP) {
+									value = getValue(bean, Date.class, field, attribute).toString();
+									pstmt.setTimestamp(pos, new Timestamp(getValue(bean, Date.class, field, attribute).getTime()));
+								} else {
+									value = getValue(bean, Date.class, field, attribute).toString();
+									pstmt.setDate(pos, new java.sql.Date(getValue(bean, Date.class, field, attribute).getTime()));
+								}
+							} else if (field.getType() == long.class || field.getType() == Long.class) {
+								pos++;
+								value = getLongValue(bean, field, attribute);
+								pstmt.setLong(pos, getValue(bean, Long.class, field, attribute));
+//								pstmt.setString(pos, getLongValue(bean, field, attribute));
+							} else if (field.getType() == int.class || field.getType() == Integer.class) {
+								pos++;
+								pstmt.setInt(pos, getValue(bean, Integer.class, field, attribute));
+//								value = getIntValue(bean, field, attribute);
+								pstmt.setString(pos, getIntValue(bean, field, attribute));
+							}
+							LOG.error(field.getName() + "='" + value + "'");
+						} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+								| InvocationTargetException e) {
+							LOG.error("Error fill statement", e);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	protected PreparedStatement getPreparedInsertStatement(Object bean, String... generatedColumns) throws NotSupportedException, SQLException  {
+		String tableName = this.getQualifiedTableName(bean.getClass());
+		ColumnsAndValues cv = getInsertColumnValues(bean);
+		String insertStatementString = getPreparedInsertStatement(tableName, cv);
+		PreparedStatement pstmt = this.getConnection().prepareStatement(insertStatementString, generatedColumns);
+		fillPreparedStatement(pstmt, bean);
+		return pstmt;
+	}
+
+	protected PreparedStatement getPreparedUpdateStatement(Object bean, String where, String... columns) throws NotSupportedException, NothingToDoException, SQLException {
+		String tableName = this.getQualifiedTableName(bean.getClass());
+		ColumnsAndValues cv = getUpdateColumnValues(bean, columns);
+		String whereClause = getWhereClause(bean, where, columns);
+		String updateStatementString = getUpdateStatement(PREPARED.TRUE, tableName, cv, whereClause);
+		PreparedStatement pstmt = this.connection.prepareStatement(updateStatementString);
+		fillPreparedStatement(pstmt, bean, columns);
+		return pstmt;
+	}
+
+	private String getWhereClause(Object bean, String where, String... columns) throws NotSupportedException {
+
+		StringBuilder whereClause = new StringBuilder();
+		if (StringUtils.isNotBlank(where)) {
+			whereClause.append(where);
+		}
+
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			if (field.getAnnotation(Attribute.class) != null) {
+				Attribute attribute = field.getAnnotation(Attribute.class);
+				String attributeValue = null;
+				try {
+					if (field.getType() == String.class) {
+						attributeValue = this.getStringValue(bean, field);
+					} else if (field.getType() == Date.class) {
+						attributeValue = this.getDateValue(bean, field, attribute);
+					} else if (field.getType() == long.class || field.getType() == Long.class) {
+						attributeValue = this.getLongValue(bean, field, attribute);
+					} else if (field.getType() == int.class || field.getType() == Integer.class) {
+						attributeValue = this.getIntValue(bean, field, attribute);
+					}
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					LOG.error("Error converting value", e);
+				}
+				if (attribute.primaryKey()) {
+					if (whereClause.length() > 0) {
+						whereClause.append(" AND ");
+					}
+					whereClause.append(attribute.name()).append("=").append(attributeValue);
+				}
+			}
+		}
+		if (whereClause.length() > 0) {
+			return whereClause.toString();
+		} else {
+			return null;
+		}
+	}
+
+	private ColumnsAndValues getUpdateColumnValues(Object bean, String... columns) {
+
+		List<String> cols= null;
+		if (columns != null && columns.length > 0) {
+			cols = Arrays.asList(columns);
+		}
+		ColumnsAndValues cv = new ColumnsAndValues();
+
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			if (field.getAnnotation(Attribute.class) != null) {
+				Attribute attribute = field.getAnnotation(Attribute.class);
+				String attributeValue = null;
+				try {
+					if (field.getType() == String.class) {
+						attributeValue = this.getStringValue(bean, field);
+					} else if (field.getType() == Date.class) {
+						attributeValue = this.getDateValue(bean, field, attribute);
+					} else if (field.getType() == long.class || field.getType() == Long.class) {
+						attributeValue = this.getLongValue(bean, field, attribute);
+					} else if (field.getType() == int.class || field.getType() == Integer.class) {
+						attributeValue = this.getIntValue(bean, field, attribute);
+					}
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					LOG.error("Error converting value", e);
+				}
+				if (cols == null || cols.contains(field.getName())) {
+					cv.put(attribute.name(), attributeValue);
+				}
+			}
+		}
+		return cv;
+	}
+
+	protected String getPreparedInsertStatement(String tableName, ColumnsAndValues cv) {
+		String result = "insert into " + tableName + " (" + cv.getColumns() + ") values (" + cv.getPreparedValues() + ")";
+		LOG.error(result);
+		return result;
+	}
+
+	private boolean usePreparedStatement(Object bean) {
+		Class<? extends Object> clazz = bean.getClass();
+		return clazz.isAnnotationPresent(Table.class) && clazz.getAnnotation(Table.class).usePreparedStatement();
 	}
 
 	@Override
@@ -699,12 +872,9 @@ public class BaseDBContext
 		}
 
 		try {
-			try (Statement stmt = this.connection.createStatement()) {
-				int count = 0;
-				try {
-					String statement = this.createUpdateWhereStatement(bean, where, columns);
-					LOG.debug(statement);
-					count = stmt.executeUpdate(statement);
+			if (usePreparedStatement(bean)) {
+				try (PreparedStatement pstmt = getPreparedUpdateStatement(bean, where, columns)) {
+					int count = pstmt.executeUpdate();
 					if (!inTransaction) {
 						try {
 							this.commit();
@@ -712,13 +882,37 @@ public class BaseDBContext
 							LOG.error("Error on commit", e);
 						}
 					}
-				} catch (NothingToDoException e) {
+					if (count == 1) {
+						return this.reload(bean);
+					} else {
+						return null;
+					}
+				} catch (NothingToDoException e1) {
 					LOG.error("Nothing to do");
-				}
-				if (count == 1) {
-					return this.reload(bean);
-				} else {
 					return null;
+				}
+			} else {
+				try (Statement stmt = this.connection.createStatement()) {
+					int count = 0;
+					try {
+						String statement = this.createUpdateWhereStatement(bean, where, columns);
+						LOG.debug(statement);
+						count = stmt.executeUpdate(statement);
+						if (!inTransaction) {
+							try {
+								this.commit();
+							} catch (NotInTransactionException e) {
+								LOG.error("Error on commit", e);
+							}
+						}
+					} catch (NothingToDoException e) {
+						LOG.error("Nothing to do");
+					}
+					if (count == 1) {
+						return this.reload(bean);
+					} else {
+						return null;
+					}
 				}
 			}
 		} finally {
@@ -941,8 +1135,7 @@ public class BaseDBContext
 			T b = (T) bean.getClass().newInstance();
 			list = loadObjects(b, true, getReloadObjectsWhereClause(bean), null);
 		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			LOG.error("Error reloading bean", e);
 		}
 		if (list != null && list.size() > 0) {
 			return list.get(0);
@@ -955,13 +1148,17 @@ public class BaseDBContext
 		/**
 		 * insert into SCHEMA.TABLE (a,b,c) values (" ", " ", 2);
 		 */
+		return getInsertStatement(this.getQualifiedTableName(bean.getClass()), getInsertColumnValues(bean));
+	}
+
+	protected ColumnsAndValues getInsertColumnValues(Object bean) throws NotSupportedException {
 
 		Table table = bean.getClass().getAnnotation(Table.class);
 		if (table == null) {
 			throw new NotSupportedException();
 		}
 
-		Map<String, String> columnValues = new HashMap<>();
+		ColumnsAndValues cv = new ColumnsAndValues();
 
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(Attribute.class) != null) {
@@ -969,13 +1166,13 @@ public class BaseDBContext
 				if (!attribute.autogen()) {
 					try {
 						if (field.getType() == String.class) {
-							columnValues.put(attribute.name(), this.getStringValue(bean, field));
+							cv.put(attribute.name(), this.getStringValue(bean, field));
 						} else if (field.getType() == Date.class) {
-							columnValues.put(attribute.name(), this.getDateValue(bean, field, attribute));
+							cv.put(attribute.name(), this.getDateValue(bean, field, attribute));
 						} else if (field.getType() == long.class || field.getType() == Long.class) {
-							columnValues.put(attribute.name(), this.getLongValue(bean, field, attribute));
+							cv.put(attribute.name(), this.getLongValue(bean, field, attribute));
 						} else if (field.getType() == int.class || field.getType() == Integer.class) {
-							columnValues.put(attribute.name(), this.getIntValue(bean, field, attribute));
+							cv.put(attribute.name(), this.getIntValue(bean, field, attribute));
 						}
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException e) {
@@ -985,7 +1182,7 @@ public class BaseDBContext
 			}
 		}
 
-		return getInsertStatement(this.getQualifiedTableName(bean.getClass()), columnValues);
+		return cv;
 	}
 
 	protected String[] getGeneratedKeys(Object bean) {
@@ -1013,6 +1210,12 @@ public class BaseDBContext
 		} else {
 			return null;
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	protected <T> T getValue(Object bean, Class<T> clazz, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException, IllegalAccessException,
+				IllegalArgumentException, InvocationTargetException  {
+		return (T) this.getValue(bean, field);
 	}
 
 	protected String getIntValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException,
@@ -1051,28 +1254,29 @@ public class BaseDBContext
 
 	}
 
-	protected static String getInsertStatement(String tableName, Map<String, String> columnValues) {
-		ColumnsAndValues cv = new ColumnsAndValues("", "");
-		for (String columnName : columnValues.keySet()) {
-			cv.add(columnName, columnValues.get(columnName));
-		}
+	protected static String getInsertStatement(String tableName, ColumnsAndValues cv) {
 
 		return "insert into " + tableName + " (" + cv.getColumns() + ") values (" + cv.getValues() + ")";
 	}
 
-	protected static String getUpdateStatement(String tableName, Map<String, String> columnValues, String whereClause) throws NothingToDoException {
-		if (columnValues == null || columnValues.size() == 0) {
+	protected String getUpdateStatement(PREPARED prepared, String tableName, ColumnsAndValues cv, String whereClause) throws NothingToDoException {
+		if (cv.size() == 0) {
 			throw new NothingToDoException();
 		}
 		StringBuilder sb = new StringBuilder();
 		sb.append("update ").append(tableName).append(" set ");
 		
 		boolean multi = false;
-		for (String columnName : columnValues.keySet()) {
+		for (String columnName : cv.getNames()) {
 			if (multi) {
 				sb.append(",");
 			}
-			sb.append(columnName).append("=").append(columnValues.get(columnName));
+			if (prepared == PREPARED.TRUE) {
+				sb.append(columnName).append("=").append("?");
+				
+			} else {
+				sb.append(columnName).append("=").append(cv.get(columnName));
+			}
 			multi = true;
 		}
 
@@ -1080,6 +1284,7 @@ public class BaseDBContext
 			sb.append(" where ");
 			sb.append(whereClause);
 		}
+		LOG.error(sb.toString());
 		return sb.toString();
 	}
 
@@ -1102,6 +1307,42 @@ public class BaseDBContext
 				date = (Date) this.getValue(bean, field);
 			}
 			return this.toTimestamp(date);
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			LOG.error("Error converting date", e);
+		}
+
+		return null;
+	}
+
+	protected Date getDateValueXXX(Object bean, Field field, Attribute attribute) {
+		try {
+			Date date;
+			if (attribute.now()) {
+				date = new Date();
+			} else {
+				date = (Date) this.getValue(bean, field);
+			}
+			return date;
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+				| InvocationTargetException e) {
+			LOG.error("Error converting date", e);
+		}
+
+		return null;
+	}
+
+	protected Calendar getCalendarValue(Object bean, Field field, Attribute attribute) {
+		try {
+			Date date;
+			if (attribute.now()) {
+				date = new Date();
+			} else {
+				date = (Date) this.getValue(bean, field);
+			}
+			  Calendar cal = Calendar.getInstance();
+			  cal.setTime(date);
+			  return cal;
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
 			LOG.error("Error converting date", e);
@@ -1158,7 +1399,7 @@ public class BaseDBContext
 		if (StringUtils.isNotBlank(where)) {
 			whereClause.append(where);
 		}
-		Map<String, String> columnValues = new HashMap<>();
+		ColumnsAndValues cv = new ColumnsAndValues();
 
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(Attribute.class) != null) {
@@ -1178,8 +1419,8 @@ public class BaseDBContext
 						| InvocationTargetException e) {
 					LOG.error("Error converting value", e);
 				}
-				if (cols == null | cols.contains(field.getName())) {
-					columnValues.put(attribute.name(), attributeValue);
+				if (cols == null || cols.contains(field.getName())) {
+					cv.add(attribute.name(), attributeValue);
 				}
 				if (attribute.primaryKey()) {
 					if (whereClause.length() > 0) {
@@ -1190,7 +1431,8 @@ public class BaseDBContext
 			}
 		}
 
-		return getUpdateStatement(this.getQualifiedTableName(bean.getClass()), columnValues, whereClause.toString());
+		return getUpdateStatement(PREPARED.FALSE, 
+				this.getQualifiedTableName(bean.getClass()), cv, whereClause.toString());
 	}
 
 	@Override

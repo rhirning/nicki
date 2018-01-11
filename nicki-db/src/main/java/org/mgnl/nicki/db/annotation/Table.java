@@ -34,4 +34,6 @@ public @interface Table {
 	String name();
 
 	String postInit() default "";
+	
+	boolean usePreparedStatement() default false;
 }
