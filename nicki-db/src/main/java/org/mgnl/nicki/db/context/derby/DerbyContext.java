@@ -90,11 +90,11 @@ public class DerbyContext
 	}
 
 	@Override
-	public PrimaryKey getSequenceNumber(String sequenceName) throws Exception {
+	public PrimaryKey getSequenceNumber(Class<?> beanClazz, String column, String sequenceName) throws Exception {
 
 		SequenceValueSelectHandler handler = new DerbySequenceValueSelectHandler(getQualifiedName(sequenceName));
 		select(handler);
-		return new PrimaryKey(handler.getResult());
+		return new PrimaryKey(beanClazz, column, handler.getResult());
 	}
 	
 	public String getQualifiedName(String name) {
@@ -103,10 +103,5 @@ public class DerbyContext
 		} else {
 			return name;
 		}
-	}
-	
-	public PrimaryKey XXXgetSequenceNumber(String sequenceName) throws Exception {
-		
-		return new PrimaryKey(RandomUtils.nextInt());
 	}
 }

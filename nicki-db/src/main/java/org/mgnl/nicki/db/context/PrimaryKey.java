@@ -24,41 +24,83 @@ package org.mgnl.nicki.db.context;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.mgnl.nicki.db.helper.Type;
 
 public class PrimaryKey {
 
-	private String value;
+	private Map<String, Object> values = new HashMap<>();
+	private Map<String, Type> types = new HashMap<>();
 	
-	public PrimaryKey(Class<?> clazz, ResultSet generatedKeys) throws SQLException {
-		if (clazz != null && generatedKeys != null && generatedKeys.next()) {
-			this.value = generatedKeys.getString(1);
+	public PrimaryKey(Class<?> beanClazz, String generatedColumns[], ResultSet generatedKeys) throws SQLException {
+		if (beanClazz != null && generatedColumns != null && generatedKeys != null) {
+			int i = 0;
+			while(generatedKeys.next()) {
+				String name = generatedColumns[i];
+				Type type = Type.getBeanAttributeType(beanClazz, name);
+				Object value = getValue(generatedKeys, name, type);
+				values.put(name, value);
+				types.put(name, type);
+				i++;
+			}
 		}
 	}
 
-	public PrimaryKey(Object rawValue) {
-		if (rawValue instanceof String) {
-			value = (String) rawValue;
-		} else if (rawValue instanceof Long) {
-			value = Long.toString((long) rawValue);
-		} else if (rawValue instanceof Integer) {
-			value = Integer.toString((int) rawValue);
+	private Object getValue(ResultSet generatedKeys, String name, Type type) throws SQLException {
+		if (type == Type.STRING || type == Type.UNKONWN) {
+			return generatedKeys.getString(name);
+		} else if (type == Type.TIMESTAMP) {
+			return generatedKeys.getTimestamp(name);
+		} else if (type == Type.DATE) {
+			return generatedKeys.getDate(name);
+		} else if (type == Type.LONG) {
+			return generatedKeys.getLong(name);
+		} else if (type == Type.INT) {
+			return generatedKeys.getInt(name);
+		}
+		return null;
+	}
+
+	public PrimaryKey(Class<?> beanClazz, String name, Object value) {
+		Type type = Type.getBeanAttributeType(beanClazz, name);
+		values.put(name, value);
+		types.put(name, type);
+	}
+
+	public PrimaryKey() {
+	}
+
+	public void add(Class<?> beanClazz, String name, Object value) {
+		Type type = Type.getBeanAttributeType(beanClazz, name);
+		values.put(name, value);
+		types.put(name, type);
+	}
+
+	public Object getValue(String name) {
+		return values.get(name);
+	}
+
+	@SuppressWarnings("unchecked")
+	private <T> T getValue(Class<T> clazz, String name) {
+		if (types.containsKey(name) && types.get(name).match(clazz)) {
+			return (T) values.get(name);
+		} else {
+			return null;
 		}
 	}
 
-	public String getValue() {
-		return value;
+	public long getLong(String name) {
+		return getValue(long.class, name);
 	}
 
-	public long getLong() {
-		return Long.parseLong(value);
+	public int getInt(String name) {
+		return getValue(int.class, name);
 	}
 
-	public int getInt() {
-		return Integer.parseInt(value);
-	}
-
-	public void setValue(String value) {
-		this.value = value;
+	public String getString(String name) {
+		return getValue(String.class, name);
 	}
 
 }

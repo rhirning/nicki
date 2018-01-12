@@ -23,13 +23,15 @@ package org.mgnl.nicki.context.db.model;
 
 
 import org.mgnl.nicki.db.annotation.Attribute;
+import org.mgnl.nicki.db.annotation.ForeignKey;
 import org.mgnl.nicki.db.annotation.Table;
 
 @Table(name = "OBJECTS")
 public class Objects {
 	@Attribute(name = "ID", autogen=true, primaryKey=true)
 	private Long id;
-	@Attribute(name = "model_object_id", foreignKey=true)
+	@Attribute(name = "model_object_id")
+	@ForeignKey(name = "id", foreignKeyClass = ModelObject.class)
 	private Long modelObjectId;
 	@Attribute(name = "name")
 	private String name;

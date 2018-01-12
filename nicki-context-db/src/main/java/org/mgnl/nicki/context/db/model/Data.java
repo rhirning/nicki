@@ -25,15 +25,18 @@ package org.mgnl.nicki.context.db.model;
 import java.util.Date;
 
 import org.mgnl.nicki.db.annotation.Attribute;
+import org.mgnl.nicki.db.annotation.ForeignKey;
 import org.mgnl.nicki.db.annotation.Table;
 
 @Table(name = "DATA")
 public class Data {
 	@Attribute(name = "ID", autogen=true, primaryKey=true)
 	private Long id;
-	@Attribute(name = "object_id", foreignKey=true)
+	@Attribute(name = "object_id")
+	@ForeignKey(name = "id", foreignKeyClass=Objects.class)
 	private String objectId;
-	@Attribute(name = "object_attribute_id", foreignKey=true)
+	@Attribute(name = "object_attribute_id")
+	@ForeignKey(name = "id", foreignKeyClass=ModelAttribute.class)
 	private String objectAttributeId;
 	@Attribute(name = "value")
 	private String value;

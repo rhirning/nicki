@@ -44,6 +44,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.db.annotation.Attribute;
+import org.mgnl.nicki.db.annotation.ForeignKey;
 import org.mgnl.nicki.db.annotation.SubTable;
 import org.mgnl.nicki.db.annotation.Table;
 import org.mgnl.nicki.db.data.DataType;
@@ -109,11 +110,11 @@ public class BaseDBContext
 		}
 	}
 	
-	protected String getSequence(Class<? extends Object> clazz) {
+	protected Attribute getSequence(Class<? extends Object> clazz) {
 		for (Field field : clazz.getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
-			if (attribute != null && attribute.primaryKey()) {
-				return StringUtils.stripToNull(attribute.sequence());
+			if (attribute != null && attribute.primaryKey() && StringUtils.isNotBlank(attribute.sequence())) {
+				return attribute;
 			}
 		}
 		return null;
@@ -299,14 +300,14 @@ public class BaseDBContext
 	}
 
 	private PrimaryKey getPrimaryKey(Object bean) {
-		PrimaryKey primaryKey = null;
+		PrimaryKey primaryKey = new PrimaryKey();
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
 			if (attribute != null && attribute.primaryKey()) {
 				String getter = "get" + StringUtils.capitalize(field.getName());
 				try {
 					Method method = bean.getClass().getMethod(getter);
-					primaryKey = new PrimaryKey(method.invoke(bean));
+					primaryKey.add(bean.getClass(), field.getName(), method.invoke(bean));
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
 					LOG.error("Error reading primary key ", e);
@@ -364,12 +365,12 @@ public class BaseDBContext
 				String setter = "set" + StringUtils.capitalize(field.getName());
 				try {
 					Method method = bean.getClass().getMethod(setter, field.getType());
-					if (Long.class.isAssignableFrom(field.getType())) {
-						method.invoke(bean, primaryKey.getLong());
-					} else if (Integer.class.isAssignableFrom(field.getType())) {
-						method.invoke(bean, primaryKey.getInt());
+					if (long.class.isAssignableFrom(field.getType())) {
+						method.invoke(bean, primaryKey.getLong(field.getName()));
+					} else if (int.class.isAssignableFrom(field.getType())) {
+						method.invoke(bean, primaryKey.getInt(field.getName()));
 					} else if (field.getType().isAssignableFrom(String.class)) {
-						method.invoke(bean, primaryKey.getValue());
+						method.invoke(bean, primaryKey.getString(field.getName()));
 					} 
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
@@ -632,18 +633,19 @@ public class BaseDBContext
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(Attribute.class) != null) {
-				Attribute attribute = field.getAnnotation(Attribute.class);
-				if (attribute.foreignKey()) {
+				ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
+				if (foreignKey != null && foreignKey.foreignKeyClass().isAssignableFrom(bean.getClass())) {
+					String id = foreignKey.name();
 					String setter = "set" + StringUtils.capitalize(field.getName());
 					Method method = bean.getClass().getMethod(setter, field.getType());
 					if (Long.class.isAssignableFrom(field.getType())) {
-						method.invoke(bean, primaryKey.getLong());
+						method.invoke(bean, primaryKey.getLong(id));
 					} else if (long.class.isAssignableFrom(field.getType())) {
-						method.invoke(bean, primaryKey.getLong());
+						method.invoke(bean, primaryKey.getLong(id));
 					} else if (Integer.class.isAssignableFrom(field.getType())) {
-						method.invoke(bean, primaryKey.getInt());
+						method.invoke(bean, primaryKey.getInt(id));
 					} else if (field.getType().isAssignableFrom(String.class)) {
-						method.invoke(bean, primaryKey.getValue());
+						method.invoke(bean, primaryKey.getString(id));
 					} 
 				}
 			}
@@ -661,13 +663,13 @@ public class BaseDBContext
 
 	protected <T> PrimaryKey createInDB(T bean) throws SQLException, NotSupportedException {
 		PrimaryKey primaryKey = null;
-		String sequence = getSequence(bean.getClass());
-		if (StringUtils.isNotBlank(sequence)) {
+		Attribute sequenceAttribute = getSequence(bean.getClass());
+		if (sequenceAttribute != null) {
 			try {
-				primaryKey = getSequenceNumber(sequence);
+				primaryKey = getSequenceNumber(bean.getClass(), sequenceAttribute);
 				setPrimaryKey(bean, primaryKey);
 			} catch (Exception e) {
-				LOG.error("Could not use sequence " + sequence, e);
+				LOG.error("Could not use sequence " + sequenceAttribute.sequence(), e);
 			}
 		}
 		
@@ -676,7 +678,7 @@ public class BaseDBContext
 			if (generatedColumns != null) {
 				try (PreparedStatement pstmt = getPreparedInsertStatement(bean, generatedColumns)) {
 					pstmt.executeUpdate();
-					return getGeneratedKey(pstmt, getPrimaryKeyType(bean.getClass()));
+					return getGeneratedKey(pstmt, generatedColumns, getPrimaryKeyType(bean.getClass()));
 				}
 			} else {
 				try (PreparedStatement pstmt = getPreparedInsertStatement(bean)) {
@@ -692,7 +694,7 @@ public class BaseDBContext
 				String generatedColumns[] = this.getGeneratedKeys(bean);
 				if (generatedColumns != null) {
 					stmt.executeUpdate(statement, generatedColumns);
-					return getGeneratedKey(stmt, getPrimaryKeyType(bean.getClass()));
+					return getGeneratedKey(stmt, generatedColumns, getPrimaryKeyType(bean.getClass()));
 				} else {
 					stmt.executeUpdate(statement);
 					return primaryKey;
@@ -721,7 +723,6 @@ public class BaseDBContext
 								pos++;
 								value = getValue(bean, String.class, field, attribute);
 								pstmt.setString(pos, getValue(bean, String.class, field, attribute));
-//								pstmt.setString(pos, this.getStringValue(bean, field));
 							} else if (field.getType() == Date.class) {
 								pos++;
 								if (attribute.type() == DataType.TIMESTAMP) {
@@ -735,14 +736,12 @@ public class BaseDBContext
 								pos++;
 								value = getLongValue(bean, field, attribute);
 								pstmt.setLong(pos, getValue(bean, Long.class, field, attribute));
-//								pstmt.setString(pos, getLongValue(bean, field, attribute));
 							} else if (field.getType() == int.class || field.getType() == Integer.class) {
 								pos++;
+								value = getIntValue(bean, field, attribute);
 								pstmt.setInt(pos, getValue(bean, Integer.class, field, attribute));
-//								value = getIntValue(bean, field, attribute);
-								pstmt.setString(pos, getIntValue(bean, field, attribute));
 							}
-							LOG.error(field.getName() + "='" + value + "'");
+							LOG.debug(field.getName() + "='" + value + "'");
 						} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 								| InvocationTargetException e) {
 							LOG.error("Error fill statement", e);
@@ -848,7 +847,7 @@ public class BaseDBContext
 
 	protected String getPreparedInsertStatement(String tableName, ColumnsAndValues cv) {
 		String result = "insert into " + tableName + " (" + cv.getColumns() + ") values (" + cv.getPreparedValues() + ")";
-		LOG.error(result);
+		LOG.debug(result);
 		return result;
 	}
 
@@ -1284,7 +1283,7 @@ public class BaseDBContext
 			sb.append(" where ");
 			sb.append(whereClause);
 		}
-		LOG.error(sb.toString());
+		LOG.debug(sb.toString());
 		return sb.toString();
 	}
 
@@ -1509,11 +1508,19 @@ public class BaseDBContext
 	}
 
 	@Override
-	public PrimaryKey getSequenceNumber(String sequenceName) throws Exception {
+	public PrimaryKey getSequenceNumber(Class<?> beanClazz, Attribute sequenceAttribute) throws Exception {
+
+		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(getQualifiedName(sequenceAttribute.sequence()));
+		select(handler);
+		return new PrimaryKey(beanClazz, sequenceAttribute.name(), handler.getResult());
+	}
+
+	@Override
+	public PrimaryKey getSequenceNumber(Class<?> beanClazz, String column, String sequenceName) throws Exception {
 
 		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(getQualifiedName(sequenceName));
 		select(handler);
-		return new PrimaryKey(handler.getResult());
+		return new PrimaryKey(beanClazz, column, handler.getResult());
 	}
 	
 	public String getQualifiedName(String name) {
@@ -1525,9 +1532,9 @@ public class BaseDBContext
 	}
 
 	@Override
-	public PrimaryKey getGeneratedKey(Statement stmt, Class<?> clazz) throws SQLException {
+	public PrimaryKey getGeneratedKey(Statement stmt, String[] generatedColumns, Class<?> clazz) throws SQLException {
 		ResultSet generatedKeys = stmt.getGeneratedKeys();
-		return new PrimaryKey(clazz, generatedKeys);
+		return new PrimaryKey(clazz, generatedColumns, generatedKeys);
 	}
 
 	@Override
