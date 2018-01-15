@@ -37,29 +37,27 @@ public class PrimaryKey {
 	
 	public PrimaryKey(Class<?> beanClass, String generatedColumns[], ResultSet generatedKeys) throws SQLException {
 		if (beanClass != null && generatedColumns != null && generatedKeys != null) {
-			int i = 0;
-			while(generatedKeys.next()) {
-				String columnName = generatedColumns[i];
-				Type type = BeanHelper.getTypeOfColumn(beanClass, columnName);
-				Object value = getValue(generatedKeys, columnName, type);
+			String columnName = generatedColumns[0];
+			Type type = BeanHelper.getTypeOfColumn(beanClass, columnName);
+			if (generatedKeys.next()) {
+				Object value = getValue(generatedKeys, 1, type);
 				values.put(columnName, value);
 				types.put(columnName, type);
-				i++;
 			}
 		}
 	}
 
-	private Object getValue(ResultSet generatedKeys, String columnName, Type type) throws SQLException {
+	private Object getValue(ResultSet generatedKeys, int pos, Type type) throws SQLException {
 		if (type == Type.STRING || type == Type.UNKONWN) {
-			return generatedKeys.getString(columnName);
+			return generatedKeys.getString(pos);
 		} else if (type == Type.TIMESTAMP) {
-			return generatedKeys.getTimestamp(columnName);
+			return generatedKeys.getTimestamp(pos);
 		} else if (type == Type.DATE) {
-			return generatedKeys.getDate(columnName);
+			return generatedKeys.getDate(pos);
 		} else if (type == Type.LONG) {
-			return generatedKeys.getLong(columnName);
+			return generatedKeys.getLong(pos);
 		} else if (type == Type.INT) {
-			return generatedKeys.getInt(columnName);
+			return generatedKeys.getInt(pos);
 		}
 		return null;
 	}

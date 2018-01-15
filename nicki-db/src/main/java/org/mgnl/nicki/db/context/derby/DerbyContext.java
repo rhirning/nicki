@@ -98,6 +98,14 @@ public class DerbyContext
 	}
 
 	@Override
+	public Long getSequenceNumber(String sequenceName) throws Exception {
+
+		SequenceValueSelectHandler handler = new DerbySequenceValueSelectHandler(getQualifiedName(sequenceName));
+		select(handler);
+		return handler.getResult();
+	}
+
+	@Override
 	public String getQualifiedName(String name) {
 		if (!StringUtils.contains(name, '.') && this.getSchema() != null) {
 			return this.getSchema() + "." + name;

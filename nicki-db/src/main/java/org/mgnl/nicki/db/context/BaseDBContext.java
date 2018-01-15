@@ -638,7 +638,7 @@ public class BaseDBContext
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(Attribute.class) != null) {
 				ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
-				if (foreignKey != null && foreignKey.foreignKeyClass().isAssignableFrom(bean.getClass())) {
+				if (foreignKey != null) {
 					String columnName = foreignKey.columnName();
 					String setter = "set" + StringUtils.capitalize(field.getName());
 					Method method = bean.getClass().getMethod(setter, field.getType());
@@ -680,7 +680,7 @@ public class BaseDBContext
 			if (generatedColumns != null) {
 				try (PreparedStatement pstmt = getPreparedInsertStatement(bean, generatedColumns)) {
 					pstmt.executeUpdate();
-					return getGeneratedKey(pstmt, generatedColumns, getPrimaryKeyType(bean.getClass()));
+					return getGeneratedKey(pstmt, generatedColumns, bean.getClass());
 				}
 			} else {
 				try (PreparedStatement pstmt = getPreparedInsertStatement(bean)) {
@@ -1175,7 +1175,12 @@ public class BaseDBContext
 								cv.add(attribute.name(), value);
 							}
 						} else if (field.getType() == Date.class) {
-							Date value = getValue(bean, Date.class, field, attribute);
+							Date value;
+							if (attribute.now()) {
+								value = new Date();
+							} else {
+								value = getValue(bean, Date.class, field, attribute);
+							}
 							if (value != null) {
 								cv.add(attribute.name(), value);
 							}
@@ -1531,6 +1536,13 @@ public class BaseDBContext
 		select(handler);
 		return new PrimaryKey(beanClazz, sequenceAttribute.name(), handler.getResult());
 	}
+
+	public Long getSequenceNumber(String sequenceName) throws Exception {
+
+		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(getQualifiedName(sequenceName));
+		select(handler);
+		return handler.getResult();
+	}
 	
 	public String getQualifiedName(String name) {
 		if (!StringUtils.contains(name, '.') && this.schema != null) {
@@ -1540,9 +1552,9 @@ public class BaseDBContext
 		}
 	}
 
-	public PrimaryKey getGeneratedKey(Statement stmt, String[] generatedColumns, Class<?> clazz) throws SQLException {
+	public PrimaryKey getGeneratedKey(Statement stmt, String[] generatedColumns, Class<?> beanClazz) throws SQLException {
 		ResultSet generatedKeys = stmt.getGeneratedKeys();
-		return new PrimaryKey(clazz, generatedColumns, generatedKeys);
+		return new PrimaryKey(beanClazz, generatedColumns, generatedKeys);
 	}
 
 	@Override

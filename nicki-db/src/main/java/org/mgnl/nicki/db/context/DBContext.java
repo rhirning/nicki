@@ -108,5 +108,8 @@ public interface DBContext extends AutoCloseable {
 	String getTimestampAsDbString(Date value);
 	String getLongAsDbString(Long value);
 	String getIntAsDbString(Integer value);
+	
+	PrimaryKey getSequenceNumber(Class<?> beanClazz, Attribute sequenceAttribute) throws Exception;
+	Long getSequenceNumber(String sequenceName) throws Exception;
 
 }
