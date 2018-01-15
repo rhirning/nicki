@@ -31,7 +31,7 @@ public class Objects {
 	@Attribute(name = "ID", autogen=true, primaryKey=true)
 	private Long id;
 	@Attribute(name = "model_object_id")
-	@ForeignKey(name = "id", foreignKeyClass = ModelObject.class)
+	@ForeignKey(columnName = "ID", foreignKeyClass = ModelObject.class)
 	private Long modelObjectId;
 	@Attribute(name = "name")
 	private String name;

@@ -1,9 +1,14 @@
 
 package org.mgnl.nicki.db.context;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.mgnl.nicki.db.helper.BeanHelper;
+import org.mgnl.nicki.db.helper.Type;
 
 /*-
  * #%L
@@ -25,47 +30,57 @@ import java.util.List;
  * #L%
  */
 
+/*
+ * Names are columnNames!!!
+ */
 
-
-
-public class ColumnsAndValues extends HashMap<String, String> {
+public class ColumnsAndValues implements Serializable {
 	private static final long serialVersionUID = -712686267178848355L;
 	public final static String COLUMN_SEPARATOR = ", ";
 	public final static String PREP_VALUE = "?";
-	private List<String> names = new ArrayList<>();
+	private List<String> columnNames = new ArrayList<>();
+	private Map<String, Object> values = new HashMap<>();
+	private Map<String, Type> types = new HashMap<>();
+	private Class<?> beanClass;
 	
-	public String add(String  name, String value) {
-		names.add(name);
-		return super.put(name, value);
+	public ColumnsAndValues(Class<?> beanClass) {
+		super();
+		this.beanClass = beanClass;
+	}
 
+
+	public void add(String columnName, Object value) {
+		columnNames.add(columnName);
+		values.put(columnName, value);
+		types.put(columnName, BeanHelper.getTypeOfColumn(beanClass, columnName));
 	}
 	
 
 	public String getColumns() {
 		StringBuilder sb = new StringBuilder();
-		for (String name : names) {
+		for (String columnName : columnNames) {
 			if (sb.length() > 0) {
 				sb.append(COLUMN_SEPARATOR);
 			}
-			sb.append(name);
+			sb.append(columnName);
 		}
 		return sb.toString();
 	}
 
-	public String getValues() {
+	public String getValues(DBContext dbContext) {
 		StringBuilder sb = new StringBuilder();
-		for (String name : names) {
+		for (String columnName : columnNames) {
 			if (sb.length() > 0) {
 				sb.append(COLUMN_SEPARATOR);
 			}
-			sb.append(get(name));
+			sb.append(getDbString(dbContext, columnName));
 		}
 		return sb.toString();
 	}
 
 	public String getPreparedValues() {
 		StringBuilder sb = new StringBuilder();
-		for (@SuppressWarnings("unused") String name : names) {
+		for (@SuppressWarnings("unused") String columnName : columnNames) {
 			if (sb.length() > 0) {
 				sb.append(COLUMN_SEPARATOR);
 			}
@@ -74,18 +89,33 @@ public class ColumnsAndValues extends HashMap<String, String> {
 		return sb.toString();
 	}
 
-	public List<String> getNames() {
-		return names;
+	public List<String> getColumnNames() {
+		return columnNames;
 	}
 
 	public int size() {
-		return names.size();
+		return columnNames.size();
+	}
+	
+	public Type getType(String columnName) {
+		if (columnNames.contains(columnName)) {
+			return types.get(columnName);
+		} else {
+			return Type.UNKONWN;
+		}
+	}
+	
+	public Object getValue(String columnName) {
+		return values.get(columnName);
 	}
 
 
-	@Override
-	public String put(String key, String value) {
-		// TODO Auto-generated method stub
-		return add(key, value);
+	public String getDbString(DBContext dbContext, String columnName) {
+		if (columnNames.contains(columnName)) {
+			Type type = types.get(columnName);
+			return Type.getDbString(dbContext, type, values.get(columnName));
+		} else {
+			return null;
+		}
 	}
 }

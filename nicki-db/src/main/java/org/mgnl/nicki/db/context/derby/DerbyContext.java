@@ -90,13 +90,14 @@ public class DerbyContext
 	}
 
 	@Override
-	public PrimaryKey getSequenceNumber(Class<?> beanClazz, String column, String sequenceName) throws Exception {
+	public PrimaryKey getSequenceNumber(Class<?> beanClazz, Attribute sequenceAttribute) throws Exception {
 
-		SequenceValueSelectHandler handler = new DerbySequenceValueSelectHandler(getQualifiedName(sequenceName));
+		SequenceValueSelectHandler handler = new DerbySequenceValueSelectHandler(getQualifiedName(sequenceAttribute.sequence()));
 		select(handler);
-		return new PrimaryKey(beanClazz, column, handler.getResult());
+		return new PrimaryKey(beanClazz, sequenceAttribute.name(), handler.getResult());
 	}
-	
+
+	@Override
 	public String getQualifiedName(String name) {
 		if (!StringUtils.contains(name, '.') && this.getSchema() != null) {
 			return this.getSchema() + "." + name;

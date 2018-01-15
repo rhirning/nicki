@@ -35,5 +35,5 @@ public @interface Table {
 
 	String postInit() default "";
 	
-	boolean usePreparedStatement() default false;
+	boolean usePreparedStatement() default true;
 }

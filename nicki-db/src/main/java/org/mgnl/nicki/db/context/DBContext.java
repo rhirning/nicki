@@ -24,7 +24,6 @@ package org.mgnl.nicki.db.context;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Date;
 import java.util.List;
 
@@ -71,7 +70,7 @@ public interface DBContext extends AutoCloseable {
 	String getQualifiedName(String name);
 	String getQualifiedTableName(Class<? extends Object> clazz) throws NotSupportedException;
 
-	Object getColumn(Class<? extends Object> clazz, String string) throws NoSuchFieldException;
+	String getColumn(Class<? extends Object> clazz, String string) throws NoSuchFieldException;
 
 	<T> List<T> loadObjects(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 
@@ -96,18 +95,18 @@ public interface DBContext extends AutoCloseable {
 	<T> T loadObject(T bean, boolean deepSearch, String filter, String orderBy)
 			throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 	
-	PrimaryKey getSequenceNumber(Class<?> beanClazz, String column, String sequenceName) throws Exception;
-
 	String getDateValue(Date date, Attribute attribute);
 
 	String toDate(Date date);
-
-	PrimaryKey getGeneratedKey(Statement stmt, String[] generatedColumns, Class<?> clazz) throws SQLException;
 	
 	DataSource getDataSource();
 
 	void setName(String name);
 
-	PrimaryKey getSequenceNumber(Class<?> beanClazz, Attribute sequenceAttribute) throws Exception;
+	String getStringAsDbString(String value);
+	String getDateAsDbString(Date value);
+	String getTimestampAsDbString(Date value);
+	String getLongAsDbString(Long value);
+	String getIntAsDbString(Integer value);
 
 }

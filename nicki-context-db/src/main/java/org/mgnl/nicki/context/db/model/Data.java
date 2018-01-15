@@ -33,10 +33,10 @@ public class Data {
 	@Attribute(name = "ID", autogen=true, primaryKey=true)
 	private Long id;
 	@Attribute(name = "object_id")
-	@ForeignKey(name = "id", foreignKeyClass=Objects.class)
+	@ForeignKey(columnName = "ID", foreignKeyClass=Objects.class)
 	private String objectId;
 	@Attribute(name = "object_attribute_id")
-	@ForeignKey(name = "id", foreignKeyClass=ModelAttribute.class)
+	@ForeignKey(columnName = "ID", foreignKeyClass=ModelAttribute.class)
 	private String objectAttributeId;
 	@Attribute(name = "value")
 	private String value;

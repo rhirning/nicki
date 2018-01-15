@@ -27,6 +27,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.mgnl.nicki.db.helper.BeanHelper;
 import org.mgnl.nicki.db.helper.Type;
 
 public class PrimaryKey {
@@ -34,73 +35,73 @@ public class PrimaryKey {
 	private Map<String, Object> values = new HashMap<>();
 	private Map<String, Type> types = new HashMap<>();
 	
-	public PrimaryKey(Class<?> beanClazz, String generatedColumns[], ResultSet generatedKeys) throws SQLException {
-		if (beanClazz != null && generatedColumns != null && generatedKeys != null) {
+	public PrimaryKey(Class<?> beanClass, String generatedColumns[], ResultSet generatedKeys) throws SQLException {
+		if (beanClass != null && generatedColumns != null && generatedKeys != null) {
 			int i = 0;
 			while(generatedKeys.next()) {
-				String name = generatedColumns[i];
-				Type type = Type.getBeanAttributeType(beanClazz, name);
-				Object value = getValue(generatedKeys, name, type);
-				values.put(name, value);
-				types.put(name, type);
+				String columnName = generatedColumns[i];
+				Type type = BeanHelper.getTypeOfColumn(beanClass, columnName);
+				Object value = getValue(generatedKeys, columnName, type);
+				values.put(columnName, value);
+				types.put(columnName, type);
 				i++;
 			}
 		}
 	}
 
-	private Object getValue(ResultSet generatedKeys, String name, Type type) throws SQLException {
+	private Object getValue(ResultSet generatedKeys, String columnName, Type type) throws SQLException {
 		if (type == Type.STRING || type == Type.UNKONWN) {
-			return generatedKeys.getString(name);
+			return generatedKeys.getString(columnName);
 		} else if (type == Type.TIMESTAMP) {
-			return generatedKeys.getTimestamp(name);
+			return generatedKeys.getTimestamp(columnName);
 		} else if (type == Type.DATE) {
-			return generatedKeys.getDate(name);
+			return generatedKeys.getDate(columnName);
 		} else if (type == Type.LONG) {
-			return generatedKeys.getLong(name);
+			return generatedKeys.getLong(columnName);
 		} else if (type == Type.INT) {
-			return generatedKeys.getInt(name);
+			return generatedKeys.getInt(columnName);
 		}
 		return null;
 	}
 
-	public PrimaryKey(Class<?> beanClazz, String name, Object value) {
-		Type type = Type.getBeanAttributeType(beanClazz, name);
-		values.put(name, value);
-		types.put(name, type);
+	public PrimaryKey(Class<?> beanClass, String columnName, Object value) {
+		Type type = BeanHelper.getTypeOfColumn(beanClass, columnName);
+		values.put(columnName, value);
+		types.put(columnName, type);
 	}
 
 	public PrimaryKey() {
 	}
 
-	public void add(Class<?> beanClazz, String name, Object value) {
-		Type type = Type.getBeanAttributeType(beanClazz, name);
-		values.put(name, value);
-		types.put(name, type);
+	public void add(Class<?> beanClass, String columnName, Object value) {
+		Type type = BeanHelper.getTypeOfColumn(beanClass, columnName);
+		values.put(columnName, value);
+		types.put(columnName, type);
 	}
 
-	public Object getValue(String name) {
-		return values.get(name);
+	public Object getValue(String columnName) {
+		return values.get(columnName);
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> T getValue(Class<T> clazz, String name) {
-		if (types.containsKey(name) && types.get(name).match(clazz)) {
-			return (T) values.get(name);
+	private <T> T getValue(Class<T> clazz, String columnName) {
+		if (types.containsKey(columnName) && types.get(columnName).match(clazz)) {
+			return (T) values.get(columnName);
 		} else {
 			return null;
 		}
 	}
 
-	public long getLong(String name) {
-		return getValue(long.class, name);
+	public long getLong(String columnName) {
+		return getValue(long.class, columnName);
 	}
 
-	public int getInt(String name) {
-		return getValue(int.class, name);
+	public int getInt(String columnName) {
+		return getValue(int.class, columnName);
 	}
 
-	public String getString(String name) {
-		return getValue(String.class, name);
+	public String getString(String columnName) {
+		return getValue(String.class, columnName);
 	}
 
 }

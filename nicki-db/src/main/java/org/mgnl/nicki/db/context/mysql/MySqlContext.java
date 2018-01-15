@@ -34,6 +34,7 @@ import org.mgnl.nicki.db.context.DBContext;
 public class MySqlContext extends BaseDBContext implements DBContext {
 
 
+	@Override
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
 		if (attribute.now()) {
 			return "NOW()";
@@ -51,6 +52,7 @@ public class MySqlContext extends BaseDBContext implements DBContext {
 		return null;
 	}
 
+	@Override
 	public String toTimestamp(Date date) {
 		if (date != null) {
 			return "to_date('" + new SimpleDateFormat(TIMESTAMP_FOR_ORACLE).format(date) + "','" + TIMESTAMP_ORACLE + "')";

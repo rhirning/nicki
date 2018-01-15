@@ -1,15 +1,31 @@
 package org.mgnl.nicki.db.helper;
 
-import java.lang.reflect.Field;
+/*-
+ * #%L
+ * nicki-db
+ * %%
+ * Copyright (C) 2017 Ralf Hirning
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.db.annotation.Attribute;
-import org.mgnl.nicki.db.data.DataType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.mgnl.nicki.db.context.DBContext;
 
 
 public enum Type {
@@ -19,9 +35,7 @@ public enum Type {
 	LONG(Long.class, long.class),
 	INT(Integer.class, int.class),
 	UNKONWN();
-	
-	private static final Logger LOG = LoggerFactory.getLogger(Type.class);
-	
+		
 	private List<Class<?>> classes = new ArrayList<>();
 	
 	private Type(Class<?> ...classes){
@@ -51,41 +65,20 @@ public enum Type {
 		return UNKONWN;
 	}
 	
-	public static Type getBeanAttributeType(Class<?> beanClazz, String name){
-
-		Type type = Type.UNKONWN;
-		Field field;
-		try {
-			field = beanClazz.getDeclaredField(name);
-			if (field.getAnnotation(Attribute.class) != null) {
-				Attribute attribute = field.getAnnotation(Attribute.class);
-				if (!attribute.autogen()) {
-					try {
-						if (field.getType() == String.class) {
-							type = Type.STRING;
-						} else if (field.getType() == Date.class) {
-							if (attribute.type() == DataType.TIMESTAMP) {
-								type = Type.TIMESTAMP;
-							} else {
-								type = Type.DATE;
-							}
-						} else if (field.getType() == long.class || field.getType() == Long.class) {
-							type = Type.LONG;
-						} else if (field.getType() == int.class || field.getType() == Integer.class) {
-							type = Type.INT;
-						}
-					} catch (SecurityException | IllegalArgumentException e) {
-						LOG.error("Error fill statement", e);
-					}
-				}
-			}
-		} catch (NoSuchFieldException | SecurityException e1) {
-			type = Type.UNKONWN;
+	public static String getDbString(DBContext dbContext, Type type, Object value) {
+		if (type == STRING) {
+			return dbContext.getStringAsDbString((String) value);
+		} else if (type == DATE) {
+			return dbContext.getDateAsDbString((Date) value);
+		} else if (type == Type.TIMESTAMP) {
+			return dbContext.getTimestampAsDbString((Date) value);
+		} else if (type == Type.LONG) {
+			return dbContext.getLongAsDbString((Long) value);
+		} else if (type == Type.INT) {
+			return dbContext.getIntAsDbString( (Integer) value);
+		} else {
+			return null;
 		}
-
-		
-		LOG.debug(name + " is = " + type + "'");
-		return type;
 	}
 
 

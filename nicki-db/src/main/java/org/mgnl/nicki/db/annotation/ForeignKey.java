@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 public @interface ForeignKey {
 
-	String name();
+	String columnName();
 	
 	Class<?> foreignKeyClass();
 }
