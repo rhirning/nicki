@@ -62,7 +62,7 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-public abstract class NickiApplication extends UI {
+public abstract class NickiApplication extends UI implements Serializable {
 	private static final Logger LOG = LoggerFactory.getLogger(NickiApplication.class);
 
 	private NickiContext nickiContext;

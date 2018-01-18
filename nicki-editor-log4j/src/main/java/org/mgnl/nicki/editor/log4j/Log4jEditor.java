@@ -49,6 +49,8 @@ public class Log4jEditor extends NickiApplication {
 		TabSheet tabSheet = new TabSheet();
 		TailViewer tailViewer = new TailViewer();
 		tabSheet.addTab(tailViewer, I18n.getText(getI18nBase() + ".tab.tailviewer"));
+		FileSystemViewer fileSystemViewer= new FileSystemViewer(this);
+		tabSheet.addTab(fileSystemViewer, I18n.getText(getI18nBase() + ".tab.filesystem"));
 		Log4jViewer editor = new Log4jViewer(this);
 		tabSheet.addTab(editor, I18n.getText(getI18nBase() + ".tab.log4j"));
 		return tabSheet;
