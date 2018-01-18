@@ -840,6 +840,7 @@ public class BaseDBContext
 				}
 			}
 		}
+		LOG.debug("CV=" + cv);
 		return cv;
 	}
 
@@ -1202,6 +1203,7 @@ public class BaseDBContext
 				}
 			}
 		}
+		LOG.debug("CV=" + cv);
 
 		return cv;
 	}

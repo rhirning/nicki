@@ -319,17 +319,17 @@ public final class SpnegoHttpFilter implements Filter {
             LOG.error("HTTP Authorization Header="
                 + httpRequest.getHeader(Constants.AUTHZ_HEADER));
         	httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
-            LOG.debug("Invalid Authorization Header");
+            LOG.info("Invalid Authorization Header");
             chain.doFilter(request, response);
             return;
         } catch (NotSupportedException e) {
         	httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
-            LOG.debug("Authentication not supported");
+            LOG.info("Authentication not supported");
             chain.doFilter(request, response);
             return;
         } catch (IOException e) {
             httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
-            LOG.debug("Authentication not successful: " + e.getMessage());
+            LOG.info("Authentication not successful: " + e.getMessage());
             chain.doFilter(request, response);
             return;
 		}

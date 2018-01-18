@@ -119,5 +119,16 @@ public abstract class BasicContext implements NickiContext {
 			Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		return getTarget().getDataModel(classDefinition);
 	}
+
+	@Override
+	public String toString() {
+		String userName;
+		try {
+			userName = getPrincipal().getName();
+		} catch (DynamicObjectException e) {
+			userName = "unknown";
+		}
+		return "" + getClass().getSimpleName() + " - " + userName;
+	}
 	
 }

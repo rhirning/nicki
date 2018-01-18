@@ -47,6 +47,22 @@ public class ColumnsAndValues implements Serializable {
 		super();
 		this.beanClass = beanClass;
 	}
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (String name : columnNames) {
+			if (sb.length() > 0) {
+				sb.append(",");
+			}
+			sb.append(name).append("(").append(types.get(name)).append(")=");
+			sb.append(values.get(name));
+		}
+		sb.insert(0, "[");
+		sb.append("]");
+		return sb.toString();
+	}
+	
+	
 
 
 	public void add(String columnName, Object value) {

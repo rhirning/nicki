@@ -1,0 +1,24 @@
+Steps to activate Kerberos authentication
+=========================================
+
+1. Add Filter to web.xml
+
+	<filter>
+		<filter-name>SpnegoHttpFilter</filter-name>
+		<filter-class>org.mgnl.nicki.spnego.SpnegoHttpFilter</filter-class>
+	</filter>
+	<filter-mapping>
+	    <filter-name>SpnegoHttpFilter</filter-name>
+	    <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+2. Filter needs the folowing configuration:
+
+#Kerberos
+nicki.application.auth.jaas				= TRUE
+nicki.application.auth.jaas.useSystem	= TRUE
+spnego.kerberos.active = true
+spnego.login.conf = resource path to login.conf. Maybe the system login.conf is used anyway
+spnego.krb5.conf = resource path to krb5.conf (or krb5.ini)
+spnego.preauth.username	= user which is entitled to verify kerberos tickets
+spnego.preauth.password = AD password of that user
