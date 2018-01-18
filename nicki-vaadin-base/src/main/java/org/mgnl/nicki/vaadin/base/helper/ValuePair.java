@@ -1,6 +1,8 @@
 
 package org.mgnl.nicki.vaadin.base.helper;
 
+import java.io.Serializable;
+
 /*-
  * #%L
  * nicki-vaadin-base
@@ -22,7 +24,8 @@ package org.mgnl.nicki.vaadin.base.helper;
  */
 
 
-public class ValuePair {
+public class ValuePair implements Serializable {
+	private static final long serialVersionUID = -4811398011208084823L;
 	private String name;
 	private String value;
 	
