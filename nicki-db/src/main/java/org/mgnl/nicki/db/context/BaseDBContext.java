@@ -38,6 +38,7 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.lang.StringUtils;
@@ -755,7 +756,12 @@ public class BaseDBContext
 		String tableName = this.getQualifiedTableName(bean.getClass());
 		ColumnsAndValues cv = getInsertColumnValues(bean);
 		String insertStatementString = getPreparedInsertStatement(tableName, cv);
-		PreparedStatement pstmt = this.getConnection().prepareStatement(insertStatementString, generatedColumns);
+		PreparedStatement pstmt;
+		if (generatedColumns != null && generatedColumns.length > 0) {
+			pstmt = this.getConnection().prepareStatement(insertStatementString, generatedColumns);
+		} else {
+			pstmt = this.getConnection().prepareStatement(insertStatementString);
+		}
 		fillPreparedStatement(pstmt, bean.getClass(), cv);
 		return pstmt;
 	}
