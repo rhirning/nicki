@@ -1,5 +1,5 @@
 
-package org.mgnl.nicki.vaadin.base.components;
+package org.mgnl.nicki.core.thread;
 
 /*-
  * #%L
