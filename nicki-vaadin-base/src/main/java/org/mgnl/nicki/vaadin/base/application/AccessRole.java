@@ -32,5 +32,7 @@ import java.lang.annotation.Target;
 public @interface AccessRole {
 	String[] name();
 	String[] configName() default {};
+	String target() default "";
+	String configTarget() default "";
 	Class<? extends AccessRoleEvaluator> evaluator() default DefaultRoleEvaluator.class;
 }

@@ -94,7 +94,6 @@ public class KerberosLoginModule extends NickiLoginModule {
 	 */
 	public static final String NEGOTIATE_HEADER = "Negotiate";
     public static final String SESSION_AUTH_HEADER = "NICKI_SESSION_AUTH_HEADER";
-    private static final String SESSION_USER = "NICKI_SESSION_USER";
 
 	@Override
 	public boolean login() throws LoginException {

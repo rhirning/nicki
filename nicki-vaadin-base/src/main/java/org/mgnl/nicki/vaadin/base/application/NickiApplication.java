@@ -24,6 +24,7 @@ package org.mgnl.nicki.vaadin.base.application;
 
 import java.io.Serializable;
 import java.security.Principal;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -271,9 +272,12 @@ public abstract class NickiApplication extends UI implements Serializable {
 			allowed =  true;
 		} else if (roleAnnotation != null){
 			try {
+				DynamicObject roleUser = getUser(user,roleAnnotation.target(), roleAnnotation.configTarget());
 				AccessRoleEvaluator roleEvaluator = roleAnnotation.evaluator().newInstance();
-				allowed = roleEvaluator.hasRole((Person) user, roleAnnotation.name());
-				allowed |= roleEvaluator.hasRole((Person) user, Config.getStringValues(roleAnnotation.configName()));
+				allowed = roleEvaluator.hasRole((Person) roleUser, roleAnnotation.name());
+				if (roleAnnotation.configName() != null && roleAnnotation.configName().length > 0) {
+					allowed |= roleEvaluator.hasRole((Person) roleUser, Config.getStringValues(roleAnnotation.configName()));
+				}
 			} catch (Exception e) {
 				LOG.error("Could not create AccessRoleEvaluator", e);
 				allowed = false;
@@ -281,10 +285,11 @@ public abstract class NickiApplication extends UI implements Serializable {
 		}
 		if (!allowed && groupAnnotation != null) {
 			try {
+				DynamicObject groupUser = getUser(user,groupAnnotation.target(), groupAnnotation.configTarget());
 				AccessGroupEvaluator groupEvaluator = groupAnnotation.evaluator().newInstance();
-				allowed = groupEvaluator.isMemberOf((Person) user, groupAnnotation.name());
+				allowed = groupEvaluator.isMemberOf((Person) groupUser, groupAnnotation.name());
 				if (groupAnnotation.configName() != null && groupAnnotation.configName().length > 0) {
-					allowed |= groupEvaluator.isMemberOf((Person) user, Config.getStringValues(groupAnnotation.configName()));
+					allowed |= groupEvaluator.isMemberOf((Person) groupUser, Config.getStringValues(groupAnnotation.configName()));
 				}
 			} catch (Exception e) {
 				LOG.error("Could not create AccessGroupEvaluator", e);
@@ -312,6 +317,32 @@ public abstract class NickiApplication extends UI implements Serializable {
 					Type.ERROR_MESSAGE);
 		}
 		return allowed;
+	}
+
+	private Person getUser(DynamicObject user, String target, String configTarget) {
+		NickiContext ctx = null;
+		try {
+			if (StringUtils.isNotBlank(configTarget)) {
+				ctx = AppContext.getSystemContext(Config.getString(configTarget));
+			} else if (StringUtils.isNotBlank(target)) {
+				ctx = AppContext.getSystemContext(target);
+			}
+		} catch (InvalidPrincipalException e) {
+			LOG.error("Invalid SystemContext", e);
+		}
+		
+		if (ctx != null) {
+			LOG.debug("Authorization context:" + ctx);
+			String baseDn = ctx.getTarget().getProperty("baseDn", Config.getString("nicki.users.basedn"));
+			List<? extends DynamicObject> list = ctx.loadObjects(Person.class, baseDn, "cn=" + user.getName());
+			
+			if (list != null && list.size() == 1) {
+				LOG.info("login: loadObjects successful");
+				return (Person) list.get(0);
+			}
+		}
+		LOG.debug("Fallback authorization context:" + user.getContext());
+		return (Person) user;
 	}
 
 	public String getEditorHeight() {

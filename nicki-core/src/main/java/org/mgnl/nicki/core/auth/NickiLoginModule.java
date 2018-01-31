@@ -26,7 +26,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.security.auth.Subject;
+import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.NameCallback;
+import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
@@ -45,6 +48,10 @@ import org.slf4j.LoggerFactory;
 public abstract class NickiLoginModule implements LoginModule {
 	private static final Logger LOG = LoggerFactory.getLogger(NickiLoginModule.class);
 	
+    public static final String AUTHZ_HEADER = "Authorization";
+    public static final String SESSION_USER = "NICKI_SESSION_USER";
+    public static final String SESSION_AUTH_HEADER = "NICKI_SESSION_AUTH_HEADER";
+	
 	// initial state
 	private Subject subject;
 	private CallbackHandler callbackHandler;
@@ -54,6 +61,7 @@ public abstract class NickiLoginModule implements LoginModule {
 	// configurable option
 	private boolean debug;
 	private String targetName;
+	private String loginTargetName;
 	private boolean useSystemContext;
 
 	// the authentication status
@@ -83,18 +91,16 @@ public abstract class NickiLoginModule implements LoginModule {
 		// initialize any configured options
 		debug = "true".equalsIgnoreCase((String) options.get("debug"));
 		targetName = StringUtils.stripToNull((String) options.get("target"));
+		loginTargetName = StringUtils.stripToNull((String) options.get("loginTarget"));
 		useSystemContext = DataHelper.booleanOf(StringUtils.stripToNull((String) options.get("useSystemContext")));
 	}
 	
 	protected NickiContext login(NickiPrincipal principal) throws InvalidPrincipalException {
-		Target target;
-		if (targetName != null) {
-			target = TargetFactory.getTarget(targetName);
-		} else {
-			target = TargetFactory.getDefaultTarget();
-		}
-		DynamicObject user = target.login(principal);
+
+		DynamicObject user = getLoginTarget().login(principal);
 		if (user != null) {
+
+			Target target = getTarget();
 			if (isUseSystemContext()) {
 				return AppContext.getSystemContext(target, user.getPath(), principal.getPassword());
 			} else {
@@ -108,7 +114,7 @@ public abstract class NickiLoginModule implements LoginModule {
 		try {
 			NickiPrincipal principal = new NickiPrincipal(name, new String(credential));
 			if (principal != null) {
-				DynamicObject user = getTarget().login(principal);
+				DynamicObject user = getLoginTarget().login(principal);
 				if (user != null) {
 					LOG.debug("Login sucessful, user=" + user);
 					return getTarget().getNamedUserContext(user, new String(credential));
@@ -120,7 +126,17 @@ public abstract class NickiLoginModule implements LoginModule {
 		return null;
 	}
 
-	private Target getTarget() {
+	protected Target getLoginTarget() {
+		if (loginTargetName != null) {
+			return TargetFactory.getTarget(loginTargetName);
+		} else if (targetName != null) {
+			return TargetFactory.getTarget(targetName);
+		} else {
+			return TargetFactory.getDefaultTarget();
+		}
+	}
+
+	protected Target getTarget() {
 		if (targetName != null) {
 			return TargetFactory.getTarget(targetName);
 		} else {
@@ -134,7 +150,11 @@ public abstract class NickiLoginModule implements LoginModule {
 		}
 		List<? extends DynamicObject> list = null;
 		try {
-			list = AppContext.getSystemContext().loadObjects(Config.getString("nicki.users.basedn"), "cn=" + userId);
+			if (StringUtils.isNotBlank(getTargetName())) {
+				list = AppContext.getSystemContext(getTargetName()).loadObjects(Config.getString("nicki.users.basedn"), "cn=" + userId);
+			} else {
+				list = AppContext.getSystemContext().loadObjects(Config.getString("nicki.users.basedn"), "cn=" + userId);
+			}
 		} catch (InvalidPrincipalException e) {
 			LOG.error("Invalid SystemContext", e);
 		}
@@ -247,6 +267,39 @@ public abstract class NickiLoginModule implements LoginModule {
 	public Subject getSubject() {
 		LOG.debug("getSubject: " + subject);
 		return subject;
+	}
+
+	/**
+	 * Used by the BASIC Auth mechanism for establishing a LoginContext to
+	 * authenticate a client/caller/request.
+	 * 
+	 * @param username
+	 *            client username
+	 * @param password
+	 *            client password
+	 * @return CallbackHandler to be used for establishing a LoginContext
+	 */
+	public static CallbackHandler getUsernamePasswordHandler(final String username, final String password) {
+
+		LOG.debug("username=" + username + "; password=" + password.hashCode());
+
+		final CallbackHandler handler = new CallbackHandler() {
+			public void handle(final Callback[] callback) {
+				for (int i = 0; i < callback.length; i++) {
+					if (callback[i] instanceof NameCallback) {
+						final NameCallback nameCallback = (NameCallback) callback[i];
+						nameCallback.setName(username);
+					} else if (callback[i] instanceof PasswordCallback) {
+						final PasswordCallback passCallback = (PasswordCallback) callback[i];
+						passCallback.setPassword(password.toCharArray());
+					} else {
+						LOG.debug("Unsupported Callback i=" + i + "; class=" + callback[i].getClass().getName());
+					}
+				}
+			}
+		};
+
+		return handler;
 	}
 
 }

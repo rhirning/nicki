@@ -128,7 +128,7 @@ public abstract class BasicContext implements NickiContext {
 		} catch (DynamicObjectException e) {
 			userName = "unknown";
 		}
-		return "" + getClass().getSimpleName() + " - " + userName;
+		return getTarget().getName() + " - " + getClass().getSimpleName() + " - " + userName;
 	}
 	
 }
