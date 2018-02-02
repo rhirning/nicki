@@ -29,8 +29,7 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface AccessRole {
-	String[] name();
-	String[] configName() default {};
-	Class<? extends AccessRoleEvaluator> evaluator() default DefaultRoleEvaluator.class;
+public @interface LoginTargetContext {
+	String name() default "";
+	String configName() default "";
 }

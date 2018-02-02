@@ -1,5 +1,5 @@
 
-package org.mgnl.nicki.vaadin.base.auth;
+package org.mgnl.nicki.core.auth;
 
 /*-
  * #%L
@@ -22,40 +22,24 @@ package org.mgnl.nicki.vaadin.base.auth;
  */
 
 
-import org.mgnl.nicki.core.auth.SSOAdapter;
-import org.mgnl.nicki.core.context.AppContext;;
+import javax.security.auth.callback.Callback;
 
-public class DevSSOAdapter implements SSOAdapter {
+public class CredentialsCallback implements Callback {
 
-	private Object request;
+	private String name;
+	private String password;
+	
 	public String getName() {
-		 try {
-			return AppContext.getSystemContext().getPrincipal().getName();
-		} catch (Exception e) {
-			return null;
-		}
+		return name;
 	}
-
-	public char[] getPassword() {
-		 try {
-				return AppContext.getSystemContext().getPrincipal().getPassword().toCharArray();
-			} catch (Exception e) {
-				return null;
-			}
+	public void setName(String name) {
+		this.name = name;
 	}
-
-	@Override
-	public TYPE getType() {
-		return TYPE.BASIC;
+	public String getPassword() {
+		return password;
 	}
-
-	@Override
-	public void setRequest(Object request) {
-		this.request = request;
-	}
-
-	public Object getRequest() {
-		return request;
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 }

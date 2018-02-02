@@ -28,6 +28,7 @@ public interface SSOAdapter {
 		SAML,
 		UNKNOWN
 	}
+	void init(NickiAdapterLoginModule loginModule);
 	void setRequest(Object request);
 	String getName();
 	char[] getPassword();

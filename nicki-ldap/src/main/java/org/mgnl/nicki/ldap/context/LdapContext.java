@@ -36,7 +36,6 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.BasicContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.DynamicObjectFactory;
@@ -120,7 +119,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		DynamicObject user = loadObject(username);
 		if (user == null) {
 			LOG.info("login: loadObject not successful");
-			List<DynamicObject> list = loadObjects(Config.getString("nicki.users.basedn"), "cn=" + username);
+			List<DynamicObject> list = loadObjects(getTarget().getBaseDn(), "cn=" + username);
 			
 			if (list != null && list.size() == 1) {
 				LOG.info("login: loadObjectssuccessful");

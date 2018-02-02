@@ -32,7 +32,5 @@ import java.lang.annotation.Target;
 public @interface AccessGroup {
 	String[] name();
 	String[] configName() default {};
-	String target() default "";
-	String configTarget() default "";
 	Class<? extends AccessGroupEvaluator> evaluator() default DefaultGroupEvaluator.class;
 }

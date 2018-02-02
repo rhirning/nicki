@@ -1,5 +1,5 @@
 
-package org.mgnl.nicki.vaadin.base.auth;
+package org.mgnl.nicki.vaadin.base.application;
 
 /*-
  * #%L
@@ -22,24 +22,14 @@ package org.mgnl.nicki.vaadin.base.auth;
  */
 
 
-import javax.security.auth.callback.Callback;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-public class CredentialsCallback implements Callback {
-
-	private String name;
-	private String password;
-	
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.TYPE})
+public @interface AccessTargetContext {
+	String name() default "";
+	String configName() default "";
 }

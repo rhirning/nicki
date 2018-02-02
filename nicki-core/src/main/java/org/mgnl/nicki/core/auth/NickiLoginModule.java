@@ -1,6 +1,8 @@
 
 package org.mgnl.nicki.core.auth;
 
+import java.io.IOException;
+
 /*-
  * #%L
  * nicki-core
@@ -30,11 +32,11 @@ import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
+import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
@@ -60,8 +62,6 @@ public abstract class NickiLoginModule implements LoginModule {
 
 	// configurable option
 	private boolean debug;
-	private String targetName;
-	private String loginTargetName;
 	private boolean useSystemContext;
 
 	// the authentication status
@@ -90,8 +90,6 @@ public abstract class NickiLoginModule implements LoginModule {
 
 		// initialize any configured options
 		debug = "true".equalsIgnoreCase((String) options.get("debug"));
-		targetName = StringUtils.stripToNull((String) options.get("target"));
-		loginTargetName = StringUtils.stripToNull((String) options.get("loginTarget"));
 		useSystemContext = DataHelper.booleanOf(StringUtils.stripToNull((String) options.get("useSystemContext")));
 	}
 	
@@ -126,22 +124,32 @@ public abstract class NickiLoginModule implements LoginModule {
 		return null;
 	}
 
-	protected Target getLoginTarget() {
-		if (loginTargetName != null) {
-			return TargetFactory.getTarget(loginTargetName);
-		} else if (targetName != null) {
-			return TargetFactory.getTarget(targetName);
-		} else {
-			return TargetFactory.getDefaultTarget();
+	public Target getLoginTarget() {
+		if (getCallbackHandler() != null) {
+			LoginTargetCallback[] callbacks = new LoginTargetCallback[1];
+			callbacks[0] = new LoginTargetCallback();
+			try {
+				getCallbackHandler().handle(callbacks);
+				return TargetFactory.getTarget(callbacks[0].getLoginTarget());
+			} catch (IOException | UnsupportedCallbackException e) {
+				LOG.error("Error with CallbackHandler", e);
+			}
 		}
+		return TargetFactory.getDefaultTarget();
 	}
 
-	protected Target getTarget() {
-		if (targetName != null) {
-			return TargetFactory.getTarget(targetName);
-		} else {
-			return TargetFactory.getDefaultTarget();
+	public Target getTarget() {
+		if (getCallbackHandler() != null) {
+			TargetCallback[] callbacks = new TargetCallback[1];
+			callbacks[0] = new TargetCallback();
+			try {
+				getCallbackHandler().handle(callbacks);
+				return TargetFactory.getTarget(callbacks[0].getTarget());
+			} catch (IOException | UnsupportedCallbackException e) {
+				LOG.error("Error with CallbackHandler", e);
+			}
 		}
+		return TargetFactory.getDefaultTarget();
 	}
 
 	protected DynamicObject loadUser(String userId) {
@@ -150,11 +158,8 @@ public abstract class NickiLoginModule implements LoginModule {
 		}
 		List<? extends DynamicObject> list = null;
 		try {
-			if (StringUtils.isNotBlank(getTargetName())) {
-				list = AppContext.getSystemContext(getTargetName()).loadObjects(Config.getString("nicki.users.basedn"), "cn=" + userId);
-			} else {
-				list = AppContext.getSystemContext().loadObjects(Config.getString("nicki.users.basedn"), "cn=" + userId);
-			}
+			Target loginTarget = getLoginTarget();
+			list = AppContext.getSystemContext(loginTarget.getName()).loadObjects(loginTarget.getBaseDn(), "cn=" + userId);
 		} catch (InvalidPrincipalException e) {
 			LOG.error("Invalid SystemContext", e);
 		}
@@ -239,10 +244,6 @@ public abstract class NickiLoginModule implements LoginModule {
 
 	protected void setLoginContext(NickiContext loginContext) {
 		this.loginContext = loginContext;
-	}
-
-	protected String getTargetName() {
-		return targetName;
 	}
 
 	protected boolean isUseSystemContext() {

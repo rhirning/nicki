@@ -32,6 +32,7 @@ import javax.portlet.PortletSession;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.auth.NickiAdapterLoginModule;
 import org.mgnl.nicki.core.auth.SSOAdapter;
 import org.mgnl.nicki.core.context.AppContext;
 import org.slf4j.Logger;
@@ -187,6 +188,12 @@ public class UserAppAdapter implements SSOAdapter {
 	public TYPE getType() {
 		init();
 		return type;
+	}
+
+	@Override
+	public void init(NickiAdapterLoginModule loginModule) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

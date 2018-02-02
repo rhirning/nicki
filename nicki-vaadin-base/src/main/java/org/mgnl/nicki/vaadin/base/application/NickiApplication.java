@@ -37,6 +37,7 @@ import org.mgnl.nicki.core.auth.DynamicObjectPrincipal;
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.auth.SSOAdapter;
+import org.mgnl.nicki.core.auth.TargetCallbackHandler;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.NickiContext;
@@ -57,6 +58,7 @@ import org.slf4j.LoggerFactory;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.Component;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
@@ -67,7 +69,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 	private static final Logger LOG = LoggerFactory.getLogger(NickiApplication.class);
 
 	private NickiContext nickiContext;
-	private Context context;
+	private DoubleContext doubleCcontext;
 	private boolean useSystemContext;
 	private boolean useWelcomeDialog;
 
@@ -87,32 +89,16 @@ public abstract class NickiApplication extends UI implements Serializable {
 		view = new VerticalLayout();
 		view.setHeight("100%");
 		view.setWidth("100%");
+		view.addComponent(new Label("Hallo"));
 		setContent(view);
 		Page.getCurrent().setTitle(I18n.getText(getI18nBase() + ".main.title"));
-		
 
 		if (Config.getBoolean("nicki.application.auth.jaas")) {
-
-			/*
-	        // specify login conf as a System property
-	        if (null == Config.getString(Constants.LOGIN_CONF)) {
-	        	LOG.error(Constants.LOGIN_CONF + " missing in env.properties");
-	        } else {
-	            String jaasConfigFile = null;
-	            URL jaasConfigURL = this.getClass().getClassLoader().getResource(Config.getString(Constants.LOGIN_CONF));
-	            if(jaasConfigURL != null) {
-	                jaasConfigFile = jaasConfigURL.getFile();
-	                System.setProperty("java.security.auth.login.config", jaasConfigFile);
-	            }
-	            LOG.debug(Constants.LOGIN_CONF + "=" + Config.getString(Constants.LOGIN_CONF) + ":" + jaasConfigFile);
-	        }
-	        */
 			loginJAAS();
 		} else {
-			// try SSO
 			loginSSO();
 		}
-		if (context != null) {
+		if (doubleCcontext != null) {
 			try {
 				start();
 				return;
@@ -125,7 +111,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 	}
 	
 	public void logout() {
-		setContext(null);
+		setDoubleContext(null);
 		showLoginDialog();
 	}
 	
@@ -158,23 +144,80 @@ public abstract class NickiApplication extends UI implements Serializable {
 			} else {
 				contextName = Config.getString("nicki.login.context.name");
 			}
-			
-			LoginContext loginContext = new LoginContext(contextName, new Subject());
+			TargetCallbackHandler callbackHandler = new TargetCallbackHandler();
+			callbackHandler.setLoginTarget(getLoginTargetName());
+			callbackHandler.setTarget(getTargetName());
+			callbackHandler.setAccessTarget(getAccessTargetName());
+			LoginContext loginContext = new LoginContext(contextName, new Subject(), callbackHandler);
 			loginContext.login();
 			Set<Principal> principals = loginContext.getSubject().getPrincipals();
 			LOG.debug("principals: " + principals);
 			if (principals != null && principals.size() > 0) {
 				DynamicObjectPrincipal dynamicObjectPrincipal = (DynamicObjectPrincipal) principals.iterator().next();
-				Context context = new Context();
+				DoubleContext context = new DoubleContext();
 				LOG.debug("loginContext: " + dynamicObjectPrincipal.getLoginContext().toString());
 				context.setLoginContext(dynamicObjectPrincipal.getLoginContext());
 				LOG.debug("nickiContext: " + dynamicObjectPrincipal.getContext().toString());
 				context.setContext(dynamicObjectPrincipal.getContext());					
-				setContext(context);
+				setDoubleContext(context);
 			}
 		} catch (LoginException e) {
 			LOG.error(e.getMessage());
 		}
+	}
+
+	private String getLoginTargetName() {
+		String loginTargetName = null;
+		LoginTargetContext annotation = this.getClass().getAnnotation(LoginTargetContext.class);
+		if (annotation != null) {
+			if (StringUtils.isNotBlank(annotation.configName())) {
+				loginTargetName = Config.getString(annotation.configName(), "");
+			} else if (StringUtils.isNotBlank(annotation.name())) {
+				loginTargetName = annotation.name();
+			}
+		}
+		if (StringUtils.isBlank(loginTargetName)) {
+			loginTargetName = getTarget().getName();
+		}
+		LOG.debug("LoginTarget=" + loginTargetName);
+		return loginTargetName;
+
+	}
+
+	private String getTargetName() {
+		String targetName = null;
+		TargetContext annotation = this.getClass().getAnnotation(TargetContext.class);
+		if (annotation != null) {
+			if (StringUtils.isNotBlank(annotation.configName())) {
+				targetName = Config.getString(annotation.configName(), "");
+			} else if (StringUtils.isNotBlank(annotation.name())) {
+				targetName = annotation.name();
+			}
+		}
+		if (StringUtils.isBlank(targetName)) {
+			targetName = getTarget().getName();
+		}
+		LOG.debug("Target=" + targetName);
+		return targetName;
+
+	}
+
+	private String getAccessTargetName() {
+		String accessTargetName = null;
+		AccessTargetContext annotation = this.getClass().getAnnotation(AccessTargetContext.class);
+		if (annotation != null) {
+			if (StringUtils.isNotBlank(annotation.configName())) {
+				accessTargetName = Config.getString(annotation.configName(), "");
+			} else if (StringUtils.isNotBlank(annotation.name())) {
+				accessTargetName = annotation.name();
+			}
+		}
+		if (StringUtils.isBlank(accessTargetName)) {
+			accessTargetName = getTarget().getName();
+		}
+		LOG.debug("accessTarget=" + accessTargetName);
+		return accessTargetName;
+
 	}
 
 	private void loginSSO() {
@@ -186,13 +229,16 @@ public abstract class NickiApplication extends UI implements Serializable {
 				String name = adapter.getName();
 				char[] password = adapter.getPassword();
 				if (name != null && password != null) {
+					login(name, new String(password));
+					/*
 					NickiPrincipal principal = new NickiPrincipal(name, new String(password));
 					if (principal != null) {
 						DynamicObject user = getTarget().login(principal);
 						if (user != null) {
-							setContext(getContext(user, principal.getPassword()));
+							setDoubleContext(getContext(user, principal.getPassword()));
 						}
 					}
+					*/
 				}
 			}
 		} catch (Exception e) {
@@ -201,8 +247,8 @@ public abstract class NickiApplication extends UI implements Serializable {
 	}
 	
 
-	private Context getContext(DynamicObject user, String password) throws InvalidPrincipalException, TargetException {
-		Context context = new Context();
+	public DoubleContext getContext(DynamicObject user, String password) throws InvalidPrincipalException, TargetException {
+		DoubleContext context = new DoubleContext();
 		if (isUseSystemContext()) {
 			context.setLoginContext(AppContext.getSystemContext(getTarget(), user.getPath(), password));
 		} else {
@@ -213,10 +259,10 @@ public abstract class NickiApplication extends UI implements Serializable {
 			if (targetContext == null) {
 				context.setContext(context.getLoginContext());
 			} else {
-				context.setContext(AppContext.getSystemContext(targetContext.value()));
+				context.setContext(AppContext.getSystemContext(getTargetName()));
 			}
 			if (context.getContext() == null) {
-				Notification.show(I18n.getText("nicki.application.error.invalid.target", targetContext.value()),
+				Notification.show(I18n.getText("nicki.application.error.invalid.target"),
 						Type.ERROR_MESSAGE);
 				return null;
 			}
@@ -236,9 +282,9 @@ public abstract class NickiApplication extends UI implements Serializable {
 		try {
 			NickiPrincipal principal = new NickiPrincipal(name, password);
 			if (principal != null) {
-				DynamicObject user = getTarget().login(principal);
+				DynamicObject user = AppContext.getSystemContext(getLoginTargetName()).login(name, password);
 				if (user != null) {
-					setContext(getContext(user, principal.getPassword()));
+					setDoubleContext(getContext(user, principal.getPassword()));
 					return true;
 				}
 			}
@@ -254,7 +300,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 		if (isUseWelcomeDialog()) {
 			getView().addComponent(new WelcomeDialog(this));
 		}
-		if (isAllowed(this.context.getLoginContext().getUser())) {
+		if (isAllowed(this.doubleCcontext.getLoginContext().getUser())) {
 			Component editor = getEditor();
 			getView().addComponent(editor);
 			editor.setSizeFull();
@@ -264,7 +310,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 		}
 	}
 	
-	private boolean isAllowed(DynamicObject user) {
+	public boolean isAllowed(DynamicObject user) {
 		boolean allowed = false;
 		AccessRole roleAnnotation = getClass().getAnnotation(AccessRole.class);
 		AccessGroup groupAnnotation = getClass().getAnnotation(AccessGroup.class);
@@ -272,7 +318,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 			allowed =  true;
 		} else if (roleAnnotation != null){
 			try {
-				DynamicObject roleUser = getUser(user,roleAnnotation.target(), roleAnnotation.configTarget());
+				DynamicObject roleUser = getUser(user, getAccessTargetName());
 				AccessRoleEvaluator roleEvaluator = roleAnnotation.evaluator().newInstance();
 				allowed = roleEvaluator.hasRole((Person) roleUser, roleAnnotation.name());
 				if (roleAnnotation.configName() != null && roleAnnotation.configName().length > 0) {
@@ -285,7 +331,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 		}
 		if (!allowed && groupAnnotation != null) {
 			try {
-				DynamicObject groupUser = getUser(user,groupAnnotation.target(), groupAnnotation.configTarget());
+				DynamicObject groupUser = getUser(user, getAccessTargetName());
 				AccessGroupEvaluator groupEvaluator = groupAnnotation.evaluator().newInstance();
 				allowed = groupEvaluator.isMemberOf((Person) groupUser, groupAnnotation.name());
 				if (groupAnnotation.configName() != null && groupAnnotation.configName().length > 0) {
@@ -319,19 +365,9 @@ public abstract class NickiApplication extends UI implements Serializable {
 		return allowed;
 	}
 
-	private Person getUser(DynamicObject user, String target, String configTarget) {
-		NickiContext ctx = null;
+	private Person getUser(DynamicObject user, String targetName) {
 		try {
-			if (StringUtils.isNotBlank(configTarget)) {
-				ctx = AppContext.getSystemContext(Config.getString(configTarget));
-			} else if (StringUtils.isNotBlank(target)) {
-				ctx = AppContext.getSystemContext(target);
-			}
-		} catch (InvalidPrincipalException e) {
-			LOG.error("Invalid SystemContext", e);
-		}
-		
-		if (ctx != null) {
+			NickiContext ctx = AppContext.getSystemContext(targetName);
 			LOG.debug("Authorization context:" + ctx);
 			String baseDn = ctx.getTarget().getProperty("baseDn", Config.getString("nicki.users.basedn"));
 			List<? extends DynamicObject> list = ctx.loadObjects(Person.class, baseDn, "cn=" + user.getName());
@@ -340,6 +376,8 @@ public abstract class NickiApplication extends UI implements Serializable {
 				LOG.info("login: loadObjects successful");
 				return (Person) list.get(0);
 			}
+		} catch (InvalidPrincipalException e) {
+			LOG.error("Invalid SystemContext", e);
 		}
 		LOG.debug("Fallback authorization context:" + user.getContext());
 		return (Person) user;
@@ -398,7 +436,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 				if (showWelcomeDialog.groups() != null && showWelcomeDialog.groups().length > 0) {
 					try {
 						AccessGroupEvaluator groupEvaluator = showWelcomeDialog.groupEvaluator().newInstance();
-						if (groupEvaluator.isMemberOf((Person) context.loginContext.getUser(), showWelcomeDialog.groups())) {
+						if (groupEvaluator.isMemberOf((Person) doubleCcontext.getLoginContext().getUser(), showWelcomeDialog.groups())) {
 							return true;
 						}
 					} catch (InstantiationException | IllegalAccessException e) {
@@ -408,7 +446,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 				if (StringUtils.isNotBlank(showWelcomeDialog.groupsConfigName())) {
 					try {
 						AccessGroupEvaluator groupEvaluator = showWelcomeDialog.groupEvaluator().newInstance();
-						if (groupEvaluator.isMemberOf((Person) context.loginContext.getUser(), Config.getList(showWelcomeDialog.groupsConfigName(), ",").toArray(new String[0]))) {
+						if (groupEvaluator.isMemberOf((Person) doubleCcontext.getLoginContext().getUser(), Config.getList(showWelcomeDialog.groupsConfigName(), ",").toArray(new String[0]))) {
 							return true;
 						}
 					} catch (InstantiationException | IllegalAccessException e) {
@@ -418,7 +456,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 				if (showWelcomeDialog.roles() != null && showWelcomeDialog.roles().length > 0) {
 					try {
 						AccessRoleEvaluator roleEvaluator = showWelcomeDialog.roleEvaluator().newInstance();
-						if (roleEvaluator.hasRole((Person) context.loginContext.getUser(), showWelcomeDialog.roles())) {
+						if (roleEvaluator.hasRole((Person) doubleCcontext.getLoginContext().getUser(), showWelcomeDialog.roles())) {
 							return true;
 						}
 					} catch (InstantiationException | IllegalAccessException e) {
@@ -428,7 +466,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 				if (StringUtils.isNotBlank(showWelcomeDialog.rolesConfigName())) {
 					try {
 						AccessRoleEvaluator roleEvaluator = showWelcomeDialog.roleEvaluator().newInstance();
-						if (roleEvaluator.hasRole((Person) context.loginContext.getUser(), Config.getList(showWelcomeDialog.rolesConfigName(), ",").toArray(new String[0]))) {
+						if (roleEvaluator.hasRole((Person) doubleCcontext.getLoginContext().getUser(), Config.getList(showWelcomeDialog.rolesConfigName(), ",").toArray(new String[0]))) {
 							return true;
 						}
 					} catch (InstantiationException | IllegalAccessException e) {
@@ -452,33 +490,11 @@ public abstract class NickiApplication extends UI implements Serializable {
 	public String getTheme() {
 		return Config.getString("nicki.application.theme", "reindeer");
 	}
-	
-	private class Context implements Serializable {
-		private NickiContext context;
-		private NickiContext loginContext;
 
-		public NickiContext getContext() {
-			return this.context;
-		}
-
-		public void setContext(NickiContext context) {
-			this.context = context;
-		}
-
-		public NickiContext getLoginContext() {
-			return this.loginContext;
-		}
-
-		public void setLoginContext(NickiContext loginContext) {
-			this.loginContext = loginContext;
-		}
-
-	}
-
-	public void setContext(Context context) {
-		this.context = context;
-		if (context != null) {
-			this.nickiContext = context.getContext();
+	public void setDoubleContext(DoubleContext doubleContext) {
+		this.doubleCcontext = doubleContext;
+		if (doubleContext != null) {
+			this.nickiContext = doubleContext.getContext();
 		} else {
 			this.nickiContext = null;
 		}
@@ -507,4 +523,8 @@ public abstract class NickiApplication extends UI implements Serializable {
     	public static final String JAAS_ENTRY = "Nicki";
     	public static final String ATTR_NICKI_CONTEXT = "NICKI_CONTEXT";
     }
+
+	public DoubleContext getContext() {
+		return doubleCcontext;
+	}
 }

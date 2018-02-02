@@ -33,6 +33,7 @@ import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.auth.NickiAdapterLoginModule;
 import org.mgnl.nicki.core.auth.SSOAdapter;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.util.XmlHelper;
@@ -192,6 +193,12 @@ public class IframeAdapter implements SSOAdapter {
 		} else {
 			return AppContext.getRequest();
 		}
+	}
+
+	@Override
+	public void init(NickiAdapterLoginModule loginModule) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	

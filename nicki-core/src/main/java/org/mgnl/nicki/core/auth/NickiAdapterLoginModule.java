@@ -72,6 +72,7 @@ public class NickiAdapterLoginModule extends NickiLoginModule implements LoginMo
 			String adapterClass =(String) getOptions().get("adapter");
 			try {
 				this.adapter = Classes.newInstance(adapterClass);
+				this.adapter.init(this);
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
 				LOG.error("Could not create adapter " + adapterClass, e.getMessage());
 			}

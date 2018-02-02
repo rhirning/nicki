@@ -48,11 +48,13 @@ public class Target implements Serializable {
 	private Map<Class<? extends DynamicObject>, DynamicObject> allDynamicObjectsMap = new HashMap<Class<? extends DynamicObject>, DynamicObject>();
 	private Map<String, DynamicObject> dynamicObjectsMap;
 	private ContextFactory contextFactory;
+	private String baseDn;
 
 	public Target(String targetName, String propertyBase) {
 		this.targetName = targetName;
 		this.propertyBase = propertyBase;
 		this.securityAuthentication = getProperty("securityAuthentication", "GSSAPI");
+		this.baseDn = getProperty("baseDn", Config.getString("nicki.users.basedn"));
 	}
 
 	public void setDynamicObjectsMap(Map<String, DynamicObject> initDynamicObjectsMap) {
@@ -181,5 +183,9 @@ public class Target implements Serializable {
 
 	public String getSecurityAuthentication() {
 		return securityAuthentication;
+	}
+
+	public String getBaseDn() {
+		return baseDn;
 	}
 }

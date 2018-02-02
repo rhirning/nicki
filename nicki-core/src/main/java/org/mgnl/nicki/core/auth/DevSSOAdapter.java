@@ -1,4 +1,3 @@
-
 package org.mgnl.nicki.core.auth;
 
 /*-
@@ -23,23 +22,27 @@ package org.mgnl.nicki.core.auth;
 
 
 import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.core.context.Target;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;;
 
 public class DevSSOAdapter implements SSOAdapter {
 	static final Logger LOG = LoggerFactory.getLogger(DevSSOAdapter.class);
+	private NickiAdapterLoginModule loginModule;
 	public String getName() {
+		Target loginTarget = loginModule.getLoginTarget();
 		 try {
-			LOG.debug("name=" + AppContext.getSystemContext().getPrincipal().getName());
-			return AppContext.getSystemContext().getPrincipal().getName();
+			LOG.debug(loginTarget.getName() + ": name=" + AppContext.getSystemContext(loginTarget.getName()).getPrincipal().getName());
+			return AppContext.getSystemContext(loginTarget.getName()).getPrincipal().getName();
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
 	public char[] getPassword() {
+		Target loginTarget = loginModule.getLoginTarget();
 		 try {
-				return AppContext.getSystemContext().getPrincipal().getPassword().toCharArray();
+				return AppContext.getSystemContext(loginTarget.getName()).getPrincipal().getPassword().toCharArray();
 			} catch (Exception e) {
 				return null;
 			}
@@ -52,6 +55,11 @@ public class DevSSOAdapter implements SSOAdapter {
 
 	@Override
 	public void setRequest(Object request) {
+	}
+
+	@Override
+	public void init(NickiAdapterLoginModule loginModule) {
+		this.loginModule = loginModule;
 	}
 
 }
