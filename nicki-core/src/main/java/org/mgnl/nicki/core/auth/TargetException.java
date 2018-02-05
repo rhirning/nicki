@@ -1,5 +1,5 @@
 
-package org.mgnl.nicki.vaadin.base.application;
+package org.mgnl.nicki.core.auth;
 
 /*-
  * #%L
@@ -22,14 +22,11 @@ package org.mgnl.nicki.vaadin.base.application;
  */
 
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+@SuppressWarnings("serial")
+public class TargetException extends Exception {
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-public @interface LoginTargetContext {
-	String name() default "";
-	String configName() default "";
+	public TargetException(String message) {
+		super(message);
+	}
+
 }

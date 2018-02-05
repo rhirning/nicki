@@ -1,5 +1,5 @@
 
-package org.mgnl.nicki.vaadin.base.application;
+package org.mgnl.nicki.core.auth;
 
 /*-
  * #%L

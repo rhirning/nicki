@@ -1,5 +1,5 @@
 
-package org.mgnl.nicki.vaadin.base.application;
+package org.mgnl.nicki.core.auth;
 
 /*-
  * #%L
@@ -29,7 +29,5 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
-public @interface AccessTargetContext {
-	String name() default "";
-	String configName() default "";
+public @interface SystemContext {
 }
