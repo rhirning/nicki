@@ -20,32 +20,45 @@ package org.mgnl.nicki.core.auth;
  * #L%
  */
 
-
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.Target;
+import org.mgnl.nicki.core.context.TargetFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;;
 
 public class DevSSOAdapter implements SSOAdapter {
 	static final Logger LOG = LoggerFactory.getLogger(DevSSOAdapter.class);
 	private NickiAdapterLoginModule loginModule;
+
 	public String getName() {
-		Target loginTarget = loginModule.getLoginTarget();
-		 try {
-			LOG.debug(loginTarget.getName() + ": name=" + AppContext.getSystemContext(loginTarget.getName()).getPrincipal().getName());
+		Target loginTarget = getLoginTarget();
+		try {
+			LOG.debug(loginTarget.getName() + ": name="
+					+ AppContext.getSystemContext(loginTarget.getName()).getPrincipal().getName());
 			return AppContext.getSystemContext(loginTarget.getName()).getPrincipal().getName();
 		} catch (Exception e) {
 			return null;
 		}
 	}
 
+	private Target getLoginTarget() {
+		Target loginTarget;
+		if (loginModule != null) {
+			loginTarget = loginModule.getLoginTarget();
+		} else {
+			loginTarget = TargetFactory.getDefaultTarget();
+		}
+
+		return loginTarget;
+	}
+
 	public char[] getPassword() {
-		Target loginTarget = loginModule.getLoginTarget();
-		 try {
-				return AppContext.getSystemContext(loginTarget.getName()).getPrincipal().getPassword().toCharArray();
-			} catch (Exception e) {
-				return null;
-			}
+		Target loginTarget = getLoginTarget();
+		try {
+			return AppContext.getSystemContext(loginTarget.getName()).getPrincipal().getPassword().toCharArray();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 	@Override
