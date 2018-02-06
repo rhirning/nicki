@@ -53,6 +53,7 @@
 		<module>nicki-user-admin</module>
 		<module>nicki-vaadin-base</module>
 		<module>nicki-verify</module>
+		<module>nicki-ws</module>
 		<module>nicki-xls</module>
 	</modules>
 	<dependencyManagement>
