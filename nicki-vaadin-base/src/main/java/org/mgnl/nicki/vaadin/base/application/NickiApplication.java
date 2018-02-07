@@ -257,7 +257,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 	public DoubleContext getContext(DynamicObject user, String password, SYSTEM_CONTEXT systemContext) throws InvalidPrincipalException, TargetException {
 		DoubleContext context = new DoubleContext();
 		// LoginTarget
-		context.setLoginContext(user.getContext());
+		context.setLoginContext(AppContext.getNamedUserContext(getLoginTargetName(), user, password));
 		// Target
 		if (systemContext == SYSTEM_CONTEXT.YES) {
 			context.setContext(AppContext.getSystemContext(getTargetName()));
