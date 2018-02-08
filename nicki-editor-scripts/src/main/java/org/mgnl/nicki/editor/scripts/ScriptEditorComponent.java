@@ -39,18 +39,18 @@ import org.mgnl.nicki.vaadin.base.editor.Icon;
 import org.mgnl.nicki.vaadin.base.editor.ImportTreeAction;
 import org.mgnl.nicki.vaadin.base.editor.ShowAllFilter;
 import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
+import org.mgnl.nicki.vaadin.base.menu.application.View;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 
 @SuppressWarnings("serial")
-public class ScriptEditorComponent extends CustomComponent implements Serializable {
+public class ScriptEditorComponent extends CustomComponent implements Serializable, View {
 	private NickiApplication nickiApplication;
+	private boolean isInit;
 	
 	public ScriptEditorComponent(NickiApplication nickiApplication) {
 		this.nickiApplication = nickiApplication;
-		setCompositionRoot(getEditor());
-		setSizeFull();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -80,5 +80,19 @@ public class ScriptEditorComponent extends CustomComponent implements Serializab
 
 	public NickiApplication getNickiApplication() {
 		return nickiApplication;
+	}
+
+	@Override
+	public void init() {
+		if (!isInit) {
+			setCompositionRoot(getEditor());
+			setSizeFull();
+			isInit = true;
+		}
+	}
+
+	@Override
+	public boolean isModified() {
+		return false;
 	}
 }

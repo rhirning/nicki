@@ -34,6 +34,7 @@ import org.mgnl.nicki.vaadin.base.application.ShowWelcomeDialog;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
 import org.mgnl.nicki.vaadin.base.editor.ShowAllFilter;
 import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
+import org.mgnl.nicki.vaadin.base.menu.application.View;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
@@ -42,13 +43,12 @@ import com.vaadin.ui.CustomComponent;
 @ShowWelcomeDialog(
 		configKey="nicki.app.viewer.filesystem.useWelcomeDialog",
 		groupsConfigName="nicki.app.viewer.filesystem.useWelcomeDialogGroups")
-public class FileSystemViewer extends CustomComponent implements Serializable {
+public class FileSystemViewer extends CustomComponent implements Serializable, View {
 	private NickiApplication nickiApplication;
+	private boolean isInit;
 	
 	public FileSystemViewer(NickiApplication nickiApplication) {
 		this.nickiApplication = nickiApplication;
-		setCompositionRoot(getEditor());
-		setSizeFull();
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -78,5 +78,19 @@ public class FileSystemViewer extends CustomComponent implements Serializable {
 
 	public NickiApplication getNickiApplication() {
 		return nickiApplication;
+	}
+
+	@Override
+	public void init() {
+		if (!isInit) {
+			setCompositionRoot(getEditor());
+			setSizeFull();
+			isInit = true;
+		}
+	}
+
+	@Override
+	public boolean isModified() {
+		return false;
 	}
 }

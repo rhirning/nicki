@@ -44,7 +44,9 @@ public class ScriptEditor extends NickiApplication {
 
 	@Override
 	public Component getEditor() {
-		return new ScriptEditorComponent(this);
+		ScriptEditorComponent editor = new ScriptEditorComponent(this);
+		editor.init();
+		return editor;
 	}
 
 	@Override

@@ -39,19 +39,19 @@ import org.mgnl.nicki.vaadin.base.editor.Icon;
 import org.mgnl.nicki.vaadin.base.editor.ImportTreeAction;
 import org.mgnl.nicki.vaadin.base.editor.ShowAllFilter;
 import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
+import org.mgnl.nicki.vaadin.base.menu.application.View;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CustomComponent;
 
-public class TemplateEditorComponent extends CustomComponent implements Serializable {
+public class TemplateEditorComponent extends CustomComponent implements Serializable, View {
 
 	private static final long serialVersionUID = -8245147689512577915L;
 	private NickiApplication nickiApplication;
+	private boolean isInit;
 
 	public TemplateEditorComponent(NickiApplication nickiApplication) {
 		this.nickiApplication = nickiApplication;
-		setCompositionRoot(getEditor());
-		setSizeFull();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -87,6 +87,20 @@ public class TemplateEditorComponent extends CustomComponent implements Serializ
 
 	public NickiApplication getNickiApplication() {
 		return nickiApplication;
+	}
+
+	@Override
+	public void init() {
+		if (!isInit) {
+			setCompositionRoot(getEditor());
+			setSizeFull();
+			isInit = true;
+		}
+	}
+
+	@Override
+	public boolean isModified() {
+		return false;
 	}
 
 

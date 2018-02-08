@@ -33,6 +33,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
+import org.mgnl.nicki.vaadin.base.menu.application.View;
 import org.slf4j.LoggerFactory;
 
 
@@ -43,12 +44,13 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 
-public class Log4jViewer extends CustomComponent {
+public class Log4jViewer extends CustomComponent implements View {
 	private static final long serialVersionUID = 6677098857979852467L;
 	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(Log4jViewer.class);
 	private Panel canvas;
 	private Table table;
 	private NickiApplication application;
+	private boolean isInit;
 
     /**
      * The root appender.
@@ -69,22 +71,6 @@ public class Log4jViewer extends CustomComponent {
     
 	public Log4jViewer(NickiApplication application) {
 		this.application = application;
-		canvas = new Panel();
-		canvas.setSizeFull();
-		table = new Table();
-		table.setSizeFull();
-		canvas.setContent(table);
-		table.addContainerProperty("title", String.class, "");
-		table.setColumnHeader("title", I18n.getText(getI18nBase() + ".column.title"));
-		table.addContainerProperty("inherited", String.class, "");
-		table.setColumnHeader("inherited", I18n.getText(getI18nBase() + ".column.inherited"));
-		table.addContainerProperty("comboBox", ComboBox.class, null);
-		table.setColumnHeader("comboBox", I18n.getText(getI18nBase() + ".column.level"));
-		table.addContainerProperty("saveButton", Button.class, null);
-		table.setColumnHeader("saveButton", "");
-		refreshTable();
-		setCompositionRoot(canvas);
-		setSizeFull();
 	}
 
 	public String getI18nBase() {
@@ -157,5 +143,35 @@ public class Log4jViewer extends CustomComponent {
 
         return list;
     }
+
+	@Override
+	public void init() {
+		if (!isInit) {
+			canvas = new Panel();
+			canvas.setSizeFull();
+			table = new Table();
+			table.setSizeFull();
+			canvas.setContent(table);
+			table.addContainerProperty("title", String.class, "");
+			table.setColumnHeader("title", I18n.getText(getI18nBase() + ".column.title"));
+			table.addContainerProperty("inherited", String.class, "");
+			table.setColumnHeader("inherited", I18n.getText(getI18nBase() + ".column.inherited"));
+			table.addContainerProperty("comboBox", ComboBox.class, null);
+			table.setColumnHeader("comboBox", I18n.getText(getI18nBase() + ".column.level"));
+			table.addContainerProperty("saveButton", Button.class, null);
+			table.setColumnHeader("saveButton", "");
+			setCompositionRoot(canvas);
+			setSizeFull();
+			isInit = true;
+		}
+		refreshTable();
+		
+	}
+
+	@Override
+	public boolean isModified() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

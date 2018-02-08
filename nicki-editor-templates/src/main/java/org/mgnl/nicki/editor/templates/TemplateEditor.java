@@ -47,7 +47,9 @@ public class TemplateEditor extends NickiApplication {
 
 	@Override
 	public Component getEditor() {
-		return new TemplateEditorComponent(this);
+		TemplateEditorComponent editor = new TemplateEditorComponent(this);
+		editor.init();
+		return editor;
 	}
 
 	@Override

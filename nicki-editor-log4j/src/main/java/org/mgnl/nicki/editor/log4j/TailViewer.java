@@ -29,6 +29,7 @@ import java.util.Date;
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListenerAdapter;
 import org.mgnl.nicki.core.helper.NameValue;
+import org.mgnl.nicki.vaadin.base.menu.application.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +51,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
-public class TailViewer extends CustomComponent implements Serializable {
+public class TailViewer extends CustomComponent implements Serializable, View {
 
 	private static final Logger LOG = LoggerFactory.getLogger(TailViewer.class);
 	static final Object VISIBLE_COLUMNS[] = {"value"};
@@ -70,11 +71,9 @@ public class TailViewer extends CustomComponent implements Serializable {
 	private long lastUse;
 	private String activePath;
 	private static final long TIMEOUT = 10 * 60 * 1000; // 10 Minutes
-
+	private boolean isInit;
+	
 	public TailViewer() {
-		buildMainLayout();
-		setCompositionRoot(mainLayout);
-		setSizeFull();
 	}
 	public LinesContainer getContainer() {
 		return container;
@@ -225,6 +224,20 @@ public class TailViewer extends CustomComponent implements Serializable {
 
 	public String getPath() {
 		return path.getValue();
+	}
+	@Override
+	public void init() {
+		if (!isInit) {
+
+			buildMainLayout();
+			setCompositionRoot(mainLayout);
+			setSizeFull();
+			isInit = true;
+		}
+	}
+	@Override
+	public boolean isModified() {
+		return false;
 	}
 		
 }
