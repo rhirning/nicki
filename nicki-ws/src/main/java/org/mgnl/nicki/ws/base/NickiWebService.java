@@ -133,7 +133,7 @@ public abstract class NickiWebService {
 
 				context.setLoginContext(AppContext.getSystemContext(loginTarget, principal.getName(), principal
 						.getPassword()));
-				context.setContext(AppContext.getSystemContext(getTargetName()));
+				context.setContext(AppContext.getSystemContext(getTargetName(), context.getLoginContext().getUser()));
 				LOG.info("after AppContext.getSystemContext()");
 				return context;
 			}
