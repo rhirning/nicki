@@ -87,6 +87,11 @@ public class AppContext {
 		}
 	}
 
+	public static NickiContext getSystemContext(String targetName, DynamicObject user) throws InvalidPrincipalException {
+		Target target = TargetFactory.getTarget(targetName);
+		return getSystemContext(target, user);
+	}
+
 	private static NickiContext getSystemContext(Target target, DynamicObject user) throws InvalidPrincipalException {
 		if (target != null && user != null) {
 			return target.getSystemContext(user);

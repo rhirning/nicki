@@ -260,7 +260,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 		context.setLoginContext(AppContext.getNamedUserContext(getLoginTargetName(), user, password));
 		// Target
 		if (systemContext == SYSTEM_CONTEXT.YES) {
-			context.setContext(AppContext.getSystemContext(getTargetName()));
+			context.setContext(AppContext.getSystemContext(getTargetName(), user));
 		} else {
 			context.setContext(AppContext.getNamedUserContext(getTargetName(), user, password));
 		}
