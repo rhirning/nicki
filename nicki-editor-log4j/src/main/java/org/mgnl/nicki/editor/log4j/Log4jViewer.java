@@ -69,6 +69,10 @@ public class Log4jViewer extends CustomComponent implements View {
         Level.ALL.toString() };
 
     
+	public Log4jViewer() {
+	}
+
+    
 	public Log4jViewer(NickiApplication application) {
 		this.application = application;
 	}
@@ -172,6 +176,11 @@ public class Log4jViewer extends CustomComponent implements View {
 	public boolean isModified() {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void setApplication(NickiApplication application) {
+		this.application = application;
 	}
 
 }

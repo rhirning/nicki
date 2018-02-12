@@ -47,6 +47,9 @@ public class FileSystemViewer extends CustomComponent implements Serializable, V
 	private NickiApplication nickiApplication;
 	private boolean isInit;
 	
+	public FileSystemViewer() {
+	}
+	
 	public FileSystemViewer(NickiApplication nickiApplication) {
 		this.nickiApplication = nickiApplication;
 	}
@@ -92,5 +95,10 @@ public class FileSystemViewer extends CustomComponent implements Serializable, V
 	@Override
 	public boolean isModified() {
 		return false;
+	}
+
+	@Override
+	public void setApplication(NickiApplication application) {
+		this.nickiApplication = application;
 	}
 }

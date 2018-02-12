@@ -29,6 +29,7 @@ import java.util.Date;
 import org.apache.commons.io.input.Tailer;
 import org.apache.commons.io.input.TailerListenerAdapter;
 import org.mgnl.nicki.core.helper.NameValue;
+import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import org.mgnl.nicki.vaadin.base.menu.application.View;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -74,6 +75,9 @@ public class TailViewer extends CustomComponent implements Serializable, View {
 	private boolean isInit;
 	
 	public TailViewer() {
+	}
+	
+	public TailViewer(NickiApplication application) {
 	}
 	public LinesContainer getContainer() {
 		return container;
@@ -238,6 +242,11 @@ public class TailViewer extends CustomComponent implements Serializable, View {
 	@Override
 	public boolean isModified() {
 		return false;
+	}
+	@Override
+	public void setApplication(NickiApplication application) {
+		// TODO Auto-generated method stub
+		
 	}
 		
 }

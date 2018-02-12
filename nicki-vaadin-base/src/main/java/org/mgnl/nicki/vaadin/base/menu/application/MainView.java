@@ -1,6 +1,8 @@
 
 package org.mgnl.nicki.vaadin.base.menu.application;
 
+import java.lang.reflect.InvocationTargetException;
+
 /*-
  * #%L
  * nicki-app-menu
@@ -27,12 +29,15 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.JsonHelper;
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.vaadin.base.application.AccessGroup;
 import org.mgnl.nicki.vaadin.base.application.AccessGroupEvaluator;
 import org.mgnl.nicki.vaadin.base.application.AccessRole;
 import org.mgnl.nicki.vaadin.base.application.AccessRoleEvaluator;
+import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import org.mgnl.nicki.vaadin.base.menu.navigation.Navigation;
 import org.mgnl.nicki.vaadin.base.menu.navigation.NavigationEntry;
 import org.mgnl.nicki.vaadin.base.menu.navigation.NavigationFolder;
@@ -47,6 +52,7 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
+
 import com.vaadin.ui.Notification.Type;
 
 public class MainView extends CustomComponent {
@@ -157,6 +163,19 @@ public class MainView extends CustomComponent {
 
 	public void setActiveView(View activeView) {
 		this.activeView = activeView;
+	}
+
+	public void addNavigation(NickiApplication application, String classPath) throws IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException {
+		ApplicationConfig applicationConfig = JsonHelper.toBean(ApplicationConfig.class, getClass().getResourceAsStream(classPath));
+		for (ApplicationChapter chapter : applicationConfig.getChapters()) {
+			for (ApplicationView applicationView : chapter.getViews()) {
+				String labelCaption = chapter.getChapter();
+				String caption = applicationView.getTitle();
+				View view = Classes.newInstance(applicationView.getView());
+				view.setApplication(application);
+				addNavigationEntry(labelCaption, caption, view);
+			}
+		}
 	}
 
 	public void addNavigationEntry(String labelCaption, String caption, View view) {

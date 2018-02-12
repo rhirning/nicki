@@ -50,6 +50,9 @@ public class TemplateEditorComponent extends CustomComponent implements Serializ
 	private NickiApplication nickiApplication;
 	private boolean isInit;
 
+	public TemplateEditorComponent() {
+	}
+
 	public TemplateEditorComponent(NickiApplication nickiApplication) {
 		this.nickiApplication = nickiApplication;
 	}
@@ -101,6 +104,11 @@ public class TemplateEditorComponent extends CustomComponent implements Serializ
 	@Override
 	public boolean isModified() {
 		return false;
+	}
+
+	@Override
+	public void setApplication(NickiApplication application) {
+		this.nickiApplication = application;
 	}
 
 

@@ -1,6 +1,8 @@
 
 package org.mgnl.nicki.vaadin.base.menu.application;
 
+import org.mgnl.nicki.vaadin.base.application.NickiApplication;
+
 /*-
  * #%L
  * nicki-app-menu
@@ -29,5 +31,7 @@ public interface View extends Component{
 	void init();
 
 	boolean isModified();
+	
+	void setApplication(NickiApplication application);
 
 }

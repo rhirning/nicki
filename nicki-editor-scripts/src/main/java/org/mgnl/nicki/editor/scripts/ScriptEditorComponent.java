@@ -49,6 +49,9 @@ public class ScriptEditorComponent extends CustomComponent implements Serializab
 	private NickiApplication nickiApplication;
 	private boolean isInit;
 	
+	public ScriptEditorComponent() {
+	}
+	
 	public ScriptEditorComponent(NickiApplication nickiApplication) {
 		this.nickiApplication = nickiApplication;
 	}
@@ -94,5 +97,10 @@ public class ScriptEditorComponent extends CustomComponent implements Serializab
 	@Override
 	public boolean isModified() {
 		return false;
+	}
+
+	@Override
+	public void setApplication(NickiApplication application) {
+		this.nickiApplication = application;
 	}
 }
