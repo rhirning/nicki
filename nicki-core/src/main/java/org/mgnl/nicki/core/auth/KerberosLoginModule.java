@@ -186,6 +186,9 @@ public class KerberosLoginModule extends NickiLoginModule {
 						return false;
 					}
 				} else {
+					if (credentials == null) {
+						credentials = "".getBytes();
+					}
 					loginContext = login(user.getName(), credentials);
 					nickiContext = loginContext;
 				}
