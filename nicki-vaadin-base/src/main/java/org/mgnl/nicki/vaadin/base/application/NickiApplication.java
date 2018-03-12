@@ -99,21 +99,31 @@ public abstract class NickiApplication extends UI implements Serializable {
 		setContent(view);
 		Page.getCurrent().setTitle(I18n.getText(getI18nBase() + ".main.title"));
 
-		if (Config.getBoolean("nicki.application.auth.jaas")) {
-			loginJAAS();
-		} else {
-			loginSSO();
-		}
-		if (doubleContext != null) {
+		if (Config.getBoolean("nicki.application.auth.no")) {
 			try {
-				start();
+				showStart();
 				return;
 			} catch (DynamicObjectException e) {
 				LOG.error("Error", e);
 			}
+		} else {
+			
+			if (Config.getBoolean("nicki.application.auth.jaas")) {
+				loginJAAS();
+			} else {
+				loginSSO();
+			}
+			if (doubleContext != null) {
+				try {
+					start();
+					return;
+				} catch (DynamicObjectException e) {
+					LOG.error("Error", e);
+				}
+			}
+	
+			showLoginDialog();
 		}
-
-		showLoginDialog();
 	}
 	
 	public void logout() {
@@ -159,13 +169,16 @@ public abstract class NickiApplication extends UI implements Serializable {
 			Set<Principal> principals = loginContext.getSubject().getPrincipals();
 			LOG.debug("principals: " + principals);
 			if (principals != null && principals.size() > 0) {
-				DynamicObjectPrincipal dynamicObjectPrincipal = (DynamicObjectPrincipal) principals.iterator().next();
-				DoubleContext context = new DoubleContext();
-				LOG.debug("loginContext: " + dynamicObjectPrincipal.getLoginContext().toString());
-				context.setLoginContext(dynamicObjectPrincipal.getLoginContext());
-				LOG.debug("nickiContext: " + dynamicObjectPrincipal.getContext().toString());
-				context.setContext(dynamicObjectPrincipal.getContext());					
-				setDoubleContext(context);
+				Principal principal = principals.iterator().next();
+				if (principal instanceof DynamicObjectPrincipal) {
+					DynamicObjectPrincipal dynamicObjectPrincipal = (DynamicObjectPrincipal) principal;
+					DoubleContext context = new DoubleContext();
+					LOG.debug("loginContext: " + dynamicObjectPrincipal.getLoginContext().toString());
+					context.setLoginContext(dynamicObjectPrincipal.getLoginContext());
+					LOG.debug("nickiContext: " + dynamicObjectPrincipal.getContext().toString());
+					context.setContext(dynamicObjectPrincipal.getContext());					
+					setDoubleContext(context);
+				}
 			}
 		} catch (LoginException e) {
 			LOG.error(e.getMessage());
@@ -291,17 +304,22 @@ public abstract class NickiApplication extends UI implements Serializable {
 
 	public void start() throws DynamicObjectException {
 		getView().removeAllComponents();
-		if (isUseWelcomeDialog()) {
-			getView().addComponent(new WelcomeDialog(this));
-		}
 		if (isAllowed(this.doubleContext.getLoginContext().getUser())) {
-			Component editor = getEditor();
-			getView().addComponent(editor);
-			editor.setSizeFull();
-			getView().setExpandRatio(editor, 1);
+			showStart();
 		} else {
 			logout();
 		}
+	}
+	
+	public void showStart() throws DynamicObjectException {
+		getView().removeAllComponents();
+		if (isUseWelcomeDialog()) {
+			getView().addComponent(new WelcomeDialog(this));
+		}
+		Component editor = getEditor();
+		getView().addComponent(editor);
+		editor.setSizeFull();
+		getView().setExpandRatio(editor, 1);
 	}
 	
 	public boolean isAllowed(DynamicObject user) {

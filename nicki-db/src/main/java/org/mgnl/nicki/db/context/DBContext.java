@@ -89,7 +89,7 @@ public interface DBContext extends AutoCloseable {
 
 	String getTimeStamp();
 
-	<T> T loadObject(T searchOrder, boolean deepSearch)
+	<T> T loadObject(T bean, boolean deepSearch)
 			throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 
 	<T> T loadObject(T bean, boolean deepSearch, String filter, String orderBy)
@@ -108,8 +108,11 @@ public interface DBContext extends AutoCloseable {
 	String getTimestampAsDbString(Date value);
 	String getLongAsDbString(Long value);
 	String getIntAsDbString(Integer value);
+	String getFloatAsDbString(Float value);
+	String getBooleanAsDbString(Boolean value);
 	
 	PrimaryKey getSequenceNumber(Class<?> beanClazz, Attribute sequenceAttribute) throws Exception;
 	Long getSequenceNumber(String sequenceName) throws Exception;
+
 
 }

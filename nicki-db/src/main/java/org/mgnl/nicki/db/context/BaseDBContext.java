@@ -420,6 +420,10 @@ public class BaseDBContext
 						method.invoke(entry, StringUtils.trim(rs.getString(attribute.name())));
 					} else if (field.getType() == int.class || field.getType() == Integer.class) {
 						method.invoke(entry, rs.getInt(attribute.name()));
+					} else if (field.getType() == float.class || field.getType() == Float.class) {
+						method.invoke(entry, rs.getFloat(attribute.name()));
+					} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
+						method.invoke(entry, rs.getBoolean(attribute.name()));
 					} else if (field.getType() == long.class || field.getType() == Long.class) {
 						method.invoke(entry, rs.getLong(attribute.name()));
 					} else if (field.getType() == Date.class) {
@@ -516,6 +520,10 @@ public class BaseDBContext
 				return this.getDateValue((Date) value, attribute);
 			} else if (type == long.class || type == Long.class) {
 				return Long.toString((long) value);
+			} else if (type == float.class || type == Float.class) {
+				return Float.toString((float) value);
+			} else if (type == boolean.class || type == Boolean.class) {
+				return Boolean.toString((Boolean) value);
 			} else if (type == int.class || type == Integer.class) {
 				return Integer.toString((int) value);
 			}
@@ -747,6 +755,14 @@ public class BaseDBContext
 					pos++;
 					Integer value = (Integer) cv.getValue(columnName);
 					pstmt.setInt(pos, value);
+				} else if (type == Type.FLOAT) {
+					pos++;
+					Float value = (Float) cv.getValue(columnName);
+					pstmt.setFloat(pos, value);
+				} else if (type == Type.BOOLEAN) {
+					pos++;
+					Boolean value = (Boolean) cv.getValue(columnName);
+					pstmt.setBoolean(pos, value);
 				}
 			}
 		}
@@ -796,6 +812,10 @@ public class BaseDBContext
 						attributeValue = this.getLongValue(bean, field, attribute);
 					} else if (field.getType() == int.class || field.getType() == Integer.class) {
 						attributeValue = this.getIntValue(bean, field, attribute);
+					} else if (field.getType() == float.class || field.getType() == Float.class) {
+						attributeValue = this.getFloatValue(bean, field, attribute);
+					} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
+						attributeValue = this.getBooleanValue(bean, field, attribute);
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
@@ -828,20 +848,26 @@ public class BaseDBContext
 			if (cols == null || cols.contains(field.getName())) {
 				if (field.getAnnotation(Attribute.class) != null) {
 					Attribute attribute = field.getAnnotation(Attribute.class);
-					String columnName = attribute.name();
-					try {
-						if (field.getType() == String.class) {
-							cv.add(columnName, getValue(bean, String.class, field, attribute));
-						} else if (field.getType() == Date.class) {
-							cv.add(columnName, getValue(bean, Date.class, field, attribute));
-						} else if (field.getType() == long.class || field.getType() == Long.class) {
-							cv.add(columnName, getValue(bean, Long.class, field, attribute));
-						} else if (field.getType() == int.class || field.getType() == Integer.class) {
-							cv.add(columnName, getValue(bean, Integer.class, field, attribute));
+					if (!attribute.primaryKey()) {
+						String columnName = attribute.name();
+						try {
+							if (field.getType() == String.class) {
+								cv.add(columnName, getValue(bean, String.class, field, attribute));
+							} else if (field.getType() == Date.class) {
+								cv.add(columnName, getValue(bean, Date.class, field, attribute));
+							} else if (field.getType() == long.class || field.getType() == Long.class) {
+								cv.add(columnName, getValue(bean, Long.class, field, attribute));
+							} else if (field.getType() == int.class || field.getType() == Integer.class) {
+								cv.add(columnName, getValue(bean, Integer.class, field, attribute));
+							} else if (field.getType() == float.class || field.getType() == Float.class) {
+								cv.add(columnName, getValue(bean, Float.class, field, attribute));
+							} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
+								cv.add(columnName, getValue(bean, Boolean.class, field, attribute));
+							}
+						} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+								| InvocationTargetException e) {
+							LOG.error("Error converting value", e);
 						}
-					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-							| InvocationTargetException e) {
-						LOG.error("Error converting value", e);
 					}
 				}
 			}
@@ -1201,6 +1227,16 @@ public class BaseDBContext
 							if (value != null) {
 								cv.add(attribute.name(), value);
 							}
+						} else if (field.getType() == float.class || field.getType() == Float.class) {
+							Float value = getValue(bean, Float.class, field, attribute);
+							if (value != null) {
+								cv.add(attribute.name(), value);
+							}
+						} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
+							Boolean value = getValue(bean, Boolean.class, field, attribute);
+							if (value != null) {
+								cv.add(attribute.name(), value);
+							}
 						}
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException e) {
@@ -1251,6 +1287,24 @@ public class BaseDBContext
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (null != this.getValue(bean, field)) {
 			return ((Integer) this.getValue(bean, field)).toString();
+		} else {
+			return null;
+		}
+	}
+
+	protected String getFloatValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		if (null != this.getValue(bean, field)) {
+			return ((Float) this.getValue(bean, field)).toString();
+		} else {
+			return null;
+		}
+	}
+
+	protected String getBooleanValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException,
+			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		if (null != this.getValue(bean, field)) {
+			return ((Boolean) this.getValue(bean, field)).toString();
 		} else {
 			return null;
 		}
@@ -1450,6 +1504,10 @@ public class BaseDBContext
 							attributeValue = this.getLongValue(bean, field, attribute);
 						} else if (field.getType() == int.class || field.getType() == Integer.class) {
 							attributeValue = this.getIntValue(bean, field, attribute);
+						} else if (field.getType() == float.class || field.getType() == Float.class) {
+							attributeValue = this.getFloatValue(bean, field, attribute);
+						} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
+							attributeValue = this.getBooleanValue(bean, field, attribute);
 						}
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException e) {
@@ -1488,6 +1546,10 @@ public class BaseDBContext
 						attributeValue = this.getLongValue(bean, field, attribute);
 					} else if (field.getType() == int.class || field.getType() == Integer.class) {
 						attributeValue = this.getIntValue(bean, field, attribute);
+					} else if (field.getType() == float.class || field.getType() == Float.class) {
+						attributeValue = this.getFloatValue(bean, field, attribute);
+					} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
+						attributeValue = this.getBooleanValue(bean, field, attribute);
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
@@ -1598,5 +1660,15 @@ public class BaseDBContext
 	@Override
 	public String getIntAsDbString(Integer value) {
 		return Integer.toString(value);
+	}
+
+	@Override
+	public String getFloatAsDbString(Float value) {
+		return Float.toString(value);
+	}
+
+	@Override
+	public String getBooleanAsDbString(Boolean value) {
+		return Boolean.toString(value);
 	}
 }

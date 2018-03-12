@@ -183,7 +183,7 @@ public abstract class NickiLoginModule implements LoginModule {
 			// add a Principal (authenticated identity)
 			// to the Subject
 
-			if (!subject.getPrincipals().contains(this.principal)) {
+			if (this.principal != null && !subject.getPrincipals().contains(this.principal)) {
 				subject.getPrincipals().add(this.principal);
 			}
 

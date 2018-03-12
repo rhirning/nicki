@@ -31,8 +31,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -59,19 +57,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class JsonHelper {
+public class JsonHelper extends BeanUtilsHelper {
     private static final Logger LOG = LoggerFactory.getLogger(JsonHelper.class);
-	public static Map<Class<?>, Class<?>> primitiveMap = new HashMap<>();
-	static {
-		primitiveMap.put(Boolean.class, boolean.class);
-		//primitiveMap.put(Byte.class, byte.class);
-		//primitiveMap.put(Character.class, char.class);
-		//primitiveMap.put(Short.class, short.class);
-		//primitiveMap.put(Integer.class, int.class);
-		//primitiveMap.put(Long.class, long.class);
-		//primitiveMap.put(Float.class, float.class);
-		//primitiveMap.put(Double.class, double.class);
-	}
 
 	public static <T> JsonArray toJsonArray(List<T> list) {
 		
@@ -191,35 +178,9 @@ public class JsonHelper {
 		}
 		return null;
 	}
-
-	/*
-	private static String getAnnotationData(Field field, Class<?> clazz, String methodName) {
-		for (Annotation annotation: field.getAnnotations()) {
-			if (clazz == annotation.getClass()) {
-				try {
-					Method method = annotation.annotationType().getMethod(methodName);
-					return (String) method.invoke(annotation);
-				} catch (Exception  e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return null;
-	}
-	*/
 	
 	private static boolean contains(String[] attributes, String name) {
 		return Arrays.asList(attributes).contains(name);
-	}
-	
-	public static String getDateString(Date value, String formatString) {
-		SimpleDateFormat format = new SimpleDateFormat(formatString);
-		return format.format(value);
-	}
-	
-	public static Date dateFromDateString(String stored, String formatString) throws ParseException {
-		SimpleDateFormat format = new SimpleDateFormat(formatString);
-		return format.parse(stored);
 	}
 	
 	private static JsonArray toJsonArray(Collection<?> value) {
@@ -274,88 +235,6 @@ public class JsonHelper {
 			}
 		}
 		return builder.build();
-	}
-
-	static String[] prefixes = new String[]{"get", "is"};
-	public static Method getGetter(Class<?> clazz, Field field) {
-		
-		for (String prefix : prefixes) {
-			String methodName = prefix + StringUtils.capitalize(field.getName());
-			for (Method method : clazz.getDeclaredMethods()) {
-				if (StringUtils.equals(methodName, method.getName())) {
-					return method;
-				}
-			}
-		}
-		
-		Class<?> superClass = clazz.getSuperclass();
-		if (superClass != null) {
-			return getGetter(superClass, field);
-		} else {
-			return null;
-		}
-	}
-
-	public static Method getSetter(Class<?> clazz, Field field) {
-		String methodName = "set" + StringUtils.capitalize(field.getName());
-		try {
-			Method method = clazz.getMethod(methodName, field.getType());
-			return method;
-		} catch (NoSuchMethodException | SecurityException e) {
-			LOG.debug("no setter for " + field.getName() + " in class " + clazz.getName());
-		}
-		/*
-		for (Method method : clazz.getDeclaredMethods()) {
-			if (equals(methodName, method.getName()) 
-					&& method.getParameterTypes() == new Class[]{paramClazz}) {
-				return method;
-			}
-		}
-		*/
-		Class<?> superClass = clazz.getSuperclass();
-		if (superClass != null) {
-			return getSetter(superClass, field, field.getType());
-		} else {
-			return null;
-		}
-	}
-
-	public static Field getField(Class<?> clazz, String name) {
-		try {
-			return clazz.getDeclaredField(name);
-		} catch (NoSuchFieldException | SecurityException e) {
-			LOG.debug("no field for " + name + " in class " + clazz.getName());
-		}
-		Class<?> superClass = clazz.getSuperclass();
-		if (superClass != null) {
-			return getField(superClass, name);
-		} else {
-			return null;
-		}
-	}
-
-	public static Method getSetter(Class<?> clazz, Field field, Class<? extends Object> paramClazz) {
-		String methodName = "set" + StringUtils.capitalize(field.getName());
-		try {
-			Method method = clazz.getMethod(methodName, paramClazz);
-			return method;
-		} catch (NoSuchMethodException | SecurityException e) {
-			LOG.debug("no setter for " + field.getName() + " in class " + clazz.getName());
-		}
-		/*
-		for (Method method : clazz.getDeclaredMethods()) {
-			if (equals(methodName, method.getName()) 
-					&& method.getParameterTypes() == new Class[]{paramClazz}) {
-				return method;
-			}
-		}
-		*/
-		Class<?> superClass = clazz.getSuperclass();
-		if (superClass != null) {
-			return getSetter(superClass, field, paramClazz);
-		} else {
-			return null;
-		}
 	}
 	
 	/**
@@ -525,142 +404,6 @@ public class JsonHelper {
 					e.printStackTrace();
 				}
 			}			
-		}
-	}
-	/*
-	private static <T, A> void XXXfillBeanWithEntry(Class<? super T> clazz, T bean, String attribute, Class<A> entryClazz, JsonObject data) {
-		Class<? super T> superClass = clazz.getSuperclass();
-		if (superClass != null) {
-			XXXfillBeanWithEntry(superClass, bean, attribute, entryClazz, data);
-		}
-		
-		for (Field field : clazz.getDeclaredFields()) {
-			String key = field.getName();
-			if (equals(attribute, key) 
-					&& data.containsKey(key)
-					&& data.get(key).getValueType() == ValueType.OBJECT) {
-				// nothing to do key is correct
-			} else if (data.containsKey(key.toLowerCase()) && data.get(key.toLowerCase()).getValueType() == ValueType.OBJECT) {
-				key = key.toLowerCase();
-			} else {
-				key = null;
-			}
-			if (key != null) {
-				JsonObject o = data.getJsonObject(key);
-				try {
-//					A entry = entryClazz.newInstance();
-					A entry = (A) field.getType().newInstance();
-					fillBeanWithProperties(entry.getClass(), entry, o);
-					Method setter = getSetter(bean.getClass(), field, field.getType());
-					if (setter != null) {
-						setter.invoke(bean, entry);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	private static <T, A> void XXXfillBeanWithList(Class<? super T> clazz, T bean, Class<A> entryClazz, JsonObject data) {
-		Class<? super T> superClass = clazz.getSuperclass();
-		if (superClass != null) {
-			XXXfillBeanWithList(superClass, bean, entryClazz, data);
-		}
-		
-
-		for (Field field : clazz.getDeclaredFields()) {
-			String key = field.getName();
-			if (data.containsKey(key) && data.get(key).getValueType() == ValueType.ARRAY) {
-				// nothing to do key ist correct
-			} else if (data.containsKey(key.toLowerCase()) && data.get(key.toLowerCase()).getValueType() == ValueType.ARRAY) {
-				key = key.toLowerCase();
-			} else {
-				key = null;
-			}
-			if (key != null) {
-				List<A> list = new ArrayList<A>();
-				try {
-					JsonArray array = data.getJsonArray(key);
-					for (int i = 0; i < array.size(); i++) {
-						try {
-							JsonObject o = array.getJsonObject(i);
-							A entry = entryClazz.newInstance();
-							fillBeanWithProperties(entryClazz, entry, o);
-							list.add(entry);
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
-					}
-					Method setter = getSetter(bean.getClass(), field, field.getType());
-					if (setter != null) {
-						setter.invoke(bean, list);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	*/
-	
-	
-	/**`
-	 * Fills String type data from a Json Object into a bean. Additionally a bean of type entryClazz will be filled
-	 * @param beanClazz class of the bean to be filled
-	 * @param attribute attribute name of the additional object
-	 * @param entryClazz class of the entry to be filled
-	 * @param data JsonObject
-	 * @return
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 * @throws InstantiationException 
-	 */
-	/*
-	public static <T, A> T toSingleEntryBean(Class<T> beanClazz, String attribute, Class<A> entryClazz, String stringData) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-		JsonReader reader = Json.createReader(new StringReader(stringData));
-		JsonObject data = reader.readObject();
-		T bean = beanClazz.newInstance();
-		
-		fillBeanWithProperties(beanClazz, bean, data);
-		//fillBeanWithEntry(beanClazz, bean, attribute, entryClazz, data);
-		return bean;
-	}
-	*/
-	/**
-	 * 
-	 * @param beanClazz class of the bean to be filled. Additionally a List of beans of type entryClazz will be filled
-	 * @param attribute attribute name of the List
-	 * @param entryClazz class of the enties to be filled
-	 * @param data JsonObject
-	 * @return
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 * @throws InstantiationException
-	 */
-	/*
-	public static <T, A> T toListEntryBean(Class<T> beanClazz, String attribute, Class<A> entryClazz, String stringData) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-		JsonReader reader = Json.createReader(new StringReader(stringData));
-		JsonObject data = reader.readObject();
-		T bean = beanClazz.newInstance();
-		
-		fillBeanWithProperties(beanClazz, bean, data);
-		//fillBeanWithList(beanClazz, bean, entryClazz, data);
-		return bean;
-	}
-	*/
-	
-	private static <T> void setProperty(Object bean, Field field, T value) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		Method setter = null;
-		if (primitiveMap.containsKey(value.getClass())) {
-			setter = getSetter(bean.getClass(), field, primitiveMap.get(value.getClass()));
-		}
-		
-		if (setter == null) {
-			setter = getSetter(bean.getClass(), field);
-		}
-		if (setter != null ) {
-			setter.invoke(bean, value);
 		}
 	}
 

@@ -58,6 +58,10 @@ public class PrimaryKey {
 			return generatedKeys.getLong(pos);
 		} else if (type == Type.INT) {
 			return generatedKeys.getInt(pos);
+		} else if (type == Type.FLOAT) {
+			return generatedKeys.getFloat(pos);
+		} else if (type == Type.BOOLEAN) {
+			return generatedKeys.getBoolean(pos);
 		}
 		return null;
 	}

@@ -34,6 +34,8 @@ public enum Type {
 	DATE(Date.class),
 	LONG(Long.class, long.class),
 	INT(Integer.class, int.class),
+	FLOAT(Float.class, float.class),
+	BOOLEAN(Boolean.class, boolean.class),
 	UNKONWN();
 		
 	private List<Class<?>> classes = new ArrayList<>();
@@ -76,6 +78,10 @@ public enum Type {
 			return dbContext.getLongAsDbString((Long) value);
 		} else if (type == Type.INT) {
 			return dbContext.getIntAsDbString( (Integer) value);
+		} else if (type == Type.FLOAT) {
+			return dbContext.getFloatAsDbString( (Float) value);
+		} else if (type == Type.INT) {
+			return dbContext.getBooleanAsDbString( (Boolean) value);
 		} else {
 			return null;
 		}

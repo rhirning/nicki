@@ -34,4 +34,6 @@ public @interface ForeignKey {
 	String columnName();
 	
 	Class<?> foreignKeyClass();
+
+	String display() default "";
 }

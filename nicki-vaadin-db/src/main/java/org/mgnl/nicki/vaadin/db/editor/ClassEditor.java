@@ -1,9 +1,9 @@
 
-package org.mgnl.nicki.db.annotation;
+package org.mgnl.nicki.vaadin.db.editor;
 
 /*-
  * #%L
- * nicki-db
+ * nicki-vaadin-base
  * %%
  * Copyright (C) 2017 Ralf Hirning
  * %%
@@ -22,30 +22,10 @@ package org.mgnl.nicki.db.annotation;
  */
 
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.vaadin.ui.Component;
 
-import org.mgnl.nicki.db.data.DataType;
+public interface ClassEditor extends Component {
+	void setDbBean(Object bean);
+	void save() throws Exception;
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD})
-public @interface Attribute {
-
-	String name();
-
-	boolean autogen() default false;
-	
-	String sequence() default "";
-
-	boolean now() default false;
-
-	boolean primaryKey() default false;
-	
-	DataType type() default DataType.DEFAULT;
-
-	String editorClass() default "";
-	
-	boolean readonly() default false;
 }

@@ -1,9 +1,9 @@
 
-package org.mgnl.nicki.db.annotation;
+package org.mgnl.nicki.vaadin.db.fields;
 
 /*-
  * #%L
- * nicki-db
+ * nicki-vaadin-base
  * %%
  * Copyright (C) 2017 Ralf Hirning
  * %%
@@ -22,30 +22,19 @@ package org.mgnl.nicki.db.annotation;
  */
 
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.i18n.I18n;;
 
-import org.mgnl.nicki.db.data.DataType;
+public class BaseDbBeanAttributeField {
 
-@Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD})
-public @interface Attribute {
-
-	String name();
-
-	boolean autogen() default false;
-	
-	String sequence() default "";
-
-	boolean now() default false;
-
-	boolean primaryKey() default false;
-	
-	DataType type() default DataType.DEFAULT;
-
-	String editorClass() default "";
-	
-	boolean readonly() default false;
+	public String getName(Object Bean, String attributeName) {
+		String key = Bean.getClass().getName()
+			+ "."
+			+ attributeName;
+		String name = I18n.getText(key);
+//		if (StringUtils.equals(key, name)) {
+//			name = attributeName;
+//		}
+		return name;
+	}
 }

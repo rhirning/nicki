@@ -20,41 +20,74 @@ package org.mgnl.nicki.db.helper;
  * #L%
  */
 
-
 import java.lang.reflect.Field;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.helper.BeanUtilsHelper;
 import org.mgnl.nicki.db.annotation.Attribute;
+import org.mgnl.nicki.db.annotation.ForeignKey;
+import org.mgnl.nicki.db.context.DBContext;
+import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.data.DataType;
+import org.mgnl.nicki.db.profile.InitProfileException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BeanHelper {
 	private static final Logger LOG = LoggerFactory.getLogger(BeanHelper.class);
 
-	
+	public enum READONLY {
+		TRUE, FALSE
+	}
+
 	public static String getFieldName(Class<?> beanClass, String columnName) {
+		Field field = getFieldFromColumnName(beanClass, columnName);
+		return field != null ? field.getName() : null;
+	}
+
+	public static Field getFieldFromColumnName(Class<?> beanClass, String columnName) {
 		for (Field field : beanClass.getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
 			if (attribute != null && StringUtils.equalsIgnoreCase(columnName, attribute.name())) {
-				return field.getName();
+				return field;
 			}
 		}
-		return null;		
+		
+		return null;
 	}
 
-	public static String getColumnName(Class<?> beanClass, String name) {
+	public static List<Field> getFields(Class<?> beanClass) {
+		List<Field> fields = new ArrayList<>();
 		for (Field field : beanClass.getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
-			if (attribute != null ) {
+			if (attribute != null) {
+				fields.add(field);
+			}
+		}
+		return fields;
+	}
+
+	public static String getColumnName(Class<?> beanClass, String fieldName) {
+		Field field;
+		try {
+			field = beanClass.getDeclaredField(fieldName);
+		} catch (NoSuchFieldException | SecurityException e) {
+			field = null;
+		}
+		if (field != null) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null && StringUtils.equalsIgnoreCase(fieldName, field.getName())) {
 				return attribute.name();
 			}
 		}
-		return null;		
+		return null;
 	}
-	
-	public static Type getTypeOfField(Class<?> beanClass, String fieldName){
+
+	public static Type getTypeOfField(Class<?> beanClass, String fieldName) {
 
 		Type type = Type.UNKONWN;
 		try {
@@ -73,24 +106,134 @@ public class BeanHelper {
 				type = Type.LONG;
 			} else if (fieldType == int.class || fieldType == Integer.class) {
 				type = Type.INT;
+			} else if (fieldType == float.class || fieldType == Float.class) {
+				type = Type.FLOAT;
+			} else if (fieldType == boolean.class || fieldType == Boolean.class) {
+				type = Type.BOOLEAN;
 			}
 		} catch (NoSuchFieldException | SecurityException e) {
 			LOG.error("Invalid name: " + beanClass.getName() + "." + fieldName);
 		}
-		
+
 		LOG.debug("Field " + fieldName + " is = " + type + "'");
 		return type;
 	}
-	
-	public static Type getTypeOfColumn(Class<?> beanClass, String columnName){
+
+	public static Type getTypeOfColumn(Class<?> beanClass, String columnName) {
 
 		Type type = Type.UNKONWN;
 		String fieldName = getFieldName(beanClass, columnName);
 		if (fieldName != null) {
 			type = getTypeOfField(beanClass, fieldName);
 		}
-		
+
 		LOG.debug("Column " + columnName + " is = " + type + "'");
 		return type;
+	}
+
+	public static Attribute getBeanAttribute(Class<?> beanClass, String fieldName) {
+		Field field;
+		try {
+			field = beanClass.getDeclaredField(fieldName);
+		} catch (NoSuchFieldException | SecurityException e) {
+			field = null;
+		}
+		if (field != null) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null && StringUtils.equalsIgnoreCase(fieldName, field.getName())) {
+				return attribute;
+			}
+		}
+		return null;
+	}
+
+	public static Object getValue(Object bean, String fieldName) {
+		Field field;
+		try {
+			field = bean.getClass().getDeclaredField(fieldName);
+		} catch (NoSuchFieldException | SecurityException e) {
+			field = null;
+		}
+		if (field != null) {
+			return BeanUtilsHelper.getProperty(bean, field);
+		}
+		return null;
+	}
+
+	public static void setValue(Object bean, String fieldName, Object newValue) {
+		Field field;
+		try {
+			field = bean.getClass().getDeclaredField(fieldName);
+		} catch (NoSuchFieldException | SecurityException e) {
+			field = null;
+		}
+		if (field != null) {
+			BeanUtilsHelper.setProperty(bean, field, newValue);
+		}
+	}
+
+	public static Class<?> getType(Object bean, String fieldName) throws NoSuchFieldException, SecurityException {
+		return bean.getClass().getDeclaredField(fieldName).getType();
+	}
+
+	public static void addForeignKey(Object bean, Object foreignObject) {
+		if (foreignObject != null) {
+			for (Field field : getFields(bean.getClass())) {
+				ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
+				if (foreignKey != null && foreignKey.foreignKeyClass().isAssignableFrom(foreignObject.getClass())) {
+					Field foreignKeyField = getFieldFromColumnName(foreignObject.getClass(), foreignKey.columnName());
+					if (foreignKeyField != null) {
+						setValue(bean, field.getName(),
+								getValue(foreignObject, foreignKeyField.getName()));
+					}
+				}
+			}
+		}
+	}
+
+	public static String[] getForeignKeyIds(Object bean) {
+		List<String> foreignKeyIds = new ArrayList<>();
+		for (Field field : getFields(bean.getClass())) {
+			ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
+			if (foreignKey != null) {
+				foreignKeyIds.add(field.getName());
+			}
+		}
+		return foreignKeyIds.toArray(new String[0]);
+	}
+
+	public static boolean isForeignKey(Object bean, String attributeName) {
+		for (Field field : getFields(bean.getClass())) {
+			if (StringUtils.equals(attributeName, field.getName())) {
+				ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
+				if (foreignKey != null) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static String getForeignValue(Object bean, String attributeName, String dbContextName) {
+		for (Field field : getFields(bean.getClass())) {
+			if (StringUtils.equals(attributeName, field.getName())) {
+				ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
+				if (foreignKey != null && StringUtils.isNotBlank(foreignKey.display())) {
+					try {
+						Object foreignObject = foreignKey.foreignKeyClass().newInstance();
+						Field foreignField = getFieldFromColumnName(foreignObject.getClass(), foreignKey.columnName());
+						Object keyValue = getValue(bean, attributeName);
+						setValue(foreignObject, foreignField.getName(), keyValue);
+						try (DBContext dbContext = DBContextManager.getContext(dbContextName)) {
+							foreignObject = dbContext.loadObject(foreignObject, false);
+							return (String) getValue(foreignObject, foreignKey.display());
+						}
+					} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
+						LOG.error("Error reading foreign value", e);
+					}
+				}
+			}
+		}
+		return null;
 	}
 }
