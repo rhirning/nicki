@@ -278,16 +278,21 @@ public final class SpnegoHttpFilter implements Filter {
     		chain.doFilter(request, response);
     		return;
     	}
-
+    	
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
-    	httpRequest.getSession(true);
+
+        
+        httpRequest.getSession(true);
+
+    	// check for request parameter nokerberos
+        if (httpRequest.getParameter("nokerberos") != null) {
+        	httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
+        }
         
         LOG.debug("Request: " + httpRequest.getServletPath() + ", ThreadId=" + Thread.currentThread().getId());
         //String browserType = (String) httpRequest.getHeader("User-Agent");
         //LOG.debug("User-Agent: " + browserType);
         
-        final SpnegoHttpServletResponse spnegoResponse = new SpnegoHttpServletResponse(
-                (HttpServletResponse) response);
     	String authHeader = httpRequest.getHeader(Constants.AUTHZ_HEADER);
 
     	if (StringUtils.isNotBlank(authHeader)) {
@@ -311,6 +316,9 @@ public final class SpnegoHttpFilter implements Filter {
             return;
         }
         
+        final SpnegoHttpServletResponse spnegoResponse = new SpnegoHttpServletResponse(
+                (HttpServletResponse) response);
+
         // client/caller principal
         final SpnegoPrincipal principal;
         try {
