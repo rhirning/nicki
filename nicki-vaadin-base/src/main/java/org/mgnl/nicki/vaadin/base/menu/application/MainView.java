@@ -169,8 +169,8 @@ public class MainView extends CustomComponent {
 		ApplicationConfig applicationConfig = JsonHelper.toBean(ApplicationConfig.class, getClass().getResourceAsStream(classPath));
 		for (ApplicationChapter chapter : applicationConfig.getChapters()) {
 			for (ApplicationView applicationView : chapter.getViews()) {
-				String labelCaption = chapter.getChapter();
-				String caption = applicationView.getTitle();
+				String labelCaption = I18n.getText(chapter.getChapter());
+				String caption = I18n.getText(applicationView.getTitle());
 				View view = Classes.newInstance(applicationView.getView());
 				view.setApplication(application);
 				addNavigationEntry(labelCaption, caption, view);
