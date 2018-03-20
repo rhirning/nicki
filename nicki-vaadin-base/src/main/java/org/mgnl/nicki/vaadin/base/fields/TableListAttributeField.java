@@ -63,9 +63,11 @@ public class TableListAttributeField extends BaseDynamicAttributeField implement
 		
 		@SuppressWarnings("unchecked")
 		List<Object> values = (List<Object>) dynamicObject.get(attributeName);
-		for (Object valueObject : values) {
-			String value = (String) valueObject;
-			addItem(value);
+		if (values != null) {
+			for (Object valueObject : values) {
+				String value = (String) valueObject;
+				addItem(value);
+			}
 		}
 		newEntryButton.addClickListener(new Button.ClickListener() {
 			public void buttonClick(ClickEvent event) {

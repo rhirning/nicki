@@ -23,6 +23,7 @@ package org.mgnl.nicki.db.context;
 
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -113,6 +114,6 @@ public interface DBContext extends AutoCloseable {
 	
 	PrimaryKey getSequenceNumber(Class<?> beanClazz, Attribute sequenceAttribute) throws Exception;
 	Long getSequenceNumber(String sequenceName) throws Exception;
-
+	<T> T get(Class<T> beanClass, ResultSet rs) throws SQLException, InstantiationException, IllegalAccessException;
 
 }

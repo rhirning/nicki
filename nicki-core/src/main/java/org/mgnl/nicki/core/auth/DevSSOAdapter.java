@@ -33,10 +33,11 @@ public class DevSSOAdapter implements SSOAdapter {
 	public String getName() {
 		Target loginTarget = getLoginTarget();
 		try {
-			LOG.debug(loginTarget.getName() + ": name="
-					+ AppContext.getSystemContext(loginTarget.getName()).getPrincipal().getName());
-			return AppContext.getSystemContext(loginTarget.getName()).getPrincipal().getName();
+			String name = AppContext.getSystemContext(loginTarget.getName()).getPrincipal().getName();
+			LOG.debug(loginTarget.getName() + ": name=" + name);
+			return name;
 		} catch (Exception e) {
+			LOG.error("Error using loginTarget", e);
 			return null;
 		}
 	}

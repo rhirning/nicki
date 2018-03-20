@@ -1,6 +1,8 @@
 
 package org.mgnl.nicki.ldap.context;
 
+import java.io.IOException;
+
 /*-
  * #%L
  * nicki-ldap
@@ -31,10 +33,11 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
-import javax.naming.directory.InitialDirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
-
+import javax.naming.ldap.InitialLdapContext;
+import javax.naming.ldap.StartTlsRequest;
+import javax.naming.ldap.StartTlsResponse;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.BasicContext;
 import org.mgnl.nicki.core.context.NickiContext;
@@ -72,13 +75,15 @@ public class LdapContext extends BasicContext implements NickiContext {
 	private static final long serialVersionUID = -3079627211615613041L;
 
 	private TargetObjectFactory objectFactory;
+	private boolean tls;
 
 	public LdapContext(DynamicObjectAdapter adapter, Target target, READONLY readonly) {
 		super(adapter, target, readonly);
+		tls = getTarget().getBoolean("securityTLS");
 	}
 	
 	
-	protected DirContext getDirContext(String name, String password) throws NamingException {
+	protected javax.naming.ldap.LdapContext getLdapContext(String name, String password) throws NamingException {
 		Hashtable<String, String> env = new Hashtable<String, String>();
 		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 		env.put(Context.PROVIDER_URL, getTarget().getProperty("providerUrl"));
@@ -102,12 +107,12 @@ public class LdapContext extends BasicContext implements NickiContext {
 		String connectionPoolTimeout = getTarget().getProperty("connect.pool.timeout", "1800000");
 		env.put("com.sun.jndi.ldap.connect.pool.timeout", connectionPoolTimeout);
 
-		return new InitialDirContext(env);
+		return new InitialLdapContext(env, null);
 	}
 
-	public DirContext getDirContext() throws DynamicObjectException {
+	public javax.naming.ldap.LdapContext getLdapContext() throws DynamicObjectException {
 		try {
-			return getDirContext(getPrincipal().getName(), getPrincipal().getPassword());
+			return getLdapContext(getPrincipal().getName(), getPrincipal().getPassword());
 		} catch (NamingException e) {
 			throw new DynamicObjectException(e);
 		}
@@ -136,7 +141,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			LOG.info("login: before getDirContex)");
 			LOG.debug("try login for user " + user.getDisplayName());
 			try {
-				getDirContext(user.getPath(), password);
+				getLdapContext(user.getPath(), password);
 				LOG.info("login: after getDirContext");
 				return user;
 			} catch (Exception e) {
@@ -155,9 +160,16 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not create object: " + dynamicObject.getPath());
 		}
-		DirContext ctx = null;
+		javax.naming.ldap.LdapContext ctx = null;
+		StartTlsResponse tls = null;
 		try {
-			ctx = getDirContext();
+			ctx = getLdapContext();
+			if (isTls()) {
+				// Start TLS
+				tls =
+				    (StartTlsResponse) ctx.extendedOperation(new StartTlsRequest());
+				tls.negotiate();
+			}
 			ctx.bind(dynamicObject.getPath(), new DynamicObjectWrapper(dynamicObject));
 			// load new object
 			DynamicObject newObject = loadObject(dynamicObject.getPath());
@@ -170,7 +182,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			updateObject(newObject);
 			*/
 			return newObject;
-		} catch (NamingException e) {
+		} catch (NamingException | IOException e) {
+			LOG.error("Error", e);
 			throw new DynamicObjectException(e);
 		} finally {
 			if (ctx != null) {
@@ -183,12 +196,24 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	private boolean isTls() {
+		return tls;
+	}
+
+
 	@Override
 	public void search(QueryHandler queryHandler) throws DynamicObjectException {
-		DirContext ctx = null;
+		javax.naming.ldap.LdapContext ctx = null;
+		StartTlsResponse tls = null;
 		NamingEnumeration<SearchResult> results = null;
 		try {
-			ctx = getDirContext();
+			ctx = getLdapContext();
+			if (isTls()) {
+				// Start TLS
+				tls =
+				    (StartTlsResponse) ctx.extendedOperation(new StartTlsRequest());
+				tls.negotiate();
+			}
 			results = ctx.search(queryHandler.getBaseDN(), queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
 			List<ContextSearchResult> list = new ArrayList<ContextSearchResult>();
 			try {
@@ -200,6 +225,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			}
 			queryHandler.handle(list);
 		} catch (Throwable e) {
+			LOG.debug("Error", e);
 			throw new DynamicObjectException(e.getMessage());
 		} finally {
 			if (results != null) {
@@ -226,13 +252,20 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
 		}
-		DirContext ctx = null;
+		javax.naming.ldap.LdapContext ctx = null;
+		StartTlsResponse tls = null;
 		try {
-			ctx = getDirContext();
+			ctx = getLdapContext();
+			if (isTls()) {
+				// Start TLS
+				tls =
+				    (StartTlsResponse) ctx.extendedOperation(new StartTlsRequest());
+				tls.negotiate();
+			}
 			ctx.modifyAttributes(dynamicObject.getPath(),DirContext.REPLACE_ATTRIBUTE, dynamicObject.getModel().getLdapAttributes(dynamicObject, CREATEONLY.FALSE));
-		} catch (NamingException e) {
+		} catch (NamingException | IOException e) {
 			String details = getDetails(dynamicObject, CREATEONLY.FALSE);
-			LOG.error(details);
+			LOG.error(details, e);
 			throw new DynamicObjectException(e);
 		} finally {
 			if (ctx != null) {
@@ -250,14 +283,21 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
 		}
-		DirContext ctx = null;
+		javax.naming.ldap.LdapContext ctx = null;
+		StartTlsResponse tls = null;
 		try {
-			ctx = getDirContext();
+			ctx = getLdapContext();
+			if (isTls()) {
+				// Start TLS
+				tls =
+				    (StartTlsResponse) ctx.extendedOperation(new StartTlsRequest());
+				tls.negotiate();
+			}
 			ctx.modifyAttributes(dynamicObject.getPath(),DirContext.REPLACE_ATTRIBUTE,
 					dynamicObject.getModel().getLdapAttributes(dynamicObject, attributeNames, CREATEONLY.FALSE));
-		} catch (NamingException e) {
+		} catch (NamingException | IOException e) {
 			String details = getDetails(dynamicObject, CREATEONLY.FALSE);
-			LOG.error(details);
+			LOG.error(details, e);
 			throw new DynamicObjectException(e);
 		} finally {
 			if (ctx != null) {
@@ -282,12 +322,20 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not delete object: " + dynamicObject.getPath());
 		}
-		DirContext ctx = null;
+		javax.naming.ldap.LdapContext ctx = null;
+		StartTlsResponse tls = null;
 		try {
-			ctx = getDirContext();
+			ctx = getLdapContext();
+			if (isTls()) {
+				// Start TLS
+				tls =
+				    (StartTlsResponse) ctx.extendedOperation(new StartTlsRequest());
+				tls.negotiate();
+			}
 			ctx.unbind(dynamicObject.getPath());
 			dynamicObject.setOriginal(null);
-		} catch (NamingException e) {
+		} catch (NamingException | IOException e) {
+			LOG.error("Error", e);
 			throw new DynamicObjectException(e);
 		} finally {
 			if (ctx != null) {
@@ -309,12 +357,20 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (isExist(newPath)) {
 			throw new DynamicObjectException("Object exists: " + newPath);
 		}
-		DirContext ctx = null;
+		javax.naming.ldap.LdapContext ctx = null;
+		StartTlsResponse tls = null;
 		try {
-			ctx = getDirContext();
+			ctx = getLdapContext();
+			if (isTls()) {
+				// Start TLS
+				tls =
+				    (StartTlsResponse) ctx.extendedOperation(new StartTlsRequest());
+				tls.negotiate();
+			}
 			ctx.rename(dynamicObject.getPath(), newPath);
 			return loadObject(newPath);
-		} catch (NamingException e) {
+		} catch (NamingException | IOException e) {
+			LOG.error("Error", e);
 			throw new DynamicObjectException(e);
 		} finally {
 			if (ctx != null) {

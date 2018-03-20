@@ -28,6 +28,7 @@ import javax.naming.Context;
 import javax.naming.NamingException;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.InitialDirContext;
+import javax.naming.ldap.InitialLdapContext;
 
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
@@ -42,7 +43,7 @@ public class LdapGuestContext extends LdapContext implements NickiContext {
 	}
 
 	@Override
-	public DirContext getDirContext() throws DynamicObjectException {
+	public javax.naming.ldap.LdapContext getLdapContext() throws DynamicObjectException {
 		Hashtable<String, String> env = new Hashtable<String, String>();
 		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 		env.put(Context.PROVIDER_URL, getTarget().getProperty("providerUrl"));
@@ -50,7 +51,7 @@ public class LdapGuestContext extends LdapContext implements NickiContext {
 		env.put("com.sun.jndi.ldap.connect.pool", "true");
 
 		try {
-			return new InitialDirContext(env);
+			return new InitialLdapContext(env, null);
 		} catch (NamingException e) {
 			throw new DynamicObjectException(e);
 		}

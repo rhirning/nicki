@@ -408,7 +408,7 @@ public class BaseDBContext
 
 	}
 
-	private <T> T get(Class<T> beanClass, ResultSet rs) throws SQLException, InstantiationException, IllegalAccessException {
+	public <T> T get(Class<T> beanClass, ResultSet rs) throws SQLException, InstantiationException, IllegalAccessException {
 		T entry = beanClass.newInstance();
 		for (Field field : beanClass.getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);

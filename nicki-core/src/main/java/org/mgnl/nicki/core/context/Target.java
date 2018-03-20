@@ -70,6 +70,10 @@ public class Target implements Serializable {
 		return Config.getString(propertyBase + "." + appendix);
 	}
 	
+	public boolean getBoolean(String appendix) {
+		return Config.getBoolean(propertyBase + "." + appendix);
+	}
+	
 	public String getProperty(String appendix, String defaultValue) {
 		return Config.getString(propertyBase + "." + appendix, defaultValue);
 	}
