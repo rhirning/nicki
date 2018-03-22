@@ -25,7 +25,9 @@ package org.mgnl.nicki.spnego;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.Filter;
@@ -193,6 +195,11 @@ public final class SpnegoHttpFilter implements Filter {
     private static final String SESSION_USER = "NICKI_SESSION_USER";
     public static final String SESSION_AUTH_HEADER = "NICKI_SESSION_AUTH_HEADER";
 	public static final String SESSION_AUTH_REQUEST = "NICKI_SESSION_AUTH_REQUEST";
+	
+	public static final String NICKI_PARAMETERS = "NICKI_PARAMETERS";
+	private static final String[] PARAMETERS = {
+		"nickiToken", "nickiName", "nickiPassword"
+	};
 
     /** Object for performing Basic and SPNEGO authentication. */
     private transient SpnegoAuthenticator authenticator;
@@ -282,7 +289,16 @@ public final class SpnegoHttpFilter implements Filter {
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
 
         
-        httpRequest.getSession(true);
+		if (httpRequest.getSession(true).getAttribute(NICKI_PARAMETERS) == null) {
+			Map<String, String> map = new HashMap<String, String>();
+			for (String param : PARAMETERS) {
+				if (StringUtils.isNotBlank(httpRequest.getParameter(param))) {
+					map.put(param, httpRequest.getParameter(param));
+				}
+			}
+			httpRequest.getSession().setAttribute(NICKI_PARAMETERS, map);
+			LOG.debug("ParameterMap: " + map);
+		}
 
     	// check for request parameter nokerberos
         if (httpRequest.getParameter("nokerberos") != null) {
