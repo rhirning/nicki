@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,6 +44,12 @@ public class NickiServlet extends VaadinServlet {
 	private static final String[] PARAMETERS = {
 		"nickiToken", "nickiName", "nickiPassword"
 	};
+	
+
+	public NickiServlet() {
+		super();
+	}
+
 
 	@Override
 	protected void service(HttpServletRequest request,
@@ -58,6 +65,12 @@ public class NickiServlet extends VaadinServlet {
 			LOG.debug("ParameterMap: " + map);
 		}
 		super.service(request, response);
+	}
+
+
+	@Override
+	public void init(ServletConfig servletConfig) throws ServletException {
+		super.init(servletConfig);
 	}
 
 
