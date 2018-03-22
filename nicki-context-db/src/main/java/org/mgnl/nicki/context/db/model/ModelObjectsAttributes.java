@@ -37,7 +37,7 @@ public class ModelObjectsAttributes {
 	@ForeignKey(columnName = "ID", foreignKeyClass = ModelAttribute.class)
 	private Long modelAttributeId;
 	@Attribute(name = "mandatory")
-	private boolean mandatory;
+	private Boolean mandatory;
 	public Long getId() {
 		return id;
 	}
@@ -56,7 +56,7 @@ public class ModelObjectsAttributes {
 	public void setModelAttributeId(Long modelAttributeId) {
 		this.modelAttributeId = modelAttributeId;
 	}
-	public boolean isMandatory() {
+	public Boolean isMandatory() {
 		return mandatory;
 	}
 	public void setMandatory(boolean mandatory) {
