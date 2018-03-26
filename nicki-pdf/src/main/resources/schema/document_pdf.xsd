@@ -36,6 +36,7 @@
   <xsd:complexType name="data" mixed="true">
        <xsd:sequence>
          <xsd:element name="text" type="text"/>
+         <xsd:element name="barcode" type="barcode"/>
          <xsd:element name="image" type="image"/>
          <xsd:element name="table" type="table"/>
          <xsd:element name="list" type="list"/>
@@ -47,6 +48,7 @@
  <xsd:complexType name="box">
        <xsd:choice>
          <xsd:element name="text" type="text" minOccurs="0"/>
+         <xsd:element name="barcode" type="barcode" minOccurs="0"/>
          <xsd:element name="image" type="image" minOccurs="0"/>
        </xsd:choice>
        <xsd:attributeGroup ref="coordinates"/>
@@ -70,10 +72,21 @@
    </xsd:simpleContent>
  </xsd:complexType>
 
+  <xsd:complexType name="barcode">
+   <xsd:simpleContent>
+     <xsd:extension base="xsd:string">
+       <xsd:attributeGroup ref="size"/>
+       <xsd:attributeGroup ref="alignment"/>
+       <xsd:attribute name="annotation"/>
+     </xsd:extension>
+   </xsd:simpleContent>
+ </xsd:complexType>
+
   <xsd:complexType name="item" mixed="true">
     <xsd:sequence>
       <xsd:element name="title" type="text" maxOccurs="1"/>
       <xsd:element name="text" type="text" maxOccurs="unbounded"/>
+      <xsd:element name="barcode" type="barcode" maxOccurs="unbounded"/>
       <xsd:element name="list" type="list" maxOccurs="unbounded"/>
     </xsd:sequence>
   </xsd:complexType>
@@ -148,6 +161,7 @@
  <xsd:complexType name="table-data" mixed="true">
        <xsd:sequence>
          <xsd:element name="text" type="text"/>
+         <xsd:element name="barcode" type="barcode"/>
          <xsd:element name="image" type="image"/>
          <xsd:element name="link" type="link"/>
          <xsd:element name="checkbox" type="checkbox"/>

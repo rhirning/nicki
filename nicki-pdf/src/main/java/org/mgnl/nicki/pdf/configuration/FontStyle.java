@@ -22,7 +22,7 @@ package org.mgnl.nicki.pdf.configuration;
  */
 
 
-import com.lowagie.text.Font;
+import com.itextpdf.text.Font;
 import java.util.HashMap;
 import java.util.Map;
 

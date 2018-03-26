@@ -17,18 +17,17 @@ import javax.xml.bind.annotation.XmlValue;
 
 
 /**
- * <p>Java-Klasse für image complex type.
+ * <p>Java-Klasse für barcode complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * 
  * <pre>
- * &lt;complexType name="image">
+ * &lt;complexType name="barcode">
  *   &lt;simpleContent>
  *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema>string">
  *       &lt;attGroup ref="{}size"/>
  *       &lt;attGroup ref="{}alignment"/>
  *       &lt;attribute name="annotation" type="{http://www.w3.org/2001/XMLSchema}anySimpleType" />
- *       &lt;attribute name="background-color" type="{http://www.w3.org/2001/XMLSchema}string" />
  *     &lt;/extension>
  *   &lt;/simpleContent>
  * &lt;/complexType>
@@ -37,18 +36,16 @@ import javax.xml.bind.annotation.XmlValue;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "image", propOrder = {
+@XmlType(name = "barcode", propOrder = {
     "value"
 })
-public class Image {
+public class Barcode {
 
     @XmlValue
     protected String value;
     @XmlAttribute(name = "annotation")
     @XmlSchemaType(name = "anySimpleType")
     protected String annotation;
-    @XmlAttribute(name = "background-color")
-    protected String backgroundColor;
     @XmlAttribute(name = "width")
     protected Integer width;
     @XmlAttribute(name = "height")
@@ -104,30 +101,6 @@ public class Image {
      */
     public void setAnnotation(String value) {
         this.annotation = value;
-    }
-
-    /**
-     * Ruft den Wert der backgroundColor-Eigenschaft ab.
-     * 
-     * @return
-     *     possible object is
-     *     {@link String }
-     *     
-     */
-    public String getBackgroundColor() {
-        return backgroundColor;
-    }
-
-    /**
-     * Legt den Wert der backgroundColor-Eigenschaft fest.
-     * 
-     * @param value
-     *     allowed object is
-     *     {@link String }
-     *     
-     */
-    public void setBackgroundColor(String value) {
-        this.backgroundColor = value;
     }
 
     /**

@@ -22,18 +22,21 @@ package org.mgnl.nicki.pdf.engine;
  */
 
 
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.ColumnText;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfWriter;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.BarcodeQRCode;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.pdf.configuration.FontStyle;
 import org.mgnl.nicki.pdf.configuration.PdfConfiguration;
+import org.mgnl.nicki.pdf.model.template.Barcode;
 import org.mgnl.nicki.pdf.model.template.Box;
 import org.mgnl.nicki.pdf.model.template.Image;
 import org.mgnl.nicki.pdf.model.template.Page;
@@ -65,6 +68,8 @@ public class PageRenderer {
 		Point point = new Point(box.getX(), box.getY());
 		if (box.getText() != null) {
 			render(box.getText(), point);
+		} else if (box.getBarcode() != null) {
+				render(box.getBarcode(), point);
 		} else if (box.getImage() != null) {
 			render(box.getImage(), point, box.getVerticalAlign(), box.getAlign());
 		}
@@ -102,13 +107,31 @@ public class PageRenderer {
 		log.debug("setting text position to {} (INCH: {})", p, posUU);
 	}
 
+	private void render(Barcode barcode, Point point) throws DocumentException, IOException {
+		log.debug("rendering barcode: {}", barcode.getValue());
+
+
+		BarcodeQRCode barcodeQRCode = new BarcodeQRCode(barcode.getValue(), barcode.getWidth(), barcode.getHeight(), null);
+
+		com.itextpdf.text.Image pdfImage = barcodeQRCode.getImage();
+		if(pdfImage == null) {
+			return;
+		}
+		
+		Point position = config.transformPoint(point);
+		log.debug("setting image position to {} (INCH: {})", point, position);
+		pdfImage.setAbsolutePosition(position.getX(), position.getY());
+		content.addImage(pdfImage);
+
+	}
+
 	private void render(Image image, Point point, String vAlign, String align) throws DocumentException, IOException {
 		log.debug("rendering with vAlign={}, align={}", vAlign, align);
 		if(image == null) {
 			return;
 		}
 		
-		com.lowagie.text.Image pdfImage = config.getImage(image.getValue());
+		com.itextpdf.text.Image pdfImage = config.getImage(image.getValue());
 		if(pdfImage == null) {
 			return;
 		}

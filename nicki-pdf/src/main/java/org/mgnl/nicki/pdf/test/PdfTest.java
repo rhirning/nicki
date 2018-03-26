@@ -25,17 +25,18 @@ package org.mgnl.nicki.pdf.test;
 import java.io.FileOutputStream;
 import java.io.IOException;
  
-import com.lowagie.text.Chunk;
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.Element;
-import com.lowagie.text.Font;
-import com.lowagie.text.Paragraph;
-import com.lowagie.text.Phrase;
-import com.lowagie.text.pdf.BaseFont;
-import com.lowagie.text.pdf.ColumnText;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfWriter;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfWriter;
  
 public class PdfTest {
  
@@ -96,7 +97,7 @@ public class PdfTest {
         canvas.restoreState();
         // Adding text with PdfContentByte.showTextAligned()
         canvas.beginText();
-        Font font = new Font(Font.HELVETICA);
+        Font font = new Font(FontFamily.HELVETICA);
         BaseFont bf = font.getCalculatedBaseFont(false);
         canvas.setFontAndSize(bf, 12);
         canvas.showTextAligned(Element.ALIGN_LEFT, foobar, 400, 788, 0);

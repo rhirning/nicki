@@ -25,13 +25,13 @@ package org.mgnl.nicki.pdf.engine;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.pdf.model.template.Checkbox;
 
-import com.lowagie.text.ExceptionConverter;
-import com.lowagie.text.Rectangle;
-import com.lowagie.text.pdf.PdfContentByte;
-import com.lowagie.text.pdf.PdfPCell;
-import com.lowagie.text.pdf.PdfPCellEvent;
-import com.lowagie.text.pdf.PdfWriter;
-import com.lowagie.text.pdf.RadioCheckField;
+import com.itextpdf.text.ExceptionConverter;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfPCell;
+import com.itextpdf.text.pdf.PdfPCellEvent;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.RadioCheckField;
 
 
 class CheckboxCellEvent implements PdfPCellEvent {
