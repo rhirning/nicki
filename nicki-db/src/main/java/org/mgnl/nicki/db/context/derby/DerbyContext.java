@@ -112,4 +112,9 @@ public class DerbyContext
 			return name;
 		}
 	}
+
+	@Override
+	public String getDateAsDbString(Date value) {
+		return toTimestamp(value);
+	}
 }
