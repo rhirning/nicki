@@ -168,12 +168,16 @@ public class MainView extends CustomComponent {
 	public void addNavigation(NickiApplication application, String classPath) throws IllegalAccessException, InvocationTargetException, InstantiationException, ClassNotFoundException {
 		ApplicationConfig applicationConfig = JsonHelper.toBean(ApplicationConfig.class, getClass().getResourceAsStream(classPath));
 		for (ApplicationChapter chapter : applicationConfig.getChapters()) {
-			for (ApplicationView applicationView : chapter.getViews()) {
-				String labelCaption = I18n.getText(chapter.getChapter());
-				String caption = I18n.getText(applicationView.getTitle());
-				View view = Classes.newInstance(applicationView.getView());
-				view.setApplication(application);
-				addNavigationEntry(labelCaption, caption, view);
+			if (applicationConfig.isAllowed(this.user, chapter.getGroups(), chapter.getRoles())) {
+				for (ApplicationView applicationView : chapter.getViews()) {
+					if (applicationConfig.isAllowed(this.user, applicationView.getGroups(), applicationView.getRoles())) {
+						String labelCaption = I18n.getText(chapter.getChapter());
+						String caption = I18n.getText(applicationView.getTitle());
+						View view = Classes.newInstance(applicationView.getView());
+						view.setApplication(application);
+						addNavigationEntry(labelCaption, caption, view);
+					}
+				}
 			}
 		}
 	}
