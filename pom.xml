@@ -18,7 +18,7 @@
 	</properties>
 	<inceptionYear>2017</inceptionYear>
 	<modules>
-		<module>nicki-app-menu</module>
+		
 		<module>nicki-apps</module>
 		<module>nicki-cache</module>
 		<module>nicki-context-db</module>

@@ -34,8 +34,6 @@ import org.slf4j.LoggerFactory;
 public class BasicAuthAdapter implements SSOAdapter {
 	private static final Logger LOG = LoggerFactory.getLogger(BasicAuthAdapter.class);
 	private Object request;
-	private NickiAdapterLoginModule loginModule;
-
 	public String getName() {
 		return getAuthPart(0);
 	}
@@ -96,7 +94,6 @@ public class BasicAuthAdapter implements SSOAdapter {
 
 	@Override
 	public void init(NickiAdapterLoginModule loginModule) {
-		this.loginModule = loginModule;
 	}
 	
 }

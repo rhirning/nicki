@@ -1,7 +1,5 @@
 package org.mgnl.nicki.core.auth;
 
-import java.security.Principal;
-
 import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 

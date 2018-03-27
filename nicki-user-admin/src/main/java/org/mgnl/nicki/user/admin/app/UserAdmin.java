@@ -23,7 +23,6 @@ package org.mgnl.nicki.user.admin.app;
 
 
 
-import org.mgnl.nicki.app.menu.application.MainView;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.i18n.I18n;
@@ -31,6 +30,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.vaadin.base.application.AccessGroup;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import org.mgnl.nicki.vaadin.base.application.ShowWelcomeDialog;
+import org.mgnl.nicki.vaadin.base.menu.application.MainView;
 
 import com.vaadin.ui.Component;
 
