@@ -127,7 +127,7 @@ public class MainView extends CustomComponent {
 
 		// TODO check is navigation change is allowed
 		if (activeView != null && activeView.isModified()) {
-			Notification.show(I18n.getText("pva.cms.client.message.modified"), Type.HUMANIZED_MESSAGE);
+			Notification.show(I18n.getText("nicki.app.menu.message.modified"), Type.HUMANIZED_MESSAGE);
 			return false;
 		}
 		navigation.selectInNavigation(entry);
