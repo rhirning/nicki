@@ -32,9 +32,9 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.ldap.core.LdapQuery;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 
-public class StructuredReferenceMethod implements TemplateMethodModel, Serializable {
+public class StructuredReferenceMethod implements TemplateMethodModelEx, Serializable {
 
 	private static final long serialVersionUID = -81535049844368520L;
 	List<DynamicObject> objects = null;

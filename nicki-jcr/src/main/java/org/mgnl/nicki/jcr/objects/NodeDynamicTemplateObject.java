@@ -32,7 +32,7 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.methods.ChildrenMethod;
 
 
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 
 @SuppressWarnings("serial")
 public class NodeDynamicTemplateObject extends BaseJcrDynamicObject {
@@ -47,13 +47,13 @@ public class NodeDynamicTemplateObject extends BaseJcrDynamicObject {
 		}
 	}
 	
-	public void addMethod(String name, TemplateMethodModel method) {
+	public void addMethod(String name, TemplateMethodModelEx method) {
 		put(DynamicJcrAttribute.getGetter(name), method);
 	};
 	
 	public Object execute(String methodName, @SuppressWarnings("rawtypes") List arguments) throws DynamicObjectException {
 		try {
-			TemplateMethodModel method = (TemplateMethodModel) get(methodName);
+			TemplateMethodModelEx method = (TemplateMethodModelEx) get(methodName);
 			return method.exec(arguments);
 		} catch (Exception e) {
 			throw new DynamicObjectException(e);

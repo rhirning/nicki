@@ -50,7 +50,7 @@ import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 
 @DynamicObject
@@ -433,7 +433,7 @@ public class IdmPerson extends Person implements Serializable {
 	@SuppressWarnings("unchecked")
 	public Collection<Role> getAssignedRoles() {
 		if (assignedRoles == null) {
-			TemplateMethodModel method = (TemplateMethodModel) get("getRoles");
+			TemplateMethodModelEx method = (TemplateMethodModelEx) get("getRoles");
 			if (method != null) {
 				try {
 					assignedRoles = (Collection<Role>) method.exec(null);
@@ -455,7 +455,7 @@ public class IdmPerson extends Person implements Serializable {
 	@SuppressWarnings("unchecked")
 	public Collection<Role> getGroupRoles() {
 		if (groupRoles == null) {
-			TemplateMethodModel method = (TemplateMethodModel) get("getGroupRoles");
+			TemplateMethodModelEx method = (TemplateMethodModelEx) get("getGroupRoles");
 			if (method != null) {
 				try {
 					groupRoles = (Collection<Role>) method.exec(null);
@@ -471,7 +471,7 @@ public class IdmPerson extends Person implements Serializable {
 	@SuppressWarnings("unchecked")
 	public Collection<Role> getContainerRoles() {
 		if (containerRoles == null) {
-			TemplateMethodModel method = (TemplateMethodModel) get("getContainerRoles");
+			TemplateMethodModelEx method = (TemplateMethodModelEx) get("getContainerRoles");
 			if (method != null) {
 				try {
 					containerRoles = (Collection<Role>) method.exec(null);
@@ -487,7 +487,7 @@ public class IdmPerson extends Person implements Serializable {
 	@SuppressWarnings("unchecked")
 	public Collection<Resource> getResources() {
 		if (assignedResources == null) {
-			TemplateMethodModel method = (TemplateMethodModel) get("getResources");
+			TemplateMethodModelEx method = (TemplateMethodModelEx) get("getResources");
 			if (method != null) {
 				try {
 					assignedResources = (Collection<Resource>) method.exec(null);

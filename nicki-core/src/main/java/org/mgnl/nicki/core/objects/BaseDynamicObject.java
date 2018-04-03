@@ -50,7 +50,7 @@ import org.mgnl.nicki.core.methods.StructuredData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 
 @SuppressWarnings("serial")
 public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
@@ -213,13 +213,13 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 		this.getModel().removeObjectClass(objectClass);
 	}
 
-	public void addMethod(String name, TemplateMethodModel method) {
+	public void addMethod(String name, TemplateMethodModelEx method) {
 		put(DynamicAttribute.getGetter(name), method);
 	}
 	
 	public Object execute(String methodName, @SuppressWarnings("rawtypes") List arguments) throws DynamicObjectException {
 		try {
-			TemplateMethodModel method = (TemplateMethodModel) get(methodName);
+			TemplateMethodModelEx method = (TemplateMethodModelEx) get(methodName);
 			return method.exec(arguments);
 		} catch (Exception e) {
 			throw new DynamicObjectException(e);

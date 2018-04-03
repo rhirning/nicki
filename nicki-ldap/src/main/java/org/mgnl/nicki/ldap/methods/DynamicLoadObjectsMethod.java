@@ -30,10 +30,10 @@ import java.util.List;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 
 @SuppressWarnings("serial")
-public class DynamicLoadObjectsMethod implements TemplateMethodModel, Serializable {
+public class DynamicLoadObjectsMethod implements TemplateMethodModelEx, Serializable {
 
 	private NickiContext context;
 	

@@ -35,9 +35,9 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 
-public class ChildrenMethod implements Serializable, TemplateMethodModel {
+public class ChildrenMethod implements Serializable, TemplateMethodModelEx {
 	private static final Logger LOG = LoggerFactory.getLogger(ChildrenMethod.class);
 
 	private static final long serialVersionUID = -81535049844368520L;

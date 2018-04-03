@@ -22,7 +22,6 @@ package org.mgnl.nicki.vaadin.db.fields;
  */
 
 
-import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;;
 
 public class BaseDbBeanAttributeField {

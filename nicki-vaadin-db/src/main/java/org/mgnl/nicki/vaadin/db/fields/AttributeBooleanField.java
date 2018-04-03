@@ -24,7 +24,6 @@ package org.mgnl.nicki.vaadin.db.fields;
 
 import java.io.Serializable;
 
-import org.mgnl.nicki.db.helper.BeanHelper;
 import org.mgnl.nicki.vaadin.db.data.AttributeDataContainer;
 import org.mgnl.nicki.vaadin.db.data.DataContainer;
 import org.mgnl.nicki.vaadin.db.editor.DbBeanValueChangeListener;

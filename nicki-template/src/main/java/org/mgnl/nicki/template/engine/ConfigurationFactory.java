@@ -33,8 +33,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import freemarker.cache.TemplateLoader;
+import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.Configuration;
-import freemarker.template.ObjectWrapper;
 
 public class ConfigurationFactory {
 	private static final Logger LOG = LoggerFactory.getLogger(ConfigurationFactory.class);
@@ -46,8 +46,8 @@ public class ConfigurationFactory {
 	public Configuration getConfiguration(TYPE type, String base) {
 		String key = type.name() + "-" + base;
 		if (!configurations.containsKey(key)) {
-			Configuration cfg = new Configuration();
-			cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
+			Configuration cfg = new Configuration(Configuration.VERSION_2_3_27);
+			cfg.setObjectWrapper(new BeansWrapperBuilder(Configuration.VERSION_2_3_27).build());
 			TemplateLoader loader = null;
 			if (type == TYPE.JNDI) {
 				try {

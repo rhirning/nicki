@@ -33,9 +33,9 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 
-public class ListForeignKeyMethod implements TemplateMethodModel, Serializable {
+public class ListForeignKeyMethod implements TemplateMethodModelEx, Serializable {
 
 	private static final long serialVersionUID = -81535049844368520L;
 	private static final Logger LOG = LoggerFactory.getLogger(ListForeignKeyMethod.class);

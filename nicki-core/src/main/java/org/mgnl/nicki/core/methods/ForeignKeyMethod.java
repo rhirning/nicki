@@ -30,9 +30,9 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 
-public class ForeignKeyMethod implements Serializable,TemplateMethodModel {
+public class ForeignKeyMethod implements Serializable,TemplateMethodModelEx {
 
 	private static final long serialVersionUID = -5726598490077862331L;
 	private DynamicObject object;

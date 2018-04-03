@@ -31,9 +31,9 @@ import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 
-public class ChildrenMethod implements Serializable, TemplateMethodModel {
+public class ChildrenMethod implements Serializable, TemplateMethodModelEx {
 
 	private static final long serialVersionUID = -81535049844368520L;
 	private List<? extends DynamicObject> objects;

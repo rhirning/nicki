@@ -31,9 +31,9 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicReference;
 
-import freemarker.template.TemplateMethodModel;
+import freemarker.template.TemplateMethodModelEx;
 
-public class ReferenceMethod implements TemplateMethodModel, Serializable {
+public class ReferenceMethod implements TemplateMethodModelEx, Serializable {
 
 	private static final long serialVersionUID = -81535049844368520L;
 	private List<DynamicObject> objects;
