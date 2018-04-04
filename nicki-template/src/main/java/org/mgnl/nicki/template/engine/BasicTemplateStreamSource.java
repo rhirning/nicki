@@ -95,16 +95,6 @@ public class BasicTemplateStreamSource {
 		return null;
 	}
 
-	public InputStream getPdfStream() {
-		try {
-			return TemplateEngine.getInstance().executeTemplateAsPdf(getTemplatePath(), getDataModel());
-		} catch (Exception e) {
-			LOG.error("Error", e);
-		}
-		
-		return null;
-	}
-
 	public InputStream getPdfStream2() {
 		try {
 			return TemplateEngine.getInstance().executeTemplateAsPdf2(getTemplatePath(), getDataModel());

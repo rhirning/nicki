@@ -251,8 +251,6 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 				if (isComplete()) {
 					if (template.hasPart("pdf")) {
 						pdfStreamSource = new PdfStreamSource2(template, template.getContext(), params);
-					} else {
-						pdfStreamSource = new PdfStreamSource(template, template.getContext(), params);
 					}
 				}
 				if (pdfStreamSource != null) {

@@ -31,7 +31,7 @@ import org.mgnl.nicki.template.engine.ConfigurationFactory;
 import org.mgnl.nicki.template.engine.TemplateEngine;
 import org.xml.sax.SAXException;
 
-import com.lowagie.text.DocumentException;
+import com.itextpdf.text.DocumentException;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;

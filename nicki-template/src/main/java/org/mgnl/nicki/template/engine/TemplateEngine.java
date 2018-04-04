@@ -42,12 +42,11 @@ import org.mgnl.nicki.dynamic.objects.objects.EngineTemplate;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.template.engine.ConfigurationFactory.TYPE;
 import org.mgnl.nicki.template.handler.TemplateHandler;
-import org.mgnl.nicki.template.pdf.PdfTemplateRenderer;
 import org.mgnl.nicki.template.pdf.PdfTemplateRenderer2;
 import org.mgnl.nicki.template.pdf.XlsTemplateRenderer;
 import org.xml.sax.SAXException;
 
-import com.lowagie.text.DocumentException;
+import com.itextpdf.text.DocumentException;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -97,7 +96,7 @@ public class TemplateEngine {
 			IOUtils.copy(executeTemplateAsCsv(templateName, handler.getDataModel()), out);
 			break;
 		case PDF:
-			IOUtils.copy(executeTemplateAsPdf(templateName, handler.getDataModel()), out);
+//			IOUtils.copy(executeTemplateAsPdf(templateName, handler.getDataModel()), out);
 			break;
 		case PDF2:
 			IOUtils.copy(executeTemplateAsPdf2(templateName, handler.getDataModel()), out);
@@ -116,16 +115,6 @@ public class TemplateEngine {
 	    PipedInputStream pis = new PipedInputStream(pos);
 	    RenderTemplate renderTemplate = new RenderTemplate(template, dataModel, pos, charset);
 	    renderTemplate.start();
-		return pis;
-	}
-
-	public InputStream executeTemplateAsPdf(String templateName,
-			Map<String, Object> dataModel) throws IOException,
-			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
-	    PipedOutputStream pos = new PipedOutputStream();
-	    PipedInputStream pis = new PipedInputStream(pos);
-		PdfTemplateRenderer renderer = new PdfTemplateRenderer(executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos);
-		renderer.start();
 		return pis;
 	}
 
