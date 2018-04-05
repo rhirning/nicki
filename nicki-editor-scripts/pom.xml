@@ -6,14 +6,14 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>7.100-SNAPSHOT</version>
+		<version>7.100</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-vaadin-base</artifactId>
-			<version>7.100-SNAPSHOT</version>
+			<version>7.100</version>
 		</dependency>
 		<dependency>
 			<groupId>org.beanshell</groupId>
