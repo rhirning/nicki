@@ -27,12 +27,22 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.BaseDBContext;
 import org.mgnl.nicki.db.context.DBContext;
 
 public class MySqlContext extends BaseDBContext implements DBContext {
 
+
+	@Override
+	public String getQualifiedName(String name) {
+		if (!StringUtils.contains(name, '.') && this.getSchema() != null) {
+			return this.getSchema() + "." + name;
+		} else {
+			return name;
+		}
+	}
 
 	@Override
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
