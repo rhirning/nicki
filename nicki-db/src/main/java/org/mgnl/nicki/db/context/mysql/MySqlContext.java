@@ -65,7 +65,7 @@ public class MySqlContext extends BaseDBContext implements DBContext {
 	@Override
 	public String toTimestamp(Date date) {
 		if (date != null) {
-			return new SimpleDateFormat(TIMESTAMP_FOR_ORACLE).format(date);
+			return "'" + new SimpleDateFormat(TIMESTAMP_FOR_ORACLE).format(date) + "'";
 		} else {
 			return "''";
 		}
