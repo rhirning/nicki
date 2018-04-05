@@ -70,4 +70,9 @@ public class MySqlContext extends BaseDBContext implements DBContext {
 			return "''";
 		}
 	}
+
+	@Override
+	public String toDate(Date date) {
+		return toTimestamp(date);
+	}
 }
