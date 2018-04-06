@@ -52,7 +52,8 @@ public class AttributeLongField  extends BaseDbBeanAttributeField implements DbB
 			field.setValue(Long.toString(property.getValue()));
 			if (BeanHelper.isForeignKey(bean, attributeName)) {
 				String foreignValue = StringUtils.stripToEmpty(BeanHelper.getForeignValue(bean, attributeName, dbContextName));
-				field.setCaption(getName(bean, attributeName) + ": " +foreignValue);
+				field.setValue(foreignValue + " (" + field.getValue() + ")");
+//				field.setCaption(getName(bean, attributeName) + ": " +foreignValue);
 			}
 		}
 		field.setImmediate(false);

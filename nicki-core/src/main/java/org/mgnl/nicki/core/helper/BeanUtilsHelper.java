@@ -46,6 +46,24 @@ public class BeanUtilsHelper {
 			return null;
 		}
 	}
+	public static Method getGetter(Class<?> clazz, String fieldName) {
+		
+		for (String prefix : prefixes) {
+			String methodName = prefix + StringUtils.capitalize(fieldName);
+			for (Method method : clazz.getDeclaredMethods()) {
+				if (StringUtils.equals(methodName, method.getName())) {
+					return method;
+				}
+			}
+		}
+		
+		Class<?> superClass = clazz.getSuperclass();
+		if (superClass != null) {
+			return getGetter(superClass, fieldName);
+		} else {
+			return null;
+		}
+	}
 
 	public static Method getSetter(Class<?> clazz, Field field) {
 		String methodName = "set" + StringUtils.capitalize(field.getName());
@@ -157,6 +175,21 @@ public class BeanUtilsHelper {
 		if (bean != null) {
 			Method getter = null;
 			getter = getGetter(bean.getClass(), field);
+			if (getter != null ) {
+				try {
+					return getter.invoke(bean);
+				} catch (Exception e) {
+					LOG.error("Error reading property", e);
+				}
+			}
+		}
+		return null;
+	}
+	
+	public static Object getProperty(Object bean, String fieldName) {
+		if (bean != null) {
+			Method getter = null;
+			getter = getGetter(bean.getClass(), fieldName);
 			if (getter != null ) {
 				try {
 					return getter.invoke(bean);

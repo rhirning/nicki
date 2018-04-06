@@ -148,16 +148,7 @@ public class BeanHelper {
 	}
 
 	public static Object getValue(Object bean, String fieldName) {
-		Field field;
-		try {
-			field = bean.getClass().getDeclaredField(fieldName);
-		} catch (NoSuchFieldException | SecurityException e) {
-			field = null;
-		}
-		if (field != null) {
-			return BeanUtilsHelper.getProperty(bean, field);
-		}
-		return null;
+		return BeanUtilsHelper.getProperty(bean, fieldName);
 	}
 
 	public static void setValue(Object bean, String fieldName, Object newValue) {

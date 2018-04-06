@@ -78,6 +78,7 @@ public class DbBeanViewer extends CustomComponent implements NewClassEditor, Cla
 		
 		mainLayout = new VerticalLayout();
 		mainLayout.setMargin(true);
+		mainLayout.setSpacing(true);
 		mainLayout.setWidth("100%");
 		Label label = new Label(I18n.getText(bean.getClass().getName()));
 		mainLayout.addComponent(label);

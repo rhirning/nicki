@@ -114,7 +114,7 @@ public class DbBeanFieldFactory implements Serializable {
 					&& (objectListener == null || objectListener.acceptAttribute(field.getName()))) {
 				Component component = createField(bean, field.getName(), create);
 				if (component != null) {
-					component.setWidth("200px");
+					component.setWidth("100%");
 					if (attribute.primaryKey() || foreignKey != null) {
 						component.setReadOnly(true);
 					}
