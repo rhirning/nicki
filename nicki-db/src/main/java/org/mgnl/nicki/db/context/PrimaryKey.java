@@ -106,4 +106,8 @@ public class PrimaryKey {
 		return getValue(String.class, columnName);
 	}
 
+	public int size() {
+		return values.size();
+	}
+
 }

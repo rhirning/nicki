@@ -996,7 +996,7 @@ public class BaseDBContext
 				try {
 					String statement = null;
 					PrimaryKey primaryKey = getPrimaryKey(bean);
-					if (primaryKey != null) {
+					if (primaryKey != null && primaryKey.size() > 0) {
 						try {
 							@SuppressWarnings("unchecked")
 							T deleteBean = (T) bean.getClass().newInstance();
