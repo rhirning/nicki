@@ -34,6 +34,7 @@ import org.mgnl.nicki.db.helper.Type;
 import org.mgnl.nicki.vaadin.db.fields.AttributeBooleanField;
 import org.mgnl.nicki.vaadin.db.fields.AttributeDateField;
 import org.mgnl.nicki.vaadin.db.fields.AttributeFloatField;
+import org.mgnl.nicki.vaadin.db.fields.AttributeForeignKeyField;
 import org.mgnl.nicki.vaadin.db.fields.AttributeIntegerField;
 import org.mgnl.nicki.vaadin.db.fields.AttributeLongField;
 import org.mgnl.nicki.vaadin.db.fields.AttributeTextField;
@@ -76,21 +77,25 @@ public class DbBeanFieldFactory implements Serializable {
 					}
 				}
 				if (viewField == null) {
-					Type type = BeanHelper.getTypeOfField(bean.getClass(), field.getName());
-					if (type == Type.DATE) {
-						viewField = new AttributeDateField();
-					} else if (type == Type.TIMESTAMP) {
-						viewField = new AttributeDateField();
-					} else if (type == Type.INT) {
-						viewField = new AttributeIntegerField();
-					} else if (type == Type.LONG) {
-						viewField = new AttributeLongField();
-					} else if (type == Type.FLOAT) {
-						viewField = new AttributeFloatField();
-					} else if (type == Type.BOOLEAN) {
-						viewField = new AttributeBooleanField();
+					if (BeanHelper.isForeignKey(bean, attributeName)) {
+						viewField = new AttributeForeignKeyField();
 					} else {
-						viewField = new AttributeTextField();
+						Type type = BeanHelper.getTypeOfField(bean.getClass(), field.getName());
+						if (type == Type.DATE) {
+							viewField = new AttributeDateField();
+						} else if (type == Type.TIMESTAMP) {
+							viewField = new AttributeDateField();
+						} else if (type == Type.INT) {
+							viewField = new AttributeIntegerField();
+						} else if (type == Type.LONG) {
+							viewField = new AttributeLongField();
+						} else if (type == Type.FLOAT) {
+							viewField = new AttributeFloatField();
+						} else if (type == Type.BOOLEAN) {
+							viewField = new AttributeBooleanField();
+						} else {
+							viewField = new AttributeTextField();
+						}
 					}
 					viewField.init(attributeName, bean, objectListener, dbContextName);
 				}
@@ -115,7 +120,7 @@ public class DbBeanFieldFactory implements Serializable {
 				Component component = createField(bean, field.getName(), create);
 				if (component != null) {
 					component.setWidth("100%");
-					if (attribute.primaryKey() || foreignKey != null) {
+					if (attribute.primaryKey()) {
 						component.setReadOnly(true);
 					}
 					layout.addComponent(component);

@@ -139,7 +139,7 @@ public class BeanUtilsHelper {
 	
 	public static <T> void setProperty(Object bean, Field field, T value) {
 		Method setter = null;
-		if (primitiveMap.containsKey(value.getClass())) {
+		if (value != null && primitiveMap.containsKey(value.getClass())) {
 			setter = getSetter(bean.getClass(), field, primitiveMap.get(value.getClass()));
 		}
 		

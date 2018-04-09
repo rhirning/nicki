@@ -48,4 +48,6 @@ public @interface Attribute {
 	String editorClass() default "";
 	
 	boolean readonly() default false;
+
+	boolean mandatory() default false;
 }

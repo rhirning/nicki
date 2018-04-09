@@ -1,6 +1,10 @@
 
 package org.mgnl.nicki.vaadin.db.fields;
 
+import java.lang.reflect.Field;
+
+import org.apache.commons.lang.StringUtils;
+
 /*-
  * #%L
  * nicki-vaadin-base
@@ -22,18 +26,35 @@ package org.mgnl.nicki.vaadin.db.fields;
  */
 
 
-import org.mgnl.nicki.core.i18n.I18n;;
+import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.db.annotation.Attribute;
 
 public class BaseDbBeanAttributeField {
 
-	public String getName(Object Bean, String attributeName) {
-		String key = Bean.getClass().getName()
+	public String getName(Object bean, String attributeName) {
+		String key = bean.getClass().getName()
 			+ "."
 			+ attributeName;
 		String name = I18n.getText(key);
+		if (isMandatory(bean, attributeName)) {
+			name += " *";
+		}
 //		if (StringUtils.equals(key, name)) {
 //			name = attributeName;
 //		}
 		return name;
 	}
+
+	private boolean isMandatory(Object bean, String attributeName) {
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			if (StringUtils.equals(attributeName, field.getName())) {
+				Attribute attribute = field.getAnnotation(Attribute.class);
+				if (attribute != null && attribute.mandatory()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 }

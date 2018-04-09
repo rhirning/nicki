@@ -193,6 +193,16 @@ public class BeanHelper {
 		return foreignKeyIds.toArray(new String[0]);
 	}
 
+	public static ForeignKey getForeignKey(Object bean, String attributeName) {
+		for (Field field : getFields(bean.getClass())) {
+			ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
+			if (foreignKey != null && StringUtils.equals(attributeName, field.getName())) {
+				return foreignKey;
+			}
+		}
+		return null;
+	}
+
 	public static boolean isForeignKey(Object bean, String attributeName) {
 		for (Field field : getFields(bean.getClass())) {
 			if (StringUtils.equals(attributeName, field.getName())) {
@@ -214,10 +224,14 @@ public class BeanHelper {
 						Object foreignObject = foreignKey.foreignKeyClass().newInstance();
 						Field foreignField = getFieldFromColumnName(foreignObject.getClass(), foreignKey.columnName());
 						Object keyValue = getValue(bean, attributeName);
-						setValue(foreignObject, foreignField.getName(), keyValue);
-						try (DBContext dbContext = DBContextManager.getContext(dbContextName)) {
-							foreignObject = dbContext.loadObject(foreignObject, false);
-							return (String) getValue(foreignObject, foreignKey.display());
+						if (keyValue != null) {
+							setValue(foreignObject, foreignField.getName(), keyValue);
+							try (DBContext dbContext = DBContextManager.getContext(dbContextName)) {
+								foreignObject = dbContext.loadObject(foreignObject, false);
+								if (foreignObject != null) {
+									return (String) getValue(foreignObject, foreignKey.display());
+								}
+							}
 						}
 					} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
 						LOG.error("Error reading foreign value", e);
@@ -226,5 +240,24 @@ public class BeanHelper {
 			}
 		}
 		return null;
+	}
+
+	public static List<Object> getForeignKeyValues(Object bean, String attributeName, String dbContextName) {
+		for (Field field : getFields(bean.getClass())) {
+			if (StringUtils.equals(attributeName, field.getName())) {
+				ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
+				if (foreignKey != null && StringUtils.isNotBlank(foreignKey.display())) {
+					try {
+						Object foreignObject = foreignKey.foreignKeyClass().newInstance();
+						try (DBContext dbContext = DBContextManager.getContext(dbContextName)) {
+							return dbContext.loadObjects(foreignObject, false);
+						}
+					} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
+						LOG.error("Error reading foreign value", e);
+					}
+				}
+			}
+		}
+		return new ArrayList<>();
 	}
 }

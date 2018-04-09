@@ -1,6 +1,10 @@
 
 package org.mgnl.nicki.vaadin.db.editor;
 
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+
 /*-
  * #%L
  * nicki-vaadin-base
@@ -24,6 +28,7 @@ package org.mgnl.nicki.vaadin.db.editor;
 
 
 import org.mgnl.nicki.core.i18n.I18n;
+import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.helper.BeanHelper;
@@ -36,6 +41,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Notification.Type;
 
 @SuppressWarnings("serial")
 public class DbBeanViewer extends CustomComponent implements NewClassEditor, ClassEditor {
@@ -98,6 +104,10 @@ public class DbBeanViewer extends CustomComponent implements NewClassEditor, Cla
 	}
 
 	public void save() {
+		if (!verifyMandatory()) {
+			Notification.show("Bitte Pflichtfelder füllen", Type.ERROR_MESSAGE);
+			return;
+		}
 		try {
 			try (DBContext dbContext = DBContextManager.getContext(dbContextName)) {
 				if (create) {
@@ -114,6 +124,19 @@ public class DbBeanViewer extends CustomComponent implements NewClassEditor, Cla
 		} catch (Exception e) {
 			LOG.error("Error", e);
 		}
+	}
+
+	private boolean verifyMandatory() {
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null && attribute.mandatory()) {
+				Object value = BeanHelper.getValue(this.bean, field.getName());
+				if (value == null) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	public boolean isCreate() {

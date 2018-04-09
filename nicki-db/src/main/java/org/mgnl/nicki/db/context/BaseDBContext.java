@@ -31,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -220,23 +221,26 @@ public class BaseDBContext
 				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
 				LOG.debug(searchStatement);
 				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-					rs.next();
-					@SuppressWarnings("unchecked")
-					T result = (T) get(bean.getClass(), rs);
-					if (postMethod != null) {
-						try {
-							postMethod.invoke(result);
-						} catch (Exception e) {
-							LOG.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
-									+ result.getClass().getName(), e);
+					if (rs.next()) {
+						@SuppressWarnings("unchecked")
+						T result = (T) get(bean.getClass(), rs);
+						if (postMethod != null) {
+							try {
+								postMethod.invoke(result);
+							} catch (Exception e) {
+								LOG.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
+										+ result.getClass().getName(), e);
+							}
 						}
-					}
-
-					
-					if (result != null && deepSearch){
-						addObjects(result, deepSearch);
-					}
-					return result;
+	
+						
+						if (result != null && deepSearch){
+							addObjects(result, deepSearch);
+						}
+						return result;
+					} else {
+						return null;
+					}					
 				}
 			}
 		} finally {
@@ -750,7 +754,11 @@ public class BaseDBContext
 				} else if (type == Type.LONG) {
 					pos++;
 					Long value = (Long) cv.getValue(columnName);
-					pstmt.setLong(pos, value);
+					if (value != null) {
+						pstmt.setLong(pos, value);
+					} else {
+						pstmt.setNull(pos, Types.BIGINT);
+					}
 				} else if (type == Type.INT) {
 					pos++;
 					Integer value = (Integer) cv.getValue(columnName);
