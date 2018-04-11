@@ -22,7 +22,7 @@ public class Period {
 	}
 
 	public boolean matches(Date date) {
-		return getStart().before(date) && getEnd().after(date);
+		return getStart().getTime().before(date) && getEnd().getTime().after(date);
 	}
 
 	public static Calendar getTodayCalendar() {
