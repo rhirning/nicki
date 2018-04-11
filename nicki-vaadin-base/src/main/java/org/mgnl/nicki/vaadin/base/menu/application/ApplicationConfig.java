@@ -17,6 +17,7 @@ public class ApplicationConfig {
 	private AccessRoleEvaluator accessRoleEvaluator = new DefaultRoleEvaluator();
 	private String accessGroupEvaluatorClass;
 	private String accessRoleEvaluatorClass;
+	private ApplicationView start;
 	private List<ApplicationChapter> chapters;
 
 	public List<ApplicationChapter> getChapters() {
@@ -72,6 +73,14 @@ public class ApplicationConfig {
 
 	private boolean isEmpty(List<String> groups) {
 		return groups == null || groups.size() == 0;
+	}
+
+	public ApplicationView getStart() {
+		return start;
+	}
+
+	public void setStart(ApplicationView start) {
+		this.start = start;
 	}
 
 

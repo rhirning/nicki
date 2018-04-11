@@ -57,4 +57,8 @@ public abstract class NavigationBase extends CustomComponent implements Navigati
 	public void initContainer() {
 		list = new ArrayList<NavigationElement>();
 	}
+	
+	public void restart() {
+		mainView.restart();
+	}
 }

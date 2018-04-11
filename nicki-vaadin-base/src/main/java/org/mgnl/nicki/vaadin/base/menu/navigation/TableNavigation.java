@@ -28,6 +28,8 @@ import org.mgnl.nicki.vaadin.base.menu.application.MainView;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.event.MouseEvents;
+import com.vaadin.event.MouseEvents.ClickEvent;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.Table.CellStyleGenerator;
@@ -55,6 +57,13 @@ public class TableNavigation extends NavigationBase implements Navigation {
 		panel.setHeight("100px");
 		panel.setStyleName("logo");
 		layout.addComponent(panel);
+		panel.addClickListener(new MouseEvents.ClickListener() {
+			
+			@Override
+			public void click(ClickEvent event) {
+				restart();
+			}
+		});
 		table = new Table();
 		table.setImmediate(true);
 		table.setSelectable(true);
@@ -112,6 +121,11 @@ public class TableNavigation extends NavigationBase implements Navigation {
 		return layout;
 	}
 	
+
+	public void restart() {
+		this.table.select(null);
+		super.restart();
+	}
 
 	@Override
 	public void init(List<NavigationFolder> navigationFolders) {

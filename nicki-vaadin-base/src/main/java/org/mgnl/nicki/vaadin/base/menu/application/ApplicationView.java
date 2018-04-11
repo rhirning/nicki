@@ -1,12 +1,14 @@
 package org.mgnl.nicki.vaadin.base.menu.application;
 
 import java.util.List;
+import java.util.Map;
 
 public class ApplicationView {
 	private String title;
 	private String view;
 	private List<String> groups;
 	private List<String> roles;
+	private Map<String, String> configuration;
 	
 	public String getTitle() {
 		return title;
@@ -31,6 +33,12 @@ public class ApplicationView {
 	}
 	public void setRoles(List<String> roles) {
 		this.roles = roles;
+	}
+	public Map<String, String> getConfiguration() {
+		return configuration;
+	}
+	public void setConfiguration(Map<String, String> configuration) {
+		this.configuration = configuration;
 	}
 
 }
