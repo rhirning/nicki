@@ -26,6 +26,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.annotation.ForeignKey;
@@ -110,21 +111,23 @@ public class DbBeanFieldFactory implements Serializable {
 	}
 	
 	
-	public void addFields(AbstractOrderedLayout layout, Object bean, boolean create, boolean readonly) {
+	public void addFields(AbstractOrderedLayout layout, Object bean, boolean create, String[] hiddenAttributes, boolean readonly) {
 		for (Field field : BeanHelper.getFields(bean.getClass())) {
-			Attribute attribute = field.getAnnotation(Attribute.class);
-			boolean all = true;
-			if (all || !attribute.primaryKey()
-					&& (objectListener == null || objectListener.acceptAttribute(field.getName()))) {
-				Component component = createField(bean, field.getName(), create);
-				if (component != null) {
-					component.setWidth("100%");
-					if (attribute.primaryKey() || readonly) {
-						component.setReadOnly(true);
+			if (hiddenAttributes == null || !DataHelper.contains(hiddenAttributes, field.getName())) {
+				Attribute attribute = field.getAnnotation(Attribute.class);
+				boolean all = true;
+				if (all || !attribute.primaryKey()
+						&& (objectListener == null || objectListener.acceptAttribute(field.getName()))) {
+					Component component = createField(bean, field.getName(), create);
+					if (component != null) {
+						component.setWidth("100%");
+						if (attribute.primaryKey() || readonly) {
+							component.setReadOnly(true);
+						}
+						layout.addComponent(component);
+					} else {
+						LOG.debug("no field for " + field.getName());
 					}
-					layout.addComponent(component);
-				} else {
-					LOG.debug("no field for " + field.getName());
 				}
 			}
 		}

@@ -53,6 +53,16 @@ public class DbBeanViewer extends CustomComponent implements NewClassEditor, Cla
 	private boolean create;
 	private DbBeanValueChangeListener listener;
 	private String dbContextName;
+	private String[] hiddenAttributes;
+
+	public void setDbBean(Object bean, String...hiddenAttributes) {
+		LOG.debug("Bean: " + bean);
+		this.bean = bean;
+		this.hiddenAttributes = hiddenAttributes;
+		this.create = false;
+		buildMainLayout();
+		setCompositionRoot(mainLayout);
+	}
 
 	@Override
 	public void setDbBean(Object bean) {
@@ -89,7 +99,7 @@ public class DbBeanViewer extends CustomComponent implements NewClassEditor, Cla
 		Label label = new Label(I18n.getText(bean.getClass().getName()));
 		mainLayout.addComponent(label);
 		DbBeanFieldFactory factory = new DbBeanFieldFactory(listener, dbContextName);
-		factory.addFields(mainLayout, bean, create, isReadOnly());
+		factory.addFields(mainLayout, bean, create, hiddenAttributes, isReadOnly());
 		
 		if (!isReadOnly()) {
 			saveButton = new Button(I18n.getText("nicki.editor.generic.button.save"));
