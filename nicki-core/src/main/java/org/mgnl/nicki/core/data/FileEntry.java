@@ -23,13 +23,18 @@ package org.mgnl.nicki.core.data;
 
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
-public class FileEntry implements TreeData {
+public class FileEntry implements TreeData, Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 684918946951446365L;
 	private String path;
 	private File file;
 
