@@ -27,15 +27,12 @@ public class Period {
 
 	public static Calendar getTodayCalendar() {
 		Calendar calendar = Calendar.getInstance();
-		calendar.set(Calendar.HOUR_OF_DAY, 0);
-		calendar.set(Calendar.MINUTE, 0);
-		calendar.set(Calendar.SECOND, 0);
-		calendar.set(Calendar.MILLISECOND, 0);
+		setToBeginOfDay(calendar);
 		return calendar;
 	}
 
 	public static Calendar getFirstDayOfYear() {
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = getTodayCalendar();
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		calendar.set(Calendar.MONTH, 0);
 		return calendar;
@@ -48,7 +45,7 @@ public class Period {
 	}
 
 	public static Calendar getFirstDayOfMonth() {
-		Calendar calendar = Calendar.getInstance();
+		Calendar calendar = getTodayCalendar();
 		calendar.set(Calendar.DAY_OF_MONTH, 1);
 		return calendar;
 	}
@@ -57,5 +54,13 @@ public class Period {
 		Calendar calendar = getFirstDayOfMonth();
 		calendar.add(Calendar.MONTH, 1);
 		return calendar;
+	}
+	
+	public static void setToBeginOfDay(Calendar calendar) {
+		calendar.set(Calendar.HOUR_OF_DAY, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.SECOND, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
+		
 	}
 }
