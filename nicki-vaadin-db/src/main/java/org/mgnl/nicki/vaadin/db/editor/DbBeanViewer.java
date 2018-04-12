@@ -89,17 +89,19 @@ public class DbBeanViewer extends CustomComponent implements NewClassEditor, Cla
 		Label label = new Label(I18n.getText(bean.getClass().getName()));
 		mainLayout.addComponent(label);
 		DbBeanFieldFactory factory = new DbBeanFieldFactory(listener, dbContextName);
-		factory.addFields(mainLayout, bean, create);
+		factory.addFields(mainLayout, bean, create, isReadOnly());
 		
-		saveButton = new Button(I18n.getText("nicki.editor.generic.button.save"));
-		saveButton.addClickListener(new Button.ClickListener() {
-			
-			public void buttonClick(ClickEvent event) {
-				save();
-			}
-		});
-
-		mainLayout.addComponent(saveButton);
+		if (!isReadOnly()) {
+			saveButton = new Button(I18n.getText("nicki.editor.generic.button.save"));
+			saveButton.addClickListener(new Button.ClickListener() {
+				
+				public void buttonClick(ClickEvent event) {
+					save();
+				}
+			});
+	
+			mainLayout.addComponent(saveButton);
+		}
 		return mainLayout;
 	}
 

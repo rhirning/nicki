@@ -110,17 +110,16 @@ public class DbBeanFieldFactory implements Serializable {
 	}
 	
 	
-	public void addFields(AbstractOrderedLayout layout, Object bean, boolean create) {
+	public void addFields(AbstractOrderedLayout layout, Object bean, boolean create, boolean readonly) {
 		for (Field field : BeanHelper.getFields(bean.getClass())) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
-			ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
 			boolean all = true;
 			if (all || !attribute.primaryKey()
 					&& (objectListener == null || objectListener.acceptAttribute(field.getName()))) {
 				Component component = createField(bean, field.getName(), create);
 				if (component != null) {
 					component.setWidth("100%");
-					if (attribute.primaryKey()) {
+					if (attribute.primaryKey() || readonly) {
 						component.setReadOnly(true);
 					}
 					layout.addComponent(component);
