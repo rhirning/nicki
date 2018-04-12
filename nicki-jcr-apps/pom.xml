@@ -3,7 +3,7 @@
 	<artifactId>nicki-jcr-apps</artifactId>
 	<parent>
 		<artifactId>nicki-parent</artifactId>
-		<version>7.111</version>
+		<version>7.112-SNAPSHOT</version>
 		<groupId>org.mgnl.nicki</groupId>
 		<relativePath>..</relativePath>
 	</parent>
@@ -16,32 +16,32 @@
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-catalogs</artifactId>
-			<version>7.111</version>
+			<version>7.112-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-jcr</artifactId>
-			<version>7.111</version>
+			<version>7.112-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-scripts</artifactId>
-			<version>7.111</version>
+			<version>7.112-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-editor-templates</artifactId>
-			<version>7.111</version>
+			<version>7.112-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-reports</artifactId>
-			<version>7.111</version>
+			<version>7.112-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-cache</artifactId>
-			<version>7.111</version>
+			<version>7.112-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>
