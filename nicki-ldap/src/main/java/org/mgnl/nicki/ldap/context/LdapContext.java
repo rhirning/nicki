@@ -478,6 +478,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadObjects(Class<T> classDefinition, String baseDn, String filter) {
+		LOG.debug("loadObjects:" + classDefinition.getName() + "|" + baseDn + "|" + filter);
 		try {
 			ObjectsLoaderQueryHandler handler = new ObjectsLoaderQueryHandler(this, baseDn, filter);
 			handler.setClassDefinition(classDefinition);
@@ -491,6 +492,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadChildObjects(Class<T> classDefinition, String parent,	String filter) {
+		LOG.debug("loadChildObjects:" + classDefinition.getName() + "|" + parent + "|" + filter);
 		try {
 			SubObjectsLoaderQueryHandler handler = new SubObjectsLoaderQueryHandler(this, parent, filter);
 			handler.setClassDefinition(classDefinition);
