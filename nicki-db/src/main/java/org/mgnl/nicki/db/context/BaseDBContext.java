@@ -734,14 +734,18 @@ public class BaseDBContext
 				if (type == Type.STRING) {
 					pos++;
 					String value = (String) cv.getValue(columnName);
-					pstmt.setString(pos, value);
+					if (value != null) {
+						pstmt.setString(pos, value);
+					} else {
+						pstmt.setNull(pos, Types.VARCHAR);
+					}
 				} else if (type == Type.TIMESTAMP) {
 					pos++;
 					Date value = (Date) cv.getValue(columnName);
 					if (value != null) {
 						pstmt.setTimestamp(pos, new Timestamp(value.getTime()));
 					} else {
-						pstmt.setTimestamp(pos, null);
+						pstmt.setNull(pos, Types.TIMESTAMP);
 					}
 				} else if (type == Type.DATE) {
 					pos++;
@@ -749,7 +753,7 @@ public class BaseDBContext
 					if (value != null) {
 						pstmt.setDate(pos, new java.sql.Date(value.getTime()));
 					} else {
-						pstmt.setDate(pos, null);
+						pstmt.setNull(pos, Types.DATE);
 					}
 				} else if (type == Type.LONG) {
 					pos++;
@@ -762,15 +766,27 @@ public class BaseDBContext
 				} else if (type == Type.INT) {
 					pos++;
 					Integer value = (Integer) cv.getValue(columnName);
-					pstmt.setInt(pos, value);
+					if (value != null) {
+						pstmt.setInt(pos, value);
+					} else {
+						pstmt.setNull(pos, Types.INTEGER);
+					}
 				} else if (type == Type.FLOAT) {
 					pos++;
 					Float value = (Float) cv.getValue(columnName);
-					pstmt.setFloat(pos, value);
+					if (value != null) {
+						pstmt.setFloat(pos, value);
+					} else {
+						pstmt.setNull(pos, Types.FLOAT);
+					}
 				} else if (type == Type.BOOLEAN) {
 					pos++;
 					Boolean value = (Boolean) cv.getValue(columnName);
-					pstmt.setBoolean(pos, value);
+					if (value != null) {
+						pstmt.setBoolean(pos, value);
+					} else {
+						pstmt.setNull(pos, Types.BOOLEAN);
+					}
 				}
 			}
 		}
