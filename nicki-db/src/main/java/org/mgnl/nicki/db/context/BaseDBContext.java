@@ -421,17 +421,35 @@ public class BaseDBContext
 					String setter = "set" + StringUtils.capitalize(field.getName());
 					Method method = beanClass.getMethod(setter, field.getType());
 					if (field.getType() == String.class) {
-						method.invoke(entry, StringUtils.trim(rs.getString(attribute.name())));
+						String value = rs.getString(attribute.name());
+						if (!rs.wasNull()) {
+							method.invoke(entry, StringUtils.trim(value));
+						}
 					} else if (field.getType() == int.class || field.getType() == Integer.class) {
-						method.invoke(entry, rs.getInt(attribute.name()));
+						int value = rs.getInt(attribute.name());
+						if (!rs.wasNull()) {
+							method.invoke(entry, value);
+						}
 					} else if (field.getType() == float.class || field.getType() == Float.class) {
-						method.invoke(entry, rs.getFloat(attribute.name()));
+						float value = rs.getFloat(attribute.name());
+						if (!rs.wasNull()) {
+							method.invoke(entry, value);
+						}
 					} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
-						method.invoke(entry, rs.getBoolean(attribute.name()));
+						boolean value = rs.getBoolean(attribute.name());
+						if (!rs.wasNull()) {
+							method.invoke(entry, value);
+						}
 					} else if (field.getType() == long.class || field.getType() == Long.class) {
-						method.invoke(entry, rs.getLong(attribute.name()));
+						long value = rs.getLong(attribute.name());
+						if (!rs.wasNull()) {
+							method.invoke(entry, value);
+						}
 					} else if (field.getType() == Date.class) {
-						method.invoke(entry, rs.getTimestamp(attribute.name()));
+						Timestamp value = rs.getTimestamp(attribute.name());
+						if (!rs.wasNull()) {
+							method.invoke(entry, value);
+						}
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 						| IllegalArgumentException | InvocationTargetException e) {
