@@ -279,6 +279,33 @@ public class BaseDBContext
 			}
 		}
 	}
+	
+	@Override
+	public <T> long count(T bean, String filter) throws SQLException, InitProfileException  {
+		boolean inTransaction = false;
+		if (this.connection != null) {
+			inTransaction = true;
+		} else {
+			this.beginTransaction();
+		}
+
+		try {
+			try (Statement stmt = this.connection.createStatement()) {
+				String searchStatement = getLoadObjectsSearchStatement(bean, "count(*)", filter, null);
+				LOG.debug(searchStatement);
+				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
+					if (rs != null && rs.next()) {
+						return rs.getLong(1);
+					}
+				}
+				return 0;
+			}
+		} finally {
+			if (!inTransaction) {
+				this.closeConnection();
+			}
+		}
+	}
 
 	private void addObjects(Object bean, boolean deepSearch) {
 		PrimaryKey primaryKey = getPrimaryKey(bean);
@@ -461,9 +488,13 @@ public class BaseDBContext
 	}
 	
 	protected String getLoadObjectsSearchStatement(Object bean, String filter, String orderBy) {
+		return getLoadObjectsSearchStatement(bean, "*", filter, orderBy);
+	}
+	
+	protected String getLoadObjectsSearchStatement(Object bean, String columns, String filter, String orderBy) {
 		try {
 			StringBuilder sb = new StringBuilder();
-			sb.append("select * from ").append(getQualifiedTableName(bean.getClass()));
+			sb.append("select ").append(columns).append(" from ").append(getQualifiedTableName(bean.getClass()));
 			int count = 0;
 			if (StringUtils.isNotBlank(filter)) {
 				sb.append(" where (");

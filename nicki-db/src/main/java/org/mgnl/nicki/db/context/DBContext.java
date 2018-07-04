@@ -82,6 +82,8 @@ public interface DBContext extends AutoCloseable {
 
 	<T> boolean exists(T bean, String filter) throws SQLException, InitProfileException;
 	
+	<T> long count(T bean, String filter) throws SQLException, InitProfileException;
+	
 	String toTimestamp(Date date);
 
 	void executeUpdate(String statement) throws SQLException, InitProfileException, NotSupportedException;
