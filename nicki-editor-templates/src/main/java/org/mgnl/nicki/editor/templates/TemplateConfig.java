@@ -24,6 +24,7 @@ package org.mgnl.nicki.editor.templates;
 
 
 import java.io.InputStream;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +33,7 @@ import javax.naming.NamingException;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.data.TreeData;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
@@ -97,15 +99,6 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 		params = new HashMap<String, Object>();
 		buildEditor();
 		setCompositionRoot(mainLayout);
-		StreamResource csvSource = createCSVStream();
-		csvFileDownloader = new FileDownloader(csvSource);
-		csvFileDownloader.extend(csvButton);
-		StreamResource xlsSource = createXLSStream();
-		xlsFileDownloader = new FileDownloader(xlsSource);
-		xlsFileDownloader.extend(xlsButton);
-		StreamResource pdfSource = createPDFStream();
-		pdfFileDownloader = new FileDownloader(pdfSource);
-		pdfFileDownloader.extend(pdfButton);
 		initI18n();
 
 		if (usePreview) {
@@ -221,7 +214,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 					return null;
 				}
 			}
-		}, template != null ? template.getName() + ".csv" : "template.csv");
+		}, template != null ? template.getName() + "_" + DataHelper.getTime(new Date()) + ".csv" : "template.csv");
 	}
 
 	protected StreamResource createXLSStream() {
@@ -239,7 +232,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 					return null;
 				}
 			}
-		}, template != null ? template.getName() + ".xls" : "template.xls");
+		}, template != null ? template.getName() + "_" + DataHelper.getTime(new Date()) + ".xls" : "template.xls");
 	}
 
 	protected StreamResource createPDFStream() {
@@ -259,7 +252,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 					return null;
 				}
 			}
-		}, template != null ? template.getName() + ".pdf" : "template.pdf");
+		}, template != null ? template.getName() + "_" + DataHelper.getTime(new Date()) + ".pdf" : "template.pdf");
 	}
 
 	protected boolean isComplete() {
@@ -366,12 +359,31 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 
 	public void paramsChanged() {
 		if (GuiTemplateHelper.isComplete(template, params)) {
-			//pdfLink.setEnabled(true);
+			if (pdfFileDownloader != null) {
+				pdfButton.removeExtension(pdfFileDownloader);
+				pdfFileDownloader = null;
+			}
+			StreamResource pdfSource = createPDFStream();
+			pdfFileDownloader = new FileDownloader(pdfSource);
+			pdfFileDownloader.extend(pdfButton);
 			pdfButton.setEnabled(true);
-			//csvLink.setEnabled(true);
+
+			if (csvFileDownloader != null) {
+				csvButton.removeExtension(csvFileDownloader);
+				csvFileDownloader = null;
+			}
+			StreamResource csvSource = createCSVStream();
+			csvFileDownloader = new FileDownloader(csvSource);
+			csvFileDownloader.extend(csvButton);
 			csvButton.setEnabled(true);
 			if (template.hasPart("xls")) {
-				//xlsLink.setEnabled(true);
+				if (xlsFileDownloader != null) {
+					xlsButton.removeExtension(xlsFileDownloader);
+					xlsFileDownloader = null;
+				}
+				StreamResource xlsSource = createXLSStream();
+				xlsFileDownloader = new FileDownloader(xlsSource);
+				xlsFileDownloader.extend(xlsButton);
 				xlsButton.setEnabled(true);
 			}
 		} else {
