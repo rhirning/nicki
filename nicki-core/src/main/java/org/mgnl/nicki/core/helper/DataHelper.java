@@ -264,9 +264,9 @@ public class DataHelper {
 		return string;
 	}
 
-	public static final String CONFIG_PATTERN_STRING = "\\%\\{(.*)\\}";
+	public static final String CONFIG_PATTERN_STRING = "\\%\\{(.*?)\\}";
 	public static final Pattern CONFIG_PATTERN = Pattern.compile(CONFIG_PATTERN_STRING);
-	public static final String PATTERN_STRING = "\\$\\{(.*)\\}";
+	public static final String PATTERN_STRING = "\\$\\{(.*?)\\}";
 	public static final Pattern PATTERN = Pattern.compile(PATTERN_STRING);
 	public static String translate(String text) {
 		String result = text;
