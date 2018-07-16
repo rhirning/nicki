@@ -29,7 +29,6 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.db.annotation.Attribute;
-import org.mgnl.nicki.db.annotation.ForeignKey;
 import org.mgnl.nicki.db.helper.BeanHelper;
 import org.mgnl.nicki.db.helper.Type;
 import org.mgnl.nicki.vaadin.db.fields.AttributeBooleanField;

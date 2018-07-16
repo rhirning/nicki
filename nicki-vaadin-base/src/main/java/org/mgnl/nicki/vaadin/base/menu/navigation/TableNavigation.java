@@ -58,7 +58,8 @@ public class TableNavigation extends NavigationBase implements Navigation {
 		panel.setStyleName("logo");
 		layout.addComponent(panel);
 		panel.addClickListener(new MouseEvents.ClickListener() {
-			
+			private static final long serialVersionUID = 4278900825719978293L;
+
 			@Override
 			public void click(ClickEvent event) {
 				restart();

@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DirectoryEntry extends FileEntry implements TreeData {
+	private static final long serialVersionUID = 501515157067795051L;
 
 	public DirectoryEntry(String path) {
 		super(path);
