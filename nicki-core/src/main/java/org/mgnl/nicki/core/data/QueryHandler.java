@@ -39,5 +39,8 @@ public interface QueryHandler {
 	SCOPE getScope();
 
 	void handle(List<ContextSearchResult> results) throws DynamicObjectException;
+
+	int getPageSize();
 	
+	boolean onePage();
 }

@@ -109,6 +109,16 @@ public abstract class BasicLdapHandler implements QueryHandler {
 		return constraints;
 	}
 
+	@Override
+	public int getPageSize() {
+		return 0;
+	}
+
+	@Override
+	public boolean onePage() {
+		return false;
+	}
+
 
 
 

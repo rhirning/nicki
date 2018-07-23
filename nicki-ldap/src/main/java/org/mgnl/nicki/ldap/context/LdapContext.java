@@ -35,7 +35,10 @@ import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
+import javax.naming.ldap.Control;
 import javax.naming.ldap.InitialLdapContext;
+import javax.naming.ldap.PagedResultsControl;
+import javax.naming.ldap.PagedResultsResponseControl;
 import javax.naming.ldap.StartTlsRequest;
 import javax.naming.ldap.StartTlsResponse;
 import org.apache.commons.lang.StringUtils;
@@ -66,11 +69,11 @@ import org.mgnl.nicki.ldap.query.LdapSearchHandler;
 import org.mgnl.nicki.ldap.query.ObjectLoaderLdapQueryHandler;
 import org.mgnl.nicki.ldap.query.ObjectsLoaderQueryHandler;
 import org.mgnl.nicki.ldap.query.SubObjectsLoaderQueryHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class LdapContext extends BasicContext implements NickiContext {
-	private static final Logger LOG = LoggerFactory.getLogger(LdapContext.class);
 
 	private static final long serialVersionUID = -3079627211615613041L;
 
@@ -120,37 +123,37 @@ public class LdapContext extends BasicContext implements NickiContext {
 
 	@Override
 	public DynamicObject login(String username, String password) {
-		LOG.info("login: start");
+		log.info("login: start");
 		DynamicObject user = loadObject(username);
 		if (user == null) {
-			LOG.info("login: loadObject not successful");
+			log.info("login: loadObject not successful");
 			List<DynamicObject> list = loadObjects(getTarget().getBaseDn(), "cn=" + username);
 			
 			if (list != null && list.size() == 1) {
-				LOG.info("login: loadObjectssuccessful");
+				log.info("login: loadObjectssuccessful");
 				user = list.get(0);
 			} else {
-				LOG.info("login: loadObjects not successful");
-				LOG.debug("Loading Objects not successful: " 
+				log.info("login: loadObjects not successful");
+				log.debug("Loading Objects not successful: " 
 						+ ((list == null)?"null":"size=" + list.size()));
 			}
 		} else {
-			LOG.info("login: loadObject successful");
+			log.info("login: loadObject successful");
 		}
 		if (user != null) {
-			LOG.info("login: before getDirContex)");
-			LOG.debug("try login for user " + user.getDisplayName());
+			log.info("login: before getDirContex)");
+			log.debug("try login for user " + user.getDisplayName());
 			try {
 				getLdapContext(user.getPath(), password);
-				LOG.info("login: after getDirContext");
+				log.info("login: after getDirContext");
 				return user;
 			} catch (Exception e) {
-				LOG.debug("Could not login user " + username, e);
+				log.debug("Could not login user " + username, e);
 			}
 		} else {
-			LOG.debug("could not load user " + username);
+			log.debug("could not load user " + username);
 		}
-		LOG.info("login: end");
+		log.info("login: end");
 		return null;
 	}
 
@@ -183,7 +186,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			*/
 			return newObject;
 		} catch (NamingException | IOException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 			throw new DynamicObjectException(e);
 		} finally {
 			if (ctx != null) {
@@ -214,18 +217,48 @@ public class LdapContext extends BasicContext implements NickiContext {
 				    (StartTlsResponse) ctx.extendedOperation(new StartTlsRequest());
 				tls.negotiate();
 			}
-			results = ctx.search(queryHandler.getBaseDN(), queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
-			List<ContextSearchResult> list = new ArrayList<ContextSearchResult>();
-			try {
-				while (results != null && results.hasMore()) {
-					list.add(new JndiSearchResult(results.next()));
-				}
-			} catch (NamingException e) {
-				LOG.error("Error", e);
+			if (queryHandler.getPageSize() > 0) {
+				ctx.setRequestControls(new Control[]{ 
+				         new PagedResultsControl(queryHandler.getPageSize(), Control.CRITICAL) });
 			}
+			byte[] cookie = null;
+			int total;
+			List<ContextSearchResult> list = new ArrayList<ContextSearchResult>();
+			int pageNum = 0;
+			do {
+				results = ctx.search(queryHandler.getBaseDN(), queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
+				
+				try {
+					while (results != null && results.hasMore()) {
+						list.add(new JndiSearchResult(results.next()));
+					}
+				} catch (NamingException e) {
+					log.error("Error", e);
+				}
+				if (queryHandler.getPageSize() > 0) {
+					pageNum++;
+					// Examine the paged results control response
+					Control[] controls = ctx.getResponseControls();
+					if (controls != null) {
+						for (int i = 0; i < controls.length; i++) {
+							if (controls[i] instanceof PagedResultsResponseControl) {
+								PagedResultsResponseControl prrc = (PagedResultsResponseControl) controls[i];
+								total = prrc.getResultSize();
+								log.debug("END-OF-PAGE " + pageNum + " (total : " + total + ")");
+								cookie = prrc.getCookie();
+							}
+						}
+					} else {
+						log.debug("No controls were sent from the server");
+					}
+					// Re-activate paged results
+					ctx.setRequestControls(new Control[] {
+							new PagedResultsControl(queryHandler.getPageSize(), cookie, Control.CRITICAL) });
+				}
+			} while (cookie != null && !queryHandler.onePage());
 			queryHandler.handle(list);
 		} catch (Throwable e) {
-			LOG.debug("Error", e);
+			log.debug("Error", e);
 			throw new DynamicObjectException(e.getMessage());
 		} finally {
 			if (results != null) {
@@ -233,7 +266,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 					results.close();
 				} catch (NamingException e) {
 					
-					LOG.error("Error", e);
+					log.error("Error", e);
 				}
 			}
 			if (ctx != null) {
@@ -241,7 +274,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 					ctx.close();
 				} catch (NamingException e) {
 					
-					LOG.error("Error", e);
+					log.error("Error", e);
 				}
 			}
 		}
@@ -265,7 +298,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			ctx.modifyAttributes(dynamicObject.getPath(),DirContext.REPLACE_ATTRIBUTE, dynamicObject.getModel().getLdapAttributes(dynamicObject, CREATEONLY.FALSE));
 		} catch (NamingException | IOException e) {
 			String details = getDetails(dynamicObject, CREATEONLY.FALSE);
-			LOG.error(details, e);
+			log.error(details, e);
 			throw new DynamicObjectException(e);
 		} finally {
 			if (ctx != null) {
@@ -297,7 +330,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 					dynamicObject.getModel().getLdapAttributes(dynamicObject, attributeNames, CREATEONLY.FALSE));
 		} catch (NamingException | IOException e) {
 			String details = getDetails(dynamicObject, CREATEONLY.FALSE);
-			LOG.error(details, e);
+			log.error(details, e);
 			throw new DynamicObjectException(e);
 		} finally {
 			if (ctx != null) {
@@ -335,7 +368,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			ctx.unbind(dynamicObject.getPath());
 			dynamicObject.setOriginal(null);
 		} catch (NamingException | IOException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 			throw new DynamicObjectException(e);
 		} finally {
 			if (ctx != null) {
@@ -370,7 +403,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			ctx.rename(dynamicObject.getPath(), newPath);
 			return loadObject(newPath);
 		} catch (NamingException | IOException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 			throw new DynamicObjectException(e);
 		} finally {
 			if (ctx != null) {
@@ -401,7 +434,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			search(handler);
 			return handler.getDynamicObject(); 
 		} catch (DynamicObjectException e) {
-			LOG.debug("Could not load object: " + path, e);
+			log.debug("Could not load object: " + path, e);
 		}
 		return null;
 	}
@@ -413,7 +446,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			search(handler);
 			return handler.getList();
 		} catch (DynamicObjectException e) {
-			LOG.debug("Could not load objects: " + filter + " under "+ baseDn, e);
+			log.debug("Could not load objects: " + filter + " under "+ baseDn, e);
 		} 
 		return null;
 	}
@@ -478,7 +511,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadObjects(Class<T> classDefinition, String baseDn, String filter) {
-		LOG.debug("loadObjects:" + classDefinition.getName() + "|" + baseDn + "|" + filter);
+		log.debug("loadObjects:" + classDefinition.getName() + "|" + baseDn + "|" + filter);
 		try {
 			ObjectsLoaderQueryHandler handler = new ObjectsLoaderQueryHandler(this, baseDn, filter);
 			handler.setClassDefinition(classDefinition);
@@ -492,7 +525,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadChildObjects(Class<T> classDefinition, String parent,	String filter) {
-		LOG.debug("loadChildObjects:" + classDefinition.getName() + "|" + parent + "|" + filter);
+		log.debug("loadChildObjects:" + classDefinition.getName() + "|" + parent + "|" + filter);
 		try {
 			SubObjectsLoaderQueryHandler handler = new SubObjectsLoaderQueryHandler(this, parent, filter);
 			handler.setClassDefinition(classDefinition);
@@ -512,7 +545,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			String path = namingAttribute + "=" + namingValue + "," + parent.getPath();
 			return loadObject(class1, path);
 		} catch (InstantiateDynamicObjectException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 			return null;
 		}
 	}

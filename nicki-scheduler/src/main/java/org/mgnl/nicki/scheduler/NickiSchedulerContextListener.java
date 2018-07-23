@@ -1,4 +1,3 @@
-
 package org.mgnl.nicki.scheduler;
 
 /*-
@@ -43,17 +42,17 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SchedulerMetaData;
 import org.quartz.impl.StdSchedulerFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class NickiSchedulerContextListener implements ServletContextListener {
-	private static final Logger LOG = LoggerFactory.getLogger(NickiSchedulerContextListener.class);
 
 	private Scheduler scheduler;
 	
 	public NickiSchedulerContextListener() {
 		super();
-	    LOG.info("------- Initializing -------------------");
+	    log.info("------- Initializing -------------------");
 	}
 
 	@Override
@@ -78,7 +77,7 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 						        .build();
 
 						    Date ft = scheduler.scheduleJob(job, trigger);
-						    LOG.info(job.getKey() + " has been scheduled to run at: " + ft + " and repeat based on expression: "
+						    log.info(job.getKey() + " has been scheduled to run at: " + ft + " and repeat based on expression: "
 						             + trigger.getCronExpression());
 						}
 					}
@@ -86,8 +85,8 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 				// and start it off
 				scheduler.start();
 			} catch (SchedulerException | IllegalAccessException | InvocationTargetException | InstantiationException | ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("Error scheduling jobs", e);
+
 			}
 
 		}
@@ -96,24 +95,22 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-	    LOG.info("------- Shutting Down ---------------------");
+		log.info("------- Shutting Down ---------------------");
 
 	    try {
 			scheduler.shutdown(true);
 		} catch (SchedulerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Error shutting down", e);
 		}
 
-	    LOG.info("------- Shutdown Complete -----------------");
+	    log.info("------- Shutdown Complete -----------------");
 
 	    SchedulerMetaData metaData;
 		try {
 			metaData = scheduler.getMetaData();
-		    LOG.info("Executed " + metaData.getNumberOfJobsExecuted() + " jobs.");
+			log.info("Executed " + metaData.getNumberOfJobsExecuted() + " jobs.");
 		} catch (SchedulerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Error getting statistics", e);
 		}
 	}
 
