@@ -1662,6 +1662,10 @@ public class BaseDBContext
 	public String getSysDate() {
 		return "SYSDATE";
 	}
+	
+	public String getNowPlusHours(int hours) {
+		return "SYSDATE " + ((hours >= 0) ? "+":"") + hours + " / 24";
+	}
 
 	@Override
 	public void close() throws SQLException {

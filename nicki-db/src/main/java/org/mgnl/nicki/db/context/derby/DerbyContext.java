@@ -54,6 +54,10 @@ public class DerbyContext
 		return "CURRENT_DATE";
 	}
 	
+	public String getNowPlusHours(int hours) {
+		return "{fn TIMESTAMPADD(SQL_TSI_HOUR, " + hours + ", CURRENT_TIMESTAMP)}";
+	}
+	
 	@Override
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
 		if (attribute.now()) {

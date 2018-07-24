@@ -1,4 +1,3 @@
-
 package org.mgnl.nicki.db.statistics;
 
 /*-

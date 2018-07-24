@@ -1,4 +1,3 @@
-
 package org.mgnl.nicki.db.statistics;
 
 /*-
@@ -36,6 +35,9 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lombok.Data;
+
+@Data
 @Table(name = "STATISTICS")
 public class Statistics {
 	private static final Logger LOG = LoggerFactory.getLogger(Statistics.class);
@@ -67,28 +69,6 @@ public class Statistics {
 			throw new StatisticsException(e);
 		}
 	}
-
-	public String getCategory() {
-		return category;
-	}
-	public void setCategory(String category) {
-		this.category = category;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public Long getId() {
-		return id;
-	}
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getData() {
-		return data;
-	}
 	public void setData(String data) {
 		this.data = data;
 		try {
@@ -96,19 +76,6 @@ public class Statistics {
 		} catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
 			LOG.error("Error parsing statistics definition", e);
 		}
-	}
-	public String getContext() {
-		return context;
-	}
-	public void setContext(String context) {
-		this.context = context;
-	}
-	public StatisticsDefinition getDefinition() {
-		return definition;
-	}
-
-	public void setDefinition(StatisticsDefinition definition) {
-		this.definition = definition;
 	}
 
 }

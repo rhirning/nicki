@@ -89,6 +89,8 @@ public interface DBContext extends AutoCloseable {
 	void executeUpdate(String statement) throws SQLException, InitProfileException, NotSupportedException;
 
 	String getSysDate();
+	
+	String getNowPlusHours(int hours);
 
 	String getTimeStamp();
 
