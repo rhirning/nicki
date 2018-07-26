@@ -146,7 +146,7 @@ public abstract class NickiWebService {
 				NickiPrincipal principal = new NickiPrincipal(adapter.getName(), new String(adapter
 						.getPassword()));
 				LOG.debug("principal: " + principal.getName() + "/" + principal.getPassword());
-				LOG.info("before target.login()");
+				LOG.debug("before target.login()");
 				DoubleContext context = new DoubleContext();
 				Target loginTarget = TargetFactory.getTarget(getLoginTargetName());
 				LOG.debug("LoginTarget=" + loginTarget);
@@ -154,7 +154,7 @@ public abstract class NickiWebService {
 				context.setLoginContext(AppContext.getSystemContext(loginTarget, principal.getName(), principal
 						.getPassword()));
 				context.setContext(AppContext.getSystemContext(getTargetName(), context.getLoginContext().getUser()));
-				LOG.info("after AppContext.getSystemContext()");
+				LOG.debug("after AppContext.getSystemContext()");
 				return context;
 			}
 		} catch (Exception e) {
@@ -169,9 +169,9 @@ public abstract class NickiWebService {
 		MessageContext mctx = this.wsctx.getMessageContext();
 		AppContext.setRequest(mctx);
 
-		LOG.info("pre login");
+		LOG.debug("pre login");
 		DoubleContext context = this.loginSSO("nicki.login.sso.ws");
-		LOG.info("after login");
+		LOG.debug("after login");
 		if (context == null) {
 			throw new AuthenticationFailedException();
 		} else {
