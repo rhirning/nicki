@@ -314,10 +314,10 @@ public class DataHelper {
 				String name = matcher.group(1);
 				String value = executeCommand(name);
 				if (StringUtils.isNotBlank(value)) {
-					result = StringUtils.replace(result, "%{" + name + "}", value);
+					result = StringUtils.replace(result, "#{" + name + "}", value);
 					continue;
 				} else {
-					result = StringUtils.replace(result, "%{" + name + "}", name);
+					result = StringUtils.replace(result, "#{" + name + "}", name);
 				}
 			} else {
 				break;
