@@ -1,9 +1,11 @@
 
 package org.mgnl.nicki.core.helper;
 
+import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -268,6 +270,8 @@ public class DataHelper {
 	public static final Pattern CONFIG_PATTERN = Pattern.compile(CONFIG_PATTERN_STRING);
 	public static final String PATTERN_STRING = "\\$\\{(.*?)\\}";
 	public static final Pattern PATTERN = Pattern.compile(PATTERN_STRING);
+	public static final String EXEC_PATTERN_STRING = "\\#\\{(.*?)\\}";
+	public static final Pattern EXEC_PATTERN = Pattern.compile(EXEC_PATTERN_STRING);
 	public static String translate(String text) {
 		String result = text;
 		
@@ -302,7 +306,50 @@ public class DataHelper {
 				break;
 			}
 		}
+
+		
+		while (result != null) {
+			Matcher matcher = EXEC_PATTERN.matcher(result);
+			if (matcher.find()) {
+				String name = matcher.group(1);
+				String value = executeCommand(name);
+				if (StringUtils.isNotBlank(value)) {
+					result = StringUtils.replace(result, "%{" + name + "}", value);
+					continue;
+				} else {
+					result = StringUtils.replace(result, "%{" + name + "}", name);
+				}
+			} else {
+				break;
+			}
+		}
 		return result;
+	}
+	
+	public static String executeCommand(String command) {
+
+		StringBuilder output = new StringBuilder();
+
+		Process p;
+		try {
+			p = Runtime.getRuntime().exec(command);
+			p.waitFor();
+			BufferedReader reader = new BufferedReader(new InputStreamReader(p.getInputStream()));
+
+			String line = "";
+			while ((line = reader.readLine()) != null) {
+				if (output.length() > 0) {
+					output.append("\n");
+				}
+				output.append(line);
+			}
+
+		} catch (Exception e) {
+			LOG.error("Error executing command " + command, e);
+		}
+
+		return output.toString();
+
 	}
 	
 	public static String translate(String text, Map<String, String> parameterMap) {
