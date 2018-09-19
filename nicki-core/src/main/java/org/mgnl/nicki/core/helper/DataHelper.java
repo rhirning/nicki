@@ -233,7 +233,9 @@ public class DataHelper {
 		for (String string : list) {
 			try {
 				String entry[] = StringUtils.split(string, valueSeparator);
-				map.put(entry[0], entry[1]);
+				if (entry != null && entry.length > 1) {
+					map.put(entry[0], entry[1]);
+				}
 			} catch (Exception e) {
 				LOG.error("Error", e);
 			}
