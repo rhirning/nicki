@@ -38,7 +38,7 @@ public class ActiveMQContextListener implements ServletContextListener {
 		boolean startBroker = Config.getBoolean("nicki.mq.broker.start", false);
 		if (startBroker) {
 			LOG.info("Load ActiveMQ");
-			BrokerThread brokerThread = new BrokerThread();
+			brokerThread = new BrokerThread();
 			brokerThread.start();
 		} else {
 			LOG.info("ActiveMQ not started");			
