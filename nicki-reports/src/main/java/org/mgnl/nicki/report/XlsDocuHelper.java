@@ -66,11 +66,15 @@ public class XlsDocuHelper {
 		StringBuilder sb = new StringBuilder();
 		String parts[] = StringUtils.split(templatePath, "/");
 		for (int i = parts.length -1 ; i >= 0; i--) {
-			sb.append("ou=").append(parts[i]).append(",");
+			String part = StringUtils.contains(parts[i], ".") ? StringUtils.substringBefore(parts[i], ".") : parts[i];
+			sb.append("ou=").append(part).append(",");
 		}
 		sb.append(Config.getString("nicki.templates.basedn"));
 		
 		String templateDn = sb.toString();
+		if (StringUtils.contains(templateDn, ".")) {
+			templateDn = StringUtils.substringBefore(templateDn, ".");
+		}
 		Template template = AppContext.getSystemContext().loadObject(Template.class, templateDn);
 		TemplateEngine engine = TemplateEngine.getInstance(TYPE.JNDI);
 		return engine.executeTemplateAsXls(template, templatePath + ".ftl", dataModel);
