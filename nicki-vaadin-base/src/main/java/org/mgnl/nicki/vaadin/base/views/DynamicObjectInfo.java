@@ -67,7 +67,7 @@ public abstract class DynamicObjectInfo<T extends DynamicObject> implements Info
 			try {
 				dynamicObject = getContext().loadObject(clazz, getPath());
 			} catch (InvalidPrincipalException e) {
-				throw new InfoStoreException(e);
+//				throw new InfoStoreException(e);
 			}
 			
 			if (dynamicObject == null) {
