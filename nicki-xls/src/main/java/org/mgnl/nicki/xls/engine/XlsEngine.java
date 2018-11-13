@@ -25,6 +25,7 @@ package org.mgnl.nicki.xls.engine;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.xls.model.template.Box;
 import org.mgnl.nicki.xls.model.template.Document;
 import org.mgnl.nicki.xls.model.template.Link;
@@ -57,8 +59,10 @@ import org.mgnl.nicki.xls.template.XlsTemplate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class XlsEngine {
-	private static final Logger LOG = LoggerFactory.getLogger(XlsEngine.class);
 	public static final String HYPER_LINK = "HYPER_LINK";
 
 	private Workbook wb;
@@ -68,7 +72,7 @@ public class XlsEngine {
 	}
 
 	public void render(InputStream master, XlsTemplate xlsTemplate, OutputStream os) throws IOException {
-		LOG.debug("rendering xls");
+		log.debug("rendering xls");
 		//if (template.)
 		if (master != null) {
 			wb = new HSSFWorkbook(master);
@@ -220,13 +224,13 @@ public class XlsEngine {
 									}
 
 									if (entry instanceof Text) {
-										LOG.debug("rendering text to document");
+										log.debug("rendering text to document");
 										render(cell, (Text) entry);
-										LOG.debug("finished rendering text to document");
+										log.debug("finished rendering text to document");
 									} else if (entry instanceof Link) {
-										LOG.debug("rendering link to document");
+										log.debug("rendering link to document");
 										render(cell, (Link) entry);
-										LOG.debug("finished rendering link to document");
+										log.debug("finished rendering link to document");
 									}
 								}
 
@@ -246,9 +250,52 @@ public class XlsEngine {
 		cell.setHyperlink(link);
 		cell.setCellStyle(cellStyles.get(HYPER_LINK));
 	}
+	
+	enum TEXT_TYPE {
+		TEXT {
+			@Override
+			void renderType(Cell cell, Text text) {
+				cell.setCellValue(text.getValue());
+			}
+		}, BOOLEAN {
+			@Override
+			void renderType(Cell cell, Text text) {
+				cell.setCellValue(DataHelper.booleanOf(text.getValue()));
+			}
+		}, DOUBLE {
+			@Override
+			void renderType(Cell cell, Text text) {
+				cell.setCellValue(Double.parseDouble(text.getValue()));
+			}
+		}, DATE {
+			@Override
+			void renderType(Cell cell, Text text) {
+				try {
+					cell.setCellValue(DataHelper.dateFromDisplayDay(text.getValue()));
+				} catch (ParseException e) {
+					log.error("Error parsing date String: " + text.getValue() + " -> " + e.getMessage());
+				}
+			}
+		};
+		
+		static void render(Cell cell, Text text) {
+			getType(text).renderType(cell, text);
+		}
+
+		abstract void renderType(Cell cell, Text text);
+
+		static TEXT_TYPE getType(Text text) {
+			for (TEXT_TYPE type : values()) {
+				if (StringUtils.equalsIgnoreCase(type.name(), text.getType())) {
+					return type;
+				}
+			}
+			return TEXT;
+		}
+	}
 
 	private void render(Cell cell, Text text) {
-		cell.setCellValue(text.getValue());
+		TEXT_TYPE.render(cell, text);
 	}
 
 	private void render(Sheet sheet, Box box) {

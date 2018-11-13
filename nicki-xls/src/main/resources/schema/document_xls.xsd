@@ -42,9 +42,10 @@
  </xsd:complexType>
 
   <xsd:complexType name="box">
-       <xsd:choice>
+       <xsd:sequence>
          <xsd:element name="text" type="text" minOccurs="0"/>
-       </xsd:choice>
+         <xsd:element name="link" type="link"/>
+       </xsd:sequence>
        <xsd:attributeGroup ref="coordinates"/>
        <xsd:attribute name="style"/>
  </xsd:complexType>
@@ -52,6 +53,7 @@
   <xsd:complexType name="text">
    <xsd:simpleContent>
      <xsd:extension base="xsd:string">
+       <xsd:attribute name="type" default="text"/>
      </xsd:extension>
    </xsd:simpleContent>
  </xsd:complexType>
