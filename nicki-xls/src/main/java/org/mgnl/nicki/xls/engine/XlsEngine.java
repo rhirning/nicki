@@ -265,7 +265,15 @@ public class XlsEngine {
 		}, DOUBLE {
 			@Override
 			void renderType(Cell cell, Text text) {
-				cell.setCellValue(Double.parseDouble(text.getValue()));
+				String value = text.getValue();
+				value = StringUtils.replace(value, ",", ".");
+				if (StringUtils.isNotBlank(value)) {
+					try {
+						cell.setCellValue(Double.parseDouble(value));
+					} catch (NumberFormatException e) {
+						log.error("Error parsing double: " + text.getValue() + " -> " + e.getMessage());
+					}
+				}
 			}
 		}, DATE {
 			@Override
