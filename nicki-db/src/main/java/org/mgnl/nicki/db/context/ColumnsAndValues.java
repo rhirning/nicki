@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.mgnl.nicki.db.context.BaseDBContext.PREPARED;
 import org.mgnl.nicki.db.helper.BeanHelper;
 import org.mgnl.nicki.db.helper.Type;
 
@@ -83,13 +84,18 @@ public class ColumnsAndValues implements Serializable {
 		return sb.toString();
 	}
 
-	public String getValues(DBContext dbContext) {
+	public String getValues(DBContext dbContext, PREPARED prepared) {
 		StringBuilder sb = new StringBuilder();
 		for (String columnName : columnNames) {
 			if (sb.length() > 0) {
 				sb.append(COLUMN_SEPARATOR);
 			}
-			sb.append(getDbString(dbContext, columnName));
+			if (prepared == PREPARED.TRUE) {
+				sb.append("?");
+				
+			} else {
+				sb.append(getDbString(dbContext, columnName));
+			}
 		}
 		return sb.toString();
 	}

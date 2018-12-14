@@ -36,6 +36,7 @@ public enum Type {
 	INT(Integer.class, int.class),
 	FLOAT(Float.class, float.class),
 	BOOLEAN(Boolean.class, boolean.class),
+	BLOB(Byte[].class, byte[].class),
 	UNKONWN();
 		
 	private List<Class<?>> classes = new ArrayList<>();
@@ -80,7 +81,7 @@ public enum Type {
 			return dbContext.getIntAsDbString( (Integer) value);
 		} else if (type == Type.FLOAT) {
 			return dbContext.getFloatAsDbString( (Float) value);
-		} else if (type == Type.INT) {
+		} else if (type == Type.BOOLEAN) {
 			return dbContext.getBooleanAsDbString( (Boolean) value);
 		} else {
 			return null;

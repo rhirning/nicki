@@ -110,6 +110,8 @@ public class BeanHelper {
 				type = Type.FLOAT;
 			} else if (fieldType == boolean.class || fieldType == Boolean.class) {
 				type = Type.BOOLEAN;
+			} else if (fieldType == byte[].class) {
+				type = Type.BLOB;
 			}
 		} catch (NoSuchFieldException | SecurityException e) {
 			LOG.error("Invalid name: " + beanClass.getName() + "." + fieldName);

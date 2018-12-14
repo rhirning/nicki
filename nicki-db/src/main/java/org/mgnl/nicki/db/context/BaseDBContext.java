@@ -1,5 +1,9 @@
 package org.mgnl.nicki.db.context;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
 /*-
  * #%L
  * nicki-db
@@ -25,6 +29,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -42,6 +47,7 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.annotation.ForeignKey;
@@ -477,6 +483,20 @@ public class BaseDBContext
 						if (!rs.wasNull()) {
 							method.invoke(entry, value);
 						}
+					} else if (field.getType() == byte[].class) {
+						Blob blob = rs.getBlob(attribute.name());
+						if (blob != null) {
+							ByteArrayOutputStream out = new ByteArrayOutputStream();
+							try {
+								IOUtils.copy(blob.getBinaryStream(), out);
+								if (!rs.wasNull()) {
+									method.invoke(entry, out.toByteArray());
+								}
+							} catch (IOException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 						| IllegalArgumentException | InvocationTargetException e) {
@@ -836,6 +856,14 @@ public class BaseDBContext
 					} else {
 						pstmt.setNull(pos, Types.BOOLEAN);
 					}
+				} else if (type == Type.BLOB) {
+					pos++;
+					byte[] value = (byte[]) cv.getValue(columnName);
+					if (value != null) {
+						pstmt.setBlob(pos, new ByteArrayInputStream(value));
+					} else {
+						pstmt.setNull(pos, Types.BLOB);
+					}
 				}
 			}
 		}
@@ -844,7 +872,7 @@ public class BaseDBContext
 	protected PreparedStatement getPreparedInsertStatement(Object bean, String... generatedColumns) throws NotSupportedException, SQLException  {
 		String tableName = this.getQualifiedTableName(bean.getClass());
 		ColumnsAndValues cv = getInsertColumnValues(bean);
-		String insertStatementString = getPreparedInsertStatement(tableName, cv);
+		String insertStatementString = getPreparedInsertStatement(PREPARED.TRUE, tableName, cv);
 		PreparedStatement pstmt;
 		if (generatedColumns != null && generatedColumns.length > 0) {
 			pstmt = this.getConnection().prepareStatement(insertStatementString, generatedColumns);
@@ -936,6 +964,8 @@ public class BaseDBContext
 								cv.add(columnName, getValue(bean, Float.class, field, attribute));
 							} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
 								cv.add(columnName, getValue(bean, Boolean.class, field, attribute));
+							} else if (field.getType() == byte[].class) {
+								cv.add(columnName, getValue(bean, byte[].class, field, attribute));
 							}
 						} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 								| InvocationTargetException e) {
@@ -949,7 +979,7 @@ public class BaseDBContext
 		return cv;
 	}
 
-	protected String getPreparedInsertStatement(String tableName, ColumnsAndValues cv) {
+	protected String getPreparedInsertStatement(PREPARED prepared, String tableName, ColumnsAndValues cv) {
 		String result = "insert into " + tableName + " (" + cv.getColumns() + ") values (" + cv.getPreparedValues() + ")";
 		LOG.debug(result);
 		return result;
@@ -1251,7 +1281,7 @@ public class BaseDBContext
 		/**
 		 * insert into SCHEMA.TABLE (a,b,c) values (" ", " ", 2);
 		 */
-		return getInsertStatement(this.getQualifiedTableName(bean.getClass()), getInsertColumnValues(bean));
+		return getInsertStatement(PREPARED.FALSE, this.getQualifiedTableName(bean.getClass()), getInsertColumnValues(bean));
 	}
 
 	/**
@@ -1307,6 +1337,11 @@ public class BaseDBContext
 							}
 						} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
 							Boolean value = getValue(bean, Boolean.class, field, attribute);
+							if (value != null) {
+								cv.add(attribute.name(), value);
+							}
+						} else if (field.getType() == byte[].class) {
+							byte[] value = getValue(bean, byte[].class, field, attribute);
 							if (value != null) {
 								cv.add(attribute.name(), value);
 							}
@@ -1410,9 +1445,8 @@ public class BaseDBContext
 
 	}
 
-	protected String getInsertStatement(String tableName, ColumnsAndValues cv) {
-
-		return "insert into " + tableName + " (" + cv.getColumns() + ") values (" + cv.getValues(this) + ")";
+	protected String getInsertStatement(PREPARED prepared, String tableName, ColumnsAndValues cv) {
+		return "insert into " + tableName + " (" + cv.getColumns() + ") values (" + cv.getValues(this, prepared) + ")";
 	}
 
 	protected String getUpdateStatement(PREPARED prepared, String tableName, ColumnsAndValues cv, String whereClause) throws NothingToDoException {
