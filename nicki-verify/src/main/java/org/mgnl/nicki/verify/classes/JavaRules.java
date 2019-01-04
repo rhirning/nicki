@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.mgnl.nicki.verify.annotations.Attribute;
+import org.mgnl.nicki.verify.annotations.VerifyCommand;
 import org.mgnl.nicki.verify.annotations.VerifyRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,6 +92,44 @@ public class JavaRules {
 				}
 			}
 		}
+	}
+	
+	public static List<String> executeCommands(Map<String, Object> data, Object ...commands) throws MissingAttributeException {
+		List<String> messages = new ArrayList<>();
+		if (commands != null) {
+			for (Object command : commands) {
+				try {
+					messages.addAll(executeCommand(data, command));
+				} catch (IllegalArgumentException | IllegalAccessException e) {
+					LOG.error("invalid class " + command.getClass().getName() + ": " + e.getMessage());
+				}
+			}
+		}
+		return messages;
+	}
+
+	public static List<String> executeCommand(Map<String, Object> data, Object command) throws MissingAttributeException, IllegalArgumentException, IllegalAccessException {
+		List<String> messages = new ArrayList<>();
+		injectData(command, data);
+		Class<?> clazz = command.getClass();
+		Method[] methods = clazz.getDeclaredMethods();
+		if (methods != null) {
+			for (Method method : methods) {
+				if (method.isAnnotationPresent(VerifyCommand.class)) {
+					try {
+						method.invoke(command);
+					} catch (IllegalArgumentException e) {
+						LOG.error("invalid method " + clazz.getName() + "." + method.getName() + ": " + e.getClass());
+					} catch (InvocationTargetException e) {
+						if (e.getTargetException() instanceof MessageVerifyException) {
+							MessageVerifyException verifyException = (MessageVerifyException) e.getTargetException();
+							messages.addAll(verifyException.getMessages());
+						}
+					}
+				}
+			}
+		}
+		return messages;
 	}
 
 }

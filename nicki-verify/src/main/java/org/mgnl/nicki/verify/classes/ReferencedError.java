@@ -28,12 +28,19 @@ public class ReferencedError {
 	private TYPE type;
 	private String reference;
 	private String message;
+	private Object command;
+	private boolean revalidate;
 	
 	public ReferencedError(TYPE type, String reference, String message) {
 		super();
 		this.type = type;
 		this.reference = reference;
 		this.message = message;
+	}
+	
+	public ReferencedError(TYPE type, String reference, String message, Object command) {
+		this(type, reference, message);
+		this.command = command;
 	}
 	public String getReference() {
 		return reference;
@@ -50,7 +57,21 @@ public class ReferencedError {
 		StringBuilder sb = new StringBuilder();
 		sb.append(type).append("{");
 		sb.append(reference).append(": ").append(message);
+		if (command != null) {
+			sb.append(", command=").append(command.toString());
+		}
 		sb.append("}");
 		return sb.toString();
+	}
+	public Object getCommand() {
+		return command;
+	}
+
+	public boolean isRevalidate() {
+		return revalidate;
+	}
+
+	public void setRevalidate(boolean revalidate) {
+		this.revalidate = revalidate;
 	}
 }
