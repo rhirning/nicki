@@ -628,7 +628,7 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 						}
 						if (value != null) {
 							if (value instanceof String) {
-								builder.add(key, (String) value);
+								builder.add(key, mapping.correctValue(key, (String) value));
 							} else if (value instanceof Date) {
 								if (StringUtils.isNotBlank(dynAttribute.getFormat())) {
 									SimpleDateFormat format = new SimpleDateFormat(dynAttribute.getFormat());

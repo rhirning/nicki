@@ -37,4 +37,6 @@ public interface AttributeMapper {
 	boolean isHiddenInternal(String internal);
 
 	boolean isHiddenExternal(String external);
+
+	String correctValue(String key, String value);
 }
