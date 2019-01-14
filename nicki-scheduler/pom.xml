@@ -20,6 +20,11 @@
 			<version>7.142-SNAPSHOT</version>
 		</dependency>
 		<dependency>
+			<groupId>org.mgnl.nicki</groupId>
+			<artifactId>nicki-verify</artifactId>
+			<version>7.142-SNAPSHOT</version>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>

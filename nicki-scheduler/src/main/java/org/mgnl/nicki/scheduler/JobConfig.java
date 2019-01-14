@@ -25,7 +25,8 @@ import lombok.Data;
 
 @Data
 public class JobConfig {
-	private boolean active;
+	private String active;
+	private String rule;
 	private String name;
 	private String group;
 	private String jobClassName;

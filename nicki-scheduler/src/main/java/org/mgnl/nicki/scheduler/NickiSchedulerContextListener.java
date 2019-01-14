@@ -26,14 +26,18 @@ import static org.quartz.TriggerBuilder.newTrigger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
+import java.util.HashMap;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.JsonHelper;
 import org.mgnl.nicki.core.util.Classes;
+import org.mgnl.nicki.verify.Verify;
+import org.mgnl.nicki.verify.VerifyException;
 import org.quartz.CronTrigger;
 import org.quartz.Job;
 import org.quartz.JobBuilder;
@@ -69,7 +73,7 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 
 				if (jobConfigurations.getJobConfig() != null) {
 					for (JobConfig syncConfig : jobConfigurations.getJobConfig()) {
-						if (syncConfig.isActive()) {
+						if (isActive(syncConfig)) {
 							Job jobClass = Classes.newInstance(syncConfig.getJobClassName());
 							JobDetail job = JobBuilder.newJob(jobClass.getClass()).withIdentity(syncConfig.getName(), syncConfig.getGroup()).build();
 
@@ -79,6 +83,8 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 						    Date ft = scheduler.scheduleJob(job, trigger);
 						    log.info(job.getKey() + " has been scheduled to run at: " + ft + " and repeat based on expression: "
 						             + trigger.getCronExpression());
+						} else {
+						    log.info("Job has not been scheduled to run: " + syncConfig);
 						}
 					}
 				}
@@ -91,6 +97,24 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 
 		}
 
+	}
+
+	private boolean isActive(JobConfig syncConfig) {
+		if (StringUtils.isNotBlank(syncConfig.getActive())) {
+			return DataHelper.booleanOf(syncConfig.getActive());
+		}
+		if (StringUtils.isNotBlank(syncConfig.getRule())) {
+			String value = DataHelper.translate(StringUtils.substringBefore(syncConfig.getRule(), ":"));
+			String rule = StringUtils.substringAfter(syncConfig.getRule(), ":");
+			try {
+				Verify.verifyRule(rule, value, new HashMap<String, String>());
+				return true;
+			} catch (VerifyException e) {
+				log.debug("Verify: " + e.getMessage());
+				return false;
+			}
+		}
+		return false;
 	}
 
 	@Override
