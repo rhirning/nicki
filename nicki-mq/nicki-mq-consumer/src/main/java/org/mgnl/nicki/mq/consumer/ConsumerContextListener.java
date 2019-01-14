@@ -23,17 +23,25 @@ package org.mgnl.nicki.mq.consumer;
 
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.JsonHelper;
 import org.mgnl.nicki.mq.model.Consumer;
 import org.mgnl.nicki.mq.model.ConsumerConfig;
+import org.mgnl.nicki.verify.Verify;
+import org.mgnl.nicki.verify.VerifyException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ConsumerContextListener implements ServletContextListener {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(ConsumerContextListener.class);
@@ -52,10 +60,10 @@ public class ConsumerContextListener implements ServletContextListener {
 			}
 			if (consumerConfig != null) {
 				for (Consumer consumer : consumerConfig.getConsumers()) {
-					if (consumer.isStart()) {
+					if (isStart(consumer)) {
 						startConsumer(consumer);
 					} else {
-						LOG.info("MQ consumer not started: " + consumer.getName());
+						LOG.info("MQ consumer not started: " + consumer);
 					}
 				}
 			}
@@ -66,6 +74,25 @@ public class ConsumerContextListener implements ServletContextListener {
 	}
 
 	
+	private boolean isStart(Consumer consumer) {
+		if (StringUtils.isNotBlank(consumer.getStart())) {
+			return DataHelper.booleanOf(consumer.getStart());
+		}
+		if (StringUtils.isNotBlank(consumer.getRule())) {
+			String value = DataHelper.translate(StringUtils.substringBefore(consumer.getRule(), ":"));
+			String rule = StringUtils.substringAfter(consumer.getRule(), ":");
+			try {
+				Verify.verifyRule(rule, value, new HashMap<String, String>());
+				return true;
+			} catch (VerifyException e) {
+				log.debug("Verify: " + e.getMessage());
+				return false;
+			}
+		}
+		return false;
+	}
+
+
 	private void startConsumer(Consumer consumer) {
 		consumerThread = new ConsumerThread(consumer);
 		consumerThread.start();
