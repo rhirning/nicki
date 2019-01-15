@@ -3,7 +3,7 @@ package org.mgnl.nicki.mq.broker;
 
 /*-
  * #%L
- * nicki-mq
+ * nicki-mq-broker
  * %%
  * Copyright (C) 2017 Ralf Hirning
  * %%
