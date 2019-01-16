@@ -7,10 +7,11 @@ import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.AttributeMapper;
 import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.db.annotation.Sync;
+import org.mgnl.nicki.db.annotation.SyncConfig;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.context.NotInTransactionException;
@@ -29,23 +30,23 @@ public class SyncManager implements Serializable{
 		return instance;
 	}
 	
-	public static void syncObject(DynamicObject dynamicObject) throws NotSupportedException, SyncException {
-		getInstance().sync(dynamicObject);
+	public static List<SyncChange> syncObject(DynamicObject dynamicObject, SyncConfig syncConfig) throws NotSupportedException, SyncException {
+		return getInstance().sync(dynamicObject, syncConfig);
 	}
 	
-	public static <T extends DynamicObject> List<SyncEntry> loadObject(Class<T> clazz, String id, Date date) throws NotSupportedException, SyncException {
-		return getInstance().load(clazz, id, date);
+	public static <T extends DynamicObject> List<SyncEntry> loadObject(Class<T> clazz, SyncConfig syncConfig, String id, Date date) throws NotSupportedException, SyncException {
+		return getInstance().load(clazz, syncConfig, id, date);
 	}
 	
-	public static <T extends DynamicObject> List<SyncChange> diffObject(Class<T> clazz, String id, Date date1, Date date2) throws NotSupportedException, SyncException {
-		return getInstance().diff(clazz, id, date1, date2);
+	public static <T extends DynamicObject> List<SyncChange> diffObject(Class<T> clazz, SyncConfig syncConfig, String id, Date date1, Date date2) throws NotSupportedException, SyncException {
+		return getInstance().diff(clazz, syncConfig, id, date1, date2);
 	}
 
-	private <T extends DynamicObject> List<SyncChange> diff(Class<T> clazz, String id, Date date1, Date date2) throws NotSupportedException, SyncException {
+	private <T extends DynamicObject> List<SyncChange> diff(Class<T> clazz, SyncConfig syncConfig, String id, Date date1, Date date2) throws NotSupportedException, SyncException {
 		List<SyncChange> changes = new ArrayList<>();
 		
-		List<SyncEntry> list1 = load(clazz, id, date1);
-		List<SyncEntry> list2 = load(clazz, id, date2);
+		List<SyncEntry> list1 = load(clazz, syncConfig, id, date1);
+		List<SyncEntry> list2 = load(clazz, syncConfig, id, date2);
 		
 		if (list1 != null && list2 != null) {
 			// remove
@@ -58,7 +59,7 @@ public class SyncManager implements Serializable{
 					}
 				}
 				if (!found) {
-					changes.add(new SyncChange(ACTION.REMOVE, e1.getAttribute(), e1.getContent()));
+					changes.add(new SyncChange(e1.getTo(), ACTION.REMOVE, e1.getAttribute(), e1.getContent()));
 				}
 			}
 			// add
@@ -71,7 +72,7 @@ public class SyncManager implements Serializable{
 					}
 				}
 				if (!found) {
-					changes.add(new SyncChange(ACTION.ADD, e1.getAttribute(), e1.getContent()));
+					changes.add(new SyncChange(e1.getFrom(), ACTION.ADD, e1.getAttribute(), e1.getContent()));
 				}
 			}
 			
@@ -80,16 +81,12 @@ public class SyncManager implements Serializable{
 		return changes;
 	}
 
-	private <T extends DynamicObject> List<SyncEntry> load(Class<T> clazz, String id, Date date) throws NotSupportedException, SyncException {
+	private <T extends DynamicObject> List<SyncEntry> load(Class<T> clazz, SyncConfig syncConfig, String id, Date date) throws NotSupportedException, SyncException {
 
-		if (!clazz.isAnnotationPresent(Sync.class)) {
-			throw new NotSupportedException("@Sync Annotation not present in class " + clazz.getName());
-		}
-		Sync annotation = clazz.getAnnotation(Sync.class);
-		try (DBContext dbContext = DBContextManager.getContext(Config.getString(annotation.context()))) {
-			SyncEntry syncEntry = getEmptyEntry(annotation.entryClass());
+		try (DBContext dbContext = DBContextManager.getContext(Config.getString(syncConfig.getContext()))) {
+			SyncEntry syncEntry = getEmptyEntry(syncConfig.getEntryClass());
 			syncEntry.setId(id);
-			syncEntry.setType(annotation.entryType());
+			syncEntry.setType(syncConfig.getEntryType());
 			StringBuilder filter = new StringBuilder();
 			filter.append("FROM_TIME <= ").append(dbContext.getTimestampAsDbString(date));
 			filter.append(" AND (");
@@ -103,78 +100,86 @@ public class SyncManager implements Serializable{
 		}		
 	}
 	
-	private void sync(DynamicObject dynamicObject) throws NotSupportedException, SyncException {
+	private List<SyncChange> sync(DynamicObject dynamicObject, SyncConfig syncConfig) throws NotSupportedException, SyncException {
+		List<SyncChange> changes = new ArrayList<>();
 		if (dynamicObject == null) {
-			return;
+			return changes;
 		}
+				
+		DELETE delete = syncConfig.isHistory() ? DELETE.NO : DELETE.YES;
 
-		if (!dynamicObject.getClass().isAnnotationPresent(Sync.class)) {
-			throw new NotSupportedException("@Sync Annotation not present in class " + dynamicObject.getClass().getName());
-		}
-		
-		Sync annotation = dynamicObject.getClass().getAnnotation(Sync.class);
+		AttributeMapper attributeMapper = syncConfig.getAttributeMapper();
 		
 		
 		DataModel model = dynamicObject.getModel();
 		Date now = new Date();
 		synchronized (instance) {
-			try (DBContext dbContext = DBContextManager.getContext(Config.getString(annotation.context()))) {
+			try (DBContext dbContext = DBContextManager.getContext(Config.getString(syncConfig.getContext()))) {
 				dbContext.beginTransaction();
-				List<SyncEntry> storedEntries = getStoredEntries(dbContext, annotation, dynamicObject.getNamingValue());
+				List<SyncEntry> storedEntries = getStoredEntries(dbContext, syncConfig, dynamicObject.getNamingValue());
 	
 				for (String attributeName : model.getAttributes().keySet()) {
-					List<SyncEntry> storedAttributeEntries = getStoredAttributeEntries(storedEntries, attributeName);
-					DynamicAttribute attribute = model.getAttributes().get(attributeName);
-					SyncEntry syncEntry = getEmptyEntry(annotation.entryClass());
-					syncEntry.setAttribute(attributeName);
-					syncEntry.setFrom(now);
-					syncEntry.setId(dynamicObject.getNamingValue());
-					syncEntry.setType(annotation.entryType());
-					if (attribute.isMultiple()) {
-						@SuppressWarnings("unchecked")
-						List<String> values = (List<String>) dynamicObject.get(attributeName);
-						// create missing
-						if (values != null) {
-							for (String valueEntry : values) {
-								String value = StringUtils.stripToNull(valueEntry);
-								if (!containsValue(storedEntries, value)) {
+					if (attributeMapper.hasInternal(attributeName)) {
+						String externalAttribute = attributeMapper.toExternal(attributeName);
+						List<SyncEntry> storedAttributeEntries = getStoredAttributeEntries(storedEntries, attributeName);
+						DynamicAttribute attribute = model.getAttributes().get(attributeName);
+						SyncEntry syncEntry = getEmptyEntry(syncConfig.getEntryClass());
+						syncEntry.setAttribute(externalAttribute);
+						syncEntry.setFrom(now);
+						syncEntry.setId(dynamicObject.getNamingValue());
+						syncEntry.setType(syncConfig.getEntryType());
+						if (attribute.isMultiple()) {
+							@SuppressWarnings("unchecked")
+							List<String> values = (List<String>) dynamicObject.get(attributeName);
+							// create missing
+							if (values != null) {
+								for (String valueEntry : values) {
+									String value = StringUtils.stripToNull(valueEntry);
+									if (!containsValue(storedEntries, value)) {
+										syncEntry.setContent(value);
+										dbContext.create(syncEntry);
+										changes.add(new SyncChange(now, ACTION.ADD, syncEntry.getAttribute(), syncEntry.getContent()));
+										log.debug(dynamicObject.getName() + ": add attribute value (internal=" + attributeName + ") " + externalAttribute + "=" + value);
+									}
+								}
+							}
+							// delete deleted
+							if (storedAttributeEntries != null && storedAttributeEntries.size() > 0) {
+								for (SyncEntry storedEntry: storedAttributeEntries) {
+									String content = storedEntry.getContent();
+									if (values == null || values.size() == 0 || !contains(values, content)) {
+										deleteEntry(dbContext, storedEntry, now, delete);
+										changes.add(new SyncChange(now, ACTION.REMOVE, storedEntry.getAttribute(), storedEntry.getContent()));
+										log.debug(dynamicObject.getName() + ": delete attribute value (internal=" + attributeName + ") " + externalAttribute + "=" + content);
+									}
+								}
+							}
+						} else {
+							SyncEntry storedEntry = null;
+							if (storedAttributeEntries != null && storedAttributeEntries.size() > 0) {
+								storedEntry = storedAttributeEntries.get(0);
+							}
+							String value = StringUtils.stripToNull(dynamicObject.getAttribute(attributeName));
+							// delete or modify?
+							if (storedEntry != null) {
+								if (value == null) {
+									deleteEntry(dbContext, storedEntry, now, delete);
+									changes.add(new SyncChange(now, ACTION.REMOVE, storedEntry.getAttribute(), storedEntry.getContent()));
+									log.debug(dynamicObject.getName() + ": delete attribute (internal=" + attributeName + ")" + externalAttribute);
+								} else if (!StringUtils.equals(value, storedEntry.getContent())) {
+									deleteEntry(dbContext, storedEntry, now, delete);
+									changes.add(new SyncChange(now, ACTION.REMOVE, storedEntry.getAttribute(), storedEntry.getContent()));
 									syncEntry.setContent(value);
 									dbContext.create(syncEntry);
-									log.debug(dynamicObject.getName() + ": add attribute value " + attributeName + "=" + value);
+									changes.add(new SyncChange(now, ACTION.ADD, syncEntry.getAttribute(), syncEntry.getContent()));
+									log.debug(dynamicObject.getName() + ": modify attribute (internal=" + attributeName + ")" + externalAttribute + "=" + value);
 								}
-							}
-						}
-						// delete deleted
-						if (storedAttributeEntries != null && storedAttributeEntries.size() > 0) {
-							for (SyncEntry storedEntry: storedAttributeEntries) {
-								String content = storedEntry.getContent();
-								if (values == null || values.size() == 0 || !contains(values, content)) {
-									deleteEntry(dbContext, storedEntry, now);
-									log.debug(dynamicObject.getName() + ": delete attribute value " + attributeName + "=" + content);
-								}
-							}
-						}
-					} else {
-						SyncEntry storedSyncEntry = null;
-						if (storedAttributeEntries != null && storedAttributeEntries.size() > 0) {
-							storedSyncEntry = storedAttributeEntries.get(0);
-						}
-						String value = StringUtils.stripToNull(dynamicObject.getAttribute(attributeName));
-						// delete or modify?
-						if (storedSyncEntry != null) {
-							if (value == null) {
-								deleteEntry(dbContext, storedSyncEntry, now);
-								log.debug(dynamicObject.getName() + ": delete attribute " + attributeName);
-							} else if (!StringUtils.equals(value, storedSyncEntry.getContent())) {
-								deleteEntry(dbContext, storedSyncEntry, now);
+							} else if (value != null) {
 								syncEntry.setContent(value);
-								dbContext.create(syncEntry);							
-								log.debug(dynamicObject.getName() + ": modify attribute " + attributeName + "=" + value);
+								dbContext.create(syncEntry);
+								changes.add(new SyncChange(now, ACTION.ADD, syncEntry.getAttribute(), syncEntry.getContent()));
+								log.debug(dynamicObject.getName() + ": add attribute (internal=" + attributeName + ")" + externalAttribute + "=" + value);
 							}
-						} else if (value != null) {
-							syncEntry.setContent(value);
-							dbContext.create(syncEntry);
-							log.debug(dynamicObject.getName() + ": add attribute " + attributeName + "=" + value);
 						}
 					}
 				}
@@ -184,6 +189,7 @@ public class SyncManager implements Serializable{
 				throw new SyncException(e);
 			}
 		}
+		return changes;
 	}
 
 	private boolean contains(List<String> values, String value) {
@@ -222,10 +228,15 @@ public class SyncManager implements Serializable{
 		}
 		return false;
 	}
+	enum DELETE {YES, NO}
 
-	private void deleteEntry(DBContext dbContext, SyncEntry storedEntry, Date toTime) throws InitProfileException, NotSupportedException, SQLException {
-		storedEntry.setTo(toTime);
-		dbContext.update(storedEntry, "to");
+	private void deleteEntry(DBContext dbContext, SyncEntry storedEntry, Date toTime, DELETE delete) throws InitProfileException, NotSupportedException, SQLException {
+		if (delete == DELETE.YES) {
+			dbContext.delete(storedEntry);
+		} else {
+			storedEntry.setTo(toTime);
+			dbContext.update(storedEntry, "to");
+		}
 	}
 
 	private SyncEntry getEmptyEntry(Class<? extends SyncEntry> entryClass) throws InstantiationException, IllegalAccessException {
@@ -233,10 +244,10 @@ public class SyncManager implements Serializable{
 	}
 
 
-	private List<SyncEntry> getStoredEntries(DBContext dbContext, Sync annotation, String id) throws InstantiationException, IllegalAccessException, SQLException, InitProfileException {
-		SyncEntry searchEntry = annotation.entryClass().newInstance();
+	private List<SyncEntry> getStoredEntries(DBContext dbContext, SyncConfig syncConfig, String id) throws InstantiationException, IllegalAccessException, SQLException, InitProfileException {
+		SyncEntry searchEntry = syncConfig.getEntryClass().newInstance();
 		searchEntry.setId(id);
-		searchEntry.setType(annotation.entryType());
+		searchEntry.setType(syncConfig.getEntryType());
 		List<SyncEntry> entries = dbContext.loadObjects(searchEntry, false, "TO_TIME IS NULL", null);
 		if (entries != null) {
 			return entries;

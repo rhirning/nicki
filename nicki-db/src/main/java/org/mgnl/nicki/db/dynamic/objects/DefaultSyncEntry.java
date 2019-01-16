@@ -8,7 +8,8 @@ import org.mgnl.nicki.db.data.DataType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data @NoArgsConstructor @Table(name = "DYNAMIC_OBJECTS")
+@Data @NoArgsConstructor
+@Table(name = "DYNAMIC_OBJECTS")
 public class DefaultSyncEntry implements SyncEntry {
 	
 	@Attribute(name = "UNIQUE_ID", autogen=true, primaryKey=true)
