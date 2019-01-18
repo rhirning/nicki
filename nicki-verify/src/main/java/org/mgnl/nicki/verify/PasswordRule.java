@@ -95,7 +95,7 @@ public class PasswordRule extends Rule {
 		return I18n.getText(getI18nBase() + ".password", messages.toString());
 	}
 	public String toString() {
-		return "email";
+		return "passwordRule";
 	}
 	enum SET {
 		LOWER_CASE("abcdefghijklmnopqrstuvwxyz\u00c4\u00d6\u00dc"),
