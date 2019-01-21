@@ -6,7 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.helper.AttributeMapper;
 import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
@@ -31,6 +33,11 @@ public class SyncManager implements Serializable{
 	}
 	
 	public static List<SyncChange> syncObject(DynamicObject dynamicObject, SyncConfig syncConfig) throws NotSupportedException, SyncException {
+		return getInstance().sync(dynamicObject, syncConfig);
+	}
+	
+	public static List<SyncChange> syncObject(String context, String path, SyncConfig syncConfig) throws NotSupportedException, SyncException, InvalidPrincipalException {
+		DynamicObject dynamicObject = AppContext.getSystemContext(context).loadObject(path);
 		return getInstance().sync(dynamicObject, syncConfig);
 	}
 	
