@@ -1,5 +1,5 @@
 
-package org.mgnl.nicki.db.annotation;
+package org.mgnl.nicki.db.dynamic.objects;
 
 /*-
  * #%L
@@ -23,9 +23,6 @@ package org.mgnl.nicki.db.annotation;
 
 
 import org.mgnl.nicki.core.helper.AttributeMapper;
-import org.mgnl.nicki.db.dynamic.objects.DefaultSyncEntry;
-import org.mgnl.nicki.db.dynamic.objects.NullAttributeMapper;
-import org.mgnl.nicki.db.dynamic.objects.SyncEntry;
 
 import lombok.Data;
 
@@ -34,6 +31,7 @@ public class SyncConfig {
 	private String context;
 	private String entryType;
 	private Class<? extends SyncEntry> entryClass = DefaultSyncEntry.class;
+	private SyncIdGenerator idGenerator;
 	private AttributeMapper attributeMapper = new NullAttributeMapper();
 	private boolean history;
 
@@ -51,6 +49,9 @@ public class SyncConfig {
 		}
 		
 		public SyncConfig build() {
+			if (this.syncConfig.idGenerator == null) {
+				this.syncConfig.idGenerator = new DefaultSyncEntry();
+			}
 			return this.syncConfig;
 		}
 		
@@ -66,6 +67,11 @@ public class SyncConfig {
 		
 		public Builder entryClass(Class<? extends SyncEntry> entryClass) {
 			this.syncConfig.entryClass = entryClass;
+			return this;
+		}
+		
+		public Builder idGenerator(SyncIdGenerator idGenerator) {
+			this.syncConfig.idGenerator = idGenerator;
 			return this;
 		}
 		

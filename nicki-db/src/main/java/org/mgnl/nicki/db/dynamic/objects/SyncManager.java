@@ -13,7 +13,6 @@ import org.mgnl.nicki.core.helper.AttributeMapper;
 import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.mgnl.nicki.db.annotation.SyncConfig;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.context.NotInTransactionException;
@@ -123,17 +122,18 @@ public class SyncManager implements Serializable{
 		synchronized (instance) {
 			try (DBContext dbContext = DBContextManager.getContext(Config.getString(syncConfig.getContext()))) {
 				dbContext.beginTransaction();
-				List<SyncEntry> storedEntries = getStoredEntries(dbContext, syncConfig, dynamicObject.getNamingValue());
+				SyncEntry syncEntry = getEmptyEntry(syncConfig.getEntryClass());
+				List<SyncEntry> storedEntries = getStoredEntries(dbContext, syncConfig, syncConfig.getIdGenerator().getId(dynamicObject));
 	
 				for (String attributeName : model.getAttributes().keySet()) {
 					if (attributeMapper.hasInternal(attributeName)) {
 						String externalAttribute = attributeMapper.toExternal(attributeName);
 						List<SyncEntry> storedAttributeEntries = getStoredAttributeEntries(storedEntries, attributeName);
 						DynamicAttribute attribute = model.getAttributes().get(attributeName);
-						SyncEntry syncEntry = getEmptyEntry(syncConfig.getEntryClass());
+						
 						syncEntry.setAttribute(externalAttribute);
 						syncEntry.setFrom(now);
-						syncEntry.setId(dynamicObject.getNamingValue());
+						syncEntry.setId(syncConfig.getIdGenerator().getId(dynamicObject));
 						syncEntry.setType(syncConfig.getEntryType());
 						if (attribute.isMultiple()) {
 							@SuppressWarnings("unchecked")

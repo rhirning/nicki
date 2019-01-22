@@ -2,6 +2,8 @@ package org.mgnl.nicki.db.dynamic.objects;
 
 import java.util.Date;
 
+import org.mgnl.nicki.core.objects.DynamicObject;
+
 public interface SyncEntry {
 
 	
