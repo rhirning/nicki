@@ -38,11 +38,14 @@ import org.mgnl.nicki.db.handler.SelectHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class StatisticsSelectHandler implements SelectHandler {
-	private static final Logger LOG = LoggerFactory.getLogger(StatisticsSelectHandler.class);
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
+public class StatisticsSelectHandler implements SelectHandler, StatisticsResult {
 	private DBContext dbContext;
 	private StatisticsDefinition definition;
-	private Map<String, String> result = new HashMap<>();
+	private @Getter Map<String, String> result = new HashMap<>();
+	private @Getter List<Map<String, String>> resultList = new ArrayList<>();
 	private Map<String, Variable> inputVariables = new HashMap<>();
 	private Map<String, Variable> outputVariables = new HashMap<>();
 	private String searchStatement;
@@ -107,27 +110,30 @@ public class StatisticsSelectHandler implements SelectHandler {
 
 	@Override
 	public void handle(ResultSet resultSet) throws SQLException {
-		if (resultSet.next()) {
+		boolean first = true;
+		while (resultSet.next()) {
+			Map<String, String> resultMap = new HashMap<>();
 			for (Variable variable : definition.getOutput()) {
 				if (resultSet.getObject(variable.getName()) != null) {
 					try {
 						String outputString = variable.toString(resultSet);
-						result.put(variable.getName(), outputString);
+						resultMap.put(variable.getName(), outputString);
 					} catch (SQLException e) {
-						LOG.error("Error parsing output", e);
+						log.error("Error parsing output", e);
 					}
 				}
 			}
+			resultList.add(resultMap);
+			if (first) {
+				result = resultMap;
+			}
+			first = false;
 		}
 	}
 
 	@Override
 	public boolean isLoggingEnabled() {
 		return true;
-	}
-
-	public Map<String, String> getResult() {
-		return result;
 	}
 
 }

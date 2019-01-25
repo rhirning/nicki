@@ -38,12 +38,12 @@ public class StatisticsManager {
 		return getInstance().isStatisticsAvailable(businessCategory, statisticName);
 	}
 
-	public static Map<String, String> getStatistics(String businessCategory, String statisticName, Map<String, String> input)
+	public static StatisticsResult getStatistics(String businessCategory, String statisticName, Map<String, String> input)
 			throws InvalidStatisticsException, MissingDataException, StatisticsException {
 		return getInstance().executeStatistics(businessCategory, statisticName, input);
 	}
 	
-	private Map<String, String> executeStatistics(String businessCategory, String statisticName, Map<String, String> input) throws InvalidStatisticsException, StatisticsException, MissingDataException {
+	private StatisticsResult executeStatistics(String businessCategory, String statisticName, Map<String, String> input) throws InvalidStatisticsException, StatisticsException, MissingDataException {
 		if (!isAvailable(businessCategory, statisticName) ) {
 			throw new InvalidStatisticsException(businessCategory + "/" + statisticName);
 		}

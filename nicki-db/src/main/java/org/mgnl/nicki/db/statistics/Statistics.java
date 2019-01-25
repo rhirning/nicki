@@ -59,12 +59,12 @@ public class Statistics {
 	
 	private StatisticsDefinition definition;
 	
-	public Map<String, String> execute(Map<String, String> input) throws StatisticsException, MissingDataException {
+	public StatisticsResult execute(Map<String, String> input) throws StatisticsException, MissingDataException {
 		DBContext dbContext = DBContextManager.getContext(context);
 		try {
 			StatisticsSelectHandler handler = new StatisticsSelectHandler(dbContext, definition, input);
 			dbContext.select(handler);
-			return handler.getResult();
+			return handler;
 		} catch (SQLException | InitProfileException | ParseException e) {
 			throw new StatisticsException(e);
 		}
