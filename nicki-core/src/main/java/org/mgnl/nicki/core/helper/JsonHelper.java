@@ -65,7 +65,13 @@ public class JsonHelper extends BeanUtilsHelper {
 		JsonArrayBuilder builder = Json.createArrayBuilder();
 		if (list != null) {
 			for (T entry : list) {
-				builder.add(JsonHelper.toJsonObject(entry));
+				if (entry instanceof Map<?,?>) {
+					@SuppressWarnings("unchecked")
+					Map<String, String> mapEntry = (Map<String,String>) entry;
+					builder.add(JsonHelper.toJsonObject(mapEntry));
+				} else {
+					builder.add(JsonHelper.toJsonObject(entry));
+				}
 			}
 		}
 		return builder.build();
@@ -190,7 +196,11 @@ public class JsonHelper extends BeanUtilsHelper {
 				builder.add((String) entry);
 				
 			} else {
-				builder.add(toJsonObject(entry));
+				if (Map.class.isAssignableFrom(entry.getClass())) {
+					builder.add(toJsonMap((Map<?, ?>) entry));
+				} else {
+					builder.add(toJsonObject(entry));
+				}
 			}
 		}
 		return builder.build();
@@ -372,31 +382,53 @@ public class JsonHelper extends BeanUtilsHelper {
 						if(genericFieldType instanceof ParameterizedType){
 						    ParameterizedType aType = (ParameterizedType) genericFieldType;
 						    Type[] fieldArgTypes = aType.getActualTypeArguments();
-							Class<?> entryClass = (Class<?>) fieldArgTypes[0];
-						
-							List<Object> list = new ArrayList<>();
-							try {
-								JsonArray array = data.getJsonArray(key);
-								for (int i = 0; i < array.size(); i++) {
-									try {
-										if (entryClass == String.class) {
-											list.add(array.getString(i));
-										} else {
-											Object entry = entryClass.newInstance();
+							if(fieldArgTypes[0] instanceof ParameterizedType){
+							    ParameterizedType bType = (ParameterizedType) fieldArgTypes[0];								
+								List<Object> list = new ArrayList<>();
+								try {
+									JsonArray array = data.getJsonArray(key);
+									for (int i = 0; i < array.size(); i++) {
+										try {
 											JsonObject o = array.getJsonObject(i);
-											fillBeanWithProperties(entryClass, entry, o);
-											list.add(entry);
+											list.add(getMap(o));
+										} catch (Exception e) {
+											e.printStackTrace();
 										}
-									} catch (Exception e) {
-										e.printStackTrace();
 									}
+									Method setter = getSetter(bean.getClass(), field, field.getType());
+									if (setter != null) {
+										setter.invoke(bean, list);
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
 								}
-								Method setter = getSetter(bean.getClass(), field, field.getType());
-								if (setter != null) {
-									setter.invoke(bean, list);
+							} else {
+								Class<?> entryClass = (Class<?>) fieldArgTypes[0];
+							
+								List<Object> list = new ArrayList<>();
+								try {
+									JsonArray array = data.getJsonArray(key);
+									for (int i = 0; i < array.size(); i++) {
+										try {
+											if (entryClass == String.class) {
+												list.add(array.getString(i));
+											} else {
+												Object entry = entryClass.newInstance();
+												JsonObject o = array.getJsonObject(i);
+												fillBeanWithProperties(entryClass, entry, o);
+												list.add(entry);
+											}
+										} catch (Exception e) {
+											e.printStackTrace();
+										}
+									}
+									Method setter = getSetter(bean.getClass(), field, field.getType());
+									if (setter != null) {
+										setter.invoke(bean, list);
+									}
+								} catch (Exception e) {
+									e.printStackTrace();
 								}
-							} catch (Exception e) {
-								e.printStackTrace();
 							}
 						}
 					}
@@ -456,6 +488,16 @@ public class JsonHelper extends BeanUtilsHelper {
 	
 	public static JsonObject copy(JsonObject jsonObject) {
 		return JsonHelper.toJsonObject(jsonObject.toString());
+	}
+	
+	public static Map<String,String> getMap(JsonObject o) {
+		Map<String,String> map = new HashMap<>();
+		if (o != null) {
+			for (String key : o.keySet()) {
+				map.put(key, o.getString(key));
+			}
+		}
+		return map;
 	}
 
 }
