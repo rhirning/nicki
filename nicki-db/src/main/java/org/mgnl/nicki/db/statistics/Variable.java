@@ -26,6 +26,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.db.context.DBContext;
 
@@ -36,6 +37,29 @@ public class Variable {
 			@Override
 			String toString(DBContext dbContext, String value) {
 				return "'" + value + "'";
+			}
+
+			@Override
+			String toString(ResultSet resultSet, String name) throws SQLException {
+				return resultSet.getString(name);
+			}
+		},
+		LIST {
+			@Override
+			String toString(DBContext dbContext, String value) {
+				if (StringUtils.isBlank(value)) {
+					return "'" + value + "'";
+				}
+				
+				String[] list = StringUtils.split(StringUtils.trimToEmpty(value), ",");
+				StringBuilder sb = new StringBuilder();
+				for (String entry : list) {
+					if (sb.length() > 0) {
+						sb.append(",");
+					}
+					sb.append("'").append(entry).append("'");
+				}
+				return sb.toString();
 			}
 
 			@Override
