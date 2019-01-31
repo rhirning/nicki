@@ -35,9 +35,6 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.handler.SelectHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
@@ -59,7 +56,8 @@ public class StatisticsSelectHandler implements SelectHandler, StatisticsResult 
 		for (Variable outputVariable : definition.getOutput()) {
 			outputVariables.put(outputVariable.getName(), outputVariable);
 		}
-		this.searchStatement = parseQuery(definition.getQuery(), definition.getInput(), values); 
+		this.searchStatement = parseQuery(definition.getQuery(), definition.getInput(), values);
+		log.debug(searchStatement);
 	}
 
 	@Override
