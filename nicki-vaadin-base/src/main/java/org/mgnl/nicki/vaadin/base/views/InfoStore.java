@@ -1,5 +1,7 @@
 package org.mgnl.nicki.vaadin.base.views;
 
+import java.io.Serializable;
+
 /*-
  * #%L
  * nicki-vaadin-base
@@ -22,7 +24,7 @@ package org.mgnl.nicki.vaadin.base.views;
 
 import java.util.Map;
 
-public interface InfoStore {
+public interface InfoStore extends Serializable {
 
 	void setData(String value) throws InfoStoreException;
 
