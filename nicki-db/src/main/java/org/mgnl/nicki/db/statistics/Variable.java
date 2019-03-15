@@ -41,7 +41,7 @@ public class Variable {
 
 			@Override
 			String toString(ResultSet resultSet, String name) throws SQLException {
-				return resultSet.getString(name);
+				return StringUtils.stripToEmpty(resultSet.getString(name));
 			}
 		},
 		LIST {
@@ -64,7 +64,7 @@ public class Variable {
 
 			@Override
 			String toString(ResultSet resultSet, String name) throws SQLException {
-				return resultSet.getString(name);
+				return StringUtils.stripToEmpty(resultSet.getString(name));
 			}
 		},
 		DATE {
