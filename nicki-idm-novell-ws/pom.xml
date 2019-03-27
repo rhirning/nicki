@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>nicki-idm-novell-ws</artifactId>
+	<name>nicki-idm-novell-ws</name>
+	<parent>
+		<artifactId>nicki-parent</artifactId>
+		<groupId>org.mgnl.nicki</groupId>
+		<version>7.156-SNAPSHOT</version>
+		<relativePath>..</relativePath>
+	</parent>
+	<dependencies>
+		<dependency>
+			<groupId>com.novell.userapp</groupId>
+			<artifactId>IDMrbac</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.novell.userapp</groupId>
+			<artifactId>workflow</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.novell.userapp</groupId>
+			<artifactId>wssdk</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml</groupId>
+			<artifactId>jaxrpc-api</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.mgnl.nicki</groupId>
+		    <artifactId>nicki-core</artifactId>
+		    <version>${project.version}</version>
+		</dependency>
+	</dependencies>
+</project>

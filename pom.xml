@@ -34,6 +34,7 @@
 		<module>nicki-editor-templates</module>
 		<module>nicki-idm-novell</module>
 		<module>nicki-idm-novell-shop</module>
+		<module>nicki-idm-novell-ws</module>
 		<module>nicki-jcr</module>
 		<module>nicki-jcr-apps</module>
 		<module>nicki-ldap</module>
@@ -128,6 +129,11 @@
 				<groupId>com.novell.userapp</groupId>
 				<artifactId>IDMfw-bin</artifactId>
 				<version>${idm.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.novell.userapp</groupId>
+				<artifactId>IDMrbac</artifactId>
+					<version>${idm.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novell.userapp</groupId>
