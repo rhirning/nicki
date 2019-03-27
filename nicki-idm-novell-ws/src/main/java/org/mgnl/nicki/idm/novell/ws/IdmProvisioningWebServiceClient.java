@@ -41,14 +41,14 @@ import com.novell.soa.ws.portable.Stub;
 @SuppressWarnings("serial")
 public class IdmProvisioningWebServiceClient implements Serializable {
 	/*
-	 * pnw.idm.novell.ws.provisioning.wsdl = http://172.17.2.91:8180/IDMProv/provisioning/service?wsdl
-	 * pnw.idm.novell.ws.provisioning.user = cn=uaadmin,ou=sa,o=data
-	 * pnw.idm.novell.ws.provisioning.password = netiq000
+	 * nicki.idm.novell.ws.provisioning.wsdl = http://172.17.2.91:8180/IDMProv/provisioning/service?wsdl
+	 * nicki.idm.novell.ws.provisioning.user = cn=uaadmin,ou=sa,o=data
+	 * nicki.idm.novell.ws.provisioning.password = netiq000
 	 */
 
-	private static String wsdl = Config.getString("pnw.idm.novell.ws.provisioning.wsdl");
-	private static String user = Config.getString("pnw.idm.novell.ws.provisioning..user");
-	private static String password = Config.getString("pnw.idm.novell.ws.provisioning.password");
+	private static String wsdl = Config.getString("nicki.idm.novell.ws.provisioning.wsdl");
+	private static String user = Config.getString("nicki.idm.novell.ws.provisioning.user");
+	private static String password = Config.getString("nicki.idm.novell.ws.provisioning.password");
 
 	private static IdmProvisioningWebServiceClient instance;
 

@@ -29,14 +29,14 @@ import com.novell.soa.ws.portable.Stub;
 @SuppressWarnings("serial")
 public class IdmResourceWebServiceClient implements Serializable {
 	/*
-	 * pnw.idm.novell.ws.resource.wsdl = http://172.17.2.91:8180/IDMProv/resource/service?wsdl
-	 * pnw.idm.novell.ws.resource.user = cn=uaadmin,ou=sa,o=data
-	 * pnw.idm.novell.ws.resource.password = netiq000
+	 * nicki.idm.novell.ws.resource.wsdl = http://172.17.2.91:8180/IDMProv/resource/service?wsdl
+	 * nicki.idm.novell.ws.resource.user = cn=uaadmin,ou=sa,o=data
+	 * nicki.idm.novell.ws.resource.password = netiq000
 	 */
 
-	private static String wsdl = Config.getString("pnw.idm.novell.ws.resource.wsdl");
-	private static String user = Config.getString("pnw.idm.novell.ws..resource.user");
-	private static String password = Config.getString("pnw.idm.novell.ws.resource.password");
+	private static String wsdl = Config.getString("nicki.idm.novell.ws.resource.wsdl");
+	private static String user = Config.getString("nicki.idm.novell.ws.resource.user");
+	private static String password = Config.getString("nicki.idm.novell.ws.resource.password");
 
 	private static IdmResourceWebServiceClient instance;
 
