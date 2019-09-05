@@ -31,6 +31,7 @@ import javax.jms.Session;
 
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.mq.base.NickiMessageListener;
 import org.mgnl.nicki.mq.model.Consumer;
@@ -60,7 +61,8 @@ public class ConsumerThread extends Thread implements Runnable {
 			session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
 			Destination destination = session.createQueue(consumer.getDestination());
-			messageConsumer = session.createConsumer(destination, consumer.getSelector());
+			String selector = DataHelper.translate(consumer.getSelector());
+			messageConsumer = session.createConsumer(destination, selector);
 			NickiMessageListener messageListener = Classes.newInstance(consumer.getListener());
 			messageListener.setConsumer(consumer);
 			messageConsumer.setMessageListener(messageListener);
