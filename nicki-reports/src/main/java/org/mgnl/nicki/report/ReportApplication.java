@@ -22,47 +22,20 @@ package org.mgnl.nicki.report;
  */
 
 
-import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.data.DataProvider;
-import org.mgnl.nicki.core.data.EntryFilter;
-import org.mgnl.nicki.dynamic.objects.objects.Org;
-import org.mgnl.nicki.dynamic.objects.objects.Template;
-import org.mgnl.nicki.editor.templates.TemplateConfig;
 import org.mgnl.nicki.editor.templates.TemplateEditor;
-import org.mgnl.nicki.vaadin.base.editor.DynamicObjectRoot;
-import org.mgnl.nicki.vaadin.base.editor.Icon;
-import org.mgnl.nicki.vaadin.base.editor.ShowAllFilter;
-import org.mgnl.nicki.vaadin.base.editor.TreeEditor;
-
 import com.vaadin.ui.Component;
 
+@SuppressWarnings("serial")
 public class ReportApplication extends TemplateEditor {
+	private ReportComponent reportApplicationComponent = new ReportComponent();
 
-	private static final long serialVersionUID = -8245147689512577915L;
-    
-
-	@SuppressWarnings("unchecked")
 	@Override
 	public Component getEditor() {
+		reportApplicationComponent.setApplication(this);
+		reportApplicationComponent.init();
+		return reportApplicationComponent;
 
-		DataProvider dataProvider = new DynamicObjectRoot(getTemplatesRoot(), getEntryFilter());
-		TreeEditor editor = new TreeEditor(this, getNickiContext(), dataProvider, getI18nBase());
-		editor.configureClass(Org.class, Icon.FOLDER, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY, Org.class, Template.class );
-		editor.configureClass(Template.class, Icon.DOCUMENT, TreeEditor.CREATE.DENY, TreeEditor.DELETE.DENY, TreeEditor.RENAME.DENY);
-		TemplateConfig templateConfig = new TemplateConfig();
-		boolean usePreview = Config.getBoolean("nicki.report.usePreview", false);
-		templateConfig.setUsePreview(usePreview);
-		editor.setClassEditor(Template.class, templateConfig);
-		editor.initActions();
-
-		return editor;
 	}
-
-	public EntryFilter getEntryFilter() {
-		return new ShowAllFilter();
-	}
-	
-
 
 	@Override
 	public String getI18nBase() {
