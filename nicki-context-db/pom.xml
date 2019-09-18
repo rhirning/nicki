@@ -6,14 +6,14 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>7.161-SNAPSHOT</version>
+		<version>7.161</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-db</artifactId>
-			<version>7.161-SNAPSHOT</version>
+			<version>7.161</version>
 		</dependency>
 		<dependency>
 			<groupId>org.freemarker</groupId>
