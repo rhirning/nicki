@@ -50,6 +50,7 @@ import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.data.SearchQueryHandler;
 import org.mgnl.nicki.core.helper.AnnotationHelper;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
@@ -106,9 +107,9 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (StringUtils.isNotEmpty(referral)) {
 			env.put(Context.REFERRAL, referral);
 		}
-		// Set pooling timeout
-		String connectionPoolTimeout = getTarget().getProperty("connect.pool.timeout", "1800000");
-		env.put("com.sun.jndi.ldap.connect.pool.timeout", connectionPoolTimeout);
+		// Enable connection pooling
+		env.put("com.sun.jndi.ldap.connect.pool",
+				DataHelper.booleanOf(getTarget().getProperty("pool")) ? "true" : "false");
 
 		return new InitialLdapContext(env, null);
 	}

@@ -30,6 +30,7 @@ import javax.naming.ldap.InitialLdapContext;
 
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
@@ -46,7 +47,8 @@ public class LdapGuestContext extends LdapContext implements NickiContext {
 		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 		env.put(Context.PROVIDER_URL, getTarget().getProperty("providerUrl"));
 		// Enable connection pooling
-		env.put("com.sun.jndi.ldap.connect.pool", "true");
+		env.put("com.sun.jndi.ldap.connect.pool",
+				DataHelper.booleanOf(getTarget().getProperty("pool")) ? "true" : "false");
 
 		try {
 			return new InitialLdapContext(env, null);
