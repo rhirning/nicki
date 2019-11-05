@@ -512,9 +512,22 @@ public class DataHelper {
 	}
 
 	public static boolean containsIgnoreCase(String[] list, String entry) {
-		for (String listEntry : list) {
-			if (StringUtils.equalsIgnoreCase(entry, listEntry)) {
-				return true;
+		if (list != null) {
+			for (String listEntry : list) {
+				if (StringUtils.equalsIgnoreCase(entry, listEntry)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public static boolean containsIgnoreCase(Collection<String> list, String entry) {
+		if (list != null) {
+			for (String listEntry : list) {
+				if (StringUtils.equalsIgnoreCase(entry, listEntry)) {
+					return true;
+				}
 			}
 		}
 		return false;
