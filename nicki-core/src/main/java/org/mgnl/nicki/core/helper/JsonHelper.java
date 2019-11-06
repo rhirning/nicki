@@ -383,7 +383,7 @@ public class JsonHelper extends BeanUtilsHelper {
 						    ParameterizedType aType = (ParameterizedType) genericFieldType;
 						    Type[] fieldArgTypes = aType.getActualTypeArguments();
 							if(fieldArgTypes[0] instanceof ParameterizedType){
-							    ParameterizedType bType = (ParameterizedType) fieldArgTypes[0];								
+							    //ParameterizedType bType = (ParameterizedType) fieldArgTypes[0];								
 								List<Object> list = new ArrayList<>();
 								try {
 									JsonArray array = data.getJsonArray(key);
