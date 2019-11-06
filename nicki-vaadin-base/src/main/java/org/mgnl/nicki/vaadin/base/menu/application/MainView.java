@@ -25,6 +25,7 @@ import java.lang.reflect.InvocationTargetException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -218,6 +219,7 @@ public class MainView extends CustomComponent {
 	}
 
 	private View getView(NickiApplication application, ApplicationView applicationView) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		log.debug("View " + DataHelper.getMilli(new Date()) + ": " + applicationView.getView());
 		View view = Classes.newInstance(applicationView.getView());
 		view.setApplication(application);
 		if (view instanceof ConfigurableView) {
