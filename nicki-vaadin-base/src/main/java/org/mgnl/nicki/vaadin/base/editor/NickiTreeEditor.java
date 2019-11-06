@@ -129,8 +129,9 @@ public class NickiTreeEditor extends CustomComponent {
 		selector = select;
 		loadTree();
 		
+		
 		Component selectorComponent = selector.getComponent();
-		selectorComponent.setSizeFull();
+		//selectorComponent.setSizeFull();
 
 		hsplit.setFirstComponent(selectorComponent);
 		hsplit.addStyleName(ValoTheme.SPLITPANEL_LARGE);
