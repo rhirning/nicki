@@ -147,11 +147,13 @@ public class KerberosLoginModule extends NickiLoginModule {
 				            if (context.getCredDelegState()) {
 				                delegCred = context.getDelegCred();
 				            }
-							String principalId = context.getSrcName().toString();
-							principal = new SpnegoPrincipal(principalId, KerberosPrincipal.KRB_NT_PRINCIPAL, gss, delegCred);
-							LOG.debug("principal=" + principal);
-							credentials = principal.getCredential();
-							user = loadUser(principal.getName());
+				            if (context.getSrcName() != null) {
+								String principalId = context.getSrcName().toString();
+								principal = new SpnegoPrincipal(principalId, KerberosPrincipal.KRB_NT_PRINCIPAL, gss, delegCred);
+								LOG.debug("principal=" + principal);
+								credentials = principal.getCredential();
+								user = loadUser(principal.getName());
+				            }
 							
 						} catch (GSSException e) {
 							LOG.error("Error with token", e);
