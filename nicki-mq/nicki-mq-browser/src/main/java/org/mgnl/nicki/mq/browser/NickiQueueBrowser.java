@@ -41,6 +41,7 @@ import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.TabSheet;
+import com.vaadin.ui.TabSheet.Tab;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextArea;
 import com.vaadin.ui.TextField;
@@ -207,6 +208,16 @@ public class NickiQueueBrowser extends CustomComponent  implements View {
 		}
 	}
 
+	public void showTab(String tabName) {
+		for (int i = 0; i < tabSheet.getComponentCount(); i++) {
+			Tab tab = tabSheet.getTab(i);
+			if (StringUtils.equals(tabName, tab.getCaption())) {
+				tabSheet.setSelectedTab(tab);
+				break;
+			}
+		}
+	}
+	
 	private void sendMessage(String configBase, String queueName, NickiMessage nickiMessage) throws JMSException {
 		Connection connection = null;
 		Session session = null;
@@ -478,7 +489,7 @@ public class NickiQueueBrowser extends CustomComponent  implements View {
 		inspectLayout = new VerticalLayout();
 		inspectLayout.setImmediate(false);
 		inspectLayout.setWidth("100.0%");
-		inspectLayout.setHeight("-1px");
+		inspectLayout.setHeight("100.0%");
 		inspectLayout.setMargin(false);
 		
 		// horizontalLayout_1
@@ -488,6 +499,7 @@ public class NickiQueueBrowser extends CustomComponent  implements View {
 		// messageSplitPanel
 		messageSplitPanel = buildMessageSplitPanel();
 		inspectLayout.addComponent(messageSplitPanel);
+		inspectLayout.setExpandRatio(messageSplitPanel, 1.0f);
 		
 		return inspectLayout;
 	}

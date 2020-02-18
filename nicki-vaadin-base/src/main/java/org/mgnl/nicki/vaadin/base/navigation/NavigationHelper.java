@@ -58,7 +58,7 @@ public class NavigationHelper {
 
 	private static boolean canExecute(Object object,
 			NavigationCommandEntry commandEntry) {
-		for (Method method : object.getClass().getDeclaredMethods()) {
+		for (Method method : object.getClass().getMethods()) {
 			Command command = method.getAnnotation(Command.class);
 			if (command != null && StringUtils.equals(command.name(), commandEntry.getCommandName())) {
 				return true;
@@ -69,7 +69,7 @@ public class NavigationHelper {
 
 	private static void execute(Object object,
 			NavigationCommandEntry commandEntry) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		for (Method method : object.getClass().getDeclaredMethods()) {
+		for (Method method : object.getClass().getMethods()) {
 			Command command = method.getAnnotation(Command.class);
 			if (command != null && StringUtils.equals(command.name(), commandEntry.getCommandName())) {
 				method.invoke(object, commandEntry.getData());

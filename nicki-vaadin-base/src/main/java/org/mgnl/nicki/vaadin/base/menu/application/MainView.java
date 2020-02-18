@@ -78,7 +78,6 @@ public class MainView extends CustomComponent {
 	private Component headline;
 	private Person user;
 	private List<NavigationFolder> navigationFolders = new ArrayList<NavigationFolder>();
-	/*- VaadinEditorProperties={"grid":"RegularGrid,20","showGrid":true,"snapToGrid":true,"snapToObject":true,"movingGuides":false,"snappingDistance":10} */
 	private static final long serialVersionUID = 8701670605362637395L;
 	private static final Logger LOG = LoggerFactory.getLogger(MainView.class);
 
@@ -158,7 +157,7 @@ public class MainView extends CustomComponent {
 		return true;
 	}
 
-	public void showView(View view) {
+	private void showView(View view) {
 		setActiveView(view);
 		view.init();
 		contentLayout.removeAllComponents();
@@ -196,7 +195,8 @@ public class MainView extends CustomComponent {
 						String labelCaption = I18n.getText(chapter.getChapter());
 						String caption = I18n.getText(applicationView.getTitle());
 						View view = getView(application, applicationView);
-						addNavigationEntry(labelCaption, caption, view);
+						String navigation = applicationView.getNavigation();
+						addNavigationEntry(labelCaption, caption, view, navigation);
 					}
 				}
 			}
@@ -229,10 +229,10 @@ public class MainView extends CustomComponent {
 		return view;
 	}
 
-	public void addNavigationEntry(String labelCaption, String caption, View view) {
+	public void addNavigationEntry(String labelCaption, String caption, View view, String navigation) {
 		if (isAllowed(view.getClass(), this.user)) {
 			NavigationFolder folder = getNavigationFolder(labelCaption);
-			NavigationEntry entry = new NavigationEntry(caption, view);
+			NavigationEntry entry = new NavigationEntry(caption, view, navigation);
 			folder.addEntry(entry);
 		}
 	}
@@ -312,6 +312,18 @@ public class MainView extends CustomComponent {
 
 	public void setHeadline(Component headline) {
 		this.headline = headline;
+	}
+
+	public NavigationEntry selectMenuItem(String navigationKey) {
+		for (NavigationFolder folder : this.navigationFolders) {
+			for (NavigationEntry entry : folder.getEntries()) {
+				if (StringUtils.equals(navigationKey, entry.getNavigation())) {
+					navigation.selectInNavigation(entry);
+					return entry;
+				}
+			}
+		}
+		return null;
 	}
 
 }

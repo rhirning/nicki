@@ -29,6 +29,7 @@ import lombok.Data;
 public class ApplicationView implements MenuItem {
 	private String title;
 	private String view;
+	private String navigation;
 	private String rule;
 	private List<String> groups;
 	private List<String> roles;

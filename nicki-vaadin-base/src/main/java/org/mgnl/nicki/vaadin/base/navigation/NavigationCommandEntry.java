@@ -1,6 +1,9 @@
 
 package org.mgnl.nicki.vaadin.base.navigation;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 /*-
  * #%L
  * nicki-vaadin-base
@@ -22,31 +25,9 @@ package org.mgnl.nicki.vaadin.base.navigation;
  */
 
 
+@Data
+@AllArgsConstructor
 public class NavigationCommandEntry {
 	private	String commandName;
 	private Object[] data;
-	
-	public NavigationCommandEntry(String commandName, Object[] data) {
-		super();
-		this.setCommandName(commandName);
-		this.data = data;
-	}
-
-	public String getCommandName() {
-		return commandName;
-	}
-
-	private void setCommandName(String commandName) {
-		this.commandName = commandName;
-	}
-
-	public Object[] getData() {
-		return data;
-	}
-
-	public void setData(Object[] data) {
-		this.data = data;
-	}
-
-
 }
