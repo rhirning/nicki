@@ -157,7 +157,7 @@ public class MainView extends CustomComponent {
 		return true;
 	}
 
-	private void showView(View view) {
+	public void showView(View view) {
 		setActiveView(view);
 		view.init();
 		contentLayout.removeAllComponents();
@@ -227,6 +227,11 @@ public class MainView extends CustomComponent {
 			configurableView.setConfiguration(applicationView.getConfiguration());
 		}
 		return view;
+	}
+
+	@Deprecated
+	public void addNavigationEntry(String labelCaption, String caption, View view) {
+		addNavigationEntry(labelCaption, labelCaption, view, null);
 	}
 
 	public void addNavigationEntry(String labelCaption, String caption, View view, String navigation) {
