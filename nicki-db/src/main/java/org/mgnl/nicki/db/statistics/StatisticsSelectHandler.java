@@ -90,8 +90,9 @@ public class StatisticsSelectHandler implements SelectHandler, StatisticsResult 
 			Variable variable = inputVariables.get(key);
 			if (StringUtils.isBlank(values.get(key))) {
 				missing.add(key);
+			} else {
+				result = StringUtils.replace(result, "${" + key + "}", variable.toString(dbContext, values.get(key)));
 			}
-			result = StringUtils.replace(result, "${" + key + "}", variable.toString(dbContext, values.get(key)));
 		}
 		
 		if (missing.size() > 0) {
