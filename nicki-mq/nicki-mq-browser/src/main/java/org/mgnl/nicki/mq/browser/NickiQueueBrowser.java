@@ -155,9 +155,7 @@ public class NickiQueueBrowser extends CustomComponent  implements View {
 				@SuppressWarnings("unchecked")
 				Collection<Message> messages = (Collection<Message>) messageTable.getValue();
 				if (messages != null && messages.size() > 0) {
-					for (Message message : messages) {
-						removeMessage(message);
-					}
+					removeMessages(messages);
 					String configBase = configBaseTextField.getValue();
 					String queueName = queueField.getValue();
 					String messageSelector = selectorTextField.getValue();
@@ -339,6 +337,54 @@ public class NickiQueueBrowser extends CustomComponent  implements View {
 		}
 	}
 	
+	public void removeMessages(Collection<Message> messages) {
+		Connection connection = null;
+		Session session = null;
+
+		String configBase = configBaseTextField.getValue();
+		String queueName = queueField.getValue();
+		try {
+			ConnectionFactory factory = new ActiveMQConnectionFactory(Config.getString(configBase + ".connector"));
+			connection = factory.createConnection("consumer",
+					Config.getString(configBase + ".user.password.consumer"));
+			session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+	
+			Destination destination = session.createQueue(queueName);
+			connection.start();
+			StringBuilder sb = new StringBuilder();
+			for (Message message : messages) {
+				if (sb.length() > 0) {
+					sb.append(" OR ");
+				}
+				sb.append("JMSMessageID='" + message.getJMSMessageID() + "'");
+			}
+			String selector = sb.toString();
+			
+			MessageConsumer consumer = session.createConsumer(destination, selector);
+			// polling for messages
+			Message message = null ; 
+			
+		    while ( (message = consumer.receive(TIMEOUT)) != null ){
+	    		message.acknowledge();
+		    }
+		} catch (JMSException e) {
+			log.error("Error loading messages", e);
+		} finally {
+			try {
+				if (session != null) {
+					session.close();
+				}
+				if (connection != null) {
+					connection.close();
+				}
+			} catch (JMSException e) {
+				log.error("Error closing JMS session/connection", e);
+			}
+		}
+
+		
+	}
+	
 	public void removeMessage(Message removeMessage) {
 		Connection connection = null;
 		Session session = null;
@@ -354,7 +400,9 @@ public class NickiQueueBrowser extends CustomComponent  implements View {
 			Destination destination = session.createQueue(queueName);
 			connection.start();
 			
-			MessageConsumer consumer = session.createConsumer(destination);
+			String selector = "JMSMessageID='"+removeMessage.getJMSMessageID() + "'";
+			
+			MessageConsumer consumer = session.createConsumer(destination, selector);
 			// polling for messages
 			Message message = null ; 
 			
