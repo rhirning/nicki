@@ -31,11 +31,11 @@ import javax.naming.directory.SearchResult;
 
 import org.mgnl.nicki.core.objects.ContextAttributes;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class JndiSearchResult implements ContextSearchResult {
-	private static final Logger LOG = LoggerFactory.getLogger(JndiSearchResult.class);
 	private SearchResult rs;
 
 	public JndiSearchResult(SearchResult rs) {
@@ -57,14 +57,14 @@ public class JndiSearchResult implements ContextSearchResult {
 
 			if (attribute != null) {
 				Object o = attribute.get();
-				LOG.debug("getValue " + name + ":" + clazz.getName() + ":" + o.getClass().getName());
+				log.debug("getValue " + name + ":" + clazz.getName() + ":" + o.getClass().getName());
 				if (clazz == byte[].class && o instanceof String) {
 					return ((String) o).getBytes();
 				}
 				return o;
 			}
 		} catch (Exception e) {
-			LOG.error("Error retrieving " + name, e);
+			log.error("Error retrieving " + name, e);
 		}
 		if (clazz == String.class) {
 			return "";
@@ -81,7 +81,7 @@ public class JndiSearchResult implements ContextSearchResult {
 			}
 		} catch (Exception e) {
 			// nothing to do
-			LOG.debug("Error", e);
+			log.debug("Error", e);
 		}
 		return list;
 	}

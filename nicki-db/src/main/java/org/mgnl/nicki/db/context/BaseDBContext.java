@@ -61,15 +61,14 @@ import org.mgnl.nicki.db.helper.BeanHelper;
 import org.mgnl.nicki.db.helper.Type;
 import org.mgnl.nicki.db.profile.DBProfile;
 import org.mgnl.nicki.db.profile.InitProfileException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BaseDBContext
 		implements DBContext {
 	public final static String TIMESTAMP_ORACLE = "YYYY-MM-DD HH24:MI:SS";
 	public final static String TIMESTAMP_FOR_ORACLE = "yyyy-MM-dd HH:mm:ss";
-	private static final Logger LOG = LoggerFactory.getLogger(BaseDBContext.class);
 	public enum PREPARED {TRUE, FALSE}
 	private String name;
 	private DBProfile profile;
@@ -106,7 +105,7 @@ public class BaseDBContext
 				try {
 					this.commit();
 				} catch (NotInTransactionException e) {
-					LOG.error("Error on commit", e);
+					log.error("Error on commit", e);
 				}
 			}
 			return primaryKey;
@@ -161,7 +160,7 @@ public class BaseDBContext
 			try {
 				throw new NotSupportedException();
 			} catch (NotSupportedException e) {
-				LOG.error("Missing Table annotation", e);
+				log.error("Missing Table annotation", e);
 			}
 		}
 
@@ -177,7 +176,7 @@ public class BaseDBContext
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
 				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
-				LOG.debug(searchStatement);
+				log.debug(searchStatement);
 				List<T> list = null;
 				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
 					list = (List<T>) handle(bean.getClass(), rs, table.postInit());
@@ -204,14 +203,14 @@ public class BaseDBContext
 			try {
 				throw new NotSupportedException();
 			} catch (NotSupportedException e) {
-				LOG.error("Missing Table annotation", e);
+				log.error("Missing Table annotation", e);
 			}
 		}
 		if (StringUtils.isNotBlank(table.postInit())) {
 			try {
 				postMethod = bean.getClass().getDeclaredMethod(table.postInit());
 			} catch (NoSuchMethodException | SecurityException e) {
-				LOG.error("Invalid postInitMethod (" + table.postInit() + ") for class " + bean.getClass().getName(), e);
+				log.error("Invalid postInitMethod (" + table.postInit() + ") for class " + bean.getClass().getName(), e);
 			}
 		}
 		
@@ -225,7 +224,7 @@ public class BaseDBContext
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
 				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
-				LOG.debug(searchStatement);
+				log.debug(searchStatement);
 				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
 					if (rs.next()) {
 						@SuppressWarnings("unchecked")
@@ -234,7 +233,7 @@ public class BaseDBContext
 							try {
 								postMethod.invoke(result);
 							} catch (Exception e) {
-								LOG.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
+								log.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
 										+ result.getClass().getName(), e);
 							}
 						}
@@ -268,7 +267,7 @@ public class BaseDBContext
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
 				String searchStatement = getLoadObjectsSearchStatement(bean, filter, null);
-				LOG.debug(searchStatement);
+				log.debug(searchStatement);
 				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
 					if (rs != null) {
 						boolean hasNext = rs.next();
@@ -298,7 +297,7 @@ public class BaseDBContext
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
 				String searchStatement = getLoadObjectsSearchStatement(bean, "count(*)", filter, null);
-				LOG.debug(searchStatement);
+				log.debug(searchStatement);
 				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
 					if (rs != null && rs.next()) {
 						return rs.getLong(1);
@@ -348,7 +347,7 @@ public class BaseDBContext
 					primaryKey.add(bean.getClass(), attribute.name(), method.invoke(bean));
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
-					LOG.error("Error reading primary key ", e);
+					log.error("Error reading primary key ", e);
 				}
 			}
 		}
@@ -366,7 +365,7 @@ public class BaseDBContext
 				method.invoke(bean, subs.get(0));
 			}			
 		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
-			LOG.error("Error adding objects " + field.getName(), e);
+			log.error("Error adding objects " + field.getName(), e);
 		}
 	}
 
@@ -381,7 +380,7 @@ public class BaseDBContext
 				method.invoke(bean, subs);
 			}			
 		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
-			LOG.error("Error adding objects " + field.getName(), e);
+			log.error("Error adding objects " + field.getName(), e);
 		}
 	}
 
@@ -390,7 +389,7 @@ public class BaseDBContext
 		try {
 			return clazz.newInstance();
 		} catch (InstantiationException | IllegalAccessException e) {
-			LOG.error("Error creating instance of  " + clazz.getName(), e);
+			log.error("Error creating instance of  " + clazz.getName(), e);
 		}
 		return null;
 	}
@@ -413,7 +412,7 @@ public class BaseDBContext
 					} 
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
-					LOG.error("Error setting primary key ", e);
+					log.error("Error setting primary key ", e);
 				}
 			}
 		}
@@ -426,7 +425,7 @@ public class BaseDBContext
 			try {
 				postMethod = beanClass.getDeclaredMethod(postInitMethod);
 			} catch (NoSuchMethodException | SecurityException e) {
-				LOG.error("Invalid postInitMethod (" + postInitMethod + ") for class " + beanClass.getName(), e);
+				log.error("Invalid postInitMethod (" + postInitMethod + ") for class " + beanClass.getName(), e);
 			}
 		}
 		List<T> list = new ArrayList<>();
@@ -436,7 +435,7 @@ public class BaseDBContext
 				try {
 					postMethod.invoke(bean);
 				} catch (Exception e) {
-					LOG.error("Unable to execute postInitMethod (" + postInitMethod + ") for class " + beanClass.getName(), e);
+					log.error("Unable to execute postInitMethod (" + postInitMethod + ") for class " + beanClass.getName(), e);
 				}
 			}
 			list.add(bean);
@@ -500,7 +499,7 @@ public class BaseDBContext
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException
 						| IllegalArgumentException | InvocationTargetException e) {
-					LOG.error("Error handling ResultSet", e);
+					log.error("Error handling ResultSet", e);
 				}
 			}
 		}
@@ -549,7 +548,7 @@ public class BaseDBContext
 			}
 			return sb.toString();
 		} catch (NotSupportedException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			LOG.error("Error creating load objects search statement ", e);
+			log.error("Error creating load objects search statement ", e);
 			return e.getMessage();
 		}
 	}
@@ -580,7 +579,7 @@ public class BaseDBContext
 			}
 			return sb.toString();
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			LOG.error("Error creating reload objects search statement ", e);
+			log.error("Error creating reload objects search statement ", e);
 			return e.getMessage();
 		}
 	}
@@ -601,7 +600,7 @@ public class BaseDBContext
 				return Integer.toString((int) value);
 			}
 		} catch (SecurityException | IllegalArgumentException e) {
-			LOG.error("Error converting", e);
+			log.error("Error converting", e);
 		}
 		return null;
 	}
@@ -649,7 +648,7 @@ public class BaseDBContext
 				}
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
-				LOG.error("Error reading subs", e);
+				log.error("Error reading subs", e);
 			}
 		}
 		return list;
@@ -680,7 +679,7 @@ public class BaseDBContext
 				}
 			} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 					| InvocationTargetException e) {
-				LOG.error("Error reading subs", e);
+				log.error("Error reading subs", e);
 			}
 		}
 		return list;
@@ -710,7 +709,7 @@ public class BaseDBContext
 			}
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
-			LOG.error("Error reading subs", e);
+			log.error("Error reading subs", e);
 		}
 		return list;
 	}
@@ -753,7 +752,7 @@ public class BaseDBContext
 				primaryKey = getSequenceNumber(bean.getClass(), sequenceAttribute);
 				setPrimaryKey(bean, primaryKey);
 			} catch (Exception e) {
-				LOG.error("Could not use sequence " + sequenceAttribute.sequence(), e);
+				log.error("Could not use sequence " + sequenceAttribute.sequence(), e);
 			}
 		}
 		
@@ -774,7 +773,7 @@ public class BaseDBContext
 		} else {	
 			try (Statement stmt = this.getConnection().createStatement()) {
 				String statement = this.createInsertStatement(bean);
-				LOG.debug(statement);
+				log.debug(statement);
 				String generatedColumns[] = this.getGeneratedKeys(bean);
 				if (generatedColumns != null) {
 					stmt.executeUpdate(statement, generatedColumns);
@@ -920,7 +919,7 @@ public class BaseDBContext
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
-					LOG.error("Error converting value", e);
+					log.error("Error converting value", e);
 				}
 				if (attribute.primaryKey()) {
 					if (whereClause.length() > 0) {
@@ -969,19 +968,19 @@ public class BaseDBContext
 							}
 						} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 								| InvocationTargetException e) {
-							LOG.error("Error converting value", e);
+							log.error("Error converting value", e);
 						}
 					}
 				}
 			}
 		}
-		LOG.debug("CV=" + cv);
+		log.debug("CV=" + cv);
 		return cv;
 	}
 
 	protected String getPreparedInsertStatement(PREPARED prepared, String tableName, ColumnsAndValues cv) {
 		String result = "insert into " + tableName + " (" + cv.getColumns() + ") values (" + cv.getPreparedValues() + ")";
-		LOG.debug(result);
+		log.debug(result);
 		return result;
 	}
 
@@ -1012,7 +1011,7 @@ public class BaseDBContext
 						try {
 							this.commit();
 						} catch (NotInTransactionException e) {
-							LOG.error("Error on commit", e);
+							log.error("Error on commit", e);
 						}
 					}
 					if (count == 1) {
@@ -1021,7 +1020,7 @@ public class BaseDBContext
 						return null;
 					}
 				} catch (NothingToDoException e1) {
-					LOG.error("Nothing to do");
+					log.error("Nothing to do");
 					return null;
 				}
 			} else {
@@ -1029,17 +1028,17 @@ public class BaseDBContext
 					int count = 0;
 					try {
 						String statement = this.createUpdateWhereStatement(bean, where, columns);
-						LOG.debug(statement);
+						log.debug(statement);
 						count = stmt.executeUpdate(statement);
 						if (!inTransaction) {
 							try {
 								this.commit();
 							} catch (NotInTransactionException e) {
-								LOG.error("Error on commit", e);
+								log.error("Error on commit", e);
 							}
 						}
 					} catch (NothingToDoException e) {
-						LOG.error("Nothing to do");
+						log.error("Nothing to do");
 					}
 					if (count == 1) {
 						return this.reload(bean);
@@ -1066,13 +1065,13 @@ public class BaseDBContext
 
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
-				LOG.debug(statement);
+				log.debug(statement);
 				stmt.executeUpdate(statement);
 				if (!inTransaction) {
 					try {
 						this.commit();
 					} catch (NotInTransactionException e) {
-						LOG.error("Error on commit", e);
+						log.error("Error on commit", e);
 					}
 				}
 			}
@@ -1106,23 +1105,23 @@ public class BaseDBContext
 							setPrimaryKey(deleteBean, primaryKey);
 							statement = this.createDeleteStatement(deleteBean);
 						} catch (InstantiationException | IllegalAccessException e) {
-							LOG.error("Eror creating deleteBean", e);
+							log.error("Eror creating deleteBean", e);
 						}
 					}
 					if (statement == null) {
 						statement = this.createDeleteStatement(bean);
 					}
-					LOG.debug(statement);
+					log.debug(statement);
 					stmt.executeUpdate(statement);
 					if (!inTransaction) {
 						try {
 							this.commit();
 						} catch (NotInTransactionException e) {
-							LOG.error("Error on commit", e);
+							log.error("Error on commit", e);
 						}
 					}
 				} catch (NotSupportedException e) {
-					LOG.error("Delete not supported");
+					log.error("Delete not supported");
 				}
 			}
 		} finally {
@@ -1163,7 +1162,7 @@ public class BaseDBContext
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
 				if (handler.isLoggingEnabled()) {
-					LOG.debug(handler.getSearchStatement());
+					log.debug(handler.getSearchStatement());
 				}
 				try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
 					handler.handle(rs);
@@ -1189,8 +1188,8 @@ public class BaseDBContext
 		try {
 			try (Statement stmt = this.connection.createStatement()) {
 				if (handler.isLoggingEnabled()) {
-					if (LOG.isDebugEnabled()) {
-						LOG.debug(handler.getSearchStatement());
+					if (log.isDebugEnabled()) {
+						log.debug(handler.getSearchStatement());
 					}
 				}
 				try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
@@ -1207,7 +1206,7 @@ public class BaseDBContext
 	@Override
 	public Connection beginTransaction() throws SQLException, InitProfileException {
 		if (this.connection == null) {
-			LOG.debug("profile: " + this.profile);
+			log.debug("profile: " + this.profile);
 			this.connection = this.profile.getConnection();
 		}
 		return this.connection;
@@ -1227,7 +1226,7 @@ public class BaseDBContext
 				try {
 					this.connection.close();
 				} catch (SQLException e) {
-					LOG.error("Error closing connection", e);
+					log.error("Error closing connection", e);
 				}
 				this.connection = null;
 			}
@@ -1254,7 +1253,7 @@ public class BaseDBContext
 			try {
 				this.connection.close();
 			} catch (SQLException e) {
-				LOG.error("Error closing connection", e);
+				log.error("Error closing connection", e);
 			}
 			this.connection = null;
 		}
@@ -1268,7 +1267,7 @@ public class BaseDBContext
 			T b = (T) bean.getClass().newInstance();
 			list = loadObjects(b, true, getReloadObjectsWhereClause(bean), null);
 		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
-			LOG.error("Error reloading bean", e);
+			log.error("Error reloading bean", e);
 		}
 		if (list != null && list.size() > 0) {
 			return list.get(0);
@@ -1348,12 +1347,12 @@ public class BaseDBContext
 						}
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException e) {
-						LOG.error("Error creating statement", e);
+						log.error("Error creating statement", e);
 					}
 				}
 			}
 		}
-		LOG.debug("CV=" + cv);
+		log.debug("CV=" + cv);
 
 		return cv;
 	}
@@ -1474,7 +1473,7 @@ public class BaseDBContext
 			sb.append(" where ");
 			sb.append(whereClause);
 		}
-		LOG.debug(sb.toString());
+		log.debug(sb.toString());
 		return sb.toString();
 	}
 
@@ -1499,7 +1498,7 @@ public class BaseDBContext
 			return this.toTimestamp(date);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
-			LOG.error("Error converting date", e);
+			log.error("Error converting date", e);
 		}
 
 		return null;
@@ -1516,7 +1515,7 @@ public class BaseDBContext
 			return date;
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
-			LOG.error("Error converting date", e);
+			log.error("Error converting date", e);
 		}
 
 		return null;
@@ -1535,7 +1534,7 @@ public class BaseDBContext
 			  return cal;
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
-			LOG.error("Error converting date", e);
+			log.error("Error converting date", e);
 		}
 
 		return null;
@@ -1618,7 +1617,7 @@ public class BaseDBContext
 						}
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException e) {
-						LOG.error("Error converting value", e);
+						log.error("Error converting value", e);
 					}
 					if (whereClause.length() > 0) {
 						whereClause.append(" AND ");
@@ -1660,7 +1659,7 @@ public class BaseDBContext
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
-					LOG.error("Error converting value", e);
+					log.error("Error converting value", e);
 				}
 				if (StringUtils.isNotBlank(attributeValue)) {
 					if (whereClause.length() > 0) {

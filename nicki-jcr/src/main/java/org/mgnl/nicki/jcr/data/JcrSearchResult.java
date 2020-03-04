@@ -31,11 +31,11 @@ import javax.jcr.PropertyIterator;
 import javax.jcr.RepositoryException;
 
 import org.mgnl.nicki.core.objects.ContextSearchResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class JcrSearchResult implements ContextSearchResult {
-	private static final Logger LOG = LoggerFactory.getLogger(JcrSearchResult.class);
 	private Node node;
 
 	public JcrSearchResult(Node node) {
@@ -46,7 +46,7 @@ public class JcrSearchResult implements ContextSearchResult {
 		try {
 			return node.getPath();
 		} catch (RepositoryException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return null;
 	}
@@ -56,9 +56,9 @@ public class JcrSearchResult implements ContextSearchResult {
 		try {
 			return node.getProperty(name);
 		} catch (PathNotFoundException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		} catch (RepositoryException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return name;
 	}
@@ -71,7 +71,7 @@ public class JcrSearchResult implements ContextSearchResult {
 				list.add(it.next());
 			}
 		} catch (RepositoryException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return list;
 	}

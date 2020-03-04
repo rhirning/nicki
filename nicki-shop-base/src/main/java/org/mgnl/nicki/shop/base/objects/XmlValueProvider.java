@@ -31,8 +31,8 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.XMLHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * XML Format:
@@ -44,9 +44,8 @@ import org.slf4j.LoggerFactory;
  *
  */
 
-
+@Slf4j
 public class XmlValueProvider implements CatalogValueProvider {
-	private static final Logger LOG = LoggerFactory.getLogger(XmlValueProvider.class);
 
 	private Map<String, String> entries = new TreeMap<String, String>();
 	private boolean onlyDefinedEntries = false;
@@ -90,7 +89,7 @@ public class XmlValueProvider implements CatalogValueProvider {
 					}
 				}
 			} catch (Exception e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		}
 	}

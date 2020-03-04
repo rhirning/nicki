@@ -34,18 +34,16 @@ import org.mgnl.nicki.core.auth.NickiLoginModule;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 public class MappingLoginModule extends NickiLoginModule {
-	static final Logger LOG = LoggerFactory.getLogger(MappingLoginModule.class);
     
 
 
 
 	@Override
 	public boolean login() throws LoginException {
-		LOG.debug("Using " + getClass().getCanonicalName());
+		log.debug("Using " + getClass().getCanonicalName());
 		HttpServletRequest request = (HttpServletRequest) AppContext.getRequest();
 		if (request instanceof HttpServletRequest) {
 			HttpServletRequest req = (HttpServletRequest) request;
@@ -54,18 +52,18 @@ public class MappingLoginModule extends NickiLoginModule {
 			if (StringUtils.isBlank(header)) {
 				header = (String) req.getSession().getAttribute(SESSION_AUTH_HEADER);
 				if (StringUtils.isNotBlank(header)) {
-					LOG.debug("Authorization header: " + header);
+					log.debug("Authorization header: " + header);
 				}
 			}
 			DynamicObject user = null;
 			byte credentials[] = null;
 			if (StringUtils.isNotBlank(authenticatedUser)) {
-				LOG.debug("Authenticated user: " + authenticatedUser);
+				log.debug("Authenticated user: " + authenticatedUser);
 				user = loadUser(authenticatedUser);
 			} else {
 				if (StringUtils.isBlank(header)) {
 					user = null;
-					LOG.debug("authorization header was missing/null");
+					log.debug("authorization header was missing/null");
 					return false;
 				}
 			}
@@ -78,7 +76,7 @@ public class MappingLoginModule extends NickiLoginModule {
 								credentials!=null?new String(credentials):"unknown");
 						nickiContext = getTarget().getSystemContext(user);
 					} catch (InvalidPrincipalException e) {
-						LOG.debug("login not successful: " + user, e);
+						log.debug("login not successful: " + user, e);
 						return false;
 					}
 				} else {
@@ -91,13 +89,13 @@ public class MappingLoginModule extends NickiLoginModule {
 							loginContext, nickiContext);
 					setPrincipal(dynamicObjectPrincipal);
 					setSucceeded(true);
-					LOG.debug("login successful:  " + user);
+					log.debug("login successful:  " + user);
 					return true;
 				} else {
-					LOG.debug("login not successful: " + user);
+					log.debug("login not successful: " + user);
 				}
 			} else {
-				LOG.debug("no valid user");
+				log.debug("no valid user");
 			}
 		}
 		return false;

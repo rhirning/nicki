@@ -21,13 +21,10 @@ package org.mgnl.nicki.shop.base.attributes;
  * #L%
  */
 
+import lombok.extern.slf4j.Slf4j;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
+@Slf4j
 public class AttributeComponentFactory {
-	private static final Logger LOG = LoggerFactory.getLogger(AttributeComponentFactory.class);
 
 	@SuppressWarnings("unchecked")
 	static public <T extends Object> BaseAttributeComponent<T> getAttributeComponent(String type) {
@@ -38,7 +35,7 @@ public class AttributeComponentFactory {
 			}
 			return (BaseAttributeComponent<T>) component.getInstance();
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return null;
 	}

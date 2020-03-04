@@ -35,15 +35,15 @@ import org.mgnl.nicki.vaadin.base.fields.AttributeTextAreaField;
 import org.mgnl.nicki.vaadin.base.fields.AttributeTextField;
 import org.mgnl.nicki.vaadin.base.fields.DynamicAttributeField;
 import org.mgnl.nicki.vaadin.base.fields.TableListAttributeField;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class DynamicObjectFieldFactory implements Serializable {
-	private static final Logger LOG = LoggerFactory.getLogger(DynamicObjectFieldFactory.class);
 	private DynamicObjectValueChangeListener<String> objectListener;
 	
 	public DynamicObjectFieldFactory(DynamicObjectValueChangeListener<String> objectListener) {
@@ -60,7 +60,7 @@ public class DynamicObjectFieldFactory implements Serializable {
 				field.init(attributeName, dynamicObject, objectListener);
 			} catch (Exception e) {
 				field = null;
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		}
 		if (field == null) {

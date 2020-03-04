@@ -30,11 +30,11 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.NickiScript;
 import org.mgnl.nicki.dynamic.objects.objects.Script;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class JcrScript extends NickiScript implements JcrDynamicObject, Script {
-	private static final Logger LOG = LoggerFactory.getLogger(JcrScript.class);
 
 	private static final long serialVersionUID = -4137088698173077190L;
 	
@@ -45,7 +45,7 @@ public class JcrScript extends NickiScript implements JcrDynamicObject, Script {
 		try {
 			return StringUtils.startsWith(node.getPath(), "/users");
 		} catch (RepositoryException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return false;
 	}

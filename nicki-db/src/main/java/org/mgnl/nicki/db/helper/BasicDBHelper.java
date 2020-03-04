@@ -34,11 +34,11 @@ import org.mgnl.nicki.db.handler.MaxIntValueSelectHandler;
 import org.mgnl.nicki.db.handler.SelectHandler;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
 import org.mgnl.nicki.db.profile.DBProfile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class BasicDBHelper {
-	private static final Logger LOG = LoggerFactory.getLogger(BasicDBHelper.class);
 	public final static String DATE_FORMAT = "yyyy-MM-dd";
 	public final static String COLUMN_SEPARATOR = ", ";
 
@@ -48,7 +48,7 @@ public class BasicDBHelper {
 			Connection conn = profile.getConnection();
 			Statement stmt = conn.createStatement()
 		) {
-			LOG.debug(statement);
+			log.debug(statement);
 			stmt.executeUpdate(statement);
 		}
 	}
@@ -63,7 +63,7 @@ public class BasicDBHelper {
 		try {
 			select(profile, handler);
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return handler.isExist();
 	}
@@ -71,7 +71,7 @@ public class BasicDBHelper {
 	public static void select(DBProfile profile, SelectHandler handler) throws Exception {
 
 		if (handler.isLoggingEnabled()) {
-			LOG.debug(handler.getSearchStatement());
+			log.debug(handler.getSearchStatement());
 		}
 
 		try(
@@ -91,7 +91,7 @@ public class BasicDBHelper {
 		try {
 			select(profile, handler);
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return handler.getResult();
 	}

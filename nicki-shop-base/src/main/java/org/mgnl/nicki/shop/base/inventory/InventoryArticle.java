@@ -28,14 +28,15 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.mgnl.nicki.shop.base.objects.CartEntry.ACTION;
 import org.mgnl.nicki.shop.base.inventory.Inventory.SOURCE;
 
+@Slf4j
 @SuppressWarnings("serial")
 public class InventoryArticle implements Serializable{
-	private static final Logger LOG = LoggerFactory.getLogger(InventoryArticle.class);
 	public enum STATUS {NONE, PROVISIONED, NEW, MODIFIED, DELETED};
 	
 	private STATUS originalStatus = STATUS.NONE;
@@ -179,7 +180,7 @@ public class InventoryArticle implements Serializable{
 				setStatus(STATUS.MODIFIED);
 			}
 		} catch (Exception e) {
-			LOG.error("Could not set end date", e);
+			log.error("Could not set end date", e);
 		}
 	}
 

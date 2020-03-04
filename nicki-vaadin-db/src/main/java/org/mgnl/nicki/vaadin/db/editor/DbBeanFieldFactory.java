@@ -39,15 +39,15 @@ import org.mgnl.nicki.vaadin.db.fields.AttributeIntegerField;
 import org.mgnl.nicki.vaadin.db.fields.AttributeLongField;
 import org.mgnl.nicki.vaadin.db.fields.AttributeTextField;
 import org.mgnl.nicki.vaadin.db.fields.DbBeanAttributeField;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.AbstractOrderedLayout;
 import com.vaadin.ui.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class DbBeanFieldFactory implements Serializable {
-	private static final Logger LOG = LoggerFactory.getLogger(DbBeanFieldFactory.class);
 	private DbBeanValueChangeListener objectListener;
 	private String dbContextName;
 	
@@ -73,7 +73,7 @@ public class DbBeanFieldFactory implements Serializable {
 						viewField.init(attributeName, bean, objectListener, dbContextName);
 					} catch (Exception e) {
 						viewField = null;
-						LOG.error("Error", e);
+						log.error("Error", e);
 					}
 				}
 				if (viewField == null) {
@@ -125,7 +125,7 @@ public class DbBeanFieldFactory implements Serializable {
 						}
 						layout.addComponent(component);
 					} else {
-						LOG.debug("no field for " + field.getName());
+						log.debug("no field for " + field.getName());
 					}
 				}
 			}

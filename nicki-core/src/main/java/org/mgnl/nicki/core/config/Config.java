@@ -32,11 +32,10 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.util.Classes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public final class Config {
-	private static final Logger LOG = LoggerFactory.getLogger(Config.class);
 	private static final String MAIN_CONFIG = "/META-INF/nicki/config.properties";
 	private static final String CONFIG_BASE = "nicki.config";
 	private static final String I18N_BASE = "nicki.i18n";
@@ -61,7 +60,7 @@ public final class Config {
 		try {
 			mainConfig = getPropertiesFromClasspath(MAIN_CONFIG);
 		} catch (Exception e) {
-			LOG.error("Error reading " + MAIN_CONFIG, e);
+			log.error("Error reading " + MAIN_CONFIG, e);
 		}
 		if (mainConfig != null) {
 			String configList = mainConfig.getProperty(CONFIG_BASE, null);
@@ -82,13 +81,13 @@ public final class Config {
 	private void addProperties(String configPath) {
 		try {
 			URL resource = getClass().getResource(configPath);
-			LOG.info("Using config properties: " + configPath + " (" + resource + ")");
+			log.info("Using config properties: " + configPath + " (" + resource + ")");
 			Properties props = getPropertiesFromClasspath(configPath);
 			if (props != null && props.size() > 0) {
 				this.properties.add(props);
 			}
 		} catch (Exception e) {
-			LOG.error("Error reading properties at " + configPath);
+			log.error("Error reading properties at " + configPath);
 			//this.openProperties.add(configPath);
 		}
 	}
@@ -99,7 +98,7 @@ public final class Config {
 		try {
 			mainConfig = getPropertiesFromClasspath(MAIN_CONFIG);
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		if (mainConfig != null) {
 			String messageBaseList = mainConfig.getProperty(I18N_BASE, null);
@@ -110,7 +109,7 @@ public final class Config {
 						try {
 							I18n.addMessageBase(messageBase);
 						} catch (Exception e) {
-							LOG.error("Error", e);
+							log.error("Error", e);
 						}
 					}
 				}
@@ -132,7 +131,7 @@ public final class Config {
 	 */
 	@Deprecated
 	public static String getProperty(String key) {
-		LOG.debug("getProperty:" + key);
+		log.debug("getProperty:" + key);
 		return getInstance().getAndTranslateProperty(key);
 	}
 	
@@ -143,7 +142,7 @@ public final class Config {
 			try {
 				return Classes.newInstance(className);
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				LOG.error("Could not create class instance for " + className + ":" + e.getMessage());
+				log.error("Could not create class instance for " + className + ":" + e.getMessage());
 			}
 		}
 		return null;
@@ -199,7 +198,7 @@ public final class Config {
 	}
 	
 	private String getAndTranslateProperty(String key) {
-		LOG.debug(key);
+		log.debug(key);
 		for (Properties props : this.properties) {
 			String value = DataHelper.translate(props.getProperty(key));
 			if (value != null) {

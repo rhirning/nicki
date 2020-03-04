@@ -43,8 +43,6 @@ import org.mgnl.nicki.vaadin.base.components.EnterNameHandler;
 import org.mgnl.nicki.vaadin.base.components.NewClassEditor;
 import org.mgnl.nicki.vaadin.base.components.SimpleNewClassEditor;
 import org.mgnl.nicki.vaadin.base.data.TreeContainer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -61,9 +59,11 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class NickiTreeEditor extends CustomComponent {
-	private static final Logger LOG = LoggerFactory.getLogger(NickiTreeEditor.class);
 
 	public enum CREATE {
 		ALLOW, DENY
@@ -147,7 +147,7 @@ public class NickiTreeEditor extends CustomComponent {
 							// TODO: ask save/not save/back
 							viewer.save();
 						} catch (Exception e) {
-							LOG.error("Error", e);
+							log.error("Error", e);
 						}
 					}
 					hideClassEditor();
@@ -159,7 +159,7 @@ public class NickiTreeEditor extends CustomComponent {
 						// TODO: ask save/not save/back
 						viewer.save();
 					} catch (Exception e) {
-						LOG.error("Error", e);
+						log.error("Error", e);
 					}
 				}
 				setSelectedObject(selected);
@@ -211,7 +211,7 @@ public class NickiTreeEditor extends CustomComponent {
 								renameItem((TreeData) target);
 							}
 						} catch (Exception e) {
-							LOG.error("Error", e);
+							log.error("Error", e);
 						}
 					}
 				} else if (treeActionMap.containsKey(action)) {
@@ -310,14 +310,14 @@ public class NickiTreeEditor extends CustomComponent {
 					dynamicObjects.add(treeData);
 				}
 			} catch (InstantiateDynamicObjectException e) {
-				LOG.error("Error configuring parent class " + parentClass.getName(), e);
+				log.error("Error configuring parent class " + parentClass.getName(), e);
 				return;
 			}			
 		} else {
 			try {
 				dynamicObjects.add(parentClass.newInstance());
 			} catch (InstantiationException | IllegalAccessException e) {
-				LOG.error("Error configuring parent class " + parentClass.getName(), e);
+				log.error("Error configuring parent class " + parentClass.getName(), e);
 				return;
 			}
 		}
@@ -352,7 +352,7 @@ public class NickiTreeEditor extends CustomComponent {
 							list.add(childObject.getClass());
 						}
 					} catch (InstantiateDynamicObjectException e) {
-						LOG.error("Error configuring child class " + parentClass.getName(), e);
+						log.error("Error configuring child class " + parentClass.getName(), e);
 						continue;
 					}
 				} else {
@@ -429,7 +429,7 @@ public class NickiTreeEditor extends CustomComponent {
 			window.setModal(true);
 			UI.getCurrent().addWindow(window);
 		} else {
-			LOG.error("editor must be of type Window");
+			log.error("editor must be of type Window");
 		}
 
 	}

@@ -26,13 +26,12 @@ import java.io.Serializable;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class Environment implements Serializable{
-	
-	private static final Logger LOG = LoggerFactory.getLogger(Environment.class);
 	
 	public static String getProperty(String name) {
 		if (getFromJndiContext(name) != null) {
@@ -58,7 +57,7 @@ public class Environment implements Serializable{
 				return value;
 			}
 		} catch (Exception e) {
-			LOG.debug("Error accessing JNDI: " + name, e);
+			log.debug("Error accessing JNDI: " + name, e);
 		}
 		return null;
 	}
@@ -67,7 +66,7 @@ public class Environment implements Serializable{
 		try {
 			return System.getProperty(name);
 		} catch (Exception e) {
-			LOG.debug("Error accessing System.getProperty: " + name, e);
+			log.debug("Error accessing System.getProperty: " + name, e);
 		}
 		return null;
 	}
@@ -76,7 +75,7 @@ public class Environment implements Serializable{
 		try {
 			return System.getenv(name);
 		} catch (Exception e) {
-			LOG.debug("Error accessing System.getenv: " + name, e);
+			log.debug("Error accessing System.getenv: " + name, e);
 		}
 		return null;
 	}

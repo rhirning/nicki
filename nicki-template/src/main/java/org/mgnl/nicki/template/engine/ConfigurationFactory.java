@@ -29,15 +29,14 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.template.loader.ClassPathTemplateLoader;
 import org.mgnl.nicki.template.loader.JndiTemplateLoader;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import freemarker.cache.TemplateLoader;
 import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.Configuration;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ConfigurationFactory {
-	private static final Logger LOG = LoggerFactory.getLogger(ConfigurationFactory.class);
 	
 	public enum TYPE {JNDI, CLASSPATH};
 
@@ -53,7 +52,7 @@ public class ConfigurationFactory {
 				try {
 					loader = new JndiTemplateLoader(AppContext.getSystemContext(), base);
 				} catch (InvalidPrincipalException e) {
-					LOG.error("Error initiating JNDI templates", e);
+					log.error("Error initiating JNDI templates", e);
 				}
 			} else if (type == TYPE.CLASSPATH) {
 				loader = new ClassPathTemplateLoader(base);

@@ -29,11 +29,11 @@ import java.io.OutputStream;
 import org.mgnl.nicki.dynamic.objects.objects.EngineTemplate;
 import org.mgnl.nicki.xls.engine.XlsEngine;
 import org.mgnl.nicki.xls.template.XlsTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class XlsTemplateRenderer extends Thread implements Runnable {
-	private static final Logger LOG = LoggerFactory.getLogger(XlsTemplateRenderer.class);
 	InputStream in;
 	OutputStream out;
 	EngineTemplate template;
@@ -66,7 +66,7 @@ public class XlsTemplateRenderer extends Thread implements Runnable {
 			out.flush();
 			out.close();
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 	}
 }

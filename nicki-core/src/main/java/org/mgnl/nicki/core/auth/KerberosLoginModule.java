@@ -52,11 +52,10 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class KerberosLoginModule extends NickiLoginModule {
-	static final Logger LOG = LoggerFactory.getLogger(KerberosLoginModule.class);
 	public static final String PREAUTH_USER_CONF = "spnego.preauth.username";
     public static final String PREAUTH_PASSWORD_CONF = "spnego.preauth.password";
     public static final String SERVER_LOGIN_MODULE_CONF = "spnego.server.loginmodule";
@@ -97,7 +96,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 
 	@Override
 	public boolean login() throws LoginException {
-		LOG.debug("Using " + getClass().getCanonicalName());
+		log.debug("Using " + getClass().getCanonicalName());
 		HttpServletRequest request = (HttpServletRequest) AppContext.getRequest();
 		if (request instanceof HttpServletRequest) {
 			HttpServletRequest req = (HttpServletRequest) request;
@@ -106,18 +105,18 @@ public class KerberosLoginModule extends NickiLoginModule {
 			if (StringUtils.isBlank(header)) {
 				header = (String) req.getSession().getAttribute(SESSION_AUTH_HEADER);
 				if (StringUtils.isNotBlank(header)) {
-					LOG.debug("Authorization header: " + header);
+					log.debug("Authorization header: " + header);
 				}
 			}
 			DynamicObject user = null;
 			byte credentials[] = null;
 			if (StringUtils.isNotBlank(authenticatedUser)) {
-				LOG.debug("Authenticated user: " + authenticatedUser);
+				log.debug("Authenticated user: " + authenticatedUser);
 				user = loadUser(authenticatedUser);
 			} else {
 				if (StringUtils.isBlank(header)) {
 					user = null;
-					LOG.debug("authorization header was missing/null");
+					log.debug("authorization header was missing/null");
 					return false;
 				} else if (header.startsWith(NEGOTIATE_HEADER)) {
 					final String negotiateHeader = header.substring(NEGOTIATE_HEADER.length() + 1);
@@ -125,7 +124,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 					final byte[] gss = decodeToken(negotiateHeader);
 		
 					if (0 == gss.length) {
-						LOG.debug("GSS data was NULL.");
+						log.debug("GSS data was NULL.");
 						return false;
 					}
 		
@@ -140,7 +139,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 							token = context.acceptSecContext(gss, 0, gss.length);
 		
 							if (null == token) {
-								LOG.debug("Token was NULL.");
+								log.debug("Token was NULL.");
 								return false;
 							}
 				            
@@ -150,13 +149,13 @@ public class KerberosLoginModule extends NickiLoginModule {
 				            if (context.getSrcName() != null) {
 								String principalId = context.getSrcName().toString();
 								principal = new SpnegoPrincipal(principalId, KerberosPrincipal.KRB_NT_PRINCIPAL, gss, delegCred);
-								LOG.debug("principal=" + principal);
+								log.debug("principal=" + principal);
 								credentials = principal.getCredential();
 								user = loadUser(principal.getName());
 				            }
 							
 						} catch (GSSException e) {
-							LOG.error("Error with token", e);
+							log.error("Error with token", e);
 						} finally {
 							LOCK.unlock();
 						}
@@ -167,7 +166,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 							try {
 								context.dispose();
 							} catch (GSSException e) {
-								LOG.error("Error disposing context", e);
+								log.error("Error disposing context", e);
 							} finally {
 								LOCK.unlock();
 							}
@@ -184,7 +183,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 								credentials!=null?new String(credentials):"unknown");
 						nickiContext = user.getContext().getTarget().getSystemContext(user);
 					} catch (InvalidPrincipalException e) {
-						LOG.debug("login not successful: " + user, e);
+						log.debug("login not successful: " + user, e);
 						return false;
 					}
 				} else {
@@ -200,13 +199,13 @@ public class KerberosLoginModule extends NickiLoginModule {
 							loginContext, nickiContext);
 					setPrincipal(dynamicObjectPrincipal);
 					setSucceeded(true);
-					LOG.debug("login successful:  " + user);
+					log.debug("login successful:  " + user);
 					return true;
 				} else {
-					LOG.debug("login not successful: " + user);
+					log.debug("login not successful: " + user);
 				}
 			} else {
-				LOG.debug("no valid user");
+				log.debug("no valid user");
 			}
 		}
 		return false;
@@ -252,7 +251,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 	 */
 	public static CallbackHandler getUsernamePasswordHandler(final String username, final String password) {
 
-		LOG.debug("preauth: username=" + username + "; password=" + password.hashCode());
+		log.debug("preauth: username=" + username + "; password=" + password.hashCode());
 
 		final CallbackHandler handler = new CallbackHandler() {
 			public void handle(final Callback[] callback) {
@@ -264,7 +263,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 						final PasswordCallback passCallback = (PasswordCallback) callback[i];
 						passCallback.setPassword(password.toCharArray());
 					} else {
-						LOG.debug("Unsupported Callback i=" + i + "; class=" + callback[i].getClass().getName());
+						log.debug("Unsupported Callback i=" + i + "; class=" + callback[i].getClass().getName());
 					}
 				}
 			}
@@ -284,7 +283,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 		try {
 			oid = new Oid("1.3.6.1.5.5.2");
 		} catch (GSSException gsse) {
-			LOG.error("Unable to create OID 1.3.6.1.5.5.2 !", gsse);
+			log.error("Unable to create OID 1.3.6.1.5.5.2 !", gsse);
 		}
 		return oid;
 	}
@@ -318,7 +317,7 @@ public class KerberosLoginModule extends NickiLoginModule {
 
 				this.serverCredentials = getServerCredential(loginContext.getSubject());
 			} catch (LoginException | PrivilegedActionException e) {
-				LOG.error("Error initializing KerberosLoginModule", e);
+				log.error("Error initializing KerberosLoginModule", e);
 			}
 		}
 

@@ -40,12 +40,11 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class SSLHelper {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SSLHelper.class);
 	public static void main(String[] args) throws Exception {
 		if (args.length < 4) {
 			throw new Exception("Wrong number of arguments");
@@ -61,7 +60,7 @@ public class SSLHelper {
 
 	public static void installCerts(String host, int port, char[] passphrase, String filename) throws Exception {
 		File file = new File(filename);
-		LOG.debug(file.getAbsolutePath());
+		log.debug(file.getAbsolutePath());
 		KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
 		//ks.load(null);
 		if (file.isFile() == false) {
@@ -73,7 +72,7 @@ public class SSLHelper {
 				file = new File(dir, "cacerts");
 			}
 		}
-		LOG.debug("Loading KeyStore " + file + "...");
+		log.debug("Loading KeyStore " + file + "...");
 		InputStream in = new FileInputStream(file);
 		ks.load(in, null);
 		in.close();
@@ -88,37 +87,37 @@ public class SSLHelper {
 		context.init(null, new TrustManager[] { tm }, null);
 		SSLSocketFactory factory = context.getSocketFactory();
 
-		LOG.debug("Opening connection to " + host + ":" + port + "...");
+		log.debug("Opening connection to " + host + ":" + port + "...");
 		SSLSocket socket = (SSLSocket) factory.createSocket(host, port);
 		socket.setSoTimeout(10000);
 		try {
-			LOG.debug("Starting SSL handshake...");
+			log.debug("Starting SSL handshake...");
 			socket.startHandshake();
 			socket.close();
-			LOG.debug("No errors, certificate is already trusted");
+			log.debug("No errors, certificate is already trusted");
 		} catch (SSLException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 
 		X509Certificate[] chain = tm.chain;
 		if (chain == null) {
-			LOG.debug("Could not obtain server certificate chain");
+			log.debug("Could not obtain server certificate chain");
 			return;
 		}
 
-		LOG.debug("Server sent " + chain.length + " certificate(s):");
+		log.debug("Server sent " + chain.length + " certificate(s):");
 
 		MessageDigest sha1 = MessageDigest.getInstance("SHA1");
 		MessageDigest md5 = MessageDigest.getInstance("MD5");
 		for (int i = 0; i < chain.length; i++) {
 			X509Certificate cert = chain[i];
-			LOG.debug(" " + (i + 1) + " Subject "
+			log.debug(" " + (i + 1) + " Subject "
 					+ cert.getSubjectDN());
-			LOG.debug("   Issuer  " + cert.getIssuerDN());
+			log.debug("   Issuer  " + cert.getIssuerDN());
 			sha1.update(cert.getEncoded());
-			LOG.debug("   sha1    " + toHexString(sha1.digest()));
+			log.debug("   sha1    " + toHexString(sha1.digest()));
 			md5.update(cert.getEncoded());
-			LOG.debug("   md5     " + toHexString(md5.digest()));
+			log.debug("   md5     " + toHexString(md5.digest()));
 			String alias = host + "-" + (i + 1);
 			ks.setCertificateEntry(alias, cert);
 
@@ -126,8 +125,8 @@ public class SSLHelper {
 			ks.store(out, passphrase);
 			out.close();
 
-			LOG.debug(cert.toString());
-			LOG.debug("Added certificate to keystore 'jssecacerts' using alias '"
+			log.debug(cert.toString());
+			log.debug("Added certificate to keystore 'jssecacerts' using alias '"
 							+ alias + "'");
 		}
 

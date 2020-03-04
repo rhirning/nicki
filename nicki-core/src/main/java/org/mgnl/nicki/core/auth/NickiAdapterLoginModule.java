@@ -29,11 +29,10 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.util.Classes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class NickiAdapterLoginModule extends NickiLoginModule implements LoginModule {
-	private static final Logger LOG = LoggerFactory.getLogger(NickiAdapterLoginModule.class);
 	
 	private SSOAdapter adapter;
 	
@@ -42,11 +41,11 @@ public class NickiAdapterLoginModule extends NickiLoginModule implements LoginMo
 		if (getAdapter() == null) {
 			return false;
 		}
-		LOG.debug("Using " + getClass().getCanonicalName() +  " with Adapter " + getAdapter().getClass().getCanonicalName());
+		log.debug("Using " + getClass().getCanonicalName() +  " with Adapter " + getAdapter().getClass().getCanonicalName());
 
 		NickiPrincipal principal;
 		if (StringUtils.isBlank(getAdapter().getName()) || getAdapter().getPassword() == null) {
-			LOG.debug("No valid principal");
+			log.debug("No valid principal");
 			return false;
 		}
 		
@@ -57,7 +56,7 @@ public class NickiAdapterLoginModule extends NickiLoginModule implements LoginMo
 			context = isUseSystemContext() ? AppContext.getSystemContext(principal.getName(),
 					principal.getPassword()): getLoginContext();
 		} catch (Exception e) {
-			LOG.debug("Invalid Principal", e);
+			log.debug("Invalid Principal", e);
 			return false;
 		}
 
@@ -74,7 +73,7 @@ public class NickiAdapterLoginModule extends NickiLoginModule implements LoginMo
 				this.adapter = Classes.newInstance(adapterClass);
 				this.adapter.init(this);
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				LOG.error("Could not create adapter " + adapterClass, e.getMessage());
+				log.error("Could not create adapter " + adapterClass, e.getMessage());
 			}
 		}
 		return adapter;

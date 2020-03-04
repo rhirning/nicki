@@ -31,11 +31,11 @@ import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public abstract class BasicLdapHandler implements QueryHandler {
-	private static final Logger LOG = LoggerFactory.getLogger(BasicLdapHandler.class);
 	private NickiContext context;
 	private Class<? extends DynamicObject> classDefinition;
 	private String filter;
@@ -87,7 +87,7 @@ public abstract class BasicLdapHandler implements QueryHandler {
 			try {
 				LdapHelper.addQuery(sb, getContext().getObjectClassFilter(getContext(), getClassDefinition()), LOGIC.AND);
 			} catch (InstantiateDynamicObjectException e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		}
 		return sb.toString();

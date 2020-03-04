@@ -31,11 +31,10 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class PropertyWrapper {
-	private static final Logger LOG = LoggerFactory.getLogger(PropertyWrapper.class);
 
 	private Property property;
 
@@ -48,7 +47,7 @@ public class PropertyWrapper {
 		try {
 			return property.getName();
 		} catch (RepositoryException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return null;
 	}
@@ -57,7 +56,7 @@ public class PropertyWrapper {
 		try {
 			return PROPERTY_TYPE.of(property.getType());
 		} catch (RepositoryException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return null;
 	}
@@ -66,11 +65,11 @@ public class PropertyWrapper {
 		try {
 			return property.getValue().getString();
 		} catch (ValueFormatException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		} catch (IllegalStateException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		} catch (RepositoryException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return null;
 	}

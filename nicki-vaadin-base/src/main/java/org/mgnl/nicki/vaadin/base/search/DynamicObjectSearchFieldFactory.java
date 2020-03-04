@@ -32,15 +32,15 @@ import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.util.Classes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.AbstractLayout;
 import com.vaadin.ui.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class DynamicObjectSearchFieldFactory<T extends DynamicObject> implements Serializable {
-	private static final Logger LOG = LoggerFactory.getLogger(DynamicObjectSearchFieldFactory.class);
 	private NickiContext context;
 	private Map<DynamicAttribute, String> map;
 	
@@ -58,7 +58,7 @@ public class DynamicObjectSearchFieldFactory<T extends DynamicObject> implements
 				field = (DynamicAttributeSearchField<T>) Classes.newInstance(dynAttribute.getSearchFieldClass());
 			} catch (Exception e) {
 				field = null;
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		}
 		if (field == null) {

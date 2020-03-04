@@ -58,8 +58,6 @@ import org.mgnl.nicki.vaadin.base.auth.LoginDialog;
 import org.mgnl.nicki.vaadin.base.command.Command;
 import org.mgnl.nicki.vaadin.base.components.ConfirmDialog;
 import org.mgnl.nicki.vaadin.base.components.WelcomeDialog;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinRequest;
@@ -70,9 +68,11 @@ import com.vaadin.ui.Notification.Type;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public abstract class NickiApplication extends UI implements Serializable {
-	private static final Logger LOG = LoggerFactory.getLogger(NickiApplication.class);
 
 	private NickiContext nickiContext;
 	private DoubleContext doubleContext;
@@ -104,7 +104,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 				showStart();
 				return;
 			} catch (DynamicObjectException e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		} else {
 			
@@ -118,7 +118,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 					start();
 					return;
 				} catch (DynamicObjectException e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 				}
 			}
 	
@@ -138,7 +138,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 		try {
 				loginDialog = Classes.newInstance(loginClass);
 			} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-				LOG.error("Error creatin LoginDialog " + loginClass,e.getMessage());
+				log.error("Error creatin LoginDialog " + loginClass,e.getMessage());
 			}
 		}
 		if (loginDialog == null) {
@@ -159,7 +159,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 			} else {
 				contextName = Config.getString("nicki.login.context.name");
 			}
-			LOG.debug("LoginContext=" + contextName);
+			log.debug("LoginContext=" + contextName);
 			TargetCallbackHandler callbackHandler = new TargetCallbackHandler();
 			callbackHandler.setLoginTarget(getLoginTargetName());
 			callbackHandler.setTarget(getTargetName());
@@ -167,21 +167,21 @@ public abstract class NickiApplication extends UI implements Serializable {
 			LoginContext loginContext = new LoginContext(contextName, new Subject(), callbackHandler);
 			loginContext.login();
 			Set<Principal> principals = loginContext.getSubject().getPrincipals();
-			LOG.debug("principals: " + principals);
+			log.debug("principals: " + principals);
 			if (principals != null && principals.size() > 0) {
 				Principal principal = principals.iterator().next();
 				if (principal instanceof DynamicObjectPrincipal) {
 					DynamicObjectPrincipal dynamicObjectPrincipal = (DynamicObjectPrincipal) principal;
 					DoubleContext context = new DoubleContext();
-					LOG.debug("loginContext: " + dynamicObjectPrincipal.getLoginContext().toString());
+					log.debug("loginContext: " + dynamicObjectPrincipal.getLoginContext().toString());
 					context.setLoginContext(dynamicObjectPrincipal.getLoginContext());
-					LOG.debug("nickiContext: " + dynamicObjectPrincipal.getContext().toString());
+					log.debug("nickiContext: " + dynamicObjectPrincipal.getContext().toString());
 					context.setContext(dynamicObjectPrincipal.getContext());					
 					setDoubleContext(context);
 				}
 			}
 		} catch (LoginException e) {
-			LOG.error(e.getMessage());
+			log.error(e.getMessage());
 		}
 	}
 
@@ -198,7 +198,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 		if (StringUtils.isBlank(loginTargetName)) {
 			loginTargetName = getTarget().getName();
 		}
-		LOG.debug("LoginTarget=" + loginTargetName);
+		log.debug("LoginTarget=" + loginTargetName);
 		return loginTargetName;
 
 	}
@@ -216,7 +216,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 		if (StringUtils.isBlank(targetName)) {
 			targetName = getTarget().getName();
 		}
-		LOG.debug("Target=" + targetName);
+		log.debug("Target=" + targetName);
 		return targetName;
 
 	}
@@ -234,7 +234,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 		if (StringUtils.isBlank(accessTargetName)) {
 			accessTargetName = getTarget().getName();
 		}
-		LOG.debug("accessTarget=" + accessTargetName);
+		log.debug("accessTarget=" + accessTargetName);
 		return accessTargetName;
 
 	}
@@ -242,7 +242,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 	private void loginSSO() {
 		try {
 			String ssoLoginClass = Config.getString("nicki.login.sso");
-			LOG.debug("ssoLoginClass=" + ssoLoginClass);
+			log.debug("ssoLoginClass=" + ssoLoginClass);
 			if (StringUtils.isNotEmpty(ssoLoginClass)) {
 				SSOAdapter adapter = (SSOAdapter) Classes.newInstance(ssoLoginClass);
 				String name = adapter.getName();
@@ -261,7 +261,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Error", e.getMessage());
+			log.error("Error", e.getMessage());
 		}
 	}
 	
@@ -296,7 +296,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 				}
 			}
 		} catch (Exception e) {
-			LOG.debug("Login failed, user=" + name, e);
+			log.debug("Login failed, user=" + name, e);
 		}
 		this.nickiContext = getTarget().getGuestContext();
 		return false;
@@ -337,7 +337,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 					allowed |= roleEvaluator.hasRole(roleUser, Config.getStringValues(roleAnnotation.configName()));
 				}
 			} catch (Exception e) {
-				LOG.error("Could not create AccessRoleEvaluator", e);
+				log.error("Could not create AccessRoleEvaluator", e);
 				allowed = false;
 			}
 		}
@@ -350,7 +350,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 					allowed |= groupEvaluator.isMemberOf(groupUser, Config.getStringValues(groupAnnotation.configName()));
 				}
 			} catch (Exception e) {
-				LOG.error("Could not create AccessGroupEvaluator", e);
+				log.error("Could not create AccessGroupEvaluator", e);
 				allowed = false;
 			}
 		}
@@ -370,7 +370,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 					errorMsg.append(" ").append(groupName);
 				}
 			}
-			LOG.error(errorMsg.toString());
+			log.error(errorMsg.toString());
 			Notification.show(I18n.getText("nicki.editor.access.denied", getClass().getName()),
 					Type.ERROR_MESSAGE);
 		}
@@ -381,19 +381,19 @@ public abstract class NickiApplication extends UI implements Serializable {
 		try {
 			if (!StringUtils.equals(targetName, user.getContext().getTarget().getName())) {
 				NickiContext ctx = AppContext.getSystemContext(targetName);
-				LOG.debug("Authorization context:" + ctx);
+				log.debug("Authorization context:" + ctx);
 				String baseDn = ctx.getTarget().getProperty("baseDn", Config.getString("nicki.users.basedn"));
 				List<? extends DynamicObject> list = ctx.loadObjects(Person.class, baseDn, "cn=" + user.getName());
 				
 				if (list != null && list.size() == 1) {
-					LOG.info("login: loadObjects successful");
+					log.info("login: loadObjects successful");
 					return (Person) list.get(0);
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Invalid SystemContext", e);
+			log.error("Invalid SystemContext", e);
 		}
-		LOG.debug("Fallback authorization context:" + user.getContext());
+		log.debug("Fallback authorization context:" + user.getContext());
 		return (Person) user;
 	}
 
@@ -454,7 +454,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 							return true;
 						}
 					} catch (InstantiationException | IllegalAccessException e) {
-						LOG.error("Could not create AccessGroupEvaluator", e);
+						log.error("Could not create AccessGroupEvaluator", e);
 					}
 				}
 				if (StringUtils.isNotBlank(showWelcomeDialog.groupsConfigName())) {
@@ -464,7 +464,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 							return true;
 						}
 					} catch (InstantiationException | IllegalAccessException e) {
-						LOG.error("Could not create AccessGroupEvaluator", e);
+						log.error("Could not create AccessGroupEvaluator", e);
 					}
 				}
 				if (showWelcomeDialog.roles() != null && showWelcomeDialog.roles().length > 0) {
@@ -474,7 +474,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 							return true;
 						}
 					} catch (InstantiationException | IllegalAccessException e) {
-						LOG.error("Could not create AccessRoleEvaluator", e);
+						log.error("Could not create AccessRoleEvaluator", e);
 					}
 				}
 				if (StringUtils.isNotBlank(showWelcomeDialog.rolesConfigName())) {
@@ -484,7 +484,7 @@ public abstract class NickiApplication extends UI implements Serializable {
 							return true;
 						}
 					} catch (InstantiationException | IllegalAccessException e) {
-						LOG.error("Could not create AccessRoleEvaluator", e);
+						log.error("Could not create AccessRoleEvaluator", e);
 					}
 				}
 			}

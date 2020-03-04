@@ -28,11 +28,11 @@ import org.mgnl.nicki.vaadin.base.application.AccessGroupEvaluator;
 import org.mgnl.nicki.vaadin.base.application.AccessRoleEvaluator;
 import org.mgnl.nicki.vaadin.base.application.DefaultGroupEvaluator;
 import org.mgnl.nicki.vaadin.base.application.DefaultRoleEvaluator;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ApplicationConfig {
-	private static final Logger LOG = LoggerFactory.getLogger(ApplicationConfig.class);
 	private AccessGroupEvaluator accessGroupEvaluator = new DefaultGroupEvaluator();
 	private AccessRoleEvaluator accessRoleEvaluator = new DefaultRoleEvaluator();
 	private String accessGroupEvaluatorClass;
@@ -57,7 +57,7 @@ public class ApplicationConfig {
 		try {
 			this.accessGroupEvaluator = Classes.newInstance(accessGroupEvaluatorClass);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			LOG.error("Invalid AccessGroupEvaluatorClass", e);
+			log.error("Invalid AccessGroupEvaluatorClass", e);
 		}
 	}
 
@@ -70,7 +70,7 @@ public class ApplicationConfig {
 		try {
 			this.accessRoleEvaluator = Classes.newInstance(accessRoleEvaluatorClass);
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			LOG.error("Invalid AccessRoleEvaluatorClass", e);
+			log.error("Invalid AccessRoleEvaluatorClass", e);
 		}
 	}
 

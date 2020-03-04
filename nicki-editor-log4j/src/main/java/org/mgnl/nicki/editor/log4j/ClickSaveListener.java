@@ -24,16 +24,17 @@ package org.mgnl.nicki.editor.log4j;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Notification;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ClickSaveListener implements ClickListener {
 	private static final long serialVersionUID = 8056214403424949582L;
-	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(ClickSaveListener.class);
 
     private static final String ROOT = "Root";
     
@@ -64,7 +65,7 @@ public class ClickSaveListener implements ClickListener {
         }
         catch (Throwable e)
         {
-            LOG.debug("ERROR Setting LOG4J Logger:" + e);
+            log.debug("ERROR Setting LOG4J Logger:" + e);
         }
 
         Notification.show("LogLevel set for " + (logger.getName().equals("") ? ROOT : logger.getName()));

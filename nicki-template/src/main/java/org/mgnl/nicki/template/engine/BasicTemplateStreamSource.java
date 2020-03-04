@@ -36,12 +36,11 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.template.handler.TemplateHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BasicTemplateStreamSource {
-	private static final Logger LOG = LoggerFactory.getLogger(BasicTemplateStreamSource.class);
 	protected static enum TYPE {PDF, XLS, XHTML, STRING};
 
 	Template template;
@@ -89,7 +88,7 @@ public class BasicTemplateStreamSource {
 			return TemplateEngine.getInstance().executeTemplate(getTemplatePath(), getDataModel(),
 					TemplateEngine.DEFAULT_CHARSET);
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		
 		return null;
@@ -99,7 +98,7 @@ public class BasicTemplateStreamSource {
 		try {
 			return TemplateEngine.getInstance().executeTemplateAsPdf2(getTemplatePath(), getDataModel());
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		
 		return null;
@@ -109,7 +108,7 @@ public class BasicTemplateStreamSource {
 		try {
 			return TemplateEngine.getInstance().executeTemplateAsXls(template, getTemplatePath(), getDataModel());
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		
 		return null;
@@ -120,7 +119,7 @@ public class BasicTemplateStreamSource {
 			return convertStream(TemplateEngine.getInstance().executeTemplateAsCsv(getTemplatePath(), getDataModel()),
 					Charset.forName(TemplateEngine.DEFAULT_CHARSET), Charset.forName(TemplateEngine.CSV_CHARSET));
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		
 		return null;
@@ -131,7 +130,7 @@ public class BasicTemplateStreamSource {
 			return convertStream(TemplateEngine.getInstance().executeTemplateAsCsv2(getTemplatePath(), getDataModel()),
 					Charset.forName(TemplateEngine.DEFAULT_CHARSET), Charset.forName(TemplateEngine.CSV_CHARSET));
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		
 		return null;

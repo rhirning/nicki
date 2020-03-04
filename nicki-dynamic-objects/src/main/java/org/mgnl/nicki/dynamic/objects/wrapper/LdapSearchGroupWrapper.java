@@ -30,17 +30,17 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.dynamic.objects.objects.LdapSearchGroup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 
 /**
  *
  * @author cna
  */
+@Slf4j
 public class LdapSearchGroupWrapper {
 
-	private static final Logger LOG = LoggerFactory.getLogger(LdapSearchGroupWrapper.class);
 	public static enum UNIT {
 
 		MONTH(Calendar.MONTH),
@@ -164,7 +164,7 @@ public class LdapSearchGroupWrapper {
 			}
 			then = add(today, modifier * Integer.parseInt(match.group(2)), UNIT.fromValue(match.group(3)).getValue());
 		} else {
-			LOG.debug("PARSE EXCEPTION: " + str + ", USING NOW()");
+			log.debug("PARSE EXCEPTION: " + str + ", USING NOW()");
 		}
 
 		return then;

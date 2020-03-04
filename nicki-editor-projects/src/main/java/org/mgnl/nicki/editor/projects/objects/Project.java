@@ -34,15 +34,15 @@ import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass({ "nickiProject" })
 @Child(name="child", objectFilter={Directory.class, Member.class})
 public class Project extends BaseDynamicObject implements Serializable {
-	private static final Logger LOG = LoggerFactory.getLogger(Project.class);
 	public static final String ATTRIBUTE_PROJECT_DIRECTORY = "projectDirectory";
 	public static final String ATTRIBUTE_DESCRIPTION = "description";
 	public static final String ATTRIBUTE_OWNER = "owner";
@@ -104,7 +104,7 @@ public class Project extends BaseDynamicObject implements Serializable {
 		try {
 			return StringUtils.equalsIgnoreCase(user.getPath(), getProjectLeader().getPath());
 		} catch (Exception e) {
-			LOG.debug("Error", e);
+			log.debug("Error", e);
 		}
 		return false;
 
@@ -119,7 +119,7 @@ public class Project extends BaseDynamicObject implements Serializable {
 			return StringUtils.equalsIgnoreCase(user.getPath(),
 					getDeputyProjectLeader().getForeignKeyObject(Person.class, ATTRIBUTE_MEMBER).getPath());
 		} catch (Exception e) {
-			LOG.debug("Error", e);
+			log.debug("Error", e);
 		}
 		return false;
 

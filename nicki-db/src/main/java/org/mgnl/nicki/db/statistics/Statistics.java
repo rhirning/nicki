@@ -32,15 +32,14 @@ import org.mgnl.nicki.db.annotation.Table;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.profile.InitProfileException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Data
 @Table(name = "STATISTICS")
 public class Statistics {
-	private static final Logger LOG = LoggerFactory.getLogger(Statistics.class);
 	
 	@Attribute(name = "ID", autogen=true, primaryKey=true)
 	private Long id;
@@ -74,7 +73,7 @@ public class Statistics {
 		try {
 			definition = JsonHelper.toBean(StatisticsDefinition.class, data);
 		} catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-			LOG.error("Error parsing statistics definition", e);
+			log.error("Error parsing statistics definition", e);
 		}
 	}
 

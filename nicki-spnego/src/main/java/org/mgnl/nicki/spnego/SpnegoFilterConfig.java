@@ -37,8 +37,8 @@ import javax.security.auth.login.Configuration;
 
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Class that applies/enforces Nicki Config init params.
@@ -68,8 +68,8 @@ import org.slf4j.LoggerFactory;
  * @author Darwin V. Felix
  *
  */
+@Slf4j
 public final class SpnegoFilterConfig { // NOPMD
-	private static final Logger LOG = LoggerFactory.getLogger(SpnegoFilterConfig.class);
         
     private static final String MISSING_PROPERTY = 
         "Servlet Filter init param(s) Nicki Config missing: ";
@@ -130,7 +130,7 @@ public final class SpnegoFilterConfig { // NOPMD
                 System.setProperty("java.security.krb5.conf", krbConfigFile);
     	        System.out.println("krb.conf: " + System.getProperty("java.security.krb5.conf"));
             }
-            LOG.debug(Constants.KRB5_CONF + "=" + getInitParameter(Constants.KRB5_CONF) + ":" + krbConfigURL);
+            log.debug(Constants.KRB5_CONF + "=" + getInitParameter(Constants.KRB5_CONF) + ":" + krbConfigURL);
         }
 
         // specify login conf as a System property
@@ -145,49 +145,49 @@ public final class SpnegoFilterConfig { // NOPMD
                 System.setProperty("java.security.auth.login.config", jaasConfigFile);
     	        System.out.println("login.conf: " + System.getProperty("java.security.auth.login.config"));
             }
-            LOG.debug(Constants.LOGIN_CONF + "=" + getInitParameter(Constants.LOGIN_CONF) + ":" + jaasConfigFile);
+            log.debug(Constants.LOGIN_CONF + "=" + getInitParameter(Constants.LOGIN_CONF) + ":" + jaasConfigFile);
         }
         
         // check if exists and no options specified
         doClientModule(getInitParameter(Constants.CLIENT_MODULE, "spnego-client"));
-        LOG.debug(Constants.CLIENT_MODULE + "=" + getInitParameter(Constants.CLIENT_MODULE, "spnego-client"));
+        log.debug(Constants.CLIENT_MODULE + "=" + getInitParameter(Constants.CLIENT_MODULE, "spnego-client"));
         
         // determine if all req. met to use keyTab
         doServerModule(getInitParameter(Constants.SERVER_MODULE, "spnego-server"));
-        LOG.debug(Constants.SERVER_MODULE + "=" + getInitParameter(Constants.SERVER_MODULE, "spnego-server"));
+        log.debug(Constants.SERVER_MODULE + "=" + getInitParameter(Constants.SERVER_MODULE, "spnego-server"));
         
         // if username/password provided, don't use key tab 
         setUsernamePassword(getInitParameter(Constants.PREAUTH_USERNAME)
                 , getInitParameter(Constants.PREAUTH_PASSWORD));
-        LOG.debug(Constants.PREAUTH_USERNAME + "=" + getInitParameter(Constants.PREAUTH_USERNAME));
+        log.debug(Constants.PREAUTH_USERNAME + "=" + getInitParameter(Constants.PREAUTH_USERNAME));
         
         // determine if we should support Basic Authentication
         setBasicSupport(getInitParameter(Constants.ALLOW_BASIC)
                 , getInitParameter(Constants.ALLOW_UNSEC_BASIC));
-        LOG.debug(Constants.ALLOW_BASIC + "=" + getInitParameter(Constants.ALLOW_BASIC));
-        LOG.debug(Constants.ALLOW_UNSEC_BASIC + "=" + getInitParameter(Constants.ALLOW_UNSEC_BASIC));
+        log.debug(Constants.ALLOW_BASIC + "=" + getInitParameter(Constants.ALLOW_BASIC));
+        log.debug(Constants.ALLOW_UNSEC_BASIC + "=" + getInitParameter(Constants.ALLOW_UNSEC_BASIC));
         
         // determine if we should Basic Auth prompt if rec. NTLM token
         setNtlmSupport(getInitParameter(Constants.PROMPT_NTLM));
-        LOG.debug(Constants.PROMPT_NTLM + "=" + getInitParameter(Constants.PROMPT_NTLM));
+        log.debug(Constants.PROMPT_NTLM + "=" + getInitParameter(Constants.PROMPT_NTLM));
         
         // requests from localhost will not be authenticated against the KDC 
         if (null != getInitParameter(Constants.ALLOW_LOCALHOST)) {
             this.allowLocalhost = 
                 Boolean.parseBoolean(getInitParameter(Constants.ALLOW_LOCALHOST));
-            LOG.debug(Constants.ALLOW_LOCALHOST + "=" + getInitParameter(Constants.ALLOW_LOCALHOST));
+            log.debug(Constants.ALLOW_LOCALHOST + "=" + getInitParameter(Constants.ALLOW_LOCALHOST));
         }
         
         // determine if the server supports credential delegation 
         if (null != getInitParameter(Constants.ALLOW_DELEGATION)) {
             this.allowDelegation = 
                 Boolean.parseBoolean(getInitParameter(Constants.ALLOW_DELEGATION));
-            LOG.debug(Constants.ALLOW_DELEGATION + "=" + getInitParameter(Constants.ALLOW_DELEGATION));
+            log.debug(Constants.ALLOW_DELEGATION + "=" + getInitParameter(Constants.ALLOW_DELEGATION));
         }
         
         // determine if a url path(s) should NOT undergo authentication
         this.excludeDirs = getInitParameter(Constants.EXCLUDE_DIRS);
-        LOG.debug(Constants.EXCLUDE_DIRS + "=" + getInitParameter(Constants.EXCLUDE_DIRS));
+        log.debug(Constants.EXCLUDE_DIRS + "=" + getInitParameter(Constants.EXCLUDE_DIRS));
     }
 
 	private String getInitParameter(String key) {
@@ -211,7 +211,7 @@ public final class SpnegoFilterConfig { // NOPMD
  
         // we only expect one entry
         final AppConfigurationEntry entry = config.getAppConfigurationEntry(moduleName)[0];
-        LOG.debug("AppConfigurationEntry: " + entry);
+        log.debug("AppConfigurationEntry: " + entry);
         
         // get login module options
 //        final Map<String, ?> opt = entry.getOptions();

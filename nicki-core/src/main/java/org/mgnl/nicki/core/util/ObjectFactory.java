@@ -26,11 +26,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.mgnl.nicki.core.config.Config;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ObjectFactory<T> {
-	private static final Logger LOG = LoggerFactory.getLogger(ObjectFactory.class);
 	public static final String PROPERTY_OBJECTS = "objects";
 	public static final String SEPARATOR = ",";
 	private Map<String, T> objectsMap;
@@ -64,7 +64,7 @@ public class ObjectFactory<T> {
 				objectsMap.put(objectName, object);
 				
 			} catch (Exception e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		}
 	}

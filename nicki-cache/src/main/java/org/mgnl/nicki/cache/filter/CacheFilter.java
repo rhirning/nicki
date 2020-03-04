@@ -43,17 +43,16 @@ import org.ehcache.CacheManager;
 import org.ehcache.config.builders.CacheConfigurationBuilder;
 import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class CacheFilter implements Filter {
 
 	List<Pattern> patterns;
 	private CacheManager cacheManager;
 	private Cache<String, CachedEntry> cache;
 
-	private static final Logger LOG = LoggerFactory
-			.getLogger(CacheFilter.class);
 	private static final String CONFIG = "config";
 	private static final String CACHE_NAME = "cacheName";
 	private static final String PATTERN = "pattern";
@@ -66,23 +65,23 @@ public class CacheFilter implements Filter {
 			configFile = "/config/ehcache.xml";
 		}
 		// DOMConfigurator.configure("log4j.xml");
-		LOG.debug("Config file:" + configFile);
+		log.debug("Config file:" + configFile);
 
 		String cacheName = filterConfig.getInitParameter(CACHE_NAME);
 		if (StringUtils.isBlank(cacheName)) {
 			cacheName = "nickiCache";
 		}
-		LOG.debug("Cache name:" + cacheName);
+		log.debug("Cache name:" + cacheName);
 
 		patterns = new ArrayList<Pattern>();
 		String patternString = filterConfig.getInitParameter(PATTERN);
-		LOG.debug("Pattern: " + patternString);
+		log.debug("Pattern: " + patternString);
 		if (StringUtils.isNotBlank(patternString)) {
 			String pArray[] = StringUtils.split(patternString,
 					PATTERN_SEPARATOR);
 			if (pArray != null && pArray.length > 0) {
 				for (int i = 0; i < pArray.length; i++) {
-					LOG.debug("add pattern: " + pArray[i]);
+					log.debug("add pattern: " + pArray[i]);
 					patterns.add(Pattern.compile(pArray[i]));
 				}
 			}
@@ -127,7 +126,7 @@ public class CacheFilter implements Filter {
 		CachedEntry cachedEntry = cache.get(cacheKey);
 		if (cachedEntry != null) {
 			cachedEntry.replay(response);
-			LOG.debug("Delivered from Cache: " + cacheKey);
+			log.debug("Delivered from Cache: " + cacheKey);
 			return;
 		}
 
@@ -154,7 +153,7 @@ public class CacheFilter implements Filter {
 
 		cachedEntry.replay(response);
 
-		LOG.debug("Write to Cache: " + cacheKey);
+		log.debug("Write to Cache: " + cacheKey);
 		cache.put(cacheKey, cachedEntry);
 
 	}

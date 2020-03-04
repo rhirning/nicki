@@ -27,12 +27,11 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.profile.InitProfileException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DatabaseStatisticsFactory implements StatisticsFactory {
-	private static final Logger LOG = LoggerFactory.getLogger(DatabaseStatisticsFactory.class);
 	private static final String context = "nicki.db.statistics.db.context";
 
 	@Override
@@ -44,7 +43,7 @@ public class DatabaseStatisticsFactory implements StatisticsFactory {
 		try {
 			collection = dbContext.loadObjects(statistics, false);
 		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
-			LOG.error("Could not load statistics from database", e);
+			log.error("Could not load statistics from database", e);
 		}
 		return collection;
 	}

@@ -22,11 +22,10 @@ package org.mgnl.nicki.core.data;
  */
 
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class OctetString {
-	private static final Logger LOG = LoggerFactory.getLogger(OctetString.class);
 	byte octetString[];
 
 	public OctetString(byte octet[]) {
@@ -46,7 +45,7 @@ public class OctetString {
 			}
 			return result;
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return null;
 	}

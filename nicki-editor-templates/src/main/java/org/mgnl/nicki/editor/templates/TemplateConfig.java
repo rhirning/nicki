@@ -40,8 +40,6 @@ import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.template.engine.TemplateParameter;
 import org.mgnl.nicki.vaadin.base.editor.ClassEditor;
 import org.mgnl.nicki.vaadin.base.editor.NickiTreeEditor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.server.FileDownloader;
 import com.vaadin.server.StreamResource;
@@ -54,9 +52,11 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class TemplateConfig extends CustomComponent implements ClassEditor {
-	private static final Logger LOG = LoggerFactory.getLogger(TemplateConfig.class);
 	public static final String DIALOG_WIDTH = ".dialogWidth";
 	public static final String DIALOG_HEIGHT = ".dialogHeight";
 
@@ -112,7 +112,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 					try {
 						preview();
 					} catch (Exception e) {
-						LOG.error("Error", e);
+						log.error("Error", e);
 					}
 				}
 			});
@@ -125,7 +125,7 @@ public class TemplateConfig extends CustomComponent implements ClassEditor {
 				try {
 					htmlPreview();
 				} catch (Exception e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 				}
 			}
 		});

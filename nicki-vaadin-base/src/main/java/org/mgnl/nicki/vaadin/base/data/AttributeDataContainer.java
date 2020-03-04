@@ -23,14 +23,14 @@ package org.mgnl.nicki.vaadin.base.data;
 
 
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.Property;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class AttributeDataContainer<T> implements DataContainer<T>, Property<T> {
-	private static final Logger LOG = LoggerFactory.getLogger(AttributeDataContainer.class);
 
 	public DynamicObject getDynamicObject() {
 		return dynamicObject;
@@ -57,7 +57,7 @@ public class AttributeDataContainer<T> implements DataContainer<T>, Property<T> 
 					return (T) "";
 				}
 			} catch (Exception e) {
-				LOG.debug("Error", e);
+				log.debug("Error", e);
 				// nothing to do
 			}
 		}

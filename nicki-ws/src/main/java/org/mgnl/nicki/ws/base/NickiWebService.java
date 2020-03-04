@@ -41,12 +41,11 @@ import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.ws.base.annotations.Right;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public abstract class NickiWebService {
-
-	private static Logger LOG = LoggerFactory.getLogger(NickiWebService.class);
 
 	@Resource
 	WebServiceContext wsctx;
@@ -66,19 +65,19 @@ public abstract class NickiWebService {
 		try {
 			if (!StringUtils.equals(targetName, user.getContext().getTarget().getName())) {
 				NickiContext ctx = AppContext.getSystemContext(targetName);
-				LOG.debug("Authorization context:" + ctx);
+				log.debug("Authorization context:" + ctx);
 				String baseDn = ctx.getTarget().getProperty("baseDn", Config.getString("nicki.users.basedn"));
 				List<? extends DynamicObject> list = ctx.loadObjects(Person.class, baseDn, "cn=" + user.getName());
 				
 				if (list != null && list.size() == 1) {
-					LOG.info("login: loadObjects successful");
+					log.info("login: loadObjects successful");
 					return (Person) list.get(0);
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Invalid SystemContext", e);
+			log.error("Invalid SystemContext", e);
 		}
-		LOG.debug("Fallback authorization context:" + user.getContext());
+		log.debug("Fallback authorization context:" + user.getContext());
 		return (Person) user;
 	}
 
@@ -95,7 +94,7 @@ public abstract class NickiWebService {
 		if (StringUtils.isBlank(loginTargetName)) {
 			loginTargetName = getTarget().getName();
 		}
-		LOG.debug("LoginTarget=" + loginTargetName);
+		log.debug("LoginTarget=" + loginTargetName);
 		return loginTargetName;
 
 	}
@@ -113,7 +112,7 @@ public abstract class NickiWebService {
 		if (StringUtils.isBlank(targetName)) {
 			targetName = getTarget().getName();
 		}
-		LOG.debug("Target=" + targetName);
+		log.debug("Target=" + targetName);
 		return targetName;
 
 	}
@@ -131,7 +130,7 @@ public abstract class NickiWebService {
 		if (StringUtils.isBlank(accessTargetName)) {
 			accessTargetName = getTarget().getName();
 		}
-		LOG.debug("accessTarget=" + accessTargetName);
+		log.debug("accessTarget=" + accessTargetName);
 		return accessTargetName;
 
 	}
@@ -142,23 +141,23 @@ public abstract class NickiWebService {
 		try {
 			SSOAdapter adapter = Config.getClassInstance(ssoAdapterKey);
 			if (adapter != null) {
-				LOG.debug("ssoLoginClass: " + adapter.getClass());
+				log.debug("ssoLoginClass: " + adapter.getClass());
 				NickiPrincipal principal = new NickiPrincipal(adapter.getName(), new String(adapter
 						.getPassword()));
-				LOG.debug("principal: " + principal.getName() + "/" + principal.getPassword());
-				LOG.debug("before target.login()");
+				log.debug("principal: " + principal.getName() + "/" + principal.getPassword());
+				log.debug("before target.login()");
 				DoubleContext context = new DoubleContext();
 				Target loginTarget = TargetFactory.getTarget(getLoginTargetName());
-				LOG.debug("LoginTarget=" + loginTarget);
+				log.debug("LoginTarget=" + loginTarget);
 
 				context.setLoginContext(AppContext.getSystemContext(loginTarget, principal.getName(), principal
 						.getPassword()));
 				context.setContext(AppContext.getSystemContext(getTargetName(), context.getLoginContext().getUser()));
-				LOG.debug("after AppContext.getSystemContext()");
+				log.debug("after AppContext.getSystemContext()");
 				return context;
 			}
 		} catch (Exception e) {
-			LOG.error("loginSSO error", e);
+			log.error("loginSSO error", e);
 		}
 		return null;
 	}
@@ -169,9 +168,9 @@ public abstract class NickiWebService {
 		MessageContext mctx = this.wsctx.getMessageContext();
 		AppContext.setRequest(mctx);
 
-		LOG.debug("pre login");
+		log.debug("pre login");
 		DoubleContext context = this.loginSSO("nicki.login.sso.ws");
-		LOG.debug("after login");
+		log.debug("after login");
 		if (context == null) {
 			throw new AuthenticationFailedException();
 		} else {

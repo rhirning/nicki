@@ -31,8 +31,8 @@ import org.jdom.Element;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 /**
  * ArticleContainer
  * 
@@ -66,9 +66,9 @@ import org.slf4j.LoggerFactory;
  *		<article id="/Host/ChangeMan fuer FB-Freigeber"/>
  *	</articles>
  */
+@Slf4j
 @SuppressWarnings("serial")
 public class ArticleContainer implements Serializable{
-	private static final Logger LOG = LoggerFactory.getLogger(ArticleContainer.class);
 	private List<CatalogArticle> articleList = new ArrayList<CatalogArticle>();
 
 	public ArticleContainer(Shop shop, Element pageElement) {
@@ -91,7 +91,7 @@ public class ArticleContainer implements Serializable{
 					this.articleList.addAll(articles);
 				}
 			} catch (Exception e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		}
 		

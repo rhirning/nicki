@@ -31,20 +31,21 @@ import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.helper.BeanHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
+
+import lombok.extern.slf4j.Slf4j;
+
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Notification.Type;
 
+@Slf4j
 @SuppressWarnings("serial")
 public class DbBeanViewer extends CustomComponent implements NewClassEditor, ClassEditor {
-	private static final Logger LOG = LoggerFactory.getLogger(DbBeanViewer.class);
 
 	private VerticalLayout mainLayout;
 	private Object bean;
@@ -55,7 +56,7 @@ public class DbBeanViewer extends CustomComponent implements NewClassEditor, Cla
 	private String[] hiddenAttributes;
 
 	public void setDbBean(Object bean, String...hiddenAttributes) {
-		LOG.debug("Bean: " + bean);
+		log.debug("Bean: " + bean);
 		this.bean = bean;
 		this.hiddenAttributes = hiddenAttributes;
 		this.create = false;
@@ -65,7 +66,7 @@ public class DbBeanViewer extends CustomComponent implements NewClassEditor, Cla
 
 	@Override
 	public void setDbBean(Object bean) {
-		LOG.debug("Bean: " + bean);
+		log.debug("Bean: " + bean);
 		this.bean = bean;
 		this.create = false;
 		buildMainLayout();
@@ -133,7 +134,7 @@ public class DbBeanViewer extends CustomComponent implements NewClassEditor, Cla
 				listener.refresh(this.bean);
 			}
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 	}
 

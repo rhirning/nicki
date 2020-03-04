@@ -28,12 +28,12 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class PasswordRule extends Rule {
-	private static final Logger LOG = LoggerFactory.getLogger(PasswordRule.class);
 	int complexity = 0;
 	int min = 6;
 	List<String> messages;
@@ -48,7 +48,7 @@ public class PasswordRule extends Rule {
 			try {
 				return Integer.parseInt(getMap().get(key));
 			} catch (NumberFormatException e) {
-				LOG.error("PasswordRule parse error: key=" + key);
+				log.error("PasswordRule parse error: key=" + key);
 			}
 		}
 		return defaultValue;

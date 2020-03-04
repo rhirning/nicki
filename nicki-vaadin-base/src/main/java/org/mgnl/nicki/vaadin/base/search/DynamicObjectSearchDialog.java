@@ -37,8 +37,6 @@ import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.SearchResultEntry;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.AbstractLayout;
@@ -49,10 +47,11 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.VerticalLayout;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class DynamicObjectSearchDialog<T extends DynamicObject> extends CustomComponent {
-	private static final Logger LOG = LoggerFactory.getLogger(DynamicObjectSearchDialog.class);
-
 	private VerticalLayout mainLayout;
 	private Button searchButton;
 	private Table table;
@@ -68,7 +67,7 @@ public class DynamicObjectSearchDialog<T extends DynamicObject> extends CustomCo
 
 	
 	public DynamicObjectSearchDialog(NickiContext context, Class<T> clazz, DynamicObjectSearcher<T> searcher, String baseDn) throws InstantiateDynamicObjectException {
-		LOG.debug("CLass: " + clazz.getName());
+		log.debug("CLass: " + clazz.getName());
 		this.context = context;
 		this.clazz = clazz;
 		this.searcher = searcher;
@@ -137,7 +136,7 @@ public class DynamicObjectSearchDialog<T extends DynamicObject> extends CustomCo
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Error reading datamodel", e);
+			log.error("Error reading datamodel", e);
 		}
 		return columnsHeaders.toArray(new String[]{});
 	}
@@ -154,7 +153,7 @@ public class DynamicObjectSearchDialog<T extends DynamicObject> extends CustomCo
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Error reading datamodel", e);
+			log.error("Error reading datamodel", e);
 		}
 		return columns.toArray(new Object[]{});
 	}
@@ -175,7 +174,7 @@ public class DynamicObjectSearchDialog<T extends DynamicObject> extends CustomCo
 		try {
 			model = context.getDataModel(clazz);
 		} catch (InstantiateDynamicObjectException e) {
-			LOG.error("Error reading datamodel", e);
+			log.error("Error reading datamodel", e);
 			return new ArrayList<SearchResultEntry>();
 		}
 		
@@ -196,7 +195,7 @@ public class DynamicObjectSearchDialog<T extends DynamicObject> extends CustomCo
 			context.search(handler);
 			return handler.getResult();
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return new ArrayList<SearchResultEntry>();
 	}

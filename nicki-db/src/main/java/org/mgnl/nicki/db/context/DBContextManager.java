@@ -32,12 +32,11 @@ import org.mgnl.nicki.db.connection.InvalidConfigurationException;
 import org.mgnl.nicki.db.profile.DBCPProfile;
 import org.mgnl.nicki.db.profile.DBProfile;
 import org.mgnl.nicki.db.profile.JndiDBProfile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class DBContextManager {
-	private static final Logger LOG = LoggerFactory.getLogger(DBContextManager.class);
 
 	private static final String PROPERTY_CONTEXTS = "nicki.db.contexts";
 	private static final String PROPERTY_CONTEXT_BASE = "nicki.db.context";
@@ -78,7 +77,7 @@ public class DBContextManager {
 					schemas.put(contextName, schema);
 				}					
 			} catch (Exception e) {
-				LOG.error("error init DBContexts", e);
+				log.error("error init DBContexts", e);
 			}
 		}
 	}
@@ -113,7 +112,7 @@ public class DBContextManager {
 			context.setProfile(getProfile(name));
 			return context;
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | InvalidConfigurationException e) {
-			LOG.error("error loading DBContext " + name, e);
+			log.error("error loading DBContext " + name, e);
 		}
 		return null;
 	}
@@ -121,7 +120,7 @@ public class DBContextManager {
 	private DBProfile getProfile(String contextName) throws InvalidConfigurationException {
 		if (!this.profiles.containsKey(contextName)) {
 			DBProfile profile = createProfile(contextName);
-			LOG.debug("init profile " + profile);
+			log.debug("init profile " + profile);
 			this.profiles.put(contextName, profile);
 
 		}

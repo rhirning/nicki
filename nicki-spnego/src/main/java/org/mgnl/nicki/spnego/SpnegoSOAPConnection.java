@@ -46,8 +46,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
 import org.w3c.dom.Document;
@@ -55,6 +53,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * This class can be used to make SOAP calls to a protected SOAP Web Service.
@@ -135,11 +135,8 @@ import org.xml.sax.SAXException;
  * @author Darwin V. Felix
  *
  */
+@Slf4j
 public class SpnegoSOAPConnection extends SOAPConnection {
-    
-    /** Default LOGGER. */
-    private static final Logger LOG = 
-        LoggerFactory.getLogger(SpnegoSOAPConnection.class);
 
     private final transient SpnegoHttpURLConnection conn;
     
@@ -247,7 +244,7 @@ public class SpnegoSOAPConnection extends SOAPConnection {
     public final SOAPMessage call(final SOAPMessage request, final Object endpoint)
         throws SOAPException {
         
-        LOG.debug("endpoint=" + endpoint);
+        log.debug("endpoint=" + endpoint);
         
         SOAPMessage message = null;
         final ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -399,11 +396,11 @@ public class SpnegoSOAPConnection extends SOAPConnection {
         
         final NodeList children = soapBody.getChildNodes();
         
-        LOG.debug("number of children=" + children.getLength());
+        log.debug("number of children=" + children.getLength());
 
         for (int i = 0; i < children.getLength(); i++) {
             
-            LOG.debug("child[" + i + "]=" + children.item(i).getLocalName());
+            log.debug("child[" + i + "]=" + children.item(i).getLocalName());
             
             final ByteArrayOutputStream bos = new ByteArrayOutputStream();
 

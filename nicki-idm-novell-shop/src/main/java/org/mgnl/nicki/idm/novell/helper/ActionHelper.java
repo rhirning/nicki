@@ -29,16 +29,16 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.mgnl.nicki.idm.novell.objects.Action;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ActionHelper {
-	private static final Logger LOG = LoggerFactory.getLogger(ActionHelper.class);
 
 	private Action action;
 	private Document doc;
@@ -148,7 +148,7 @@ public class ActionHelper {
 			builder = domfactory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
 //			Should never happen
-			LOG.error("Error", e);
+			log.error("Error", e);
 			assert 0 == 1;
 		}
 		doc = builder.newDocument();

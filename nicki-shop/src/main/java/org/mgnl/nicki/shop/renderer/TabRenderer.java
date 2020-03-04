@@ -31,17 +31,17 @@ import org.mgnl.nicki.shop.core.ShopPage;
 import org.mgnl.nicki.shop.core.ShopViewerComponent;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
 import org.mgnl.nicki.vaadin.base.editor.Icon;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.AbstractComponent;
 import com.vaadin.ui.TabSheet;
 import com.vaadin.ui.TabSheet.SelectedTabChangeEvent;
 import com.vaadin.ui.TabSheet.Tab;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
-	private static final Logger LOG = LoggerFactory.getLogger(TabRenderer.class);
 
 	private ShopViewerComponent shopViewerComponent;
 	private TabSheet tabSheet;
@@ -86,7 +86,7 @@ public class TabRenderer extends BaseShopRenderer implements ShopRenderer {
 			public void selectedTabChange(SelectedTabChangeEvent event) {
 				TabSheet source = (TabSheet) event.getSource();
 				AbstractComponent component = (AbstractComponent) source.getSelectedTab();
-				LOG.debug(component.getClass().getName());
+				log.debug(component.getClass().getName());
 				ShopRenderer renderer = (ShopRenderer) component.getData();
 				if (renderer != null) {
 					renderer.render();

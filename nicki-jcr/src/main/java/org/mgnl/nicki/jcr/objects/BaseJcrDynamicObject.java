@@ -33,12 +33,11 @@ import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.context.JcrContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class BaseJcrDynamicObject extends BaseDynamicObject {
-	private static final Logger LOG = LoggerFactory.getLogger(BaseJcrDynamicObject.class);
 
 	private static final long serialVersionUID = -2552751504033170225L;
 	private Node node;
@@ -50,7 +49,7 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 		try {
 			return node.getProperty(key).toString();
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return null;
 	}
@@ -89,7 +88,7 @@ public class BaseJcrDynamicObject extends BaseDynamicObject {
 
 			setOriginal((DynamicObject) this.clone());
 		} catch (RepositoryException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 	}
 	

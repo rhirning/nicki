@@ -30,12 +30,12 @@ import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @DynamicObject
 public class JcrPerson extends Person implements JcrDynamicObject {
-	private static final Logger LOG = LoggerFactory.getLogger(JcrPerson.class);
 
 	private static final long serialVersionUID = -7661216202997423875L;
 	
@@ -46,7 +46,7 @@ public class JcrPerson extends Person implements JcrDynamicObject {
 		try {
 			return StringUtils.startsWith(node.getPath(), "/users/");
 		} catch (RepositoryException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return false;
 	}

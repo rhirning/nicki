@@ -31,14 +31,14 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.BaseDBContext;
 import org.mgnl.nicki.db.context.DBContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class SqlServerContext
 		extends BaseDBContext
 		implements DBContext {
 
-	private static final Logger LOG = LoggerFactory.getLogger(SqlServerContext.class);
 	public final static String TIMESTAMP_PATTERN = "yyyy-MM-dd HH:mm:ss";
 	public final static String PARTS_PATTERN = "yyyy, MM, dd, HH, mm, ss, SSS";
 	public final static String DATE_PATTERN = "yyyy-MM-dd";
@@ -67,7 +67,7 @@ public class SqlServerContext
 			return getDateValue(date, attribute);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
-			LOG.error("Error creating date expression", e);
+			log.error("Error creating date expression", e);
 		}
 		return null;
 	}

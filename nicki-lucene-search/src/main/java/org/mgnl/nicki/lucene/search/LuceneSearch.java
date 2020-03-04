@@ -53,11 +53,11 @@ import org.apache.lucene.store.FSDirectory;
 import org.mgnl.nicki.search.Extractor;
 import org.mgnl.nicki.search.NickiSearch;
 import org.mgnl.nicki.search.NickiSearchResult;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class LuceneSearch<T extends Object> implements NickiSearch<T> {
-	private static final Logger LOG = LoggerFactory.getLogger(LuceneSearch.class);
 
 
 	public static enum MODE {
@@ -100,7 +100,7 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 				try {
 					indexObject(writer, t, extractor);
 				} catch (IOException e) {
-					LOG.error("Error indexing", e);
+					log.error("Error indexing", e);
 				}
 			}
 		}
@@ -144,10 +144,10 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 		doc.add(new StringField(ATTRIBUTE_CONTENT, sb.toString(), Field.Store.YES));
 		
 		if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
-			LOG.debug("adding " + key);
+			log.debug("adding " + key);
 			writer.addDocument(doc);
 		} else {
-			LOG.debug("updating " + key);
+			log.debug("updating " + key);
 			writer.updateDocument(new Term(ATTRIBUTE_KEY, key), doc);
 		}
 
@@ -156,7 +156,7 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 	public void index(Collection<T> list, Extractor<T> extractor) {
 		Date start = new Date();
 		try {
-			LOG.debug("Indexing to directory '" + indexPath + "'...");
+			log.debug("Indexing to directory '" + indexPath + "'...");
 
 			Directory dir = FSDirectory.open(Paths.get(indexPath));
 			Analyzer analyzer = getAnalyzer();
@@ -190,11 +190,11 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 				// writer.forceMerge(1);
 
 				Date end = new Date();
-				LOG.info(end.getTime() - start.getTime() + " total milliseconds");
+				log.info(end.getTime() - start.getTime() + " total milliseconds");
 			}
 
 		} catch (IOException e) {
-			LOG.error("Error indexing", e);
+			log.error("Error indexing", e);
 		}
 	}
 

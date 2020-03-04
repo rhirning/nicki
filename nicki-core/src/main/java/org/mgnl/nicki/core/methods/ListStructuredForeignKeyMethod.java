@@ -29,12 +29,12 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class ListStructuredForeignKeyMethod extends ListForeignKeyMethod {
-	private static final Logger LOG = LoggerFactory.getLogger(ListStructuredForeignKeyMethod.class);
 	public ListStructuredForeignKeyMethod(NickiContext context,
 			ContextSearchResult rs, String ldapName,
 			Class<? extends DynamicObject> classDefinition) {
@@ -58,7 +58,7 @@ public class ListStructuredForeignKeyMethod extends ListForeignKeyMethod {
 					object.put("struct" , new StructuredData(xml));
 					getObjects().add(object);
 				} else {
-					LOG.debug("Could not build object: " + path);
+					log.debug("Could not build object: " + path);
 				}
 			}
 		}

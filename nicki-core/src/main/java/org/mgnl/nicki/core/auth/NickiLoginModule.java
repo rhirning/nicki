@@ -43,12 +43,10 @@ import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 public abstract class NickiLoginModule implements LoginModule {
-	private static final Logger LOG = LoggerFactory.getLogger(NickiLoginModule.class);
 	
     public static final String AUTHZ_HEADER = "Authorization";
     public static final String SESSION_USER = "NICKI_SESSION_USER";
@@ -114,12 +112,12 @@ public abstract class NickiLoginModule implements LoginModule {
 			if (principal != null) {
 				DynamicObject user = getLoginTarget().login(principal);
 				if (user != null) {
-					LOG.debug("Login sucessful, user=" + user);
+					log.debug("Login sucessful, user=" + user);
 					return getTarget().getNamedUserContext(user, new String(credential));
 				}
 			}
 		} catch (Exception e) {
-			LOG.debug("Login failed, user=" + name, e);
+			log.debug("Login failed, user=" + name, e);
 		}
 		return null;
 	}
@@ -132,7 +130,7 @@ public abstract class NickiLoginModule implements LoginModule {
 				getCallbackHandler().handle(callbacks);
 				return TargetFactory.getTarget(callbacks[0].getLoginTarget());
 			} catch (IOException | UnsupportedCallbackException e) {
-				LOG.error("Error with CallbackHandler", e);
+				log.error("Error with CallbackHandler", e);
 			}
 		}
 		return TargetFactory.getDefaultTarget();
@@ -146,7 +144,7 @@ public abstract class NickiLoginModule implements LoginModule {
 				getCallbackHandler().handle(callbacks);
 				return TargetFactory.getTarget(callbacks[0].getTarget());
 			} catch (IOException | UnsupportedCallbackException e) {
-				LOG.error("Error with CallbackHandler", e);
+				log.error("Error with CallbackHandler", e);
 			}
 		}
 		return TargetFactory.getDefaultTarget();
@@ -161,15 +159,15 @@ public abstract class NickiLoginModule implements LoginModule {
 			Target loginTarget = getLoginTarget();
 			list = AppContext.getSystemContext(loginTarget.getName()).loadObjects(loginTarget.getBaseDn(), "cn=" + userId);
 		} catch (InvalidPrincipalException e) {
-			LOG.error("Invalid SystemContext", e);
+			log.error("Invalid SystemContext", e);
 		}
 		
 		if (list != null && list.size() == 1) {
-			LOG.info("login: loadObjects successful");
+			log.info("login: loadObjects successful");
 			return list.get(0);
 		} else {
-			LOG.info("login: loadObjects not successful");
-			LOG.debug("Loading Objects not successful: " 
+			log.info("login: loadObjects not successful");
+			log.debug("Loading Objects not successful: " 
 					+ ((list == null)?"null":"size=" + list.size()));
 			return null;
 		}
@@ -257,16 +255,16 @@ public abstract class NickiLoginModule implements LoginModule {
 	public void setPrincipal(DynamicObjectPrincipal dynamicObjectPrincipal) {
 		if (this.subject == null) {
 			this.subject = new Subject();
-			LOG.debug("create new Subject");
+			log.debug("create new Subject");
 		} else {
-			LOG.debug("Subject exists");
+			log.debug("Subject exists");
 		}
 		this.subject.getPrincipals().add(dynamicObjectPrincipal);
 		this.principal = dynamicObjectPrincipal;
 	}
 
 	public Subject getSubject() {
-		LOG.debug("getSubject: " + subject);
+		log.debug("getSubject: " + subject);
 		return subject;
 	}
 
@@ -282,7 +280,7 @@ public abstract class NickiLoginModule implements LoginModule {
 	 */
 	public static CallbackHandler getUsernamePasswordHandler(final String username, final String password) {
 
-		LOG.debug("username=" + username + "; password=" + password.hashCode());
+		log.debug("username=" + username + "; password=" + password.hashCode());
 
 		final CallbackHandler handler = new CallbackHandler() {
 			public void handle(final Callback[] callback) {
@@ -294,7 +292,7 @@ public abstract class NickiLoginModule implements LoginModule {
 						final PasswordCallback passCallback = (PasswordCallback) callback[i];
 						passCallback.setPassword(password.toCharArray());
 					} else {
-						LOG.debug("Unsupported Callback i=" + i + "; class=" + callback[i].getClass().getName());
+						log.debug("Unsupported Callback i=" + i + "; class=" + callback[i].getClass().getName());
 					}
 				}
 			}

@@ -25,8 +25,6 @@ package org.mgnl.nicki.vaadin.base.editor;
 import java.util.Collection;
 
 import org.mgnl.nicki.core.data.TreeData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -35,9 +33,11 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.AbstractSelect.ItemCaptionMode;
 import com.vaadin.ui.Tree.ExpandListener;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public abstract class BasicNickiSelector implements NickiSelect {
-	private static final Logger LOG = LoggerFactory.getLogger(BasicNickiSelector.class);
 	private AbstractSelect component;
 
 	public void setHeight(String height) {
@@ -94,28 +94,28 @@ public abstract class BasicNickiSelector implements NickiSelect {
 	
 	@Override
 	public void expandItem(TreeData object) {
-		LOG.debug("not implemented");
+		log.debug("not implemented");
 	}
 
 	@Override
 	public void addListener(ExpandListener listener) {
-		LOG.debug("not implemented");
+		log.debug("not implemented");
 	}
 
 	@Override
 	public Collection<?> rootItemIds() {
-		LOG.debug("not implemented");
+		log.debug("not implemented");
 		return null;
 	}
 
 	@Override
 	public void expandItemsRecursively(Object id) {
-		LOG.debug("not implemented");
+		log.debug("not implemented");
 	}
 
 	@Override
 	public void collapseItemsRecursively(TreeData startItemId) {
-		LOG.debug("not implemented");
+		log.debug("not implemented");
 	}
 
 

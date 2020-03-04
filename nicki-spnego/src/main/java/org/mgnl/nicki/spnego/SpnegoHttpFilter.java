@@ -42,8 +42,8 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.lang.StringUtils;
 import org.ietf.jgss.GSSException;
 import org.mgnl.nicki.core.config.Config;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Http Servlet Filter that provides <a
@@ -188,8 +188,8 @@ import org.slf4j.LoggerFactory;
  * @author Darwin V. Felix
  * 
  */
+@Slf4j
 public final class SpnegoHttpFilter implements Filter {
-	private static final Logger LOG = LoggerFactory.getLogger(SpnegoHttpFilter.class);
 
     private static final String SESSION_NO_USER = "NICKI_SESSION_NO_USER";
     private static final String SESSION_USER = "NICKI_SESSION_USER";
@@ -228,7 +228,7 @@ public final class SpnegoHttpFilter implements Filter {
 	            final SpnegoFilterConfig config = SpnegoFilterConfig.getInstance();
 	            this.excludeDirs.addAll(config.getExcludeDirs());
 	            
-	            LOG.info("excludeDirs=" + this.excludeDirs);
+	            log.info("excludeDirs=" + this.excludeDirs);
 	            
 	            // pre-authenticate
 	            this.authenticator = new SpnegoAuthenticator(config);
@@ -236,7 +236,7 @@ public final class SpnegoHttpFilter implements Filter {
 	            // authorization
 	            final Properties props = SpnegoHttpFilter.toProperties(filterConfig);
 	            if (!props.getProperty("spnego.authz.class", "").isEmpty()) {
-	            	LOG.debug("spnego.authz.class = " + props.getProperty("spnego.authz.class", ""));
+	            	log.debug("spnego.authz.class = " + props.getProperty("spnego.authz.class", ""));
 	                props.put("spnego.server.realm", this.authenticator.getServerRealm());
 	                this.page403 = props.getProperty("spnego.authz.403", "").trim();
 	                this.sitewide = props.getProperty("spnego.authz.sitewide", "").trim();
@@ -245,17 +245,17 @@ public final class SpnegoHttpFilter implements Filter {
 	                        props.getProperty("spnego.authz.class")).newInstance();
 	                this.accessControl.init(props);                
 	            } else {
-	            	LOG.debug("spnego.authz.class empty");
+	            	log.debug("spnego.authz.class empty");
 	            	
 	            }
 	            
 	        } catch (final Exception e) {
-	        	LOG.error("Error inizializing SpnegoHttpFilter", e);
-	    		LOG.info("Kerberos not activated");
+	        	log.error("Error inizializing SpnegoHttpFilter", e);
+	    		log.info("Kerberos not activated");
 	        	this.active = false;
 	        }
     	} else {
-    		LOG.info("Kerberos not activated");
+    		log.info("Kerberos not activated");
     	}
     }
 
@@ -297,7 +297,7 @@ public final class SpnegoHttpFilter implements Filter {
 				}
 			}
 			httpRequest.getSession().setAttribute(NICKI_PARAMETERS, map);
-			LOG.debug("ParameterMap: " + map);
+			log.debug("ParameterMap: " + map);
 		}
 
     	// check for request parameter nokerberos
@@ -305,9 +305,9 @@ public final class SpnegoHttpFilter implements Filter {
         	httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
         }
         
-        LOG.debug("Request: " + httpRequest.getServletPath() + ", ThreadId=" + Thread.currentThread().getId());
+        log.debug("Request: " + httpRequest.getServletPath() + ", ThreadId=" + Thread.currentThread().getId());
         //String browserType = (String) httpRequest.getHeader("User-Agent");
-        //LOG.debug("User-Agent: " + browserType);
+        //log.debug("User-Agent: " + browserType);
         
     	String authHeader = httpRequest.getHeader(Constants.AUTHZ_HEADER);
 
@@ -317,17 +317,17 @@ public final class SpnegoHttpFilter implements Filter {
     	
         // skip authentication if session is already authenticated
     	if (httpRequest.getSession().getAttribute(SESSION_USER) != null) {
-            LOG.debug("Authenticated user: " + httpRequest.getSession().getAttribute(SESSION_USER));
+            log.debug("Authenticated user: " + httpRequest.getSession().getAttribute(SESSION_USER));
             chain.doFilter(request, response);
             return;
     	} else if (httpRequest.getSession(false).getAttribute(SESSION_NO_USER) != null) {
-            LOG.debug("no authenticated user");
+            log.debug("no authenticated user");
             chain.doFilter(request, response);
             return;
     	}
         // skip authentication if resource is in the list of directories to exclude
         if (exclude(httpRequest.getContextPath(), httpRequest.getServletPath())) {
-            LOG.debug("excluded: " + httpRequest.getServletPath());
+            log.debug("excluded: " + httpRequest.getServletPath());
             chain.doFilter(request, response);
             return;
         }
@@ -340,20 +340,20 @@ public final class SpnegoHttpFilter implements Filter {
         try {
             principal = this.authenticator.authenticate(httpRequest, spnegoResponse);
         } catch (GSSException gsse) {
-            LOG.error("HTTP Authorization Header="
+            log.error("HTTP Authorization Header="
                 + httpRequest.getHeader(Constants.AUTHZ_HEADER));
         	httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
-            LOG.info("Invalid Authorization Header");
+            log.info("Invalid Authorization Header");
             chain.doFilter(request, response);
             return;
         } catch (NotSupportedException e) {
         	httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
-            LOG.info("Authentication not supported");
+            log.info("Authentication not supported");
             chain.doFilter(request, response);
             return;
         } catch (IOException e) {
             httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
-            LOG.info("Authentication not successful: " + e.getMessage());
+            log.info("Authentication not successful: " + e.getMessage());
             chain.doFilter(request, response);
             return;
 		}
@@ -361,11 +361,11 @@ public final class SpnegoHttpFilter implements Filter {
         // context/auth loop not yet complete
         if (spnegoResponse.isStatusSet()) {
         	if (httpRequest.getSession().getAttribute(SESSION_AUTH_REQUEST) != null) {
-        		LOG.debug("Second authenticate request");
+        		log.debug("Second authenticate request");
             	httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
                 chain.doFilter(request, response);
         	} else {
-        		LOG.debug("First authenticate request");
+        		log.debug("First authenticate request");
         		httpRequest.getSession().setAttribute(SESSION_AUTH_REQUEST, "1");
         	}
             return;
@@ -373,20 +373,20 @@ public final class SpnegoHttpFilter implements Filter {
 
         // assert
         if (null == principal) {
-            LOG.debug("Principal was null.");
+            log.debug("Principal was null.");
         	httpRequest.getSession().setAttribute(SESSION_NO_USER, "1");
             chain.doFilter(request, response);
             return;
         }
 
-        LOG.debug("principal=" + principal);
+        log.debug("principal=" + principal);
         
         final SpnegoHttpServletRequest spnegoRequest = 
                 new SpnegoHttpServletRequest(httpRequest, principal, this.accessControl);
                 
         // site wide authZ check (if enabled)
         if (!isAuthorized((HttpServletRequest) spnegoRequest)) {
-            LOG.info("Principal Not AuthoriZed: " + principal);
+            log.info("Principal Not AuthoriZed: " + principal);
             if (this.page403.isEmpty()) {
                 spnegoResponse.setStatus(HttpServletResponse.SC_FORBIDDEN, true);  
             } else {

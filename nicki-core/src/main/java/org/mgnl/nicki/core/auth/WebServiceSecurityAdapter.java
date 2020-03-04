@@ -30,12 +30,11 @@ import javax.xml.ws.handler.MessageContext;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.BasicAuthAdapter;
 import org.mgnl.nicki.core.auth.SSOAdapter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class WebServiceSecurityAdapter extends BasicAuthAdapter implements SSOAdapter {
 
-	private static Logger LOG = LoggerFactory.getLogger(WebServiceSecurityAdapter.class);
 	
 	@Override
 	protected String getAuthPart(int num) {
@@ -51,7 +50,7 @@ public class WebServiceSecurityAdapter extends BasicAuthAdapter implements SSOAd
 				return decode(encodedCredentials)[num];
 			}
 		} catch (Exception e) {
-			LOG.error("Error reading Basic Authentication data", e);
+			log.error("Error reading Basic Authentication data", e);
 		}
 		return null;
 	}

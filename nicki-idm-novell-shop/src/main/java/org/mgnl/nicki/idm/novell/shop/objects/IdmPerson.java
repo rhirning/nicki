@@ -47,18 +47,17 @@ import org.mgnl.nicki.idm.novell.catalog.RoleCatalogArticle;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @DynamicObject
 @ObjectClass(value="inetOrgPerson", init=true)
 @RemoveDynamicAttribute("memberOf")
 @AdditionalObjectClass({"DirXML-EntitlementRecipient", "DirXML-EmployeeAux"})
 public class IdmPerson extends Person implements Serializable {
-	private static final Logger LOG = LoggerFactory.getLogger(IdmPerson.class);
 
 	private static final long serialVersionUID = -6791692458041112275L;
 	public static final String ATTRIBUTE_LASTWORKINGDAY = "lastWorkingDay";
@@ -438,7 +437,7 @@ public class IdmPerson extends Person implements Serializable {
 				try {
 					assignedRoles = (Collection<Role>) method.exec(null);
 				} catch (TemplateModelException e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 					assignedRoles =  new ArrayList<Role>();
 				}
 			}
@@ -460,7 +459,7 @@ public class IdmPerson extends Person implements Serializable {
 				try {
 					groupRoles = (Collection<Role>) method.exec(null);
 				} catch (TemplateModelException e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 					groupRoles =  new ArrayList<Role>();
 				}
 			}
@@ -476,7 +475,7 @@ public class IdmPerson extends Person implements Serializable {
 				try {
 					containerRoles = (Collection<Role>) method.exec(null);
 				} catch (TemplateModelException e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 					containerRoles =  new ArrayList<Role>();
 				}
 			}
@@ -492,7 +491,7 @@ public class IdmPerson extends Person implements Serializable {
 				try {
 					assignedResources = (Collection<Resource>) method.exec(null);
 				} catch (TemplateModelException e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 					assignedResources = new ArrayList<Resource>();
 				}
 			}

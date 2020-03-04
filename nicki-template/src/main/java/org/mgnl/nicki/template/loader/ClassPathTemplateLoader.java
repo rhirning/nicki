@@ -36,10 +36,9 @@ import javax.xml.bind.Unmarshaller;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.template.engine.SimpleTemplate;
 import org.mgnl.nicki.template.engine.SimpleTemplateDescriptor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import freemarker.cache.TemplateLoader;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * A TemplateLoader that reads templates using classloader under a given basePath
@@ -47,8 +46,8 @@ import freemarker.cache.TemplateLoader;
  * @author rhi
  *
  */
+@Slf4j
 public class ClassPathTemplateLoader implements TemplateLoader {
-	private static final Logger LOG = LoggerFactory.getLogger(ClassPathTemplateLoader.class);
 	
 	public static final String APPENDIX_SEP = ".";
 	public static final String LOCALE_SEP = "_";
@@ -105,7 +104,7 @@ public class ClassPathTemplateLoader implements TemplateLoader {
 		}
 		
 		String classPath = getClassPath(directoryPath, templateName, appendix);
-//		LOG.debug("Search for template: " + path + " at: " + dnPath);
+//		log.debug("Search for template: " + path + " at: " + dnPath);
 
 		return getTemplate(path, classPath, part);
 	}
@@ -134,7 +133,7 @@ public class ClassPathTemplateLoader implements TemplateLoader {
 				template = (SimpleTemplate) jaxbUnmarshaller.unmarshal(reader);
 			}
 		} catch (Exception e) {
-			LOG.info("could not read template(" + name + ", " + classPath +", " + part);
+			log.info("could not read template(" + name + ", " + classPath +", " + part);
 		}
 		if (template != null) {
 			this.templates.put(name, template);

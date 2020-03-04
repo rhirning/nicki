@@ -23,11 +23,11 @@ package org.mgnl.nicki.core.i18n;
 
 
 import org.mgnl.nicki.core.util.Classes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class TopicCacheConfiguration {
-    private static final Logger LOG = LoggerFactory.getLogger(TopicCacheConfiguration.class);
 	private String topic;
 	private CacheEntryFactory factory;
 	private boolean valid;
@@ -46,7 +46,7 @@ public class TopicCacheConfiguration {
 			this.factory = Classes.newInstance(factoryClass);
 			this.valid = true;
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			LOG.error("Error creating CacheFactory " + factoryClass, e);
+			log.error("Error creating CacheFactory " + factoryClass, e);
 		}
 	}
 	public boolean isValid() {

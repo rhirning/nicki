@@ -35,11 +35,11 @@ import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.mq.base.NickiMessageListener;
 import org.mgnl.nicki.mq.model.Consumer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ConsumerThread extends Thread implements Runnable {
-	private static final Logger LOG = LoggerFactory.getLogger(ConsumerThread.class);
 	public final static String DEFAULT_CHARSET = "UTF-8";
 	private Connection connection = null;
 	private Session session = null;
@@ -68,26 +68,26 @@ public class ConsumerThread extends Thread implements Runnable {
 			messageConsumer.setMessageListener(messageListener);
 			
 		} catch (JMSException | ClassNotFoundException | InstantiationException | IllegalAccessException e0) {
-			LOG.error("Error starting MQConsumerListener", e0);
+			log.error("Error starting MQConsumerListener", e0);
 			if (messageConsumer != null) {
 				try {
 					messageConsumer.close();
 				} catch (JMSException e) {
-					LOG.error("Error closing consumer", e);
+					log.error("Error closing consumer", e);
 				}
 			}
 			if (session != null) {
 				try {
 					session.close();
 				} catch (JMSException e) {
-					LOG.error("Error closing session", e);
+					log.error("Error closing session", e);
 				}
 			}
 			if (connection != null) {
 				try {
 					connection.close();
 				} catch (JMSException e) {
-					LOG.error("Error closing connextion", e);
+					log.error("Error closing connextion", e);
 				}
 			}
 		}
@@ -107,21 +107,21 @@ public class ConsumerThread extends Thread implements Runnable {
 				try {
 					messageConsumer.close();
 				} catch (JMSException e) {
-					LOG.error("Error closing consumer", e);
+					log.error("Error closing consumer", e);
 				}
 			}
 			if (session != null) {
 				try {
 					session.close();
 				} catch (JMSException e) {
-					LOG.error("Error closing session", e);
+					log.error("Error closing session", e);
 				}
 			}
 			if (connection != null) {
 				try {
 					connection.close();
 				} catch (JMSException e) {
-					LOG.error("Error closing connextion", e);
+					log.error("Error closing connextion", e);
 				}
 			}
 		}

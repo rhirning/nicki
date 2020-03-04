@@ -26,15 +26,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.server.StreamResource.StreamSource;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ContainerFileResource implements StreamSource {
 	private static final long serialVersionUID = -2366308187343189975L;
 
-	private static final Logger LOG = LoggerFactory.getLogger(Log4jViewer.class);
 
 	TailViewer tailViewer;
 
@@ -51,7 +51,7 @@ public class ContainerFileResource implements StreamSource {
 			renderer.start();
 			return pis;
 		} catch (IOException e) {
-			LOG.error("could not read container", e);
+			log.error("could not read container", e);
 		}
 	    return null;
 	}
