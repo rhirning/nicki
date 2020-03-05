@@ -228,7 +228,7 @@ public class MainView extends CustomComponent {
 
 	@Deprecated
 	public void addNavigationEntry(String labelCaption, String caption, View view) {
-		addNavigationEntry(labelCaption, labelCaption, view, null);
+		addNavigationEntry(labelCaption, caption, view, null);
 	}
 
 	public void addNavigationEntry(String labelCaption, String caption, View view, String navigation) {
