@@ -50,11 +50,15 @@ public class StatisticsSelectHandler implements SelectHandler, StatisticsResult 
 	public StatisticsSelectHandler(DBContext dbContext, StatisticsDefinition definition, Map<String, String> values) throws ParseException, MissingDataException {
 		this.dbContext = dbContext;
 		this.definition = definition;
-		for (Variable inputVariable : definition.getInput()) {
-			inputVariables.put(inputVariable.getName(), inputVariable);
+		if (definition.getInput() != null) {
+			for (Variable inputVariable : definition.getInput()) {
+				inputVariables.put(inputVariable.getName(), inputVariable);
+			}
 		}
-		for (Variable outputVariable : definition.getOutput()) {
-			outputVariables.put(outputVariable.getName(), outputVariable);
+		if (definition.getOutput() != null) {
+			for (Variable outputVariable : definition.getOutput()) {
+				outputVariables.put(outputVariable.getName(), outputVariable);
+			}
 		}
 		this.searchStatement = parseQuery(definition.getQuery(), definition.getInput(), values);
 		log.debug(searchStatement);
@@ -86,8 +90,9 @@ public class StatisticsSelectHandler implements SelectHandler, StatisticsResult 
 			Variable variable = inputVariables.get(key);
 			if (StringUtils.isBlank(values.get(key))) {
 				missing.add(key);
+			} else {
+				result = StringUtils.replace(result, "${" + key + "}", variable.toString(dbContext, values.get(key)));
 			}
-			result = StringUtils.replace(result, "${" + key + "}", variable.toString(dbContext, values.get(key)));
 		}
 		
 		if (missing.size() > 0) {

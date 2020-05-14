@@ -26,12 +26,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import org.apache.commons.io.IOUtils;
 import org.mgnl.nicki.core.helper.NameValue;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import com.vaadin.data.util.BeanItemContainer;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class BeanItemContainerRenderer extends Thread implements Runnable {
-	private static final Logger LOG = LoggerFactory.getLogger(BeanItemContainerRenderer.class);
 	BeanItemContainer<NameValue> container;
 	OutputStream out;
 
@@ -49,7 +49,7 @@ public class BeanItemContainerRenderer extends Thread implements Runnable {
 			out.flush();
 			out.close();
 		} catch (IOException e) {
-			LOG.error("Error reading container", e);
+			log.error("Error reading container", e);
 		}
 
 	}

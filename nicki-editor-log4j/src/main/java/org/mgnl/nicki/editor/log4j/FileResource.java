@@ -27,15 +27,15 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.server.StreamResource.StreamSource;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class FileResource implements StreamSource {
 	private static final long serialVersionUID = -2366308187343189975L;
 
-	private static final Logger LOG = LoggerFactory.getLogger(Log4jViewer.class);
 
 	private File file;
 	
@@ -48,7 +48,7 @@ public class FileResource implements StreamSource {
 		try {
 			return FileUtils.openInputStream(file);
 		} catch (IOException e) {
-			LOG.error("could not open file: " + file);
+			log.error("could not open file: " + file);
 		}
 		return null;
 	}

@@ -36,8 +36,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
@@ -67,10 +68,8 @@ import org.ietf.jgss.Oid;
  * @author Darwin V. Felix
  * 
  */
+@Slf4j
 public final class SpnegoProvider {
-
-    /** Default LOGGER. */
-    private static final Logger LOG = LoggerFactory.getLogger(SpnegoProvider.class);
 
     /** Factory for GSS-API mechanism. */
     private static final GSSManager MANAGER = GSSManager.getInstance();
@@ -115,7 +114,7 @@ public final class SpnegoProvider {
                 req.getHeader(Constants.AUTHZ_HEADER));
         
         if (null == scheme || scheme.getToken().length == 0) {
-            LOG.debug("Header Token was NULL");
+            log.debug("Header Token was NULL");
         	if (req.getSession().getAttribute(SpnegoHttpFilter.SESSION_AUTH_REQUEST) == null) {
 	            resp.setHeader(Constants.AUTHN_HEADER, Constants.NEGOTIATE_HEADER);
 	            //req.getSession(true).setAttribute(SESSION_AUTH_REQUEST, "1");
@@ -124,7 +123,7 @@ public final class SpnegoProvider {
 	                resp.addHeader(Constants.AUTHN_HEADER,
 	                    Constants.BASIC_HEADER + " realm=\"" + realm + '\"');
 	            } else {
-	                LOG.debug("Basic NOT offered: Not Enabled or SSL Required.");
+	                log.debug("Basic NOT offered: Not Enabled or SSL Required.");
 	            }
 	
 	            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED, true);
@@ -138,7 +137,7 @@ public final class SpnegoProvider {
         
         // assert
         if (scheme.isNtlmToken()) {
-            LOG.warn("Downgrade NTLM request to Basic Auth.");
+            log.warn("Downgrade NTLM request to Basic Auth.");
 
             if (resp.isStatusSet()) {
                 throw new IllegalStateException("HTTP Status already set.");
@@ -221,17 +220,17 @@ public final class SpnegoProvider {
     public static SpnegoAuthScheme getAuthScheme(final String header) {
 
         if (null == header || header.isEmpty()) {
-            LOG.debug("authorization header was missing/null");
+            log.debug("authorization header was missing/null");
             return null;
             
         } else if (header.startsWith(Constants.NEGOTIATE_HEADER)) {
             final String token = header.substring(Constants.NEGOTIATE_HEADER.length() + 1);
-            LOG.debug("Negotiate Header: " + token);
+            log.debug("Negotiate Header: " + token);
             return new SpnegoAuthScheme(Constants.NEGOTIATE_HEADER, token);
             
         } else if (header.startsWith(Constants.BASIC_HEADER)) {
             final String token = header.substring(Constants.BASIC_HEADER.length() + 1);
-            LOG.debug("Basic Header: " + token);
+            log.debug("Basic Header: " + token);
             return new SpnegoAuthScheme(Constants.BASIC_HEADER, token);
             
         } else {
@@ -250,7 +249,7 @@ public final class SpnegoProvider {
         try {
             oid = new Oid("1.3.6.1.5.5.2");
         } catch (GSSException gsse) {
-            LOG.error("Unable to create OID 1.3.6.1.5.5.2 !", gsse);
+            log.error("Unable to create OID 1.3.6.1.5.5.2 !", gsse);
         }
         return oid;
     }
@@ -302,7 +301,7 @@ public final class SpnegoProvider {
     public static CallbackHandler getUsernamePasswordHandler(
         final String username, final String password) {
 
-        LOG.debug("username=" + username + "; password=" + password.hashCode());
+        log.debug("username=" + username + "; password=" + password.hashCode());
 
         final CallbackHandler handler = new CallbackHandler() {
             public void handle(final Callback[] callback) {
@@ -314,7 +313,7 @@ public final class SpnegoProvider {
                         final PasswordCallback passCallback = (PasswordCallback) callback[i];
                         passCallback.setPassword(password.toCharArray());
                     } else {
-                        LOG.warn("Unsupported Callback i=" + i + "; class=" 
+                        log.warn("Unsupported Callback i=" + i + "; class=" 
                                 + callback[i].getClass().getName());
                     }
                 }

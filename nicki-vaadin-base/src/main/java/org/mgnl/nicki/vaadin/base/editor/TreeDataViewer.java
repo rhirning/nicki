@@ -27,16 +27,16 @@ import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.data.InvalidActionException;
 import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.vaadin.base.components.NewClassEditor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class TreeDataViewer extends CustomComponent implements NewClassEditor, ClassEditor {
-	private static final Logger LOG = LoggerFactory.getLogger(TreeDataViewer.class);
 
 	private VerticalLayout mainLayout;
 	private TreeData dynamicObject;
@@ -47,7 +47,7 @@ public class TreeDataViewer extends CustomComponent implements NewClassEditor, C
 	}
 
 	public void setDynamicObject(NickiTreeEditor nickiEditor, TreeData dynamicObject) {
-		LOG.debug("DynamicObject: " + dynamicObject);
+		log.debug("DynamicObject: " + dynamicObject);
 		this.dynamicObject = dynamicObject;
 		this.create = false;
 		buildMainLayout();

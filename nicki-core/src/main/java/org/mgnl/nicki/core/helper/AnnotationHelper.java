@@ -41,12 +41,12 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicReference;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class AnnotationHelper {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(AnnotationHelper.class);
 
 	public static String[] getObjectClasses(Class<?> clazz) {
 		ObjectClass oClass = clazz.getAnnotation(ObjectClass.class);
@@ -80,7 +80,7 @@ public class AnnotationHelper {
 		if (modelClass.getSuperclass() != null) {
 			initAnnotationDataModel(dynamicObject, modelClass.getSuperclass());
 		}
-		LOG.debug("initAnnotationDataModel: " + modelClass);
+		log.debug("initAnnotationDataModel: " + modelClass);
 		if (initObjectClass(modelClass)) {
 			dynamicObject.getModel().getObjectClasses().clear();
 		}
@@ -132,8 +132,8 @@ public class AnnotationHelper {
 	
 		for (Field field : modelClass.getDeclaredFields()) {
 			if (field.isAnnotationPresent(DynamicAttribute.class)) {
-				LOG.debug("DynamicAttribute: " + field.getName());
-				LOG.warn("Deprecated usage of Annotation DynamicAttribute with field "
+				log.debug("DynamicAttribute: " + field.getName());
+				log.warn("Deprecated usage of Annotation DynamicAttribute with field "
 				+ field.getName() + " in class " + modelClass);
 				DynamicAttribute dAttribute = field
 						.getAnnotation(DynamicAttribute.class);
@@ -182,8 +182,8 @@ public class AnnotationHelper {
 				
 				dynamicObject.addAttribute(dynAttribute);
 			} else if (field.isAnnotationPresent(StructuredDynamicAttribute.class)) {
-				LOG.debug("StructuredDynamicAttribute: " + field.getName());
-				LOG.warn("Deprecated usage of Annotation StructuredDynamicAttribute with field "
+				log.debug("StructuredDynamicAttribute: " + field.getName());
+				log.warn("Deprecated usage of Annotation StructuredDynamicAttribute with field "
 				+ field.getName() + " in class " + modelClass);
 				StructuredDynamicAttribute dAttribute = field
 						.getAnnotation(StructuredDynamicAttribute.class);
@@ -193,7 +193,7 @@ public class AnnotationHelper {
 						field.getName(), dAttribute.externalName(),
 						field.getType());
 				} catch (Exception e) {
-					LOG.error("Field=" + field.getName(), e);
+					log.error("Field=" + field.getName(), e);
 				}
 				dynAttribute.setType(dAttribute.type());
 				if (isMultiple(field)) {
@@ -234,8 +234,8 @@ public class AnnotationHelper {
 				
 				dynamicObject.addAttribute(dynAttribute);
 			} else if (field.isAnnotationPresent(DynamicReferenceAttribute.class)) {
-				LOG.debug("DynamicReferenceAttribute: " + field.getName() + "(" + field.getType() + ")");
-				LOG.warn("Deprecated usage of Annotation DynamicReferenceAttribute with field "
+				log.debug("DynamicReferenceAttribute: " + field.getName() + "(" + field.getType() + ")");
+				log.warn("Deprecated usage of Annotation DynamicReferenceAttribute with field "
 				+ field.getName() + " in class " + modelClass);
 				DynamicReferenceAttribute dAttribute = field
 						.getAnnotation(DynamicReferenceAttribute.class);
@@ -286,7 +286,7 @@ public class AnnotationHelper {
 			
 			for (Method method : modelClass.getDeclaredMethods()) {
 				if (method.isAnnotationPresent(DynamicAttribute.class)) {
-					LOG.debug("DynamicAttribute: " + getName(method.getName()));
+					log.debug("DynamicAttribute: " + getName(method.getName()));
 					DynamicAttribute dAttribute = method
 							.getAnnotation(DynamicAttribute.class);
 					org.mgnl.nicki.core.objects.DynamicAttribute dynAttribute = new org.mgnl.nicki.core.objects.DynamicAttribute(
@@ -335,7 +335,7 @@ public class AnnotationHelper {
 					
 					dynamicObject.addAttribute(dynAttribute);
 				} else if (method.isAnnotationPresent(StructuredDynamicAttribute.class)) {
-					LOG.debug("StructuredDynamicAttribute: " + getName(method.getName()));
+					log.debug("StructuredDynamicAttribute: " + getName(method.getName()));
 					StructuredDynamicAttribute dAttribute = method
 							.getAnnotation(StructuredDynamicAttribute.class);
 					org.mgnl.nicki.core.objects.StructuredDynamicAttribute dynAttribute = null;
@@ -344,7 +344,7 @@ public class AnnotationHelper {
 								getName(method.getName()), dAttribute.externalName(),
 								method.getReturnType());
 					} catch (Exception e) {
-						LOG.error("Method=" +getName(method.getName()), e);
+						log.error("Method=" +getName(method.getName()), e);
 					}
 					dynAttribute.setType(dAttribute.type());
 					if (isMultiple(method)) {
@@ -385,7 +385,7 @@ public class AnnotationHelper {
 					
 					dynamicObject.addAttribute(dynAttribute);
 				} else if (method.isAnnotationPresent(DynamicReferenceAttribute.class)) {
-					LOG.debug("DynamicReferenceAttribute: " + getName(method.getName()) + "(" + method.getReturnType() + ")");
+					log.debug("DynamicReferenceAttribute: " + getName(method.getName()) + "(" + method.getReturnType() + ")");
 					DynamicReferenceAttribute dAttribute = method
 							.getAnnotation(DynamicReferenceAttribute.class);
 					DynamicReference dynAttribute = new DynamicReference(dAttribute.reference(),

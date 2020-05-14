@@ -30,14 +30,14 @@ import java.util.Date;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.BaseDBContext;
 import org.mgnl.nicki.db.context.DBContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class OracleContext
 		extends BaseDBContext
 		implements DBContext {
 
-	private static final Logger LOG = LoggerFactory.getLogger(OracleContext.class);
 
 	@Override
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
@@ -49,7 +49,7 @@ public class OracleContext
 			return this.toTimestamp(date);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
-			LOG.error("Could not parse date", e);
+			log.error("Could not parse date", e);
 		}
 
 		return null;

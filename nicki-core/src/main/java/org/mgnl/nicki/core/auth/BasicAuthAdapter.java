@@ -27,12 +27,10 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.AppContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-
+@Slf4j
 public class BasicAuthAdapter implements SSOAdapter {
-	private static final Logger LOG = LoggerFactory.getLogger(BasicAuthAdapter.class);
 	private Object request;
 	public String getName() {
 		return getAuthPart(0);
@@ -87,7 +85,7 @@ public class BasicAuthAdapter implements SSOAdapter {
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Error reading Basic Authentication data", e.getMessage());
+			log.error("Error reading Basic Authentication data", e.getMessage());
 		}
 		return null;
 	}

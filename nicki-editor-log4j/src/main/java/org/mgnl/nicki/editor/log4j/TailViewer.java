@@ -31,8 +31,6 @@ import org.apache.commons.io.input.TailerListenerAdapter;
 import org.mgnl.nicki.core.helper.NameValue;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import org.mgnl.nicki.vaadin.base.menu.application.View;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.event.FieldEvents.BlurListener;
@@ -45,16 +43,19 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Link;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Notification.Type;
+
+import lombok.extern.slf4j.Slf4j;
+
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
+@Slf4j
 @SuppressWarnings("serial")
 public class TailViewer extends CustomComponent implements Serializable, View {
 
-	private static final Logger LOG = LoggerFactory.getLogger(TailViewer.class);
 	static final Object VISIBLE_COLUMNS[] = {"value"};
 
 	private VerticalLayout mainLayout;
@@ -200,7 +201,7 @@ public class TailViewer extends CustomComponent implements Serializable, View {
 		if (tailer != null) {
 			tailer.stop();
 			tailer = null;
-			LOG.debug("Stop Tailer for File '" + activePath + "'");
+			log.debug("Stop Tailer for File '" + activePath + "'");
 		}
 		lastUse = new Date().getTime();
 		activePath = path.getValue();
@@ -208,7 +209,7 @@ public class TailViewer extends CustomComponent implements Serializable, View {
 		
 		long delayMillis = 1000;
 		tailer = Tailer.create(file, listener, delayMillis , end);
-		LOG.debug("Tailer for File '" + activePath + "' started");
+		log.debug("Tailer for File '" + activePath + "' started");
 	}
 
 	class TailerListener extends TailerListenerAdapter implements Serializable {
@@ -219,7 +220,7 @@ public class TailViewer extends CustomComponent implements Serializable, View {
 			if (now - TIMEOUT > lastUse) {
 				tailer.stop();
 				tailer = null;
-				LOG.debug("Timeout Tailer for File '" + activePath + "'");
+				log.debug("Timeout Tailer for File '" + activePath + "'");
 			}
 			container.addBean(new NameValue("line", line));
 			checkContainer();

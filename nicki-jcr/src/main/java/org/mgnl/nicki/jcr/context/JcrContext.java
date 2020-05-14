@@ -50,17 +50,16 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.objects.JcrDynamicObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	private static final long serialVersionUID = -3079627211615613041L;
-	private static final Logger LOG = LoggerFactory.getLogger(BasicJcrContext.class);
 
 	public static final String PATH_SEPARATOR = "/";
 	
-	static Logger logger = LoggerFactory.getLogger(JcrContext.class);
 	public JcrObjectFactory objectFactory;
 
 	public JcrObjectFactory getJcrObjectFactory() {
@@ -93,7 +92,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 				try {
 					node = root.getNode("scripts");
 				} catch (Exception e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 				}
 				if (node == null) {
 					Node root = session.getRootNode();
@@ -103,14 +102,14 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 					session.save();
 
 					// Retrieve content
-					LOG.debug(scripts.getPath());
+					log.debug(scripts.getPath());
 
 					session.save();
 				}
 			}
 			
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 	}
 	
@@ -130,7 +129,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 				login(user, password);
 				return user;
 			} catch (Exception e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		}
 		return null;
@@ -138,7 +137,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	// TODO: implement login mechanism
 	private void login(DynamicObject user, String password) {
-		LOG.error("not implemented: " + user + "/" + password);
+		log.error("not implemented: " + user + "/" + password);
 	}
 
 	@Override
@@ -171,7 +170,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 
 	// TODO implement
 	private void updateNode(Node node, DynamicObject dynamicObject) {
-		LOG.error("not implemented: " + node + "/" + dynamicObject.getName());
+		log.error("not implemented: " + node + "/" + dynamicObject.getName());
 	}
 
 	public List<DynamicObject> search(JcrQueryHandler queryHandler) throws DynamicObjectException {
@@ -271,8 +270,8 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 			}
 			return getDynamicObject(session.getNode(path));
 		} catch (Exception e) {
-			LOG.error("Error", e);
-			logger.debug("Could not load object " + path, e);
+			log.error("Error", e);
+			log.debug("Could not load object " + path, e);
 		}
 		return null;
 	}
@@ -295,7 +294,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 				dynamicObject.init(this, node);
 			}
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return dynamicObject;
 	}
@@ -325,7 +324,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 			javax.jcr.query.Query query = qm.createQuery(statement, javax.jcr.query.Query.JCR_JQOM);
 			return getDynamicObjects(query.execute());
 		} catch (Exception e) {
-			logger.debug("Could not load objects " + statement, e);
+			log.debug("Could not load objects " + statement, e);
 
 		} 
 		return new ArrayList<DynamicObject>();
@@ -345,7 +344,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 				  }
 			}
 		} catch (Exception e) {
-			logger.debug("Could not load childobject " + parentPath, e);
+			log.debug("Could not load childobject " + parentPath, e);
 
 		} 
 		return list;
@@ -366,7 +365,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 				  }
 			}
 		} catch (Exception e) {
-			logger.debug("Could not load childobject " + parentPath, e);
+			log.debug("Could not load childobject " + parentPath, e);
 		} 
 		return list;
 	}
@@ -378,7 +377,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 			DynamicObject dynamicObject = loadObject(path);
 			return (T) dynamicObject;
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return null;
 	}
@@ -396,7 +395,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 			javax.jcr.query.Query query = qm.createQuery(statement, javax.jcr.query.Query.JCR_JQOM);
 			return getDynamicObjects(classDefinition, query.execute());
 		} catch (Exception e) {
-			logger.debug("Could not load objects " + statement, e);
+			log.debug("Could not load objects " + statement, e);
 		} 
 		return (List<T>) new ArrayList<DynamicObject>();
 	}
@@ -427,7 +426,7 @@ public class JcrContext extends BasicJcrContext implements NickiContext {
 		try {
 			return session.itemExists(dn);
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return false;
 	}

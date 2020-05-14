@@ -32,11 +32,11 @@ import java.util.Map;
 import org.mgnl.nicki.verify.annotations.Attribute;
 import org.mgnl.nicki.verify.annotations.VerifyCommand;
 import org.mgnl.nicki.verify.annotations.VerifyRule;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class JavaRules {
-	private static final Logger LOG = LoggerFactory.getLogger(JavaRules.class);
 	
 	public static List<ReferencedError> evaluate(Map<String, Object> data, String ...classNames) throws MissingAttributeException, ClassNotFoundException {
 		List<Class<?>> classes = new ArrayList<>();
@@ -52,7 +52,7 @@ public class JavaRules {
 			try {
 				errors.addAll(evaluateClass(data, clazz));
 			} catch (InstantiationException | IllegalAccessException e) {
-				LOG.error("invalid class " + clazz.getName() + ": " + e.getMessage());
+				log.error("invalid class " + clazz.getName() + ": " + e.getMessage());
 			}
 		}
 		return errors;
@@ -69,7 +69,7 @@ public class JavaRules {
 					try {
 						method.invoke(instance);
 					} catch (IllegalArgumentException e) {
-						LOG.error("invalid method " + clazz.getName() + "." + method.getName() + ": " + e.getClass());
+						log.error("invalid method " + clazz.getName() + "." + method.getName() + ": " + e.getClass());
 					} catch (InvocationTargetException e) {
 						if (e.getTargetException() instanceof ReferenceVerifyException) {
 							ReferenceVerifyException verifyException = (ReferenceVerifyException) e.getTargetException();
@@ -101,7 +101,7 @@ public class JavaRules {
 				try {
 					messages.addAll(executeCommand(data, command));
 				} catch (IllegalArgumentException | IllegalAccessException e) {
-					LOG.error("invalid class " + command.getClass().getName() + ": " + e.getMessage());
+					log.error("invalid class " + command.getClass().getName() + ": " + e.getMessage());
 				}
 			}
 		}
@@ -119,7 +119,7 @@ public class JavaRules {
 					try {
 						method.invoke(command);
 					} catch (IllegalArgumentException e) {
-						LOG.error("invalid method " + clazz.getName() + "." + method.getName() + ": " + e.getClass());
+						log.error("invalid method " + clazz.getName() + "." + method.getName() + ": " + e.getClass());
 					} catch (InvocationTargetException e) {
 						if (e.getTargetException() instanceof MessageVerifyException) {
 							MessageVerifyException verifyException = (MessageVerifyException) e.getTargetException();

@@ -44,14 +44,14 @@ import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.Selector;
 import org.mgnl.nicki.shop.base.objects.ValueProvider;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /* 
  * Attribute nickiDirectory: Pfad getrennt mit "/"
  */
+@Slf4j
 public class RuleManager {
-	private static final Logger LOG = LoggerFactory.getLogger(RuleManager.class);
 	private static String activeFilter;
 	
 	static {
@@ -59,7 +59,7 @@ public class RuleManager {
 			activeFilter = AppContext.getSystemContext().getObjectFactory().getDynamicObject(Person.class).getActiveFilter();
 		} catch (Exception e) {
 			activeFilter = null;
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 
 	}

@@ -42,6 +42,7 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
  * 
  *
  */
+@SuppressWarnings("serial")
 public abstract class DynamicObjectInfo<T extends DynamicObject> implements InfoStore {
 
 	private Map<String, String> configuration;

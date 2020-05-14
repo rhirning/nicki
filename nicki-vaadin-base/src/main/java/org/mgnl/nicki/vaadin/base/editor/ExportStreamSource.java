@@ -30,14 +30,13 @@ import java.io.Writer;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.util.XMLBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.server.StreamResource.StreamSource;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ExportStreamSource implements StreamSource{
-	private static final Logger LOG = LoggerFactory.getLogger(ExportStreamSource.class);
 
 	private static final long serialVersionUID = -8068031351212191141L;
 	private TreeData dynamicObject;
@@ -58,7 +57,7 @@ public class ExportStreamSource implements StreamSource{
 			
 			return new ByteArrayInputStream(writer.toString().getBytes("UTF-8"));
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return null;
 	}

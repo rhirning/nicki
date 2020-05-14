@@ -49,12 +49,12 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.objects.DynamicObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class DataHelper {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DataHelper.class);
 	public final static String FORMAT_DAY = "yyyyMMdd";
 	public final static String FORMAT_DISPLAY_DAY = "dd.MM.yyyy";
 	// 20091030115321
@@ -80,7 +80,7 @@ public class DataHelper {
 			try {
 				return Integer.parseInt(stringValue);
 			} catch (Exception e) {
-				LOG.debug("Error parsing " + stringValue);
+				log.debug("Error parsing " + stringValue);
 			}
 		}
 		return defaultValue;
@@ -97,7 +97,7 @@ public class DataHelper {
 			try {
 				return Long.parseLong(stringValue);
 			} catch (Exception e) {
-				LOG.debug("Error parsing " + stringValue);
+				log.debug("Error parsing " + stringValue);
 			}
 		}
 		return defaultValue;
@@ -237,7 +237,7 @@ public class DataHelper {
 					map.put(entry[0], entry[1]);
 				}
 			} catch (Exception e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 			
 		}
@@ -263,7 +263,7 @@ public class DataHelper {
 				return new String(Base64.decodeBase64(StringUtils.substringAfter(string, "!").getBytes()));
 			}
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return string;
 	}
@@ -347,7 +347,7 @@ public class DataHelper {
 			}
 
 		} catch (Exception e) {
-			LOG.error("Error executing command " + command, e);
+			log.error("Error executing command " + command, e);
 		}
 
 		return output.toString();
@@ -637,20 +637,20 @@ public class DataHelper {
             oos.flush();
             bytes = bos.toByteArray();
         } catch (IOException e) {
-        	LOG.error("Error serializing object: " + e.getMessage());
+        	log.error("Error serializing object: " + e.getMessage());
 		} finally {
             if (oos != null) {
                 try {
 					oos.close();
 				} catch (IOException e) {
-		        	LOG.error("Error closing ObjectOutputStream", e);
+		        	log.error("Error closing ObjectOutputStream", e);
 				}
             }
             if (bos != null) {
                 try {
 					bos.close();
 				} catch (IOException e) {
-		        	LOG.error("Error closing ByteArrayOutputStream", e);
+		        	log.error("Error closing ByteArrayOutputStream", e);
 				}
             }
         }
@@ -666,20 +666,20 @@ public class DataHelper {
             ois = new ObjectInputStream(bis);
             obj = ois.readObject();
         } catch (IOException | ClassNotFoundException e) {
-        	LOG.error("Error creating object from ByteArray", e);
+        	log.error("Error creating object from ByteArray", e);
 		} finally {
             if (bis != null) {
                 try {
 					bis.close();
 				} catch (IOException e) {
-		        	LOG.error("Error closing ByteArrayInputStream", e);
+		        	log.error("Error closing ByteArrayInputStream", e);
 				}
             }
             if (ois != null) {
                 try {
 					ois.close();
 				} catch (IOException e) {
-		        	LOG.error("Error closing ObjectInputStream", e);
+		        	log.error("Error closing ObjectInputStream", e);
 				}
             }
         }

@@ -27,13 +27,13 @@ import java.util.Map;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.template.engine.TemplateHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.Component;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class GuiTemplateHelper extends TemplateHelper {
-	private static final Logger LOG = LoggerFactory.getLogger(GuiTemplateHelper.class);
 
 	public static GuiTemplateHandler getGuiTemplateHandler(Template template) {
 		GuiTemplateHandler handler = null;
@@ -41,7 +41,7 @@ public class GuiTemplateHelper extends TemplateHelper {
 			try {
 				handler = (GuiTemplateHandler) Classes.newInstance(template.getHandler());
 			} catch (Exception e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		}
 		if (handler == null) {

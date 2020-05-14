@@ -36,8 +36,6 @@ import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.inventory.Inventory;
 import org.mgnl.nicki.shop.renderer.ShopRenderer;
 import org.mgnl.nicki.shop.renderer.TabRenderer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
@@ -51,9 +49,11 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.Window.CloseListener;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class ShopViewer extends CustomComponent implements ShopViewerComponent, CloseListener, Serializable {
-	private static final Logger LOG = LoggerFactory.getLogger(ShopViewer.class);
 
 	private Person shopper;
 	private Person recipient;
@@ -88,7 +88,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 			try {
 				this.renderer = (ShopRenderer) Classes.newInstance(shop.getRenderer());
 			} catch (Exception e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 				this.renderer = null;
 			}
 		}
@@ -110,7 +110,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 			
 			public void buttonClick(ClickEvent event) {
 				if (getInventory() != null) {
-					// LOG.debug(getInventory().toString());
+					// log.debug(getInventory().toString());
 					try {
 						if (!getInventory().hasChanged()) {
 							Notification.show(I18n.getText(parent.getI18nBase() + ".save.empty"),
@@ -125,7 +125,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 						Notification.show(I18n.getText(parent.getI18nBase() + ".save.error"),
 								e.getMessage(),
 								Notification.Type.ERROR_MESSAGE);
-						LOG.error("Error", e);
+						log.error("Error", e);
 					}
 				}
 			}
@@ -137,7 +137,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 			
 			public void buttonClick(ClickEvent event) {
 				if (getInventory() != null) {
-					// LOG.debug(getInventory().toString());
+					// log.debug(getInventory().toString());
 					try {
 						if (!getInventory().hasChanged()) {
 							Notification.show(I18n.getText(parent.getI18nBase() + ".remember.empty"),
@@ -153,7 +153,7 @@ public class ShopViewer extends CustomComponent implements ShopViewerComponent, 
 						Notification.show(I18n.getText(parent.getI18nBase() + ".remember.error"),
 								e.getMessage(),
 								Notification.Type.ERROR_MESSAGE);
-						LOG.error("Error", e);
+						log.error("Error", e);
 					}
 				}
 			}

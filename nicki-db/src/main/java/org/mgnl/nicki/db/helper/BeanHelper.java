@@ -34,11 +34,11 @@ import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.data.DataType;
 import org.mgnl.nicki.db.profile.InitProfileException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class BeanHelper {
-	private static final Logger LOG = LoggerFactory.getLogger(BeanHelper.class);
 
 	public enum READONLY {
 		TRUE, FALSE
@@ -114,10 +114,10 @@ public class BeanHelper {
 				type = Type.BLOB;
 			}
 		} catch (NoSuchFieldException | SecurityException e) {
-			LOG.error("Invalid name: " + beanClass.getName() + "." + fieldName);
+			log.error("Invalid name: " + beanClass.getName() + "." + fieldName);
 		}
 
-		LOG.debug("Field " + fieldName + " is = " + type + "'");
+		log.debug("Field " + fieldName + " is = " + type + "'");
 		return type;
 	}
 
@@ -129,7 +129,7 @@ public class BeanHelper {
 			type = getTypeOfField(beanClass, fieldName);
 		}
 
-		LOG.debug("Column " + columnName + " is = " + type + "'");
+		log.debug("Column " + columnName + " is = " + type + "'");
 		return type;
 	}
 
@@ -236,7 +236,7 @@ public class BeanHelper {
 							}
 						}
 					} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
-						LOG.error("Error reading foreign value", e);
+						log.error("Error reading foreign value", e);
 					}
 				}
 			}
@@ -255,7 +255,7 @@ public class BeanHelper {
 							return dbContext.loadObjects(foreignObject, false);
 						}
 					} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
-						LOG.error("Error reading foreign value", e);
+						log.error("Error reading foreign value", e);
 					}
 				}
 			}

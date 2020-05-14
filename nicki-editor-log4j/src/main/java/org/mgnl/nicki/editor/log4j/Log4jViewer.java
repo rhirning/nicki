@@ -34,7 +34,6 @@ import org.apache.log4j.Logger;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.vaadin.base.application.NickiApplication;
 import org.mgnl.nicki.vaadin.base.menu.application.View;
-import org.slf4j.LoggerFactory;
 
 
 import com.vaadin.data.Item;
@@ -44,9 +43,11 @@ import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class Log4jViewer extends CustomComponent implements View {
 	private static final long serialVersionUID = 6677098857979852467L;
-	private static final org.slf4j.Logger LOG = LoggerFactory.getLogger(Log4jViewer.class);
 	private Panel canvas;
 	private Table table;
 	private NickiApplication application;
@@ -83,12 +84,12 @@ public class Log4jViewer extends CustomComponent implements View {
 	
 
     private void refreshTable() {
-    	LOG.debug("fill Table()");
+    	log.debug("fill Table()");
     	table.removeAllItems();
     	addLoggerItem(Logger.getRootLogger());
     	
         for (Logger logger : getLoggers()) {
-        	LOG.debug("Logger added: " + logger.getName());
+        	log.debug("Logger added: " + logger.getName());
         	addLoggerItem(logger);
 		}
 	}

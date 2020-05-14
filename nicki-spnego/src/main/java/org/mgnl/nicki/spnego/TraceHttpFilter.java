@@ -32,21 +32,20 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class TraceHttpFilter implements Filter {
-	private static final Logger LOG = LoggerFactory.getLogger(TraceHttpFilter.class);
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
-		LOG.info("starting filter");
+		log.info("starting filter");
 	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		LOG.info("filtering");
+		log.info("filtering");
 		if (request instanceof HttpServletRequest) {
 			HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 			System.out.println(httpServletRequest.getPathInfo());

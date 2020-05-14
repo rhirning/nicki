@@ -47,14 +47,13 @@ import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.methods.ChildrenMethod;
 import org.mgnl.nicki.core.methods.StructuredData;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import freemarker.template.TemplateMethodModelEx;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @SuppressWarnings("serial")
 public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable {
-	private static final Logger LOG = LoggerFactory.getLogger(BaseDynamicObject.class);
 	public static final String ATTRIBUTE_NAME = "name";
 	public static final String SEPARATOR = "/";
 
@@ -87,7 +86,7 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 				try {
 					this.context.loadObject(this);
 				} catch (DynamicObjectException e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 				}
 			}
 			init = true;
@@ -138,7 +137,7 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 				if (object != null) {
 					objects.add(context.loadObject(classDefinition, path));
 				} else {
-					LOG.debug("Could not build object: " + path);
+					log.debug("Could not build object: " + path);
 				}
 			}
 		}
@@ -247,7 +246,7 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 			cloned = context.getObjectFactory().getNewDynamicObject(this.getClass(), getParentPath(), getNamingValue());
 			cloned.copyFrom(this);
 		} catch (InstantiateDynamicObjectException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return cloned;
 	}
@@ -588,14 +587,14 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 						try {
 							getter = getClass().getMethod(DynamicAttribute.getMultipleGetter(dynAttribute.getName()));
 						} catch (NoSuchMethodException | SecurityException e) {
-							LOG.debug("no getter for " + dynAttribute.getName());
+							log.debug("no getter for " + dynAttribute.getName());
 						}
 						List<String> list = null;
 						if (getter != null) {
 							try {
 								list = (List<String>) getter.invoke(this);
 							} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-								LOG.debug("wrongo getter for " + dynAttribute.getName(), e);
+								log.debug("wrongo getter for " + dynAttribute.getName(), e);
 							}
 						}
 						if (list == null) {
@@ -613,14 +612,14 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 						try {
 							getter = getClass().getMethod(DynamicAttribute.getGetter(dynAttribute.getName()));
 						} catch (NoSuchMethodException | SecurityException e) {
-							LOG.debug("no getter for " + dynAttribute.getName());
+							log.debug("no getter for " + dynAttribute.getName());
 						}
 						Object value = null;
 						if (getter != null) {
 							try {
 								value = getter.invoke(this);
 							} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-								LOG.debug("wrongo getter for " + dynAttribute.getName(), e);
+								log.debug("wrongo getter for " + dynAttribute.getName(), e);
 							}
 						}
 						if (value == null) {
@@ -674,7 +673,7 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 				if (!query.containsKey(key)) {
 					if (mapping != null) {
 						if (mapping.isStrict() && !mapping.hasExternal(key)) {
-							LOG.error("External '" + key + "' missing in AttributeMapper");
+							log.error("External '" + key + "' missing in AttributeMapper");
 						}
 					}
 
@@ -691,7 +690,7 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 				if (mapping != null) {
 					if (mapping.isStrict() && !mapping.hasExternal(key)) {
 						attributeName = null;
-						LOG.info("External '" + key + "' missing in AttributeMapper");
+						log.info("External '" + key + "' missing in AttributeMapper");
 					} else {
 						attributeName = mapping.toInternal(key);
 					}
@@ -729,7 +728,7 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 		try {
 			return (T) createDynamicObjectChild((Class<DynamicObject>) classDefinition, name);
 		} catch (InstantiateDynamicObjectException | DynamicObjectException e) {
-			LOG.error("Error creating child");
+			log.error("Error creating child");
 		}
 		return null;
 

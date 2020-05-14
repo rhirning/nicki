@@ -24,15 +24,14 @@ package org.mgnl.nicki.vaadin.db.data;
 
 import org.mgnl.nicki.db.helper.BeanHelper;
 import org.mgnl.nicki.db.helper.Type;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.Property;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class AttributeDataContainer<T> implements DataContainer<T>, Property<T> {
-	private static final Logger LOG = LoggerFactory.getLogger(AttributeDataContainer.class);
-
 	private Object orgBean;
 	private Object bean;
 	private String attributeName;
@@ -82,7 +81,7 @@ public class AttributeDataContainer<T> implements DataContainer<T>, Property<T> 
 		try {
 			return  (Class<? extends T>) BeanHelper.getType(bean.getClass(), attributeName);
 		} catch (NoSuchFieldException | SecurityException e) {
-			LOG.error("Error reading type", e);
+			log.error("Error reading type", e);
 		}
 		return null;
 	}

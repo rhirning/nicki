@@ -35,12 +35,11 @@ import javax.json.JsonReader;
 import javax.json.JsonValue;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.JsonHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class ClasspathStatisticsFactory implements StatisticsFactory {
-	private static final Logger LOG = LoggerFactory.getLogger(ClasspathStatisticsFactory.class);
 	private static final String propertyKey = "nicki.db.statistics.classpath";
 
 	@Override
@@ -51,7 +50,7 @@ public class ClasspathStatisticsFactory implements StatisticsFactory {
 		try {
 			array = buildFromResource(path);
 		} catch (IOException e) {
-			LOG.error("Could not load statistics from classpath", e);
+			log.error("Could not load statistics from classpath", e);
 		}
 		if (array != null) {
 			for (JsonValue jsonValue : array) {
@@ -59,7 +58,7 @@ public class ClasspathStatisticsFactory implements StatisticsFactory {
 				try {
 					collection.add(JsonHelper.toBean(Statistics.class, jsonObject));
 				} catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-					LOG.error("Could not load statistics from classpath", e);
+					log.error("Could not load statistics from classpath", e);
 				}
 			}
 		}

@@ -32,12 +32,12 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.AnnotationHelper;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.util.Classes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public final class TargetFactory {
 
-	private static final Logger LOG = LoggerFactory.getLogger(TargetFactory.class);
 	public static final String PROPERTY_BASE = "nicki.targets";
 	public static final String PROPERTY_OBJECTS = "objects";
 	public static final String PROPERTY_FACTORY = "factory";
@@ -61,7 +61,7 @@ public final class TargetFactory {
 				try {
 					initContextFactory(target);
 				} catch (Exception e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 				}
 				targets.put(targetName, target);
 			}
@@ -92,7 +92,7 @@ public final class TargetFactory {
 					
 					dynamicObjects.add(entry);
 				} catch (Exception e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 				}
 			}
 		}
@@ -105,7 +105,7 @@ public final class TargetFactory {
 		if (dynamicObject.isAnnotated()) {
 			AnnotationHelper.initAnnotationDataModel(dynamicObject);
 		} else {
-			LOG.error("only annotated dynamic objects supported: " + dynamicObject.getClass().getName());
+			log.error("only annotated dynamic objects supported: " + dynamicObject.getClass().getName());
 		}
 	}
 	

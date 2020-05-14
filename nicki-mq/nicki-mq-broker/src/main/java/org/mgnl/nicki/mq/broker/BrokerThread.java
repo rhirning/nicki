@@ -37,11 +37,11 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class BrokerThread extends Thread implements Runnable {
-	private static final Logger LOG = LoggerFactory.getLogger(BrokerThread.class);
 	public final static String DEFAULT_CHARSET = "UTF-8";
 	private boolean stop;
 	private BrokerService broker;
@@ -53,11 +53,11 @@ public class BrokerThread extends Thread implements Runnable {
 	public void run() {
 		// wait
 		int wait = Config.getInteger("nicki.mq.broker.wait", 10);
-		LOG.info("Waiting " + wait + " seconds before starting broker");
+		log.info("Waiting " + wait + " seconds before starting broker");
 		try {
 			Thread.sleep(1000 * wait);
 		} catch (InterruptedException e1) {
-			LOG.info("Wait interrupted");
+			log.info("Wait interrupted");
 		}
 		// configure the broker
 		try {
@@ -68,7 +68,7 @@ public class BrokerThread extends Thread implements Runnable {
 			broker.setUseJmx(Config.getBoolean("nicki.mq.usejmx", false));
 
 			broker.start();
-			LOG.info("ActiveMQ loaded succesfully");
+			log.info("ActiveMQ loaded succesfully");
 
 			try {
 				while (true) {
@@ -86,12 +86,12 @@ public class BrokerThread extends Thread implements Runnable {
 					try {
 						broker.stop();
 					} catch (Exception e) {
-						LOG.error("Error stopping broker", e);
+						log.error("Error stopping broker", e);
 					}
 				}
 			}
 		} catch (Exception e) {
-			LOG.error("Unable to load ActiveMQ!", e);
+			log.error("Unable to load ActiveMQ!", e);
 		}
 	}
 

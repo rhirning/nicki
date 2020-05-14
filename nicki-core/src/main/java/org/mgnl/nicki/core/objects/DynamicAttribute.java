@@ -32,12 +32,12 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.OctetString;
 import org.mgnl.nicki.core.methods.ForeignKeyMethod;
 import org.mgnl.nicki.core.methods.ListForeignKeyMethod;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class DynamicAttribute implements Serializable {
-	private static final Logger LOG = LoggerFactory.getLogger(DynamicAttribute.class);
 	
 	public enum CREATEONLY {TRUE, FALSE}
 
@@ -124,11 +124,11 @@ public class DynamicAttribute implements Serializable {
 				BeanUtils.setProperty(dynamicObject, name, value);
 				return;
 			} catch (Exception e) {
-				LOG.debug(value.getClass().toString());
+				log.debug(value.getClass().toString());
 				clazz = clazz.getSuperclass();
 			}
 		}
-		LOG.error("Class: " + dynamicObject.getClass() + ". Could not set Property " + name + " with value " + value);
+		log.error("Class: " + dynamicObject.getClass() + ". Could not set Property " + name + " with value " + value);
 
 	}
 

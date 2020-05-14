@@ -50,7 +50,7 @@ public class UserAdmin extends NickiApplication {
 		MainView mainView = new MainView((Person) getNickiContext().getUser());
 		
 		mainView.addNavigationEntry(I18n.getText("Administration"),
-				I18n.getText("User"), new UserView());
+				I18n.getText("User"), new UserView(), "userAdmin");
 
 		mainView.initNavigation();
 		

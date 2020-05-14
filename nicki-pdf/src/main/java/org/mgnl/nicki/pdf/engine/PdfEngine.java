@@ -28,6 +28,8 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -45,14 +47,9 @@ import org.mgnl.nicki.pdf.configuration.PdfConfiguration;
 import org.mgnl.nicki.pdf.model.template.Data;
 import org.mgnl.nicki.pdf.model.template.Page;
 import org.mgnl.nicki.pdf.template.PdfTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+@Slf4j
 public class PdfEngine extends PdfPageEventHelper {
-	
-	
-
-	private static final Logger log = LoggerFactory.getLogger(PdfEngine.class);
 	
 	private PdfConfiguration config;
 	private PageRenderer pageRenderer;

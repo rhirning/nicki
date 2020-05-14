@@ -33,6 +33,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Template;
  * 
  *
  */
+@SuppressWarnings("serial")
 public class TemplateInfo extends DynamicObjectInfo<Template> implements InfoStore {
 
 	public TemplateInfo() {

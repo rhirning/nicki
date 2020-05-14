@@ -33,11 +33,11 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.data.Query;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ObjectsLoaderQueryHandler extends ObjectLoaderLdapQueryHandler {
-	private static final Logger LOG = LoggerFactory.getLogger(ObjectsLoaderQueryHandler.class);
 
 	private List<DynamicObject> list = new ArrayList<DynamicObject>();
 	
@@ -64,7 +64,7 @@ public class ObjectsLoaderQueryHandler extends ObjectLoaderLdapQueryHandler {
 					dynamicObject = getContext().getObjectFactory().getObject(rs, getClassDefinition());
 				} catch (InstantiateDynamicObjectException e) {
 					dynamicObject = null;
-					LOG.debug(e.getMessage());
+					log.debug(e.getMessage());
 				}
 			} else {
 				try {

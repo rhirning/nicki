@@ -31,11 +31,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class InMemorySearch<T extends Object> implements NickiSearch<T> {
-	private static final Logger LOG = LoggerFactory.getLogger(InMemorySearch.class);
 
 	private Map<String, String> data = new HashMap<String, String>();
 
@@ -74,7 +74,7 @@ public class InMemorySearch<T extends Object> implements NickiSearch<T> {
 				try {
 					indexObject(t, extractor);
 				} catch (IOException e) {
-					LOG.error("Error indexing", e);
+					log.error("Error indexing", e);
 				}
 			}
 		}
@@ -104,7 +104,7 @@ public class InMemorySearch<T extends Object> implements NickiSearch<T> {
 		Date start = new Date();
 		indexObjects(list, extractor);
 		Date end = new Date();
-		LOG.info(end.getTime() - start.getTime() + " total milliseconds");
+		log.info(end.getTime() - start.getTime() + " total milliseconds");
 
 	}
 

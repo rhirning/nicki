@@ -30,11 +30,11 @@ import java.util.List;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class NavigationHelper {
-	private static final Logger LOG = LoggerFactory.getLogger(NavigationHelper.class);
 	private static String COMMAND_SEPARATOR = "|";
 
 	public static void executeCommands(Object object, NavigationCommand command) {
@@ -45,7 +45,7 @@ public class NavigationHelper {
 					execute(object, commandEntry);
 					toBeRemoved.add(commandEntry);
 				} catch (Exception e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 				}
 				continue;
 			}
@@ -58,7 +58,7 @@ public class NavigationHelper {
 
 	private static boolean canExecute(Object object,
 			NavigationCommandEntry commandEntry) {
-		for (Method method : object.getClass().getDeclaredMethods()) {
+		for (Method method : object.getClass().getMethods()) {
 			Command command = method.getAnnotation(Command.class);
 			if (command != null && StringUtils.equals(command.name(), commandEntry.getCommandName())) {
 				return true;
@@ -69,7 +69,7 @@ public class NavigationHelper {
 
 	private static void execute(Object object,
 			NavigationCommandEntry commandEntry) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException {
-		for (Method method : object.getClass().getDeclaredMethods()) {
+		for (Method method : object.getClass().getMethods()) {
 			Command command = method.getAnnotation(Command.class);
 			if (command != null && StringUtils.equals(command.name(), commandEntry.getCommandName())) {
 				method.invoke(object, commandEntry.getData());

@@ -28,8 +28,6 @@ import java.util.Collection;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.vaadin.data.Container;
 import com.vaadin.data.Item;
@@ -37,11 +35,10 @@ import com.vaadin.data.Property;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.data.util.IndexedContainer;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ContainerHelper {
-	private static final Logger LOG = LoggerFactory.getLogger(ContainerHelper.class);
-
-
-
 	/*
 	public static <T extends Object> Container getListContainer(Collection<T> data, String namedProperties) {
 		Container container = new IndexedContainer(data);
@@ -84,7 +81,7 @@ public class ContainerHelper {
 				container.addItem(new ValuePair(translatedName, ""));
 			}
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 	}
 	

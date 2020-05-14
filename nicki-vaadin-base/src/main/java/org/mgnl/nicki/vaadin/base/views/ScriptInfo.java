@@ -33,6 +33,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Script;
  * 
  *
  */
+@SuppressWarnings("serial")
 public class ScriptInfo extends DynamicObjectInfo<Script> implements InfoStore {
 
 	public ScriptInfo() {

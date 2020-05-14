@@ -27,14 +27,14 @@ import javax.jcr.Session;
 import javax.jcr.SimpleCredentials;
 import javax.jcr.Node;
 import org.apache.jackrabbit.core.TransientRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Second hop example. Stores, retrieves, and removes example content.
  */
+@Slf4j
 public class FourthHop {
-	private static final Logger LOG = LoggerFactory.getLogger(FourthHop.class);
 
 	/**
 	 * The main entry point of the example application.
@@ -59,8 +59,8 @@ public class FourthHop {
 
 			// Retrieve content
 			Node node = root.getNode("users/admin");
-			LOG.debug(node.getPath());
-			LOG.debug(node.getProperty("password").getString());
+			log.debug(node.getPath());
+			log.debug(node.getProperty("password").getString());
 
 			session.save();
 		} finally {

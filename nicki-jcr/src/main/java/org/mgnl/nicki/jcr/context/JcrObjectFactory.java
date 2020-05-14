@@ -38,11 +38,11 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.jcr.objects.JcrDynamicObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class JcrObjectFactory implements DynamicObjectFactory {
-	private static final Logger LOG = LoggerFactory.getLogger(JcrObjectFactory.class);
 
 	private JcrContext context;
 	private Target target;
@@ -157,7 +157,7 @@ public class JcrObjectFactory implements DynamicObjectFactory {
 			dynamicObject = getDynamicObject(storedDynamicObject);
 			dynamicObject.setContext(context);
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return dynamicObject;
 	}
@@ -169,7 +169,7 @@ public class JcrObjectFactory implements DynamicObjectFactory {
 			dynamicObject = getDynamicObject(storedDynamicObject);
 			dynamicObject.setContext(context);
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return dynamicObject;
 	}

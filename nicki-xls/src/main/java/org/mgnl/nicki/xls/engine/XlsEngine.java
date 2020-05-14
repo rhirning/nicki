@@ -56,9 +56,6 @@ import org.mgnl.nicki.xls.model.template.TableData;
 import org.mgnl.nicki.xls.model.template.TableRow;
 import org.mgnl.nicki.xls.model.template.Text;
 import org.mgnl.nicki.xls.template.XlsTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

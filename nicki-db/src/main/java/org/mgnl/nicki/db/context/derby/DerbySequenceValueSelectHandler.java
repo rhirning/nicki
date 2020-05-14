@@ -24,12 +24,12 @@ package org.mgnl.nicki.db.context.derby;
 
 import org.mgnl.nicki.db.handler.SelectHandler;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class DerbySequenceValueSelectHandler extends SequenceValueSelectHandler implements SelectHandler {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DerbySequenceValueSelectHandler.class);
 
 	public DerbySequenceValueSelectHandler(String sequenceName) {
 		super(sequenceName);
@@ -37,7 +37,7 @@ public class DerbySequenceValueSelectHandler extends SequenceValueSelectHandler 
 
 	public String getSearchStatement() {
 		String statement = "VALUES NEXT VALUE FOR " + getSequenceName();
-		LOG.debug(statement);
+		log.debug(statement);
 		return statement;
 	}
 }

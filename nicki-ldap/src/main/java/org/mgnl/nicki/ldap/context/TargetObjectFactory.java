@@ -35,11 +35,11 @@ import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
-	private static final Logger LOG = LoggerFactory.getLogger(TargetObjectFactory.class);
 	private static final long serialVersionUID = 4047428469649718133L;
 	private NickiContext context;
 	private Target target;
@@ -148,7 +148,7 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 			dynamicObject = getDynamicObject(storedDynamicObject);
 			dynamicObject.setContext(context);
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return dynamicObject;
 	}
@@ -160,7 +160,7 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 			dynamicObject = getDynamicObject(storedDynamicObject);
 			dynamicObject.setContext(context);
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return dynamicObject;
 	}

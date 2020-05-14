@@ -36,15 +36,12 @@ import org.mgnl.nicki.mq.model.Consumer;
 import org.mgnl.nicki.mq.model.ConsumerConfig;
 import org.mgnl.nicki.verify.Verify;
 import org.mgnl.nicki.verify.VerifyException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class ConsumerContextListener implements ServletContextListener {
 	
-	private static final Logger LOG = LoggerFactory.getLogger(ConsumerContextListener.class);
 	private ConsumerThread consumerThread;
 
 	@Override
@@ -56,19 +53,19 @@ public class ConsumerContextListener implements ServletContextListener {
 			try {
 				consumerConfig = JsonHelper.toBean(ConsumerConfig.class, getClass().getResourceAsStream(configPath));
 			} catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-				LOG.error("Error readin condumer config: " + configPath, e);
+				log.error("Error readin condumer config: " + configPath, e);
 			}
 			if (consumerConfig != null) {
 				for (Consumer consumer : consumerConfig.getConsumers()) {
 					if (isStart(consumer)) {
 						startConsumer(consumer);
 					} else {
-						LOG.info("MQ consumer not started: " + consumer);
+						log.info("MQ consumer not started: " + consumer);
 					}
 				}
 			}
 		} else {
-			LOG.info("MQ consumer not started: nicki.mq.consumer.start=FALSE");
+			log.info("MQ consumer not started: nicki.mq.consumer.start=FALSE");
 			
 		}
 	}
@@ -96,7 +93,7 @@ public class ConsumerContextListener implements ServletContextListener {
 	private void startConsumer(Consumer consumer) {
 		consumerThread = new ConsumerThread(consumer);
 		consumerThread.start();
-		LOG.info("MQ consumer started: " + consumer);
+		log.info("MQ consumer started: " + consumer);
 	}
 
 	@Override

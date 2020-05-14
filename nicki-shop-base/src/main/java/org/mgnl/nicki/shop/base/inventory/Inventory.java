@@ -40,12 +40,12 @@ import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CartEntry.ACTION;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle.STATUS;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @SuppressWarnings("serial")
 public class Inventory implements Serializable {
-	private static final Logger LOG = LoggerFactory.getLogger(Inventory.class);
 	public enum SOURCE {
 		SHOP, RULE, NONE;
 
@@ -261,7 +261,7 @@ public class Inventory implements Serializable {
 				}
 				return cart;
 			} catch (InstantiateDynamicObjectException e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		}
 		return null;

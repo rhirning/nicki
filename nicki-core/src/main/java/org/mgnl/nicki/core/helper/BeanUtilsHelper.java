@@ -30,11 +30,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class BeanUtilsHelper {
-    private static final Logger LOG = LoggerFactory.getLogger(BeanUtilsHelper.class);
 	public static Map<Class<?>, Class<?>> primitiveMap = new HashMap<>();
 	static {
 		primitiveMap.put(Boolean.class, boolean.class);
@@ -91,7 +91,7 @@ public class BeanUtilsHelper {
 			Method method = clazz.getMethod(methodName, field.getType());
 			return method;
 		} catch (NoSuchMethodException | SecurityException e) {
-			LOG.debug("no setter for " + field.getName() + " in class " + clazz.getName());
+			log.debug("no setter for " + field.getName() + " in class " + clazz.getName());
 		}
 		/*
 		for (Method method : clazz.getDeclaredMethods()) {
@@ -115,7 +115,7 @@ public class BeanUtilsHelper {
 			Method method = clazz.getMethod(methodName, paramClazz);
 			return method;
 		} catch (NoSuchMethodException | SecurityException e) {
-			LOG.debug("no setter for " + field.getName() + " in class " + clazz.getName());
+			log.debug("no setter for " + field.getName() + " in class " + clazz.getName());
 		}
 		/*
 		for (Method method : clazz.getDeclaredMethods()) {
@@ -147,7 +147,7 @@ public class BeanUtilsHelper {
 		try {
 			return clazz.getDeclaredField(name);
 		} catch (NoSuchFieldException | SecurityException e) {
-			LOG.debug("no field for " + name + " in class " + clazz.getName());
+			log.debug("no field for " + name + " in class " + clazz.getName());
 		}
 		Class<?> superClass = clazz.getSuperclass();
 		if (superClass != null) {
@@ -170,7 +170,7 @@ public class BeanUtilsHelper {
 			try {
 				setter.invoke(bean, value);
 			} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-				LOG.error("Error setting property", e);
+				log.error("Error setting property", e);
 			}
 		}
 	}
@@ -184,7 +184,7 @@ public class BeanUtilsHelper {
 				try {
 					return (T) getter.invoke(bean);
 				} catch (Exception e) {
-					LOG.error("Error reading property", e);
+					log.error("Error reading property", e);
 				}
 			}
 		}
@@ -199,7 +199,7 @@ public class BeanUtilsHelper {
 				try {
 					return getter.invoke(bean);
 				} catch (Exception e) {
-					LOG.error("Error reading property", e);
+					log.error("Error reading property", e);
 				}
 			}
 		}
@@ -214,7 +214,7 @@ public class BeanUtilsHelper {
 				try {
 					return getter.invoke(bean);
 				} catch (Exception e) {
-					LOG.error("Error reading property", e);
+					log.error("Error reading property", e);
 				}
 			}
 		}

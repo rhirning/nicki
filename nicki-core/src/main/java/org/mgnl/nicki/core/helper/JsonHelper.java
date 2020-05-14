@@ -53,12 +53,11 @@ import javax.json.JsonValue;
 import javax.json.JsonValue.ValueType;
 
 import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class JsonHelper extends BeanUtilsHelper {
-    private static final Logger LOG = LoggerFactory.getLogger(JsonHelper.class);
 
 	public static <T> JsonArray toJsonArray(List<T> list) {
 		
@@ -164,7 +163,7 @@ public class JsonHelper extends BeanUtilsHelper {
 						}
 					}
 				} catch (Exception e) {
-					LOG.debug("Error using " + field.getName());
+					log.debug("Error using " + field.getName());
 				}
 			}
 		}
@@ -241,7 +240,7 @@ public class JsonHelper extends BeanUtilsHelper {
 					builder.add(field.getName(), toJsonObject(value));
 				}
 			} catch (Exception e) {
-				LOG.debug("Error using " + field.getName());
+				log.debug("Error using " + field.getName());
 			}
 		}
 		return builder.build();
@@ -283,7 +282,7 @@ public class JsonHelper extends BeanUtilsHelper {
 		for (Field field : clazz.getDeclaredFields()) {
 			String key = field.getName();
 			if (data.containsKey(key)) {
-				LOG.debug(key + ":  nothing to do key is correct");
+				log.debug(key + ":  nothing to do key is correct");
 			} else if (data.containsKey(key.toLowerCase())) {
 				key = key.toLowerCase();
 			} else {
@@ -383,7 +382,7 @@ public class JsonHelper extends BeanUtilsHelper {
 						    ParameterizedType aType = (ParameterizedType) genericFieldType;
 						    Type[] fieldArgTypes = aType.getActualTypeArguments();
 							if(fieldArgTypes[0] instanceof ParameterizedType){
-							    ParameterizedType bType = (ParameterizedType) fieldArgTypes[0];								
+							    //ParameterizedType bType = (ParameterizedType) fieldArgTypes[0];								
 								List<Object> list = new ArrayList<>();
 								try {
 									JsonArray array = data.getJsonArray(key);
@@ -471,7 +470,7 @@ public class JsonHelper extends BeanUtilsHelper {
 					T object = toBean(clazz, jsonValue.toString());
 					list.add(object);
 				} catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-					LOG.error("Could not parse list object: ", e.getMessage());
+					log.error("Could not parse list object: ", e.getMessage());
 				}
 			}
 		}

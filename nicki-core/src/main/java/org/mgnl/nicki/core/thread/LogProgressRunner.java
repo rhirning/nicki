@@ -4,8 +4,8 @@ package org.mgnl.nicki.core.thread;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.thread.NickiProgress;
 import org.mgnl.nicki.core.thread.ProgressRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /*-
  * #%L
@@ -26,9 +26,8 @@ import org.slf4j.LoggerFactory;
  * limitations under the License.
  * #L%
  */
-
+@Slf4j
 public abstract class LogProgressRunner extends ProgressRunner implements Runnable {
-	private static final Logger LOG = LoggerFactory.getLogger(LogProgressRunner.class);
 
 	public LogProgressRunner(NickiProgress progress, String title, int count) {
 		super(progress, title, count);
@@ -53,11 +52,11 @@ public abstract class LogProgressRunner extends ProgressRunner implements Runnab
 		this.setDetails(newDetails);
 		float value = new Float(getCurrent()) / getCount();
 		if (StringUtils.isNotBlank(newDetails)) {
-			LOG.info(this.toString() + ": Details: " + getDetails());
+			log.info(this.toString() + ": Details: " + getDetails());
 		}
 		if (getCurrent() < getCount())
-			LOG.info(this.toString() + ": " + ((int) (value * 100)) + "% ("+ getCurrent() + "/" + getCount() + ")");
+			log.info(this.toString() + ": " + ((int) (value * 100)) + "% ("+ getCurrent() + "/" + getCount() + ")");
 		else
-			LOG.info(this.toString() + ": finished");
+			log.info(this.toString() + ": finished");
 	}
 }

@@ -33,8 +33,8 @@ import org.ehcache.config.builders.CacheManagerBuilder;
 import org.ehcache.config.builders.ResourcePoolsBuilder;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.JsonHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Cache with topic and EntryFactory
@@ -43,8 +43,8 @@ import org.slf4j.LoggerFactory;
  * @author rhirning
  *
  */
+@Slf4j
 public class I18nCache {
-    private static final Logger LOG = LoggerFactory.getLogger(I18nCache.class);
 	private static I18nCache instance = new I18nCache();
 	private Map<String, TopicCacheConfiguration> caches = new HashMap<>();
 	private CacheManager cacheManager;
@@ -63,7 +63,7 @@ public class I18nCache {
 				}
 			}
 		} catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-			LOG.error("Error reading cache configuration from " + configFile, e);
+			log.error("Error reading cache configuration from " + configFile, e);
 		}
 	}
 

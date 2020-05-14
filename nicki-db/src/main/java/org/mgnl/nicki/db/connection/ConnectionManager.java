@@ -28,8 +28,8 @@ import org.apache.commons.dbcp.PoolableConnectionFactory;
 import org.apache.commons.dbcp.PoolingDataSource;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.mgnl.nicki.core.util.Classes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 import javax.sql.DataSource;
 
@@ -37,9 +37,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 
+@Slf4j
 public class ConnectionManager {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ConnectionManager.class);
     
     public DataSource dataSource;
     public GenericObjectPool pool;
@@ -64,12 +64,12 @@ public class ConnectionManager {
         }
         catch(Exception e)
         {
-            LOG.error("Error when attempting to obtain DB Driver: "
+            log.error("Error when attempting to obtain DB Driver: "
                     + config.getDbDriverName() + " on "
                     + new Date().toString(), e);
         }
 
-        LOG.debug("Trying to connect to database...");
+        log.debug("Trying to connect to database...");
         try
         {
         	dataSource = setupDataSource(
@@ -79,11 +79,11 @@ public class ConnectionManager {
                     config.getDbPoolMinSize(),
                     config.getDbPoolMaxSize() );
 
-            LOG.debug("Connection attempt to database succeeded.");
+            log.debug("Connection attempt to database succeeded.");
         }
         catch(Exception e)
         {
-            LOG.error("Error when attempting to connect to DB ", e);
+            log.error("Error when attempting to connect to DB ", e);
         }
     }
 
@@ -137,8 +137,8 @@ public class ConnectionManager {
     }
 
     public void printDriverStats() throws Exception {
-        LOG.info("NumActive: " + pool.getNumActive());
-        LOG.info("NumIdle: " + pool.getNumIdle());
+        log.info("NumActive: " + pool.getNumActive());
+        log.info("NumIdle: " + pool.getNumIdle());
     }
 
 	public synchronized Connection getConnection() throws SQLException {

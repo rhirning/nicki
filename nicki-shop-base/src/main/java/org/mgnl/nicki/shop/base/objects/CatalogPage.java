@@ -39,16 +39,15 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 @SuppressWarnings("serial")
-
+@Slf4j
 @DynamicObject
 @ObjectClass("nickiCatalogPage")
 @Child(name="child", objectFilter={CatalogPage.class, CatalogArticle.class})
 public class CatalogPage extends CatalogObject {
-	private static final Logger LOG = LoggerFactory.getLogger(CatalogPage.class);
 	
 	private Provider provider;
 
@@ -80,9 +79,9 @@ public class CatalogPage extends CatalogObject {
 					}
 				}
 			} catch (JDOMException e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			} catch (IOException e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		}
 		return list;
@@ -132,7 +131,7 @@ public class CatalogPage extends CatalogObject {
 		try {
 			return getParent(CatalogPage.class).getAllCategories();
 		} catch (Exception e) {
-			LOG.debug("Error", e);
+			log.debug("Error", e);
 		}
 		return new ArrayList<String>();
 	}
@@ -157,7 +156,7 @@ public class CatalogPage extends CatalogObject {
 				try {
 					getContext().loadObject(page);
 				} catch (DynamicObjectException e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 				}
 			}
 		}
@@ -184,7 +183,7 @@ public class CatalogPage extends CatalogObject {
 				this.provider = (Provider) Classes.newInstance(providerClass);
 				this.provider.init(this);
 			} catch (Exception e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		}
 	}

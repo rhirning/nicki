@@ -29,11 +29,9 @@ import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 public class InitJaasContextListener implements ServletContextListener {
-	static final Logger LOG = LoggerFactory.getLogger(InitJaasContextListener.class);
     public static final String KRB5_CONF			= "spnego.krb5.conf";
     public static final String LOGIN_CONF			= "spnego.login.conf";
     public static final String CONTEXT_CONF			= "nicki.login.context.name";
@@ -58,7 +56,7 @@ public class InitJaasContextListener implements ServletContextListener {
 	            }
         	}
         }
-        LOG.info(PROPERTY_KRB5_CONF + "=" + System.getProperty(PROPERTY_KRB5_CONF));
+        log.info(PROPERTY_KRB5_CONF + "=" + System.getProperty(PROPERTY_KRB5_CONF));
 
         // specify login conf as a System property
     	String jaasConfigSystemProperty = System.getProperty(PROPERTY_LOGIN_CONF);
@@ -74,7 +72,7 @@ public class InitJaasContextListener implements ServletContextListener {
 	            }
         	}
         }
-        LOG.info(PROPERTY_LOGIN_CONF + "=" + System.getProperty(PROPERTY_LOGIN_CONF));
+        log.info(PROPERTY_LOGIN_CONF + "=" + System.getProperty(PROPERTY_LOGIN_CONF));
         
         checkModule(Config.getString(CONTEXT_CONF));
 	}
@@ -87,9 +85,9 @@ public class InitJaasContextListener implements ServletContextListener {
         // we only expect one entry
         final AppConfigurationEntry entry = config.getAppConfigurationEntry(moduleName)[0];
         if (entry != null) {
-        	LOG.info("LoginContext " + moduleName + " erfolgreich geladen");
+        	log.info("LoginContext " + moduleName + " erfolgreich geladen");
         } else {
-        	LOG.info("LoginContext " + moduleName + " konnte nicht geladen werden");
+        	log.info("LoginContext " + moduleName + " konnte nicht geladen werden");
         }
     }
 

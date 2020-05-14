@@ -42,8 +42,6 @@ import org.mgnl.nicki.pdf.model.template.Table;
 import org.mgnl.nicki.pdf.model.template.TableData;
 import org.mgnl.nicki.pdf.model.template.TableRow;
 import org.mgnl.nicki.pdf.model.template.Text;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.itextpdf.text.Anchor;
 import com.itextpdf.text.BadElementException;
@@ -61,9 +59,11 @@ import com.itextpdf.text.pdf.BarcodeQRCode;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class ContentRenderer {
 
-	private static final Logger LOG = LoggerFactory.getLogger(ContentRenderer.class);
 	private PdfConfiguration config;
 	private Document document;
 	
@@ -82,33 +82,33 @@ public class ContentRenderer {
 				Object entry = ((JAXBElement) contentElement).getValue();
 				
 				if (entry instanceof Image) {
-					LOG.debug("rendering image to document");
+					log.debug("rendering image to document");
 					render(parent, (Image) entry);
-					LOG.debug("finished rendering image to document");
+					log.debug("finished rendering image to document");
 				} else if (entry instanceof Table) {
-					LOG.debug("rendering table to document");
+					log.debug("rendering table to document");
 					render(parent, (Table) entry);
-					LOG.debug("finished rendering table to document");
+					log.debug("finished rendering table to document");
 				} else if (entry instanceof Text) {
-					LOG.debug("rendering text to document");
+					log.debug("rendering text to document");
 					render(parent, (Text) entry);
-					LOG.debug("finished rendering text to document");
+					log.debug("finished rendering text to document");
 				} else if (entry instanceof Barcode) {
-					LOG.debug("rendering barcode to document");
+					log.debug("rendering barcode to document");
 					render(parent, (Barcode) entry);
-					LOG.debug("finished rendering barcode to document");
+					log.debug("finished rendering barcode to document");
 				} else if (entry instanceof Link) {
-					LOG.debug("rendering link to document");
+					log.debug("rendering link to document");
 					render(parent, (Link) entry);
-					LOG.debug("finished rendering link to document");
+					log.debug("finished rendering link to document");
 				} else if (entry instanceof List) {
-					LOG.debug("rendering list to document");
+					log.debug("rendering list to document");
 					render(parent, (List) entry);
-					LOG.debug("finished rendering list to document");
+					log.debug("finished rendering list to document");
 				} else if (entry instanceof Break) {
-					LOG.debug("rendering break to document");
+					log.debug("rendering break to document");
 					addBreak();
-					LOG.debug("finished rendering break to document");
+					log.debug("finished rendering break to document");
 				}
 			}
 		}
@@ -346,25 +346,25 @@ public class ContentRenderer {
 				Object entry = ((JAXBElement) contentElement).getValue();
 				
 				if (entry instanceof Image) {
-					LOG.debug("rendering image to document");
+					log.debug("rendering image to document");
 					render(pdfTable, borderColor, (Image) entry);
-					LOG.debug("finished rendering image to document");
+					log.debug("finished rendering image to document");
 				} else if (entry instanceof Text) {
-					LOG.debug("rendering text to document");
+					log.debug("rendering text to document");
 					render(pdfTable, borderColor, f, (Text) entry);
-					LOG.debug("finished rendering text to document");
+					log.debug("finished rendering text to document");
 				} else if (entry instanceof Barcode) {
-					LOG.debug("rendering barcode to document");
+					log.debug("rendering barcode to document");
 					render(pdfTable, borderColor, f, (Barcode) entry);
-					LOG.debug("finished rendering barcode to document");
+					log.debug("finished rendering barcode to document");
 				} else if (entry instanceof Link) {
-					LOG.debug("rendering link to document");
+					log.debug("rendering link to document");
 					render(pdfTable, borderColor, (Link) entry);
-					LOG.debug("finished rendering link to document");
+					log.debug("finished rendering link to document");
 				} else if (entry instanceof Checkbox) {
-					LOG.debug("rendering link to document");
+					log.debug("rendering link to document");
 					render(pdfTable, borderColor, (Checkbox) entry);
-					LOG.debug("finished rendering checkbox to document");
+					log.debug("finished rendering checkbox to document");
 				}
 			}
 		}
@@ -428,7 +428,7 @@ public class ContentRenderer {
 				int b = Integer.parseInt(StringUtils.substring(hex, 4, 6), 16);
 				return new BaseColor(r,g,b);
 			} catch (Exception e) {
-				LOG.error("Error parsing color", e);
+				log.error("Error parsing color", e);
 			}
 		}
 		return new BaseColor(255,255,255);

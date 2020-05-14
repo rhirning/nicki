@@ -26,11 +26,11 @@ import java.util.Map;
 
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.util.Classes;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class StatisticsManager {
-	private static final Logger LOG = LoggerFactory.getLogger(StatisticsManager.class);
 	private static StatisticsManager instance;
 	private Map<String, Map<String, Statistics>> statisticsMap;
 
@@ -74,7 +74,7 @@ public class StatisticsManager {
 				bcMap.put(name, statistics);
 			}
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException e) {
-			LOG.error("Error loading StatisticsFactory", e);
+			log.error("Error loading StatisticsFactory", e);
 		}
 	}
 

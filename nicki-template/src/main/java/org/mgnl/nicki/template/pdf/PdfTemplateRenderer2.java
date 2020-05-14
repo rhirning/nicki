@@ -27,11 +27,11 @@ import java.io.OutputStream;
 
 import org.mgnl.nicki.pdf.engine.PdfEngine;
 import org.mgnl.nicki.pdf.template.PdfTemplate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class PdfTemplateRenderer2 extends Thread implements Runnable {
-	private static final Logger LOG = LoggerFactory.getLogger(PdfTemplateRenderer2.class);
 	InputStream in;
 	OutputStream out;
 
@@ -48,7 +48,7 @@ public class PdfTemplateRenderer2 extends Thread implements Runnable {
 			out.flush();
 			out.close();
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 	}
 }

@@ -25,7 +25,11 @@ package org.mgnl.nicki.vaadin.base.navigation;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
+
+@Data
 public class NavigationCommand {
+	
 	private List<NavigationCommandEntry> entries = new ArrayList<NavigationCommandEntry>();
 
 	public void add(String commandName, Object... data) {
@@ -35,20 +39,25 @@ public class NavigationCommand {
 		entries.add(commandEntry);
 	}
 
-	public List<NavigationCommandEntry> getEntries() {
-		return entries;
-	}
-
-	public void setEntries(List<NavigationCommandEntry> entries) {
-		this.entries = entries;
-	}
-
 	public void remove(NavigationCommandEntry navigationCommandEntry) {
 		entries.remove(navigationCommandEntry);
 	}
 	
 	public boolean hasCommands() {
 		return entries.size() > 0;
+	}
+	
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("NavigationCommand: ");
+		if (hasCommands()) {
+			sb.append("[");
+			for (NavigationCommandEntry entry : entries) {
+				sb.append(entry.toString());
+			}
+			sb.append("]");
+		}
+		return sb.toString();
 	}
 
 }

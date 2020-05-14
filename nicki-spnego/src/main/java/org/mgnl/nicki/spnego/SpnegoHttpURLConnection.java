@@ -42,8 +42,9 @@ import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.codec.binary.Base64;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
@@ -128,10 +129,9 @@ import org.ietf.jgss.GSSException;
  * @author Darwin V. Felix
  * 
  */
+@Slf4j
 public final class SpnegoHttpURLConnection {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SpnegoHttpURLConnection.class);
-    
     /** GSSContext is not thread-safe. */
     private static final Lock LOCK = new ReentrantLock();
     
@@ -430,12 +430,12 @@ public final class SpnegoHttpURLConnection {
             
             // app servers will not return a WWW-Authenticate on 302, (and 30x...?)
             if (null == scheme) {
-                LOG.debug("SpnegoProvider.getAuthScheme(...) returned null.");
+                log.debug("SpnegoProvider.getAuthScheme(...) returned null.");
                 
             // client requesting to skip context loop if 200 and mutualAuth=false
             } else if (this.conn.getResponseCode() == HttpURLConnection.HTTP_OK
                     && !this.mutualAuth) {
-                LOG.debug("SpnegoProvider.getAuthScheme(...) returned null.");
+                log.debug("SpnegoProvider.getAuthScheme(...) returned null.");
                 
             } else {
                 data = scheme.getToken();
@@ -450,7 +450,7 @@ public final class SpnegoHttpURLConnection {
 
                     // TODO : support context loops where i>1
                     if (null != data) {
-                        LOG.warn("Server requested context loop: " + data.length);
+                        log.warn("Server requested context loop: " + data.length);
                     }
                     
                 } else {
@@ -482,7 +482,7 @@ public final class SpnegoHttpURLConnection {
                     SpnegoHttpURLConnection.LOCK.unlock();
                 }
             } catch (GSSException gsse) {
-                LOG.warn("call to dispose context failed.", gsse);
+                log.warn("call to dispose context failed.", gsse);
             }
         }
         
@@ -490,7 +490,7 @@ public final class SpnegoHttpURLConnection {
             try {
                 this.credential.dispose();
             } catch (final GSSException gsse) {
-                LOG.warn("call to dispose credential failed.", gsse);
+                log.warn("call to dispose credential failed.", gsse);
             }
         }
         
@@ -498,7 +498,7 @@ public final class SpnegoHttpURLConnection {
             try {
                 this.loginContext.logout();
             } catch (final LoginException lex) {
-                LOG.warn("call to logout context failed.", lex);
+                log.warn("call to logout context failed.", lex);
             }
         }
     }

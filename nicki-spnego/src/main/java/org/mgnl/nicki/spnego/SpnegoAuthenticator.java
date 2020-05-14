@@ -35,8 +35,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.codec.binary.Base64;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
@@ -87,10 +88,9 @@ import org.ietf.jgss.GSSManager;
  * @author Darwin V. Felix
  * 
  */
+@Slf4j
 public final class SpnegoAuthenticator {
 
-    private static final Logger LOG = LoggerFactory.getLogger(SpnegoAuthenticator.class);
-    
     /** GSSContext is not thread-safe. */
     private static final Lock LOCK = new ReentrantLock();
     
@@ -135,7 +135,7 @@ public final class SpnegoAuthenticator {
     public SpnegoAuthenticator(final SpnegoFilterConfig config) 
         throws LoginException, GSSException, PrivilegedActionException {
 
-        LOG.debug("config=" + config);
+        log.debug("config=" + config);
 
         this.allowBasic = config.isBasicAllowed();
         this.allowUnsecure = config.isUnsecureAllowed();  
@@ -176,7 +176,7 @@ public final class SpnegoAuthenticator {
         , final SpnegoFilterConfig config) throws LoginException
         , GSSException, PrivilegedActionException {
 
-        LOG.debug("loginModuleName=" + loginModuleName);
+        log.debug("loginModuleName=" + loginModuleName);
 
         this.allowBasic = config.isBasicAllowed();
         this.allowUnsecure = config.isUnsecureAllowed();  
@@ -250,10 +250,10 @@ public final class SpnegoAuthenticator {
         // NOTE: this may also occur if we do not allow Basic Auth and
         // the client only supports Basic Auth
         if (null == scheme) {
-            LOG.debug("scheme null.");
+            log.debug("scheme null.");
             return null;
         } else {
-        	LOG.debug("scheme: " + scheme.getScheme());
+        	log.debug("scheme: " + scheme.getScheme());
         	if (scheme.isNotSupported()) {
         		throw new NotSupportedException();
         	}
@@ -264,7 +264,7 @@ public final class SpnegoAuthenticator {
         	boolean doAuthenticate = true;
         	if (doAuthenticate) {
         		principal = doSpnegoAuth(scheme, resp);
-            	LOG.debug("principal(SPNEGO): " + (principal == null?null:principal.getName()));
+            	log.debug("principal(SPNEGO): " + (principal == null?null:principal.getName()));
         	} else {
         		principal = null;
         	}
@@ -274,9 +274,9 @@ public final class SpnegoAuthenticator {
             // check if we allow Basic Auth AND if can be un-secure
             if (basicSupported) {
                 principal = doBasicAuth(scheme, resp);
-            	LOG.debug("principal(BASIC): " + (principal == null?null:principal.getName()));
+            	log.debug("principal(BASIC): " + (principal == null?null:principal.getName()));
             } else {
-                LOG.error("allowBasic=" + this.allowBasic 
+                log.error("allowBasic=" + this.allowBasic 
                         + "; allowUnsecure=" + this.allowUnsecure
                         + "; req.isSecure()=" + req.isSecure());
                 throw new UnsupportedOperationException("Basic Auth not allowed"
@@ -305,14 +305,14 @@ public final class SpnegoAuthenticator {
             try {
                 this.serverCredentials.dispose();
             } catch (GSSException e) {
-                LOG.warn("Dispose failed.", e);
+                log.warn("Dispose failed.", e);
             }
         }
         if (null != this.loginContext) {
             try {
                 this.loginContext.logout();
             } catch (LoginException lex) {
-                LOG.warn("Logout failed.", lex);
+                log.warn("Logout failed.", lex);
             }
         }
     }
@@ -333,7 +333,7 @@ public final class SpnegoAuthenticator {
         final byte[] data = scheme.getToken();
 
         if (0 == data.length) {
-            LOG.debug("Basic Auth data was NULL.");
+            log.debug("Basic Auth data was NULL.");
             return null;
         }
 
@@ -363,11 +363,11 @@ public final class SpnegoAuthenticator {
             final LoginContext cntxt = new LoginContext(this.clientModuleName, handler);
 
             // validate username/password by login/logout
-            LOG.debug("vor login");
+            log.debug("vor login");
             cntxt.login();
-            LOG.debug("nach login / vor logout");
+            log.debug("nach login / vor logout");
             cntxt.logout();
-            LOG.debug("nach logout");
+            log.debug("nach logout");
 
             principal = new SpnegoPrincipal(username + '@' 
                     + this.serverPrincipal.getRealm()
@@ -375,7 +375,7 @@ public final class SpnegoAuthenticator {
                     password.getBytes());
 
         } catch (LoginException lex) {
-            LOG.debug(lex.getMessage() + ": Login failed. username=" + username);
+            log.debug(lex.getMessage() + ": Login failed. username=" + username);
 
             resp.setHeader(Constants.AUTHN_HEADER, Constants.NEGOTIATE_HEADER);
             resp.addHeader(Constants.AUTHN_HEADER, Constants.BASIC_HEADER 
@@ -419,7 +419,7 @@ public final class SpnegoAuthenticator {
         final byte[] gss = scheme.getToken();
 
         if (0 == gss.length) {
-            LOG.debug("GSS data was NULL.");
+            log.debug("GSS data was NULL.");
             return null;
         }
 
@@ -438,7 +438,7 @@ public final class SpnegoAuthenticator {
             }
 
             if (null == token) {
-                LOG.debug("Token was NULL.");
+                log.debug("Token was NULL.");
                 return null;
             }
 
@@ -446,7 +446,7 @@ public final class SpnegoAuthenticator {
                     + ' ' + Base64.encodeBase64(token));
 
             if (!context.isEstablished()) {
-                LOG.debug("context not established");
+                log.debug("context not established");
                 resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED, true);
                 return null;
             }

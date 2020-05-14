@@ -34,12 +34,11 @@ import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @SuppressWarnings("serial")
 public class Target implements Serializable {
-	private static final Logger LOG = LoggerFactory.getLogger(Target.class);
 
 	private String targetName;
 	private String propertyBase;
@@ -141,7 +140,7 @@ public class Target implements Serializable {
 			try {
 				return findDynamicObject(classDefinition);
 			} catch (Exception e1) {
-				LOG.debug(classDefinition.getName() + " not found, so create a new one");
+				log.debug(classDefinition.getName() + " not found, so create a new one");
 			}
 			try {
 				dynamicObject = classDefinition.newInstance();

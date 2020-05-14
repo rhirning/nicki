@@ -46,8 +46,7 @@ import javax.naming.directory.SearchResult;
 import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.LdapContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * The <code>LdapAccessControl</code> class is a reference implementation 
@@ -214,10 +213,8 @@ import org.slf4j.LoggerFactory;
  * @author Darwin V. Felix
  *
  */
+@Slf4j
 public class LdapAccessControl implements UserAccessControl {
-    
-    private static final Logger LOG = 
-            LoggerFactory.getLogger(LdapAccessControl.class);
     
     private static final String POLICY_FILE = "spnego.authz.policy.file";
     
@@ -311,7 +308,7 @@ public class LdapAccessControl implements UserAccessControl {
     
     @Override
     public void destroy() {
-        LOG.info("destroy()...");
+        log.info("destroy()...");
         this.writeLock.lock();
         try {
             this.matchedList.clear();
@@ -363,7 +360,7 @@ public class LdapAccessControl implements UserAccessControl {
             }
 
             // query AD to update both MapS and expiration time
-            LOG.debug("username: " + username + "; role: " + attribute);
+            log.debug("username: " + username + "; role: " + attribute);
 
             this.writeLock.lock();
             try {
@@ -386,7 +383,7 @@ public class LdapAccessControl implements UserAccessControl {
                     // add to cache
                     if (found) {
                         count++;
-                        //LOG.info("add attribute to matchedList: " + attribute);
+                        //log.info("add attribute to matchedList: " + attribute);
                         this.matchedList.put(key, System.currentTimeMillis());
                         if (!this.uniqueOnly) {
                             break;                            
@@ -406,7 +403,7 @@ public class LdapAccessControl implements UserAccessControl {
                 context.close();
                 
                 if (0 == count) {
-                    //LOG.info("add attribute to unMatchedList: " + attribute);
+                    //log.info("add attribute to unMatchedList: " + attribute);
                     this.unMatchedList.put(key, System.currentTimeMillis());                    
                 } else {
                     cacheUserInfo(username);
@@ -416,7 +413,7 @@ public class LdapAccessControl implements UserAccessControl {
                 this.writeLock.unlock();
             }
         } catch (NamingException lex) {
-        	LOG.error(lex.getMessage());
+        	log.error(lex.getMessage());
             throw new RuntimeException(lex);
         }
         
@@ -433,7 +430,7 @@ public class LdapAccessControl implements UserAccessControl {
         // assert
         if (null == attributeYs || 0 == attributeYs.length) {
             final String errorMsg = "Must provide at least two parameters";
-            LOG.error(errorMsg);
+            log.error(errorMsg);
             throw new IllegalArgumentException(errorMsg);
         }
         
@@ -482,7 +479,7 @@ public class LdapAccessControl implements UserAccessControl {
         }
 
         // query AD to update both MapS and expiration time
-        LOG.debug("username: " + username + "; resource: " + resource);
+        log.debug("username: " + username + "; resource: " + resource);
         
         boolean matched = false;
         boolean containsHas = false;
@@ -526,10 +523,10 @@ public class LdapAccessControl implements UserAccessControl {
         this.writeLock.lock();
         try {
             if (matched) {
-                //LOG.info("add resource to matchedList: " + resource);
+                //log.info("add resource to matchedList: " + resource);
                 this.matchedList.put(key, now);
             } else {
-                //LOG.info("add resource to unMatchedList: " + resource);
+                //log.info("add resource to unMatchedList: " + resource);
                 this.unMatchedList.put(key, now);
             }
         } finally {
@@ -549,7 +546,7 @@ public class LdapAccessControl implements UserAccessControl {
         // assert
         if (null == resourceYs || 0 == resourceYs.length) {
             final String errorMsg = "Must provide at least two parameters";
-            LOG.error(errorMsg);
+            log.error(errorMsg);
             throw new IllegalArgumentException(errorMsg);
         }
         
@@ -621,7 +618,7 @@ public class LdapAccessControl implements UserAccessControl {
             return cacheUserInfo(username);
         } catch (NamingException nex) {
             final String errorMessage = "Could not get user info for: " + username;
-            LOG.warn(errorMessage);
+            log.warn(errorMessage);
             throw new IllegalStateException(errorMessage, nex);
         } finally {
             this.writeLock.unlock();
@@ -630,7 +627,7 @@ public class LdapAccessControl implements UserAccessControl {
     
     @Override
     public void init(final Properties props) {
-        LOG.info("init()...");
+        log.info("init()...");
         
         this.readLock.lock();
         try {
@@ -646,7 +643,7 @@ public class LdapAccessControl implements UserAccessControl {
         final Properties policies = new Properties();
         if (!policyFile.isEmpty()) {
             try {
-                LOG.info("policy file: " + policyFile);
+                log.info("policy file: " + policyFile);
                 final FileInputStream fis =new FileInputStream(policyFile);
                 try {
                     policies.load(fis);
@@ -686,17 +683,17 @@ public class LdapAccessControl implements UserAccessControl {
             }
             dc = "DC=" + tmp.replaceAll("\\.", ",DC=");
         }
-        LOG.info(dc);
+        log.info(dc);
         
         // assert that an ldap url was provided
         if (policies.getProperty(LDAP_URL, props.getProperty(LDAP_URL, "")).isEmpty()) {
             final String errorMessage = "Must provide a value for the spnego.authz.ldap.url parameter";
-            LOG.error(errorMessage);
+            log.error(errorMessage);
             throw new IllegalStateException(errorMessage);
         } else {
             env.put(Context.PROVIDER_URL
                     , policies.getProperty(LDAP_URL, props.getProperty(LDAP_URL)));
-            LOG.info("ldap provider url: " + env.get(Context.PROVIDER_URL));            
+            log.info("ldap provider url: " + env.get(Context.PROVIDER_URL));            
         }
 
         // if username/password not provided, default to krb5 username/password
@@ -704,13 +701,13 @@ public class LdapAccessControl implements UserAccessControl {
         if (policies.getProperty(LDAP_USERNAME, props.getProperty(LDAP_USERNAME
                 , props.getProperty(KRB5_USERNAME, policies.getProperty(KRB5_USERNAME, "")))).isEmpty()) {
             final String errorMessage = "Must provide a username to use for connecting to the LDAP server";
-            LOG.error(errorMessage);
+            log.error(errorMessage);
             throw new IllegalArgumentException(errorMessage);
         }
         if (policies.getProperty(LDAP_PASSWORD, props.getProperty(LDAP_PASSWORD
             , props.getProperty(KRB5_PASSWORD, policies.getProperty(KRB5_PASSWORD, "")))).isEmpty()) {
             final String errorMessage = "Must provide a password to use for connecting to the LDAP server";
-            LOG.error(errorMessage);
+            log.error(errorMessage);
             throw new IllegalArgumentException(errorMessage);
         }
         
@@ -720,19 +717,19 @@ public class LdapAccessControl implements UserAccessControl {
         env.put(Context.SECURITY_CREDENTIALS
                 , policies.getProperty(LDAP_PASSWORD, props.getProperty(LDAP_PASSWORD
                         , props.getProperty(KRB5_PASSWORD, policies.getProperty(KRB5_PASSWORD)))));
-        LOG.info("ldap security principal: " + env.get(Context.SECURITY_PRINCIPAL));
+        log.info("ldap security principal: " + env.get(Context.SECURITY_PRINCIPAL));
         
         // specifiy how many minutes the cache is good for
         // used to control when to re-query/perform another ldap search
         long ttl = DEFAULT_TTL;
         ttl = Long.parseLong(policies.getProperty(TTL, props.getProperty(TTL, "-1")));
-        LOG.info("spnego.authz.ttl: " + ttl);
+        log.info("spnego.authz.ttl: " + ttl);
         
         // determine if we're allowed to violate the uniqueness property
         this.uniqueOnly = Boolean.parseBoolean(policies.getProperty(UNIQUE
                 , props.getProperty(UNIQUE, "true")));
         
-        LOG.info("uniqueness property enabled: " + uniqueOnly);
+        log.info("uniqueness property enabled: " + uniqueOnly);
         
         this.writeLock.lock();
         try {
@@ -749,7 +746,7 @@ public class LdapAccessControl implements UserAccessControl {
             } else {
                 this.expiration = ttl * 60 * 1000;
             }
-            LOG.info("cache expiration in millis: " + this.expiration);
+            log.info("cache expiration in millis: " + this.expiration);
             
             this.srchCntrls = new SearchControls();
             this.srchCntrls.setSearchScope(SearchControls.SUBTREE_SCOPE);
@@ -758,16 +755,16 @@ public class LdapAccessControl implements UserAccessControl {
             final String[] labels = policies.getProperty(USER_INFO
                     , props.getProperty(USER_INFO, "")).split(",");
             
-            LOG.info("UserInfo label count: " + labels.length);
+            log.info("UserInfo label count: " + labels.length);
             for (String label : labels) {
-                LOG.info(label);
+                log.info(label);
                 this.userInfoLabels.add(label.trim());
             }
             
             this.userInfoFilter = policies.getProperty(USER_INFO_FILTER
                     , props.getProperty(USER_INFO_FILTER, ""));
             
-            LOG.info("UserInfo filter: " + this.userInfoFilter);
+            log.info("UserInfo filter: " + this.userInfoFilter);
 
         } finally {
             this.writeLock.unlock();
@@ -814,7 +811,7 @@ public class LdapAccessControl implements UserAccessControl {
                     , props.getProperty(PREFIX_FILTER + idx, "")).trim();
             if (MAX_NUM_FILTERS == i) {
                 final String errorMessage = "Over the max number of filters allowed: " + i;
-                LOG.error(errorMessage);
+                log.error(errorMessage);
                 throw new IllegalArgumentException(errorMessage);
             } else if (filter.isEmpty()) {
                 break;
@@ -825,7 +822,7 @@ public class LdapAccessControl implements UserAccessControl {
         // need minimum of one policy to execute
         if (0 == this.policy.size()) {
             final String errorMessage = "Must specify at least one spnego.authz.ldap.filter.1";
-            LOG.error(errorMessage);
+            log.error(errorMessage);
             throw new IllegalStateException(errorMessage);
         } 
     }
@@ -854,7 +851,7 @@ public class LdapAccessControl implements UserAccessControl {
             
             if (MAX_NUM_FILTERS == i) {
                 final String errorMessage = "Over the max number of resources allowed: " + i;
-                LOG.error(errorMessage);
+                log.error(errorMessage);
                 throw new IllegalArgumentException(errorMessage);
             } else if (resname.isEmpty()) {
                 break;
@@ -870,7 +867,7 @@ public class LdapAccessControl implements UserAccessControl {
         if (null == this.userInfoFilter 
                 || this.userInfoFilter.isEmpty() 
                 || this.userInfoLabels.size() == 0) {
-            LOG.info(USER_INFO_FILTER + " was empty OR no value(s) specified for the "  
+            log.info(USER_INFO_FILTER + " was empty OR no value(s) specified for the "  
                     + USER_INFO +" property");
             return null;
         }
@@ -908,7 +905,7 @@ public class LdapAccessControl implements UserAccessControl {
         // add to cache
         final UserInfo userInfoObject;
         if (found) {
-            //LOG.info("add to cache userInfoList");
+            //log.info("add to cache userInfoList");
             userInfoObject = new UserInfo() {
                 private final Map<String, List<String>> info = labelInfo;
                 private final String labels = userInfoLabels.toString();

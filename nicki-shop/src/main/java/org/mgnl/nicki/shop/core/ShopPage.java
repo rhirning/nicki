@@ -35,8 +35,8 @@ import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogArticleAttribute;
 import org.mgnl.nicki.shop.renderer.ShopRenderer;
 import org.mgnl.nicki.shop.renderer.TableRenderer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import lombok.extern.slf4j.Slf4j;
 /**
  * ShopPage
  * 
@@ -65,9 +65,9 @@ import org.slf4j.LoggerFactory;
  *	</page>
  *  
  */
+@Slf4j
 @SuppressWarnings("serial")
 public class ShopPage implements ShopViewerComponent, Serializable {
-	private static final Logger LOG =  LoggerFactory.getLogger(ShopPage.class);
 	private String name;
 	private String label;
 	private List<ShopPage> pageList = new ArrayList<ShopPage>();
@@ -199,7 +199,7 @@ public class ShopPage implements ShopViewerComponent, Serializable {
 		try {
 			return (ShopRenderer) Classes.newInstance(renderer);
 		} catch (Exception e) {
-			LOG.debug("Error", e);
+			log.debug("Error", e);
 		}
 		return new TableRenderer();
 	}

@@ -35,11 +35,11 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.template.handler.TemplateHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class BasicTemplateHandler implements TemplateHandler{
-	private static final Logger LOG = LoggerFactory.getLogger(BasicTemplateHandler.class);
 	
 	private Person person;
 	private NickiContext context;
@@ -75,7 +75,7 @@ public class BasicTemplateHandler implements TemplateHandler{
 			function.initDataModel();
 			dataModel.put("function", function);
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		*/
 		dataModel.put("person", person);
@@ -104,7 +104,7 @@ public class BasicTemplateHandler implements TemplateHandler{
 						}
 					}
 				} catch (Exception e) {
-					LOG.error("Error", e);
+					log.error("Error", e);
 				}
 			}
 		}

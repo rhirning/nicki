@@ -30,6 +30,9 @@ import com.itextpdf.text.pdf.BarcodeQRCode;
 import com.itextpdf.text.pdf.ColumnText;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfWriter;
+
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 
 import org.apache.commons.lang.StringUtils;
@@ -40,11 +43,9 @@ import org.mgnl.nicki.pdf.model.template.Box;
 import org.mgnl.nicki.pdf.model.template.Image;
 import org.mgnl.nicki.pdf.model.template.Page;
 import org.mgnl.nicki.pdf.model.template.Text;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory; 
 
+@Slf4j
 public class PageRenderer {
-	private static final Logger log = LoggerFactory.getLogger(PageRenderer.class);
 	private PdfContentByte content;
 	private PdfWriter writer;
 	

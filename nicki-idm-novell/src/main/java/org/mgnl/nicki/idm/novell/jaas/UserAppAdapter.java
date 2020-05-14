@@ -35,8 +35,6 @@ import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.auth.NickiAdapterLoginModule;
 import org.mgnl.nicki.core.auth.SSOAdapter;
 import org.mgnl.nicki.core.context.AppContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.sssw.fw.directory.api.EbiRealmGroup;
 import com.sssw.fw.directory.api.EbiRealmUser;
@@ -45,9 +43,10 @@ import com.sssw.fw.directory.core.EboUserCredentials;
 import com.sssw.fw.exception.EboUnrecoverableSystemException;
 import com.sssw.portal.api.EbiPortalContext;
 
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class UserAppAdapter implements SSOAdapter {
-	private static final Logger LOG = LoggerFactory.getLogger(UserAppAdapter.class);
 
 	static final String BASE_KEY = "com.sssw.fw.directory.realm.impl.jndildap.EboJndiLdapUserConnectionInfoHelper:";
 	static final String USER_CREDENTIALS = BASE_KEY + "USER_CREDENTIALS";
@@ -92,7 +91,7 @@ public class UserAppAdapter implements SSOAdapter {
 				list.add(group.getName());
 			}
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return list;
 	}
@@ -114,7 +113,7 @@ public class UserAppAdapter implements SSOAdapter {
 			m.setAccessible(true);
 			return (String) m.invoke(credentials, new Object[]{credentials.getEncPassword()});
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return null;
 	}
@@ -127,7 +126,7 @@ public class UserAppAdapter implements SSOAdapter {
 		try {
 			userName = EboDirectoryHelper.getUserID(getContext());
 		} catch (EboUnrecoverableSystemException e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 		return userName;
 	}

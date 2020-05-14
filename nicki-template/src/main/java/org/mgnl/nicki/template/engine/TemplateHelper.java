@@ -35,12 +35,11 @@ import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.template.handler.TemplateHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class TemplateHelper {
-	private static final Logger LOG = LoggerFactory.getLogger(TemplateHelper.class);
-
 	public static Map<String, Object> getDataModel(NickiContext context, Map<String, Object> data, Map<String, String> objects) {
 		Map<String, Object> dataModel = new HashMap<String, Object>();
 		dataModel.putAll(data);
@@ -130,7 +129,7 @@ public class TemplateHelper {
 			try {
 				handler = (TemplateHandler) Classes.newInstance(template.getHandler());
 			} catch (Exception e) {
-				LOG.error("Error", e);
+				log.error("Error", e);
 			}
 		}
 		if (handler == null) {

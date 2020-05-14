@@ -33,11 +33,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class XsltRenderer extends Thread implements Runnable {
-	private static final Logger LOG = LoggerFactory.getLogger(XsltRenderer.class);
 	InputStream in;
 	OutputStream out;
 	InputStream xslTemplate;
@@ -71,7 +71,7 @@ public class XsltRenderer extends Thread implements Runnable {
 			out.flush();
 			out.close();
 		} catch (Exception e) {
-			LOG.error("Error", e);
+			log.error("Error", e);
 		}
 	}
 }

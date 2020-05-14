@@ -25,6 +25,9 @@ import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.Image;
+
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -36,13 +39,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.pdf.engine.Point;
 import org.mgnl.nicki.pdf.model.config.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-
+@Slf4j
 public class PdfConfiguration {
 
-	private static final Logger log = LoggerFactory.getLogger(PdfConfiguration.class);
 	public static final float CM_PER_INCH = 2.54f;
 	public static final float MM_PER_USER_UNIT = CM_PER_INCH * 10.0f / 72.0f;
 	
