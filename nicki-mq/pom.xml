@@ -14,7 +14,6 @@
 	<packaging>pom</packaging>
 	<modules>
 		<module>nicki-mq-broker</module>
-		<module>nicki-mq-browser</module>
 		<module>nicki-mq-consumer</module>
 		<module>nicki-mq-mail</module>
 	</modules>

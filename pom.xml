@@ -19,41 +19,28 @@
 	<inceptionYear>2017</inceptionYear>
 	<modules>
 		
-		<module>nicki-apps</module>
 		<module>nicki-cache</module>
 		<module>nicki-context-db</module>
 		<module>nicki-core</module>
 		<module>nicki-db</module>
 		<module>nicki-dynamic-objects</module>
 		<module>nicki-dynamic-objects-ad</module>
-		<module>nicki-editor-catalogs</module>
-		<module>nicki-editor-jcr</module>
-		<module>nicki-editor-log4j</module>
-		<module>nicki-editor-projects</module>
-		<module>nicki-editor-scripts</module>
-		<module>nicki-editor-templates</module>
 		<module>nicki-idm-novell</module>
 		<module>nicki-idm-novell-shop</module>
 		<module>nicki-idm-novell-ws</module>
 		<module>nicki-jcr</module>
-		<module>nicki-jcr-apps</module>
 		<module>nicki-ldap</module>
 		<module>nicki-lucene-search</module>
 		<module>nicki-mail-extract</module>
 		<module>nicki-mq</module>
 		<module>nicki-pdf</module>
 		<module>nicki-portlets</module>
-		<module>nicki-reports</module>
 		<module>nicki-scheduler</module>
 		<module>nicki-search</module>
-		<module>nicki-shop</module>
 		<module>nicki-shop-base</module>
 		<module>nicki-spnego</module>
 		<module>nicki-storage</module>
 		<module>nicki-template</module>
-		<module>nicki-user-admin</module>
-		<module>nicki-vaadin-base</module>
-		<module>nicki-vaadin-db</module>
 		<module>nicki-verify</module>
 		<module>nicki-ws</module>
 		<module>nicki-xls</module>
