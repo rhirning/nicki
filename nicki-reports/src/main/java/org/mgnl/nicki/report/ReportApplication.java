@@ -29,11 +29,15 @@ import com.vaadin.ui.Component;
 public class ReportApplication extends TemplateEditor {
 	private ReportComponent reportApplicationComponent = new ReportComponent();
 
+	public ReportComponent getReportApplicationComponent() {
+		return reportApplicationComponent;
+	}
+
 	@Override
 	public Component getEditor() {
-		reportApplicationComponent.setApplication(this);
-		reportApplicationComponent.init();
-		return reportApplicationComponent;
+		getReportApplicationComponent().setApplication(this);
+		getReportApplicationComponent().init();
+		return getReportApplicationComponent();
 
 	}
 
