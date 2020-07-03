@@ -86,5 +86,13 @@ public class Role extends DynamicStructObject {
 			return new ArrayList<Person>();
 		}
 	}
+	
+	public Collection<ResourceAssociation> getResourceAssociations() {
+		if (get("resourceAssociation") != null) {
+			return getForeignKeyObjects(ResourceAssociation.class, "resourceAssociation");
+		} else {
+			return new ArrayList<ResourceAssociation>();
+		}
+	}
 
 }
