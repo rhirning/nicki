@@ -87,11 +87,12 @@ public class Role extends DynamicStructObject {
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	public Collection<ResourceAssociation> getResourceAssociations() {
-		if (get("resourceAssociation") != null) {
-			return getForeignKeyObjects(ResourceAssociation.class, "resourceAssociation");
-		} else {
-			return new ArrayList<ResourceAssociation>();
+		try {
+			return (Collection<ResourceAssociation>) execute("getResourceAssociations", null);
+		} catch (Exception e) {
+			return null;
 		}
 	}
 

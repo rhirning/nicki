@@ -59,18 +59,18 @@ public class ResourceAssociation extends BaseDynamicObject {
 		return getAttribute("paramVal");
 	}
 	
-	public String getParamVals() {
+	public String getParamValue() {
 		if (StringUtils.isNotEmpty(getParamValsXml())) {
 			return getInfo(getParamValsXml(), "/parameter/value");
 		}
 		return "";
 	}
 	
-	public Collection<Resource> getResources() {
+	public Resource getResource() {
 		if (get("resource") != null) {
-			return getForeignKeyObjects(Resource.class, "resource");
+			return getForeignKeyObject(Resource.class, "resource");
 		} else {
-			return new ArrayList<Resource>();
+			return null;
 		}
 	}
 
