@@ -86,5 +86,14 @@ public class Role extends DynamicStructObject {
 			return new ArrayList<Person>();
 		}
 	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<ResourceAssociation> getResourceAssociations() {
+		try {
+			return (Collection<ResourceAssociation>) execute("getResourceAssociations", null);
+		} catch (Exception e) {
+			return null;
+		}
+	}
 
 }

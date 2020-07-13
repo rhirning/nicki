@@ -1,6 +1,9 @@
 
 package org.mgnl.nicki.idm.novell.shop.objects;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /*-
  * #%L
  * nicki-idm-novell-shop
@@ -56,11 +59,19 @@ public class ResourceAssociation extends BaseDynamicObject {
 		return getAttribute("paramVal");
 	}
 	
-	public String getParamVals() {
+	public String getParamValue() {
 		if (StringUtils.isNotEmpty(getParamValsXml())) {
 			return getInfo(getParamValsXml(), "/parameter/value");
 		}
 		return "";
+	}
+	
+	public Resource getResource() {
+		if (get("resource") != null) {
+			return getForeignKeyObject(Resource.class, "resource");
+		} else {
+			return null;
+		}
 	}
 
 }
