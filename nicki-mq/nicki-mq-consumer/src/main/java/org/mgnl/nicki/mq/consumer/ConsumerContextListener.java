@@ -24,6 +24,7 @@ package org.mgnl.nicki.mq.consumer;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -42,32 +43,43 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ConsumerContextListener implements ServletContextListener {
 	
-	private ConsumerThread consumerThread;
+	private Map<String,ConsumerThread> consumerThreads = new HashMap<>();
 
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		boolean startConsumer = Config.getBoolean("nicki.mq.consumer.start", false);
 		if (startConsumer) {
 			String configPath = sce.getServletContext().getInitParameter("mq.config");
-			ConsumerConfig consumerConfig = null;
-			try {
-				consumerConfig = JsonHelper.toBean(ConsumerConfig.class, getClass().getResourceAsStream(configPath));
-			} catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
-				log.error("Error readin condumer config: " + configPath, e);
-			}
-			if (consumerConfig != null) {
-				for (Consumer consumer : consumerConfig.getConsumers()) {
-					if (isStart(consumer)) {
-						startConsumer(consumer);
-					} else {
-						log.info("MQ consumer not started: " + consumer);
-					}
-				}
-			}
+			start(configPath);
 		} else {
 			log.info("MQ consumer not started: nicki.mq.consumer.start=FALSE");
 			
 		}
+	}
+	
+	public static ConsumerContextListener startConsumers(String configPath) {
+		ConsumerContextListener consumerContextListener = new ConsumerContextListener();
+		consumerContextListener.start(configPath);
+		return consumerContextListener;
+	}
+	
+	private void start(String configPath) {
+		ConsumerConfig consumerConfig = null;
+		try {
+			consumerConfig = JsonHelper.toBean(ConsumerConfig.class, getClass().getResourceAsStream(configPath));
+		} catch (IllegalAccessException | InvocationTargetException | InstantiationException e) {
+			log.error("Error readin condumer config: " + configPath, e);
+		}
+		if (consumerConfig != null) {
+			for (Consumer consumer : consumerConfig.getConsumers()) {
+				if (isStart(consumer)) {
+					startConsumer(consumer);
+				} else {
+					log.info("MQ consumer not started: " + consumer);
+				}
+			}
+		}
+		
 	}
 
 	
@@ -91,16 +103,22 @@ public class ConsumerContextListener implements ServletContextListener {
 
 
 	private void startConsumer(Consumer consumer) {
-		consumerThread = new ConsumerThread(consumer);
-		consumerThread.start();
+		consumerThreads.put(consumer.getName(), new ConsumerThread(consumer));
+		consumerThreads.get(consumer.getName()).start();
 		log.info("MQ consumer started: " + consumer);
+	}
+	
+	public void stopAllConsumers() {
+		for (String key : consumerThreads.keySet()) {
+			consumerThreads.get(key).setStop(true);
+			log.info("MQ consumer stopped: " + key);
+			
+		}
 	}
 
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
-		if (this.consumerThread != null) {
-			this.consumerThread.setStop(true);
-		}
+		stopAllConsumers();
 	}
 
 }
