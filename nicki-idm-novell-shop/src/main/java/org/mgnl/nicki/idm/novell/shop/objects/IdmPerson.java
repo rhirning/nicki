@@ -515,7 +515,7 @@ public class IdmPerson extends Person implements Serializable {
 
 		INTERNAL_USER("INTERNAL"),
 		EXTERNAL_USER("EXTERNAL"),
-		NOCLOUD_USER("NOCLOUD"),
+		RP_USER("RP"),
 		FUNCTIONAL_USER("FUNCTIONAL"),
 		SECONDARY_USER("SECONDARY"),
 		PROLIVE_USER("PROLIVE"),
@@ -539,8 +539,8 @@ public class IdmPerson extends Person implements Serializable {
 				return INTERNAL_USER;
 			} else if (EXTERNAL_USER.getValue().equals(type)) {
 				return EXTERNAL_USER;
-			} else if (NOCLOUD_USER.getValue().equals(type)) {
-				return NOCLOUD_USER;
+			} else if (RP_USER.getValue().equals(type)) {
+				return RP_USER;
 			} else if (FUNCTIONAL_USER.getValue().equals(type)) {
 				return FUNCTIONAL_USER;
 			} else if (SECONDARY_USER.getValue().equals(type)) {
