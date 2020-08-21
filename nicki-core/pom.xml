@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>8.10-SNAPSHOT</version>
+		<version>8.10</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
