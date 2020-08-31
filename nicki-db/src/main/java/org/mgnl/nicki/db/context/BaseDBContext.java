@@ -1712,18 +1712,27 @@ public class BaseDBContext
 
 	public PrimaryKey getSequenceNumber(Class<?> beanClazz, Attribute sequenceAttribute) throws Exception {
 
-		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(getQualifiedName(sequenceAttribute.sequence()));
+		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(getQualifiedQuotedName(sequenceAttribute.sequence()));
 		select(handler);
 		return new PrimaryKey(beanClazz, sequenceAttribute.name(), handler.getResult());
 	}
 
 	public Long getSequenceNumber(String sequenceName) throws Exception {
 
-		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(getQualifiedName(sequenceName));
+		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(getQualifiedQuotedName(sequenceName));
 		select(handler);
 		return handler.getResult();
 	}
 	
+	static final String HOCHKOMMA = "\"";
+	public String getQualifiedQuotedName(String name) {
+		if (!StringUtils.contains(name, '.') && this.schema != null) {
+			return HOCHKOMMA + this.schema + HOCHKOMMA + "." + HOCHKOMMA + name + HOCHKOMMA;
+		} else {
+			return HOCHKOMMA + name+ HOCHKOMMA;
+		}
+	}
+
 	public String getQualifiedName(String name) {
 		if (!StringUtils.contains(name, '.') && this.schema != null) {
 			return this.schema + "." + name;
