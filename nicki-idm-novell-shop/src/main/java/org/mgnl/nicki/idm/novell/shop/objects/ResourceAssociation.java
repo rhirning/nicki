@@ -1,8 +1,7 @@
 
 package org.mgnl.nicki.idm.novell.shop.objects;
 
-import java.util.ArrayList;
-import java.util.Collection;
+
 
 /*-
  * #%L

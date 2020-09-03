@@ -1369,7 +1369,7 @@ public class BaseDBContext
 			}
 		}
 		if (keys.size() > 0) {
-			return keys.toArray(new String[] {});
+			return keys.toArray(new String[0]);
 		} else {
 			return null;
 		}

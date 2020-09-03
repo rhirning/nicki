@@ -94,7 +94,7 @@ public class GenericAttributeMapper  implements AttributeMapper{
 	}
 	
 	public String[] getExternalAttributes() {
-		return externalAttributes.toArray(new String[]{});
+		return externalAttributes.toArray(new String[0]);
 	}
 	
 	private void add(String object, String object2) {

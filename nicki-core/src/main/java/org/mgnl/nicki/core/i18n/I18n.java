@@ -81,6 +81,6 @@ public final class I18n {
 		for (String key: keys) {
 			texts.add(I18n.getText(base + "." + key));
 		}
-		return texts.toArray(new String[]{});
+		return texts.toArray(new String[0]);
 	}
 }

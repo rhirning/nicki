@@ -199,7 +199,7 @@ public class DataHelper {
 	 * @return String array
 	 */
 	public static String[] toStringArray(String data, String separator) {
-		return getList(data, separator).toArray(new String[]{});
+		return getList(data, separator).toArray(new String[0]);
 	}
 	
 	/**

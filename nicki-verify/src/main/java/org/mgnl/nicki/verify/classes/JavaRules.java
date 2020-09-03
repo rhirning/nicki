@@ -43,7 +43,7 @@ public class JavaRules {
 		for (String className : classNames) {
 			classes.add(Class.forName(className));
 		}
-		return evaluate(data, classes.toArray(new Class[]{}));
+		return evaluate(data, classes.toArray(new Class[0]));
 	}
 	
 	public static List<ReferencedError> evaluate(Map<String, Object> data, Class<?> ...classes) throws MissingAttributeException {

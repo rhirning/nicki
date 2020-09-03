@@ -272,7 +272,6 @@ public class JsonHelper extends BeanUtilsHelper {
 		return bean;
 	}
 	
-	@SuppressWarnings("unchecked")
 	private static void fillBeanWithProperties(Class<? extends Object> clazz, Object bean, JsonObject data) {
 		Class<? extends Object> superClass = clazz.getSuperclass();
 		if (superClass != null) {
