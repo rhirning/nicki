@@ -45,6 +45,7 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.xls.model.template.Box;
 import org.mgnl.nicki.xls.model.template.Document;
@@ -68,6 +69,7 @@ public class XlsEngine {
 	public XlsEngine()  {
 	}
 
+	@Deprecated
 	public void render(InputStream master, XlsTemplate xlsTemplate, OutputStream os) throws IOException {
 		log.debug("rendering xls");
 		//if (template.)
@@ -76,6 +78,36 @@ public class XlsEngine {
 		}
 		if (wb == null) {
 			wb = new HSSFWorkbook();  // or new XSSFWorkbook();
+		}
+		Document document = xlsTemplate.getDocument();
+
+		createDefaultStyles();
+		if (document.getStyles() != null) {
+			List<Style> styles = document.getStyles().getStyle();
+			for (Style style : styles) {
+				cellStyles.put(style.getName(), createCellStyle(style));
+			}
+		}
+
+		List<Page> pages = document.getPages().getPage();
+
+		int i = 0;
+		for (Page page : pages) {
+			i++;
+			render(wb, page, i);
+		}
+
+		wb.write(os);
+	}
+
+	public void renderXlsx(InputStream master, XlsTemplate xlsTemplate, OutputStream os) throws IOException {
+		log.debug("rendering xls");
+		//if (template.)
+		if (master != null) {
+			wb = new XSSFWorkbook(master);
+		}
+		if (wb == null) {
+			wb = new XSSFWorkbook();  // or new XSSFWorkbook();
 		}
 		Document document = xlsTemplate.getDocument();
 

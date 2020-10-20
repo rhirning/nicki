@@ -33,21 +33,20 @@ import org.mgnl.nicki.xls.template.XlsTemplate;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@Deprecated
-public class XlsTemplateRenderer extends Thread implements Runnable {
+public class XlsxTemplateRenderer extends Thread implements Runnable {
 	InputStream in;
 	OutputStream out;
 	EngineTemplate template;
 	byte[] master;
 
-	public XlsTemplateRenderer(EngineTemplate template, InputStream in, OutputStream out) {
+	public XlsxTemplateRenderer(EngineTemplate template, InputStream in, OutputStream out) {
 		super();
 		this.template = template;
 		this.in = in;
 		this.out = out;
 	}
 
-	public XlsTemplateRenderer(byte[] master, InputStream in, OutputStream out) {
+	public XlsxTemplateRenderer(byte[] master, InputStream in, OutputStream out) {
 		super();
 		this.master = master;
 		this.in = in;
@@ -63,7 +62,7 @@ public class XlsTemplateRenderer extends Thread implements Runnable {
 			} else if (this.template != null && this.template.getFile() != null) {
 				masterIn = new ByteArrayInputStream(this.template.getFile());
 			}
-			engine.render(masterIn, template, out);
+			engine.renderXlsx(masterIn, template, out);
 			out.flush();
 			out.close();
 		} catch (Exception e) {

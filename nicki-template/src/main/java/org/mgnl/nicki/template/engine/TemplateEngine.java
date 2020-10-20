@@ -44,6 +44,7 @@ import org.mgnl.nicki.template.engine.ConfigurationFactory.TYPE;
 import org.mgnl.nicki.template.handler.TemplateHandler;
 import org.mgnl.nicki.template.pdf.PdfTemplateRenderer2;
 import org.mgnl.nicki.template.pdf.XlsTemplateRenderer;
+import org.mgnl.nicki.template.pdf.XlsxTemplateRenderer;
 import org.xml.sax.SAXException;
 
 import com.itextpdf.text.DocumentException;
@@ -128,6 +129,7 @@ public class TemplateEngine {
 		return pis;
 	}
 
+	@Deprecated
 	public InputStream executeTemplateAsXls(EngineTemplate template, String templateName,
 			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
@@ -139,6 +141,18 @@ public class TemplateEngine {
 		return pis;
 	}
 
+	public InputStream executeTemplateAsXlsx(EngineTemplate template, String templateName,
+			Map<String, Object> dataModel) throws IOException,
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+	    PipedOutputStream pos = new PipedOutputStream();
+	    PipedInputStream pis = new PipedInputStream(pos);
+	    
+		XlsxTemplateRenderer renderer = new XlsxTemplateRenderer(template, executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos);
+		renderer.start();
+		return pis;
+	}
+
+	@Deprecated
 	public InputStream executeTemplateAsXls(byte[] master, String templateName,
 			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
@@ -146,6 +160,17 @@ public class TemplateEngine {
 	    PipedInputStream pis = new PipedInputStream(pos);
 	    
 		XlsTemplateRenderer renderer = new XlsTemplateRenderer(master, executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos);
+		renderer.start();
+		return pis;
+	}
+
+	public InputStream executeTemplateAsXlsx(byte[] master, String templateName,
+			Map<String, Object> dataModel) throws IOException,
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+	    PipedOutputStream pos = new PipedOutputStream();
+	    PipedInputStream pis = new PipedInputStream(pos);
+	    
+		XlsxTemplateRenderer renderer = new XlsxTemplateRenderer(master, executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos);
 		renderer.start();
 		return pis;
 	}

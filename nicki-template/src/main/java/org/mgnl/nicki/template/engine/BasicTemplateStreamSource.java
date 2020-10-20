@@ -104,6 +104,17 @@ public class BasicTemplateStreamSource {
 		return null;
 	}
 
+	public InputStream getXlsxStream() {
+		try {
+			return TemplateEngine.getInstance().executeTemplateAsXlsx(template, getTemplatePath(), getDataModel());
+		} catch (Exception e) {
+			log.error("Error", e);
+		}
+		
+		return null;
+	}
+
+	@Deprecated
 	public InputStream getXlsStream() {
 		try {
 			return TemplateEngine.getInstance().executeTemplateAsXls(template, getTemplatePath(), getDataModel());

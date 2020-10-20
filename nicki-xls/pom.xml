@@ -15,6 +15,14 @@
 			<artifactId>poi</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-core</artifactId>
 			<version>${project.version}</version>

@@ -51,8 +51,8 @@ public class TestXLS {
 		
 
 			try {
-				FileOutputStream out = new FileOutputStream("target/document.xls");
-				IOUtils.copy(engine.executeTemplateAsXls((byte[])null, template, dataModel), out);
+				FileOutputStream out = new FileOutputStream("target/document.xlsx");
+				IOUtils.copy(engine.executeTemplateAsXlsx((byte[])null, template, dataModel), out);
 			} catch (IOException | TemplateException | InvalidPrincipalException | ParserConfigurationException
 					| SAXException | DocumentException e) {
 				// TODO Auto-generated catch block

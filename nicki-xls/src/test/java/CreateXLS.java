@@ -33,8 +33,8 @@ public class CreateXLS {
 		InputStream in = CreateXLS.class.getResourceAsStream("/document.xml");
 		XlsEngine engine = new XlsEngine();
 		try {
-			FileOutputStream os = new FileOutputStream("target/output.xls");
-			engine.render(null, new XlsTemplate(in), os);
+			FileOutputStream os = new FileOutputStream("target/output.xlsx");
+			engine.renderXlsx(null, new XlsTemplate(in), os);
 		} catch (IOException | JAXBException e) {
 			e.printStackTrace();
 		}
