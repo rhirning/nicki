@@ -516,6 +516,7 @@ public class IdmPerson extends Person implements Serializable {
 		INTERNAL_USER("INTERNAL"),
 		EXTERNAL_USER("EXTERNAL"),
 		RP_USER("RP"),
+		GUEST_USER("GUEST"),
 		CLOUD_USER("CLOUD"),
 		FUNCTIONAL_USER("FUNCTIONAL"),
 		SECONDARY_USER("SECONDARY"),
