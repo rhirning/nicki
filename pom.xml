@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mgnl.nicki</groupId>
 	<artifactId>nicki-parent</artifactId>
-	<version>8.16-SNAPSHOT</version>
+	<version>8.16</version>
 	<name>nicki-parent</name>
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
@@ -467,7 +467,7 @@
 		<connection>scm:git:https://github.com/rhirning/nicki</connection>
 		<developerConnection>scm:git:https://github.com/rhirning/nicki</developerConnection>
 		<url>scm:git:https://github.com/rhirning/nicki</url>
-		<tag>master</tag>
+		<tag>nicki-parent-8.16</tag>
 	</scm>
 	<distributionManagement>
 		<repository>
