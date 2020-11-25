@@ -101,7 +101,7 @@ public class LdapSearchGroupWrapper {
 	
 	private LdapSearchGroup group;
 	private final static Pattern OUTER_REGEX = Pattern.compile("\\|\\[(.*?)\\](PRECISE|TIME|DAY)?\\|");
-	private final static Pattern INNER_REGEX = Pattern.compile("([+-])(\\d+)(MONTH|DAY|HOUR|MIN)S?");
+	private final static Pattern INNER_REGEX = Pattern.compile("([+-])(\\d+)(MONTH|DAY|HOUR|MINUTE)S?");
 
 	private String dateFormat = FORMAT.PRECISE.getValue();
 	
