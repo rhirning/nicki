@@ -124,29 +124,27 @@ public class LdapContext extends BasicContext implements NickiContext {
 
 	@Override
 	public DynamicObject login(String username, String password) {
-		log.info("login: start");
+		log.debug("login: start for user " + username);
 		DynamicObject user = loadObject(username);
 		if (user == null) {
-			log.info("login: loadObject not successful");
+			log.info("login: loadObject not successful for user " + username);
 			List<DynamicObject> list = loadObjects(getTarget().getBaseDn(), "cn=" + username);
 			
 			if (list != null && list.size() == 1) {
-				log.info("login: loadObjectssuccessful");
+				log.debug("login: loadObjects successful");
 				user = list.get(0);
 			} else {
-				log.info("login: loadObjects not successful");
 				log.debug("Loading Objects not successful: " 
 						+ ((list == null)?"null":"size=" + list.size()));
 			}
 		} else {
-			log.info("login: loadObject successful");
+			log.debug("login: loadObject successful");
 		}
 		if (user != null) {
-			log.info("login: before getDirContex)");
 			log.debug("try login for user " + user.getDisplayName());
 			try {
 				getLdapContext(user.getPath(), password);
-				log.info("login: after getDirContext");
+				log.debug("login: after getDirContext");
 				return user;
 			} catch (Exception e) {
 				log.debug("Could not login user " + username, e);
@@ -154,7 +152,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		} else {
 			log.debug("could not load user " + username);
 		}
-		log.info("login: end");
+		log.debug("login: end");
 		return null;
 	}
 
