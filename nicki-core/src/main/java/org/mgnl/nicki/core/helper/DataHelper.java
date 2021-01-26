@@ -79,6 +79,16 @@ public class DataHelper {
 			      .atZone(ZoneId.systemDefault())
 			      .toInstant());
 	}
+	
+	public static <T> List<T> getList (@SuppressWarnings("unchecked") T ... entries) {
+		List<T> list = new ArrayList<T>();
+		if (entries != null) {
+			for (T entry : entries) {
+				list.add(entry);
+			}
+		}
+		return list;
+	}
         
 
 	/**
