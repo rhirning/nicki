@@ -32,6 +32,8 @@ import java.io.ObjectOutputStream;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -66,6 +68,17 @@ public class DataHelper {
 	public final static String FORMAT_TIMESTAMP = "yyyy-MM-dd HH:mm:ss Z";
 	public final static String FORMAT_GERMAN_TIMESTAMP = "dd.MM.yyyy HH:mm:ss";
 
+	public static LocalDate getLocalDate(Date date) {
+		return date.toInstant()
+			      .atZone(ZoneId.systemDefault())
+			      .toLocalDate();
+	}
+
+	public static Date getDate(LocalDate localDate) {
+		return Date.from(localDate.atStartOfDay()
+			      .atZone(ZoneId.systemDefault())
+			      .toInstant());
+	}
         
 
 	/**
