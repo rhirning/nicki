@@ -15,6 +15,7 @@
 		<idm.version>4.5</idm.version>
 		<activemq-version>5.15.12</activemq-version>
 		<vaadin.version>7.7.16</vaadin.version>
+		<project.scm.id>github</project.scm.id>
 	</properties>
 	<inceptionYear>2017</inceptionYear>
 	<modules>
