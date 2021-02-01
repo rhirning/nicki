@@ -6,19 +6,19 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>8.21-SNAPSHOT</version>
+		<version>8.21</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-idm-novell</artifactId>
-			<version>8.21-SNAPSHOT</version>
+			<version>8.21</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-shop-base</artifactId>
-			<version>8.21-SNAPSHOT</version>
+			<version>8.21</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
