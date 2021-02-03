@@ -33,10 +33,6 @@
 			<artifactId>bcmail-jdk15on</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-core</artifactId>
 			<version>8.22-SNAPSHOT</version>

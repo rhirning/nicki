@@ -14,7 +14,6 @@
 		<project.build.sourceEncoding>iso-8859-1</project.build.sourceEncoding>
 		<idm.version>4.5</idm.version>
 		<activemq-version>5.15.12</activemq-version>
-		<vaadin.version>7.7.16</vaadin.version>
 		<project.scm.id>github</project.scm.id>
 	</properties>
 	<inceptionYear>2017</inceptionYear>
@@ -211,11 +210,6 @@
 				<version>4.13.1</version>
 			</dependency>
 			<dependency>
-				<groupId>log4j</groupId>
-				<artifactId>log4j</artifactId>
-				<version>1.2.17</version>
-			</dependency>
-			<dependency>
 				<groupId>org.apache.activemq</groupId>
 				<artifactId>activemq-all</artifactId>
 				<version>${activemq-version}</version>
@@ -259,6 +253,21 @@
 				<groupId>org.apache.jackrabbit</groupId>
 				<artifactId>jackrabbit-webapp</artifactId>
 				<version>2.4.3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-core</artifactId>
+				<version>2.14.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.logging.log4j</groupId>
+				<artifactId>log4j-api</artifactId>
+				<version>2.14.0</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.apache.logging.log4j</groupId>
+			    <artifactId>log4j-slf4j-impl</artifactId>
+			    <version>2.14.0</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.lucene</groupId>
@@ -342,16 +351,6 @@
 				<version>[2.3.2,)</version>
 			</dependency>
 			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-api</artifactId>
-				<version>1.7.6</version>
-			</dependency>
-			<dependency>
-				<groupId>org.slf4j</groupId>
-				<artifactId>slf4j-log4j12</artifactId>
-				<version>1.7.6</version>
-			</dependency>
-			<dependency>
 				<groupId>org.xhtmlrenderer</groupId>
 				<artifactId>core-renderer</artifactId>
 				<version>R8</version>
@@ -378,7 +377,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>2.5.3</version>
 
 				<dependencies>
 					<dependency>

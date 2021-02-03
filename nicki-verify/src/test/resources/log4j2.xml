@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration>
+  <Appenders>
+    <Console name="STDOUT" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d %-5p [%t] %C{2} (%F:%L) - %m%n"/>
+    </Console>
+  </Appenders>
+  <Loggers>
+    <Logger name="org.mgnl.nicki.cache" level="info"/>
+    <Logger name="org.mgnl.nicki.core" level="info"/>
+    <Logger name="org.mgnl.nicki.core.config.Config" level="info"/>
+    <Logger name="de.provinzial.idm.ws.handler" level="info"/>
+    <Logger name="de.provinzial.idm.um.ws.comm" level="info"/>
+    <Logger name="de.provinzial.idm.um.api.ws" level="info"/>
+    <Logger name="org.mgnl.nicki.ldap" level="info"/>
+    <Logger name="org.mgnl.nicki.shop" level="info"/>
+    <Logger name="org.mgnl.nicki.db" level="info"/>
+    <Logger name="org.mgnl.nicki.vaadin" level="info"/>
+    <Logger name="de.provinzial.idm.ws.test" level="info"/>
+    <Logger name="org.mgnl.nicki.vaadin.base.application.NickiApplication" level="info"/>
+    <Logger name="org.mgnl.nicki.core.helper.AnnotationHelper" level="info"/>
+    <Logger name="org.mgnl.nicki.db.context.BaseDBContext" level="debug"/>
+    <Logger name="org.mgnl.nicki.search" level="info"/>
+    <Logger name="org.mgnl.nicki.vaadin.base.menu.application" level="debug"/>
+    <Logger name="org.mgnl.nicki.ldap" level="info"/>
+    <Logger name="org.mgnl.nicki.core.helper.AnnotationHelper" level="info"/>
+    <Logger name="org.mgnl.nicki.core.helper.AnnotationHelper" level="info"/>
+    <Root level="info">
+      <AppenderRef ref="STDOUT"/>
+    </Root>
+  </Loggers>
+</Configuration>
