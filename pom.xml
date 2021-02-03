@@ -28,7 +28,6 @@
 		<module>nicki-idm-novell</module>
 		<module>nicki-idm-novell-shop</module>
 		<module>nicki-idm-novell-ws</module>
-		<module>nicki-jcr</module>
 		<module>nicki-ldap</module>
 		<module>nicki-lucene-search</module>
 		<module>nicki-mail-extract</module>
@@ -173,11 +172,6 @@
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-themes</artifactId>
 				<version>${vaadin.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>javax.jcr</groupId>
-				<artifactId>jcr</artifactId>
-				<version>2.0</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.json</groupId>
