@@ -6,19 +6,19 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>8.24-SNAPSHOT</version>
+		<version>8.24</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-dynamic-objects</artifactId>
-			<version>8.24-SNAPSHOT</version>
+			<version>8.24</version>
 		</dependency>
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-shop-base</artifactId>
-			<version>8.24-SNAPSHOT</version>
+			<version>8.24</version>
 		</dependency>
 		<dependency>
 			<groupId>com.netiq.common</groupId>
