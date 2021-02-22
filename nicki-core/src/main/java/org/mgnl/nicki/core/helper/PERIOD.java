@@ -57,6 +57,12 @@ public enum PERIOD {
 		public Period getPeriod() {
 			return new Period(Period.getFirstDayOfYear(), Period.getLastDayOfYear());
 		}
+	},
+	USER_DEFINED {
+		@Override
+		public Period getPeriod() {
+			return null;
+		}
 	};
 	
 	public Calendar getStart() {

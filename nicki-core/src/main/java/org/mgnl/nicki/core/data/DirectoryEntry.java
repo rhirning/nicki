@@ -28,6 +28,7 @@ import java.util.List;
 
 public class DirectoryEntry extends FileEntry implements TreeData {
 	private static final long serialVersionUID = 501515157067795051L;
+	private List<TreeData> children;
 
 	public DirectoryEntry(String path) {
 		super(path);
@@ -39,11 +40,22 @@ public class DirectoryEntry extends FileEntry implements TreeData {
 
 	@Override
 	public List<TreeData> getAllChildren() {
-		List<TreeData> files = new ArrayList<>();
-		for(File file : getFile().listFiles()) {
-			files.add(new DirectoryEntry(file));
+		if (children == null) {
+			System.out.println("getAllChildren of " + this);
+			children = new ArrayList<>();
+			if (this.getFile().listFiles() != null) {
+				for (File child : this.getFile().listFiles()) {
+					if (child.isDirectory()) {
+						FileEntry dir = new DirectoryEntry(child);
+						children.add(dir);
+						System.out.println("child directory found: " + dir);
+					} else {
+						System.out.println("non directory child found: " + child.getName());
+					}
+				}
+			}
 		}
-		return files;
+		return children.size() > 0 ? children : null;
 	}
 
 

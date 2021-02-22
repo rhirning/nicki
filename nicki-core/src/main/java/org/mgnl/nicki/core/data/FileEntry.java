@@ -65,6 +65,10 @@ public class FileEntry implements TreeData, Serializable {
 	public String getName() {
 		return file.getName();
 	}
+	
+	public String toString() {
+		return getName();
+	}
 
 	@Override
 	public void unLoadChildren() {
@@ -73,14 +77,7 @@ public class FileEntry implements TreeData, Serializable {
 	@Override
 	public List<TreeData> getAllChildren() {
 		List<TreeData> children = new ArrayList<>();
-		if (this.file.listFiles() != null) {
-			for (File child : this.file.listFiles()) {
-				if (child.isDirectory()) {
-					children.add(new FileEntry(child));
-				}
-			}
-		}
-		return children;
+		return null;
 	}
 
 	@Override

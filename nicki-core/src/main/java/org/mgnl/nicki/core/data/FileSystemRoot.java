@@ -23,6 +23,7 @@ package org.mgnl.nicki.core.data;
 
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -33,7 +34,7 @@ import org.mgnl.nicki.core.data.TreeData;
 
 
 @SuppressWarnings("serial")
-public class FileSystemRoot implements DataProvider, Serializable {
+public class FileSystemRoot implements DataProvider<TreeData>, Serializable {
 	private String root;
 	private EntryFilter entryFilter;
 
@@ -58,7 +59,7 @@ public class FileSystemRoot implements DataProvider, Serializable {
 	}
 
 	public TreeData getRoot(NickiContext context) {
-		return new FileEntry(this.root);
+		return new DirectoryEntry(this.root);
 	}
 
 	public String getMessage() {
@@ -67,6 +68,11 @@ public class FileSystemRoot implements DataProvider, Serializable {
 
 	public EntryFilter getEntryFilter() {
 		return this.entryFilter;
+	}
+
+	@Override
+	public Collection<? extends TreeData> getChildren(TreeData parent) {
+		return parent.getAllChildren();
 	}
 
 }

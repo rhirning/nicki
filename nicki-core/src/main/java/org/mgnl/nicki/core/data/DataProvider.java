@@ -23,13 +23,13 @@ package org.mgnl.nicki.core.data;
 
 
 import java.util.Collection;
-
 import org.mgnl.nicki.core.context.NickiContext;
 
 
 public interface DataProvider<T> {
 
 	Collection<? extends T> getChildren(NickiContext context);
+	Collection<? extends T> getChildren(T parent);
 	T getRoot(NickiContext context);
 	String getMessage();
 	EntryFilter getEntryFilter();
