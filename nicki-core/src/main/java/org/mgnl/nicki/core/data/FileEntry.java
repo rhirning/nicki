@@ -77,7 +77,7 @@ public class FileEntry implements TreeData, Serializable {
 	@Override
 	public List<TreeData> getAllChildren() {
 		List<TreeData> children = new ArrayList<>();
-		return null;
+		return children;
 	}
 
 	@Override

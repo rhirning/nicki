@@ -53,6 +53,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+@SuppressWarnings("deprecation")
 public class TemplateEngine {
 	public enum OUTPUT_TYPE {TXT, PDF, CSV, PDF2, XLS };
 	public final static String DEFAULT_CHARSET = "UTF-8";

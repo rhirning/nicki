@@ -217,6 +217,16 @@ public class BeanHelper {
 		return false;
 	}
 
+	public static String getKeyAttribute(Object bean) {
+		for (Field field : getFields(bean.getClass())) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null && attribute.primaryKey()) {
+				return field.getName();
+			}
+		}
+		return null;
+	}
+
 	public static String getForeignValue(Object bean, String attributeName, String dbContextName) {
 		for (Field field : getFields(bean.getClass())) {
 			if (StringUtils.equals(attributeName, field.getName())) {

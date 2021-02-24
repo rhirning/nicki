@@ -851,9 +851,9 @@ public class BaseDBContext
 					pos++;
 					Boolean value = (Boolean) cv.getValue(columnName);
 					if (value != null) {
-						pstmt.setBoolean(pos, value);
+						pstmt.setInt(pos, value? 1: 0);
 					} else {
-						pstmt.setNull(pos, Types.BOOLEAN);
+						pstmt.setNull(pos, Types.INTEGER);
 					}
 				} else if (type == Type.BLOB) {
 					pos++;
