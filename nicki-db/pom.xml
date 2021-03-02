@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>8.26-SNAPSHOT</version>
+		<version>8.26</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
@@ -17,7 +17,7 @@
 		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-core</artifactId>
-			<version>8.26-SNAPSHOT</version>
+			<version>8.26</version>
 		</dependency>
 		<dependency>
 			<groupId>org.projectlombok</groupId>
