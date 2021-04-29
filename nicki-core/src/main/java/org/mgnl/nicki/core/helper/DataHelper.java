@@ -69,15 +69,23 @@ public class DataHelper {
 	public final static String FORMAT_GERMAN_TIMESTAMP = "dd.MM.yyyy HH:mm:ss";
 
 	public static LocalDate getLocalDate(Date date) {
-		return date.toInstant()
-			      .atZone(ZoneId.systemDefault())
-			      .toLocalDate();
+		if (date != null) {
+			return date.toInstant()
+				      .atZone(ZoneId.systemDefault())
+				      .toLocalDate();
+		} else {
+			return null;
+		}
 	}
 
 	public static Date getDate(LocalDate localDate) {
-		return Date.from(localDate.atStartOfDay()
-			      .atZone(ZoneId.systemDefault())
-			      .toInstant());
+		if (localDate != null) {
+			return Date.from(localDate.atStartOfDay()
+				      .atZone(ZoneId.systemDefault())
+				      .toInstant());
+		} else {
+			return null;
+		}
 	}
 	
 	public static <T> List<T> getList (@SuppressWarnings("unchecked") T ... entries) {
