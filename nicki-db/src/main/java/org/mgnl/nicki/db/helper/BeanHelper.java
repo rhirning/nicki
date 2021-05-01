@@ -272,4 +272,27 @@ public class BeanHelper {
 		}
 		return new ArrayList<>();
 	}
+
+	public static Object getForeignKeyObject(Object bean, String attributeName, String dbContextName, Long key) {
+		for (Field field : getFields(bean.getClass())) {
+			if (StringUtils.equals(attributeName, field.getName())) {
+				ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
+				if (foreignKey != null && StringUtils.isNotBlank(foreignKey.display())) {
+					try {
+						Object foreignObject = foreignKey.foreignKeyClass().newInstance();
+						Field foreignKeyField = getFieldFromColumnName(foreignKey.foreignKeyClass(), foreignKey.columnName());
+						if (foreignKeyField != null) {
+							setValue(foreignObject, foreignKeyField.getName(), key);
+							try (DBContext dbContext = DBContextManager.getContext(dbContextName)) {
+								return dbContext.loadObject(foreignObject, false);
+							}
+						}
+					} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
+						log.error("Error reading foreign value", e);
+					}
+				}
+			}
+		}
+		return null;
+	}
 }
