@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
-public interface TreeData {
+public interface TreeData extends TreeObject{
 
 	String getDisplayName();
 
