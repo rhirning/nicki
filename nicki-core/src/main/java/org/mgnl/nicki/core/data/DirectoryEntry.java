@@ -26,6 +26,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 public class DirectoryEntry extends FileEntry implements TreeData {
 	private static final long serialVersionUID = 501515157067795051L;
 	private List<TreeData> children;
@@ -41,16 +43,16 @@ public class DirectoryEntry extends FileEntry implements TreeData {
 	@Override
 	public List<TreeData> getAllChildren() {
 		if (children == null) {
-			System.out.println("getAllChildren of " + this);
+			log.debug("getAllChildren of " + this);
 			children = new ArrayList<>();
 			if (this.getFile().listFiles() != null) {
 				for (File child : this.getFile().listFiles()) {
 					if (child.isDirectory()) {
 						FileEntry dir = new DirectoryEntry(child);
 						children.add(dir);
-						System.out.println("child directory found: " + dir);
+						log.debug("child directory found: " + dir);
 					} else {
-						System.out.println("non directory child found: " + child.getName());
+						log.debug("non directory child found: " + child.getName());
 					}
 				}
 			}

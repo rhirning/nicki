@@ -189,7 +189,7 @@ import lombok.extern.slf4j.Slf4j;
  * 
  */
 @Slf4j
-public final class SpnegoHttpFilter implements Filter {
+public class SpnegoHttpFilter implements Filter {
 
     private static final String SESSION_NO_USER = "NICKI_SESSION_NO_USER";
     private static final String SESSION_USER = "NICKI_SESSION_USER";
