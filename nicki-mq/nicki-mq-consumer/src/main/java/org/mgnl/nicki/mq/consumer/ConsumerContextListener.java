@@ -40,6 +40,15 @@ import org.mgnl.nicki.verify.VerifyException;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * ConsumerContextListener
+ * @author B996043
+ * 
+ * Konfiguration:
+ * nicki.mq.consumer.start = true  	==> die Consumer werden gestartet
+ * nicki.mq.consumer.config			==> Konfigurationsdatei 
+ * 
+ */
 @Slf4j
 public class ConsumerContextListener implements ServletContextListener {
 	
@@ -50,6 +59,9 @@ public class ConsumerContextListener implements ServletContextListener {
 		boolean startConsumer = Config.getBoolean("nicki.mq.consumer.start", false);
 		if (startConsumer) {
 			String configPath = sce.getServletContext().getInitParameter("mq.config");
+			if (StringUtils.isBlank(configPath)) {
+				configPath = Config.getString("nicki.mq.consumer.config");
+			}
 			start(configPath);
 		} else {
 			log.info("MQ consumer not started: nicki.mq.consumer.start=FALSE");

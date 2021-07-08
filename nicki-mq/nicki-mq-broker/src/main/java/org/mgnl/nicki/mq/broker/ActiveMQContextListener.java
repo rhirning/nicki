@@ -52,7 +52,24 @@ import org.mgnl.nicki.verify.Verify;
 import org.mgnl.nicki.verify.VerifyException;
 
 import lombok.extern.slf4j.Slf4j;
-
+/**
+ * ActiveMQContextListener
+ * startet einen ActiveMQ Broker
+ * @author rhirning
+ * 
+ * Konfiguration:
+ * nicki.mq.broker.start				= boolean
+ * nicki.mq.broker.rule					= Regeln gemäß org.mgnl.nicki.verify.Verify. Beispiel: #{hostname}:values:lxtom17p
+ * nicki.mq.broker.wait					= Startverzögerung in Sekunden (z.B. 30)
+ * nicki.mq.connector					= URL des Brokers (z.B tcp://lxtom17p.pnw.loc:61616)
+ * nicki.mq.persistenceType				= JDBC
+ * nicki.mq.context						= nicki-db-context (z.B. history)
+ * nicki.mq.tables.create				= boolean
+ * nicki.mq.user.password.producer		= Producer Passwort
+ * nicki.mq.user.password.consumer		= Consumer Passwort
+ * nicki.mq.user.password.admin			= Admin Passwort
+ * 
+ */
 @Slf4j
 public class ActiveMQContextListener implements ServletContextListener {
 	private BrokerThread brokerThread;

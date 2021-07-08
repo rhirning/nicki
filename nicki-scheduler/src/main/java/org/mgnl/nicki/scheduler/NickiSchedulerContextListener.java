@@ -33,6 +33,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.helper.JsonHelper;
 import org.mgnl.nicki.core.util.Classes;
@@ -49,6 +50,16 @@ import org.quartz.impl.StdSchedulerFactory;
 
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * NickiSchedulerContextListener
+ * @author rhirning
+ * 
+ * Konfigurationsdatei wird festgelegt in
+ * 
+ * nicki.scheduler.config
+ * 
+ * ist keine Konfigurationsdatei konfiguriert, dann wird der Scheduler nicht gestartet
+ */
 @Slf4j
 public class NickiSchedulerContextListener implements ServletContextListener {
 
@@ -64,6 +75,9 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 
 		ServletContext ctx = servletContextEvent.getServletContext();
 		String configPath = ctx.getInitParameter("jobConfig");
+		if (StringUtils.isBlank(configPath)) {
+			configPath = Config.getString("nicki.scheduler.config");
+		}
 		if (StringUtils.isNotBlank(configPath)) {
 			try {
 				JobConfigurations jobConfigurations = JsonHelper.toBean(JobConfigurations.class,
