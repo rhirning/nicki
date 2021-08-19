@@ -23,6 +23,7 @@ package org.mgnl.nicki.cache.filter;
 
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -38,4 +39,14 @@ public class SimpleServletOutputStream extends ServletOutputStream {
     public void write(int b) throws IOException {
         out.write(b);
     }
+
+	@Override
+	public boolean isReady() {
+		return true;
+	}
+
+	@Override
+	public void setWriteListener(WriteListener writeListener) {
+		// TODO Auto-generated method stub
+	}
 }
