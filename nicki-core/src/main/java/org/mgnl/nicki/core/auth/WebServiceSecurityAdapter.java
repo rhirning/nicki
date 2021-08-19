@@ -28,8 +28,6 @@ import java.util.Map;
 import javax.xml.ws.handler.MessageContext;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.auth.BasicAuthAdapter;
-import org.mgnl.nicki.core.auth.SSOAdapter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

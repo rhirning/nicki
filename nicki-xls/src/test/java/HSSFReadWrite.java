@@ -208,7 +208,7 @@ public final class HSSFReadWrite {
 								String value;
 
 								if(cell != null) {
-									switch (cell.getCellTypeEnum()) {
+									switch (cell.getCellType()) {
 
 										case FORMULA:
 											value = "FORMULA value=" + cell.getCellFormula();
@@ -235,7 +235,7 @@ public final class HSSFReadWrite {
 											break;
 
 										default:
-											value = "UNKNOWN value of type " + cell.getCellTypeEnum();
+											value = "UNKNOWN value of type " + cell.getCellType();
 									}
 									System.out.println("CELL col=" + cell.getColumnIndex() + " VALUE="
 											+ value);

@@ -23,7 +23,6 @@ package org.mgnl.nicki.shop.base.objects;
 
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
-import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 
 public interface ValueProvider {
 	public enum TYPE {SELF,ALL};

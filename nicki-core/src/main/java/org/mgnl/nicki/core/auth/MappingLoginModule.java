@@ -28,9 +28,6 @@ import javax.security.auth.login.LoginException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.auth.DynamicObjectPrincipal;
-import org.mgnl.nicki.core.auth.InvalidPrincipalException;
-import org.mgnl.nicki.core.auth.NickiLoginModule;
 import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObject;

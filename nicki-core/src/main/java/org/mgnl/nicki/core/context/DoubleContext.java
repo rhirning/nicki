@@ -24,8 +24,6 @@ package org.mgnl.nicki.core.context;
 
 import java.io.Serializable;
 
-import org.mgnl.nicki.core.context.NickiContext;
-
 public class DoubleContext implements Serializable {
 	private static final long serialVersionUID = -6658652678574459666L;
 		private NickiContext context;

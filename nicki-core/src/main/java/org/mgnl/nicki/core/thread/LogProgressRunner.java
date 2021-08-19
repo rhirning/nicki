@@ -2,9 +2,6 @@
 package org.mgnl.nicki.core.thread;
 
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.thread.NickiProgress;
-import org.mgnl.nicki.core.thread.ProgressRunner;
-
 import lombok.extern.slf4j.Slf4j;
 
 /*-

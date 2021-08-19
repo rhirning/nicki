@@ -33,7 +33,6 @@ import java.util.Properties;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
-import org.mgnl.nicki.core.helper.AttributeMapper;
 
 public class GenericAttributeMapper  implements AttributeMapper{
 	

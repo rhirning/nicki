@@ -30,7 +30,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
-import org.mgnl.nicki.core.data.TreeData;
 
 
 @SuppressWarnings("serial")

@@ -429,7 +429,6 @@ public class SpnegoHttpFilter implements Filter {
     
     private static Properties toProperties(final FilterConfig filterConfig) {
         final Properties props = new Properties();
-        @SuppressWarnings("unchecked")
         final Enumeration<String> it = filterConfig.getInitParameterNames();
         
         while (it.hasMoreElements()) {

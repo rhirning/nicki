@@ -30,8 +30,6 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import org.mgnl.nicki.db.context.DBContext;
-import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.profile.InitProfileException;
 
 public class JDBCDataSource implements DataSource {
