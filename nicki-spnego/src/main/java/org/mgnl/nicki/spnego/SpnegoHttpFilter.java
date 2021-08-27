@@ -36,13 +36,13 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang.StringUtils;
 import org.ietf.jgss.GSSException;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.context.AppContext;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -288,7 +288,9 @@ public class SpnegoHttpFilter implements Filter {
     	}
     	
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
-
+        if (AppContext.getRequest() == null) {
+        	AppContext.setRequest(httpRequest);
+        }
         
 		if (httpRequest.getSession(true).getAttribute(NICKI_PARAMETERS) == null) {
 			Map<String, String> map = new HashMap<String, String>();
