@@ -26,6 +26,7 @@ public enum DataType {
 	DEFAULT,
 	DATE,
 	TIMESTAMP,
+	TIME,
 	CLOB,
 	BLOB
 

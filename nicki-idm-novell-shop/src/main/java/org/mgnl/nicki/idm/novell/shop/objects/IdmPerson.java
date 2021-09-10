@@ -38,7 +38,6 @@ import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.annotation.RemoveDynamicAttribute;
 import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.helper.DataHelper;
-import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.dynamic.objects.objects.Group;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
@@ -64,8 +63,6 @@ public class IdmPerson extends Person implements Serializable {
 	public static final String ATTRIBUTE_QUITDATE = "quitDate";
 	public static final String ATTRIBUTE_ACTIVATIONDATE = "activationDate";
 	public static final String ATTRIBUTE_MANAGER = "manager";
-	public static final String ATTRIBUTE_TYPE = "type";
-	public static final String ATTRIBUTE_TYPE_AS_STRING = "typeAsString";
 	public static final String ATTRIBUTE_COSTCENTER = "costCenter";
 	public static final String ATTRIBUTE_GENDER = "gender";
 	public static final String ATTRIBUTE_ENTITLEMENT = "entitlement";
@@ -194,22 +191,6 @@ public class IdmPerson extends Person implements Serializable {
 			}
 		}
 		return false;
-	}
-
-	public void setType(PERSONTYPE type) {
-		if(null != type) {
-			put(ATTRIBUTE_TYPE, type.getValue());
-		} else {
-			clear(ATTRIBUTE_TYPE);
-		}
-	}
-
-	public PERSONTYPE getType() {
-		return PERSONTYPE.fromValue(getAttribute(ATTRIBUTE_TYPE));
-	}
-
-	public String getTypeAsString() {
-		return getType().getDisplayName();
 	}
 
 	public void setCostCenter(String value) {
@@ -511,70 +492,12 @@ public class IdmPerson extends Person implements Serializable {
 		MALE, FEMALE
 	};
 
-	public enum PERSONTYPE {
-
-		INTERNAL_USER("INTERNAL"),
-		EXTERNAL_USER("EXTERNAL"),
-		RP_USER("RP"),
-		GUEST_USER("GUEST"),
-		CLOUD_USER("CLOUD"),
-		FUNCTIONAL_USER("FUNCTIONAL"),
-		SECONDARY_USER("SECONDARY"),
-		PROLIVE_USER("PROLIVE"),
-		MAKLER_USER("MAKLER"),
-		ADMIN_USER("ADMINACC"),
-		WEST_USER("WEST"),
-		NORTH_USER("NORTH"),
-		NOT_SET("");
-		private final String type;
-
-		private PERSONTYPE(String type) {
-			this.type = type;
-		}
-
-		public String getDisplayName() {
-			return I18n.getText("nicki.dynamic.objects.persontype." + this);
-		}
-
-		public static PERSONTYPE fromValue(String type) {
-			if (INTERNAL_USER.getValue().equals(type)) {
-				return INTERNAL_USER;
-			} else if (EXTERNAL_USER.getValue().equals(type)) {
-				return EXTERNAL_USER;
-			} else if (RP_USER.getValue().equals(type)) {
-				return RP_USER;
-			} else if (CLOUD_USER.getValue().equals(type)) {
-				return CLOUD_USER;
-			} else if (FUNCTIONAL_USER.getValue().equals(type)) {
-				return FUNCTIONAL_USER;
-			} else if (SECONDARY_USER.getValue().equals(type)) {
-				return SECONDARY_USER;
-			} else if (PROLIVE_USER.getValue().equals(type)) {
-				return PROLIVE_USER;
-			} else if (MAKLER_USER.getValue().equals(type)) {
-				return MAKLER_USER;
-			} else if (ADMIN_USER.getValue().equals(type)) {
-				return ADMIN_USER;
-			} else if (WEST_USER.getValue().equals(type)) {
-				return WEST_USER;
-			} else if (NORTH_USER.getValue().equals(type)) {
-				return NORTH_USER;
-			}
-
-			return NOT_SET;
-
-		}
-
-		public String getValue() {
-			return type;
-		}
-	}
 
 	public Person getManager() {
 		return getForeignKeyObject(Person.class, ATTRIBUTE_MANAGER);
 	}
 
-	public void setManager(IdmPerson manager) {
+	public void setManager(Person manager) {
 		if (manager != null) {
 			put(ATTRIBUTE_MANAGER, manager.getId());
 		} else {
