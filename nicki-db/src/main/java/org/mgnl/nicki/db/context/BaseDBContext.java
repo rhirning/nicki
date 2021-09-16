@@ -69,6 +69,8 @@ public class BaseDBContext
 		implements DBContext {
 	public final static String TIMESTAMP_ORACLE = "YYYY-MM-DD HH24:MI:SS";
 	public final static String TIMESTAMP_FOR_ORACLE = "yyyy-MM-dd HH:mm:ss";
+	public final static String TIME_ORACLE = "HH24.MI.SS";
+	public final static String TIME_FOR_ORACLE = "HH.mm.ss";
 	public enum PREPARED {TRUE, FALSE}
 	private String name;
 	private DBProfile profile;
@@ -1550,6 +1552,11 @@ public class BaseDBContext
 		return "to_date('" + new SimpleDateFormat(TIMESTAMP_FOR_ORACLE).format(date) + "','" + TIMESTAMP_ORACLE + "')";
 	}
 
+	@Override
+	public String toTime(Date date) {
+		return "to_date('" + new SimpleDateFormat(TIME_FOR_ORACLE).format(date) + "','" + TIME_ORACLE + "')";
+	}
+
 	protected String getStringValue(Object bean, Field field) throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (null != this.getValue(bean, field)) {
@@ -1764,6 +1771,11 @@ public class BaseDBContext
 	@Override
 	public String getDateAsDbString(Date value) {
 		return toDate(value);
+	}
+
+	@Override
+	public String getTimeAsDbString(Date value) {
+		return toTime(value);
 	}
 
 	@Override

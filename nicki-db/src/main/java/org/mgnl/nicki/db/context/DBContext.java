@@ -103,6 +103,7 @@ public interface DBContext extends AutoCloseable {
 	String getDateValue(Date date, Attribute attribute);
 
 	String toDate(Date date);
+	String toTime(Date date);
 	
 	DataSource getDataSource();
 
@@ -110,6 +111,7 @@ public interface DBContext extends AutoCloseable {
 
 	String getStringAsDbString(String value);
 	String getDateAsDbString(Date value);
+	String getTimeAsDbString(Date value);
 	String getTimestampAsDbString(Date value);
 	String getLongAsDbString(Long value);
 	String getIntAsDbString(Integer value);
@@ -119,5 +121,6 @@ public interface DBContext extends AutoCloseable {
 	PrimaryKey getSequenceNumber(Class<?> beanClazz, Attribute sequenceAttribute) throws Exception;
 	Long getSequenceNumber(String sequenceName) throws Exception;
 	<T> T get(Class<T> beanClass, ResultSet rs) throws SQLException, InstantiationException, IllegalAccessException;
+
 
 }

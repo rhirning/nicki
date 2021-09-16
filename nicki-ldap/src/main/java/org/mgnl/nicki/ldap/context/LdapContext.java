@@ -36,7 +36,6 @@ import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 import javax.naming.ldap.Control;
-import javax.naming.ldap.InitialLdapContext;
 import javax.naming.ldap.PagedResultsControl;
 import javax.naming.ldap.PagedResultsResponseControl;
 import javax.naming.ldap.StartTlsRequest;
@@ -87,7 +86,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 	
 	
-	protected javax.naming.ldap.LdapContext getLdapContext(String name, String password) throws NamingException {
+	protected NickiLdapContext getLdapContext(String name, String password) throws NamingException {
 		Hashtable<String, String> env = new Hashtable<String, String>();
 		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 		env.put(Context.PROVIDER_URL, getTarget().getProperty("providerUrl"));
@@ -111,10 +110,10 @@ public class LdapContext extends BasicContext implements NickiContext {
 		env.put("com.sun.jndi.ldap.connect.pool",
 				DataHelper.booleanOf(getTarget().getProperty("pool")) ? "true" : "false");
 
-		return new InitialLdapContext(env, null);
+		return new NickiLdapContext(env, null);
 	}
 
-	public javax.naming.ldap.LdapContext getLdapContext() throws DynamicObjectException {
+	public NickiLdapContext getLdapContext() throws DynamicObjectException {
 		try {
 			return getLdapContext(getPrincipal().getName(), getPrincipal().getPassword());
 		} catch (NamingException e) {
@@ -142,8 +141,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 		if (user != null) {
 			log.debug("try login for user " + user.getDisplayName());
-			try {
-				getLdapContext(user.getPath(), password);
+			try (NickiLdapContext ctx = getLdapContext(user.getPath(), password)) {
 				log.debug("login: after getDirContext");
 				return user;
 			} catch (Exception e) {
@@ -162,10 +160,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not create object: " + dynamicObject.getPath());
 		}
-		javax.naming.ldap.LdapContext ctx = null;
 		StartTlsResponse tls = null;
-		try {
-			ctx = getLdapContext();
+		try (NickiLdapContext ctx = getLdapContext()) {
 			if (isTls()) {
 				// Start TLS
 				tls =
@@ -187,14 +183,6 @@ public class LdapContext extends BasicContext implements NickiContext {
 		} catch (NamingException | IOException e) {
 			log.error("Error", e);
 			throw new DynamicObjectException(e);
-		} finally {
-			if (ctx != null) {
-				try {
-					ctx.close();
-				} catch (NamingException e) {
-					throw new DynamicObjectException(e);
-				}
-			}
 		}
 	}
 
@@ -205,11 +193,9 @@ public class LdapContext extends BasicContext implements NickiContext {
 
 	@Override
 	public void search(QueryHandler queryHandler) throws DynamicObjectException {
-		javax.naming.ldap.LdapContext ctx = null;
 		StartTlsResponse tls = null;
 		NamingEnumeration<SearchResult> results = null;
-		try {
-			ctx = getLdapContext();
+		try (NickiLdapContext ctx = getLdapContext()) {
 			if (isTls()) {
 				// Start TLS
 				tls =
@@ -268,14 +254,6 @@ public class LdapContext extends BasicContext implements NickiContext {
 					log.error("Error", e);
 				}
 			}
-			if (ctx != null) {
-				try {
-					ctx.close();
-				} catch (NamingException e) {
-					
-					log.error("Error", e);
-				}
-			}
 		}
 	}
 
@@ -284,10 +262,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
 		}
-		javax.naming.ldap.LdapContext ctx = null;
 		StartTlsResponse tls = null;
-		try {
-			ctx = getLdapContext();
+		try (NickiLdapContext ctx = getLdapContext()) {
 			if (isTls()) {
 				// Start TLS
 				tls =
@@ -299,14 +275,6 @@ public class LdapContext extends BasicContext implements NickiContext {
 			String details = getDetails(dynamicObject, CREATEONLY.FALSE);
 			log.error(details, e);
 			throw new DynamicObjectException(e);
-		} finally {
-			if (ctx != null) {
-				try {
-					ctx.close();
-				} catch (NamingException e) {
-					throw new DynamicObjectException(e);
-				}
-			}
 		}
 	}
 
@@ -315,10 +283,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
 		}
-		javax.naming.ldap.LdapContext ctx = null;
 		StartTlsResponse tls = null;
-		try {
-			ctx = getLdapContext();
+		try (NickiLdapContext ctx = getLdapContext()) {
 			if (isTls()) {
 				// Start TLS
 				tls =
@@ -331,14 +297,6 @@ public class LdapContext extends BasicContext implements NickiContext {
 			String details = getDetails(dynamicObject, CREATEONLY.FALSE);
 			log.error(details, e);
 			throw new DynamicObjectException(e);
-		} finally {
-			if (ctx != null) {
-				try {
-					ctx.close();
-				} catch (NamingException e) {
-					throw new DynamicObjectException(e);
-				}
-			}
 		}
 	}
 
@@ -354,10 +312,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (this.isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not delete object: " + dynamicObject.getPath());
 		}
-		javax.naming.ldap.LdapContext ctx = null;
 		StartTlsResponse tls = null;
-		try {
-			ctx = getLdapContext();
+		try (NickiLdapContext ctx = getLdapContext()) {
 			if (isTls()) {
 				// Start TLS
 				tls =
@@ -369,14 +325,6 @@ public class LdapContext extends BasicContext implements NickiContext {
 		} catch (NamingException | IOException e) {
 			log.error("Error", e);
 			throw new DynamicObjectException(e);
-		} finally {
-			if (ctx != null) {
-				try {
-					ctx.close();
-				} catch (NamingException e) {
-					throw new DynamicObjectException(e);
-				}
-			}
 		}
 	}
 
@@ -389,10 +337,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (isExist(newPath)) {
 			throw new DynamicObjectException("Object exists: " + newPath);
 		}
-		javax.naming.ldap.LdapContext ctx = null;
 		StartTlsResponse tls = null;
-		try {
-			ctx = getLdapContext();
+		try (NickiLdapContext ctx = getLdapContext()) {
 			if (isTls()) {
 				// Start TLS
 				tls =
@@ -404,14 +350,6 @@ public class LdapContext extends BasicContext implements NickiContext {
 		} catch (NamingException | IOException e) {
 			log.error("Error", e);
 			throw new DynamicObjectException(e);
-		} finally {
-			if (ctx != null) {
-				try {
-					ctx.close();
-				} catch (NamingException e) {
-					throw new DynamicObjectException(e);
-				}
-			}
 		}
 	}
 

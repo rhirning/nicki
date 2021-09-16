@@ -42,7 +42,7 @@ public class LdapGuestContext extends LdapContext implements NickiContext {
 	}
 
 	@Override
-	public javax.naming.ldap.LdapContext getLdapContext() throws DynamicObjectException {
+	public NickiLdapContext getLdapContext() throws DynamicObjectException {
 		Hashtable<String, String> env = new Hashtable<String, String>();
 		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 		env.put(Context.PROVIDER_URL, getTarget().getProperty("providerUrl"));
@@ -51,7 +51,7 @@ public class LdapGuestContext extends LdapContext implements NickiContext {
 				DataHelper.booleanOf(getTarget().getProperty("pool")) ? "true" : "false");
 
 		try {
-			return new InitialLdapContext(env, null);
+			return new NickiLdapContext(env, null);
 		} catch (NamingException e) {
 			throw new DynamicObjectException(e);
 		}

@@ -32,6 +32,7 @@ public enum Type {
 	STRING(String.class),
 	TIMESTAMP(Date.class),
 	DATE(Date.class),
+	TIME(Date.class),
 	LONG(Long.class, long.class),
 	INT(Integer.class, int.class),
 	FLOAT(Float.class, float.class),
@@ -73,6 +74,8 @@ public enum Type {
 			return dbContext.getStringAsDbString((String) value);
 		} else if (type == DATE) {
 			return dbContext.getDateAsDbString((Date) value);
+		} else if (type == TIME) {
+			return dbContext.getTimeAsDbString((Date) value);
 		} else if (type == Type.TIMESTAMP) {
 			return dbContext.getTimestampAsDbString((Date) value);
 		} else if (type == Type.LONG) {
