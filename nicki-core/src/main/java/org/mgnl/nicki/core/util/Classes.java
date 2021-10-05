@@ -1,6 +1,12 @@
 
 package org.mgnl.nicki.core.util;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 /*-
  * #%L
  * nicki-core
@@ -44,6 +50,26 @@ public class Classes {
             loadedClass = (Class<C>) Class.forName(className);
         }
         return loadedClass;
+    }
+    
+    public static Set<Class<?>> findAllClassesInPackage(String packageName) {
+        InputStream stream = ClassLoader.getSystemClassLoader()
+          .getResourceAsStream(packageName.replaceAll("[.]", "/"));
+        BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+        return reader.lines()
+          .filter(line -> line.endsWith(".class"))
+          .map(line -> getClass(line, packageName))
+          .collect(Collectors.toSet());
+    }
+ 
+    private static Class<?> getClass(String className, String packageName) {
+        try {
+            return forName(packageName + "."
+              + className.substring(0, className.lastIndexOf('.')));
+        } catch (ClassNotFoundException e) {
+            // handle the exception
+        }
+        return null;
     }
 
 
