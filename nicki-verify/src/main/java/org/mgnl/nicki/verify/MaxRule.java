@@ -38,7 +38,7 @@ public class MaxRule extends Rule {
 
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
-		if (maxValue != null &&  StringUtils.isNotEmpty(value)) {
+		if (maxValue != null &&  StringUtils.isNotBlank(value)) {
 			try {
 				return maxValue >= getLong(value);
 			} catch (Exception e) {

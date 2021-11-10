@@ -42,7 +42,10 @@ public abstract class Rule implements Serializable {
 	public abstract boolean evaluate(String value, Map<String, String> values);
 	
 	public static long getLong(String value) {
-		value = StringUtils.strip(value);
+		value = StringUtils.stripToNull(value);
+		if (value == null) {
+			return 0;
+		}
 		if (StringUtils.contains(value, ",")) {
 			value = StringUtils.substringBefore(value, ",");
 		}
@@ -53,7 +56,10 @@ public abstract class Rule implements Serializable {
 	}
 	
 	public static double getNumber(String value) throws NumberFormatException {
-		value = StringUtils.strip(value);
+		value = StringUtils.stripToNull(value);
+		if (value == null) {
+			return 0;
+		}
 		if (StringUtils.contains(value, ".")) {
 			value = StringUtils.remove(value, ".");
 		}

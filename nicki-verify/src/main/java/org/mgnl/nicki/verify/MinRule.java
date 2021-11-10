@@ -24,6 +24,7 @@ package org.mgnl.nicki.verify;
 
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 
 public class MinRule extends Rule {
@@ -37,7 +38,7 @@ public class MinRule extends Rule {
 
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
-		if (minValue != null) {
+		if (minValue != null &&  StringUtils.isNotBlank(value)) {
 			return minValue <= getLong(value);
 		}
 		return true;
