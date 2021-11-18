@@ -34,9 +34,12 @@ import java.util.List;
 import java.util.Map;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
+
 import org.apache.commons.lang.StringUtils;
 import org.jdom.Element;
 import org.mgnl.nicki.core.context.NickiContext;
@@ -702,7 +705,18 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 				if (dynAttribute != null) {
 					Class<?> type = dynAttribute.getType();
 					if (type == String.class) {
-						put(attributeName, query.getString(key));
+						if (dynAttribute.isMultiple()) {
+							List<String> list = new ArrayList<>();
+							if (query.containsKey(key)) {
+								JsonArray jsonArray = query.getJsonArray(key);
+								for (int i = 0; i < jsonArray.size(); i++) {
+									list.add(jsonArray.getString(i));
+								}
+							}
+							put(attributeName, list);
+						} else {
+							put(attributeName, query.getString(key));
+						}
 					} else if (type == Date.class) {
 						put(attributeName, query.getString(key));
 					} else if (type == Boolean.class) {
