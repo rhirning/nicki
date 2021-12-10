@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.activemq.broker.BrokerPlugin;
 import org.apache.activemq.broker.BrokerService;
+import org.apache.activemq.broker.jmx.ManagementContext;
 import org.apache.activemq.security.AuthenticationUser;
 import org.apache.activemq.security.SimpleAuthenticationPlugin;
 import org.apache.activemq.store.PersistenceAdapter;
@@ -65,8 +66,26 @@ public class BrokerThread extends Thread implements Runnable {
 			broker.setPlugins(getPlugins());
 			broker.setPersistenceAdapter(getPersistenceAdapter());
 			broker.addConnector(Config.getString("nicki.mq.connector"));
-			broker.setUseJmx(Config.getBoolean("nicki.mq.usejmx", false));
-
+			if (Config.getBoolean("nicki.mq.broker.jmx.use", false)) {
+				broker.setUseJmx(true);
+				ManagementContext managementContext = new ManagementContext();
+				boolean setContext = false;
+				if (StringUtils.isNotBlank(Config.getString("nicki.mq.broker.jmx.port"))) {
+					managementContext.setConnectorPort(Config.getInteger("nicki.mq.broker.jmx.port"));
+					log.info("ConnectorPort: " + Config.getInteger("nicki.mq.broker.jmx.port"));
+					setContext = true;
+				}
+				if (StringUtils.isNotBlank(Config.getString("nicki.mq.broker.jmx.domain"))) {
+					managementContext.setJmxDomainName(Config.getString("nicki.mq.broker.jmx.domain"));
+					log.info("JmxDomainName: " + Config.getInteger("nicki.mq.broker.jmx.domain"));
+					setContext = true;
+				}
+				if (setContext) {
+					broker.setManagementContext(managementContext);
+				}
+			} else {
+				broker.setUseJmx(false);
+			}
 			broker.start();
 			log.info("ActiveMQ loaded succesfully");
 
