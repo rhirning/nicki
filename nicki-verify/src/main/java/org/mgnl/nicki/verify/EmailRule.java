@@ -24,8 +24,6 @@ package org.mgnl.nicki.verify;
 
 import java.util.Map;
 
-import javax.mail.internet.InternetAddress;
-
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 
@@ -35,7 +33,6 @@ public class EmailRule extends Rule {
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		try {
-			new InternetAddress(value);
 			if (!hasNameAndDomain(value)) {
 				return false;
 			}
