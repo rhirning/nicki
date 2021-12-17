@@ -39,7 +39,7 @@ public class EmailRule extends Rule {
 			if (!hasNameAndDomain(value)) {
 				return false;
 			}
-		} catch (Exception ex) {
+		} catch (Throwable ex) {
 			return false;
 		}
 		return true;
