@@ -88,6 +88,7 @@ public class IdmPerson extends Person implements Serializable {
 	private Collection<Role> assignedRoles;
 	private Collection<Role> groupRoles;
 	private Collection<Role> containerRoles;
+	private Collection<Role> inheritedRoles;
 	private Collection<Resource> assignedResources;
 
 	@DynamicAttribute(externalName="nickiLastWorkingDay")
@@ -114,6 +115,8 @@ public class IdmPerson extends Person implements Serializable {
 	private String[] groupRole;
 	@StructuredDynamicAttribute(externalName="nrfContainerRoles", foreignKey=Role.class)
 	private String[] containerRole;
+	@StructuredDynamicAttribute(externalName="nrfInheritedRoles", foreignKey=Role.class)
+	private String[] inheritedRole;
 	@StructuredDynamicAttribute(externalName="nrfAssignedResources", foreignKey=Resource.class)
 	private String[] resource;
 	@DynamicAttribute(externalName="nickiBirthDate")
@@ -407,6 +410,7 @@ public class IdmPerson extends Person implements Serializable {
 		roles.addAll(getAssignedRoles());
 		roles.addAll(getGroupRoles());
 		roles.addAll(getContainerRoles());
+		roles.addAll(getInheritedRoles());
 		return roles;
 	}
 
@@ -462,6 +466,22 @@ public class IdmPerson extends Person implements Serializable {
 			}
 		}
 		return containerRoles;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public Collection<Role> getInheritedRoles() {
+		if (inheritedRoles == null) {
+			TemplateMethodModelEx method = (TemplateMethodModelEx) get("getInheritedRoles");
+			if (method != null) {
+				try {
+					inheritedRoles = (Collection<Role>) method.exec(null);
+				} catch (TemplateModelException e) {
+					log.error("Error", e);
+					inheritedRoles =  new ArrayList<Role>();
+				}
+			}
+		}
+		return inheritedRoles;
 	}
 
 	@SuppressWarnings("unchecked")
