@@ -36,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public final class Config {
+	private static final String CONFIG_VALUE_PROVIDER_KEY = "nicki.config.valueprovider";
 	private static final String MAIN_CONFIG = "/META-INF/nicki/config.properties";
 	private static final String CONFIG_BASE = "nicki.config";
 	private static final String I18N_BASE = "nicki.i18n";
@@ -45,6 +46,8 @@ public final class Config {
 	private List<Properties> properties = new ArrayList<Properties>();
 	//private List<String> openProperties = new ArrayList<String>();
 	private List<ConfigListener> configListener = new ArrayList<ConfigListener>();
+	private ConfigValueProvider configValueProvider;
+	private boolean isInit;
 	private Config() {
 		
 	}
@@ -199,7 +202,30 @@ public final class Config {
 	
 	private String getAndTranslateProperty(String key) {
 		log.debug(key);
-		for (Properties props : this.properties) {
+		if (!isInit) {
+			if (StringUtils.isNotBlank(getValue(CONFIG_VALUE_PROVIDER_KEY))) {
+				String className = getValue(CONFIG_VALUE_PROVIDER_KEY);
+				if (StringUtils.isNotEmpty(className)) {
+					try {
+						Class<ConfigValueProvider> clazz = (Class<ConfigValueProvider>) Class.forName(className);
+						configValueProvider = clazz.newInstance();
+					} catch (Exception e) {
+						log.error("Could not create class instance for " + className + ":" + e.getMessage());
+					}
+				}
+			}
+			isInit = true;
+		}
+		if (configValueProvider != null && configValueProvider.exists(key)) {
+			String value = DataHelper.translate(configValueProvider.get(key));
+			return DataHelper.getPassword(value);
+		}
+
+		return getValue(key);
+	}
+	
+	public static String getValue(String key) {
+		for (Properties props : getInstance().properties) {
 			String value = DataHelper.translate(props.getProperty(key));
 			if (value != null) {
 				return DataHelper.getPassword(value);
@@ -245,7 +271,7 @@ public final class Config {
 	}
 	
 	public Properties getPropertiesFromClasspath(String name) throws IOException {
-		Properties properties = new Properties() ;
+		Properties properties = new Properties();
 		properties.load(getClass().getResourceAsStream(name));
 		return properties;
 	}
