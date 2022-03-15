@@ -77,7 +77,7 @@ public class BrokerThread extends Thread implements Runnable {
 				}
 				if (StringUtils.isNotBlank(Config.getString("nicki.mq.broker.jmx.domain"))) {
 					managementContext.setJmxDomainName(Config.getString("nicki.mq.broker.jmx.domain"));
-					log.info("JmxDomainName: " + Config.getInteger("nicki.mq.broker.jmx.domain"));
+					log.info("JmxDomainName: " + Config.getString("nicki.mq.broker.jmx.domain"));
 					setContext = true;
 				}
 				if (setContext) {
