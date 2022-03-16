@@ -904,26 +904,26 @@ public class BaseDBContext
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(Attribute.class) != null) {
 				Attribute attribute = field.getAnnotation(Attribute.class);
-				String attributeValue = null;
-				try {
-					if (field.getType() == String.class) {
-						attributeValue = this.getStringValue(bean, field);
-					} else if (field.getType() == Date.class) {
-						attributeValue = this.getDateValue(bean, field, attribute);
-					} else if (field.getType() == long.class || field.getType() == Long.class) {
-						attributeValue = this.getLongValue(bean, field, attribute);
-					} else if (field.getType() == int.class || field.getType() == Integer.class) {
-						attributeValue = this.getIntValue(bean, field, attribute);
-					} else if (field.getType() == float.class || field.getType() == Float.class) {
-						attributeValue = this.getFloatValue(bean, field, attribute);
-					} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
-						attributeValue = this.getBooleanValue(bean, field, attribute);
-					}
-				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException e) {
-					log.error("Error converting value", e);
-				}
 				if (attribute.primaryKey()) {
+					String attributeValue = null;
+					try {
+						if (field.getType() == String.class) {
+							attributeValue = this.getStringValue(bean, field);
+						} else if (field.getType() == Date.class) {
+							attributeValue = this.getDateValue(bean, field, attribute);
+						} else if (field.getType() == long.class || field.getType() == Long.class) {
+							attributeValue = this.getLongValue(bean, field, attribute);
+						} else if (field.getType() == int.class || field.getType() == Integer.class) {
+							attributeValue = this.getIntValue(bean, field, attribute);
+						} else if (field.getType() == float.class || field.getType() == Float.class) {
+							attributeValue = this.getFloatValue(bean, field, attribute);
+						} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
+							attributeValue = this.getBooleanValue(bean, field, attribute);
+						}
+					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+							| InvocationTargetException e) {
+						log.error("Error converting value", e);
+					}
 					if (whereClause.length() > 0) {
 						whereClause.append(" AND ");
 					}
