@@ -85,7 +85,7 @@ public class DerbyContext
 	@Override
 	public String toDate(Date date) {
 		if (date != null) {
-			return "'" + new SimpleDateFormat(DATE_PATTERN).format(date) + "'";
+			return "DATE('" + new SimpleDateFormat(DATE_PATTERN).format(date) + "')";
 		} else {
 			return null;
 		}
