@@ -288,9 +288,7 @@ public class SpnegoHttpFilter implements Filter {
     	}
     	
         final HttpServletRequest httpRequest = (HttpServletRequest) request;
-        if (AppContext.getRequest() == null) {
-        	AppContext.setRequest(httpRequest);
-        }
+       	AppContext.setRequest(httpRequest);
         
 		if (httpRequest.getSession(true).getAttribute(NICKI_PARAMETERS) == null) {
 			Map<String, String> map = new HashMap<String, String>();
