@@ -6,7 +6,7 @@
 	<parent>
 		<artifactId>nicki-mq</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>8.56</version>
+		<version>8.57-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
