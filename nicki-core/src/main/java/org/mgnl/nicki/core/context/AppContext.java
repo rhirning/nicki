@@ -45,11 +45,11 @@ public class AppContext {
 		return getInstance().getRequestParameters();
 	}
     
-	public static Object getRequest() {
+	public static synchronized Object getRequest() {
 		return getInstance().getRequest();
 	}
 
-	public static void setRequest(Object request) {
+	public static synchronized void setRequest(Object request) {
 		getInstance().setRequest(request);
 	}
 
