@@ -34,6 +34,8 @@ public @interface Table {
 	String name();
 
 	String postInit() default "";
+	Class<?> verifyClass() default void.class;
+	Class<?> updateClass() default void.class;
 	
 	boolean usePreparedStatement() default true;
 }
