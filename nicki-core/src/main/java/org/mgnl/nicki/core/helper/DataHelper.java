@@ -33,6 +33,7 @@ import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,6 +82,16 @@ public class DataHelper {
 	public static Date getDate(LocalDate localDate) {
 		if (localDate != null) {
 			return Date.from(localDate.atStartOfDay()
+				      .atZone(ZoneId.systemDefault())
+				      .toInstant());
+		} else {
+			return null;
+		}
+	}
+
+	public static Date getDate(LocalDateTime localDateTime) {
+		if (localDateTime != null) {
+			return Date.from(localDateTime
 				      .atZone(ZoneId.systemDefault())
 				      .toInstant());
 		} else {
