@@ -31,8 +31,8 @@
 			<artifactId>commons-codec</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>com.sun.xml.ws</groupId>
-		    <artifactId>jaxws-rt</artifactId>
+			<groupId>javax.xml.ws</groupId>
+			<artifactId>jaxws-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
