@@ -25,6 +25,7 @@ package org.mgnl.nicki.dynamic.objects.objects;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -60,20 +61,46 @@ public class Person extends BaseDynamicObject {
 	private Collection<Group> assignedGroups;
 	private Collection<String> attributeValues;
 	private Map<String, String> catalogAttributes = new HashMap<String, String>();
+	
+	@DynamicAttribute(externalName="nickiLocation")
+	public String getLocation() {
+		return (String) this.get(ATTRIBUTE_LOCATION);
+	}
+	
+	@SuppressWarnings("unchecked")
+	@DynamicAttribute(externalName="nickiCatalogArticle")
+	private List<String> getAssignedArticle() {
+		return (List<String>) this.get(ATTRIBUTE_ASSIGNEDARTICLE);
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@DynamicAttribute(externalName="nickiCatalogAttribute")
+	private List<String> getAttributeValue() {
+		return (List<String>) this.get(ATTRIBUTE_ATTRIBUTEVALUE);
+	}
 
-	@DynamicAttribute(externalName="isManager")
-	private boolean isManager;
 
+	@SuppressWarnings("unchecked")
 	@DynamicReferenceAttribute(externalName="member", reference=Group.class,
 			baseProperty="nicki.data.basedn")
-	private String[] member;
-	@DynamicAttribute(externalName="nickiLocation")
-	private String location;
-	@DynamicAttribute(externalName="nickiCatalogArticle")
-	private String[] assignedArticle;
-	@DynamicAttribute(externalName="nickiCatalogAttribute")
-	private String[] attributeValue;
+	public List<String> getMember() {
+		return (List<String>) this.get(ATTRIBUTE_MEMBER);
+	}
 
+	@DynamicAttribute(externalName="isManager")
+	public String getIsManager() {
+		return (String) this.get(ATTRIBUTE_IS_MANAGER);
+	}
+
+	public void setIsManager(String value) {
+		if (StringUtils.isNotBlank(value)) {
+			this.put(ATTRIBUTE_IS_MANAGER, value);
+		} else {
+			this.clear(ATTRIBUTE_IS_MANAGER);
+		}
+	}
+	
 	@Override
 	@DynamicAttribute(externalName="cn", naming=true)
 	public String getName() {

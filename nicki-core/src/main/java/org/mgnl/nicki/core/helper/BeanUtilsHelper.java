@@ -157,6 +157,18 @@ public class BeanUtilsHelper {
 		}
 	}
 	
+	public static void setValue(Object bean, String fieldName, Object newValue) {
+		Field field;
+		try {
+			field = bean.getClass().getDeclaredField(fieldName);
+		} catch (NoSuchFieldException | SecurityException e) {
+			field = null;
+		}
+		if (field != null) {
+			setProperty(bean, field, newValue);
+		}
+	}
+	
 	public static <T> void setProperty(Object bean, Field field, T value) {
 		Method setter = null;
 		if (value != null && primitiveMap.containsKey(value.getClass())) {
