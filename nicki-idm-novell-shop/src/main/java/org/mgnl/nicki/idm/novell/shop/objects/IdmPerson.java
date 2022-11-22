@@ -59,6 +59,7 @@ import lombok.extern.slf4j.Slf4j;
 public class IdmPerson extends Person implements Serializable {
 
 	private static final long serialVersionUID = -6791692458041112275L;
+	public static final String[] ROLE_ATTRIBUTES = {"role", "groupRole", "containerRole", "inheritedRole"};
 	public static final String ATTRIBUTE_LASTWORKINGDAY = "lastWorkingDay";
 	public static final String ATTRIBUTE_QUITDATE = "quitDate";
 	public static final String ATTRIBUTE_ACTIVATIONDATE = "activationDate";
@@ -171,11 +172,16 @@ public class IdmPerson extends Person implements Serializable {
 
 	@Override
 	public boolean hasRole(String roleName) {
-		for (Role role : getRoles()) {
-			if (StringUtils.equalsIgnoreCase(role.getName(), roleName)) {
-				return true;
+		for (String roleAttribute : ROLE_ATTRIBUTES) {
+			if (get(roleAttribute) != null) {
+				@SuppressWarnings("unchecked")
+				Collection<String> foreignKeys = (Collection<String>) get(roleAttribute);
+				if (LdapHelper.containsName(foreignKeys, roleName)) {
+					return true;
+				}
 			}
 		}
+
 		return false;
 	}
 
