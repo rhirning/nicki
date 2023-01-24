@@ -1,5 +1,12 @@
 package org.mgnl.nicki.db.helper;
 
+import java.io.ByteArrayInputStream;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.sql.Types;
+
 /*-
  * #%L
  * nicki-db
@@ -29,16 +36,97 @@ import org.mgnl.nicki.db.context.DBContext;
 
 
 public enum Type {
-	STRING(String.class),
-	TIMESTAMP(Date.class),
-	DATE(Date.class),
-	TIME(Date.class),
-	LONG(Long.class, long.class),
-	INT(Integer.class, int.class),
-	FLOAT(Float.class, float.class),
-	BOOLEAN(Boolean.class, boolean.class),
-	BLOB(Byte[].class, byte[].class),
-	UNKONWN();
+	STRING(String.class) {		
+		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
+			if (rawValue != null) {
+				pstmt.setString(pos, (String) rawValue);
+			} else {
+				pstmt.setNull(pos, Types.VARCHAR);
+			}
+		}
+	},
+	TIMESTAMP(Date.class) {		
+		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
+			if (rawValue != null) {
+				Date dateValue = (Date) rawValue;
+				pstmt.setTimestamp(pos, new Timestamp(dateValue.getTime()));
+			} else {
+				pstmt.setNull(pos, Types.TIMESTAMP);
+			}
+		}
+	},
+	DATE(Date.class) {		
+		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
+			if (rawValue != null) {
+				Date dateValue = (Date) rawValue;
+				pstmt.setDate(pos, new java.sql.Date(dateValue.getTime()));
+			} else {
+				pstmt.setNull(pos, Types.DATE);
+			}
+		}
+	},
+	TIME(Date.class) {		
+		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
+			if (rawValue != null) {
+				Date dateValue = (Date) rawValue;
+				pstmt.setTime(pos, new Time(dateValue.getTime()));
+			} else {
+				pstmt.setNull(pos, Types.TIME);
+			}
+		}
+	},
+	LONG(Long.class, long.class) {		
+		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
+			if (rawValue != null) {
+				pstmt.setLong(pos, (Long) rawValue);
+			} else {
+				pstmt.setNull(pos, Types.BIGINT);
+			}
+		}
+	},
+	INT(Integer.class, int.class) {		
+		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
+			if (rawValue != null) {
+				pstmt.setInt(pos, (Integer) rawValue);
+			} else {
+				pstmt.setNull(pos, Types.INTEGER);
+			}
+		}
+	},
+	FLOAT(Float.class, float.class) {		
+		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
+			if (rawValue != null) {
+				pstmt.setFloat(pos, (Float) rawValue);
+			} else {
+				pstmt.setNull(pos, Types.FLOAT);
+			}
+		}
+	},
+	BOOLEAN(Boolean.class, boolean.class) {		
+		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
+			if (rawValue != null) {
+				Boolean value = (Boolean) rawValue;
+				pstmt.setInt(pos, value? 1: 0);
+			} else {
+				pstmt.setNull(pos, Types.INTEGER);
+			}
+		}
+	},
+	BLOB(Byte[].class, byte[].class) {		
+		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
+			if (rawValue != null) {
+				byte[] value = (byte[]) rawValue;
+				pstmt.setBlob(pos, new ByteArrayInputStream(value));
+			} else {
+				pstmt.setNull(pos, Types.BLOB);
+			}
+		}
+	},
+	UNKONWN() {
+		@Override
+		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
+		}
+	};
 		
 	private List<Class<?>> classes = new ArrayList<>();
 	
@@ -50,6 +138,8 @@ public enum Type {
 		}
 		
 	}
+	
+	public abstract void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException;
 
 	public boolean match(Class<?> clazz) {
 		for (Class<?> c : this.classes) {

@@ -1,6 +1,5 @@
 package org.mgnl.nicki.db.context;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
@@ -36,7 +35,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -175,26 +173,108 @@ public class BaseDBContext
 			this.beginTransaction();
 		}
 
-		try {
-			try (Statement stmt = this.connection.createStatement()) {
-				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
-				log.debug(searchStatement);
-				List<T> list = null;
-				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-					list = (List<T>) handle(bean.getClass(), rs, table.postInit());
-				}
-				if (list != null && deepSearch) {
-					for (T t : list) {
-						addObjects(t, deepSearch);
+		if (StringUtils.isBlank(filter) && StringUtils.isBlank(orderBy) && usePreparedStatement(bean)) {			
+			try {
+				try (PreparedStatement pstmt = getPreparedSelectStatement(bean)) {
+					List<T> list = null;
+					try (ResultSet rs = pstmt.executeQuery()) {
+						list = (List<T>) handle(bean.getClass(), rs, table.postInit());
 					}
+					if (list != null && deepSearch) {
+						for (T t : list) {
+							addObjects(t, deepSearch);
+						}
+					}
+					return list;
 				}
-				return list;
+			} finally {
+				if (!inTransaction) {
+					this.closeConnection();
+				}
 			}
-		} finally {
-			if (!inTransaction) {
-				this.closeConnection();
+		} else {
+			try {
+				try (Statement stmt = this.connection.createStatement()) {
+					String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
+					log.debug(searchStatement);
+					List<T> list = null;
+					try (ResultSet rs = stmt.executeQuery(searchStatement)) {
+						list = (List<T>) handle(bean.getClass(), rs, table.postInit());
+					}
+					if (list != null && deepSearch) {
+						for (T t : list) {
+							addObjects(t, deepSearch);
+						}
+					}
+					return list;
+				}
+			} finally {
+				if (!inTransaction) {
+					this.closeConnection();
+				}
 			}
 		}
+	}
+
+	protected PreparedStatement getPreparedSelectStatement(Object bean) throws SQLException   {
+		String selectStatementString = getPreparedSelectStatement("*", bean);
+		PreparedStatement pstmt = this.getConnection().prepareStatement(selectStatementString);
+		fillPreparedStatement(pstmt, bean);
+		return pstmt;
+	}
+
+	private void fillPreparedStatement(PreparedStatement pstmt, Object bean) {
+		int pos = 0;
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null) {
+				String getter = "get" + StringUtils.capitalize(field.getName());
+				Method method;
+				try {
+					method = bean.getClass().getMethod(getter);
+					Object rawValue = method.invoke(bean);
+					if (rawValue != null) {
+						pos++;
+						Type type = BeanHelper.getTypeOfField(bean.getClass(), field.getName());
+						type.fillPreparedStatement(pstmt, pos, rawValue);
+					}
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | SQLException e) {
+					log.error("Error reading value of " + field.getName() + " in class " + bean.getClass(), e);
+				}
+			}
+		}
+	}
+
+	protected String getPreparedSelectStatement(String columns, Object bean)  {
+		StringBuilder sb = new StringBuilder();
+		sb.append("select ").append(columns).append(" from ").append(getQualifiedTableName(bean.getClass()));
+		int count = 0;
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null) {
+				String getter = "get" + StringUtils.capitalize(field.getName());
+				Method method;
+				try {
+					method = bean.getClass().getMethod(getter);
+					Object rawValue = method.invoke(bean);
+					if (rawValue != null) {
+						if (count > 0) {
+							sb.append(" AND ");
+						} else {
+							sb.append(" where ");
+						}
+						count++;
+						sb.append(attribute.name()).append("=").append(ColumnsAndValues.PREP_VALUE);
+					}
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					log.error("Error reading value of " + field.getName() + " in class " + bean.getClass(), e);
+				}
+			}
+		}
+		log.debug(sb.toString());
+		return sb.toString();
 	}
 	
 	@Override
@@ -222,8 +302,36 @@ public class BaseDBContext
 		} else {
 			this.beginTransaction();
 		}
+		
+		if (StringUtils.isBlank(filter) && StringUtils.isBlank(orderBy) && usePreparedStatement(bean)) {			
+			try (PreparedStatement pstmt = getPreparedSelectStatement(bean)) {
+				try (ResultSet rs = pstmt.executeQuery()) {
+					if (rs.next()) {
+						@SuppressWarnings("unchecked")
+						T result = (T) get(bean.getClass(), rs);
+						if (postMethod != null) {
+							try {
+								postMethod.invoke(result);
+							} catch (Exception e) {
+								log.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
+										+ result.getClass().getName(), e);
+							}
+						}
 
-		try {
+						if (result != null && deepSearch) {
+							addObjects(result, deepSearch);
+						}
+						return result;
+					} else {
+						return null;
+					}
+				}
+			} finally {
+				if (!inTransaction) {
+					this.closeConnection();
+				}
+			}
+		} else {
 			try (Statement stmt = this.connection.createStatement()) {
 				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
 				log.debug(searchStatement);
@@ -239,20 +347,20 @@ public class BaseDBContext
 										+ result.getClass().getName(), e);
 							}
 						}
-	
-						
-						if (result != null && deepSearch){
+
+						if (result != null && deepSearch) {
 							addObjects(result, deepSearch);
 						}
 						return result;
 					} else {
 						return null;
-					}					
+					}
 				}
-			}
-		} finally {
-			if (!inTransaction) {
-				this.closeConnection();
+
+			} finally {
+				if (!inTransaction) {
+					this.closeConnection();
+				}
 			}
 		}
 	}
@@ -549,7 +657,7 @@ public class BaseDBContext
 				sb.append(" order by ").append(orderBy);
 			}
 			return sb.toString();
-		} catch (NotSupportedException | NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
+		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			log.error("Error creating load objects search statement ", e);
 			return e.getMessage();
 		}
@@ -800,72 +908,9 @@ public class BaseDBContext
 		for (String columnName : cv.getColumnNames()) {
 			String beanName = BeanHelper.getFieldName(beanClass, columnName);
 			if (cols == null || cols.contains(beanName)) {
+				pos++;
 				Type type = cv.getType(columnName);
-				if (type == Type.STRING) {
-					pos++;
-					String value = (String) cv.getValue(columnName);
-					if (value != null) {
-						pstmt.setString(pos, value);
-					} else {
-						pstmt.setNull(pos, Types.VARCHAR);
-					}
-				} else if (type == Type.TIMESTAMP) {
-					pos++;
-					Date value = (Date) cv.getValue(columnName);
-					if (value != null) {
-						pstmt.setTimestamp(pos, new Timestamp(value.getTime()));
-					} else {
-						pstmt.setNull(pos, Types.TIMESTAMP);
-					}
-				} else if (type == Type.DATE) {
-					pos++;
-					Date value = (Date) cv.getValue(columnName);
-					if (value != null) {
-						pstmt.setDate(pos, new java.sql.Date(value.getTime()));
-					} else {
-						pstmt.setNull(pos, Types.DATE);
-					}
-				} else if (type == Type.LONG) {
-					pos++;
-					Long value = (Long) cv.getValue(columnName);
-					if (value != null) {
-						pstmt.setLong(pos, value);
-					} else {
-						pstmt.setNull(pos, Types.BIGINT);
-					}
-				} else if (type == Type.INT) {
-					pos++;
-					Integer value = (Integer) cv.getValue(columnName);
-					if (value != null) {
-						pstmt.setInt(pos, value);
-					} else {
-						pstmt.setNull(pos, Types.INTEGER);
-					}
-				} else if (type == Type.FLOAT) {
-					pos++;
-					Float value = (Float) cv.getValue(columnName);
-					if (value != null) {
-						pstmt.setFloat(pos, value);
-					} else {
-						pstmt.setNull(pos, Types.FLOAT);
-					}
-				} else if (type == Type.BOOLEAN) {
-					pos++;
-					Boolean value = (Boolean) cv.getValue(columnName);
-					if (value != null) {
-						pstmt.setInt(pos, value? 1: 0);
-					} else {
-						pstmt.setNull(pos, Types.INTEGER);
-					}
-				} else if (type == Type.BLOB) {
-					pos++;
-					byte[] value = (byte[]) cv.getValue(columnName);
-					if (value != null) {
-						pstmt.setBlob(pos, new ByteArrayInputStream(value));
-					} else {
-						pstmt.setNull(pos, Types.BLOB);
-					}
-				}
+				type.fillPreparedStatement(pstmt, pos, cv.getValue(columnName));
 			}
 		}
 	}
@@ -1420,11 +1465,11 @@ public class BaseDBContext
 	}
 
 	@Override
-	public String getQualifiedTableName(Class<? extends Object> clazz) throws NotSupportedException {
-
+	public String getQualifiedTableName(Class<? extends Object> clazz) {
 		Table table = clazz.getAnnotation(Table.class);
 		if (table == null) {
-			throw new NotSupportedException();
+			log.error("");
+			return "INVALID_TABLE_NAME";
 		}
 		return getQualifiedName(table.name());
 	}
