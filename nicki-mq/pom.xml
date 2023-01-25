@@ -15,6 +15,5 @@
 	<modules>
 		<module>nicki-mq-broker</module>
 		<module>nicki-mq-consumer</module>
-		<module>nicki-mq-mail</module>
 	</modules>
 </project>
