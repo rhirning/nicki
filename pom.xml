@@ -38,7 +38,6 @@
 		<module>nicki-search</module>
 		<module>nicki-shop-base</module>
 		<module>nicki-spnego</module>
-		<module>nicki-storage</module>
 		<module>nicki-template</module>
 		<module>nicki-verify</module>
 		<module>nicki-ws</module>
