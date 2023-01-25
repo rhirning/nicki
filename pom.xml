@@ -277,6 +277,11 @@
 				<version>1.1.4</version>
 			</dependency>
 			<dependency>
+			    <groupId>org.glassfish.jaxb</groupId>
+			    <artifactId>jaxb-runtime</artifactId>
+			    <version>2.3.1</version>
+			</dependency>
+			<dependency>
 				<groupId>org.jaxen</groupId>
 				<artifactId>jaxen</artifactId>
 				<version>1.1.1</version>
