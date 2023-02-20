@@ -50,4 +50,6 @@ public @interface Attribute {
 	boolean readonly() default false;
 
 	boolean mandatory() default false;
+	
+	int length() default 0;
 }

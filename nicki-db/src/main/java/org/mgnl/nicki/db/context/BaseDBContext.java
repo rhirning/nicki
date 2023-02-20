@@ -236,6 +236,9 @@ public class BaseDBContext
 					if (rawValue != null) {
 						pos++;
 						Type type = BeanHelper.getTypeOfField(bean.getClass(), field.getName());
+						if (type == Type.STRING && attribute.length() > 0) {
+							rawValue = StringUtils.leftPad((String) rawValue, attribute.length(), ' ');
+						}
 						type.fillPreparedStatement(pstmt, pos, rawValue);
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
