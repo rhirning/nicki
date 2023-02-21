@@ -173,7 +173,7 @@ public class BaseDBContext
 			this.beginTransaction();
 		}
 
-		if (StringUtils.isBlank(filter) && StringUtils.isBlank(orderBy) && usePreparedStatement(bean)) {			
+		if (StringUtils.isBlank(filter) && StringUtils.isBlank(orderBy) && usePreparedSelectStatement(bean)) {			
 			try {
 				try (PreparedStatement pstmt = getPreparedSelectStatement(bean)) {
 					List<T> list = null;
@@ -237,7 +237,7 @@ public class BaseDBContext
 						pos++;
 						Type type = BeanHelper.getTypeOfField(bean.getClass(), field.getName());
 						if (type == Type.STRING && attribute.length() > 0) {
-							rawValue = StringUtils.leftPad((String) rawValue, attribute.length(), ' ');
+							rawValue = StringUtils.rightPad((String) rawValue, attribute.length(), ' ');
 						}
 						type.fillPreparedStatement(pstmt, pos, rawValue);
 					}
@@ -306,7 +306,7 @@ public class BaseDBContext
 			this.beginTransaction();
 		}
 		
-		if (StringUtils.isBlank(filter) && StringUtils.isBlank(orderBy) && usePreparedStatement(bean)) {			
+		if (StringUtils.isBlank(filter) && StringUtils.isBlank(orderBy) && usePreparedSelectStatement(bean)) {			
 			try (PreparedStatement pstmt = getPreparedSelectStatement(bean)) {
 				try (ResultSet rs = pstmt.executeQuery()) {
 					if (rs.next()) {
@@ -1037,6 +1037,10 @@ public class BaseDBContext
 	private boolean usePreparedStatement(Object bean) {
 		Class<? extends Object> clazz = bean.getClass();
 		return clazz.isAnnotationPresent(Table.class) && clazz.getAnnotation(Table.class).usePreparedStatement();
+	}
+
+	protected boolean usePreparedSelectStatement(Object bean) {
+		return usePreparedStatement(bean);
 	}
 
 	@Override

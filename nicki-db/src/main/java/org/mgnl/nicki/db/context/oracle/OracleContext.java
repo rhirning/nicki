@@ -63,4 +63,8 @@ public class OracleContext
 			return null;
 		}
 	}
+
+	protected boolean usePreparedSelectStatement(Object bean) {
+		return false;
+	}
 }
