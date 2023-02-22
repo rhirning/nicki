@@ -1,5 +1,7 @@
 package org.mgnl.nicki.db.dynamic.objects;
 
+import java.io.Serializable;
+
 /*-
  * #%L
  * nicki-db
@@ -32,8 +34,10 @@ import lombok.NoArgsConstructor;
 
 @Data @NoArgsConstructor
 @Table(name = "DYNAMIC_OBJECTS")
-public class DefaultSyncEntry implements SyncEntry, SyncIdGenerator {
-	
+public class DefaultSyncEntry implements SyncEntry, SyncIdGenerator, Serializable {
+
+	private static final long serialVersionUID = 4837806177766451088L;
+
 	@Attribute(name = "UNIQUE_ID", autogen=true, primaryKey=true)
 	private Long uniqueId;
 	
