@@ -57,6 +57,7 @@ import org.mgnl.nicki.db.handler.SelectHandler;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
 import org.mgnl.nicki.db.helper.BeanHelper;
 import org.mgnl.nicki.db.helper.Type;
+import org.mgnl.nicki.db.helper.TypedValue;
 import org.mgnl.nicki.db.profile.DBProfile;
 import org.mgnl.nicki.db.profile.InitProfileException;
 
@@ -173,7 +174,7 @@ public class BaseDBContext
 			this.beginTransaction();
 		}
 
-		if (StringUtils.isBlank(filter) && StringUtils.isBlank(orderBy) && usePreparedSelectStatement(bean)) {			
+		if (StringUtils.isBlank(filter) && StringUtils.isBlank(orderBy) && usePreparedWhereStatement(bean)) {			
 			try {
 				try (PreparedStatement pstmt = getPreparedSelectStatement(bean)) {
 					List<T> list = null;
@@ -306,7 +307,7 @@ public class BaseDBContext
 			this.beginTransaction();
 		}
 		
-		if (StringUtils.isBlank(filter) && StringUtils.isBlank(orderBy) && usePreparedSelectStatement(bean)) {			
+		if (StringUtils.isBlank(filter) && StringUtils.isBlank(orderBy) && usePreparedWhereStatement(bean)) {			
 			try (PreparedStatement pstmt = getPreparedSelectStatement(bean)) {
 				try (ResultSet rs = pstmt.executeQuery()) {
 					if (rs.next()) {
@@ -899,6 +900,12 @@ public class BaseDBContext
 		}
 	}
 
+	private void fillPreparedStatement(PreparedStatement pstmt, Class<?> beanClass, List<TypedValue> typedValues) throws SQLException {
+		for (TypedValue typedValue : typedValues) {
+			typedValue.fillPreparedStatement(pstmt);
+		}
+	}
+
 	private void fillPreparedStatement(PreparedStatement pstmt, Class<?> beanClass, ColumnsAndValues cv, String... columns) throws SQLException {
 
 		List<String> cols = null;
@@ -934,16 +941,28 @@ public class BaseDBContext
 
 	protected PreparedStatement getPreparedUpdateStatement(Object bean, String where, String... columns) throws NotSupportedException, NothingToDoException, SQLException {
 		String tableName = this.getQualifiedTableName(bean.getClass());
-		ColumnsAndValues cv = getUpdateColumnValues(bean, columns);
-		String whereClause = getWhereClause(bean, where, columns);
+		List<TypedValue> typedValues = new ArrayList<TypedValue>();
+		ColumnsAndValues cv = getUpdateColumnValues(bean, typedValues, columns);
+		String whereClause = getWhereClause(bean, typedValues, where);
 		String updateStatementString = getUpdateStatement(PREPARED.TRUE, tableName, cv, whereClause);
 		PreparedStatement pstmt = this.connection.prepareStatement(updateStatementString);
-		fillPreparedStatement(pstmt, bean.getClass(), cv, columns);
+		fillPreparedStatement(pstmt, bean.getClass(), typedValues);
 		return pstmt;
 	}
 
-	private String getWhereClause(Object bean, String where, String... columns) throws NotSupportedException {
+	protected PreparedStatement getPreparedDeleteStatement(Object bean) throws NotSupportedException, SQLException {
+		String tableName = this.getQualifiedTableName(bean.getClass());
+		List<TypedValue> typedValues = new ArrayList<TypedValue>();
+		String whereClause = getWhereClause(bean, typedValues, null);
+		String deleteStatementString = getDeleteStatement(tableName, whereClause);
+		PreparedStatement pstmt = this.connection.prepareStatement(deleteStatementString);
+		fillPreparedStatement(pstmt, bean.getClass(), typedValues);
+		return pstmt;
+	}
 
+	private String getWhereClause(Object bean, List<TypedValue> typedValues, String where) throws NotSupportedException {
+
+		int pos = typedValues.size();
 		StringBuilder whereClause = new StringBuilder();
 		if (StringUtils.isNotBlank(where)) {
 			whereClause.append(where);
@@ -957,16 +976,22 @@ public class BaseDBContext
 					try {
 						if (field.getType() == String.class) {
 							attributeValue = this.getStringValue(bean, field);
+							typedValues.add(new TypedValue(Type.STRING, ++pos, getValue(bean, String.class, field, attribute)));
 						} else if (field.getType() == Date.class) {
 							attributeValue = this.getDateValue(bean, field, attribute);
+							typedValues.add(new TypedValue(Type.DATE, ++pos, getValue(bean, Date.class, field, attribute)));
 						} else if (field.getType() == long.class || field.getType() == Long.class) {
 							attributeValue = this.getLongValue(bean, field, attribute);
+							typedValues.add(new TypedValue(Type.LONG, ++pos, getValue(bean, Long.class, field, attribute)));
 						} else if (field.getType() == int.class || field.getType() == Integer.class) {
 							attributeValue = this.getIntValue(bean, field, attribute);
+							typedValues.add(new TypedValue(Type.INT, ++pos, getValue(bean, Integer.class, field, attribute)));
 						} else if (field.getType() == float.class || field.getType() == Float.class) {
 							attributeValue = this.getFloatValue(bean, field, attribute);
+							typedValues.add(new TypedValue(Type.FLOAT, ++pos, getValue(bean, Float.class, field, attribute)));
 						} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
 							attributeValue = this.getBooleanValue(bean, field, attribute);
+							typedValues.add(new TypedValue(Type.BOOLEAN, ++pos, getValue(bean, Boolean.class, field, attribute)));
 						}
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException e) {
@@ -975,7 +1000,11 @@ public class BaseDBContext
 					if (whereClause.length() > 0) {
 						whereClause.append(" AND ");
 					}
-					whereClause.append(attribute.name()).append("=").append(attributeValue);
+					if (usePreparedWhereStatement(bean)) {
+						whereClause.append(attribute.name()).append("=").append(ColumnsAndValues.PREP_VALUE);
+					} else {
+						whereClause.append(attribute.name()).append("=").append(attributeValue);
+					}
 				}
 			}
 		}
@@ -986,8 +1015,8 @@ public class BaseDBContext
 		}
 	}
 
-	private ColumnsAndValues getUpdateColumnValues(Object bean, String... columns) {
-
+	private ColumnsAndValues getUpdateColumnValues(Object bean, List<TypedValue> typedValues, String... columns) {
+		int pos = 0;
 		List<String> cols= null;
 		if (columns != null && columns.length > 0) {
 			cols = Arrays.asList(columns);
@@ -1003,18 +1032,25 @@ public class BaseDBContext
 						try {
 							if (field.getType() == String.class) {
 								cv.add(columnName, getValue(bean, String.class, field, attribute));
+								typedValues.add(new TypedValue(Type.STRING, ++pos, getValue(bean, String.class, field, attribute)));
 							} else if (field.getType() == Date.class) {
 								cv.add(columnName, getValue(bean, Date.class, field, attribute));
+								typedValues.add(new TypedValue(Type.DATE, ++pos, getValue(bean, Date.class, field, attribute)));
 							} else if (field.getType() == long.class || field.getType() == Long.class) {
 								cv.add(columnName, getValue(bean, Long.class, field, attribute));
+								typedValues.add(new TypedValue(Type.LONG, ++pos, getValue(bean, Long.class, field, attribute)));
 							} else if (field.getType() == int.class || field.getType() == Integer.class) {
 								cv.add(columnName, getValue(bean, Integer.class, field, attribute));
+								typedValues.add(new TypedValue(Type.INT, ++pos, getValue(bean, Integer.class, field, attribute)));
 							} else if (field.getType() == float.class || field.getType() == Float.class) {
 								cv.add(columnName, getValue(bean, Float.class, field, attribute));
+								typedValues.add(new TypedValue(Type.FLOAT, ++pos, getValue(bean, Float.class, field, attribute)));
 							} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
 								cv.add(columnName, getValue(bean, Boolean.class, field, attribute));
+								typedValues.add(new TypedValue(Type.BOOLEAN, ++pos, getValue(bean, Boolean.class, field, attribute)));
 							} else if (field.getType() == byte[].class) {
 								cv.add(columnName, getValue(bean, byte[].class, field, attribute));
+								typedValues.add(new TypedValue(Type.BLOB, ++pos, getValue(bean, byte[].class, field, attribute)));
 							}
 						} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 								| InvocationTargetException e) {
@@ -1039,7 +1075,7 @@ public class BaseDBContext
 		return clazz.isAnnotationPresent(Table.class) && clazz.getAnnotation(Table.class).usePreparedStatement();
 	}
 
-	protected boolean usePreparedSelectStatement(Object bean) {
+	protected boolean usePreparedWhereStatement(Object bean) {
 		return usePreparedStatement(bean);
 	}
 
@@ -1137,7 +1173,7 @@ public class BaseDBContext
 	}
 
 	@Override
-	public <T> void delete(T bean) throws SQLException, InitProfileException {
+	public <T> void delete(T bean) throws SQLException, InitProfileException, NotSupportedException {
 
 		boolean inTransaction = false;
 		if (this.connection != null) {
@@ -1147,45 +1183,58 @@ public class BaseDBContext
 		}
 		this.deleteSubs(bean);
 
-		try {
-			try (Statement stmt = this.connection.createStatement()) {
-				try {
-					String statement = null;
-					PrimaryKey primaryKey = getPrimaryKey(bean);
-					if (primaryKey != null && primaryKey.size() > 0) {
-						try {
-							@SuppressWarnings("unchecked")
-							T deleteBean = (T) bean.getClass().newInstance();
-							setPrimaryKey(deleteBean, primaryKey);
-							statement = this.createDeleteStatement(deleteBean);
-						} catch (InstantiationException | IllegalAccessException e) {
-							log.error("Eror creating deleteBean", e);
-						}
+
+		if (usePreparedStatement(bean)) {
+			try (PreparedStatement pstmt = getPreparedDeleteStatement(bean)) {
+				pstmt.executeUpdate();
+				if (!inTransaction) {
+					try {
+						this.commit();
+					} catch (NotInTransactionException e) {
+						log.error("Error on commit", e);
 					}
-					if (statement == null) {
-						statement = this.createDeleteStatement(bean);
-					}
-					log.debug(statement);
-					stmt.executeUpdate(statement);
-					if (!inTransaction) {
-						try {
-							this.commit();
-						} catch (NotInTransactionException e) {
-							log.error("Error on commit", e);
-						}
-					}
-				} catch (NotSupportedException e) {
-					log.error("Delete not supported");
+				}
+			} finally {
+				if (!inTransaction) {
+					this.rollback();
 				}
 			}
-		} finally {
-			if (!inTransaction) {
-				this.rollback();
+
+		} else {
+			try (Statement stmt = this.connection.createStatement()) {
+				String statement = null;
+				PrimaryKey primaryKey = getPrimaryKey(bean);
+				if (primaryKey != null && primaryKey.size() > 0) {
+					try {
+						@SuppressWarnings("unchecked")
+						T deleteBean = (T) bean.getClass().newInstance();
+						setPrimaryKey(deleteBean, primaryKey);
+						statement = this.createDeleteStatement(deleteBean);
+					} catch (InstantiationException | IllegalAccessException e) {
+						log.error("Eror creating deleteBean", e);
+					}
+				}
+				if (statement == null) {
+					statement = this.createDeleteStatement(bean);
+				}
+				log.debug(statement);
+				stmt.executeUpdate(statement);
+				if (!inTransaction) {
+					try {
+						this.commit();
+					} catch (NotInTransactionException e) {
+						log.error("Error on commit", e);
+					}
+				}
+			} finally {
+				if (!inTransaction) {
+					this.rollback();
+				}
 			}
 		}
 	}
 
-	protected void deleteSubs(Object bean) throws SQLException, InitProfileException {
+	protected void deleteSubs(Object bean) throws SQLException, InitProfileException, NotSupportedException {
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(SubTable.class) != null) {
 				if (this.hasSubs(field.getType())) {
@@ -1198,7 +1247,7 @@ public class BaseDBContext
 		}
 	}
 
-	private void deleteSubs(Object bean, Field field) throws SQLException, InitProfileException {
+	private void deleteSubs(Object bean, Field field) throws SQLException, InitProfileException, NotSupportedException {
 		for (Object sub : this.getSubs(bean, field)) {
 			this.delete(sub);
 		}
@@ -1315,16 +1364,14 @@ public class BaseDBContext
 	}
 
 	private <T> T reload(T bean) {
-		List<T> list = null;
 		try {
 			@SuppressWarnings("unchecked")
 			T b = (T) bean.getClass().newInstance();
-			list = loadObjects(b, true, getReloadObjectsWhereClause(bean), null);
+			PrimaryKey primaryKey = getPrimaryKey(bean);
+			setPrimaryKey(b, primaryKey);
+			return loadObject(b, true);
 		} catch (InstantiationException | IllegalAccessException | SQLException | InitProfileException e) {
 			log.error("Error reloading bean", e);
-		}
-		if (list != null && list.size() > 0) {
-			return list.get(0);
 		}
 		return null;
 	}
@@ -1636,10 +1683,11 @@ public class BaseDBContext
 			throw new NotSupportedException();
 		}
 
-		String whereClause = addPrimaryKeyWhereClause(bean, where);
+		List<TypedValue> typedValues = new ArrayList<TypedValue>();
 		
-		ColumnsAndValues cv = getUpdateColumnValues(bean, columns);
+		ColumnsAndValues cv = getUpdateColumnValues(bean, typedValues, columns);
 
+		String whereClause = addPrimaryKeyWhereClause(bean, where);
 		return getUpdateStatement(PREPARED.FALSE, 
 				this.getQualifiedTableName(bean.getClass()), cv, whereClause);
 	}

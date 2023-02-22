@@ -64,7 +64,7 @@ public class OracleContext
 		}
 	}
 
-	protected boolean usePreparedSelectStatement(Object bean) {
+	protected boolean usePreparedWhereStatement(Object bean) {
 		return false;
 	}
 }
