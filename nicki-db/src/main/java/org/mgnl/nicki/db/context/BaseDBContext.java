@@ -979,7 +979,13 @@ public class BaseDBContext
 							typedValues.add(new TypedValue(Type.STRING, ++pos, getValue(bean, String.class, field, attribute)));
 						} else if (field.getType() == Date.class) {
 							attributeValue = this.getDateValue(bean, field, attribute);
-							typedValues.add(new TypedValue(Type.DATE, ++pos, getValue(bean, Date.class, field, attribute)));
+							if (attribute.type() == DataType.TIME) {
+								typedValues.add(new TypedValue(Type.TIME, ++pos, getValue(bean, Date.class, field, attribute)));
+							} else if (attribute.type() == DataType.TIMESTAMP) {
+								typedValues.add(new TypedValue(Type.TIMESTAMP, ++pos, getValue(bean, Date.class, field, attribute)));
+							}else {
+								typedValues.add(new TypedValue(Type.DATE, ++pos, getValue(bean, Date.class, field, attribute)));
+							}
 						} else if (field.getType() == long.class || field.getType() == Long.class) {
 							attributeValue = this.getLongValue(bean, field, attribute);
 							typedValues.add(new TypedValue(Type.LONG, ++pos, getValue(bean, Long.class, field, attribute)));
@@ -1035,7 +1041,13 @@ public class BaseDBContext
 								typedValues.add(new TypedValue(Type.STRING, ++pos, getValue(bean, String.class, field, attribute)));
 							} else if (field.getType() == Date.class) {
 								cv.add(columnName, getValue(bean, Date.class, field, attribute));
-								typedValues.add(new TypedValue(Type.DATE, ++pos, getValue(bean, Date.class, field, attribute)));
+								if (attribute.type() == DataType.TIME) {
+									typedValues.add(new TypedValue(Type.TIME, ++pos, getValue(bean, Date.class, field, attribute)));
+								} else if (attribute.type() == DataType.TIMESTAMP) {
+									typedValues.add(new TypedValue(Type.TIMESTAMP, ++pos, getValue(bean, Date.class, field, attribute)));
+								}else {
+									typedValues.add(new TypedValue(Type.DATE, ++pos, getValue(bean, Date.class, field, attribute)));
+								}
 							} else if (field.getType() == long.class || field.getType() == Long.class) {
 								cv.add(columnName, getValue(bean, Long.class, field, attribute));
 								typedValues.add(new TypedValue(Type.LONG, ++pos, getValue(bean, Long.class, field, attribute)));
