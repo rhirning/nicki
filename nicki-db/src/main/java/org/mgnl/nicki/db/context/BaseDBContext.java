@@ -47,6 +47,7 @@ import javax.sql.DataSource;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.annotation.ForeignKey;
 import org.mgnl.nicki.db.annotation.SubTable;
@@ -76,8 +77,11 @@ public class BaseDBContext
 	private Connection connection;
 
 	private String schema;
+	
+	boolean allowPreparedWhere;
 
 	public BaseDBContext() {
+		allowPreparedWhere = Config.getBoolean(getClass().getName() + ".allowPreparedWhere", true);
 	}
 
 	@Override
@@ -902,6 +906,12 @@ public class BaseDBContext
 
 	private void fillPreparedStatement(PreparedStatement pstmt, Class<?> beanClass, List<TypedValue> typedValues) throws SQLException {
 		for (TypedValue typedValue : typedValues) {
+			Attribute attribute = beanClass.getAnnotation(Attribute.class);
+			if (typedValue.getType() == Type.STRING && attribute != null && attribute.length() > 0) {
+				String rawValue = StringUtils.rightPad((String) typedValue.getRawValue(), attribute.length(), ' ');
+				typedValue.setRawValue(rawValue);
+			}
+
 			typedValue.fillPreparedStatement(pstmt);
 		}
 	}
@@ -976,28 +986,40 @@ public class BaseDBContext
 					try {
 						if (field.getType() == String.class) {
 							attributeValue = this.getStringValue(bean, field);
-							typedValues.add(new TypedValue(Type.STRING, ++pos, getValue(bean, String.class, field, attribute)));
+							if (usePreparedWhereStatement(bean)) {
+								typedValues.add(new TypedValue(Type.STRING, ++pos, getValue(bean, String.class, field, attribute)));
+							}
 						} else if (field.getType() == Date.class) {
 							attributeValue = this.getDateValue(bean, field, attribute);
-							if (attribute.type() == DataType.TIME) {
-								typedValues.add(new TypedValue(Type.TIME, ++pos, getValue(bean, Date.class, field, attribute)));
-							} else if (attribute.type() == DataType.TIMESTAMP) {
-								typedValues.add(new TypedValue(Type.TIMESTAMP, ++pos, getValue(bean, Date.class, field, attribute)));
-							}else {
-								typedValues.add(new TypedValue(Type.DATE, ++pos, getValue(bean, Date.class, field, attribute)));
+							if (usePreparedWhereStatement(bean)) {
+								if (attribute.type() == DataType.TIME) {
+									typedValues.add(new TypedValue(Type.TIME, ++pos, getValue(bean, Date.class, field, attribute)));
+								} else if (attribute.type() == DataType.TIMESTAMP) {
+									typedValues.add(new TypedValue(Type.TIMESTAMP, ++pos, getValue(bean, Date.class, field, attribute)));
+								}else {
+									typedValues.add(new TypedValue(Type.DATE, ++pos, getValue(bean, Date.class, field, attribute)));
+								}
 							}
 						} else if (field.getType() == long.class || field.getType() == Long.class) {
 							attributeValue = this.getLongValue(bean, field, attribute);
-							typedValues.add(new TypedValue(Type.LONG, ++pos, getValue(bean, Long.class, field, attribute)));
+							if (usePreparedWhereStatement(bean)) {
+								typedValues.add(new TypedValue(Type.LONG, ++pos, getValue(bean, Long.class, field, attribute)));
+							}
 						} else if (field.getType() == int.class || field.getType() == Integer.class) {
 							attributeValue = this.getIntValue(bean, field, attribute);
-							typedValues.add(new TypedValue(Type.INT, ++pos, getValue(bean, Integer.class, field, attribute)));
+							if (usePreparedWhereStatement(bean)) {
+								typedValues.add(new TypedValue(Type.INT, ++pos, getValue(bean, Integer.class, field, attribute)));
+							}
 						} else if (field.getType() == float.class || field.getType() == Float.class) {
 							attributeValue = this.getFloatValue(bean, field, attribute);
-							typedValues.add(new TypedValue(Type.FLOAT, ++pos, getValue(bean, Float.class, field, attribute)));
+							if (usePreparedWhereStatement(bean)) {
+								typedValues.add(new TypedValue(Type.FLOAT, ++pos, getValue(bean, Float.class, field, attribute)));
+							}
 						} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
 							attributeValue = this.getBooleanValue(bean, field, attribute);
-							typedValues.add(new TypedValue(Type.BOOLEAN, ++pos, getValue(bean, Boolean.class, field, attribute)));
+							if (usePreparedWhereStatement(bean)) {
+								typedValues.add(new TypedValue(Type.BOOLEAN, ++pos, getValue(bean, Boolean.class, field, attribute)));
+							}
 						}
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 							| InvocationTargetException e) {
@@ -1088,7 +1110,7 @@ public class BaseDBContext
 	}
 
 	protected boolean usePreparedWhereStatement(Object bean) {
-		return usePreparedStatement(bean);
+		return usePreparedStatement(bean) && allowPreparedWhere;
 	}
 
 	@Override
