@@ -48,12 +48,14 @@ import javax.sql.DataSource;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.annotation.ForeignKey;
 import org.mgnl.nicki.db.annotation.SubTable;
 import org.mgnl.nicki.db.annotation.Table;
 import org.mgnl.nicki.db.data.DataType;
 import org.mgnl.nicki.db.handler.ListSelectHandler;
+import org.mgnl.nicki.db.handler.PreparedStatementSelectHandler;
 import org.mgnl.nicki.db.handler.SelectHandler;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
 import org.mgnl.nicki.db.helper.BeanHelper;
@@ -67,6 +69,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BaseDBContext
 		implements DBContext {
+	public Class<?> VALID_TYPES[] = {String.class,
+			Date.class,
+			long.class, Long.class,
+			int.class, Integer.class,
+			float.class, Float.class,
+			boolean.class, Boolean.class,
+			byte[].class
+	};
 	public final static String TIMESTAMP_ORACLE = "YYYY-MM-DD HH24:MI:SS";
 	public final static String TIMESTAMP_FOR_ORACLE = "yyyy-MM-dd HH:mm:ss";
 	public final static String TIME_ORACLE = "HH24.MI.SS";
@@ -159,7 +169,7 @@ public class BaseDBContext
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
+	public <T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy, TypedValue... typedFilterValues) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
 		Table table = bean.getClass().getAnnotation(Table.class);
 		if (table == null) {
 			try {
@@ -178,9 +188,9 @@ public class BaseDBContext
 			this.beginTransaction();
 		}
 
-		if (StringUtils.isBlank(filter) && StringUtils.isBlank(orderBy) && usePreparedWhereStatement(bean)) {			
+		if (usePreparedWhereStatement(bean)) {			
 			try {
-				try (PreparedStatement pstmt = getPreparedSelectStatement(bean)) {
+				try (PreparedStatement pstmt = getPreparedSelectStatement(bean, filter, orderBy, typedFilterValues)) {
 					List<T> list = null;
 					try (ResultSet rs = pstmt.executeQuery()) {
 						list = (List<T>) handle(bean.getClass(), rs, table.postInit());
@@ -254,6 +264,53 @@ public class BaseDBContext
 		}
 	}
 
+	protected PreparedStatement getPreparedSelectStatement(Object bean, String filter, String orderBy, TypedValue... typedFilterValues) throws SQLException  {
+		List<TypedValue> typedValues = new ArrayList<TypedValue>();
+		if (typedFilterValues != null && typedFilterValues.length > 0) {
+			for (TypedValue typedValue : typedFilterValues) {
+				typedValues.add(typedValue);
+			}
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append("select * from ").append(getQualifiedTableName(bean.getClass()));
+		int count = 0;
+		if (StringUtils.isNotBlank(filter)) {
+			sb.append(" where ");
+			sb.append(filter);
+			count++;
+		}
+		for (Field field : bean.getClass().getDeclaredFields()) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null) {
+				Type type = BeanHelper.getTypeOfField(bean.getClass(), field.getName());
+				String getter = "get" + StringUtils.capitalize(field.getName());
+				Method method;
+				try {
+					method = bean.getClass().getMethod(getter);
+					Object rawValue = method.invoke(bean);
+					if (rawValue != null) {
+						if (count > 0) {
+							sb.append(" AND ");
+						} else {
+							sb.append(" where ");
+						}
+						count++;
+						sb.append(attribute.name()).append("=").append(ColumnsAndValues.PREP_VALUE);
+						typedValues.add(new TypedValue(type, typedValues.size() + 1, rawValue));
+					}
+				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException e) {
+					log.error("Error reading value of " + field.getName() + " in class " + bean.getClass(), e);
+				}
+			}
+		}
+		log.debug(sb.toString());
+		PreparedStatement pstmt = this.getConnection().prepareStatement(sb.toString());
+		fillPreparedStatement(pstmt, bean);
+
+		return pstmt;
+	}
+
 	protected String getPreparedSelectStatement(String columns, Object bean)  {
 		StringBuilder sb = new StringBuilder();
 		sb.append("select ").append(columns).append(" from ").append(getQualifiedTableName(bean.getClass()));
@@ -286,7 +343,7 @@ public class BaseDBContext
 	}
 	
 	@Override
-	public <T> T loadObject(T bean, boolean deepSearch, String filter, String orderBy) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
+	public <T> T loadObject(T bean, boolean deepSearch, String filter, String orderBy, TypedValue... typedFilterValues) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
 		Method postMethod = null;
 		Table table = bean.getClass().getAnnotation(Table.class);
 		if (table == null) {
@@ -311,8 +368,8 @@ public class BaseDBContext
 			this.beginTransaction();
 		}
 		
-		if (StringUtils.isBlank(filter) && StringUtils.isBlank(orderBy) && usePreparedWhereStatement(bean)) {			
-			try (PreparedStatement pstmt = getPreparedSelectStatement(bean)) {
+		if (usePreparedWhereStatement(bean)) {			
+			try (PreparedStatement pstmt = getPreparedSelectStatement(bean, filter, orderBy, typedFilterValues)) {
 				try (ResultSet rs = pstmt.executeQuery()) {
 					if (rs.next()) {
 						@SuppressWarnings("unchecked")
@@ -670,37 +727,6 @@ public class BaseDBContext
 			return e.getMessage();
 		}
 	}
-	
-	private String getReloadObjectsWhereClause(Object bean) {
-		try {
-			StringBuilder sb = new StringBuilder();
-			int count = 0;
-			for (Field field : bean.getClass().getDeclaredFields()) {
-				Attribute attribute = field.getAnnotation(Attribute.class);
-				if (attribute != null && attribute.primaryKey()) {
-					String getter = "get" + StringUtils.capitalize(field.getName());
-					Method method;
-					method = bean.getClass().getMethod(getter);
-					Object rawValue = method.invoke(bean);
-					String value = null;
-					if (rawValue != null) {
-						value = getStringValue(method.getReturnType(), rawValue, attribute);
-					}
-					if (value != null) {
-						if (count > 0) {
-							sb.append(" AND ");
-						}
-						count++;
-						sb.append(attribute.name()).append("=").append(value);
-					}
-				}
-			}
-			return sb.toString();
-		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			log.error("Error creating reload objects search statement ", e);
-			return e.getMessage();
-		}
-	}
 
 	protected String getStringValue(Class<?> type, Object value, Attribute attribute) {
 		try {
@@ -981,44 +1007,39 @@ public class BaseDBContext
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(Attribute.class) != null) {
 				Attribute attribute = field.getAnnotation(Attribute.class);
+				Type type = BeanHelper.getTypeOfField(field);
 				if (attribute.primaryKey()) {
 					String attributeValue = null;
 					try {
 						if (field.getType() == String.class) {
 							attributeValue = this.getStringValue(bean, field);
 							if (usePreparedWhereStatement(bean)) {
-								typedValues.add(new TypedValue(Type.STRING, ++pos, getValue(bean, String.class, field, attribute)));
+								typedValues.add(new TypedValue(type, ++pos, getValue(bean, type.getTypeClass(), field, attribute)));
 							}
 						} else if (field.getType() == Date.class) {
 							attributeValue = this.getDateValue(bean, field, attribute);
 							if (usePreparedWhereStatement(bean)) {
-								if (attribute.type() == DataType.TIME) {
-									typedValues.add(new TypedValue(Type.TIME, ++pos, getValue(bean, Date.class, field, attribute)));
-								} else if (attribute.type() == DataType.TIMESTAMP) {
-									typedValues.add(new TypedValue(Type.TIMESTAMP, ++pos, getValue(bean, Date.class, field, attribute)));
-								}else {
-									typedValues.add(new TypedValue(Type.DATE, ++pos, getValue(bean, Date.class, field, attribute)));
-								}
+								typedValues.add(new TypedValue(type, ++pos, getValue(bean, type.getTypeClass(), field, attribute)));
 							}
 						} else if (field.getType() == long.class || field.getType() == Long.class) {
 							attributeValue = this.getLongValue(bean, field, attribute);
 							if (usePreparedWhereStatement(bean)) {
-								typedValues.add(new TypedValue(Type.LONG, ++pos, getValue(bean, Long.class, field, attribute)));
+								typedValues.add(new TypedValue(type, ++pos, getValue(bean, type.getTypeClass(), field, attribute)));
 							}
 						} else if (field.getType() == int.class || field.getType() == Integer.class) {
 							attributeValue = this.getIntValue(bean, field, attribute);
 							if (usePreparedWhereStatement(bean)) {
-								typedValues.add(new TypedValue(Type.INT, ++pos, getValue(bean, Integer.class, field, attribute)));
+								typedValues.add(new TypedValue(type, ++pos, getValue(bean, type.getTypeClass(), field, attribute)));
 							}
 						} else if (field.getType() == float.class || field.getType() == Float.class) {
 							attributeValue = this.getFloatValue(bean, field, attribute);
 							if (usePreparedWhereStatement(bean)) {
-								typedValues.add(new TypedValue(Type.FLOAT, ++pos, getValue(bean, Float.class, field, attribute)));
+								typedValues.add(new TypedValue(type, ++pos, getValue(bean, type.getTypeClass(), field, attribute)));
 							}
 						} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
 							attributeValue = this.getBooleanValue(bean, field, attribute);
 							if (usePreparedWhereStatement(bean)) {
-								typedValues.add(new TypedValue(Type.BOOLEAN, ++pos, getValue(bean, Boolean.class, field, attribute)));
+								typedValues.add(new TypedValue(type, ++pos, getValue(bean, type.getTypeClass(), field, attribute)));
 							}
 						}
 					} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -1055,36 +1076,14 @@ public class BaseDBContext
 			if (cols == null || cols.contains(field.getName())) {
 				if (field.getAnnotation(Attribute.class) != null) {
 					Attribute attribute = field.getAnnotation(Attribute.class);
+					Type type = BeanHelper.getTypeOfField(field);
 					if (!attribute.primaryKey()) {
 						String columnName = attribute.name();
 						try {
-							if (field.getType() == String.class) {
-								cv.add(columnName, getValue(bean, String.class, field, attribute));
-								typedValues.add(new TypedValue(Type.STRING, ++pos, getValue(bean, String.class, field, attribute)));
-							} else if (field.getType() == Date.class) {
-								cv.add(columnName, getValue(bean, Date.class, field, attribute));
-								if (attribute.type() == DataType.TIME) {
-									typedValues.add(new TypedValue(Type.TIME, ++pos, getValue(bean, Date.class, field, attribute)));
-								} else if (attribute.type() == DataType.TIMESTAMP) {
-									typedValues.add(new TypedValue(Type.TIMESTAMP, ++pos, getValue(bean, Date.class, field, attribute)));
-								}else {
-									typedValues.add(new TypedValue(Type.DATE, ++pos, getValue(bean, Date.class, field, attribute)));
-								}
-							} else if (field.getType() == long.class || field.getType() == Long.class) {
-								cv.add(columnName, getValue(bean, Long.class, field, attribute));
-								typedValues.add(new TypedValue(Type.LONG, ++pos, getValue(bean, Long.class, field, attribute)));
-							} else if (field.getType() == int.class || field.getType() == Integer.class) {
-								cv.add(columnName, getValue(bean, Integer.class, field, attribute));
-								typedValues.add(new TypedValue(Type.INT, ++pos, getValue(bean, Integer.class, field, attribute)));
-							} else if (field.getType() == float.class || field.getType() == Float.class) {
-								cv.add(columnName, getValue(bean, Float.class, field, attribute));
-								typedValues.add(new TypedValue(Type.FLOAT, ++pos, getValue(bean, Float.class, field, attribute)));
-							} else if (field.getType() == boolean.class || field.getType() == Boolean.class) {
-								cv.add(columnName, getValue(bean, Boolean.class, field, attribute));
-								typedValues.add(new TypedValue(Type.BOOLEAN, ++pos, getValue(bean, Boolean.class, field, attribute)));
-							} else if (field.getType() == byte[].class) {
-								cv.add(columnName, getValue(bean, byte[].class, field, attribute));
-								typedValues.add(new TypedValue(Type.BLOB, ++pos, getValue(bean, byte[].class, field, attribute)));
+							if (DataHelper.contains(VALID_TYPES, field.getType())) {
+								Object rawValue = getValue(bean, type.getTypeClass(), field, attribute);
+								cv.add(columnName, rawValue);
+								typedValues.add(new TypedValue(type, ++pos, rawValue));
 							}
 						} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 								| InvocationTargetException e) {
@@ -1321,8 +1320,19 @@ public class BaseDBContext
 		} else {
 			this.beginTransaction();
 		}
+		
+		if (handler instanceof PreparedStatementSelectHandler) {
+			PreparedStatementSelectHandler preparedStatementSelectHandler = (PreparedStatementSelectHandler) handler;
+			PreparedStatement pstmt = preparedStatementSelectHandler.getPreparedStatement(this.connection);
 
-		try {
+			try (ResultSet rs = pstmt.executeQuery()) {
+				handler.handle(rs);
+			} finally {
+				if (!inTransaction) {
+					this.closeConnection();
+				}
+			}
+		} else {
 			try (Statement stmt = this.connection.createStatement()) {
 				if (handler.isLoggingEnabled()) {
 					if (log.isDebugEnabled()) {
@@ -1332,10 +1342,10 @@ public class BaseDBContext
 				try (ResultSet rs = stmt.executeQuery(handler.getSearchStatement())) {
 					handler.handle(rs);
 				}
-			}
-		} finally {
-			if (!inTransaction) {
-				this.closeConnection();
+			} finally {
+				if (!inTransaction) {
+					this.closeConnection();
+				}
 			}
 		}
 	}

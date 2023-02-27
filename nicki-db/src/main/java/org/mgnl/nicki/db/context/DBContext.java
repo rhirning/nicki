@@ -33,6 +33,7 @@ import javax.sql.DataSource;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.handler.ListSelectHandler;
 import org.mgnl.nicki.db.handler.SelectHandler;
+import org.mgnl.nicki.db.helper.TypedValue;
 import org.mgnl.nicki.db.profile.DBProfile;
 import org.mgnl.nicki.db.profile.InitProfileException;
 
@@ -75,9 +76,6 @@ public interface DBContext extends AutoCloseable {
 
 	<T> List<T> loadObjects(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 
-	<T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy)
-			throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
-
 	<T> boolean exists(T bean) throws SQLException, InitProfileException;
 
 	<T> boolean exists(T bean, String filter) throws SQLException, InitProfileException;
@@ -97,7 +95,7 @@ public interface DBContext extends AutoCloseable {
 	<T> T loadObject(T bean, boolean deepSearch)
 			throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 
-	<T> T loadObject(T bean, boolean deepSearch, String filter, String orderBy)
+	<T> T loadObject(T bean, boolean deepSearch, String filter, String orderBy, TypedValue... typedFilterValues)
 			throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 	
 	String getDateValue(Date date, Attribute attribute);
@@ -121,6 +119,9 @@ public interface DBContext extends AutoCloseable {
 	PrimaryKey getSequenceNumber(Class<?> beanClazz, Attribute sequenceAttribute) throws Exception;
 	Long getSequenceNumber(String sequenceName) throws Exception;
 	<T> T get(Class<T> beanClass, ResultSet rs) throws SQLException, InstantiationException, IllegalAccessException;
+
+	<T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy, TypedValue... typedValues)
+			throws SQLException, InitProfileException, InstantiationException, IllegalAccessException;
 
 
 }

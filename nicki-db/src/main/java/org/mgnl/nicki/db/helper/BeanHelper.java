@@ -87,32 +87,43 @@ public class BeanHelper {
 		return null;
 	}
 
+	public static Type getTypeOfField(Field field) {
+
+		Type type = Type.UNKONWN;
+		Class<?> fieldType = field.getType();
+		if (fieldType == String.class) {
+			type = Type.STRING;
+		} else if (fieldType == Date.class) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute.type() == DataType.TIMESTAMP) {
+				type = Type.TIMESTAMP;
+			} else if (attribute.type() == DataType.TIME) {
+				type = Type.TIME;
+			} else {
+				type = Type.DATE;
+			}
+		} else if (fieldType == long.class || fieldType == Long.class) {
+			type = Type.LONG;
+		} else if (fieldType == int.class || fieldType == Integer.class) {
+			type = Type.INT;
+		} else if (fieldType == float.class || fieldType == Float.class) {
+			type = Type.FLOAT;
+		} else if (fieldType == boolean.class || fieldType == Boolean.class) {
+			type = Type.BOOLEAN;
+		} else if (fieldType == byte[].class) {
+			type = Type.BLOB;
+		}
+
+		log.debug("Field " + field.getName() + " is = " + type + "'");
+		return type;
+	}
+
 	public static Type getTypeOfField(Class<?> beanClass, String fieldName) {
 
 		Type type = Type.UNKONWN;
 		try {
 			Field field = beanClass.getDeclaredField(fieldName);
-			Class<?> fieldType = field.getType();
-			if (fieldType == String.class) {
-				type = Type.STRING;
-			} else if (fieldType == Date.class) {
-				Attribute attribute = field.getAnnotation(Attribute.class);
-				if (attribute.type() == DataType.TIMESTAMP) {
-					type = Type.TIMESTAMP;
-				} else {
-					type = Type.DATE;
-				}
-			} else if (fieldType == long.class || fieldType == Long.class) {
-				type = Type.LONG;
-			} else if (fieldType == int.class || fieldType == Integer.class) {
-				type = Type.INT;
-			} else if (fieldType == float.class || fieldType == Float.class) {
-				type = Type.FLOAT;
-			} else if (fieldType == boolean.class || fieldType == Boolean.class) {
-				type = Type.BOOLEAN;
-			} else if (fieldType == byte[].class) {
-				type = Type.BLOB;
-			}
+			type = getTypeOfField(field);
 		} catch (NoSuchFieldException | SecurityException e) {
 			log.error("Invalid name: " + beanClass.getName() + "." + fieldName);
 		}
