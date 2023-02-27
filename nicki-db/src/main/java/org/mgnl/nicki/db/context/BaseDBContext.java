@@ -296,6 +296,10 @@ public class BaseDBContext
 						}
 						count++;
 						sb.append(attribute.name()).append("=").append(ColumnsAndValues.PREP_VALUE);
+
+						if (type == Type.STRING && attribute != null && attribute.length() > 0) {
+							rawValue = StringUtils.rightPad((String) rawValue, attribute.length());
+						}
 						typedValues.add(new TypedValue(type, typedValues.size() + 1, rawValue));
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -306,7 +310,7 @@ public class BaseDBContext
 		}
 		log.debug(sb.toString());
 		PreparedStatement pstmt = this.getConnection().prepareStatement(sb.toString());
-		fillPreparedStatement(pstmt, bean);
+		fillPreparedStatement(pstmt, typedValues);
 
 		return pstmt;
 	}
@@ -930,14 +934,8 @@ public class BaseDBContext
 		}
 	}
 
-	private void fillPreparedStatement(PreparedStatement pstmt, Class<?> beanClass, List<TypedValue> typedValues) throws SQLException {
+	private void fillPreparedStatement(PreparedStatement pstmt, List<TypedValue> typedValues) throws SQLException {
 		for (TypedValue typedValue : typedValues) {
-			Attribute attribute = beanClass.getAnnotation(Attribute.class);
-			if (typedValue.getType() == Type.STRING && attribute != null && attribute.length() > 0) {
-				String rawValue = StringUtils.rightPad((String) typedValue.getRawValue(), attribute.length(), ' ');
-				typedValue.setRawValue(rawValue);
-			}
-
 			typedValue.fillPreparedStatement(pstmt);
 		}
 	}
@@ -982,7 +980,7 @@ public class BaseDBContext
 		String whereClause = getWhereClause(bean, typedValues, where);
 		String updateStatementString = getUpdateStatement(PREPARED.TRUE, tableName, cv, whereClause);
 		PreparedStatement pstmt = this.connection.prepareStatement(updateStatementString);
-		fillPreparedStatement(pstmt, bean.getClass(), typedValues);
+		fillPreparedStatement(pstmt, typedValues);
 		return pstmt;
 	}
 
@@ -992,7 +990,7 @@ public class BaseDBContext
 		String whereClause = getWhereClause(bean, typedValues, null);
 		String deleteStatementString = getDeleteStatement(tableName, whereClause);
 		PreparedStatement pstmt = this.connection.prepareStatement(deleteStatementString);
-		fillPreparedStatement(pstmt, bean.getClass(), typedValues);
+		fillPreparedStatement(pstmt, typedValues);
 		return pstmt;
 	}
 
@@ -1014,6 +1012,9 @@ public class BaseDBContext
 						if (field.getType() == String.class) {
 							attributeValue = this.getStringValue(bean, field);
 							if (usePreparedWhereStatement(bean)) {
+								if (type == Type.STRING && attribute != null && attribute.length() > 0) {
+									attributeValue = StringUtils.rightPad((String) attributeValue, attribute.length());
+								}
 								typedValues.add(new TypedValue(type, ++pos, getValue(bean, type.getTypeClass(), field, attribute)));
 							}
 						} else if (field.getType() == Date.class) {
@@ -1082,6 +1083,9 @@ public class BaseDBContext
 						try {
 							if (DataHelper.contains(VALID_TYPES, field.getType())) {
 								Object rawValue = getValue(bean, type.getTypeClass(), field, attribute);
+								if (type == Type.STRING && attribute != null && attribute.length() > 0) {
+									rawValue = StringUtils.rightPad((String) rawValue, attribute.length());
+								}
 								cv.add(columnName, rawValue);
 								typedValues.add(new TypedValue(type, ++pos, rawValue));
 							}
