@@ -252,7 +252,7 @@ public class BaseDBContext
 						pos++;
 						Type type = BeanHelper.getTypeOfField(bean.getClass(), field.getName());
 						if (type == Type.STRING && attribute.length() > 0) {
-							rawValue = StringUtils.rightPad((String) rawValue, attribute.length(), ' ');
+							rawValue = StringUtils.rightPad((String) rawValue, attribute.length());
 						}
 						type.fillPreparedStatement(pstmt, pos, rawValue);
 					}
@@ -296,11 +296,7 @@ public class BaseDBContext
 						}
 						count++;
 						sb.append(attribute.name()).append("=").append(ColumnsAndValues.PREP_VALUE);
-
-						if (type == Type.STRING && attribute != null && attribute.length() > 0) {
-							rawValue = StringUtils.rightPad((String) rawValue, attribute.length());
-						}
-						typedValues.add(new TypedValue(type, typedValues.size() + 1, rawValue));
+						typedValues.add(new TypedValue(type, typedValues.size() + 1, rawValue).correctValue(field));
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
@@ -977,7 +973,10 @@ public class BaseDBContext
 		String tableName = this.getQualifiedTableName(bean.getClass());
 		List<TypedValue> typedValues = new ArrayList<TypedValue>();
 		ColumnsAndValues cv = getUpdateColumnValues(bean, typedValues, columns);
-		String whereClause = getWhereClause(bean, typedValues, where);
+		String whereClause = getPrimaryKeyWhereClause(bean, typedValues, where);
+		if (StringUtils.isBlank(whereClause)) {
+			throw new NotSupportedException("Missing primary key value");
+		}
 		String updateStatementString = getUpdateStatement(PREPARED.TRUE, tableName, cv, whereClause);
 		PreparedStatement pstmt = this.connection.prepareStatement(updateStatementString);
 		fillPreparedStatement(pstmt, typedValues);
@@ -987,14 +986,17 @@ public class BaseDBContext
 	protected PreparedStatement getPreparedDeleteStatement(Object bean) throws NotSupportedException, SQLException {
 		String tableName = this.getQualifiedTableName(bean.getClass());
 		List<TypedValue> typedValues = new ArrayList<TypedValue>();
-		String whereClause = getWhereClause(bean, typedValues, null);
+		String whereClause = getPrimaryKeyWhereClause(bean, typedValues, null);
+		if (StringUtils.isBlank(whereClause)) {
+			throw new NotSupportedException("Missing primary key value");
+		}
 		String deleteStatementString = getDeleteStatement(tableName, whereClause);
 		PreparedStatement pstmt = this.connection.prepareStatement(deleteStatementString);
 		fillPreparedStatement(pstmt, typedValues);
 		return pstmt;
 	}
 
-	private String getWhereClause(Object bean, List<TypedValue> typedValues, String where) throws NotSupportedException {
+	private String getPrimaryKeyWhereClause(Object bean, List<TypedValue> typedValues, String where) throws NotSupportedException {
 
 		int pos = typedValues.size();
 		StringBuilder whereClause = new StringBuilder();
@@ -1012,10 +1014,7 @@ public class BaseDBContext
 						if (field.getType() == String.class) {
 							attributeValue = this.getStringValue(bean, field);
 							if (usePreparedWhereStatement(bean)) {
-								if (type == Type.STRING && attribute != null && attribute.length() > 0) {
-									attributeValue = StringUtils.rightPad((String) attributeValue, attribute.length());
-								}
-								typedValues.add(new TypedValue(type, ++pos, getValue(bean, type.getTypeClass(), field, attribute)));
+								typedValues.add(new TypedValue(type, ++pos, getValue(bean, type.getTypeClass(), field, attribute)).correctValue(field));
 							}
 						} else if (field.getType() == Date.class) {
 							attributeValue = this.getDateValue(bean, field, attribute);
@@ -1047,13 +1046,15 @@ public class BaseDBContext
 							| InvocationTargetException e) {
 						log.error("Error converting value", e);
 					}
-					if (whereClause.length() > 0) {
-						whereClause.append(" AND ");
-					}
-					if (usePreparedWhereStatement(bean)) {
-						whereClause.append(attribute.name()).append("=").append(ColumnsAndValues.PREP_VALUE);
-					} else {
-						whereClause.append(attribute.name()).append("=").append(attributeValue);
+					if (StringUtils.isNotBlank(attributeValue)) {
+						if (whereClause.length() > 0) {
+							whereClause.append(" AND ");
+						}
+						if (usePreparedWhereStatement(bean)) {
+							whereClause.append(attribute.name()).append("=").append(ColumnsAndValues.PREP_VALUE);
+						} else {
+							whereClause.append(attribute.name()).append("=").append(attributeValue);
+						}
 					}
 				}
 			}
@@ -1083,11 +1084,8 @@ public class BaseDBContext
 						try {
 							if (DataHelper.contains(VALID_TYPES, field.getType())) {
 								Object rawValue = getValue(bean, type.getTypeClass(), field, attribute);
-								if (type == Type.STRING && attribute != null && attribute.length() > 0) {
-									rawValue = StringUtils.rightPad((String) rawValue, attribute.length());
-								}
 								cv.add(columnName, rawValue);
-								typedValues.add(new TypedValue(type, ++pos, rawValue));
+								typedValues.add(new TypedValue(type, ++pos, rawValue).correctValue(field));
 							}
 						} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 								| InvocationTargetException e) {

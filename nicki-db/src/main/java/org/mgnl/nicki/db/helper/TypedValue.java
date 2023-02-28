@@ -1,5 +1,7 @@
 package org.mgnl.nicki.db.helper;
 
+import java.lang.reflect.Field;
+
 /*-
  * #%L
  * nicki-db
@@ -23,6 +25,9 @@ package org.mgnl.nicki.db.helper;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.db.annotation.Attribute;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -35,5 +40,35 @@ public class TypedValue {
 	
 	public void fillPreparedStatement(PreparedStatement pstmt) throws SQLException {
 		type.fillPreparedStatement(pstmt, pos, rawValue);
+	}
+	
+	public TypedValue correctValue(Object bean, String attributeName) {
+		if (type == Type.STRING) {
+			Attribute attribute = BeanHelper.getBeanAttribute(bean.getClass(), attributeName);
+			if (attribute != null && attribute.length() > 0) {
+				rawValue = StringUtils.rightPad((String) rawValue, attribute.length());
+			}
+		}
+		return this;
+	}
+	
+	public TypedValue correctValue(Class<?> beanClass, String attributeName) {
+		if (type == Type.STRING) {
+			Attribute attribute = BeanHelper.getBeanAttribute(beanClass, attributeName);
+			if (attribute != null && attribute.length() > 0) {
+				rawValue = StringUtils.rightPad((String) rawValue, attribute.length());
+			}
+		}
+		return this;
+	}
+	
+	public TypedValue correctValue(Field field) {
+		if (type == Type.STRING) {
+			Attribute attribute = field.getAnnotation(Attribute.class);
+			if (attribute != null && attribute.length() > 0) {
+				rawValue = StringUtils.rightPad((String) rawValue, attribute.length());
+			}
+		}
+		return this;
 	}
 }
