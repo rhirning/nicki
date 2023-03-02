@@ -78,13 +78,13 @@ public interface DBContext extends AutoCloseable {
 
 	<T> boolean exists(T bean) throws SQLException, InitProfileException;
 
-	<T> boolean exists(T bean, String filter) throws SQLException, InitProfileException;
+	<T> boolean exists(T bean, String filter, TypedValue... typedFilterValues) throws SQLException, InitProfileException;
 	
 	<T> long count(T bean, String filter) throws SQLException, InitProfileException;
 	
 	String toTimestamp(Date date);
 
-	void executeUpdate(String statement) throws SQLException, InitProfileException, NotSupportedException;
+	void executeUpdate(String statement, TypedValue... typedFilterValues) throws SQLException, InitProfileException, NotSupportedException;
 
 	String getSysDate();
 	

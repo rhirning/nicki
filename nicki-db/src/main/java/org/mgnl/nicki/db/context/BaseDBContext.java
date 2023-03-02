@@ -188,41 +188,33 @@ public class BaseDBContext
 			this.beginTransaction();
 		}
 
-		if (usePreparedWhereStatement(bean)) {			
-			try {
-				try (PreparedStatement pstmt = getPreparedSelectStatement(bean, filter, orderBy, typedFilterValues)) {
-					List<T> list = null;
-					try (ResultSet rs = pstmt.executeQuery()) {
-						list = (List<T>) handle(bean.getClass(), rs, table.postInit());
+		if (usePreparedWhereStatement(bean)) {
+			List<T> list = null;
+			try (PreparedStatement pstmt = getPreparedSelectStatement(bean, filter, orderBy, typedFilterValues); ResultSet rs = pstmt.executeQuery()) {
+				list = (List<T>) handle(bean.getClass(), rs, table.postInit());
+				if (list != null && deepSearch) {
+					for (T t : list) {
+						addObjects(t, deepSearch);
 					}
-					if (list != null && deepSearch) {
-						for (T t : list) {
-							addObjects(t, deepSearch);
-						}
-					}
-					return list;
 				}
+				return list;
 			} finally {
 				if (!inTransaction) {
 					this.closeConnection();
 				}
 			}
 		} else {
-			try {
-				try (Statement stmt = this.connection.createStatement()) {
-					String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
-					log.debug(searchStatement);
-					List<T> list = null;
-					try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-						list = (List<T>) handle(bean.getClass(), rs, table.postInit());
+			String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
+			log.debug(searchStatement);
+			List<T> list = null;
+			try (Statement stmt = this.connection.createStatement(); ResultSet rs = stmt.executeQuery(searchStatement)) {
+				list = (List<T>) handle(bean.getClass(), rs, table.postInit());
+				if (list != null && deepSearch) {
+					for (T t : list) {
+						addObjects(t, deepSearch);
 					}
-					if (list != null && deepSearch) {
-						for (T t : list) {
-							addObjects(t, deepSearch);
-						}
-					}
-					return list;
 				}
+				return list;
 			} finally {
 				if (!inTransaction) {
 					this.closeConnection();
@@ -369,27 +361,25 @@ public class BaseDBContext
 		}
 		
 		if (usePreparedWhereStatement(bean)) {			
-			try (PreparedStatement pstmt = getPreparedSelectStatement(bean, filter, orderBy, typedFilterValues)) {
-				try (ResultSet rs = pstmt.executeQuery()) {
-					if (rs.next()) {
-						@SuppressWarnings("unchecked")
-						T result = (T) get(bean.getClass(), rs);
-						if (postMethod != null) {
-							try {
-								postMethod.invoke(result);
-							} catch (Exception e) {
-								log.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
-										+ result.getClass().getName(), e);
-							}
+			try (PreparedStatement pstmt = getPreparedSelectStatement(bean, filter, orderBy, typedFilterValues); ResultSet rs = pstmt.executeQuery()) {
+				if (rs.next()) {
+					@SuppressWarnings("unchecked")
+					T result = (T) get(bean.getClass(), rs);
+					if (postMethod != null) {
+						try {
+							postMethod.invoke(result);
+						} catch (Exception e) {
+							log.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
+									+ result.getClass().getName(), e);
 						}
-
-						if (result != null && deepSearch) {
-							addObjects(result, deepSearch);
-						}
-						return result;
-					} else {
-						return null;
 					}
+
+					if (result != null && deepSearch) {
+						addObjects(result, deepSearch);
+					}
+					return result;
+				} else {
+					return null;
 				}
 			} finally {
 				if (!inTransaction) {
@@ -397,31 +387,28 @@ public class BaseDBContext
 				}
 			}
 		} else {
-			try (Statement stmt = this.connection.createStatement()) {
-				String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
-				log.debug(searchStatement);
-				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-					if (rs.next()) {
-						@SuppressWarnings("unchecked")
-						T result = (T) get(bean.getClass(), rs);
-						if (postMethod != null) {
-							try {
-								postMethod.invoke(result);
-							} catch (Exception e) {
-								log.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
-										+ result.getClass().getName(), e);
-							}
+			String searchStatement = getLoadObjectsSearchStatement(bean, filter, orderBy);
+			log.debug(searchStatement);
+			try (Statement stmt = this.connection.createStatement(); ResultSet rs = stmt.executeQuery(searchStatement)) {
+				if (rs.next()) {
+					@SuppressWarnings("unchecked")
+					T result = (T) get(bean.getClass(), rs);
+					if (postMethod != null) {
+						try {
+							postMethod.invoke(result);
+						} catch (Exception e) {
+							log.error("Unable to execute postInitMethod (" + table.postInit() + ") for class "
+									+ result.getClass().getName(), e);
 						}
-
-						if (result != null && deepSearch) {
-							addObjects(result, deepSearch);
-						}
-						return result;
-					} else {
-						return null;
 					}
-				}
 
+					if (result != null && deepSearch) {
+						addObjects(result, deepSearch);
+					}
+					return result;
+				} else {
+					return null;
+				}
 			} finally {
 				if (!inTransaction) {
 					this.closeConnection();
@@ -431,7 +418,7 @@ public class BaseDBContext
 	}
 	
 	@Override
-	public <T> boolean exists(T bean, String filter) throws SQLException, InitProfileException  {
+	public <T> boolean exists(T bean, String filter, TypedValue... typedFilterValues) throws SQLException, InitProfileException  {
 		boolean inTransaction = false;
 		if (this.connection != null) {
 			inTransaction = true;
@@ -439,23 +426,35 @@ public class BaseDBContext
 			this.beginTransaction();
 		}
 
-		try {
-			try (Statement stmt = this.connection.createStatement()) {
-				String searchStatement = getLoadObjectsSearchStatement(bean, filter, null);
-				log.debug(searchStatement);
-				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-					if (rs != null) {
-						boolean hasNext = rs.next();
-						if (hasNext) {
-							return true;
-						}
+		if (usePreparedWhereStatement(bean)) {
+			try (PreparedStatement pstmt = getPreparedSelectStatement(bean, filter, null, typedFilterValues); ResultSet rs = pstmt.executeQuery()) {
+				if (rs != null) {
+					boolean hasNext = rs.next();
+					if (hasNext) {
+						return true;
+					}
+				}
+			} finally {
+				if (!inTransaction) {
+					this.closeConnection();
+				}
+			}
+			return false;
+		} else {
+			String searchStatement = getLoadObjectsSearchStatement(bean, filter, null);
+			log.debug(searchStatement);
+			try (Statement stmt = this.connection.createStatement(); ResultSet rs = stmt.executeQuery(searchStatement)) {
+				if (rs != null) {
+					boolean hasNext = rs.next();
+					if (hasNext) {
+						return true;
 					}
 				}
 				return false;
-			}
-		} finally {
-			if (!inTransaction) {
-				this.closeConnection();
+			} finally {
+				if (!inTransaction) {
+					this.closeConnection();
+				}
 			}
 		}
 	}
@@ -470,13 +469,11 @@ public class BaseDBContext
 		}
 
 		try {
-			try (Statement stmt = this.connection.createStatement()) {
-				String searchStatement = getLoadObjectsSearchStatement(bean, "count(*)", filter, null);
-				log.debug(searchStatement);
-				try (ResultSet rs = stmt.executeQuery(searchStatement)) {
-					if (rs != null && rs.next()) {
-						return rs.getLong(1);
-					}
+			String searchStatement = getLoadObjectsSearchStatement(bean, "count(*)", filter, null);
+			log.debug(searchStatement);
+			try (Statement stmt = this.connection.createStatement(); ResultSet rs = stmt.executeQuery(searchStatement)) {
+				if (rs != null && rs.next()) {
+					return rs.getLong(1);
 				}
 				return 0;
 			}
@@ -936,6 +933,12 @@ public class BaseDBContext
 		}
 	}
 
+	private void fillPreparedStatement(PreparedStatement pstmt, TypedValue[] typedValues) throws SQLException {
+		for (TypedValue typedValue : typedValues) {
+			typedValue.fillPreparedStatement(pstmt);
+		}
+	}
+
 	private void fillPreparedStatement(PreparedStatement pstmt, Class<?> beanClass, ColumnsAndValues cv, String... columns) throws SQLException {
 
 		List<String> cols = null;
@@ -1180,7 +1183,7 @@ public class BaseDBContext
 	}
 
 	@Override
-	public void executeUpdate(String statement) throws SQLException, InitProfileException, NotSupportedException {
+	public void executeUpdate(String statement, TypedValue... typedFilterValues) throws SQLException, InitProfileException, NotSupportedException {
 		boolean inTransaction = false;
 		if (this.connection != null) {
 			inTransaction = true;
@@ -1188,7 +1191,23 @@ public class BaseDBContext
 			this.beginTransaction();
 		}
 
-		try {
+		if (typedFilterValues != null && typedFilterValues.length > 0) {
+			try (PreparedStatement pstmt = this.getConnection().prepareStatement(statement)) {
+				fillPreparedStatement(pstmt, typedFilterValues);
+				pstmt.executeUpdate();
+				if (!inTransaction) {
+					try {
+						this.commit();
+					} catch (NotInTransactionException e) {
+						log.error("Error on commit", e);
+					}
+				}
+			} finally {
+				if (!inTransaction) {
+					this.rollback();
+				}
+			}
+		} else {
 			try (Statement stmt = this.connection.createStatement()) {
 				log.debug(statement);
 				stmt.executeUpdate(statement);
@@ -1199,10 +1218,10 @@ public class BaseDBContext
 						log.error("Error on commit", e);
 					}
 				}
-			}
-		} finally {
-			if (!inTransaction) {
-				this.rollback();
+			} finally {
+				if (!inTransaction) {
+					this.rollback();
+				}
 			}
 		}
 	}

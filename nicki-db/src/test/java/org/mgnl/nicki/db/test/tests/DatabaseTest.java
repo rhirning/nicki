@@ -145,6 +145,36 @@ public class DatabaseTest extends TestBase {
 			dbContext.update(errorEntry);
 			assertEquals("Anzahl gefundener Einträge mit command FINISH", 1, countCommandEntries(dbContext, "FINISH"));
 			
+			// exists ohne Filter mit blankem bean
+			errorEntry = new ErrorEntry();
+			assertTrue("exists ohne Filter mit blankem bean", dbContext.exists(errorEntry));
+			
+			// exists ohne Filter mit bean und passendem Eintrag
+			errorEntry = new ErrorEntry();
+			errorEntry.setCommand("FINISH");
+			assertTrue("exists ohne Filter mit bean und passendem Eintrag", dbContext.exists(errorEntry));
+			
+			// exists ohne Filter mit bean und nicht passendem Eintrag
+			errorEntry = new ErrorEntry();
+			errorEntry.setCommand("TEST");
+			assertTrue("exists ohne Filter mit bean und nicht passendem Eintrag", !dbContext.exists(errorEntry));
+			
+			// exists ohne Filter
+			errorEntry = new ErrorEntry();
+			assertTrue("Exist one filter", dbContext.exists(errorEntry));
+			// exists mit Filter, der passt
+			errorEntry = new ErrorEntry();
+			assertTrue("exists mit Filter, der passt", dbContext.exists(errorEntry, "COMMAND='FINISH'"));
+			// exists mit Filter, der nicht passt
+			errorEntry = new ErrorEntry();
+			assertTrue("exists mit Filter, der nicht passt", !dbContext.exists(errorEntry, "COMMAND='TEST'"));
+			
+			// exists mit Filter, der passt und typedValues
+			errorEntry = new ErrorEntry();
+			assertTrue("exists mit Filter, der passt", dbContext.exists(errorEntry, "COMMAND=?", new TypedValue(Type.STRING, 1, "FINISH")));
+			// exists mit Filter, der nicht passt und typedValues
+			errorEntry = new ErrorEntry();
+			assertTrue("exists mit Filter, der nicht passt", !dbContext.exists(errorEntry, "COMMAND=?", new TypedValue(Type.STRING, 1, "TEST")));
 			
 		} catch (SQLException | InitProfileException | NotSupportedException | InstantiationException | IllegalAccessException e) {
 			e.printStackTrace();
