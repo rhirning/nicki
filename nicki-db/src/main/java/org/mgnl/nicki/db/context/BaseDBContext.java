@@ -47,7 +47,6 @@ import javax.sql.DataSource;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.annotation.ForeignKey;
@@ -58,6 +57,7 @@ import org.mgnl.nicki.db.handler.ListSelectHandler;
 import org.mgnl.nicki.db.handler.PreparedStatementSelectHandler;
 import org.mgnl.nicki.db.handler.SelectHandler;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
+import org.mgnl.nicki.db.helper.BasicDBHelper;
 import org.mgnl.nicki.db.helper.BeanHelper;
 import org.mgnl.nicki.db.helper.Type;
 import org.mgnl.nicki.db.helper.TypedValue;
@@ -87,12 +87,9 @@ public class BaseDBContext
 	private Connection connection;
 
 	private String schema;
-	
-	boolean allowPreparedWhere;
 
-	public BaseDBContext() {
-		allowPreparedWhere = Config.getBoolean(getClass().getName() + ".allowPreparedWhere", true);
-	}
+	boolean allowPreparedWhere = BasicDBHelper.isAllowPreparedWhere(this);
+	boolean trimStrings = BasicDBHelper.isTrimStrings(this);
 
 	@Override
 	public void setProfile(DBProfile profile) {
@@ -701,8 +698,12 @@ public class BaseDBContext
 					method = bean.getClass().getMethod(getter);
 					Object rawValue = method.invoke(bean);
 					String value = null;
+					String condition = null;
 					if (rawValue != null) {
 						value = getStringValue(method.getReturnType(), rawValue, attribute);
+						if (trimStrings && method.getReturnType() == String.class) {
+							condition = "trim(" + attribute.name() + ")=" + value;
+						}
 					}
 					if (value != null) {
 						if (count > 0) {
@@ -711,7 +712,11 @@ public class BaseDBContext
 							sb.append(" where ");
 						}
 						count++;
-						sb.append(attribute.name()).append("=").append(value);
+						if (condition != null) {
+							sb.append(condition);
+						} else {
+							sb.append(attribute.name()).append("=").append(value);
+						}
 					}
 				}
 			}
@@ -1012,12 +1017,15 @@ public class BaseDBContext
 				Attribute attribute = field.getAnnotation(Attribute.class);
 				Type type = BeanHelper.getTypeOfField(field);
 				if (attribute.primaryKey()) {
+					String condition = null;
 					String attributeValue = null;
 					try {
 						if (field.getType() == String.class) {
 							attributeValue = this.getStringValue(bean, field);
 							if (usePreparedWhereStatement(bean)) {
 								typedValues.add(new TypedValue(type, ++pos, getValue(bean, type.getTypeClass(), field, attribute)).correctValue(field));
+							} else if (trimStrings) {
+								condition = "trim(" + attribute.name() + ")=" + attributeValue;
 							}
 						} else if (field.getType() == Date.class) {
 							attributeValue = this.getDateValue(bean, field, attribute);
@@ -1055,6 +1063,8 @@ public class BaseDBContext
 						}
 						if (usePreparedWhereStatement(bean)) {
 							whereClause.append(attribute.name()).append("=").append(ColumnsAndValues.PREP_VALUE);
+						} else if (condition != null) {
+							whereClause.append(condition);
 						} else {
 							whereClause.append(attribute.name()).append("=").append(attributeValue);
 						}

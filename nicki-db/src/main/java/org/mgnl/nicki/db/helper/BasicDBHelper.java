@@ -27,8 +27,11 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
+import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.handler.IsExistSelectHandler;
 import org.mgnl.nicki.db.handler.MaxIntValueSelectHandler;
 import org.mgnl.nicki.db.handler.SelectHandler;
@@ -41,6 +44,23 @@ import lombok.extern.slf4j.Slf4j;
 public class BasicDBHelper {
 	public final static String DATE_FORMAT = "yyyy-MM-dd";
 	public final static String COLUMN_SEPARATOR = ", ";
+
+	private static Map<Class<?>, Boolean> allowPreparedWhereMap = new HashMap<Class<?>, Boolean>();
+	private static Map<Class<?>, Boolean> trimStringsMap = new HashMap<Class<?>, Boolean>();
+
+	public static boolean isAllowPreparedWhere(DBContext dbContext) {
+		if (!allowPreparedWhereMap.containsKey(dbContext.getClass())) {
+			allowPreparedWhereMap.put(dbContext.getClass(), Config.getBoolean(dbContext.getClass().getName() + ".allowPreparedWhere", true));
+		}
+		return allowPreparedWhereMap.get(dbContext.getClass()).booleanValue();
+	}
+	
+	public static boolean isTrimStrings(DBContext dbContext) {
+		if (!trimStringsMap.containsKey(dbContext.getClass())) {
+			trimStringsMap.put(dbContext.getClass(), Config.getBoolean(dbContext.getClass().getName() + ".trimStrings", false));
+		}
+		return trimStringsMap.get(dbContext.getClass()).booleanValue();
+	}
 
 	public static void executeUpdate(DBProfile profile, String statement) throws Exception {
 
