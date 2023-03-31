@@ -1,9 +1,6 @@
 package org.mgnl.nicki.db.helper;
 
 import java.io.ByteArrayInputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Time;
@@ -35,8 +32,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
-import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.DBContext;
 
 

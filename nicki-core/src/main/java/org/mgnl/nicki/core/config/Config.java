@@ -207,6 +207,7 @@ public final class Config {
 				String className = getValue(CONFIG_VALUE_PROVIDER_KEY);
 				if (StringUtils.isNotEmpty(className)) {
 					try {
+						@SuppressWarnings("unchecked")
 						Class<ConfigValueProvider> clazz = (Class<ConfigValueProvider>) Class.forName(className);
 						configValueProvider = clazz.newInstance();
 					} catch (Exception e) {
