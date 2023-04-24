@@ -1382,7 +1382,7 @@ public class BaseDBContext
 	}
 
 	@Override
-	public Connection beginTransaction() throws SQLException, InitProfileException {
+	public synchronized Connection beginTransaction() throws SQLException, InitProfileException {
 		if (this.connection == null) {
 			log.debug("profile: " + this.profile);
 			this.connection = this.profile.getConnection();
