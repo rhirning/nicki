@@ -36,7 +36,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class InMemorySearch<T extends Object> implements NickiSearch<T> {
-
+	private static final long serialVersionUID = -8131864934307700845L;
 	private Map<String, String> data = new HashMap<String, String>();
 
 
