@@ -13,7 +13,7 @@
 	<properties>
 		<project.build.sourceEncoding>iso-8859-1</project.build.sourceEncoding>
 		<idm.version>4.5</idm.version>
-		<activemq-version>5.16.3</activemq-version>
+		<activemq-version>5.18.1</activemq-version>
 		<project.scm.id>github</project.scm.id>
 		<log4j.version>2.17.1</log4j.version>
 	</properties>
@@ -249,12 +249,12 @@
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi</artifactId>
-				<version>4.1.2</version>
+				<version>5.2.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-ooxml</artifactId>
-				<version>4.1.2</version>
+				<version>5.2.3</version>
 			</dependency>
 			<dependency>
 				<groupId>org.beanshell</groupId>
@@ -425,6 +425,18 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+			   <groupId>org.owasp</groupId>
+			   <artifactId>dependency-check-maven</artifactId>
+			   <version>8.3.1</version>
+			   <executions>
+			      <execution>
+			         <goals>
+			            <goal>check</goal>
+			         </goals>
+			      </execution>
+			   </executions>
 			</plugin>
 		</plugins>
 		<resources>
