@@ -28,7 +28,7 @@ import java.util.Collection;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections4.MultiMap;
+import org.apache.commons.collections4.MultiValuedMap;
 
 public class CachedEntry implements Serializable {
 
@@ -36,11 +36,11 @@ public class CachedEntry implements Serializable {
 	private final String contentType;
     private final String characterEncoding;
     private final int statusCode;
-    private transient MultiMap headers;
+    private transient MultiValuedMap<String, Object> headers;
     private final byte[] plainContent;
 	
 	
-	public CachedEntry(byte[] out, String contentType, String characterEncoding, int statusCode, MultiMap headers) throws IOException {
+	public CachedEntry(byte[] out, String contentType, String characterEncoding, int statusCode, MultiValuedMap<String, Object> headers) throws IOException {
 		this.plainContent = out;
         this.contentType = contentType;
         this.characterEncoding = characterEncoding;
@@ -61,7 +61,7 @@ public class CachedEntry implements Serializable {
 	
 	@SuppressWarnings("rawtypes")
 	protected void addHeaders(final HttpServletResponse response) {
-        final MultiMap headers = getHeaders();
+        final MultiValuedMap<String, Object> headers = getHeaders();
 
         for (Object key : headers.keySet()) {
 	        final String header = (String) key;
@@ -115,7 +115,7 @@ public class CachedEntry implements Serializable {
         return statusCode;
     }
 
-    public MultiMap getHeaders() {
+    public MultiValuedMap<String, Object> getHeaders() {
         return headers;
     }
 

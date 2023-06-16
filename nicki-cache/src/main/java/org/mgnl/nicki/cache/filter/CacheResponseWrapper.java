@@ -31,8 +31,8 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import org.apache.commons.collections4.MultiMap;
-import org.apache.commons.collections4.map.MultiValueMap;
+import org.apache.commons.collections4.MultiValuedMap;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
 
 /**
@@ -46,7 +46,7 @@ public class CacheResponseWrapper extends HttpServletResponseWrapper {
 
 	private final ServletOutputStream wrappedStream;
 	private PrintWriter wrappedWriter;
-	private final MultiMap headers = new MultiValueMap();
+	private final MultiValuedMap<String,Object> headers = new ArrayListValuedHashMap<>();
 	private int status = SC_OK;
 	private boolean isError;
 	private String redirectionLocation;
@@ -117,7 +117,7 @@ public class CacheResponseWrapper extends HttpServletResponseWrapper {
 		return isError;
 	}
 
-	public MultiMap getHeaders() {
+	public MultiValuedMap<String, Object> getHeaders() {
 		return headers;
 	}
 
