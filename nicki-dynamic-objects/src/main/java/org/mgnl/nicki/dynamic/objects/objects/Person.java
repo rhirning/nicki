@@ -88,6 +88,14 @@ public class Person extends BaseDynamicObject {
 		return (List<String>) this.get(ATTRIBUTE_MEMBER);
 	}
 
+	public Boolean isManager() {
+		if (StringUtils.isNotBlank(getAttribute(ATTRIBUTE_IS_MANAGER))) {
+			return DataHelper.booleanOf(getAttribute(ATTRIBUTE_IS_MANAGER));
+		} else {
+			return false;
+		}
+	}
+
 	@DynamicAttribute(externalName="isManager")
 	public String getIsManager() {
 		return (String) this.get(ATTRIBUTE_IS_MANAGER);

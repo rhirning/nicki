@@ -286,11 +286,11 @@ public class AnnotationHelper {
 			
 			for (Method method : modelClass.getDeclaredMethods()) {
 				if (method.isAnnotationPresent(DynamicAttribute.class)) {
-					log.debug("DynamicAttribute: " + getName(method.getName()));
+					log.debug("DynamicAttribute: " + getName(method));
 					DynamicAttribute dAttribute = method
 							.getAnnotation(DynamicAttribute.class);
 					org.mgnl.nicki.core.objects.DynamicAttribute dynAttribute = new org.mgnl.nicki.core.objects.DynamicAttribute(
-							getName(method.getName()), dAttribute.externalName(),
+							getName(method), dAttribute.externalName(),
 							method.getReturnType());
 					dynAttribute.setType(dAttribute.type());
 					if (isMultiple(method)) {
@@ -335,16 +335,16 @@ public class AnnotationHelper {
 					
 					dynamicObject.addAttribute(dynAttribute);
 				} else if (method.isAnnotationPresent(StructuredDynamicAttribute.class)) {
-					log.debug("StructuredDynamicAttribute: " + getName(method.getName()));
+					log.debug("StructuredDynamicAttribute: " + getName(method));
 					StructuredDynamicAttribute dAttribute = method
 							.getAnnotation(StructuredDynamicAttribute.class);
 					org.mgnl.nicki.core.objects.StructuredDynamicAttribute dynAttribute = null;
 					try {
 						dynAttribute = new org.mgnl.nicki.core.objects.StructuredDynamicAttribute(
-								getName(method.getName()), dAttribute.externalName(),
+								getName(method), dAttribute.externalName(),
 								method.getReturnType());
 					} catch (Exception e) {
-						log.error("Method=" +getName(method.getName()), e);
+						log.error("Method=" +getName(method), e);
 					}
 					dynAttribute.setType(dAttribute.type());
 					if (isMultiple(method)) {
@@ -385,11 +385,11 @@ public class AnnotationHelper {
 					
 					dynamicObject.addAttribute(dynAttribute);
 				} else if (method.isAnnotationPresent(DynamicReferenceAttribute.class)) {
-					log.debug("DynamicReferenceAttribute: " + getName(method.getName()) + "(" + method.getReturnType() + ")");
+					log.debug("DynamicReferenceAttribute: " + getName(method) + "(" + method.getReturnType() + ")");
 					DynamicReferenceAttribute dAttribute = method
 							.getAnnotation(DynamicReferenceAttribute.class);
 					DynamicReference dynAttribute = new DynamicReference(dAttribute.reference(),
-							getName(method.getName()),
+							getName(method),
 							Config.getString(dAttribute.baseProperty()),
 							dAttribute.externalName(),
 							method.getReturnType());
@@ -452,9 +452,12 @@ public class AnnotationHelper {
 		return	Collection.class.isAssignableFrom(clazz);
 	}
 
-	private static String getName(String name) {
-		
-		return StringUtils.uncapitalize(StringUtils.substringAfter(name, "get"));
+	private static String getName(Method method) {
+		if (method.getReturnType() == Boolean.class) {
+			return method.getName();
+		} else {
+			return StringUtils.uncapitalize(StringUtils.substringAfter(method.getName(), "get"));
+		}
 	}
 	
 
