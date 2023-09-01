@@ -23,14 +23,20 @@ package org.mgnl.nicki.xls.template;
 
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.apache.commons.io.IOUtils;
 import org.mgnl.nicki.xls.model.template.Document;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class XlsTemplate {
 
 	private Document document;
@@ -47,14 +53,25 @@ public class XlsTemplate {
 		return unmarshal(docClass, new ByteArrayInputStream(templateContent.getBytes()));
 	}
 
+	@SuppressWarnings("unchecked")
 	public <T> T unmarshal(Class<T> docClass, InputStream inputStream)
 			throws JAXBException {
 		String packageName = docClass.getPackage().getName();
 		JAXBContext jc = JAXBContext.newInstance(packageName);
 		Unmarshaller u = jc.createUnmarshaller();
-		@SuppressWarnings("unchecked")
-		T doc = (T) u.unmarshal(inputStream);
-		return doc;
+		if (log.isDebugEnabled()) {
+			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+			try {
+				IOUtils.copy(inputStream, outputStream);
+			} catch (IOException e) {
+				log.debug("Error with InputStream", e);
+			}
+			ByteArrayInputStream in = new ByteArrayInputStream(outputStream.toByteArray());
+			log.debug(outputStream.toString());
+			return (T) u.unmarshal(in);
+		} else {
+			return (T) u.unmarshal(inputStream);
+		}
 	}
 
 	public Document getDocument() {
