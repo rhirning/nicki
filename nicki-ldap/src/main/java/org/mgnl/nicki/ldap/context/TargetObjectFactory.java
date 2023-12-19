@@ -35,6 +35,7 @@ import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.core.util.Classes;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -178,7 +179,7 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 	private <T extends DynamicObject> T getDynamicObject(T pattern) throws InstantiateDynamicObjectException {
 		try {
 			@SuppressWarnings("unchecked")
-			T object = (T) pattern.getClass().newInstance();
+			T object = (T) Classes.newInstance(pattern.getClass());
 			initDataModel(pattern, object);
 			return object;
 		} catch (Exception e) {

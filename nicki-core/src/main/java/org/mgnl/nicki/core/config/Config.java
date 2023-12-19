@@ -209,7 +209,7 @@ public final class Config {
 					try {
 						@SuppressWarnings("unchecked")
 						Class<ConfigValueProvider> clazz = (Class<ConfigValueProvider>) Class.forName(className);
-						configValueProvider = clazz.newInstance();
+						configValueProvider = Classes.newInstance(clazz);
 					} catch (Exception e) {
 						log.error("Could not create class instance for " + className + ":" + e.getMessage());
 					}

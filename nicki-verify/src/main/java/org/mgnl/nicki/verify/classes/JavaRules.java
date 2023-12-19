@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.verify.annotations.Attribute;
 import org.mgnl.nicki.verify.annotations.VerifyCommand;
 import org.mgnl.nicki.verify.annotations.VerifyRule;
@@ -60,7 +61,7 @@ public class JavaRules {
 
 	private static <T> List<ReferencedError> evaluateClass(Map<String, Object> data, Class<T> clazz) throws InstantiationException, IllegalAccessException, MissingAttributeException {
 		List<ReferencedError> errors = new ArrayList<>();
-		T instance = clazz.newInstance();
+		T instance = Classes.newInstance(clazz);
 		injectData(instance, data);
 		Method[] methods = clazz.getDeclaredMethods();
 		if (methods != null) {

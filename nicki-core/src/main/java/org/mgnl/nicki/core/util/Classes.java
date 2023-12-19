@@ -4,6 +4,7 @@ package org.mgnl.nicki.core.util;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -34,7 +35,21 @@ public class Classes {
 
     public static <T> T newInstance(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         final Class<T> clazz = forName(className);
-        return clazz.newInstance();
+        try {
+			return clazz.getDeclaredConstructor().newInstance();
+		} catch (InvocationTargetException
+				| NoSuchMethodException e) {
+			throw new InstantiationException();
+		}
+    }
+
+    public static <T> T newInstance(Class<T> clazz) throws InstantiationException, IllegalAccessException {
+        try {
+			return clazz.getDeclaredConstructor().newInstance();
+		} catch (InvocationTargetException
+				| NoSuchMethodException e) {
+			throw new InstantiationException();
+		}
     }
 
     @SuppressWarnings("unchecked")

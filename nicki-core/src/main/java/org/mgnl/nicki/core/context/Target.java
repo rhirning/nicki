@@ -34,6 +34,8 @@ import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
+import org.mgnl.nicki.core.util.Classes;
+
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -143,7 +145,7 @@ public class Target implements Serializable {
 				log.debug(classDefinition.getName() + " not found, so create a new one");
 			}
 			try {
-				dynamicObject = classDefinition.newInstance();
+				dynamicObject = Classes.newInstance(classDefinition);
 				TargetFactory.initDataModel(dynamicObject);
 				allDynamicObjectsMap.put(classDefinition, dynamicObject);
 				return dynamicObject;

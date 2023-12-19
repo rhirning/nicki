@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.util.Classes;
 
 public class CatalogArticleFactory {
 	private static CatalogArticleFactory instance;
@@ -43,7 +44,7 @@ public class CatalogArticleFactory {
 		for (CatalogArticle catalogArticle : Catalog.getCatalog().getAllArticles()) {
 			if (!articleTypes.containsKey(catalogArticle.getClass())) {
 				try {
-					articleTypes.put(catalogArticle.getClass(), catalogArticle.getClass().newInstance());
+					articleTypes.put(catalogArticle.getClass(), Classes.newInstance(catalogArticle.getClass()));
 				} catch (Exception e) {
 					articleTypes.put(catalogArticle.getClass(), catalogArticle);
 				}

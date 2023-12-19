@@ -47,7 +47,7 @@ public abstract class LogProgressRunner extends ProgressRunner implements Runnab
 	public void progressed(int newCurrent, String newDetails) {
 		this.setCurrent(newCurrent);
 		this.setDetails(newDetails);
-		float value = new Float(getCurrent()) / getCount();
+		float value = Float.valueOf(getCurrent()) / getCount();
 		if (StringUtils.isNotBlank(newDetails)) {
 			log.info(this.toString() + ": Details: " + getDetails());
 		}

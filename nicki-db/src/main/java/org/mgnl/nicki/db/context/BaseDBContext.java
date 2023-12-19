@@ -48,6 +48,7 @@ import javax.sql.DataSource;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.annotation.ForeignKey;
 import org.mgnl.nicki.db.annotation.SubTable;
@@ -556,7 +557,7 @@ public class BaseDBContext
 	private <T> T getNewInstance(Class<T> clazz) {
 
 		try {
-			return clazz.newInstance();
+			return Classes.newInstance(clazz);
 		} catch (InstantiationException | IllegalAccessException e) {
 			log.error("Error creating instance of  " + clazz.getName(), e);
 		}
@@ -614,7 +615,7 @@ public class BaseDBContext
 	}
 
 	public <T> T get(Class<T> beanClass, ResultSet rs) throws SQLException, InstantiationException, IllegalAccessException {
-		T entry = beanClass.newInstance();
+		T entry = Classes.newInstance(beanClass);
 		for (Field field : beanClass.getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
 			if (attribute != null) {
@@ -1271,7 +1272,7 @@ public class BaseDBContext
 				if (primaryKey != null && primaryKey.size() > 0) {
 					try {
 						@SuppressWarnings("unchecked")
-						T deleteBean = (T) bean.getClass().newInstance();
+						T deleteBean = (T) Classes.newInstance(bean.getClass());
 						setPrimaryKey(deleteBean, primaryKey);
 						statement = this.createDeleteStatement(deleteBean);
 					} catch (InstantiationException | IllegalAccessException e) {
@@ -1441,7 +1442,7 @@ public class BaseDBContext
 	private <T> T reload(T bean) {
 		try {
 			@SuppressWarnings("unchecked")
-			T b = (T) bean.getClass().newInstance();
+			T b = (T) Classes.newInstance(bean.getClass());
 			PrimaryKey primaryKey = getPrimaryKey(bean);
 			setPrimaryKey(b, primaryKey);
 			return loadObject(b, true);

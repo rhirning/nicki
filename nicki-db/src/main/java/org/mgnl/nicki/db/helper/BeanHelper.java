@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.BeanUtilsHelper;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.annotation.ForeignKey;
 import org.mgnl.nicki.db.context.DBContext;
@@ -244,7 +245,7 @@ public class BeanHelper {
 				ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
 				if (foreignKey != null && StringUtils.isNotBlank(foreignKey.display())) {
 					try {
-						Object foreignObject = foreignKey.foreignKeyClass().newInstance();
+						Object foreignObject = Classes.newInstance(foreignKey.foreignKeyClass());
 						Field foreignField = getFieldFromColumnName(foreignObject.getClass(), foreignKey.columnName());
 						Object keyValue = getValue(bean, attributeName);
 						if (keyValue != null) {
@@ -271,7 +272,7 @@ public class BeanHelper {
 				ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
 				if (foreignKey != null && StringUtils.isNotBlank(foreignKey.display())) {
 					try {
-						Object foreignObject = foreignKey.foreignKeyClass().newInstance();
+						Object foreignObject = Classes.newInstance(foreignKey.foreignKeyClass());
 						try (DBContext dbContext = DBContextManager.getContext(dbContextName)) {
 							return dbContext.loadObjects(foreignObject, false);
 						}
@@ -290,7 +291,7 @@ public class BeanHelper {
 				ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
 				if (foreignKey != null && StringUtils.isNotBlank(foreignKey.display())) {
 					try {
-						Object foreignObject = foreignKey.foreignKeyClass().newInstance();
+						Object foreignObject = Classes.newInstance(foreignKey.foreignKeyClass());
 						Field foreignKeyField = getFieldFromColumnName(foreignKey.foreignKeyClass(), foreignKey.columnName());
 						if (foreignKeyField != null) {
 							setValue(foreignObject, foreignKeyField.getName(), key);

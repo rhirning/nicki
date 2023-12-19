@@ -33,6 +33,7 @@ import org.mgnl.nicki.core.helper.AttributeMapper;
 import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
+import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.context.NotInTransactionException;
@@ -267,12 +268,12 @@ public class SyncManager implements Serializable{
 	}
 
 	private SyncEntry getEmptyEntry(Class<? extends SyncEntry> entryClass) throws InstantiationException, IllegalAccessException {
-		return entryClass.newInstance();
+		return Classes.newInstance(entryClass);
 	}
 
 
 	private List<SyncEntry> getStoredEntries(DBContext dbContext, SyncConfig syncConfig, String id) throws InstantiationException, IllegalAccessException, SQLException, InitProfileException {
-		SyncEntry searchEntry = syncConfig.getEntryClass().newInstance();
+		SyncEntry searchEntry = Classes.newInstance(syncConfig.getEntryClass());
 		searchEntry.setId(id);
 		searchEntry.setType(syncConfig.getEntryType());
 		List<SyncEntry> entries = dbContext.loadObjects(searchEntry, false, "TO_TIME IS NULL", null);

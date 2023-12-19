@@ -43,6 +43,7 @@ import org.apache.commons.lang.StringUtils;
 import org.ietf.jgss.GSSException;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.AppContext;
+import org.mgnl.nicki.core.util.Classes;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -242,8 +243,8 @@ public class SpnegoHttpFilter implements Filter {
 	                this.page403 = props.getProperty("spnego.authz.403", "").trim();
 	                this.sitewide = props.getProperty("spnego.authz.sitewide", "").trim();
 	                this.sitewide = (this.sitewide.isEmpty()) ? null : this.sitewide;
-	                this.accessControl = (UserAccessControl) Class.forName(
-	                        props.getProperty("spnego.authz.class")).newInstance();
+	                this.accessControl = (UserAccessControl) Classes.newInstance(
+	                        props.getProperty("spnego.authz.class"));
 	                this.accessControl.init(props);                
 	            } else {
 	            	log.debug("spnego.authz.class empty");

@@ -58,6 +58,7 @@ import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 
 import org.apache.commons.lang.StringUtils;
+import org.mgnl.nicki.core.util.Classes;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -300,7 +301,8 @@ public class JsonHelper extends BeanUtilsHelper {
 	}
 
 	public static <T> T toBean(Class<T> beanClazz, JsonObject data) throws IllegalAccessException, InvocationTargetException, InstantiationException {
-		T bean = beanClazz.newInstance();
+		T bean;
+		bean = Classes.newInstance(beanClazz);
 		fillBeanWithProperties(beanClazz, bean, data);
 		return bean;
 	}
@@ -396,7 +398,7 @@ public class JsonHelper extends BeanUtilsHelper {
 						JsonObject o = data.getJsonObject(key);
 						try {
 //							A entry = entryClazz.newInstance();
-							Object entry = field.getType().newInstance();
+							Object entry = Classes.newInstance(field.getType());
 							fillBeanWithProperties(entry.getClass(), entry, o);
 							Method setter = getSetter(bean.getClass(), field, field.getType());
 							if (setter != null) {
@@ -444,7 +446,7 @@ public class JsonHelper extends BeanUtilsHelper {
 											if (entryClass == String.class) {
 												list.add(array.getString(i));
 											} else {
-												Object entry = entryClass.newInstance();
+												Object entry = Classes.newInstance(entryClass);
 												JsonObject o = array.getJsonObject(i);
 												fillBeanWithProperties(entryClass, entry, o);
 												list.add(entry);
