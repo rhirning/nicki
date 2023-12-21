@@ -13,7 +13,7 @@
 	<properties>
 		<project.build.sourceEncoding>iso-8859-1</project.build.sourceEncoding>
 		<idm.version>4.5</idm.version>
-		<activemq-version>5.18.3</activemq-version>
+		<activemq-version>5.16.7</activemq-version>
 		<project.scm.id>github</project.scm.id>
 		<log4j.version>2.17.1</log4j.version>
 	</properties>
