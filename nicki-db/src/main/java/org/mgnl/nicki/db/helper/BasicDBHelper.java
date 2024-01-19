@@ -47,6 +47,7 @@ public class BasicDBHelper {
 
 	private static Map<Class<?>, Boolean> allowPreparedWhereMap = new HashMap<Class<?>, Boolean>();
 	private static Map<Class<?>, Boolean> trimStringsMap = new HashMap<Class<?>, Boolean>();
+	private static Map<Class<?>, Boolean> trimStringsInBeanMap = new HashMap<Class<?>, Boolean>();
 
 	public static boolean isAllowPreparedWhere(DBContext dbContext) {
 		if (!allowPreparedWhereMap.containsKey(dbContext.getClass())) {
@@ -60,6 +61,13 @@ public class BasicDBHelper {
 			trimStringsMap.put(dbContext.getClass(), Config.getBoolean(dbContext.getClass().getName() + ".trimStrings", false));
 		}
 		return trimStringsMap.get(dbContext.getClass()).booleanValue();
+	}
+	
+	public static boolean isTrimStringsInBean(Class<?> clazz) {
+		if (!trimStringsInBeanMap.containsKey(clazz)) {
+			trimStringsInBeanMap.put(clazz, Config.getBoolean(clazz.getName() + ".trimStrings", true));
+		}
+		return trimStringsInBeanMap.get(clazz).booleanValue();
 	}
 
 	public static void executeUpdate(DBProfile profile, String statement) throws Exception {
