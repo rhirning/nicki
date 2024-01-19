@@ -88,9 +88,12 @@ public class BaseDBContext
 
 	private String schema;
 
-	boolean allowPreparedWhere = BasicDBHelper.isAllowPreparedWhere(this);
-	boolean trimStrings = BasicDBHelper.isTrimStrings(this);
+	private boolean allowPreparedWhere = BasicDBHelper.isAllowPreparedWhere(this);
+	private boolean trimStringsInContext = BasicDBHelper.isTrimStrings(this);
 
+	protected boolean isTrimStrings(Class<?> beanClass) {
+		return trimStringsInContext && BasicDBHelper.isTrimStringsInBean(beanClass);
+	}
 	@Override
 	public void setProfile(DBProfile profile) {
 		this.profile = profile;
@@ -701,7 +704,7 @@ public class BaseDBContext
 					String condition = null;
 					if (rawValue != null) {
 						value = getStringValue(method.getReturnType(), rawValue, attribute);
-						if (trimStrings && method.getReturnType() == String.class) {
+						if (isTrimStrings(bean.getClass()) && method.getReturnType() == String.class) {
 							condition = "trim(" + attribute.name() + ")=" + value;
 						}
 					}
@@ -1024,7 +1027,7 @@ public class BaseDBContext
 							attributeValue = this.getStringValue(bean, field);
 							if (usePreparedWhereStatement(bean)) {
 								typedValues.add(new TypedValue(type, ++pos, getValue(bean, type.getTypeClass(), field, attribute)).correctValue(field));
-							} else if (trimStrings) {
+							} else if (isTrimStrings(bean.getClass())) {
 								condition = "trim(" + attribute.name() + ")=" + attributeValue;
 							}
 						} else if (field.getType() == Date.class) {
