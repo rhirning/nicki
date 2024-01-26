@@ -42,6 +42,7 @@ import javax.naming.ldap.StartTlsRequest;
 import javax.naming.ldap.StartTlsResponse;
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.BasicContext;
+import org.mgnl.nicki.core.context.BeanQueryHandler;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.DynamicObjectFactory;
 import org.mgnl.nicki.core.context.Target;
@@ -245,6 +246,33 @@ public class LdapContext extends BasicContext implements NickiContext {
 		} catch (Throwable e) {
 			log.debug("Error", e);
 			throw new DynamicObjectException(e.getMessage());
+		} finally {
+			if (results != null) {
+				try {
+					results.close();
+				} catch (NamingException e) {
+					
+					log.error("Error", e);
+				}
+			}
+		}
+	}
+
+	public void search(BeanQueryHandler queryHandler) throws NamingException {
+		StartTlsResponse tls = null;
+		NamingEnumeration<SearchResult> results = null;
+		try (NickiLdapContext ctx = getLdapContext()) {
+			if (isTls()) {
+				// Start TLS
+				tls =
+				    (StartTlsResponse) ctx.extendedOperation(new StartTlsRequest());
+				tls.negotiate();
+			}
+			results = ctx.search(queryHandler.getBaseDN(), queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
+			queryHandler.handle(this, results);
+		} catch (IOException | NamingException | DynamicObjectException e) {
+			log.error("Error searching LDAP", e);
+			throw new NamingException(e.getMessage());
 		} finally {
 			if (results != null) {
 				try {

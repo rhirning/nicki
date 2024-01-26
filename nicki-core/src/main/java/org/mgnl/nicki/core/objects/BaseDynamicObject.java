@@ -620,7 +620,7 @@ public class BaseDynamicObject implements DynamicObject, Serializable, Cloneable
 							try {
 								value = getter.invoke(this);
 							} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-								log.debug("wrongo getter for " + dynAttribute.getName(), e);
+								log.debug("wrong getter for " + dynAttribute.getName(), e);
 							}
 						}
 						if (value == null) {

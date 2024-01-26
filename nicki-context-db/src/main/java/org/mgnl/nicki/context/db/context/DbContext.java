@@ -24,7 +24,10 @@ package org.mgnl.nicki.context.db.context;
 
 import java.util.List;
 
+import javax.naming.NamingException;
+
 import org.mgnl.nicki.core.auth.NickiPrincipal;
+import org.mgnl.nicki.core.context.BeanQueryHandler;
 import org.mgnl.nicki.core.context.DynamicObjectFactory;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
@@ -267,6 +270,12 @@ public class DbContext implements NickiContext {
 			throws InstantiateDynamicObjectException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void search(BeanQueryHandler queryHandler) throws NamingException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
