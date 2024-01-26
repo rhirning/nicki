@@ -25,6 +25,8 @@ package org.mgnl.nicki.core.context;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.naming.NamingException;
+
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.data.Query;
@@ -79,6 +81,7 @@ public interface NickiContext extends Serializable {
 	<T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, ReferenceMethod referenceMethod);
 	DynamicObjectAdapter getAdapter();
 	void search(QueryHandler handler) throws DynamicObjectException;
+	void search(BeanQueryHandler queryHandler) throws NamingException;
 	SearchQueryHandler getSearchHandler(Query query);
 	Query getQuery(String base);
 	<T extends DynamicObject> DataModel getDataModel(Class<T> classDefinition) throws InstantiateDynamicObjectException;

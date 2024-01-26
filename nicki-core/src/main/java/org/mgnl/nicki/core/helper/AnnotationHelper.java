@@ -436,15 +436,15 @@ public class AnnotationHelper {
 		}
 	}
 
-	private static boolean isMultiple(Method method) {
+	public static boolean isMultiple(Method method) {
 		return isMultiple(method.getReturnType());
 	}
 
-	private static boolean isMultiple(Field field) {
+	public static boolean isMultiple(Field field) {
 		return isMultiple(field.getType());
 	}
 
-	private static boolean isMultiple(Class<?> clazz) {
+	public static boolean isMultiple(Class<?> clazz) {
 		if (clazz.isArray() && clazz != byte[].class) {
 			return true;
 		}
@@ -452,7 +452,7 @@ public class AnnotationHelper {
 		return	Collection.class.isAssignableFrom(clazz);
 	}
 
-	private static String getName(Method method) {
+	public static String getName(Method method) {
 		if (method.getReturnType() == Boolean.class) {
 			return method.getName();
 		} else {
