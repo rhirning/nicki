@@ -21,7 +21,6 @@
 	<modules>
 		
 		<module>nicki-cache</module>
-		<module>nicki-context-db</module>
 		<module>nicki-core</module>
 		<module>nicki-db</module>
 		<module>nicki-dynamic-objects</module>
@@ -249,22 +248,22 @@
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi</artifactId>
-				<version>4.1.2</version>
+				<version>5.2.5</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-ooxml</artifactId>
-				<version>4.1.2</version>
+				<version>5.2.5</version>
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcmail-jdk15on</artifactId>
-				<version>1.67</version>
+				<artifactId>bcmail-jdk18on</artifactId>
+				<version>1.77</version>
 			</dependency>
 			<dependency>
 				<groupId>org.bouncycastle</groupId>
-				<artifactId>bcprov-jdk15on</artifactId>
-				<version>1.67</version>
+				<artifactId>bcprov-jdk18on</artifactId>
+				<version>1.77</version>
 			</dependency>
 			<dependency>
 				<groupId>org.ehcache</groupId>
@@ -305,12 +304,12 @@
 			<dependency>
 				<groupId>org.quartz-scheduler</groupId>
 				<artifactId>quartz</artifactId>
-				<version>2.4.0-rc2</version>
+				<version>2.5.0-rc1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.quartz-scheduler</groupId>
 				<artifactId>quartz-jobs</artifactId>
-				<version>2.4.0-rc2</version>
+				<version>2.5.0-rc1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.xhtmlrenderer</groupId>
@@ -424,7 +423,7 @@
 			<plugin>
 			   <groupId>org.owasp</groupId>
 			   <artifactId>dependency-check-maven</artifactId>
-			   <version>8.3.1</version>
+			   <version>9.0.9</version>
 			   <configuration>
 			   		<pnpmAuditAnalyzerEnabled>false</pnpmAuditAnalyzerEnabled>
 			   </configuration>
