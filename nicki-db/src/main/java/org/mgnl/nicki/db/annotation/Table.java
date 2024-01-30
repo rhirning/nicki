@@ -38,4 +38,5 @@ public @interface Table {
 	Class<?> updateClass() default void.class;
 	
 	boolean usePreparedStatement() default true;
+	String trimStrings() default "";
 }

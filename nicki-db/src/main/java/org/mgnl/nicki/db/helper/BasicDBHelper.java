@@ -1,6 +1,8 @@
 
 package org.mgnl.nicki.db.helper;
 
+import java.lang.reflect.Field;
+
 /*-
  * #%L
  * nicki-db
@@ -30,7 +32,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.db.annotation.Attribute;
+import org.mgnl.nicki.db.annotation.Table;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.handler.IsExistSelectHandler;
 import org.mgnl.nicki.db.handler.MaxIntValueSelectHandler;
@@ -46,7 +52,7 @@ public class BasicDBHelper {
 	public final static String COLUMN_SEPARATOR = ", ";
 
 	private static Map<Class<?>, Boolean> allowPreparedWhereMap = new HashMap<Class<?>, Boolean>();
-	private static Map<Class<?>, Boolean> trimStringsMap = new HashMap<Class<?>, Boolean>();
+	private static Map<String, Boolean> trimStringsMap = new HashMap<String, Boolean>();
 	private static Map<Class<?>, Boolean> trimStringsInBeanMap = new HashMap<Class<?>, Boolean>();
 
 	public static boolean isAllowPreparedWhere(DBContext dbContext) {
@@ -56,18 +62,57 @@ public class BasicDBHelper {
 		return allowPreparedWhereMap.get(dbContext.getClass()).booleanValue();
 	}
 	
+	/*
 	public static boolean isTrimStrings(DBContext dbContext) {
 		if (!trimStringsMap.containsKey(dbContext.getClass())) {
 			trimStringsMap.put(dbContext.getClass(), Config.getBoolean(dbContext.getClass().getName() + ".trimStrings", false));
 		}
 		return trimStringsMap.get(dbContext.getClass()).booleanValue();
 	}
+	*/
 	
+	/*
 	public static boolean isTrimStringsInBean(Class<?> clazz) {
 		if (!trimStringsInBeanMap.containsKey(clazz)) {
 			trimStringsInBeanMap.put(clazz, Config.getBoolean(clazz.getName() + ".trimStrings", true));
 		}
 		return trimStringsInBeanMap.get(clazz).booleanValue();
+	}
+	*/
+	/**
+	 * Bestimmt, ob in where-Bedingungen String-Werte in trim() eingepackt werden
+	 * Es kann konfiguriert werden (aufsteigende Priorität):
+	 * <ul>
+	 * <li>contextClass.getName() + ".trimStrings" (default false)
+	 * <li>Mit Argument trimStrings in Table-Annotation ("true" oder "false"). Wird nur berücksichtigt, falls trimStrings gesetzt ist
+	 * <li>beanClass.getName() + ".trimStrings". Wird nur berücksichtigt, falls ein Wert gesetzt ist
+	 * <li>Mit Argument trim in Attribute-Annotation ("true" oder "false"). Wird nur berücksichtigt, falls trim gesetzt ist
+	 * @param contextClass
+	 * @param beanClass
+	 * @param field
+	 * @return
+	 */
+	
+	
+	public static boolean isTrimStrings(Class<?> contextClass, Class<?> beanClass, Field field) {
+		String key = contextClass.getName() + ":" + beanClass.getName() + ":" + field.getName();
+		if (!trimStringsMap.containsKey(key)) {
+			boolean result = Config.getBoolean(contextClass.getName() + ".trimStrings", false);
+			Table tableAnnotation = beanClass.getAnnotation(Table.class);
+			if (tableAnnotation != null && StringUtils.isNotBlank(tableAnnotation.trimStrings())) {
+				result = DataHelper.booleanOf(tableAnnotation.trimStrings());
+			}
+			String beanConfig = Config.getString(beanClass.getName() + ".trimStrings");
+			if (StringUtils.isNotBlank(beanConfig)) {
+				result = DataHelper.booleanOf(beanConfig);
+			}
+			Attribute attributeAnnotation = field.getAnnotation(Attribute.class);
+			if (attributeAnnotation != null && StringUtils.isNotBlank(attributeAnnotation.trim())) {
+				result = DataHelper.booleanOf(attributeAnnotation.trim());
+			}
+			trimStringsMap.put(key, result);
+		}
+		return trimStringsMap.get(key).booleanValue();
 	}
 
 	public static void executeUpdate(DBProfile profile, String statement) throws Exception {

@@ -90,10 +90,9 @@ public class BaseDBContext
 	private String schema;
 
 	private boolean allowPreparedWhere = BasicDBHelper.isAllowPreparedWhere(this);
-	private boolean trimStringsInContext = BasicDBHelper.isTrimStrings(this);
 
-	protected boolean isTrimStrings(Class<?> beanClass) {
-		return trimStringsInContext && BasicDBHelper.isTrimStringsInBean(beanClass);
+	protected boolean isTrimStrings(Class<?> beanClass, Field field) {
+		return BasicDBHelper.isTrimStrings(getClass(), beanClass, field);
 	}
 	@Override
 	public void setProfile(DBProfile profile) {
@@ -288,7 +287,11 @@ public class BaseDBContext
 							sb.append(" where ");
 						}
 						count++;
-						sb.append(attribute.name()).append("=").append(ColumnsAndValues.PREP_VALUE);
+						if (isTrimStrings(bean.getClass(), field) && method.getReturnType() == String.class) {
+							sb.append("trim(").append(attribute.name()).append(")=").append(ColumnsAndValues.PREP_VALUE);
+						} else {
+							sb.append(attribute.name()).append("=").append(ColumnsAndValues.PREP_VALUE);
+						}
 						typedValues.add(new TypedValue(type, typedValues.size() + 1, rawValue).correctValue(field));
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
@@ -323,7 +326,11 @@ public class BaseDBContext
 							sb.append(" where ");
 						}
 						count++;
-						sb.append(attribute.name()).append("=").append(ColumnsAndValues.PREP_VALUE);
+						if (isTrimStrings(bean.getClass(), field) && method.getReturnType() == String.class) {
+							sb.append("trim(").append(attribute.name()).append(")=").append(ColumnsAndValues.PREP_VALUE);
+						} else {
+							sb.append(attribute.name()).append("=").append(ColumnsAndValues.PREP_VALUE);
+						}
 					}
 				} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 						| InvocationTargetException e) {
@@ -705,7 +712,7 @@ public class BaseDBContext
 					String condition = null;
 					if (rawValue != null) {
 						value = getStringValue(method.getReturnType(), rawValue, attribute);
-						if (isTrimStrings(bean.getClass()) && method.getReturnType() == String.class) {
+						if (isTrimStrings(bean.getClass(), field) && method.getReturnType() == String.class) {
 							condition = "trim(" + attribute.name() + ")=" + value;
 						}
 					}
@@ -1028,7 +1035,7 @@ public class BaseDBContext
 							attributeValue = this.getStringValue(bean, field);
 							if (usePreparedWhereStatement(bean)) {
 								typedValues.add(new TypedValue(type, ++pos, getValue(bean, type.getTypeClass(), field, attribute)).correctValue(field));
-							} else if (isTrimStrings(bean.getClass())) {
+							} else if (isTrimStrings(bean.getClass(), field)) {
 								condition = "trim(" + attribute.name() + ")=" + attributeValue;
 							}
 						} else if (field.getType() == Date.class) {
@@ -1787,9 +1794,15 @@ public class BaseDBContext
 				Attribute attribute = field.getAnnotation(Attribute.class);
 				if (attribute.primaryKey()) {
 					String attributeValue = null;
+					StringBuilder sb = new StringBuilder();
 					try {
 						if (field.getType() == String.class) {
 							attributeValue = this.getStringValue(bean, field);
+							if (isTrimStrings(bean.getClass(), field)) {
+								sb.append("trim(").append(attribute.name()).append(")=").append(attributeValue);
+							} else {
+								sb.append(attribute.name()).append("=").append(attributeValue);
+							}
 						} else if (field.getType() == Date.class) {
 							attributeValue = this.getDateValue(bean, field, attribute);
 						} else if (field.getType() == long.class || field.getType() == Long.class) {
@@ -1808,7 +1821,11 @@ public class BaseDBContext
 					if (whereClause.length() > 0) {
 						whereClause.append(" AND ");
 					}
-					whereClause.append(attribute.name()).append("=").append(attributeValue);
+					if (sb.length() > 0) {
+						whereClause.append(sb);
+					} else {
+						whereClause.append(attribute.name()).append("=").append(attributeValue);
+					}
 				}
 			}
 		}
@@ -1831,9 +1848,15 @@ public class BaseDBContext
 			if (field.getAnnotation(Attribute.class) != null) {
 				Attribute attribute = field.getAnnotation(Attribute.class);
 				String attributeValue = null;
+				StringBuilder sb = new StringBuilder();
 				try {
 					if (field.getType() == String.class) {
 						attributeValue = this.getStringValue(bean, field);
+						if (isTrimStrings(bean.getClass(), field)) {
+							sb.append("trim(").append(attribute.name()).append(")=").append(attributeValue);
+						} else {
+							sb.append(attribute.name()).append("=").append(attributeValue);
+						}
 					} else if (field.getType() == long.class || field.getType() == Long.class) {
 						attributeValue = this.getLongValue(bean, field, attribute);
 					} else if (field.getType() == int.class || field.getType() == Integer.class) {
@@ -1851,7 +1874,11 @@ public class BaseDBContext
 					if (whereClause.length() > 0) {
 						whereClause.append(" AND ");
 					}
-					whereClause.append(attribute.name()).append("=").append(attributeValue);
+					if (sb.length() > 0) {
+						whereClause.append(sb);
+					} else {
+						whereClause.append(attribute.name()).append("=").append(attributeValue);
+					}
 				}
 			}
 		}

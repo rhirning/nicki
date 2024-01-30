@@ -52,4 +52,6 @@ public @interface Attribute {
 	boolean mandatory() default false;
 	
 	int length() default 0;
+	
+	String trim() default "";
 }
