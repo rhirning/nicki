@@ -212,7 +212,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 			List<ContextSearchResult> list = new ArrayList<ContextSearchResult>();
 			int pageNum = 0;
 			do {
-				results = ctx.search(queryHandler.getBaseDN(), queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
+				String baseDn = StringUtils.isNotBlank(queryHandler.getBaseDN()) ? queryHandler.getBaseDN() : getTarget().getBaseDn();
+				results = ctx.search(baseDn, queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
 				
 				try {
 					while (results != null && results.hasMore()) {
@@ -268,7 +269,8 @@ public class LdapContext extends BasicContext implements NickiContext {
 				    (StartTlsResponse) ctx.extendedOperation(new StartTlsRequest());
 				tls.negotiate();
 			}
-			results = ctx.search(queryHandler.getBaseDN(), queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
+			String baseDn = StringUtils.isNotBlank(queryHandler.getBaseDN()) ? queryHandler.getBaseDN() : getTarget().getBaseDn();
+			results = ctx.search(baseDn, queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
 			queryHandler.handle(this, results);
 		} catch (IOException | NamingException | DynamicObjectException e) {
 			log.error("Error searching LDAP", e);
