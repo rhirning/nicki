@@ -28,6 +28,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.helper.BeanUtilsHelper;
+import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.annotation.ForeignKey;
@@ -307,4 +309,69 @@ public class BeanHelper {
 		}
 		return null;
 	}
+
+	public static <T> List<T> importCsv(Class<T> clazz, List<String> lines, String separator) {
+		String line  = lines.get(0);
+		String[] parts = DataHelper.toStringArray(line, separator);
+		List<T> beans = new ArrayList<T>();
+		int numberColumns = parts.length;
+		int numberRows = lines.size();
+		String[] titles = new String[numberColumns];		
+		DataType[] types = new DataType[numberColumns];
+		for (int i = 0; i < numberColumns; i++) {
+			String title = parts[i];
+			try {
+				Field field = clazz.getDeclaredField(title);
+				titles[i] = title;
+				types[i] = DataType.getTypeOfField(field);
+			} catch (NoSuchFieldException | SecurityException e) {
+				log.error("Error importing field: " + title );
+			}
+		}
+		
+		for (int rowNum = 1 ; rowNum < numberRows; rowNum++) {
+			T bean;
+			try {
+				bean = Classes.newInstance(clazz);
+			} catch (InstantiationException | IllegalAccessException e) {
+				log.error("Error creating Bean: " + clazz, e);
+				return beans;
+			}
+			line  = lines.get(rowNum);
+			parts = DataHelper.toStringArray(line, separator);
+			for (int i = 0; i < numberColumns; i++) {
+				if (titles[i] != null && parts.length > i) {
+					BeanHelper.setValue(bean, titles[i], types[i].getValue(parts[i]));
+				}
+			}
+			beans.add(bean);
+		}
+
+		return beans;
+	}
+	
+	public static <T> String getName(Class<T> clazz, String attributeName) {
+		String key = clazz.getName()
+			+ "."
+			+ attributeName;
+		String name = I18n.getText(key);
+		if (isMandatory(clazz, attributeName)) {
+			name += " *";
+		}
+
+		return name;
+	}
+	
+	public static <T> boolean isMandatory(Class<T> clazz, String attributeName) {
+		for (Field field : clazz.getDeclaredFields()) {
+			if (StringUtils.equals(attributeName, field.getName())) {
+				Attribute attribute = field.getAnnotation(Attribute.class);
+				if (attribute != null && attribute.mandatory()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 }

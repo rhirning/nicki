@@ -38,13 +38,13 @@ public class BeanUtilsHelper {
 	public static Map<Class<?>, Class<?>> primitiveMap = new HashMap<>();
 	static {
 		primitiveMap.put(Boolean.class, boolean.class);
-		//primitiveMap.put(Byte.class, byte.class);
-		//primitiveMap.put(Character.class, char.class);
-		//primitiveMap.put(Short.class, short.class);
-		//primitiveMap.put(Integer.class, int.class);
-		//primitiveMap.put(Long.class, long.class);
-		//primitiveMap.put(Float.class, float.class);
-		//primitiveMap.put(Double.class, double.class);
+		primitiveMap.put(Byte.class, byte.class);
+		primitiveMap.put(Character.class, char.class);
+		primitiveMap.put(Short.class, short.class);
+		primitiveMap.put(Integer.class, int.class);
+		primitiveMap.put(Long.class, long.class);
+		primitiveMap.put(Float.class, float.class);
+		primitiveMap.put(Double.class, double.class);
 	}
 
 	static String[] prefixes = new String[]{"get", "is"};
