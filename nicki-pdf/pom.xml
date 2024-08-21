@@ -10,9 +10,25 @@
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
+		<!--
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itextpdf</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcprov-jdk15on</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.bouncycastle</groupId>
+					<artifactId>bcpkix-jdk15on</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		-->
+		<dependency>
+		  <groupId>com.github.librepdf</groupId>
+		  <artifactId>openpdf</artifactId>
 			<exclusions>
 				<exclusion>
 					<groupId>org.bouncycastle</groupId>

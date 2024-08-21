@@ -29,9 +29,9 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import org.apache.commons.lang.StringUtils;
-import org.jdom.Document;
-import org.jdom.JDOMException;
-import org.jdom.input.SAXBuilder;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 
 public class XMLHelper {
 	

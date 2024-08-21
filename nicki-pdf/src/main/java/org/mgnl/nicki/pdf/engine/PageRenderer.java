@@ -22,14 +22,12 @@ package org.mgnl.nicki.pdf.engine;
  */
 
 
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.BarcodeQRCode;
-import com.itextpdf.text.pdf.ColumnText;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.pdf.ColumnText;
+import com.lowagie.text.pdf.PdfContentByte;
+import com.lowagie.text.pdf.PdfWriter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,7 +54,7 @@ public class PageRenderer {
 		this.config = config;
 	}
 	
-	public  void render(Page page) throws DocumentException, IOException {
+	public  void render(Page page) throws IOException {
 		this.content = writer.getDirectContent();
 
 		for (Box box : page.getBox()) {
@@ -64,7 +62,7 @@ public class PageRenderer {
 		}
 	}
 
-	private void render(Box box) throws DocumentException, IOException {
+	private void render(Box box) throws IOException {
 		Point point = new Point(box.getX(), box.getY());
 		if (box.getText() != null) {
 			render(box.getText(), point);
@@ -75,7 +73,7 @@ public class PageRenderer {
 		}
 	}
 
-	private void render(Text text, Point p) throws DocumentException, IOException {
+	private void render(Text text, Point p) throws IOException {
 		log.debug("rendering text: {}", text.getValue());
 		Font f = config.getFont(text.getFont(), text.getSize(), FontStyle.byName(text.getStyle()));
 
@@ -107,13 +105,14 @@ public class PageRenderer {
 		log.debug("setting text position to {} (INCH: {})", p, posUU);
 	}
 
-	private void render(Barcode barcode, Point point) throws DocumentException, IOException {
+	private void render(Barcode barcode, Point point) throws IOException {
+		/*
 		log.debug("rendering barcode: {}", barcode.getValue());
 
 
 		BarcodeQRCode barcodeQRCode = new BarcodeQRCode(barcode.getValue(), barcode.getWidth(), barcode.getHeight(), null);
 
-		com.itextpdf.text.Image pdfImage = barcodeQRCode.getImage();
+		com.lowagie.text.Image pdfImage = barcodeQRCode.getImage();
 		if(pdfImage == null) {
 			return;
 		}
@@ -122,16 +121,16 @@ public class PageRenderer {
 		log.debug("setting image position to {} (INCH: {})", point, position);
 		pdfImage.setAbsolutePosition(position.getX(), position.getY());
 		content.addImage(pdfImage);
-
+		*/
 	}
 
-	private void render(Image image, Point point, String vAlign, String align) throws DocumentException, IOException {
+	private void render(Image image, Point point, String vAlign, String align) throws IOException {
 		log.debug("rendering with vAlign={}, align={}", vAlign, align);
 		if(image == null) {
 			return;
 		}
 		
-		com.itextpdf.text.Image pdfImage = config.getImage(image.getValue());
+		com.lowagie.text.Image pdfImage = config.getImage(image.getValue());
 		if(pdfImage == null) {
 			return;
 		}

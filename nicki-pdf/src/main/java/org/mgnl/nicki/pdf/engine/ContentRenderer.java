@@ -1,6 +1,8 @@
 
 package org.mgnl.nicki.pdf.engine;
 
+import java.awt.Color;
+
 /*-
  * #%L
  * nicki-pdf
@@ -43,21 +45,18 @@ import org.mgnl.nicki.pdf.model.template.TableData;
 import org.mgnl.nicki.pdf.model.template.TableRow;
 import org.mgnl.nicki.pdf.model.template.Text;
 
-import com.itextpdf.text.Anchor;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.ElementListener;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.ListItem;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.BarcodeQRCode;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
+import com.lowagie.text.Anchor;
+import com.lowagie.text.BadElementException;
+import com.lowagie.text.Document;
+import com.lowagie.text.Element;
+import com.lowagie.text.ElementListener;
+import com.lowagie.text.Font;
+import com.lowagie.text.ListItem;
+import com.lowagie.text.Paragraph;
+import com.lowagie.text.Phrase;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfPCell;
+import com.lowagie.text.pdf.PdfPTable;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -74,7 +73,7 @@ public class ContentRenderer {
 		this.config = config;
 	}
 
-	public void render(ElementListener parent, Data data) throws DocumentException, IOException {
+	public void render(ElementListener parent, Data data) throws IOException {
 		for (Object contentElement : data.getContent()) {
 			if (contentElement instanceof JAXBElement)
 			{
@@ -118,10 +117,10 @@ public class ContentRenderer {
 		this.document.newPage();
 	}
 
-	public void render(ElementListener parent, List list) throws BadElementException, MalformedURLException, IOException, DocumentException {
+	public void render(ElementListener parent, List list) throws BadElementException, MalformedURLException, IOException {
 
-		com.itextpdf.text.List pdfList = new com.itextpdf.text.List(list.isOrdered() != null && list.isOrdered()? 
-				com.itextpdf.text.List.ORDERED:com.itextpdf.text.List.UNORDERED);
+		com.lowagie.text.List pdfList = new com.lowagie.text.List(list.isOrdered() != null && list.isOrdered()? 
+				com.lowagie.text.List.ORDERED:com.lowagie.text.List.UNORDERED);
 		String symbol = list.getSymbol();
 		if (symbol != null) {
 			pdfList.setListSymbol(symbol);
@@ -133,7 +132,7 @@ public class ContentRenderer {
 		parent.add(pdfList);
 	}
 	
-	private void render(com.itextpdf.text.List pdfList, Item item) throws DocumentException, IOException {
+	private void render(com.lowagie.text.List pdfList, Item item) throws IOException {
 		Text title = null;
 		ArrayList<Object> entries = new ArrayList<Object>();
 		for (Object contentElement : item.getContent()) {
@@ -152,7 +151,7 @@ public class ContentRenderer {
 		if (title != null) {
 			render(pdfList, title);
 			if (entries.size() > 0) {
-				com.itextpdf.text.List subList = new com.itextpdf.text.List(com.itextpdf.text.List.UNORDERED);
+				com.lowagie.text.List subList = new com.lowagie.text.List(com.lowagie.text.List.UNORDERED);
 				//subList.setAutoindent(false);
 				subList.setSymbolIndent(10);
 				subList.setListSymbol("");
@@ -165,7 +164,7 @@ public class ContentRenderer {
 		
 	}
 
-	private void render(com.itextpdf.text.List list, ArrayList<Object> entries) throws DocumentException, IOException {
+	private void render(com.lowagie.text.List list, ArrayList<Object> entries) throws IOException {
 		for (Object object : entries) {
 			if (object instanceof Text) {
 				Text text = (Text) object;
@@ -179,9 +178,9 @@ public class ContentRenderer {
 		}
 	}
 
-	private void render(ListItem listItem, List list) throws DocumentException, IOException {
-		com.itextpdf.text.List pdfList = new com.itextpdf.text.List(list.isOrdered() != null && list.isOrdered()? 
-				com.itextpdf.text.List.ORDERED:com.itextpdf.text.List.UNORDERED);
+	private void render(ListItem listItem, List list) throws IOException {
+		com.lowagie.text.List pdfList = new com.lowagie.text.List(list.isOrdered() != null && list.isOrdered()? 
+				com.lowagie.text.List.ORDERED:com.lowagie.text.List.UNORDERED);
 		String symbol = list.getSymbol();
 		if (symbol != null) {
 			pdfList.setListSymbol(symbol);
@@ -193,7 +192,7 @@ public class ContentRenderer {
 		listItem.add(pdfList);	
 	}
 
-	private void render(com.itextpdf.text.List list, Text text) throws DocumentException, IOException {
+	private void render(com.lowagie.text.List list, Text text) throws IOException {
 		Font f = config.getFont(text.getFont(), text.getSize(), FontStyle.byName(text.getStyle()));
 		if (StringUtils.isNotBlank(text.getColor())) {
 			f.setColor(ContentRenderer.getColor(text.getColor()));
@@ -234,12 +233,12 @@ public class ContentRenderer {
 		}
 	}
 
-	public void render(ElementListener parent, Image image) throws BadElementException, MalformedURLException, IOException, DocumentException {
+	public void render(ElementListener parent, Image image) throws BadElementException, MalformedURLException, IOException {
 		if (image == null) {
 			return;
 		}
 
-		com.itextpdf.text.Image pdfImage = config.getImage(image.getValue());
+		com.lowagie.text.Image pdfImage = config.getImage(image.getValue());
 		
 		if (pdfImage == null) {
 			return;
@@ -250,7 +249,7 @@ public class ContentRenderer {
 		parent.add(pdfImage);
 	}
 
-	public void render(ElementListener parent, Text text) throws BadElementException, MalformedURLException, IOException, DocumentException {
+	public void render(ElementListener parent, Text text) throws BadElementException, MalformedURLException, IOException {
 		Font f = config.getFont(text.getFont(), text.getSize(), FontStyle.byName(text.getStyle()));
 		if (StringUtils.isNotBlank(text.getColor())) {
 			f.setColor(ContentRenderer.getColor(text.getColor()));
@@ -260,22 +259,24 @@ public class ContentRenderer {
 	}
 
 
-	public void render(ElementListener parent, Barcode barcode) throws BadElementException, MalformedURLException, IOException, DocumentException {
+	public void render(ElementListener parent, Barcode barcode) throws BadElementException, MalformedURLException, IOException {
+		/*
 		BarcodeQRCode barcodeQRCode = new BarcodeQRCode(barcode.getValue(), barcode.getWidth(), barcode.getHeight(), null);
-		com.itextpdf.text.Image pdfImage = barcodeQRCode.getImage();
+		com.lowagie.text.Image pdfImage = barcodeQRCode.getImage();
 		
 		parent.add(pdfImage);
+		*/
 	}
 
 
-	public void render(ElementListener parent, Link link) throws BadElementException, MalformedURLException, IOException, DocumentException {
+	public void render(ElementListener parent, Link link) throws BadElementException, MalformedURLException, IOException {
 		Anchor a = new Anchor(link.getValue(), config.getFont(link.getFont(), link.getSize(), FontStyle.byName(link.getStyle())));
 		a.setReference(link.getReference());
 		parent.add(a);
 	}
 
-	public void render(ElementListener parent, Table table) throws DocumentException, IOException {
-		BaseColor borderColor = getColor(table.getBorderColor());
+	public void render(ElementListener parent, Table table) throws IOException {
+		Color borderColor = getColor(table.getBorderColor());
 		int colCount;
 		try {
 			colCount = table.getRow().get(0).getColumn().size();
@@ -338,7 +339,7 @@ public class ContentRenderer {
 	
 
 
-	public void render(PdfPTable pdfTable, BaseColor borderColor, Font f, TableData data) throws DocumentException, IOException {
+	public void render(PdfPTable pdfTable, Color borderColor, Font f, TableData data) throws IOException {
 		for (Object contentElement : data.getContent()) {
 			if (contentElement instanceof JAXBElement)
 			{
@@ -370,19 +371,19 @@ public class ContentRenderer {
 		}
 	}
 	
-	private void render(PdfPTable pdfTable, BaseColor borderColor, Image image) throws DocumentException, IOException {
+	private void render(PdfPTable pdfTable, Color borderColor, Image image) throws IOException {
 		if (image == null) {
 			return;
 		}
 
-		com.itextpdf.text.Image pdfImage = config.getImage(image.getValue());
+		com.lowagie.text.Image pdfImage = config.getImage(image.getValue());
 		
 		if (pdfImage == null) {
 			return;
 		}
 		pdfImage.scaleAbsoluteHeight(config.transform(image.getHeight()));
 		pdfImage.scaleAbsoluteWidth(config.transform(image.getWidth()));
-		BaseColor backgroundColor = getColor(image.getBackgroundColor());
+		Color backgroundColor = getColor(image.getBackgroundColor());
 		PdfPCell cell = createCell(pdfImage, backgroundColor, borderColor);
 		if (StringUtils.isNotBlank(image.getAlign())) {
 			cell.setHorizontalAlignment(getAlignment(image.getAlign()));
@@ -393,13 +394,13 @@ public class ContentRenderer {
 		pdfTable.addCell(cell);
 	}
 	
-	private void render(PdfPTable pdfTable, BaseColor borderColor, Font f, Text text) throws DocumentException, IOException {
+	private void render(PdfPTable pdfTable, Color borderColor, Font f, Text text) throws IOException {
 		Font tdFont = config.getFont(f, text.getFont(), text.getSize(), FontStyle.byName(text.getStyle()));
 		if (StringUtils.isNotBlank(text.getColor())) {
 			tdFont.setColor(getColor(text.getColor()));
 		}
 		Phrase p = new Phrase(text.getValue(), tdFont);
-		BaseColor backgroundColor = getColor(text.getBackgroundColor());
+		Color backgroundColor = getColor(text.getBackgroundColor());
 		PdfPCell cell = createCell(p, backgroundColor, borderColor);
 		if (StringUtils.isNotBlank(text.getAlign())) {
 			cell.setHorizontalAlignment(getAlignment(text.getAlign()));
@@ -410,13 +411,15 @@ public class ContentRenderer {
 		pdfTable.addCell(cell);
 	}
 	
-	private void render(PdfPTable pdfTable, BaseColor borderColor, Font f, Barcode barcode) throws DocumentException, IOException {
+	private void render(PdfPTable pdfTable, Color borderColor, Font f, Barcode barcode) throws IOException {
+		/*
 		BarcodeQRCode barcodeQRCode = new BarcodeQRCode(barcode.getValue(), barcode.getWidth(), barcode.getHeight(), null);
         PdfPCell cell = new PdfPCell(barcodeQRCode.getImage(), true);
 		pdfTable.addCell(cell);
+		*/
 	}
 	
-	public static BaseColor getColor(String color) {
+	public static Color getColor(String color) {
 		if (StringUtils.length(color) >= 7) {
 			String hex = color;
 			if (hex.startsWith("#")) {
@@ -426,12 +429,12 @@ public class ContentRenderer {
 				int r = Integer.parseInt(StringUtils.substring(hex, 0, 2), 16);
 				int g = Integer.parseInt(StringUtils.substring(hex, 2, 4), 16);
 				int b = Integer.parseInt(StringUtils.substring(hex, 4, 6), 16);
-				return new BaseColor(r,g,b);
+				return new Color(r,g,b);
 			} catch (Exception e) {
 				log.error("Error parsing color", e);
 			}
 		}
-		return new BaseColor(255,255,255);
+		return new Color(255,255,255);
 	}
 
 	private int getAlignment(String align) {
@@ -452,11 +455,11 @@ public class ContentRenderer {
 		}
 	}
 
-	private void render(PdfPTable pdfTable, BaseColor borderColor, Checkbox checkbox) throws DocumentException, IOException {
+	private void render(PdfPTable pdfTable, Color borderColor, Checkbox checkbox) throws IOException {
 		PdfPCell cell = new PdfPCell();
 		cell.setBorderColor(borderColor);
 		if (StringUtils.isNotBlank(checkbox.getBackgroundColor())) {
-			BaseColor color = getColor(checkbox.getBackgroundColor());
+			Color color = getColor(checkbox.getBackgroundColor());
 			cell.setBackgroundColor(color);
 		}
 		if (StringUtils.isNotBlank(checkbox.getAlign())) {
@@ -471,10 +474,10 @@ public class ContentRenderer {
 		pdfTable.addCell(cell);
 	}
 	
-	private void render(PdfPTable pdfTable, BaseColor borderColor, Link link) throws DocumentException, IOException {
+	private void render(PdfPTable pdfTable, Color borderColor, Link link) throws IOException {
 		Anchor a = new Anchor(link.getValue(), config.getFont(link.getFont(), link.getSize(), FontStyle.byName(link.getStyle())));
 		a.setReference(link.getReference());
-		BaseColor backgroundColor = getColor(link.getBackgroundColor());
+		Color backgroundColor = getColor(link.getBackgroundColor());
 		PdfPCell cell = createCell(a, backgroundColor, borderColor);
 		if (StringUtils.isNotBlank(link.getAlign())) {
 			cell.setHorizontalAlignment(getAlignment(link.getAlign()));
@@ -485,7 +488,7 @@ public class ContentRenderer {
 		pdfTable.addCell(cell);
 	}
 
-	private PdfPCell createCell(Phrase p, BaseColor backgroundColor, BaseColor borderColor){
+	private PdfPCell createCell(Phrase p, Color backgroundColor, Color borderColor){
 		PdfPCell cell = new PdfPCell(p);
 		
 		cell.disableBorderSide(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);
@@ -499,7 +502,7 @@ public class ContentRenderer {
 		return cell;
 	}
 
-	private PdfPCell createCell(com.itextpdf.text.Image image, BaseColor backgroundColor, BaseColor borderColor){
+	private PdfPCell createCell(com.lowagie.text.Image image, Color backgroundColor, Color borderColor){
 		PdfPCell cell = new PdfPCell(image);
 		
 		cell.disableBorderSide(Rectangle.LEFT | Rectangle.RIGHT | Rectangle.TOP);

@@ -24,7 +24,7 @@ package org.mgnl.nicki.shop.base.objects;
 
 import java.io.Serializable;
 
-import org.jdom.Element;
+import org.jdom2.Element;
 import org.mgnl.nicki.core.i18n.I18n;
 
 @SuppressWarnings("serial")

@@ -1,9 +1,9 @@
 
 package org.mgnl.nicki.pdf.engine;
 
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfAnnotation;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfAnnotation;
+import com.lowagie.text.pdf.PdfWriter;
 
 /*-
  * #%L

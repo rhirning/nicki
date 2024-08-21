@@ -25,8 +25,8 @@ package org.mgnl.nicki.idm.novell.shop.objects;
 import java.util.Date;
 
 import org.apache.commons.lang.StringUtils;
-import org.jdom.Document;
-import org.jdom.Element;
+import org.jdom2.Document;
+import org.jdom2.Element;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.methods.StructuredData;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;

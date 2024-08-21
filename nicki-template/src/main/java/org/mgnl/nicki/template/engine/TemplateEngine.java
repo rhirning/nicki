@@ -47,7 +47,6 @@ import org.mgnl.nicki.template.pdf.XlsTemplateRenderer;
 import org.mgnl.nicki.template.pdf.XlsxTemplateRenderer;
 import org.xml.sax.SAXException;
 
-import com.itextpdf.text.DocumentException;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -122,7 +121,7 @@ public class TemplateEngine {
 
 	public InputStream executeTemplateAsPdf2(String templateName,
 			Map<String, Object> dataModel) throws IOException,
-			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
 		PdfTemplateRenderer2 renderer = new PdfTemplateRenderer2(executeTemplate(templateName, dataModel, DEFAULT_CHARSET), pos);
@@ -133,7 +132,7 @@ public class TemplateEngine {
 	@Deprecated
 	public InputStream executeTemplateAsXls(EngineTemplate template, String templateName,
 			Map<String, Object> dataModel) throws IOException,
-			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
 	    
@@ -144,7 +143,7 @@ public class TemplateEngine {
 
 	public InputStream executeTemplateAsXlsx(EngineTemplate template, String templateName,
 			Map<String, Object> dataModel) throws IOException,
-			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
 	    
@@ -156,7 +155,7 @@ public class TemplateEngine {
 	@Deprecated
 	public InputStream executeTemplateAsXls(byte[] master, String templateName,
 			Map<String, Object> dataModel) throws IOException,
-			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
 	    
@@ -167,7 +166,7 @@ public class TemplateEngine {
 
 	public InputStream executeTemplateAsXlsx(byte[] master, String templateName,
 			Map<String, Object> dataModel) throws IOException,
-			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
 	    
@@ -178,7 +177,7 @@ public class TemplateEngine {
 
 	public InputStream executeTemplateAsCsv(String templateName,
 			Map<String, Object> dataModel) throws IOException,
-			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 		InputStream xslTemplate = this.getClass().getResourceAsStream("/META-INF/nicki/xsl/csv.xsl");
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);
@@ -189,7 +188,7 @@ public class TemplateEngine {
 
 	public InputStream executeTemplateAsCsv2(String templateName,
 			Map<String, Object> dataModel) throws IOException,
-			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 		InputStream xslTemplate = this.getClass().getResourceAsStream("/META-INF/nicki/xsl/csv2.xsl");
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);

@@ -31,7 +31,6 @@ import org.mgnl.nicki.template.engine.ConfigurationFactory;
 import org.mgnl.nicki.template.engine.TemplateEngine;
 import org.xml.sax.SAXException;
 
-import com.itextpdf.text.DocumentException;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
@@ -54,7 +53,7 @@ public class TestXLS {
 				FileOutputStream out = new FileOutputStream("target/document.xlsx");
 				IOUtils.copy(engine.executeTemplateAsXlsx((byte[])null, template, dataModel), out);
 			} catch (IOException | TemplateException | InvalidPrincipalException | ParserConfigurationException
-					| SAXException | DocumentException e) {
+					| SAXException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

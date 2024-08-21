@@ -35,6 +35,7 @@ import java.util.Map;
 import javax.security.auth.login.AppConfigurationEntry;
 import javax.security.auth.login.Configuration;
 
+import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 
@@ -70,6 +71,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public final class SpnegoFilterConfig { // NOPMD
+	public static final String PATH_PREFIX = "/C:";
         
     private static final String MISSING_PROPERTY = 
         "Servlet Filter init param(s) Nicki Config missing: ";
@@ -127,6 +129,10 @@ public final class SpnegoFilterConfig { // NOPMD
             URL krbConfigURL = this.getClass().getClassLoader().getResource(getInitParameter(Constants.KRB5_CONF));
             if(krbConfigURL != null) {
                 krbConfigFile = krbConfigURL.getFile();
+                krbConfigFile = krbConfigURL.getFile();
+                if (StringUtils.startsWith(krbConfigFile, PATH_PREFIX)) {
+                	krbConfigFile = StringUtils.substringAfter(krbConfigFile, PATH_PREFIX);
+                }
                 System.setProperty("java.security.krb5.conf", krbConfigFile);
     	        System.out.println("krb.conf: " + System.getProperty("java.security.krb5.conf"));
             }
@@ -142,6 +148,9 @@ public final class SpnegoFilterConfig { // NOPMD
             URL jaasConfigURL = this.getClass().getClassLoader().getResource(getInitParameter(Constants.LOGIN_CONF));
             if(jaasConfigURL != null) {
                 jaasConfigFile = jaasConfigURL.getFile();
+                if (StringUtils.startsWith(jaasConfigFile, PATH_PREFIX)) {
+                	jaasConfigFile = StringUtils.substringAfter(jaasConfigFile, PATH_PREFIX);
+                }
                 System.setProperty("java.security.auth.login.config", jaasConfigFile);
     	        System.out.println("login.conf: " + System.getProperty("java.security.auth.login.config"));
             }

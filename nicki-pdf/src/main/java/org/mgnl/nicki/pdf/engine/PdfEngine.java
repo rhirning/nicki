@@ -21,12 +21,11 @@ package org.mgnl.nicki.pdf.engine;
  * #L%
  */
 
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Rectangle;
-import com.itextpdf.text.pdf.PdfPageEventHelper;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.lowagie.text.Document;
+import com.lowagie.text.PageSize;
+import com.lowagie.text.Rectangle;
+import com.lowagie.text.pdf.PdfPageEventHelper;
+import com.lowagie.text.pdf.PdfWriter;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -56,22 +55,22 @@ public class PdfEngine extends PdfPageEventHelper {
 	private ContentRenderer contentRenderer;
 	private List<Page> pages;
 
-	public static PdfEngine fromConfig(String configPropertyName, String contextBasePathPropertyName) throws JAXBException, DocumentException, IOException {
+	public static PdfEngine fromConfig(String configPropertyName, String contextBasePathPropertyName) throws JAXBException, IOException {
 		String configValue = Config.getString(configPropertyName, "<configuration><fonts><default font=\"Helvetica\" size=\"8\" style=\"normal\"/></fonts></configuration>");
 		ByteArrayInputStream bais = new ByteArrayInputStream(configValue.getBytes());
 		return new PdfEngine(bais, Config.getString(contextBasePathPropertyName, "/"));
 	}
 
-	public static PdfEngine fromResource(String configResource, String contextBasePath) throws JAXBException, DocumentException, IOException {
+	public static PdfEngine fromResource(String configResource, String contextBasePath) throws JAXBException, IOException {
 		return new PdfEngine(PdfEngine.class.getClassLoader().getResourceAsStream(configResource), contextBasePath);
 	}
 
-	public static PdfEngine fromFile(String configFile, String contextBasePath) throws FileNotFoundException, JAXBException, DocumentException, IOException {
+	public static PdfEngine fromFile(String configFile, String contextBasePath) throws FileNotFoundException, JAXBException, IOException {
 		InputStream is = new FileInputStream(configFile);
 		return new PdfEngine(is, contextBasePath);
 	}
 
-	public PdfEngine(InputStream configStream, String contextBasePath) throws JAXBException, DocumentException, IOException {
+	public PdfEngine(InputStream configStream, String contextBasePath) throws JAXBException, IOException {
 		Objects.requireNonNull(configStream, "config-inputstream is null");
 
 		config = new PdfConfiguration(configStream, contextBasePath);
@@ -97,8 +96,6 @@ public class PdfEngine extends PdfPageEventHelper {
 		
 		try {
 			pageRenderer.render(currentPage);
-		} catch (DocumentException ex) {
-			log.error("could not render page");
 		} catch (IOException ex) {
 			log.error("could not write to file");
 		}
@@ -115,7 +112,7 @@ public class PdfEngine extends PdfPageEventHelper {
 		setMargins(document, nextPage);
 	}
 
-	public void render(PdfTemplate template, OutputStream os) throws DocumentException, IOException {
+	public void render(PdfTemplate template, OutputStream os) throws IOException {
 		log.debug("rendering pdf");
 		Objects.requireNonNull(template, "template may not be null");
 		Objects.requireNonNull(template.getDocument(), "template.document may not be null");
@@ -132,7 +129,7 @@ public class PdfEngine extends PdfPageEventHelper {
 
 	}
 
-	private Document initRenderEnvironment(PdfTemplate template, OutputStream os) throws DocumentException {
+	private Document initRenderEnvironment(PdfTemplate template, OutputStream os) {
 		Page startPage = template.getDocument().getPages().getStartPage();
 		pages = template.getDocument().getPages().getPage();
 		pages.add(0, startPage);

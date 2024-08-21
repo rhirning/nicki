@@ -29,7 +29,7 @@ import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.codec.binary.Base64;
-import org.jdom.JDOMException;
+import org.jdom2.JDOMException;
 import org.mgnl.nicki.core.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;

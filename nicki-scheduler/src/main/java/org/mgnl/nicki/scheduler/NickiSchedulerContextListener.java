@@ -21,8 +21,6 @@ package org.mgnl.nicki.scheduler;
  */
 
 
-import static org.quartz.CronScheduleBuilder.cronSchedule;
-import static org.quartz.TriggerBuilder.newTrigger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
@@ -39,15 +37,8 @@ import org.mgnl.nicki.core.helper.JsonHelper;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.verify.Verify;
 import org.mgnl.nicki.verify.VerifyException;
-import org.quartz.CronTrigger;
-import org.quartz.Job;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SchedulerMetaData;
-import org.quartz.impl.StdSchedulerFactory;
 
+import it.sauronsoftware.cron4j.Scheduler;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -82,21 +73,15 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 			try {
 				JobConfigurations jobConfigurations = JsonHelper.toBean(JobConfigurations.class,
 						getClass().getResourceAsStream(configPath));
-				// Grab the Scheduler instance from the Factory
-				scheduler = StdSchedulerFactory.getDefaultScheduler();
-
+				scheduler = new Scheduler();
+	
 				if (jobConfigurations.getJobConfig() != null) {
 					for (JobConfig syncConfig : jobConfigurations.getJobConfig()) {
 						if (isActive(syncConfig)) {
-							Job jobClass = Classes.newInstance(syncConfig.getJobClassName());
-							JobDetail job = JobBuilder.newJob(jobClass.getClass()).withIdentity(syncConfig.getName(), syncConfig.getGroup()).build();
-
-						    CronTrigger trigger = newTrigger().withIdentity(syncConfig.getName(), syncConfig.getGroup()).withSchedule(cronSchedule(syncConfig.getCronSchedule()))
-						        .build();
-
-						    Date ft = scheduler.scheduleJob(job, trigger);
-						    log.info(job.getKey() + " has been scheduled to run at: " + ft + " and repeat based on expression: "
-						             + trigger.getCronExpression());
+							Job job = Classes.newInstance(syncConfig.getJobClassName());
+							job.setJobConfig(syncConfig);
+							scheduler.schedule(syncConfig.getCronSchedule(), job);
+						    log.info(job.getJobConfig().getName() + " has been scheduled: " + syncConfig);
 						} else {
 						    log.info("Job has not been scheduled to run: " + syncConfig);
 						}
@@ -104,7 +89,7 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 				}
 				// and start it off
 				scheduler.start();
-			} catch (SchedulerException | IllegalAccessException | InvocationTargetException | InstantiationException | ClassNotFoundException e) {
+			} catch (IllegalAccessException | InvocationTargetException | InstantiationException | ClassNotFoundException  e) {
 				log.error("Error scheduling jobs", e);
 
 			}
@@ -134,22 +119,8 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		log.info("------- Shutting Down ---------------------");
-
-	    try {
-			scheduler.shutdown(true);
-		} catch (SchedulerException e) {
-			log.error("Error shutting down", e);
-		}
-
+		scheduler.stop();
 	    log.info("------- Shutdown Complete -----------------");
-
-	    SchedulerMetaData metaData;
-		try {
-			metaData = scheduler.getMetaData();
-			log.info("Executed " + metaData.getNumberOfJobsExecuted() + " jobs.");
-		} catch (SchedulerException e) {
-			log.error("Error getting statistics", e);
-		}
 	}
 
 }

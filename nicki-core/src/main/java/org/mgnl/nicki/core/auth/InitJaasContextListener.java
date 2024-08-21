@@ -32,6 +32,7 @@ import org.mgnl.nicki.core.config.Config;
 import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class InitJaasContextListener implements ServletContextListener {
+	public static final String PATH_PREFIX 			= "/C:";
     public static final String KRB5_CONF			= "spnego.krb5.conf";
     public static final String LOGIN_CONF			= "spnego.login.conf";
     public static final String CONTEXT_CONF			= "nicki.login.context.name";
@@ -52,6 +53,9 @@ public class InitJaasContextListener implements ServletContextListener {
 	            URL krbConfigURL = this.getClass().getClassLoader().getResource(getInitParameter(KRB5_CONF));
 	            if(krbConfigURL != null) {
 	                krbConfigFile = krbConfigURL.getFile();
+	                if (StringUtils.startsWith(krbConfigFile, PATH_PREFIX)) {
+	                	krbConfigFile = StringUtils.substringAfter(krbConfigFile, PATH_PREFIX);
+	                }
 	                System.setProperty(PROPERTY_KRB5_CONF, krbConfigFile);
 	            }
         	}
@@ -68,6 +72,9 @@ public class InitJaasContextListener implements ServletContextListener {
 	            URL jaasConfigURL = this.getClass().getClassLoader().getResource(getInitParameter(LOGIN_CONF));
 	            if(jaasConfigURL != null) {
 	                jaasConfigFile = jaasConfigURL.getFile();
+	                if (StringUtils.startsWith(jaasConfigFile, PATH_PREFIX)) {
+	                	jaasConfigFile = StringUtils.substringAfter(jaasConfigFile, PATH_PREFIX);
+	                }
 	                System.setProperty(PROPERTY_LOGIN_CONF, jaasConfigFile);
 	            }
         	}

@@ -45,8 +45,6 @@ import org.mgnl.nicki.template.engine.ConfigurationFactory.TYPE;
 import org.mgnl.nicki.template.engine.TemplateEngine;
 import org.xml.sax.SAXException;
 
-import com.itextpdf.text.DocumentException;
-
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
@@ -54,7 +52,7 @@ public class XlsDocuHelper {
 	enum DOC_TYPE {XLS, XLSX}
 
 	@Deprecated
-	public static InputStream generate(TYPE type, String templatePath, Map<String, Object> dataModel) throws IOException, TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+	public static InputStream generate(TYPE type, String templatePath, Map<String, Object> dataModel) throws IOException, TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 		if (type == TYPE.JNDI) {
 			return generateJNDI(DOC_TYPE.XLS, templatePath, dataModel);
 		} else if (type == TYPE.CLASSPATH) {
@@ -64,7 +62,7 @@ public class XlsDocuHelper {
 		}
 	}
 
-	public static InputStream generateXlsx(TYPE type, String templatePath, Map<String, Object> dataModel) throws IOException, TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+	public static InputStream generateXlsx(TYPE type, String templatePath, Map<String, Object> dataModel) throws IOException, TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 		if (type == TYPE.JNDI) {
 			return generateJNDI(DOC_TYPE.XLSX, templatePath, dataModel);
 		} else if (type == TYPE.CLASSPATH) {
@@ -75,7 +73,7 @@ public class XlsDocuHelper {
 	}
 
 	@SuppressWarnings("deprecation")
-	private static InputStream generateJNDI(DOC_TYPE docType, String templatePath, Map<String, Object> dataModel) throws IOException, TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+	private static InputStream generateJNDI(DOC_TYPE docType, String templatePath, Map<String, Object> dataModel) throws IOException, TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 		StringBuilder sb = new StringBuilder();
 		String parts[] = StringUtils.split(templatePath, "/");
 		for (int i = parts.length -1 ; i >= 0; i--) {
@@ -97,7 +95,7 @@ public class XlsDocuHelper {
 		}
 	}
 	@SuppressWarnings("deprecation")
-	private static InputStream generateClasspath(DOC_TYPE docType, String templatePath, Map<String, Object> dataModel) throws IOException, TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException, DocumentException {
+	private static InputStream generateClasspath(DOC_TYPE docType, String templatePath, Map<String, Object> dataModel) throws IOException, TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 
 		String base = "/META-INF/templates";
 		Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(ConfigurationFactory.TYPE.CLASSPATH,

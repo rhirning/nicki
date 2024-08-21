@@ -22,7 +22,7 @@ package org.mgnl.nicki.template.engine;
  */
 
 
-import org.jdom.Element;
+import org.jdom2.Element;
 
 public class TemplateParameter {
 	private String name;

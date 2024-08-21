@@ -21,10 +21,9 @@ package org.mgnl.nicki.pdf.configuration;
  * #L%
  */
 
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
+import com.lowagie.text.Font;
+import com.lowagie.text.FontFactory;
+import com.lowagie.text.Image;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -51,7 +50,7 @@ public class PdfConfiguration {
 	private Font defaultFont;
 	private String contextBasePath;
 
-	public PdfConfiguration(InputStream configuration, String contextBasePath) throws JAXBException, DocumentException, IOException {
+	public PdfConfiguration(InputStream configuration, String contextBasePath) throws JAXBException, IOException {
 		config = unmarshal(Configuration.class, configuration);
 		if(!StringUtils.endsWith(contextBasePath, "/")) {
 			contextBasePath = contextBasePath + "/";
@@ -60,7 +59,7 @@ public class PdfConfiguration {
 		this.contextBasePath = contextBasePath;
 	}
 	
-	public void init() throws DocumentException, IOException {
+	public void init() throws IOException {
 		
 		for (org.mgnl.nicki.pdf.model.config.Font font : config.getFonts().getFont()) {
 			log.debug("registering font {}", contextBasePath + font.getValue());
@@ -98,11 +97,11 @@ public class PdfConfiguration {
 		this.config = config;
 	}
 	
-	public Font getFont(String font, Integer size, FontStyle style) throws DocumentException, IOException {
+	public Font getFont(String font, Integer size, FontStyle style) throws IOException {
 		return getFont(defaultFont, font, size, style);
 	}
 	
-	public Font getFont(Font base, String font, Integer size, FontStyle style) throws DocumentException, IOException {
+	public Font getFont(Font base, String font, Integer size, FontStyle style) throws IOException {
 		
 		if(base == null) {
 			base = new Font(defaultFont);
@@ -127,7 +126,7 @@ public class PdfConfiguration {
 		return f;
 	}
 	
-	public Font getFont(String font, int size) throws DocumentException, IOException {
+	public Font getFont(String font, int size) throws IOException {
 		return getFont(font, size, FontStyle.NORMAL);
 	}
 	

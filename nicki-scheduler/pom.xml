@@ -10,6 +10,10 @@
 	<artifactId>nicki-scheduler</artifactId>
 	<dependencies>
 		<dependency>
+		    <groupId>it.sauronsoftware.cron4j</groupId>
+		    <artifactId>cron4j</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<scope>provided</scope>
@@ -29,6 +33,7 @@
 			<artifactId>lombok</artifactId>
 			<scope>provided</scope>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
@@ -37,6 +42,7 @@
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz-jobs</artifactId>
 		</dependency>
+		-->
 	</dependencies>
 	<name>nicki-scheduler</name>
 </project>

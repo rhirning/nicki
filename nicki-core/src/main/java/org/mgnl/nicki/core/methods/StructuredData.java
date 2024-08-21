@@ -24,7 +24,7 @@ package org.mgnl.nicki.core.methods;
 
 import java.io.Serializable;
 
-import org.jdom.Document;
+import org.jdom2.Document;
 import org.mgnl.nicki.core.helper.XMLHelper;
 
 @SuppressWarnings("serial")
