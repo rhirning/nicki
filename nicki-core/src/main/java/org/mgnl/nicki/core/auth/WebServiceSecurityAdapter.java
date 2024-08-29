@@ -25,7 +25,7 @@ package org.mgnl.nicki.core.auth;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.ws.handler.MessageContext;
+import jakarta.xml.ws.handler.MessageContext;
 
 import org.apache.commons.lang.StringUtils;
 import lombok.extern.slf4j.Slf4j;
