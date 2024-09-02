@@ -55,7 +55,7 @@ public class DataBaseManager {
 		server = new Server();
 		server.setDatabaseName(0, "TEST");
 		server.setDatabasePath(0, "mem:TEST");
-		server.setPort(19001);
+//		server.setPort(19001);
 		server.setSilent(true);
 		server.start();
 	}
