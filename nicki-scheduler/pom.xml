@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>11.28-SNAPSHOT</version>
+		<version>11.28</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<artifactId>nicki-scheduler</artifactId>
