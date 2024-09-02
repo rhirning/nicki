@@ -52,12 +52,14 @@ public class DataBaseManager {
 	}
 
 	public void startServer() {
+		/*
 		server = new Server();
 		server.setDatabaseName(0, "TEST");
 		server.setDatabasePath(0, "mem:TEST");
 //		server.setPort(19001);
 		server.setSilent(true);
 		server.start();
+		*/
 	}
 
 	public void stopServer() {
