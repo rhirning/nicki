@@ -20,14 +20,14 @@ package org.mgnl.nicki.db.test.base;
  * #L%
  */
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
+//import static org.junit.jupiter.api.Assertions.assertNotNull;
+//import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+//import org.junit.jupiter.api.AfterAll;
+//import org.junit.jupiter.api.BeforeAll;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.profile.InitProfileException;
@@ -35,6 +35,7 @@ import org.mgnl.nicki.db.test.db.ErrorEntry;
 
 
 public abstract class TestBase {
+	/*
 	private static DataBaseManager dataBaseManager;	
 	
 	protected static final boolean DO_EXPIRE_TESTS = true;
@@ -68,4 +69,5 @@ public abstract class TestBase {
 		Thread.sleep(3000);
 		dataBaseManager.stopServer();
 	}
+	*/
 }

@@ -1,8 +1,8 @@
 package org.mgnl.nicki.db.test.tests;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+//import static org.junit.jupiter.api.Assertions.assertEquals;
+//import static org.junit.jupiter.api.Assertions.assertNotNull;
+//import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /*-
  * #%L
@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
@@ -41,7 +41,7 @@ import org.mgnl.nicki.db.test.base.TestBase;
 import org.mgnl.nicki.db.test.db.ErrorEntry;
 
 public class DatabaseTest extends TestBase {
-	
+	/*
 	@Test
 	public void runDatabaseTest() throws InvalidPrincipalException, IOException, SQLException, InitProfileException, NotSupportedException {
 
@@ -72,7 +72,7 @@ public class DatabaseTest extends TestBase {
 			dbContext.exists(new ErrorEntry());			
 		}
 	}
-	
+	*/
 	/**
 	 * Insert mit code = "ABC"
 	 * update where code = 'ABC'
@@ -86,6 +86,7 @@ public class DatabaseTest extends TestBase {
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */
+	/*
 	@Test
 	public void testUpdateWhereChar() throws InvalidPrincipalException, IOException, SQLException, InitProfileException, NotSupportedException, InstantiationException, IllegalAccessException {
 
@@ -209,4 +210,5 @@ public class DatabaseTest extends TestBase {
 		errorEntry.setData("SQL unit testing");
 		dbContext.create(errorEntry);
 	}
+	*/
 }

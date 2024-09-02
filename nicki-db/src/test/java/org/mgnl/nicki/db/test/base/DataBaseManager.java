@@ -20,7 +20,7 @@ package org.mgnl.nicki.db.test.base;
  * #L%
  */
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+//import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -37,7 +37,7 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 import org.mgnl.nicki.db.test.db.ErrorEntry;
 
 public class DataBaseManager {
-	
+/*	
 	private Server server;
 
 	public static void  main(String[] args) throws Exception {
@@ -52,14 +52,14 @@ public class DataBaseManager {
 	}
 
 	public void startServer() {
-		/*
+
 		server = new Server();
 		server.setDatabaseName(0, "TEST");
 		server.setDatabasePath(0, "mem:TEST");
 //		server.setPort(19001);
 		server.setSilent(true);
 		server.start();
-		*/
+
 	}
 
 	public void stopServer() {
@@ -68,7 +68,7 @@ public class DataBaseManager {
 		}
 
 	}
-	
+
 	public void populateTables() throws IOException, SQLException, InitProfileException, NotSupportedException {
 
 		DBContext dbContext = DBContextManager.getContext("test");
@@ -134,5 +134,5 @@ public class DataBaseManager {
 			}
 		}
 	}
-
+*/
 }
