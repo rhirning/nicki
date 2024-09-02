@@ -33,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.pdf.configuration.FontStyle;
 import org.mgnl.nicki.pdf.configuration.PdfConfiguration;
 import org.mgnl.nicki.pdf.model.template.Barcode;

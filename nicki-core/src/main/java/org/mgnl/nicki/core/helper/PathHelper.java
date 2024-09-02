@@ -22,7 +22,7 @@ package org.mgnl.nicki.core.helper;
  */
 
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class PathHelper {
 

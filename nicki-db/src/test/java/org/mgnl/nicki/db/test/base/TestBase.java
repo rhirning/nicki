@@ -20,12 +20,14 @@ package org.mgnl.nicki.db.test.base;
  * #L%
  */
 
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.profile.InitProfileException;
@@ -33,33 +35,37 @@ import org.mgnl.nicki.db.test.db.ErrorEntry;
 
 
 public abstract class TestBase {
-	
+	private static DataBaseManager dataBaseManager;	
 	
 	protected static final boolean DO_EXPIRE_TESTS = true;
 	
-	@BeforeClass
+	@BeforeAll
 	public static void startServers() throws Exception {
 
 		System.setProperty("/META-INF/nicki/env.properties", "/META-INF/nicki/env_test.properties");
-	
-		DataBaseManager.createTables();
+
+		dataBaseManager = new DataBaseManager();
+		dataBaseManager.startServer();
+		dataBaseManager.createTables();
+		dataBaseManager.populateTables();
 		verifyTables();
 	}
 
 
 	private static void verifyTables() {
 		try(DBContext dbContext = DBContextManager.getContext("test")) {
-			assertNotNull("DbContext", dbContext);
+			assertNotNull(dbContext, "DbContext");
 			dbContext.exists(new ErrorEntry());
 			
 		} catch (SQLException | InitProfileException e) {
 			e.printStackTrace();
-			assertNotNull("ContextError error", null);
+			assertNull(e, "ContextError error");
 		}
 	}
 
-	@AfterClass
-	public static void stopServers() throws IOException   {
-		DataBaseManager.dropTables();
+	@AfterAll
+	public static void stopServers() throws IOException, InterruptedException   {
+		Thread.sleep(3000);
+		dataBaseManager.stopServer();
 	}
 }

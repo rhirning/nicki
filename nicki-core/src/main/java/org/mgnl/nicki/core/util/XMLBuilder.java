@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.Collection;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.CDATA;
 import org.jdom2.Document;
 import org.jdom2.Element;

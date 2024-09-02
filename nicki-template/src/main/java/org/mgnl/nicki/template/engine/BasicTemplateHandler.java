@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mgnl.nicki.core.helper.XMLHelper;
@@ -96,7 +96,6 @@ public class BasicTemplateHandler implements TemplateHandler{
 			if (StringUtils.isNotEmpty(parameters)) {
 				try {
 					Document document = XMLHelper.documentFromString(parameters);
-					@SuppressWarnings("unchecked")
 					List<Element> params = document.getRootElement().getChildren("parameter");
 					if (params != null) {
 						for (Element attributeElement : params) {

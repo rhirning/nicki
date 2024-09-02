@@ -18,13 +18,15 @@
  * #L%
  */
 
-import static org.junit.Assert.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mgnl.nicki.verify.classes.JavaRules;
 import org.mgnl.nicki.verify.classes.MissingAttributeException;
 import org.mgnl.nicki.verify.classes.ReferencedError;
@@ -38,7 +40,7 @@ public class RulesTest {
 		Map<String, Object> data = new HashMap<>();
 		data.put("userId", "Thing");
 		List<ReferencedError> errors = JavaRules.evaluate(data, TestRule.class);
-		assertNotEquals("Anzahl Fehler", 0, errors.size());
+		assertNotEquals(0, errors.size(), "Anzahl Fehler");
 		System.out.println(errors);
 	}
 	
@@ -47,7 +49,7 @@ public class RulesTest {
 		Map<String, Object> data = new HashMap<>();
 		data.put("userId", "rhirning");
 		List<ReferencedError> errors = JavaRules.evaluate(data, "test.TestRule");
-		assertEquals("Anzahl Fehler", 0, errors.size());
+		assertEquals(0, errors.size(), "Anzahl Fehler");
 		System.out.println(errors);
 	}
 }

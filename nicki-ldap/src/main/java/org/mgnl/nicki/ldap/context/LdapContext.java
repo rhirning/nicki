@@ -40,7 +40,7 @@ import javax.naming.ldap.PagedResultsControl;
 import javax.naming.ldap.PagedResultsResponseControl;
 import javax.naming.ldap.StartTlsRequest;
 import javax.naming.ldap.StartTlsResponse;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.context.BasicContext;
 import org.mgnl.nicki.core.context.BeanQueryHandler;
 import org.mgnl.nicki.core.context.NickiContext;

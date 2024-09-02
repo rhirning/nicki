@@ -26,8 +26,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.text.StrTokenizer;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringTokenizer;
 import org.mgnl.nicki.core.i18n.I18n;
 
 /**
@@ -84,7 +84,7 @@ public class PartRule extends Rule {
 
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
-		StrTokenizer tokenizer = new StrTokenizer(value, separator);
+		StringTokenizer tokenizer = new StringTokenizer(value, separator);
 		tokenizer.setIgnoreEmptyTokens(false);
 		String parts[] = tokenizer.getTokenArray();
 		

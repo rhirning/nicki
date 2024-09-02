@@ -24,7 +24,7 @@ package org.mgnl.nicki.shop.base.inventory;
 
 import java.io.Serializable;
 import java.util.Date;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;

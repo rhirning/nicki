@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mgnl.nicki.core.helper.DataHelper;
@@ -81,7 +81,6 @@ public class XmlValueProvider implements CatalogValueProvider {
 				if (StringUtils.isNotEmpty(onlyDefinedEntries)) {
 					this.onlyDefinedEntries = DataHelper.booleanOf(onlyDefinedEntries);
 				}
-				@SuppressWarnings("unchecked")
 				List<Element> entryList = document.getRootElement().getChildren("entry");
 				if (entryList != null) {
 					for (Element element : entryList) {

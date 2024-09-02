@@ -25,7 +25,7 @@ package org.mgnl.nicki.template.engine;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.helper.NameValue;
 import org.mgnl.nicki.core.util.XmlHelper;
 import org.w3c.dom.Document;

@@ -23,8 +23,8 @@
 			<artifactId>commons-io</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-codec</groupId>
@@ -69,7 +69,7 @@
 		</dependency>
 		<dependency>
 		    <groupId>org.glassfish</groupId>
-		    <artifactId>javax.json</artifactId>
+		    <artifactId>jakarta.json</artifactId>
 		</dependency>
 		<dependency>
 		    <groupId>org.glassfish.jaxb</groupId>

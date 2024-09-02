@@ -25,7 +25,7 @@ package org.mgnl.nicki.template.engine;
 import java.io.Reader;
 import java.io.StringReader;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class SimpleTemplateDescriptor {
 	private SimpleTemplate template;

@@ -25,7 +25,7 @@ package org.mgnl.nicki.db.context;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.util.Classes;
 import org.mgnl.nicki.db.connection.InvalidConfigurationException;

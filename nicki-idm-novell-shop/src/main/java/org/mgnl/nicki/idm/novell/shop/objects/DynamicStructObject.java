@@ -24,7 +24,7 @@ package org.mgnl.nicki.idm.novell.shop.objects;
 
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.mgnl.nicki.core.helper.DataHelper;
@@ -60,7 +60,7 @@ public abstract class DynamicStructObject extends BaseDynamicObject {
 	
 	public Date getDateInfo(String infoPath) {
 		try {
-			String info = StringUtils.chomp(getInfo(infoPath), "Z");
+			String info = StringUtils.removeEnd(getInfo(infoPath), "Z");
 			return DataHelper.timeFromString(info);
 		} catch (Exception e) {
 			return null;

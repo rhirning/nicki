@@ -2,7 +2,6 @@
 package org.mgnl.nicki.db.data;
 
 import java.lang.reflect.Field;
-import java.text.ParseException;
 import java.util.Date;
 
 import org.mgnl.nicki.core.helper.DataHelper;

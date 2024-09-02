@@ -48,8 +48,6 @@ public class Mapping extends BaseDynamicObject {
 	@DynamicAttribute(externalName="DirXML-ContentType")
 	private String contentType;
 	
-	
-	@SuppressWarnings("unchecked")
 	public List<NameValue> getMapping() throws JDOMException, IOException   {
 		List<NameValue> list = new ArrayList<NameValue>();
 

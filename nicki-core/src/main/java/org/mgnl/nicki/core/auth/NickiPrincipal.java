@@ -24,7 +24,7 @@ package org.mgnl.nicki.core.auth;
 
 import java.security.Principal;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 @SuppressWarnings("serial")
 public class NickiPrincipal implements Principal, java.io.Serializable {

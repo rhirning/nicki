@@ -38,9 +38,9 @@ import java.io.OutputStream;
 import java.util.List;
 import java.util.Objects;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.pdf.configuration.PdfConfiguration;
 import org.mgnl.nicki.pdf.model.template.Data;

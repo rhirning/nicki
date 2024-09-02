@@ -31,7 +31,7 @@ import javax.naming.NamingException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.DOMBuilder;
@@ -63,7 +63,6 @@ public class XMLImporter {
 		
 	}
 	private void createChildren(String parentPath, Element parentNode) throws InstantiateDynamicObjectException, DynamicObjectException {
-		@SuppressWarnings("unchecked")
 		List<Element> children = parentNode.getChildren("dynamicObject");
 		if (children != null &&  children.size() > 0) {
 			for (Element child : children) {
@@ -83,7 +82,6 @@ public class XMLImporter {
 	}
 
 	private void addAttributes(String parentPath, String path, DynamicObject dynamicObject, Element element) {
-		@SuppressWarnings("unchecked")
 		List<Element> attributes = element.getChildren("attribute");
 		if (attributes != null && attributes.size() > 0) {
 			for (Element attribute : attributes) {

@@ -1,5 +1,9 @@
 package org.mgnl.nicki.db.test.tests;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /*-
  * #%L
  * nicki-db
@@ -20,14 +24,12 @@ package org.mgnl.nicki.db.test.tests;
  * #L%
  */
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
-import org.junit.Test;
+
+import org.junit.jupiter.api.Test;
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
@@ -35,23 +37,18 @@ import org.mgnl.nicki.db.context.NotSupportedException;
 import org.mgnl.nicki.db.helper.Type;
 import org.mgnl.nicki.db.helper.TypedValue;
 import org.mgnl.nicki.db.profile.InitProfileException;
-import org.mgnl.nicki.db.test.base.DataBaseManager;
 import org.mgnl.nicki.db.test.base.TestBase;
 import org.mgnl.nicki.db.test.db.ErrorEntry;
 
 public class DatabaseTest extends TestBase {
 	
 	@Test
-	public void runDatabaseTest() throws InvalidPrincipalException, IOException {
+	public void runDatabaseTest() throws InvalidPrincipalException, IOException, SQLException, InitProfileException, NotSupportedException {
 
 		try(DBContext dbContext = DBContextManager.getContext("test")) {
-			assertNotNull("DbContext", dbContext);
-			DataBaseManager.populateTables();
+			assertNotNull(dbContext, "DbContext");
 			dbContext.exists(new ErrorEntry());
 			
-		} catch (SQLException | InitProfileException | NotSupportedException e) {
-			e.printStackTrace();
-			assertNotNull("ContextError error", null);
 		}
 	}
 	
@@ -68,15 +65,11 @@ public class DatabaseTest extends TestBase {
 	}
 	
 	@Test
-	public void runSecondDatabaseTest() throws InvalidPrincipalException, IOException {
+	public void runSecondDatabaseTest() throws InvalidPrincipalException, IOException, SQLException, InitProfileException {
 
 		try(DBContext dbContext = DBContextManager.getContext("test")) {
-			assertNotNull("DbContext", dbContext);
-			dbContext.exists(new ErrorEntry());
-			
-		} catch (SQLException | InitProfileException e) {
-			e.printStackTrace();
-			assertNotNull("ContextError error", null);
+			assertNotNull(dbContext, "DbContext");
+			dbContext.exists(new ErrorEntry());			
 		}
 	}
 	
@@ -87,118 +80,121 @@ public class DatabaseTest extends TestBase {
 	 * 
 	 * @throws InvalidPrincipalException
 	 * @throws IOException
+	 * @throws InitProfileException 
+	 * @throws SQLException 
+	 * @throws NotSupportedException 
+	 * @throws IllegalAccessException 
+	 * @throws InstantiationException 
 	 */
 	@Test
-	public void testUpdateWhereChar() throws InvalidPrincipalException, IOException {
+	public void testUpdateWhereChar() throws InvalidPrincipalException, IOException, SQLException, InitProfileException, NotSupportedException, InstantiationException, IllegalAccessException {
 
 		try(DBContext dbContext = DBContextManager.getContext("test")) {
 			
 			// count
-			assertNotNull("DbContext", dbContext);
-			assertEquals("Anzahl Datenbankeinträge mit XXX", 0, countCodeEntries(dbContext, "XXX"));
+			assertNotNull(dbContext, "DbContext");
+			assertEquals(0, countCodeEntries(dbContext, "XXX"), "Anzahl Datenbankeinträge mit XXX");
 			create(dbContext, "ABC");
-			assertEquals("Anzahl Datenbankeinträge mit ABC", 1, countCodeEntries(dbContext, "ABC"));
+			assertEquals(1, countCodeEntries(dbContext, "ABC"), "Anzahl Datenbankeinträge mit ABC");
 
 			// search with bean
 			ErrorEntry errorEntry = new ErrorEntry();
 			errorEntry.setCode("ABC");
 			List<ErrorEntry> entries = dbContext.loadObjects(errorEntry, false);
 			assertNotNull(entries);
-			assertEquals("Anzahl gefundener Einträge mit ABC", 1, entries.size());
+			assertEquals(1, entries.size(), "Anzahl gefundener Einträge mit ABC");
 			
 			// search with where clause
 			errorEntry = new ErrorEntry();
 			entries = dbContext.loadObjects(errorEntry, false, "code='ABC'", null);
 			assertNotNull(entries);
-			assertEquals("Anzahl gefundener Einträge ABC in where clause", 1, entries.size());
+			assertEquals(1, entries.size(), "Anzahl gefundener Einträge ABC in where clause");
 			
 			// search with prepared where clause
 			errorEntry = new ErrorEntry();
 			entries = dbContext.loadObjects(errorEntry, false, "code=?", null, new TypedValue(Type.STRING, 1, "ABC").correctValue(ErrorEntry.class, "code"));
 			assertNotNull(entries);
-			assertEquals("Anzahl gefundener Einträge ABC als TypedValue", 1, entries.size());
+			assertEquals(1, entries.size(), "Anzahl gefundener Einträge ABC als TypedValue");
 
 			// search with bean and prepared where clause
 			errorEntry = new ErrorEntry();
 			errorEntry.setCommand("TEST");
 			entries = dbContext.loadObjects(errorEntry, false, "code=?", null, new TypedValue(Type.STRING, 1, "ABC").correctValue(ErrorEntry.class, "code"));
 			assertNotNull(entries);
-			assertEquals("Anzahl gefundener Einträge mit command TEST", 1, entries.size());
+			assertEquals(1, entries.size(), "Anzahl gefundener Einträge mit command TEST");
 			
 			// delete mit bean und primary key
 			errorEntry = new ErrorEntry();
 			errorEntry.setCommand("TEST");
 			errorEntry = dbContext.loadObject(errorEntry, false);
-			assertNotNull("ErrorEntry TEST", errorEntry);
+			assertNotNull(errorEntry, "ErrorEntry TEST");
 			dbContext.delete(errorEntry);
-			assertEquals("Anzahl gefundener Einträge mit command TEST", 0, countCommandEntries(dbContext, "TEST"));
+			assertEquals(0, countCommandEntries(dbContext, "TEST"), "Anzahl gefundener Einträge mit command TEST");
 			
 			// delete mit bean ohne primary key
 			create(dbContext, "ABC");
-			assertEquals("Anzahl gefundener Einträge mit command TEST", 1, countCommandEntries(dbContext, "TEST"));
+			assertEquals(1, countCommandEntries(dbContext, "TEST"), "Anzahl gefundener Einträge mit command TEST");
 			errorEntry = new ErrorEntry();
 			errorEntry.setCommand("TEST");
+
 			try {
 				dbContext.delete(errorEntry);
-				assertTrue("delete darf nicht erfolgt sein", false);
+				assertTrue(false, "delete darf nicht erfolgt sein");
 			} catch (NotSupportedException e) {
-				assertNotNull("delete mit bean ohne primary key ist nicht erlaubt", e);
+				assertNotNull(e, "delete mit bean ohne primary key ist nicht erlaubt");
 			}
-			assertEquals("Anzahl gefundener Einträge mit command TEST", 1, countCommandEntries(dbContext, "TEST"));
+			assertEquals(1, countCommandEntries(dbContext, "TEST"), "Anzahl gefundener Einträge mit command TEST");
 			
 			// update ohne primary key
 			errorEntry = new ErrorEntry();
 			errorEntry.setCommand("FINISH");
 			try {
 				dbContext.update(errorEntry);
-				assertTrue("update darf nicht erfolgt sein", false);
+				assertTrue(false, "update darf nicht erfolgt sein");
 			} catch (NotSupportedException e) {
-				assertNotNull("update mit bean ohne primary key ist nicht erlaubt", e);
+				assertNotNull(e, "update mit bean ohne primary key ist nicht erlaubt");
 			}
 			
 			// update mit primary key
 			errorEntry = new ErrorEntry();
 			errorEntry.setCommand("TEST");
 			errorEntry = dbContext.loadObject(errorEntry, false);
-			assertNotNull("ErrorEntry TEST", errorEntry);
+			assertNotNull(errorEntry, "ErrorEntry TEST");
 			errorEntry.setCommand("FINISH");
 			dbContext.update(errorEntry);
-			assertEquals("Anzahl gefundener Einträge mit command FINISH", 1, countCommandEntries(dbContext, "FINISH"));
+			assertEquals(1, countCommandEntries(dbContext, "FINISH"), "Anzahl gefundener Einträge mit command FINISH");
 			
 			// exists ohne Filter mit blankem bean
 			errorEntry = new ErrorEntry();
-			assertTrue("exists ohne Filter mit blankem bean", dbContext.exists(errorEntry));
+			assertTrue(dbContext.exists(errorEntry), "exists ohne Filter mit blankem bean");
 			
 			// exists ohne Filter mit bean und passendem Eintrag
 			errorEntry = new ErrorEntry();
 			errorEntry.setCommand("FINISH");
-			assertTrue("exists ohne Filter mit bean und passendem Eintrag", dbContext.exists(errorEntry));
+			assertTrue(dbContext.exists(errorEntry), "exists ohne Filter mit bean und passendem Eintrag");
 			
 			// exists ohne Filter mit bean und nicht passendem Eintrag
 			errorEntry = new ErrorEntry();
 			errorEntry.setCommand("TEST");
-			assertTrue("exists ohne Filter mit bean und nicht passendem Eintrag", !dbContext.exists(errorEntry));
+			assertTrue(!dbContext.exists(errorEntry), "exists ohne Filter mit bean und nicht passendem Eintrag");
 			
 			// exists ohne Filter
 			errorEntry = new ErrorEntry();
-			assertTrue("Exist one filter", dbContext.exists(errorEntry));
+			assertTrue(dbContext.exists(errorEntry), "Exist one filter");
 			// exists mit Filter, der passt
 			errorEntry = new ErrorEntry();
-			assertTrue("exists mit Filter, der passt", dbContext.exists(errorEntry, "COMMAND='FINISH'"));
+			assertTrue(dbContext.exists(errorEntry, "COMMAND='FINISH'"), "exists mit Filter, der passt");
 			// exists mit Filter, der nicht passt
 			errorEntry = new ErrorEntry();
-			assertTrue("exists mit Filter, der nicht passt", !dbContext.exists(errorEntry, "COMMAND='TEST'"));
+			assertTrue(!dbContext.exists(errorEntry, "COMMAND='TEST'"), "exists mit Filter, der nicht passt");
 			
 			// exists mit Filter, der passt und typedValues
 			errorEntry = new ErrorEntry();
-			assertTrue("exists mit Filter, der passt", dbContext.exists(errorEntry, "COMMAND=?", new TypedValue(Type.STRING, 1, "FINISH")));
+			assertTrue(dbContext.exists(errorEntry, "COMMAND=?", new TypedValue(Type.STRING, 1, "FINISH")), "exists mit Filter, der passt");
 			// exists mit Filter, der nicht passt und typedValues
 			errorEntry = new ErrorEntry();
-			assertTrue("exists mit Filter, der nicht passt", !dbContext.exists(errorEntry, "COMMAND=?", new TypedValue(Type.STRING, 1, "TEST")));
+			assertTrue(!dbContext.exists(errorEntry, "COMMAND=?", new TypedValue(Type.STRING, 1, "TEST")), "exists mit Filter, der nicht passt");
 			
-		} catch (SQLException | InitProfileException | NotSupportedException | InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
-			assertNotNull("DB Error", null);
 		}
 	}
 

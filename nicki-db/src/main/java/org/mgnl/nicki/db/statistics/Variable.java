@@ -26,7 +26,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.db.context.DBContext;
 

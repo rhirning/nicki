@@ -26,7 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
@@ -71,7 +71,6 @@ public class CatalogPage extends CatalogObject {
 		if (StringUtils.isNotEmpty(attributes)) {
 			try {
 				Document document = XMLHelper.documentFromString(attributes);
-				@SuppressWarnings("unchecked")
 				List<Element> attrs = document.getRootElement().getChildren("attribute");
 				if (attrs != null) {
 					for (Element attributeElement : attrs) {

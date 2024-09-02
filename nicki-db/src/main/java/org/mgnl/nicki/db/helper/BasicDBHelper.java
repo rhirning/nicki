@@ -32,7 +32,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.db.annotation.Attribute;
@@ -53,7 +53,6 @@ public class BasicDBHelper {
 
 	private static Map<Class<?>, Boolean> allowPreparedWhereMap = new HashMap<Class<?>, Boolean>();
 	private static Map<String, Boolean> trimStringsMap = new HashMap<String, Boolean>();
-	private static Map<Class<?>, Boolean> trimStringsInBeanMap = new HashMap<Class<?>, Boolean>();
 
 	public static boolean isAllowPreparedWhere(DBContext dbContext) {
 		if (!allowPreparedWhereMap.containsKey(dbContext.getClass())) {
@@ -62,23 +61,6 @@ public class BasicDBHelper {
 		return allowPreparedWhereMap.get(dbContext.getClass()).booleanValue();
 	}
 	
-	/*
-	public static boolean isTrimStrings(DBContext dbContext) {
-		if (!trimStringsMap.containsKey(dbContext.getClass())) {
-			trimStringsMap.put(dbContext.getClass(), Config.getBoolean(dbContext.getClass().getName() + ".trimStrings", false));
-		}
-		return trimStringsMap.get(dbContext.getClass()).booleanValue();
-	}
-	*/
-	
-	/*
-	public static boolean isTrimStringsInBean(Class<?> clazz) {
-		if (!trimStringsInBeanMap.containsKey(clazz)) {
-			trimStringsInBeanMap.put(clazz, Config.getBoolean(clazz.getName() + ".trimStrings", true));
-		}
-		return trimStringsInBeanMap.get(clazz).booleanValue();
-	}
-	*/
 	/**
 	 * Bestimmt, ob in where-Bedingungen String-Werte in trim() eingepackt werden
 	 * Es kann konfiguriert werden (aufsteigende Priorität):

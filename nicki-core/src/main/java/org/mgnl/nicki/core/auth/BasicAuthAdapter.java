@@ -25,7 +25,7 @@ package org.mgnl.nicki.core.auth;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.context.AppContext;
 import lombok.extern.slf4j.Slf4j;
 

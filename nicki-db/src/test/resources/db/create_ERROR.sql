@@ -17,7 +17,7 @@
 -- limitations under the License.
 -- #L%
 ---
-CREATE TABLE TEST.ERROR (
+CREATE TABLE ERROR (
   ID bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
   COMMAND char(64) NOT NULL,
   MODIFY_TIME timestamp NOT NULL,

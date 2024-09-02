@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.data.Query;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;

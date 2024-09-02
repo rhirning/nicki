@@ -30,16 +30,16 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
+import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.SearchResult;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.BeanQueryHandler;
 import org.mgnl.nicki.core.context.NickiContext;
@@ -47,6 +47,7 @@ import org.mgnl.nicki.core.helper.AnnotationHelper;
 import org.mgnl.nicki.core.helper.AttributeMapper;
 import org.mgnl.nicki.core.helper.BeanUtilsHelper;
 import org.mgnl.nicki.core.helper.DataHelper;
+import org.mgnl.nicki.core.util.Classes;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -91,12 +92,11 @@ public class BeanSearchHandler<T> extends BasicLdapHandler implements BeanQueryH
 		while(results != null && results.hasMore()) {
 			SearchResult result = results.next();
 			try {
-				T entry = beanClass.newInstance();
+				T entry = Classes.newInstance(beanClass);
 				for (Field field : beanClass.getDeclaredFields()) {
 					Object value = getValue(result, field);
 					if (field.isAnnotationPresent(LdapAttribute.class)) {
 						LdapAttribute ldapAttribute = field.getAnnotation(LdapAttribute.class);
-						String attributeName = StringUtils.isBlank(ldapAttribute.ldapName()) ? field.getName() : ldapAttribute.ldapName();
 						if (ldapAttribute.dn()) {
 							BeanUtilsHelper.setValue(entry, field.getName(), result.getNameInNamespace());
 						} else {
@@ -157,18 +157,6 @@ public class BeanSearchHandler<T> extends BasicLdapHandler implements BeanQueryH
 	private String format(LdapAttribute ldapAttribute, String value) {
 		return ldapAttribute.formatter().format(value);
 	}
-
-	private static String getValue(SearchResult r, String s) {
-		String result = "";
-		if (null != r.getAttributes().get(s)) {
-			try {
-				result = (String) r.getAttributes().get(s).get();
-			} catch (NamingException e) {
-				e.printStackTrace();
-			}
-		}
-		return result;
-	}
 	
 	protected String[] getReturningAttributes() {
 		if (this.fields == null) {
@@ -200,6 +188,7 @@ public class BeanSearchHandler<T> extends BasicLdapHandler implements BeanQueryH
 		return toJsonObjectBuilder(bean, mapping).build();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static <T> JsonObjectBuilder toJsonObjectBuilder(T bean, AttributeMapper mapping) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		for (Field field : bean.getClass().getDeclaredFields()) {

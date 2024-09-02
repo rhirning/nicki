@@ -26,7 +26,7 @@ import javax.annotation.Resource;
 import jakarta.xml.ws.WebServiceContext;
 import jakarta.xml.ws.handler.MessageContext;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.auth.AccessTargetContext;
 import org.mgnl.nicki.core.auth.LoginTargetContext;
 import org.mgnl.nicki.core.auth.NickiPrincipal;

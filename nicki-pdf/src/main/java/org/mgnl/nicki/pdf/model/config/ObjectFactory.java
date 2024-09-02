@@ -30,7 +30,7 @@ package org.mgnl.nicki.pdf.model.config;
  */
 
 
-import javax.xml.bind.annotation.XmlRegistry;
+import jakarta.xml.bind.annotation.XmlRegistry;
 
 
 /**

@@ -27,7 +27,7 @@ import java.util.Map;
 
 import jakarta.xml.ws.handler.MessageContext;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

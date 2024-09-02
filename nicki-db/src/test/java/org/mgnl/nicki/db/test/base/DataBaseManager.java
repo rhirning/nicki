@@ -20,17 +20,16 @@ package org.mgnl.nicki.db.test.base;
  * #L%
  */
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
 import java.sql.SQLException;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.derby.drda.NetworkServerControl;
+import org.apache.commons.lang3.StringUtils;
+import org.hsqldb.server.Server;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.context.NotSupportedException;
@@ -38,17 +37,37 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 import org.mgnl.nicki.db.test.db.ErrorEntry;
 
 public class DataBaseManager {
+	
+	private Server server;
 
 	public static void  main(String[] args) throws Exception {
 		System.setProperty("/META-INF/nicki/env.properties", "/META-INF/nicki/env_test.properties");
-		createTables();
-		populateTables();
+		DataBaseManager dataBaseManager = new DataBaseManager();
+		dataBaseManager.startServer();
+		dataBaseManager.createTables();
+		dataBaseManager.populateTables();
 		DBContext dbContext = DBContextManager.getContext("test");
 		System.out.println(dbContext.count(new ErrorEntry(), null));
-		DataBaseManager.dropTables();
+		dataBaseManager.stopServer();
+	}
+
+	public void startServer() {
+		server = new Server();
+		server.setDatabaseName(0, "TEST");
+		server.setDatabasePath(0, "mem:TEST");
+		server.setPort(19001);
+		server.setSilent(true);
+		server.start();
+	}
+
+	public void stopServer() {
+		if (server != null) {
+			server.stop();
+		}
+
 	}
 	
-	public static void populateTables() throws IOException, SQLException, InitProfileException, NotSupportedException {
+	public void populateTables() throws IOException, SQLException, InitProfileException, NotSupportedException {
 
 		DBContext dbContext = DBContextManager.getContext("test");
 		assertNotNull(dbContext);
@@ -63,10 +82,7 @@ public class DataBaseManager {
 		dbContext.create(errorEntry);
 	}
 
-	public static void createTables() throws Exception {
-		NetworkServerControl server = new NetworkServerControl
-				(InetAddress.getByName("localhost"),1527);
-			server.start(null);
+	public void createTables() throws Exception {
 		DBContext dbContext = DBContextManager.getContext("test");
 		assertNotNull(dbContext);
 		executeSQLs(dbContext,
@@ -74,14 +90,14 @@ public class DataBaseManager {
 				"/db/create_ERROR.sql");
 	}
 
-	public static void dropTables() throws IOException   {
+	public  void dropTables() throws IOException   {
 		DBContext dbContext = DBContextManager.getContext("test");
 		assertNotNull(dbContext);
 		executeSQLs(dbContext, "/db/drop.sql");
 	}
 
 
-	private static void executeSQLs(DBContext dbContext, String... sqls) throws IOException  {
+	private void executeSQLs(DBContext dbContext, String... sqls) throws IOException  {
 		for (String sql : sqls) {
 			InputStream inputStream = DataBaseManager.class.getResourceAsStream(sql);
 			InputStreamReader reader = new InputStreamReader(inputStream);

@@ -15,6 +15,10 @@
 			<artifactId>commons-dbcp</artifactId>
 		</dependency>
 		<dependency>
+		    <groupId>org.hsqldb</groupId>
+		    <artifactId>hsqldb</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.mgnl.nicki</groupId>
 			<artifactId>nicki-core</artifactId>
 			<version>${project.version}</version>
@@ -25,19 +29,9 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbyclient</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derbynet</artifactId>
-			<scope>test</scope>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <scope>test</scope>
 		</dependency>
 	</dependencies>
 </project>

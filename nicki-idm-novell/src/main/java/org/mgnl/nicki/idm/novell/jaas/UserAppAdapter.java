@@ -31,7 +31,7 @@ import javax.portlet.PortletRequest;
 import javax.portlet.PortletSession;
 
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.auth.NickiAdapterLoginModule;
 import org.mgnl.nicki.core.auth.SSOAdapter;
 import org.mgnl.nicki.core.context.AppContext;

@@ -25,7 +25,7 @@ package org.mgnl.nicki.db.handler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class CountSelectHandler extends NonLoggingSelectHandler implements SelectHandler {
 

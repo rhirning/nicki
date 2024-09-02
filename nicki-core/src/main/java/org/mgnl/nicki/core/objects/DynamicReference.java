@@ -23,7 +23,7 @@ package org.mgnl.nicki.core.objects;
 
 
 import java.io.Serializable;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.methods.ForeignKeyMethod;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.context.NickiContext;

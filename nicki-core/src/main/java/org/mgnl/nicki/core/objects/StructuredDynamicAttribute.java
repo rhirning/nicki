@@ -25,7 +25,7 @@ package org.mgnl.nicki.core.objects;
 import java.io.Serializable;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.methods.ListStructuredForeignKeyMethod;
 import org.mgnl.nicki.core.methods.StructuredForeignKeyMethod;

@@ -31,7 +31,7 @@ import java.util.Map;
 
 import javax.naming.NamingException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.template.engine.Template;
