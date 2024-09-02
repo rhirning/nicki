@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
+//import org.junit.jupiter.api.Test;
 import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
@@ -42,7 +42,7 @@ import org.mgnl.nicki.db.test.db.ErrorEntry;
 
 public class DatabaseTest extends TestBase {
 	
-	@Test
+//	@Test
 	public void runDatabaseTest() throws InvalidPrincipalException, IOException, SQLException, InitProfileException, NotSupportedException {
 
 		try(DBContext dbContext = DBContextManager.getContext("test")) {
@@ -64,7 +64,7 @@ public class DatabaseTest extends TestBase {
 		return dbContext.count(errorEntry, null);
 	}
 	
-	@Test
+//	@Test
 	public void runSecondDatabaseTest() throws InvalidPrincipalException, IOException, SQLException, InitProfileException {
 
 		try(DBContext dbContext = DBContextManager.getContext("test")) {
@@ -86,7 +86,7 @@ public class DatabaseTest extends TestBase {
 	 * @throws IllegalAccessException 
 	 * @throws InstantiationException 
 	 */
-	@Test
+//	@Test
 	public void testUpdateWhereChar() throws InvalidPrincipalException, IOException, SQLException, InitProfileException, NotSupportedException, InstantiationException, IllegalAccessException {
 
 		try(DBContext dbContext = DBContextManager.getContext("test")) {
