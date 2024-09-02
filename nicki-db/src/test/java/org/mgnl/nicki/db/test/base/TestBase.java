@@ -26,8 +26,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+//import org.junit.jupiter.api.AfterAll;
+//import org.junit.jupiter.api.BeforeAll;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.context.DBContextManager;
 import org.mgnl.nicki.db.profile.InitProfileException;
@@ -39,7 +39,7 @@ public abstract class TestBase {
 	
 	protected static final boolean DO_EXPIRE_TESTS = true;
 	
-	@BeforeAll
+//	@BeforeAll
 	public static void startServers() throws Exception {
 
 		System.setProperty("/META-INF/nicki/env.properties", "/META-INF/nicki/env_test.properties");
@@ -63,7 +63,7 @@ public abstract class TestBase {
 		}
 	}
 
-	@AfterAll
+//	@AfterAll
 	public static void stopServers() throws IOException, InterruptedException   {
 		Thread.sleep(3000);
 		dataBaseManager.stopServer();
