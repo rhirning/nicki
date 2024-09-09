@@ -12,7 +12,7 @@
 	</organization>
 	<properties>
 		<project.build.sourceEncoding>iso-8859-1</project.build.sourceEncoding>
-		<idm.version>4.5</idm.version>
+		<idm.version>4.8.7</idm.version>
 		<activemq-version>5.18.4</activemq-version>
 		<project.scm.id>github</project.scm.id>
 		<log4j.version>2.23.1</log4j.version>
@@ -99,7 +99,7 @@
 			<dependency>
 				<groupId>com.netiq.common</groupId>
 				<artifactId>i18n-common</artifactId>
-				<version>0.8.0.1</version>
+				<version>0.8.0.2</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novell.dirxml</groupId>
