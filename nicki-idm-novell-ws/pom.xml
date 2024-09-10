@@ -30,6 +30,16 @@
 		    <groupId>org.mgnl.nicki</groupId>
 		    <artifactId>nicki-core</artifactId>
 		    <version>${project.version}</version>
+		    <exclusions>
+				<exclusion>
+				    <groupId>jakarta.xml.ws</groupId>
+				    <artifactId>jakarta.xml.ws-api</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+		    <groupId>javax.xml.soap</groupId>
+		    <artifactId>javax.xml.soap-api</artifactId>
 		</dependency>
 	</dependencies>
 </project>
