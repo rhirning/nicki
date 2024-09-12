@@ -22,7 +22,7 @@ package org.mgnl.nicki.pdf.template;
  */
 
 
-import jakarta.xml.bind.annotation.XmlRegistry;
+import javax.xml.bind.annotation.XmlRegistry;
 
 
 /**

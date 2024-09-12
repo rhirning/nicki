@@ -25,9 +25,9 @@ package org.mgnl.nicki.pdf.template;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
-import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBException;
-import jakarta.xml.bind.Unmarshaller;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import org.mgnl.nicki.pdf.model.template.Document;
 

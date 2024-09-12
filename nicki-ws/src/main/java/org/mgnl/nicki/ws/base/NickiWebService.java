@@ -23,8 +23,8 @@ package org.mgnl.nicki.ws.base;
 import java.util.List;
 
 import javax.annotation.Resource;
-import jakarta.xml.ws.WebServiceContext;
-import jakarta.xml.ws.handler.MessageContext;
+import javax.xml.ws.WebServiceContext;
+import javax.xml.ws.handler.MessageContext;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.auth.AccessTargetContext;
