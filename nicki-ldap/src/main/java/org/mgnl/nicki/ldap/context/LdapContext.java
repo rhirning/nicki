@@ -31,6 +31,7 @@ import java.util.List;
 import javax.naming.Context;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
+import javax.naming.PartialResultException;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.DirContext;
 import javax.naming.directory.SearchControls;
@@ -80,6 +81,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 
 	private TargetObjectFactory objectFactory;
 	private boolean tls;
+	private boolean ignoreReferral;
 
 	public LdapContext(DynamicObjectAdapter adapter, Target target, READONLY readonly) {
 		super(adapter, target, readonly);
@@ -105,6 +107,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 		String referral = getTarget().getProperty("context.referral");
 		if (StringUtils.isNotEmpty(referral)) {
+			ignoreReferral = StringUtils.equals(referral, "ignore");
 			env.put(Context.REFERRAL, referral);
 		}
 		// Enable connection pooling
@@ -272,6 +275,11 @@ public class LdapContext extends BasicContext implements NickiContext {
 			String baseDn = StringUtils.isNotBlank(queryHandler.getBaseDN()) ? queryHandler.getBaseDN() : getTarget().getBaseDn();
 			results = ctx.search(baseDn, queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
 			queryHandler.handle(this, results);
+		} catch (PartialResultException e) {
+			if (!ignoreReferral) {
+				log.error("Error searching LDAP", e);
+				throw new NamingException(e.getMessage());
+			}
 		} catch (IOException | NamingException | DynamicObjectException e) {
 			log.error("Error searching LDAP", e);
 			throw new NamingException(e.getMessage());
