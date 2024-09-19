@@ -15,7 +15,7 @@
 		<idm.version>4.8.7</idm.version>
 		<activemq-version>5.18.4</activemq-version>
 		<project.scm.id>github</project.scm.id>
-		<log4j.version>2.23.1</log4j.version>
+		<log4j.version>2.24.0</log4j.version>
 	</properties>
 	<inceptionYear>2017</inceptionYear>
 	<modules>
@@ -237,7 +237,7 @@
 			</dependency>
 			<dependency>
 			    <groupId>org.apache.logging.log4j</groupId>
-			    <artifactId>log4j-slf4j-impl</artifactId>
+			    <artifactId>log4j-slf4j2-impl</artifactId>
 				<version>${log4j.version}</version>
 			</dependency>
 			<dependency>
