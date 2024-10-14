@@ -168,7 +168,7 @@
 			<dependency>
 			    <groupId>com.sun.xml.ws</groupId>
 			    <artifactId>jaxws-rt</artifactId>
-			    <version>4.0.3</version>
+			    <version>2.3.7</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.portlet</groupId>
@@ -376,7 +376,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.13.0</version>
 				<configuration>
-					<release>11</release>
+					<release>17</release>
 				</configuration>
 			</plugin>
 			<plugin>
