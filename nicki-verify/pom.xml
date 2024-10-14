@@ -6,13 +6,13 @@
 	<parent>
 		<artifactId>nicki-parent</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
-		<version>8.109-SNAPSHOT</version>
+		<version>11.32-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
 	<dependencies>
 		<dependency>
-		    <groupId>org.junit.jupiter</groupId>
-		    <artifactId>junit-jupiter-api</artifactId>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

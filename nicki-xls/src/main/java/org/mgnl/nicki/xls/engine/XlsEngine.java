@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.JAXBElement;
+import jakarta.xml.bind.JAXBElement;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.common.usermodel.HyperlinkType;

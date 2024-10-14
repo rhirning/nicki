@@ -26,8 +26,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
-import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlRootElement;
+import jakarta.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlRootElement;
 
 import org.apache.commons.io.IOUtils;
 import org.mgnl.nicki.dynamic.objects.objects.EngineTemplate;

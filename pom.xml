@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mgnl.nicki</groupId>
 	<artifactId>nicki-parent</artifactId>
-	<version>8.109-SNAPSHOT</version>
+	<version>11.32-SNAPSHOT</version>
 	<name>nicki-parent</name>
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
@@ -42,6 +42,14 @@
 		<module>nicki-ws</module>
 		<module>nicki-xls</module>
 	</modules>
+	<dependencies>
+		<dependency>
+		  <groupId>org.codehaus.mojo</groupId>
+		  <artifactId>versions-maven-plugin</artifactId>
+		  <version>2.17.1</version>
+		  <type>maven-plugin</type>
+		</dependency>
+	</dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -88,6 +96,11 @@
 			    <groupId>org.apache.commons</groupId>
 			    <artifactId>commons-text</artifactId>
 			    <version>1.12.0</version>
+			</dependency>
+			<dependency>
+			    <groupId>org.codehaus.mojo</groupId>
+			    <artifactId>versions-maven-plugin</artifactId>
+			    <version>2.17.1</version>
 			</dependency>
 			<dependency>
 			  <groupId>com.github.librepdf</groupId>
@@ -163,7 +176,7 @@
 			<dependency>
 			    <groupId>com.sun.xml.ws</groupId>
 			    <artifactId>jaxws-rt</artifactId>
-			    <version>2.3.7</version>
+			    <version>4.0.3</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.portlet</groupId>
@@ -179,6 +192,11 @@
 			    <groupId>javax.xml</groupId>
 			    <artifactId>jaxrpc-api</artifactId>
 			    <version>1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.13.1</version>
 			</dependency>
 			<dependency>
 			    <groupId>org.junit.jupiter</groupId>
@@ -366,7 +384,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.13.0</version>
 				<configuration>
-					<release>8</release>
+					<release>11</release>
 				</configuration>
 			</plugin>
 			<plugin>
