@@ -24,8 +24,8 @@ package org.mgnl.nicki.spnego;
 
 import java.security.Principal;
 
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletRequestWrapper;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 

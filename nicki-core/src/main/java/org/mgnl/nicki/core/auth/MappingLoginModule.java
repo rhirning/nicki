@@ -25,7 +25,7 @@ package org.mgnl.nicki.core.auth;
 
 
 import javax.security.auth.login.LoginException;
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.context.AppContext;

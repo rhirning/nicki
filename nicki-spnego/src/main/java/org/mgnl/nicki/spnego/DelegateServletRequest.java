@@ -22,7 +22,7 @@ package org.mgnl.nicki.spnego;
  */
 
 
-import jakarta.servlet.ServletRequest;
+import javax.servlet.ServletRequest;
 
 import org.ietf.jgss.GSSCredential;
 

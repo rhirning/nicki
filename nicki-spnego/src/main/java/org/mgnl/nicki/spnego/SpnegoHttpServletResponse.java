@@ -24,8 +24,8 @@ package org.mgnl.nicki.spnego;
 
 import java.io.IOException;
 
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpServletResponseWrapper;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpServletResponseWrapper;
 
 /**
  * Class adds capability to track/determine if the HTTP Status 
