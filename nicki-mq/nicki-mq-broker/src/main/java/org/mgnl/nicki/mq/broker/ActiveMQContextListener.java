@@ -22,8 +22,8 @@ package org.mgnl.nicki.mq.broker;
 
 
 import java.util.HashMap;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.config.Config;

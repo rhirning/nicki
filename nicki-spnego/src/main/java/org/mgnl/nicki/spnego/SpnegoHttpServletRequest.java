@@ -24,8 +24,8 @@ package org.mgnl.nicki.spnego;
 
 import java.security.Principal;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequestWrapper;
 
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 
@@ -88,7 +88,7 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
     /**
      * Returns "Negotiate" or "Basic" else default auth type.
      * 
-     * @see javax.servlet.http.HttpServletRequest#getAuthType()
+     * @see jakarta.servlet.http.HttpServletRequest#getAuthType()
      */
     @Override
     public String getAuthType() {
@@ -124,7 +124,7 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
     /**
      * Returns authenticated username (sans domain/realm) else default username.
      * 
-     * @see javax.servlet.http.HttpServletRequest#getRemoteUser()
+     * @see jakarta.servlet.http.HttpServletRequest#getRemoteUser()
      */
     @Override
     public String getRemoteUser() {
@@ -141,7 +141,7 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
     /**
      * Returns KerberosPrincipal of user.
      * 
-     * @see javax.servlet.http.HttpServletRequest#getUserPrincipal()
+     * @see jakarta.servlet.http.HttpServletRequest#getUserPrincipal()
      */
     @Override
     public Principal getUserPrincipal() {
@@ -251,7 +251,7 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
     
     /*
      * (non-Javadoc)
-     * @see javax.servlet.http.HttpServletRequestWrapper#isUserInRole(java.lang.String)
+     * @see jakarta.servlet.http.HttpServletRequestWrapper#isUserInRole(java.lang.String)
      */
     @Override
     public boolean isUserInRole(final String role) {

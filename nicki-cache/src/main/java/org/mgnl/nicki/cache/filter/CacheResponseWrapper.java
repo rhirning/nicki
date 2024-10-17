@@ -10,9 +10,9 @@ package org.mgnl.nicki.cache.filter;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,23 +21,21 @@ package org.mgnl.nicki.cache.filter;
  * #L%
  */
 
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpServletResponseWrapper;
-
 import org.apache.commons.collections4.MultiValuedMap;
 import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
 
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponseWrapper;
 
 /**
  * A response wrapper which records the status, headers and content.
- * 
+ *
  * @version $Id$
  */
 public class CacheResponseWrapper extends HttpServletResponseWrapper {
@@ -46,7 +44,7 @@ public class CacheResponseWrapper extends HttpServletResponseWrapper {
 
 	private final ServletOutputStream wrappedStream;
 	private PrintWriter wrappedWriter;
-	private final MultiValuedMap<String,Object> headers = new ArrayListValuedHashMap<>();
+	private final MultiValuedMap<String, Object> headers = new ArrayListValuedHashMap<>();
 	private int status = SC_OK;
 	private boolean isError;
 	private String redirectionLocation;
@@ -56,8 +54,8 @@ public class CacheResponseWrapper extends HttpServletResponseWrapper {
 
 	public CacheResponseWrapper(final HttpServletResponse response) {
 		super(response);
-		this.inMemoryBuffer = new ByteArrayOutputStream();
-		this.wrappedStream = new SimpleServletOutputStream(inMemoryBuffer);
+		inMemoryBuffer = new ByteArrayOutputStream();
+		wrappedStream = new SimpleServletOutputStream(inMemoryBuffer);
 	}
 
 	public byte[] getBufferedContent() {
@@ -73,8 +71,7 @@ public class CacheResponseWrapper extends HttpServletResponseWrapper {
 	public PrintWriter getWriter() throws IOException {
 		if (wrappedWriter == null) {
 			String encoding = getCharacterEncoding();
-			wrappedWriter = encoding != null ? new PrintWriter(
-					new OutputStreamWriter(getOutputStream(), encoding))
+			wrappedWriter = encoding != null ? new PrintWriter(new OutputStreamWriter(getOutputStream(), encoding))
 					: new PrintWriter(new OutputStreamWriter(getOutputStream()));
 		}
 
@@ -109,6 +106,7 @@ public class CacheResponseWrapper extends HttpServletResponseWrapper {
 		wrappedWriter = null;
 	}
 
+	@Override
 	public int getStatus() {
 		return status;
 	}
@@ -174,32 +172,31 @@ public class CacheResponseWrapper extends HttpServletResponseWrapper {
 		this.status = status;
 	}
 
-	@Override
-	public void setStatus(int status, String string) {
-		this.status = status;
-	}
-
+	/*
+	 * @Override public void setStatus(int status, String string) { this.status =
+	 * status; }
+	 */
 	@Override
 	public void sendRedirect(String location) throws IOException {
-		this.status = SC_MOVED_TEMPORARILY;
-		this.redirectionLocation = location;
+		status = SC_MOVED_TEMPORARILY;
+		redirectionLocation = location;
 	}
 
 	@Override
 	public void sendError(int status, String errorMsg) throws IOException {
 		this.status = status;
-		this.isError = true;
+		isError = true;
 	}
 
 	@Override
 	public void sendError(int status) throws IOException {
 		this.status = status;
-		this.isError = true;
+		isError = true;
 	}
 
 	@Override
 	public void setContentLength(int len) {
-		this.contentLength = len;
+		contentLength = len;
 	}
 
 	public int getContentLength() {
