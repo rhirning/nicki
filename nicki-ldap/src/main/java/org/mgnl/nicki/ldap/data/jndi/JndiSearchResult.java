@@ -10,9 +10,9 @@ package org.mgnl.nicki.ldap.data.jndi;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,7 +20,6 @@ package org.mgnl.nicki.ldap.data.jndi;
  * limitations under the License.
  * #L%
  */
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,11 +41,12 @@ public class JndiSearchResult implements ContextSearchResult {
 		this.rs = rs;
 	}
 
+	@Override
 	public String getNameInNamespace() {
 		return rs.getNameInNamespace();
 	}
 
-	public ContextAttributes getAttributes() {		
+	public ContextAttributes getAttributes() {
 		return new JndiAttributes(rs.getAttributes());
 	}
 
@@ -57,7 +57,7 @@ public class JndiSearchResult implements ContextSearchResult {
 
 			if (attribute != null) {
 				Object o = attribute.get();
-				log.debug("getValue " + name + ":" + clazz.getName() + ":" + o.getClass().getName());
+				log.debug("getValue " + name + ":" + clazz.getName() + ":" + o);
 				if (clazz == byte[].class && o instanceof String) {
 					return ((String) o).getBytes();
 				}
@@ -74,14 +74,13 @@ public class JndiSearchResult implements ContextSearchResult {
 
 	@Override
 	public List<Object> getValues(String name) {
-		List<Object> list = new ArrayList<Object>();
+		List<Object> list = new ArrayList<>();
 		try {
 			for (NamingEnumeration<?> iterator = rs.getAttributes().get(name).getAll(); iterator.hasMoreElements();) {
 				list.add(iterator.next());
 			}
 		} catch (Exception e) {
 			// nothing to do
-			log.debug("Error", e);
 		}
 		return list;
 	}
