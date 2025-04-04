@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mgnl.nicki</groupId>
 	<artifactId>nicki</artifactId>
-	<version>11.38-SNAPSHOT</version>
+	<version>11.38</version>
 	<name>nicki</name>
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
