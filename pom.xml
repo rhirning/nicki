@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mgnl.nicki</groupId>
 	<artifactId>nicki</artifactId>
-	<version>11.39-SNAPSHOT</version>
+	<version>11.39</version>
 	<name>nicki</name>
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
@@ -396,10 +396,28 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
-				<version>3.3.1</version>
-				<configuration>
-					<skipSource>true</skipSource>
-				</configuration>
+				<version>2.2.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -476,7 +494,7 @@
 		<connection>scm:git:https://github.com/rhirning/nicki</connection>
 		<developerConnection>scm:git:https://github.com/rhirning/nicki</developerConnection>
 		<url>scm:git:https://github.com/rhirning/nicki</url>
-		<tag>nicki-11.38</tag>
+		<tag>nicki-11.39</tag>
 	</scm>
 	<!--
 	<distributionManagement>
