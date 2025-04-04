@@ -4,7 +4,7 @@
 	<artifactId>nicki-ws</artifactId>
 	<name>nicki-ws</name>
 	<parent>
-		<artifactId>nicki-parent</artifactId>
+		<artifactId>nicki</artifactId>
 		<groupId>org.mgnl.nicki</groupId>
 		<version>11.38-SNAPSHOT</version>
 		<relativePath>..</relativePath>

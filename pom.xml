@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.mgnl.nicki</groupId>
-	<artifactId>nicki-parent</artifactId>
+	<artifactId>nicki</artifactId>
 	<version>11.38-SNAPSHOT</version>
-	<name>nicki-parent</name>
+	<name>nicki</name>
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
 	<organization>
@@ -325,18 +325,6 @@
 				<version>1.18.34</version>
 				<scope>provided</scope>
 			</dependency>
-			<!-- 
-			<dependency>
-				<groupId>org.quartz-scheduler</groupId>
-				<artifactId>quartz</artifactId>
-				<version>2.5.0-rc1</version>
-			</dependency>
-			<dependency>
-				<groupId>org.quartz-scheduler</groupId>
-				<artifactId>quartz-jobs</artifactId>
-				<version>2.5.0-rc1</version>
-			</dependency>
-			-->
 			<dependency>
 				<groupId>org.xhtmlrenderer</groupId>
 				<artifactId>core-renderer</artifactId>
@@ -347,6 +335,15 @@
 	<build>
 		<sourceDirectory>src/main/java</sourceDirectory>
 		<plugins>
+			<plugin>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.7.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<publishingServerId>central</publishingServerId>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
@@ -359,17 +356,6 @@
 				    </archive>
 				</configuration>
 			</plugin>
-			<!--
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.7.0</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -392,6 +378,10 @@
 				</dependencies>
 
 				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<useReleaseProfile>false</useReleaseProfile>
+					<releaseProfiles>release</releaseProfiles>
+					<goals>deploy</goals>
 					<checkModificationExcludes>
 						<checkModificationExclude>pom.xml</checkModificationExclude>
 					</checkModificationExcludes>
@@ -486,8 +476,9 @@
 		<connection>scm:git:https://github.com/rhirning/nicki</connection>
 		<developerConnection>scm:git:https://github.com/rhirning/nicki</developerConnection>
 		<url>scm:git:https://github.com/rhirning/nicki</url>
-		<tag>master</tag>
+		<tag>nicki-11.38</tag>
 	</scm>
+	<!--
 	<distributionManagement>
 		<repository>
 			<id>releases</id>
@@ -498,4 +489,5 @@
 			<url>https://nexus.hirning.de/repository/snapshots</url>
 		</snapshotRepository>
 	</distributionManagement>
+	-->
 </project>
