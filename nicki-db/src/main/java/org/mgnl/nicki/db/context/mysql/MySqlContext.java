@@ -32,9 +32,19 @@ import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.BaseDBContext;
 import org.mgnl.nicki.db.context.DBContext;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MySqlContext.
+ */
 public class MySqlContext extends BaseDBContext implements DBContext {
 
 
+	/**
+	 * Gets the qualified name.
+	 *
+	 * @param name the name
+	 * @return the qualified name
+	 */
 	@Override
 	public String getQualifiedName(String name) {
 		if (!StringUtils.contains(name, '.') && this.getSchema() != null) {
@@ -44,6 +54,14 @@ public class MySqlContext extends BaseDBContext implements DBContext {
 		}
 	}
 
+	/**
+	 * Gets the date value.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @param attribute the attribute
+	 * @return the date value
+	 */
 	@Override
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
 		if (attribute.now()) {
@@ -62,6 +80,12 @@ public class MySqlContext extends BaseDBContext implements DBContext {
 		return null;
 	}
 
+	/**
+	 * To timestamp.
+	 *
+	 * @param date the date
+	 * @return the string
+	 */
 	@Override
 	public String toTimestamp(Date date) {
 		if (date != null) {
@@ -71,6 +95,12 @@ public class MySqlContext extends BaseDBContext implements DBContext {
 		}
 	}
 
+	/**
+	 * To date.
+	 *
+	 * @param date the date
+	 * @return the string
+	 */
 	@Override
 	public String toDate(Date date) {
 		return toTimestamp(date);

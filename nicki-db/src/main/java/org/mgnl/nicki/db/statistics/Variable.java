@@ -30,9 +30,18 @@ import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.db.context.DBContext;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Variable.
+ */
 public class Variable {
 	
+	/**
+	 * The Enum TYPE.
+	 */
 	enum TYPE {
+		
+		/** The string. */
 		STRING {
 			@Override
 			String toString(DBContext dbContext, String value) {
@@ -44,6 +53,8 @@ public class Variable {
 				return StringUtils.stripToEmpty(resultSet.getString(name));
 			}
 		},
+		
+		/** The list. */
 		LIST {
 			@Override
 			String toString(DBContext dbContext, String value) {
@@ -67,6 +78,8 @@ public class Variable {
 				return StringUtils.stripToEmpty(resultSet.getString(name));
 			}
 		},
+		
+		/** The date. */
 		DATE {
 			@Override
 			String toString(DBContext dbContext, String value) throws ParseException {
@@ -80,6 +93,8 @@ public class Variable {
 				return DataHelper.getDisplayDay(date);
 			}
 		},
+		
+		/** The timestamp. */
 		TIMESTAMP {
 			@Override
 			String toString(DBContext dbContext, String value) throws ParseException {
@@ -93,6 +108,8 @@ public class Variable {
 				return DataHelper.getMilli(date);
 			}
 		},
+		
+		/** The integer. */
 		INTEGER {
 			@Override
 			String toString(DBContext dbContext, String value) throws ParseException {
@@ -105,39 +122,97 @@ public class Variable {
 			}
 		};
 		
+		/**
+		 * To string.
+		 *
+		 * @param dbContext the db context
+		 * @param value the value
+		 * @return the string
+		 * @throws ParseException the parse exception
+		 */
 		abstract String toString(DBContext dbContext, String value) throws ParseException;
 
+		/**
+		 * To string.
+		 *
+		 * @param resultSet the result set
+		 * @param name the name
+		 * @return the string
+		 * @throws SQLException the SQL exception
+		 */
 		abstract String toString(ResultSet resultSet, String name) throws SQLException;
 	};
 	
+	/**
+	 * To string.
+	 *
+	 * @param dbContext the db context
+	 * @param value the value
+	 * @return the string
+	 * @throws ParseException the parse exception
+	 */
 	public String toString(DBContext dbContext, String value) throws ParseException {
 		return getVariableType().toString(dbContext, value);
 	}
 	
+	/** The name. */
 	private String name;
 	
+	/** The type. */
 	private String type;
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	public String getType() {
 		return type;
 	}
 
+	/**
+	 * Sets the type.
+	 *
+	 * @param type the new type
+	 */
 	public void setType(String type) {
 		this.type = type;
 	}
 	
+	/**
+	 * Gets the variable type.
+	 *
+	 * @return the variable type
+	 */
 	public TYPE getVariableType() {
 		return TYPE.valueOf(type);
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @param resultSet the result set
+	 * @return the string
+	 * @throws SQLException the SQL exception
+	 */
 	public String toString(ResultSet resultSet) throws SQLException {
 		return getVariableType().toString(resultSet, name);
 	}

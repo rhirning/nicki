@@ -39,6 +39,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for anonymous complex type.
  * 
@@ -76,6 +77,7 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "configuration")
 public class Configuration {
 
+    /** The fonts. */
     protected Configuration.Fonts fonts;
 
     /**
@@ -130,8 +132,11 @@ public class Configuration {
     })
     public static class Fonts {
 
+        /** The default. */
         @XmlElement(name = "default", required = true)
         protected DefaultFont _default;
+        
+        /** The font. */
         @XmlElement(required = true)
         protected List<Font> font;
 
@@ -178,8 +183,8 @@ public class Configuration {
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link Font }
-         * 
-         * 
+         *
+         * @return the font
          */
         public List<Font> getFont() {
             if (font == null) {

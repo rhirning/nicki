@@ -36,6 +36,7 @@ import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.XmlValue;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java-Klasse f�r image complex type.
  * 
@@ -62,19 +63,32 @@ import jakarta.xml.bind.annotation.XmlValue;
 })
 public class Image {
 
+    /** The value. */
     @XmlValue
     protected String value;
+    
+    /** The annotation. */
     @XmlAttribute(name = "annotation")
     @XmlSchemaType(name = "anySimpleType")
     protected String annotation;
+    
+    /** The background color. */
     @XmlAttribute(name = "background-color")
     protected String backgroundColor;
+    
+    /** The width. */
     @XmlAttribute(name = "width")
     protected Integer width;
+    
+    /** The height. */
     @XmlAttribute(name = "height")
     protected Integer height;
+    
+    /** The align. */
     @XmlAttribute(name = "align")
     protected String align;
+    
+    /** The vertical align. */
     @XmlAttribute(name = "vertical-align")
     protected String verticalAlign;
 

@@ -32,16 +32,32 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 import freemarker.template.TemplateMethodModelEx;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DynamicLoadObjectsMethod.
+ */
 @SuppressWarnings("serial")
 public class DynamicLoadObjectsMethod implements TemplateMethodModelEx, Serializable {
 
+	/** The context. */
 	private NickiContext context;
 	
+	/**
+	 * Instantiates a new dynamic load objects method.
+	 *
+	 * @param context the context
+	 */
 	public DynamicLoadObjectsMethod(NickiContext context) {
 		super();
 		this.context = context;
 	}
 
+	/**
+	 * Exec.
+	 *
+	 * @param arguments the arguments
+	 * @return the list<? extends dynamic object>
+	 */
 	public List<? extends DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (arguments != null && arguments.size() == 2) {
 			String dynamicBaseDn = (String) arguments.get(0);

@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.auth;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-vaadin-base
@@ -21,10 +22,17 @@ package org.mgnl.nicki.core.auth;
  * #L%
  */
 
-
+/**
+ * TargetException.
+ */
 @SuppressWarnings("serial")
 public class TargetException extends Exception {
 
+	/**
+	 * Instantiates a new target exception.
+	 *
+	 * @param message the message
+	 */
 	public TargetException(String message) {
 		super(message);
 	}

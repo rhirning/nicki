@@ -21,14 +21,30 @@ package org.mgnl.nicki.core.auth;
  */
 
 import javax.security.auth.callback.Callback;
+// TODO: Auto-generated Javadoc
 
+/**
+ * Callback to get the Login target.
+ */
 public class LoginTargetCallback implements Callback {
+	
+	/** The login target. */
 	private String loginTarget;
 
+	/**
+	 * Gets the login target.
+	 *
+	 * @return the login target
+	 */
 	public String getLoginTarget() {
 		return loginTarget;
 	}
 
+	/**
+	 * Sets the login target.
+	 *
+	 * @param loginTarget the new login target
+	 */
 	public void setLoginTarget(String loginTarget) {
 		this.loginTarget = loginTarget;
 	}

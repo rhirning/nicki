@@ -31,33 +31,68 @@ import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Group.
+ */
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("groupOfNames")
 public class Group extends BaseDynamicObject {
+	
+	/** The Constant ATTRIBUTE_DESCRIPTION. */
 	public static final String ATTRIBUTE_DESCRIPTION = "description";
+	
+	/** The Constant ATTRIBUTE_MEMBER. */
 	public static final String ATTRIBUTE_MEMBER = "member";
+	
+	/** The Constant ATTRIBUTE_OWNER. */
 	public static final String ATTRIBUTE_OWNER = "owner";
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	@DynamicAttribute(externalName="cn", naming=true)
 	public String getName() {
 		return super.getName();
 	}
 	
+	/**
+	 * Gets the description.
+	 *
+	 * @return the description
+	 */
 	@DynamicAttribute(externalName="description")
 	public String getDescription() {
 		return getAttribute(ATTRIBUTE_DESCRIPTION);
 	}
 	
+	/**
+	 * Sets the description.
+	 *
+	 * @param description the new description
+	 */
 	public void setDescription(String description) {
 		put(ATTRIBUTE_DESCRIPTION, description);
 	}
 	
+	/**
+	 * Gets the owner.
+	 *
+	 * @return the owner
+	 */
 	@DynamicAttribute(externalName="owner", foreignKey=Person.class)
 	public String getOwner() {
 		return getAttribute(ATTRIBUTE_OWNER);
 	}
 		
+    /**
+     * Gets the member.
+     *
+     * @return the member
+     */
     @SuppressWarnings("unchecked")
 	@DynamicAttribute(externalName = "member", foreignKey=Person.class)
     public List<String> getMember() {
@@ -65,10 +100,20 @@ public class Group extends BaseDynamicObject {
     }
     
 
+	/**
+	 * Gets the members.
+	 *
+	 * @return the members
+	 */
 	public Collection<Person> getMembers() {
 		return getForeignKeyObjects(Person.class, "member");
 	}
 
+	/**
+	 * Adds the member.
+	 *
+	 * @param path the path
+	 */
 	public void addMember(String path) {
 		List<String> list = getMember();
 		if (list == null) {
@@ -79,6 +124,11 @@ public class Group extends BaseDynamicObject {
 		}
 	}
 	
+	/**
+	 * Removes the member.
+	 *
+	 * @param path the path
+	 */
 	public void removeMember(String path) {
 		List<String> list = getMember();
 		if (list != null && list.contains(path)) {

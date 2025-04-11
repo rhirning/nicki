@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.search;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-search
@@ -22,8 +23,17 @@ package org.mgnl.nicki.search;
  */
 
 
+/**
+ * The Interface SearchDocument.
+ */
 public interface SearchDocument {
 
+	/**
+	 * Gets the.
+	 *
+	 * @param attributeKey the attribute key
+	 * @return the string
+	 */
 	String get(String attributeKey);
 
 }

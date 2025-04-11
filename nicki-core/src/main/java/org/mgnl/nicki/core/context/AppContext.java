@@ -29,51 +29,119 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AppContext.
+ */
 public class AppContext {
+    
     /**
      * Get the current context of this thread.
+     *
+     * @return single instance of AppContext
      */
     public static Context getInstance() {
         return ThreadContext.getInstance();
     }
     
+    /**
+     * Sets the request parameters.
+     *
+     * @param map the map
+     */
     public static void setRequestParameters(Map<String, String> map) {
     	getInstance().setRequestParameters(map);
     }
 	
+	/**
+	 * Gets the request parameters.
+	 *
+	 * @return the request parameters
+	 */
 	public static Map<String, String> getRequestParameters() {
 		return getInstance().getRequestParameters();
 	}
     
+	/**
+	 * Gets the request.
+	 *
+	 * @return the request
+	 */
 	public static synchronized Object getRequest() {
 		return getInstance().getRequest();
 	}
 
+	/**
+	 * Sets the request.
+	 *
+	 * @param request the new request
+	 */
 	public static synchronized void setRequest(Object request) {
 		getInstance().setRequest(request);
 	}
 
+	/**
+	 * Gets the locale.
+	 *
+	 * @return the locale
+	 */
 	public static Locale getLocale() {
 		return getInstance().getLocale();
 	}
 
+	/**
+	 * Sets the locale.
+	 *
+	 * @param locale the new locale
+	 */
 	public static void setLocale(Locale locale) {
 		getInstance().setLocale(locale);
 	}
+	
+	/**
+	 * Gets the system context.
+	 *
+	 * @param target the target
+	 * @param username the username
+	 * @param password the password
+	 * @return the system context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	public static NickiContext getSystemContext(Target target, String username, String password) throws InvalidPrincipalException {
 		DynamicObject user = target.login(new NickiPrincipal(username, password));
 		return getSystemContext(target, user);
 	}
 
+	/**
+	 * Gets the system context.
+	 *
+	 * @param username the username
+	 * @param password the password
+	 * @return the system context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	public static NickiContext getSystemContext(String username, String password) throws InvalidPrincipalException {
 		DynamicObject user = TargetFactory.getDefaultTarget().login(new NickiPrincipal(username, password));
 		return getSystemContext(TargetFactory.getDefaultTarget(), user);
 	}
 
+	/**
+	 * Gets the system context.
+	 *
+	 * @return the system context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	public static NickiContext getSystemContext() throws InvalidPrincipalException {
 		return getSystemContext(TargetFactory.getDefaultTarget().getName());
 	}
 
+	/**
+	 * Gets the system context.
+	 *
+	 * @param targetName the target name
+	 * @return the system context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	public static NickiContext getSystemContext(String targetName) throws InvalidPrincipalException {
 		Target target = TargetFactory.getTarget(targetName);
 		if (target != null) {
@@ -87,11 +155,27 @@ public class AppContext {
 		}
 	}
 
+	/**
+	 * Gets the system context.
+	 *
+	 * @param targetName the target name
+	 * @param user the user
+	 * @return the system context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	public static NickiContext getSystemContext(String targetName, DynamicObject user) throws InvalidPrincipalException {
 		Target target = TargetFactory.getTarget(targetName);
 		return getSystemContext(target, user);
 	}
 
+	/**
+	 * Gets the system context.
+	 *
+	 * @param target the target
+	 * @param user the user
+	 * @return the system context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	private static NickiContext getSystemContext(Target target, DynamicObject user) throws InvalidPrincipalException {
 		if (target != null && user != null) {
 			return target.getSystemContext(user);
@@ -99,6 +183,15 @@ public class AppContext {
 		return null;
 	}
 
+	/**
+	 * Gets the named user context.
+	 *
+	 * @param targetName the target name
+	 * @param user the user
+	 * @param password the password
+	 * @return the named user context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	public static NickiContext getNamedUserContext(String targetName, DynamicObject user, String password) throws InvalidPrincipalException {
 		Target target = TargetFactory.getTarget(targetName);
 		if (target != null) {
@@ -107,6 +200,13 @@ public class AppContext {
 		return null;
 	}
 	
+	/**
+	 * Gets the guest context.
+	 *
+	 * @param targetName the target name
+	 * @return the guest context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	public static NickiContext getGuestContext(String targetName) throws InvalidPrincipalException {
 		Target target = TargetFactory.getTarget(targetName);
 		if (target != null) {

@@ -36,6 +36,7 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for default-font complex type.
  * 
@@ -59,10 +60,15 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlType(name = "default-font")
 public class DefaultFont {
 
+    /** The font. */
     @XmlAttribute(name = "font")
     protected String font;
+    
+    /** The size. */
     @XmlAttribute(name = "size")
     protected Integer size;
+    
+    /** The style. */
     @XmlAttribute(name = "style")
     protected String style;
 

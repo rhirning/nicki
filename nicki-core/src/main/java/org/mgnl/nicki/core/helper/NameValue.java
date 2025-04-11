@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.helper;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -22,17 +23,43 @@ package org.mgnl.nicki.core.helper;
  */
 
 
+/**
+ * The Class NameValue.
+ */
 public class NameValue {
+	
+	/** The name. */
 	private String name;
+	
+	/** The value. */
 	private String value;
+	
+	/**
+	 * Instantiates a new name value.
+	 *
+	 * @param name the name
+	 * @param value the value
+	 */
 	public NameValue(String name, String value) {
 		super();
 		this.name = name;
 		this.value = value;
 	}
+	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public String getValue() {
 		return value;
 	}

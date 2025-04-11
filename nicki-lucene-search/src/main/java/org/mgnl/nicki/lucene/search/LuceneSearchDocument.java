@@ -25,13 +25,30 @@ package org.mgnl.nicki.lucene.search;
 import org.apache.lucene.document.Document;
 import org.mgnl.nicki.search.SearchDocument;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LuceneSearchDocument.
+ */
 public class LuceneSearchDocument implements SearchDocument {
 
+	/** The doc. */
 	private Document doc;
+	
+	/**
+	 * Instantiates a new lucene search document.
+	 *
+	 * @param doc the doc
+	 */
 	public LuceneSearchDocument(Document doc) {
 		this.doc = doc;
 	}
 
+	/**
+	 * Gets the.
+	 *
+	 * @param attributeKey the attribute key
+	 * @return the string
+	 */
 	@Override
 	public String get(String attributeKey) {
 		return doc.get(attributeKey);

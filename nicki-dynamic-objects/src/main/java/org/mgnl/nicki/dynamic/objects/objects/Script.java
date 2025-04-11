@@ -24,12 +24,31 @@ package org.mgnl.nicki.dynamic.objects.objects;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface Script.
+ */
 public interface Script extends DynamicObject {
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	String getName();
 
+	/**
+	 * Gets the data.
+	 *
+	 * @return the data
+	 */
 	String getData();
 
+	/**
+	 * Sets the data.
+	 *
+	 * @param data the new data
+	 */
 	void setData(String data);
 
 }

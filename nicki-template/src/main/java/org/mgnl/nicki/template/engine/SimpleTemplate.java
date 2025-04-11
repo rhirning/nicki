@@ -32,43 +32,105 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import org.apache.commons.io.IOUtils;
 import org.mgnl.nicki.dynamic.objects.objects.EngineTemplate;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SimpleTemplate.
+ */
 @XmlRootElement
 public class SimpleTemplate implements EngineTemplate {
 	
+	/** The name. */
 	private String name;
+	
+	/** The data. */
 	private String data;
+	
+	/** The file path. */
 	private String filePath;
+	
+	/** The part. */
 	private Map<String, String> part;
 	
+	/**
+	 * Gets the data.
+	 *
+	 * @return the data
+	 */
 	public String getData() {
 		return this.data;
 	}
 
+	/**
+	 * Sets the data.
+	 *
+	 * @param data the new data
+	 */
 	public void setData(String data) {
 		this.data = data;
 	}
+	
+	/**
+	 * Gets the part.
+	 *
+	 * @return the part
+	 */
 	public Map<String, String> getPart() {
 		return this.part;
 	}
 
+	/**
+	 * Sets the part.
+	 *
+	 * @param part the part
+	 */
 	public void setPart(Map<String, String> part) {
 		this.part = part;
 	}
+	
+	/**
+	 * Contains key.
+	 *
+	 * @param key the key
+	 * @return true, if successful
+	 */
 	public boolean containsKey(String key) {
 		return this.part.containsKey(key);
 	}
 
+	/**
+	 * Gets the part.
+	 *
+	 * @param key the key
+	 * @return the part
+	 */
 	public String getPart(String key) {
 		return part.get(key);
 	}
+	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
 	@XmlAttribute
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Gets the file.
+	 *
+	 * @return the file
+	 */
 	@Override
 	public byte[] getFile() {
 		if (getFilePath() != null) {
@@ -84,10 +146,20 @@ public class SimpleTemplate implements EngineTemplate {
 		return null;
 	}
 
+	/**
+	 * Gets the file path.
+	 *
+	 * @return the file path
+	 */
 	public String getFilePath() {
 		return filePath;
 	}
 
+	/**
+	 * Sets the file path.
+	 *
+	 * @param filePath the new file path
+	 */
 	@XmlAttribute
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;

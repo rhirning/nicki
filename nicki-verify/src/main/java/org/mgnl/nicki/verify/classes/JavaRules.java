@@ -36,9 +36,22 @@ import org.mgnl.nicki.verify.annotations.VerifyRule;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JavaRules.
+ */
 @Slf4j
 public class JavaRules {
 	
+	/**
+	 * Evaluate.
+	 *
+	 * @param data the data
+	 * @param classNames the class names
+	 * @return the list
+	 * @throws MissingAttributeException the missing attribute exception
+	 * @throws ClassNotFoundException the class not found exception
+	 */
 	public static List<ReferencedError> evaluate(Map<String, Object> data, String ...classNames) throws MissingAttributeException, ClassNotFoundException {
 		List<Class<?>> classes = new ArrayList<>();
 		for (String className : classNames) {
@@ -47,6 +60,14 @@ public class JavaRules {
 		return evaluate(data, classes.toArray(new Class[0]));
 	}
 	
+	/**
+	 * Evaluate.
+	 *
+	 * @param data the data
+	 * @param classes the classes
+	 * @return the list
+	 * @throws MissingAttributeException the missing attribute exception
+	 */
 	public static List<ReferencedError> evaluate(Map<String, Object> data, Class<?> ...classes) throws MissingAttributeException {
 		List<ReferencedError> errors = new ArrayList<>();
 		for (Class<?> clazz : classes) {
@@ -59,6 +80,17 @@ public class JavaRules {
 		return errors;
 	}
 
+	/**
+	 * Evaluate class.
+	 *
+	 * @param <T> the generic type
+	 * @param data the data
+	 * @param clazz the clazz
+	 * @return the list
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws MissingAttributeException the missing attribute exception
+	 */
 	private static <T> List<ReferencedError> evaluateClass(Map<String, Object> data, Class<T> clazz) throws InstantiationException, IllegalAccessException, MissingAttributeException {
 		List<ReferencedError> errors = new ArrayList<>();
 		T instance = Classes.newInstance(clazz);
@@ -83,6 +115,16 @@ public class JavaRules {
 		return errors;
 	}
 
+	/**
+	 * Inject data.
+	 *
+	 * @param <T> the generic type
+	 * @param instance the instance
+	 * @param data the data
+	 * @throws MissingAttributeException the missing attribute exception
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	private static <T> void injectData(T instance, Map<String, Object> data) throws MissingAttributeException, IllegalArgumentException, IllegalAccessException {
 		for (Field field : instance.getClass().getDeclaredFields()) {
 			if (field.isAnnotationPresent(Attribute.class)) {
@@ -95,6 +137,14 @@ public class JavaRules {
 		}
 	}
 	
+	/**
+	 * Execute commands.
+	 *
+	 * @param data the data
+	 * @param commands the commands
+	 * @return the list
+	 * @throws MissingAttributeException the missing attribute exception
+	 */
 	public static List<String> executeCommands(Map<String, Object> data, Object ...commands) throws MissingAttributeException {
 		List<String> messages = new ArrayList<>();
 		if (commands != null) {
@@ -109,6 +159,16 @@ public class JavaRules {
 		return messages;
 	}
 
+	/**
+	 * Execute command.
+	 *
+	 * @param data the data
+	 * @param command the command
+	 * @return the list
+	 * @throws MissingAttributeException the missing attribute exception
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	public static List<String> executeCommand(Map<String, Object> data, Object command) throws MissingAttributeException, IllegalArgumentException, IllegalAccessException {
 		List<String> messages = new ArrayList<>();
 		injectData(command, data);

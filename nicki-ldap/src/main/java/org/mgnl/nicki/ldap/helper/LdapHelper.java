@@ -36,25 +36,55 @@ import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LdapHelper.
+ */
 public class LdapHelper extends PathHelper {
 
+	/**
+	 * The Enum LOGIC.
+	 */
 	public enum LOGIC {
 
+		/** The and. */
 		AND("&"),
+		
+		/** The or. */
 		OR("|");
+		
+		/** The sign. */
 		private String sign;
 
+		/**
+		 * Instantiates a new logic.
+		 *
+		 * @param sign the sign
+		 */
 		LOGIC(String sign) {
 			this.sign = sign;
 		}
 
 		;
 
+		/**
+		 * Gets the sign.
+		 *
+		 * @return the sign
+		 */
 		public String getSign() {
 			return this.sign;
 		}
 	}
 
+	/**
+	 * Gets the path.
+	 *
+	 * @param parentPath the parent path
+	 * @param namingLdapAttribute the naming ldap attribute
+	 * @param namingValue the naming value
+	 * @return the path
+	 */
 	public static String getPath(String parentPath, String namingLdapAttribute, String namingValue) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(StringUtils.upperCase(namingLdapAttribute));
@@ -66,14 +96,33 @@ public class LdapHelper extends PathHelper {
 		return sb.toString();
 	}
 
+	/**
+	 * Gets the parent path.
+	 *
+	 * @param path the path
+	 * @return the parent path
+	 */
 	public static String getParentPath(String path) {
 		return StringUtils.strip(StringUtils.substringAfter(path, ","));
 	}
 
+	/**
+	 * Gets the naming value.
+	 *
+	 * @param path the path
+	 * @return the naming value
+	 */
 	public static String getNamingValue(String path) {
 		return StringUtils.strip(StringUtils.substringAfter(StringUtils.substringBefore(path, ","), "="));
 	}
 	
+	/**
+	 * Contains name.
+	 *
+	 * @param dns the dns
+	 * @param name the name
+	 * @return true, if successful
+	 */
 	public static boolean containsName(Collection<String> dns, String name) {
 		if (dns != null) {
 			for (String path : dns) {
@@ -88,6 +137,11 @@ public class LdapHelper extends PathHelper {
 	
 
 
+	/**
+	 * Negate query.
+	 *
+	 * @param sb the sb
+	 */
 	public static void negateQuery(StringBuilder sb) {
 		if (sb.length() > 0) {
 			sb.insert(0, "!");
@@ -96,6 +150,13 @@ public class LdapHelper extends PathHelper {
 		}
 	}
 
+	/**
+	 * Adds the query.
+	 *
+	 * @param sb the sb
+	 * @param query the query
+	 * @param andOr the and or
+	 */
 	public static void addQuery(StringBuilder sb, String query, LOGIC andOr) {
 		if (sb.length() == 0) {
 			sb.append(query);
@@ -119,6 +180,12 @@ public class LdapHelper extends PathHelper {
 
 
 	
+	/**
+	 * Gets the ldap attributes for create.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @return the ldap attributes for create
+	 */
 	public static Attributes getLdapAttributesForCreate(DynamicObject dynamicObject) {
 		Attributes myAttrs = new BasicAttributes(true);
 		addBasicLdapAttributes(myAttrs, dynamicObject);
@@ -126,6 +193,12 @@ public class LdapHelper extends PathHelper {
 		return myAttrs;
 	}
 	
+	/**
+	 * Adds the basic ldap attributes.
+	 *
+	 * @param myAttrs the my attrs
+	 * @param dynamicObject the dynamic object
+	 */
 	// objectClass + naming
 	public static void addBasicLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject) {
 		Attribute oc = new BasicAttribute("objectClass");
@@ -143,6 +216,13 @@ public class LdapHelper extends PathHelper {
 		}
 	}
 	
+	/**
+	 * Adds the ldap attributes.
+	 *
+	 * @param myAttrs the my attrs
+	 * @param dynamicObject the dynamic object
+	 * @param nullable the nullable
+	 */
 	public static void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject, boolean nullable) {
 
 		// single attributes (except namingAttribute)
@@ -183,6 +263,12 @@ public class LdapHelper extends PathHelper {
 	}
 	
 
+	/**
+	 * Gets the object class filter.
+	 *
+	 * @param model the model
+	 * @return the object class filter
+	 */
 	public static String getObjectClassFilter(DataModel model) {
 		StringBuilder sb = new StringBuilder();
 		for (String objectClass : model.getObjectClasses()) {

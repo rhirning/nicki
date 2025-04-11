@@ -27,37 +27,76 @@ import org.mgnl.nicki.idm.novell.shop.objects.Role;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VirtualRoleCatalogArticle.
+ */
 @SuppressWarnings("serial")
 @DynamicObject
 public class VirtualRoleCatalogArticle extends RoleCatalogArticle {
+	
+	/** The role. */
 	private Role role;
+	
+	/** The page. */
 	private CatalogPage page;
 
+	/**
+	 * Instantiates a new virtual role catalog article.
+	 *
+	 * @param role the role
+	 * @param page the page
+	 */
 	public VirtualRoleCatalogArticle(Role role, CatalogPage page) {
 		this.role = role;
 		this.page = page;
 	}
 
+	/**
+	 * Gets the path.
+	 *
+	 * @return the path
+	 */
 	@Override
 	public String getPath() {
 		return role.getPath();
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	@Override
 	public String getName() {
 		return role.getPath();
 	}
 
+	/**
+	 * Gets the display name.
+	 *
+	 * @return the display name
+	 */
 	@Override
 	public String getDisplayName() {
 		return role.getDisplayName();
 	}
 	
+	/**
+	 * Gets the catalog path.
+	 *
+	 * @return the catalog path
+	 */
 	@Override
 	public String getCatalogPath() {
 		return page.getCatalogPath() + Catalog.PATH_SEPARATOR + getName();
 	}
 
+	/**
+	 * Gets the role.
+	 *
+	 * @return the role
+	 */
 	public Role getRole() {
 		return role;
 	}

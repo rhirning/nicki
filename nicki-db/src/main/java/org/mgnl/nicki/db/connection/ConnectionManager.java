@@ -37,25 +37,43 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ConnectionManager.
+ */
 @Slf4j
 public class ConnectionManager {
 
     
+    /** The data source. */
     public DataSource dataSource;
+    
+    /** The pool. */
     public GenericObjectPool pool;
     
+    /**
+     * Instantiates a new connection manager.
+     */
     public ConnectionManager() {
     	
     }
     
+	/**
+	 * Inits the.
+	 *
+	 * @param profileConfigBase the profile config base
+	 * @throws InvalidConfigurationException the invalid configuration exception
+	 */
 	public void init(String profileConfigBase) throws InvalidConfigurationException {
 		DbcpConfiguration configuration = new DbcpConfiguration(profileConfigBase);
     	connectToDB(configuration);
     }
 
     /**
-    *  connectToDB - Connect to the DB!
-    */
+     *  connectToDB - Connect to the DB!.
+     *
+     * @param config the config
+     */
     private void connectToDB(DbcpConfiguration config ) {
 
         try
@@ -88,13 +106,15 @@ public class ConnectionManager {
     }
 
     /**
+     * Setup data source.
      *
      * @param connectURI - JDBC Connection URI
      * @param username - JDBC Connection username
      * @param password - JDBC Connection password
      * @param minIdle - Minimum number of idel connection in the connection pool
      * @param maxActive - Connection Pool Maximum Capacity (Size)
-     * @throws Exception
+     * @return the data source
+     * @throws Exception the exception
      */
     public DataSource setupDataSource(
     		String connectURI, 
@@ -136,11 +156,22 @@ public class ConnectionManager {
         return dataSource;
     }
 
+    /**
+     * Prints the driver stats.
+     *
+     * @throws Exception the exception
+     */
     public void printDriverStats() throws Exception {
         log.info("NumActive: " + pool.getNumActive());
         log.info("NumIdle: " + pool.getNumIdle());
     }
 
+	/**
+	 * Gets the connection.
+	 *
+	 * @return the connection
+	 * @throws SQLException the SQL exception
+	 */
 	public synchronized Connection getConnection() throws SQLException {
 		return dataSource.getConnection();
 	}

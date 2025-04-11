@@ -25,6 +25,7 @@ package org.mgnl.nicki.pdf.template;
 import jakarta.xml.bind.annotation.XmlRegistry;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
@@ -44,15 +45,15 @@ public class ObjectFactory {
 
 
     /**
-     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: pdf
-     * 
+     * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: pdf.
      */
     public ObjectFactory() {
     }
 
     /**
-     * Create an instance of {@link Pdf }
-     * 
+     * Create an instance of {@link Pdf }.
+     *
+     * @return the pdf
      */
     public Pdf createPdf() {
         return new Pdf();
@@ -60,7 +61,8 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Pdf.Box }
-     * 
+     *
+     * @return the box
      */
     public Pdf.Box createPdfBox() {
         return new Pdf.Box();

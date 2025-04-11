@@ -39,30 +39,58 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Catalog.
+ */
 @Slf4j
 @DynamicObject
 @ObjectClass("nickiCatalog")
 @Child(name="child", objectFilter={CatalogPage.class})
 public class Catalog extends CatalogObject{
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1114608130611536361L;
+	
+	/** The Constant PATH_SEPARATOR. */
 	public static final String PATH_SEPARATOR = "/";
+	
+	/** The last build. */
 	private static long lastBuild = 0;
+	
+	/** The build interval. */
 	private static long buildInterval = 10*60*1000; // ms
+	
+	/** The instance. */
 	private static Catalog instance;
 	
+	/** The pages. */
 	private List<CatalogPage> pages;
+	
+	/** The articles. */
 	private List<CatalogArticle> articles;
 
+	/** The name. */
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;
 	
+	/** The category. */
 	@DynamicAttribute(externalName="nickiCategory")
 	private String[] category;
 	
+	/**
+	 * Instantiates a new catalog.
+	 */
 	public Catalog() {
 		
 	}
 
+	/**
+	 * Gets the article.
+	 *
+	 * @param catalogArticleId the catalog article id
+	 * @return the article
+	 */
 	/*
 	 * CatalogID: /separatedPathToArticle
 	 */
@@ -81,10 +109,21 @@ public class Catalog extends CatalogObject{
 		}
 	}
 	
+	/**
+	 * Gets the page.
+	 *
+	 * @param key the key
+	 * @return the page
+	 */
 	public CatalogPage getPage(String key) {
 		return getContext().loadChildObject(CatalogPage.class, this, key);
 	}
 
+	/**
+	 * Gets the articles.
+	 *
+	 * @return the articles
+	 */
 	private List<CatalogArticle> getArticles() {
 		if (articles == null) {
 			articles = new ArrayList<CatalogArticle>();
@@ -95,6 +134,11 @@ public class Catalog extends CatalogObject{
 		return articles;
 	}
 	
+	/**
+	 * Gets the catalog.
+	 *
+	 * @return the catalog
+	 */
 	public static synchronized Catalog getCatalog() {
 		if (lastBuild + buildInterval < new Date().getTime()) {
 			instance = null;
@@ -106,6 +150,9 @@ public class Catalog extends CatalogObject{
 		return instance;
 	}
 
+	/**
+	 * Load.
+	 */
 	private static void load() {
 		try {
 			instance = AppContext.getSystemContext().loadObject(Catalog.class, Config.getString("nicki.catalog"));
@@ -115,6 +162,12 @@ public class Catalog extends CatalogObject{
 		}
 	}
 
+	/**
+	 * Gets the referenced page.
+	 *
+	 * @param referencedPage the referenced page
+	 * @return the referenced page
+	 */
 	public CatalogPage getReferencedPage(
 			String referencedPage) {
 		String key = referencedPage;
@@ -131,6 +184,12 @@ public class Catalog extends CatalogObject{
 		}
 	}
 
+	/**
+	 * Gets the articles for path.
+	 *
+	 * @param path the path
+	 * @return the articles for path
+	 */
 	public List<CatalogArticle> getArticlesForPath(String path) {
 		List<CatalogArticle> catalogArticles = new ArrayList<CatalogArticle>();
 		for (CatalogArticle article : getAllArticles()) {
@@ -141,6 +200,11 @@ public class Catalog extends CatalogObject{
 		return catalogArticles;
 	}
 
+	/**
+	 * Gets the pages.
+	 *
+	 * @return the pages
+	 */
 	public List<CatalogPage> getPages() {
 		if (pages == null) {
 			pages = getContext().loadChildObjects(CatalogPage.class, this.getPath(), null);
@@ -155,6 +219,12 @@ public class Catalog extends CatalogObject{
 		return pages;
 	}
 	
+	/**
+	 * Gets the all articles.
+	 *
+	 * @param person the person
+	 * @return the all articles
+	 */
 	public List<CatalogArticle> getAllArticles(Person person) {
 		List<CatalogArticle> catalogArticles = new ArrayList<CatalogArticle>();
 		for (CatalogArticle catalogArticle : getAllArticles()) {
@@ -165,6 +235,11 @@ public class Catalog extends CatalogObject{
 		return catalogArticles;
 	}
 
+	/**
+	 * Gets the all articles.
+	 *
+	 * @return the all articles
+	 */
 	public List<CatalogArticle> getAllArticles() {
 		List<CatalogArticle> catalogArticles = new ArrayList<CatalogArticle>();
 		for (CatalogArticle catalogArticle : getArticles()) {
@@ -174,10 +249,23 @@ public class Catalog extends CatalogObject{
 	}
 
 
+	/**
+	 * Checks for article.
+	 *
+	 * @param person the person
+	 * @param article the article
+	 * @return true, if successful
+	 */
 	public boolean hasArticle(Person person, CatalogArticle article) {
 		return article.hasArticle(person, article);
 	}
 
+	/**
+	 * Gets the articles.
+	 *
+	 * @param path the path
+	 * @return the articles
+	 */
 	public List<CatalogArticle> getArticles(String path) {
 		String key = path;
 		if (StringUtils.startsWith(key, PATH_SEPARATOR)) {
@@ -193,6 +281,12 @@ public class Catalog extends CatalogObject{
 		}
 	}
 
+	/**
+	 * Gets the articles of type.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @return the articles of type
+	 */
 	public List<CatalogArticle> getArticlesOfType(CatalogArticle catalogArticle) {
 		List<CatalogArticle> result = new ArrayList<CatalogArticle>();
 		for (CatalogArticle article : getAllArticles()) {
@@ -203,6 +297,11 @@ public class Catalog extends CatalogObject{
 		return result;
 	}
 
+	/**
+	 * Gets the child list.
+	 *
+	 * @return the child list
+	 */
 	@Override
 	public List<? extends CatalogObject> getChildList() {
 		return getPages();

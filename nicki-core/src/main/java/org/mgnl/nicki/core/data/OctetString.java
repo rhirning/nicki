@@ -24,18 +24,39 @@ package org.mgnl.nicki.core.data;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OctetString.
+ */
 @Slf4j
 public class OctetString {
+	
+	/** The octet string. */
 	byte octetString[];
 
+	/**
+	 * Instantiates a new octet string.
+	 *
+	 * @param octet the octet
+	 */
 	public OctetString(byte octet[]) {
 		this.octetString = octet;
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public Object getValue() {
 		return octetString;
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		try {
 			String result = "";

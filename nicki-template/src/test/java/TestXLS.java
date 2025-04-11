@@ -35,14 +35,29 @@ import org.xml.sax.SAXException;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TestXLS.
+ */
 public class TestXLS {
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		Map<String, Object> dataModel = new HashMap<>();
 		dataModel.put("user", "Ralf");
 		generate("document.ftl", dataModel);
 	}
 	
+	/**
+	 * Generate.
+	 *
+	 * @param template the template
+	 * @param dataModel the data model
+	 */
 	public static void generate(String template, Map<String, Object> dataModel) {
 		Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(ConfigurationFactory.TYPE.CLASSPATH,
 				"/META-INF/templates");

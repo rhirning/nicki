@@ -32,10 +32,20 @@ import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class I18nPart.
+ */
 public class I18nPart {
 	
+	/** The map. */
 	private Map<String, String> map = new HashMap<>();
 	
+	/**
+	 * Instantiates a new i 18 n part.
+	 *
+	 * @param path the path
+	 */
 	public I18nPart(String path) {
 		super();
         try {
@@ -53,6 +63,12 @@ public class I18nPart {
 		}
 	}
 
+	/**
+	 * Simple translate.
+	 *
+	 * @param input the input
+	 * @return the string
+	 */
 	public String simpleTranslate(String input) {
 		if (input != null) {
 			for (String key : map.keySet()) {
@@ -64,6 +80,12 @@ public class I18nPart {
 		return input;
 	}
 
+	/**
+	 * Translate.
+	 *
+	 * @param input the input
+	 * @return the string
+	 */
 	public String translate(String input) {
 		if (input != null) {
 			for (String key : map.keySet()) {

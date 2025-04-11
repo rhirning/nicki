@@ -29,42 +29,87 @@ import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 import org.mgnl.nicki.shop.base.objects.MultipleInstancesCatalogArticle;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VirtualValuedResourceCatalogArticle.
+ */
 @DynamicObject
 @ObjectClass("nickiValuedResourceArticle")
 public class VirtualValuedResourceCatalogArticle extends ValuedResourceCatalogArticle implements MultipleInstancesCatalogArticle {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -7208705030668378943L;
+	
+	/** The resource. */
 	private Resource resource;
+	
+	/** The page. */
 	private CatalogPage page;
 
+	/**
+	 * Instantiates a new virtual valued resource catalog article.
+	 *
+	 * @param resource the resource
+	 * @param page the page
+	 */
 	public VirtualValuedResourceCatalogArticle(Resource resource, CatalogPage page) {
 		this.resource = resource;
 		this.page = page;
 	}
 	
+	/**
+	 * Checks if is multiple.
+	 *
+	 * @return true, if is multiple
+	 */
 	public boolean isMultiple() {
 		return true;
 	}
 
+	/**
+	 * Gets the resource.
+	 *
+	 * @return the resource
+	 */
 	public Resource getResource() {
 		return resource;
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	@Override
 	public String getName() {
 		return resource.getPath();
 	}
 
+	/**
+	 * Gets the path.
+	 *
+	 * @return the path
+	 */
 	@Override
 	public String getPath() {
 		return resource.getPath();
 	}
 
+	/**
+	 * Gets the display name.
+	 *
+	 * @return the display name
+	 */
 	@Override
 	public String getDisplayName() {
 		return resource.getDisplayName();
 	}
 	
+	/**
+	 * Gets the catalog path.
+	 *
+	 * @return the catalog path
+	 */
 	@Override
 	public String getCatalogPath() {
 		return page.getCatalogPath() + Catalog.PATH_SEPARATOR + getName();

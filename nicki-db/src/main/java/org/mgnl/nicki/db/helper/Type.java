@@ -35,7 +35,13 @@ import java.util.List;
 import org.mgnl.nicki.db.context.DBContext;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Enum Type.
+ */
 public enum Type {
+	
+	/** The string. */
 	STRING(String.class) {		
 		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
 			if (rawValue != null) {
@@ -45,6 +51,8 @@ public enum Type {
 			}
 		}
 	},
+	
+	/** The timestamp. */
 	TIMESTAMP(Date.class) {		
 		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
 			if (rawValue != null) {
@@ -55,6 +63,8 @@ public enum Type {
 			}
 		}
 	},
+	
+	/** The date. */
 	DATE(Date.class) {		
 		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
 			if (rawValue != null) {
@@ -65,6 +75,8 @@ public enum Type {
 			}
 		}
 	},
+	
+	/** The time. */
 	TIME(Date.class) {		
 		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
 			if (rawValue != null) {
@@ -75,6 +87,8 @@ public enum Type {
 			}
 		}
 	},
+	
+	/** The long. */
 	LONG(Long.class, long.class) {		
 		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
 			if (rawValue != null) {
@@ -84,6 +98,8 @@ public enum Type {
 			}
 		}
 	},
+	
+	/** The int. */
 	INT(Integer.class, int.class) {		
 		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
 			if (rawValue != null) {
@@ -93,6 +109,8 @@ public enum Type {
 			}
 		}
 	},
+	
+	/** The float. */
 	FLOAT(Float.class, float.class) {		
 		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
 			if (rawValue != null) {
@@ -102,6 +120,8 @@ public enum Type {
 			}
 		}
 	},
+	
+	/** The boolean. */
 	BOOLEAN(Boolean.class, boolean.class) {		
 		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
 			if (rawValue != null) {
@@ -112,6 +132,8 @@ public enum Type {
 			}
 		}
 	},
+	
+	/** The blob. */
 	BLOB(Byte[].class, byte[].class) {		
 		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
 			if (rawValue != null) {
@@ -122,14 +144,22 @@ public enum Type {
 			}
 		}
 	},
+	
+	/** The unkonwn. */
 	UNKONWN() {
 		@Override
 		public void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException {
 		}
 	};
 		
+	/** The classes. */
 	private List<Class<?>> classes = new ArrayList<>();
 	
+	/**
+	 * Instantiates a new type.
+	 *
+	 * @param classes the classes
+	 */
 	private Type(Class<?> ...classes){
 		if (classes != null) {
 			for (Class<?> clazz : classes) {
@@ -139,6 +169,11 @@ public enum Type {
 		
 	}
 	
+	/**
+	 * Gets the type class.
+	 *
+	 * @return the type class
+	 */
 	public Class<?> getTypeClass() {
 		if (!classes.isEmpty()) {
 			return classes.get(0);
@@ -147,8 +182,22 @@ public enum Type {
 		}
 	}
 	
+	/**
+	 * Fill prepared statement.
+	 *
+	 * @param pstmt the pstmt
+	 * @param pos the pos
+	 * @param rawValue the raw value
+	 * @throws SQLException the SQL exception
+	 */
 	public abstract void fillPreparedStatement(PreparedStatement pstmt, int pos, Object rawValue) throws SQLException;
 
+	/**
+	 * Match.
+	 *
+	 * @param clazz the clazz
+	 * @return true, if successful
+	 */
 	public boolean match(Class<?> clazz) {
 		for (Class<?> c : this.classes) {
 			if (c.isAssignableFrom(clazz)) {
@@ -158,6 +207,12 @@ public enum Type {
 		return false;
 	}
 	
+	/**
+	 * Gets the type.
+	 *
+	 * @param clazz the clazz
+	 * @return the type
+	 */
 	public Type getType(Class<?> clazz) {
 		for (Type type : values()) {
 			if (match(clazz)) {
@@ -167,6 +222,14 @@ public enum Type {
 		return UNKONWN;
 	}
 	
+	/**
+	 * Gets the db string.
+	 *
+	 * @param dbContext the db context
+	 * @param type the type
+	 * @param value the value
+	 * @return the db string
+	 */
 	public static String getDbString(DBContext dbContext, Type type, Object value) {
 		if (type == STRING) {
 			return dbContext.getStringAsDbString((String) value);

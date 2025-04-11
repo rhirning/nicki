@@ -26,12 +26,28 @@ import javax.naming.NamingException;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.InitialLdapContext;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NickiLdapContext.
+ */
 public class NickiLdapContext extends InitialLdapContext implements AutoCloseable {
 
+	/**
+	 * Instantiates a new nicki ldap context.
+	 *
+	 * @throws NamingException the naming exception
+	 */
 	public NickiLdapContext() throws NamingException {
 		super();
 	}
 
+	/**
+	 * Instantiates a new nicki ldap context.
+	 *
+	 * @param env the env
+	 * @param connCtls the conn ctls
+	 * @throws NamingException the naming exception
+	 */
 	public NickiLdapContext(Hashtable<String, String> env, Control[] connCtls) throws NamingException {
 		super(env,connCtls);
 	}

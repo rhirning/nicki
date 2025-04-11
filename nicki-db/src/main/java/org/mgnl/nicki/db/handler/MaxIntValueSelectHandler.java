@@ -25,23 +25,49 @@ package org.mgnl.nicki.db.handler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MaxIntValueSelectHandler.
+ */
 public class MaxIntValueSelectHandler extends NonLoggingSelectHandler implements SelectHandler {
 	
+	/** The table name. */
 	private String tableName;
+	
+	/** The column. */
 	private String column;
+	
+	/** The result. */
 	private int result = 1;
 
+	/**
+	 * Instantiates a new max int value select handler.
+	 *
+	 * @param tableName the table name
+	 * @param column the column
+	 */
 	public MaxIntValueSelectHandler(String tableName, String column) {
 		this.tableName = tableName;
 		this.column = column;
 	}
 
 
+	/**
+	 * Gets the search statement.
+	 *
+	 * @return the search statement
+	 */
 	public String getSearchStatement() {
 		return "select max(" + column + ") from " + tableName;
 	}
 
 
+	/**
+	 * Handle.
+	 *
+	 * @param rs the rs
+	 * @throws SQLException the SQL exception
+	 */
 	public void handle(ResultSet rs) throws SQLException {
 		if (rs.next()) {
 			result = rs.getInt(1)+1;
@@ -49,6 +75,11 @@ public class MaxIntValueSelectHandler extends NonLoggingSelectHandler implements
 	}
 
 
+	/**
+	 * Gets the result.
+	 *
+	 * @return the result
+	 */
 	public int getResult() {
 		return result;
 	}

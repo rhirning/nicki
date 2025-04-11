@@ -29,29 +29,88 @@ import java.lang.annotation.Target;
 
 import org.mgnl.nicki.db.data.DataType;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface Attribute.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface Attribute {
 
+	/**
+	 * Name.
+	 *
+	 * @return the string
+	 */
 	String name();
 
+	/**
+	 * Autogen.
+	 *
+	 * @return true, if successful
+	 */
 	boolean autogen() default false;
 	
+	/**
+	 * Sequence.
+	 *
+	 * @return the string
+	 */
 	String sequence() default "";
 
+	/**
+	 * Now.
+	 *
+	 * @return true, if successful
+	 */
 	boolean now() default false;
 
+	/**
+	 * Primary key.
+	 *
+	 * @return true, if successful
+	 */
 	boolean primaryKey() default false;
 	
+	/**
+	 * Type.
+	 *
+	 * @return the data type
+	 */
 	DataType type() default DataType.DEFAULT;
 
+	/**
+	 * Editor class.
+	 *
+	 * @return the string
+	 */
 	String editorClass() default "";
 	
+	/**
+	 * Readonly.
+	 *
+	 * @return true, if successful
+	 */
 	boolean readonly() default false;
 
+	/**
+	 * Mandatory.
+	 *
+	 * @return true, if successful
+	 */
 	boolean mandatory() default false;
 	
+	/**
+	 * Length.
+	 *
+	 * @return the int
+	 */
 	int length() default 0;
 	
+	/**
+	 * Trim.
+	 *
+	 * @return the string
+	 */
 	String trim() default "";
 }

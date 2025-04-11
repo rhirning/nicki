@@ -36,6 +36,9 @@ import org.mgnl.nicki.db.context.NotSupportedException;
 import org.mgnl.nicki.db.profile.InitProfileException;
 import org.mgnl.nicki.db.test.db.ErrorEntry;
 
+/**
+ * The Class DataBaseManager.
+ */
 public class DataBaseManager {
 /*	
 	private Server server;

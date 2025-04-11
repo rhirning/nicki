@@ -33,16 +33,33 @@ import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ObjectLoaderLdapQueryHandler.
+ */
 @Slf4j
 public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
 	
+	/** The dn. */
 	private String dn;
+	
+	/** The dynamic object. */
 	protected DynamicObject dynamicObject;
 
+	/**
+	 * Gets the dynamic object.
+	 *
+	 * @return the dynamic object
+	 */
 	public DynamicObject getDynamicObject() {
 		return dynamicObject;
 	}
 
+	/**
+	 * Instantiates a new object loader ldap query handler.
+	 *
+	 * @param dynamicObject the dynamic object
+	 */
 	public ObjectLoaderLdapQueryHandler(DynamicObject dynamicObject) {
 		super(dynamicObject.getContext());
 		this.dynamicObject = dynamicObject;
@@ -50,6 +67,12 @@ public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements Qu
 	}
 
 
+	/**
+	 * Instantiates a new object loader ldap query handler.
+	 *
+	 * @param context the context
+	 * @param dn the dn
+	 */
 	public ObjectLoaderLdapQueryHandler(NickiContext context, String dn) {
 		super(context);
 		this.dynamicObject = null;
@@ -57,10 +80,21 @@ public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements Qu
 	}
 
 
+	/**
+	 * Gets the base DN.
+	 *
+	 * @return the base DN
+	 */
 	public String getBaseDN() {
 		return this.dn;
 	}
 
+	/**
+	 * Handle.
+	 *
+	 * @param results the results
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
 		try {
 			if (results != null && results.size() > 0) {
@@ -83,6 +117,11 @@ public class ObjectLoaderLdapQueryHandler extends BasicLdapHandler implements Qu
 		}
 	}
 
+	/**
+	 * Gets the scope.
+	 *
+	 * @return the scope
+	 */
 	@Override
 	public SCOPE getScope() {
 		return SCOPE.OBJECT;

@@ -36,23 +36,58 @@ import org.mgnl.nicki.xls.model.template.Document;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XlsTemplate.
+ */
 @Slf4j
 public class XlsTemplate {
 
+	/** The document. */
 	private Document document;
 
+	/**
+	 * Instantiates a new xls template.
+	 *
+	 * @param templateContent the template content
+	 * @throws JAXBException the JAXB exception
+	 */
 	public XlsTemplate(String templateContent) throws JAXBException {
 		document = unmarshal(Document.class, templateContent);
 	}
 
+	/**
+	 * Instantiates a new xls template.
+	 *
+	 * @param inputStream the input stream
+	 * @throws JAXBException the JAXB exception
+	 */
 	public XlsTemplate(InputStream inputStream) throws JAXBException {
 		document = unmarshal(Document.class, inputStream);
 	}
 
+	/**
+	 * Unmarshal.
+	 *
+	 * @param <T> the generic type
+	 * @param docClass the doc class
+	 * @param templateContent the template content
+	 * @return the t
+	 * @throws JAXBException the JAXB exception
+	 */
 	public <T> T unmarshal(Class<T> docClass, String templateContent) throws JAXBException {
 		return unmarshal(docClass, new ByteArrayInputStream(templateContent.getBytes()));
 	}
 
+	/**
+	 * Unmarshal.
+	 *
+	 * @param <T> the generic type
+	 * @param docClass the doc class
+	 * @param inputStream the input stream
+	 * @return the t
+	 * @throws JAXBException the JAXB exception
+	 */
 	@SuppressWarnings("unchecked")
 	public <T> T unmarshal(Class<T> docClass, InputStream inputStream)
 			throws JAXBException {
@@ -74,10 +109,20 @@ public class XlsTemplate {
 		}
 	}
 
+	/**
+	 * Gets the document.
+	 *
+	 * @return the document
+	 */
 	public Document getDocument() {
 		return document;
 	}
 
+	/**
+	 * Sets the document.
+	 *
+	 * @param document the new document
+	 */
 	public void setDocument(Document document) {
 		this.document = document;
 	}

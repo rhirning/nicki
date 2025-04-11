@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.auth;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -21,16 +22,58 @@ package org.mgnl.nicki.core.auth;
  * #L%
  */
 
-
+/**
+ * SSOAdapter.
+ */
 public interface SSOAdapter {
+	
+	/**
+	 * The Enum TYPE.
+	 */
 	public enum TYPE {
+		
+		/** The basic. */
 		BASIC,
+		
+		/** The saml. */
 		SAML,
+		
+		/** The unknown. */
 		UNKNOWN
 	}
+	
+	/**
+	 * Inits the.
+	 *
+	 * @param loginModule the login module
+	 */
 	void init(NickiAdapterLoginModule loginModule);
+	
+	/**
+	 * Sets the request.
+	 *
+	 * @param request the new request
+	 */
 	void setRequest(Object request);
+	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	String getName();
+	
+	/**
+	 * Gets the password.
+	 *
+	 * @return the password
+	 */
 	char[] getPassword();
+	
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	TYPE getType();
 }

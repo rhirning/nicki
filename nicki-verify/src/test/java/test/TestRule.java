@@ -30,10 +30,19 @@ import org.mgnl.nicki.verify.classes.ReferencedError;
 import org.mgnl.nicki.verify.classes.ReferencedError.TYPE;
 import org.mgnl.nicki.verify.annotations.VerifyRule;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TestRule.
+ */
 public class TestRule {
+	
+	/** The user id. */
 	@Attribute
 	private String userId;
 	
+	/**
+	 * Attribute available test.
+	 */
 	@VerifyRule
 	public void attributeAvailableTest() {
 		System.out.println("attributeAvailableTest");
@@ -41,6 +50,11 @@ public class TestRule {
 		
 	}
 	
+	/**
+	 * Attribute test.
+	 *
+	 * @throws ReferenceVerifyException the reference verify exception
+	 */
 	@VerifyRule
 	public void attributeTest() throws ReferenceVerifyException {
 		System.out.println("attributeTest");
@@ -50,6 +64,11 @@ public class TestRule {
 		
 	}
 	
+	/**
+	 * Error list test.
+	 *
+	 * @throws ReferenceVerifyException the reference verify exception
+	 */
 	@VerifyRule
 	public void errorListTest() throws ReferenceVerifyException {
 		System.out.println("errorListTest");

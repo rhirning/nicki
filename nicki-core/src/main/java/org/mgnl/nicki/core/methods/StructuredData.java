@@ -27,10 +27,21 @@ import java.io.Serializable;
 import org.jdom2.Document;
 import org.mgnl.nicki.core.helper.XMLHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StructuredData.
+ */
 @SuppressWarnings("serial")
 public class StructuredData implements Serializable {
+	
+	/** The document. */
 	private Document document;
 
+	/**
+	 * Instantiates a new structured data.
+	 *
+	 * @param xml the xml
+	 */
 	public StructuredData(String xml) {
 		try {
 			document = XMLHelper.documentFromString(xml);
@@ -39,6 +50,11 @@ public class StructuredData implements Serializable {
 		}
 	}
 
+	/**
+	 * Gets the document.
+	 *
+	 * @return the document
+	 */
 	public Document getDocument() {
 		return document;
 	}	

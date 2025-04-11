@@ -28,10 +28,41 @@ import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogObject;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface CatalogVisitor.
+ */
 public interface CatalogVisitor extends Visitor {
 
+	/**
+	 * Visit.
+	 *
+	 * @param catalogObject the catalog object
+	 * @return the visitor. ACTION
+	 */
 	Visitor.ACTION visit(CatalogObject catalogObject); 
+	
+	/**
+	 * Visit.
+	 *
+	 * @param catalog the catalog
+	 * @return the visitor. ACTION
+	 */
 	Visitor.ACTION visit(Catalog catalog); 
+	
+	/**
+	 * Visit.
+	 *
+	 * @param catalogPage the catalog page
+	 * @return the visitor. ACTION
+	 */
 	Visitor.ACTION visit(CatalogPage catalogPage);
+	
+	/**
+	 * Visit.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @return the visitor. ACTION
+	 */
 	Visitor.ACTION visit(CatalogArticle catalogArticle); 
 }

@@ -40,18 +40,43 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BeanHelper.
+ */
 @Slf4j
 public class BeanHelper {
 
+	/**
+	 * The Enum READONLY.
+	 */
 	public enum READONLY {
-		TRUE, FALSE
+		
+		/** The true. */
+		TRUE, 
+ /** The false. */
+ FALSE
 	}
 
+	/**
+	 * Gets the field name.
+	 *
+	 * @param beanClass the bean class
+	 * @param columnName the column name
+	 * @return the field name
+	 */
 	public static String getFieldName(Class<?> beanClass, String columnName) {
 		Field field = getFieldFromColumnName(beanClass, columnName);
 		return field != null ? field.getName() : null;
 	}
 
+	/**
+	 * Gets the field from column name.
+	 *
+	 * @param beanClass the bean class
+	 * @param columnName the column name
+	 * @return the field from column name
+	 */
 	public static Field getFieldFromColumnName(Class<?> beanClass, String columnName) {
 		for (Field field : beanClass.getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
@@ -63,6 +88,12 @@ public class BeanHelper {
 		return null;
 	}
 
+	/**
+	 * Gets the fields.
+	 *
+	 * @param beanClass the bean class
+	 * @return the fields
+	 */
 	public static List<Field> getFields(Class<?> beanClass) {
 		List<Field> fields = new ArrayList<>();
 		for (Field field : beanClass.getDeclaredFields()) {
@@ -74,6 +105,13 @@ public class BeanHelper {
 		return fields;
 	}
 
+	/**
+	 * Gets the column name.
+	 *
+	 * @param beanClass the bean class
+	 * @param fieldName the field name
+	 * @return the column name
+	 */
 	public static String getColumnName(Class<?> beanClass, String fieldName) {
 		Field field;
 		try {
@@ -90,6 +128,12 @@ public class BeanHelper {
 		return null;
 	}
 
+	/**
+	 * Gets the type of field.
+	 *
+	 * @param field the field
+	 * @return the type of field
+	 */
 	public static Type getTypeOfField(Field field) {
 
 		Type type = Type.UNKONWN;
@@ -121,6 +165,13 @@ public class BeanHelper {
 		return type;
 	}
 
+	/**
+	 * Gets the type of field.
+	 *
+	 * @param beanClass the bean class
+	 * @param fieldName the field name
+	 * @return the type of field
+	 */
 	public static Type getTypeOfField(Class<?> beanClass, String fieldName) {
 
 		Type type = Type.UNKONWN;
@@ -135,6 +186,13 @@ public class BeanHelper {
 		return type;
 	}
 
+	/**
+	 * Gets the type of column.
+	 *
+	 * @param beanClass the bean class
+	 * @param columnName the column name
+	 * @return the type of column
+	 */
 	public static Type getTypeOfColumn(Class<?> beanClass, String columnName) {
 
 		Type type = Type.UNKONWN;
@@ -147,6 +205,13 @@ public class BeanHelper {
 		return type;
 	}
 
+	/**
+	 * Gets the bean attribute.
+	 *
+	 * @param beanClass the bean class
+	 * @param fieldName the field name
+	 * @return the bean attribute
+	 */
 	public static Attribute getBeanAttribute(Class<?> beanClass, String fieldName) {
 		Field field;
 		try {
@@ -163,10 +228,24 @@ public class BeanHelper {
 		return null;
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @param bean the bean
+	 * @param fieldName the field name
+	 * @return the value
+	 */
 	public static Object getValue(Object bean, String fieldName) {
 		return BeanUtilsHelper.getProperty(bean, fieldName);
 	}
 
+	/**
+	 * Sets the value.
+	 *
+	 * @param bean the bean
+	 * @param fieldName the field name
+	 * @param newValue the new value
+	 */
 	public static void setValue(Object bean, String fieldName, Object newValue) {
 		Field field;
 		try {
@@ -179,10 +258,25 @@ public class BeanHelper {
 		}
 	}
 
+	/**
+	 * Gets the type.
+	 *
+	 * @param bean the bean
+	 * @param fieldName the field name
+	 * @return the type
+	 * @throws NoSuchFieldException the no such field exception
+	 * @throws SecurityException the security exception
+	 */
 	public static Class<?> getType(Object bean, String fieldName) throws NoSuchFieldException, SecurityException {
 		return bean.getClass().getDeclaredField(fieldName).getType();
 	}
 
+	/**
+	 * Adds the foreign key.
+	 *
+	 * @param bean the bean
+	 * @param foreignObject the foreign object
+	 */
 	public static void addForeignKey(Object bean, Object foreignObject) {
 		if (foreignObject != null) {
 			for (Field field : getFields(bean.getClass())) {
@@ -198,6 +292,12 @@ public class BeanHelper {
 		}
 	}
 
+	/**
+	 * Gets the foreign key ids.
+	 *
+	 * @param bean the bean
+	 * @return the foreign key ids
+	 */
 	public static String[] getForeignKeyIds(Object bean) {
 		List<String> foreignKeyIds = new ArrayList<>();
 		for (Field field : getFields(bean.getClass())) {
@@ -209,6 +309,13 @@ public class BeanHelper {
 		return foreignKeyIds.toArray(new String[0]);
 	}
 
+	/**
+	 * Gets the foreign key.
+	 *
+	 * @param bean the bean
+	 * @param attributeName the attribute name
+	 * @return the foreign key
+	 */
 	public static ForeignKey getForeignKey(Object bean, String attributeName) {
 		for (Field field : getFields(bean.getClass())) {
 			ForeignKey foreignKey = field.getAnnotation(ForeignKey.class);
@@ -219,6 +326,13 @@ public class BeanHelper {
 		return null;
 	}
 
+	/**
+	 * Checks if is foreign key.
+	 *
+	 * @param bean the bean
+	 * @param attributeName the attribute name
+	 * @return true, if is foreign key
+	 */
 	public static boolean isForeignKey(Object bean, String attributeName) {
 		for (Field field : getFields(bean.getClass())) {
 			if (StringUtils.equals(attributeName, field.getName())) {
@@ -231,6 +345,12 @@ public class BeanHelper {
 		return false;
 	}
 
+	/**
+	 * Gets the key attribute.
+	 *
+	 * @param bean the bean
+	 * @return the key attribute
+	 */
 	public static String getKeyAttribute(Object bean) {
 		for (Field field : getFields(bean.getClass())) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
@@ -241,6 +361,14 @@ public class BeanHelper {
 		return null;
 	}
 
+	/**
+	 * Gets the foreign value.
+	 *
+	 * @param bean the bean
+	 * @param attributeName the attribute name
+	 * @param dbContextName the db context name
+	 * @return the foreign value
+	 */
 	public static String getForeignValue(Object bean, String attributeName, String dbContextName) {
 		for (Field field : getFields(bean.getClass())) {
 			if (StringUtils.equals(attributeName, field.getName())) {
@@ -268,6 +396,14 @@ public class BeanHelper {
 		return null;
 	}
 
+	/**
+	 * Gets the foreign key values.
+	 *
+	 * @param bean the bean
+	 * @param attributeName the attribute name
+	 * @param dbContextName the db context name
+	 * @return the foreign key values
+	 */
 	public static List<Object> getForeignKeyValues(Object bean, String attributeName, String dbContextName) {
 		for (Field field : getFields(bean.getClass())) {
 			if (StringUtils.equals(attributeName, field.getName())) {
@@ -287,6 +423,15 @@ public class BeanHelper {
 		return new ArrayList<>();
 	}
 
+	/**
+	 * Gets the foreign key object.
+	 *
+	 * @param bean the bean
+	 * @param attributeName the attribute name
+	 * @param dbContextName the db context name
+	 * @param key the key
+	 * @return the foreign key object
+	 */
 	public static Object getForeignKeyObject(Object bean, String attributeName, String dbContextName, Long key) {
 		for (Field field : getFields(bean.getClass())) {
 			if (StringUtils.equals(attributeName, field.getName())) {
@@ -310,6 +455,15 @@ public class BeanHelper {
 		return null;
 	}
 
+	/**
+	 * Import csv.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param lines the lines
+	 * @param separator the separator
+	 * @return the list
+	 */
 	public static <T> List<T> importCsv(Class<T> clazz, List<String> lines, String separator) {
 		String line  = lines.get(0);
 		String[] parts = DataHelper.toStringArray(line, separator);
@@ -350,6 +504,14 @@ public class BeanHelper {
 		return beans;
 	}
 	
+	/**
+	 * Gets the name.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param attributeName the attribute name
+	 * @return the name
+	 */
 	public static <T> String getName(Class<T> clazz, String attributeName) {
 		String key = clazz.getName()
 			+ "."
@@ -362,6 +524,14 @@ public class BeanHelper {
 		return name;
 	}
 	
+	/**
+	 * Checks if is mandatory.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param attributeName the attribute name
+	 * @return true, if is mandatory
+	 */
 	public static <T> boolean isMandatory(Class<T> clazz, String attributeName) {
 		for (Field field : clazz.getDeclaredFields()) {
 			if (StringUtils.equals(attributeName, field.getName())) {

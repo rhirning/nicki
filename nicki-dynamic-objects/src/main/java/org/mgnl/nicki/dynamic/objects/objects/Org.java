@@ -30,13 +30,24 @@ import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Org.
+ */
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("organizationalUnit")
 @Child(name="child")
 public class Org extends BaseDynamicObject implements Serializable {
+	
+	/** The Constant ATTRIBUTE_CHILD. */
 	public static final String ATTRIBUTE_CHILD = "child";
 	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	@DynamicAttribute(externalName="ou", naming=true)
 	public String getName() {
 		return super.getName();

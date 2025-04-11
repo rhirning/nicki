@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.visitor;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -22,7 +23,18 @@ package org.mgnl.nicki.core.visitor;
  */
 
 
+/**
+ * The Interface Visitor.
+ */
 public interface Visitor {
-	public static enum ACTION {FINISH, CONTINUE};
+	
+	/**
+	 * The Enum ACTION.
+	 */
+	public static enum ACTION {
+/** The finish. */
+FINISH, 
+ /** The continue. */
+ CONTINUE};
 
 }

@@ -35,6 +35,7 @@ import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.XmlValue;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for style complex type.
  * 
@@ -59,13 +60,20 @@ import jakarta.xml.bind.annotation.XmlValue;
 })
 public class Style {
 
+    /** The value. */
     @XmlValue
     protected String value;
+    
+    /** The name. */
     @XmlAttribute(name = "name")
     @XmlSchemaType(name = "anySimpleType")
     protected String name;
+    
+    /** The align. */
     @XmlAttribute(name = "align")
     protected String align;
+    
+    /** The vertical align. */
     @XmlAttribute(name = "vertical-align")
     protected String verticalAlign;
 

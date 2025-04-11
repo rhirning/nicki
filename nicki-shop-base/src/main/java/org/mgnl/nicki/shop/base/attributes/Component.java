@@ -24,22 +24,56 @@ package org.mgnl.nicki.shop.base.attributes;
 
 import org.mgnl.nicki.core.util.Classes;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Enum Component.
+ */
 public enum Component {
+	
+	/** The date. */
 	DATE("org.mgnl.nicki.shop.attributes.DateComponent"),
+	
+	/** The text. */
 	TEXT("org.mgnl.nicki.shop.attributes.TextComponent"),
+	
+	/** The checkbox. */
 	CHECKBOX("org.mgnl.nicki.shop.attributes.CheckboxComponent"),
+	
+	/** The select. */
 	SELECT("org.mgnl.nicki.shop.attributes.SelectComponent"),
+	
+	/** The freeselect. */
 	FREESELECT("org.mgnl.nicki.shop.attributes.FreeSelectComponent"),
+	
+	/** The static. */
 	STATIC("org.mgnl.nicki.shop.attributes.LabelComponent"),
+	
+	/** The generic. */
 	GENERIC("org.mgnl.nicki.shop.attributes.GenericComponent"),
+	
+	/** The default. */
 	DEFAULT("org.mgnl.nicki.shop.attributes.LabelComponent");
 
+	/** The class name. */
 	private String className;
 
+	/**
+	 * Instantiates a new component.
+	 *
+	 * @param className the class name
+	 */
 	Component(String className) {
 		this.className = className;
 	}
 
+	/**
+	 * Gets the single instance of Component.
+	 *
+	 * @return single instance of Component
+	 * @throws ClassNotFoundException the class not found exception
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	public Object getInstance() throws ClassNotFoundException,
 			InstantiationException, IllegalAccessException {
 		return Classes.newInstance(className);

@@ -27,12 +27,30 @@ import javax.naming.directory.Attributes;
 import org.mgnl.nicki.core.objects.ContextAttribute;
 import org.mgnl.nicki.core.objects.ContextAttributes;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JndiAttributes.
+ */
 public class JndiAttributes implements ContextAttributes {
+	
+	/** The attributes. */
 	Attributes attributes;
+	
+	/**
+	 * Instantiates a new jndi attributes.
+	 *
+	 * @param attributes the attributes
+	 */
 	public JndiAttributes(Attributes attributes) {
 		this.attributes = attributes;
 	}
 
+	/**
+	 * Gets the.
+	 *
+	 * @param attributeName the attribute name
+	 * @return the context attribute
+	 */
 	public ContextAttribute get(String attributeName) {
 		return new JndiContextAttribute(attributes.get(attributeName));
 	}

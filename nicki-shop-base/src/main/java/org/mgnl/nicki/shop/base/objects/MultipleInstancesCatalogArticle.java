@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.shop.base.objects;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-shop-base
@@ -22,10 +23,23 @@ package org.mgnl.nicki.shop.base.objects;
  */
 
 
+/**
+ * The Interface MultipleInstancesCatalogArticle.
+ */
 public interface MultipleInstancesCatalogArticle {
 
+	/**
+	 * Checks if is multiple.
+	 *
+	 * @return true, if is multiple
+	 */
 	boolean isMultiple();
 
+	/**
+	 * Gets the catalog value provider.
+	 *
+	 * @return the catalog value provider
+	 */
 	CatalogValueProvider getCatalogValueProvider();
 	
 }

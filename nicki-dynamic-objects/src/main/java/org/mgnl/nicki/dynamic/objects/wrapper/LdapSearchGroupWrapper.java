@@ -34,20 +34,36 @@ import org.mgnl.nicki.dynamic.objects.objects.LdapSearchGroup;
 import lombok.extern.slf4j.Slf4j;
 
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class LdapSearchGroupWrapper.
  *
  * @author cna
  */
 @Slf4j
 public class LdapSearchGroupWrapper {
 
+	/**
+	 * The Enum UNIT.
+	 */
 	public static enum UNIT {
 
+		/** The month. */
 		MONTH(Calendar.MONTH),
+		
+		/** The day. */
 		DAY(Calendar.DATE),
+		
+		/** The hour. */
 		HOUR(Calendar.HOUR),
+		
+		/** The minute. */
 		MINUTE(Calendar.MINUTE);
+		
+		/** The value. */
 		private int value;
+		
+		/** The map. */
 		private static HashMap<String, UNIT> map = new HashMap<String, UNIT>();
 
 		static {
@@ -57,26 +73,53 @@ public class LdapSearchGroupWrapper {
 			map.put("MINUTE", MINUTE);
 		}
 
+		/**
+		 * Instantiates a new unit.
+		 *
+		 * @param value the value
+		 */
 		private UNIT(int value) {
 			this.value = value;
 		}
 
+		/**
+		 * From value.
+		 *
+		 * @param value the value
+		 * @return the unit
+		 */
 		public static UNIT fromValue(String value) {
 			return map.get(StringUtils.upperCase(value));
 		}
 
+		/**
+		 * Gets the value.
+		 *
+		 * @return the value
+		 */
 		public int getValue() {
 			return value;
 		}
 	};
 	
+	/**
+	 * The Enum FORMAT.
+	 */
 	public static enum FORMAT {
 
+		/** The precise. */
 		PRECISE("yyyyMMddHHmmssZ"),
+		
+		/** The time. */
 		TIME("yyyyMMddHHmm"),
+		
+		/** The day. */
 		DAY("yyyyMMdd");
 		
+		/** The value. */
 		private String value;
+		
+		/** The map. */
 		private static HashMap<String, FORMAT> map = new HashMap<String, FORMAT>();
 
 		static {
@@ -85,31 +128,63 @@ public class LdapSearchGroupWrapper {
 			map.put("DAY", DAY);
 		}
 
+		/**
+		 * Instantiates a new format.
+		 *
+		 * @param value the value
+		 */
 		private FORMAT(String value) {
 			this.value = value;
 		}
 
+		/**
+		 * From value.
+		 *
+		 * @param value the value
+		 * @return the format
+		 */
 		public static FORMAT fromValue(String value) {
 			return map.get(StringUtils.upperCase(value));
 		}
 
+		/**
+		 * Gets the value.
+		 *
+		 * @return the value
+		 */
 		public String getValue() {
 			return value;
 		}
 	};
 	
 	
+	/** The group. */
 	private LdapSearchGroup group;
+	
+	/** The Constant OUTER_REGEX. */
 	private final static Pattern OUTER_REGEX = Pattern.compile("\\|\\[(.*?)\\](PRECISE|TIME|DAY)?\\|");
+	
+	/** The Constant INNER_REGEX. */
 	private final static Pattern INNER_REGEX = Pattern.compile("([+-])(\\d+)(MONTH|DAY|HOUR|MINUTE)S?");
 
+	/** The date format. */
 	private String dateFormat = FORMAT.PRECISE.getValue();
 	
 
+	/**
+	 * Instantiates a new ldap search group wrapper.
+	 *
+	 * @param group the group
+	 */
 	public LdapSearchGroupWrapper(LdapSearchGroup group) {
 		this.group = group;
 	}
 
+	/**
+	 * Sets the dynamic ldap search.
+	 *
+	 * @param dynLdapSearch the new dynamic ldap search
+	 */
 	public void setDynamicLdapSearch(String dynLdapSearch) {
 		String result = dynLdapSearch;
 		Matcher match = OUTER_REGEX.matcher(result);
@@ -134,10 +209,21 @@ public class LdapSearchGroupWrapper {
 
 	}
 
+	/**
+	 * Sets the date format.
+	 *
+	 * @param dateFormat the new date format
+	 */
 	public void setDateFormat(String dateFormat) {
 		this.dateFormat = dateFormat;
 	}
 
+	/**
+	 * Gets the calculated time.
+	 *
+	 * @param str the str
+	 * @return the calculated time
+	 */
 	/*
 	 * str in the form: ([+-])(\d+)(MONTH|DAY|HOUR|MIN)S?
 	 * example: -3DAY
@@ -171,11 +257,26 @@ public class LdapSearchGroupWrapper {
 
 	}
 
+	/**
+	 * Gets the date string.
+	 *
+	 * @param date the date
+	 * @param format the format
+	 * @return the date string
+	 */
 	private String getDateString(Date date, String format) {
 		SimpleDateFormat sdf = new SimpleDateFormat(format);
 		return sdf.format(date);
 	}
 
+	/**
+	 * Adds the.
+	 *
+	 * @param date the date
+	 * @param amount the amount
+	 * @param units the units
+	 * @return the date
+	 */
 	private Date add(Date date, int amount, int units) {
 		Calendar cal = new GregorianCalendar();
 		cal.setTime(date);

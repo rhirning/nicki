@@ -25,33 +25,73 @@ package org.mgnl.nicki.core.context;
 import java.util.Locale;
 import java.util.Map;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Context.
+ */
 public class Context {
+	
+	/** The request. */
 	private Object request;
+	
+	/** The locale. */
 	private Locale locale = Locale.GERMAN;
+	
+	/** The parameter map. */
 	private Map<String, String> parameterMap;
 
+	/**
+	 * Gets the request.
+	 *
+	 * @return the request
+	 */
 	public Object getRequest() {
 		return request;
 	}
 
+	/**
+	 * Sets the request.
+	 *
+	 * @param request the new request
+	 */
 	public void setRequest(Object request) {
 		this.request = request;
 	}
 
+	/**
+	 * Gets the locale.
+	 *
+	 * @return the locale
+	 */
 	public Locale getLocale() {
 		return locale;
 	}
 
+	/**
+	 * Sets the locale.
+	 *
+	 * @param locale the new locale
+	 */
 	public void setLocale(Locale locale) {
 		if (locale != null) {
 			this.locale = locale;
 		}
 	}
 
+	/**
+	 * Sets the request parameters.
+	 *
+	 * @param map the map
+	 */
 	public void setRequestParameters(Map<String, String> map) {
 		this.parameterMap = map;
 	}
 	
+	/**
+	 * Gets the request parameters.
+	 *
+	 * @return the request parameters
+	 */
 	public Map<String, String> getRequestParameters() {
 		return this.parameterMap;
 	}

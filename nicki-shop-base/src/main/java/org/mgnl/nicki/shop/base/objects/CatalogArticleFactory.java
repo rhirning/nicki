@@ -28,10 +28,25 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.util.Classes;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating CatalogArticle objects.
+ */
 public class CatalogArticleFactory {
+	
+	/** The instance. */
 	private static CatalogArticleFactory instance;
+	
+	/** The article types. */
 	Map<Class<?>, CatalogArticle> articleTypes = new HashMap<Class<?>, CatalogArticle>();
 	
+	/**
+	 * Gets the single instance of CatalogArticleFactory.
+	 *
+	 * @return single instance of CatalogArticleFactory
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	public static CatalogArticleFactory getInstance() throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		if (instance == null) {
 			instance = new CatalogArticleFactory();
@@ -39,6 +54,12 @@ public class CatalogArticleFactory {
 		return instance;
 	}
 
+	/**
+	 * Instantiates a new catalog article factory.
+	 *
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	public CatalogArticleFactory() throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		
 		for (CatalogArticle catalogArticle : Catalog.getCatalog().getAllArticles()) {
@@ -52,6 +73,11 @@ public class CatalogArticleFactory {
 		}
 	}
 
+	/**
+	 * Gets the article types.
+	 *
+	 * @return the article types
+	 */
 	public Map<Class<?>, CatalogArticle> getArticleTypes() {
 		return articleTypes;
 	}

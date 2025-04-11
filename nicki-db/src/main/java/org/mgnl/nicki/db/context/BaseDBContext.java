@@ -67,9 +67,15 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BaseDBContext.
+ */
 @Slf4j
 public class BaseDBContext
 		implements DBContext {
+	
+	/** The valid types. */
 	public Class<?> VALID_TYPES[] = {String.class,
 			Date.class,
 			long.class, Long.class,
@@ -78,27 +84,74 @@ public class BaseDBContext
 			boolean.class, Boolean.class,
 			byte[].class
 	};
+	
+	/** The Constant TIMESTAMP_ORACLE. */
 	public final static String TIMESTAMP_ORACLE = "YYYY-MM-DD HH24:MI:SS";
+	
+	/** The Constant TIMESTAMP_FOR_ORACLE. */
 	public final static String TIMESTAMP_FOR_ORACLE = "yyyy-MM-dd HH:mm:ss";
+	
+	/** The Constant TIME_ORACLE. */
 	public final static String TIME_ORACLE = "HH24.MI.SS";
+	
+	/** The Constant TIME_FOR_ORACLE. */
 	public final static String TIME_FOR_ORACLE = "HH.mm.ss";
-	public enum PREPARED {TRUE, FALSE}
+	
+	/**
+	 * The Enum PREPARED.
+	 */
+	public enum PREPARED {
+/** The true. */
+TRUE, 
+ /** The false. */
+ FALSE}
+	
+	/** The name. */
 	private String name;
+	
+	/** The profile. */
 	private DBProfile profile;
+	
+	/** The connection. */
 	private Connection connection;
 
+	/** The schema. */
 	private String schema;
 
+	/** The allow prepared where. */
 	private boolean allowPreparedWhere = BasicDBHelper.isAllowPreparedWhere(this);
 
+	/**
+	 * Checks if is trim strings.
+	 *
+	 * @param beanClass the bean class
+	 * @param field the field
+	 * @return true, if is trim strings
+	 */
 	protected boolean isTrimStrings(Class<?> beanClass, Field field) {
 		return BasicDBHelper.isTrimStrings(getClass(), beanClass, field);
 	}
+	
+	/**
+	 * Sets the profile.
+	 *
+	 * @param profile the new profile
+	 */
 	@Override
 	public void setProfile(DBProfile profile) {
 		this.profile = profile;
 	}
 
+	/**
+	 * Creates the.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @return the primary key
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 * @throws NotSupportedException the not supported exception
+	 */
 	@Override
 	public <T> PrimaryKey create(T bean) throws SQLException, InitProfileException, NotSupportedException {
 		boolean inTransaction = false;
@@ -132,6 +185,12 @@ public class BaseDBContext
 		}
 	}
 	
+	/**
+	 * Gets the sequence.
+	 *
+	 * @param clazz the clazz
+	 * @return the sequence
+	 */
 	protected Attribute getSequence(Class<? extends Object> clazz) {
 		for (Field field : clazz.getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
@@ -142,6 +201,12 @@ public class BaseDBContext
 		return null;
 	}
 	
+	/**
+	 * Gets the primary key type.
+	 *
+	 * @param clazz the clazz
+	 * @return the primary key type
+	 */
 	protected Class<?> getPrimaryKeyType(Class<? extends Object> clazz) {
 		for (Field field : clazz.getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
@@ -152,21 +217,69 @@ public class BaseDBContext
 		return null;
 	}
 
+	/**
+	 * Load objects.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param deepSearch the deep search
+	 * @return the list
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	@Override
 	public <T> List<T> loadObjects(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
 		return loadObjects(bean, deepSearch, null, null);
 	}
 	
+	/**
+	 * Load object.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param deepSearch the deep search
+	 * @return the t
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	@Override
 	public <T> T loadObject(T bean, boolean deepSearch) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
 		return loadObject(bean, deepSearch, null, null);
 	}
 	
+	/**
+	 * Exists.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @return true, if successful
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 */
 	@Override
 	public <T> boolean exists(T bean) throws SQLException, InitProfileException  {
 		return exists(bean, null);
 	}
 	
+	/**
+	 * Load objects.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param deepSearch the deep search
+	 * @param filter the filter
+	 * @param orderBy the order by
+	 * @param typedFilterValues the typed filter values
+	 * @return the list
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> List<T> loadObjects(T bean, boolean deepSearch, String filter, String orderBy, TypedValue... typedFilterValues) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
@@ -223,6 +336,13 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the prepared select statement.
+	 *
+	 * @param bean the bean
+	 * @return the prepared select statement
+	 * @throws SQLException the SQL exception
+	 */
 	protected PreparedStatement getPreparedSelectStatement(Object bean) throws SQLException   {
 		String selectStatementString = getPreparedSelectStatement("*", bean);
 		PreparedStatement pstmt = this.getConnection().prepareStatement(selectStatementString);
@@ -230,6 +350,12 @@ public class BaseDBContext
 		return pstmt;
 	}
 
+	/**
+	 * Fill prepared statement.
+	 *
+	 * @param pstmt the pstmt
+	 * @param bean the bean
+	 */
 	private void fillPreparedStatement(PreparedStatement pstmt, Object bean) {
 		int pos = 0;
 		for (Field field : bean.getClass().getDeclaredFields()) {
@@ -256,6 +382,16 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the prepared select statement.
+	 *
+	 * @param bean the bean
+	 * @param filter the filter
+	 * @param orderBy the order by
+	 * @param typedFilterValues the typed filter values
+	 * @return the prepared select statement
+	 * @throws SQLException the SQL exception
+	 */
 	protected PreparedStatement getPreparedSelectStatement(Object bean, String filter, String orderBy, TypedValue... typedFilterValues) throws SQLException  {
 		List<TypedValue> typedValues = new ArrayList<TypedValue>();
 		if (typedFilterValues != null && typedFilterValues.length > 0) {
@@ -307,6 +443,13 @@ public class BaseDBContext
 		return pstmt;
 	}
 
+	/**
+	 * Gets the prepared select statement.
+	 *
+	 * @param columns the columns
+	 * @param bean the bean
+	 * @return the prepared select statement
+	 */
 	protected String getPreparedSelectStatement(String columns, Object bean)  {
 		StringBuilder sb = new StringBuilder();
 		sb.append("select ").append(columns).append(" from ").append(getQualifiedTableName(bean.getClass()));
@@ -342,6 +485,21 @@ public class BaseDBContext
 		return sb.toString();
 	}
 	
+	/**
+	 * Load object.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param deepSearch the deep search
+	 * @param filter the filter
+	 * @param orderBy the order by
+	 * @param typedFilterValues the typed filter values
+	 * @return the t
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	@Override
 	public <T> T loadObject(T bean, boolean deepSearch, String filter, String orderBy, TypedValue... typedFilterValues) throws SQLException, InitProfileException, InstantiationException, IllegalAccessException {
 		Method postMethod = null;
@@ -425,6 +583,17 @@ public class BaseDBContext
 		}
 	}
 	
+	/**
+	 * Exists.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param filter the filter
+	 * @param typedFilterValues the typed filter values
+	 * @return true, if successful
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 */
 	@Override
 	public <T> boolean exists(T bean, String filter, TypedValue... typedFilterValues) throws SQLException, InitProfileException  {
 		boolean inTransaction = false;
@@ -467,6 +636,16 @@ public class BaseDBContext
 		}
 	}
 	
+	/**
+	 * Count.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param filter the filter
+	 * @return the long
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 */
 	@Override
 	public <T> long count(T bean, String filter) throws SQLException, InitProfileException  {
 		boolean inTransaction = false;
@@ -492,6 +671,12 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Adds the objects.
+	 *
+	 * @param bean the bean
+	 * @param deepSearch the deep search
+	 */
 	private void addObjects(Object bean, boolean deepSearch) {
 		PrimaryKey primaryKey = getPrimaryKey(bean);
 		if (primaryKey != null) {
@@ -516,6 +701,12 @@ public class BaseDBContext
 		
 	}
 
+	/**
+	 * Gets the primary key.
+	 *
+	 * @param bean the bean
+	 * @return the primary key
+	 */
 	private PrimaryKey getPrimaryKey(Object bean) {
 		PrimaryKey primaryKey = new PrimaryKey();
 		for (Field field : bean.getClass().getDeclaredFields()) {
@@ -534,6 +725,16 @@ public class BaseDBContext
 		return primaryKey;
 	}
 
+	/**
+	 * Adds the object.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param field the field
+	 * @param entryClass the entry class
+	 * @param primaryKey the primary key
+	 * @param deepSearch the deep search
+	 */
 	private <T> void addObject(Object bean, Field field, Class<T> entryClass, PrimaryKey primaryKey, boolean deepSearch) {
 		T subBean = getNewInstance(entryClass);
 		setPrimaryKey(subBean, primaryKey);
@@ -549,6 +750,16 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Adds the objects.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param field the field
+	 * @param entryClass the entry class
+	 * @param primaryKey the primary key
+	 * @param deepSearch the deep search
+	 */
 	private <T> void addObjects(Object bean, Field field, Class<T> entryClass, PrimaryKey primaryKey, boolean deepSearch) {
 		T subBean = getNewInstance(entryClass);
 		try {
@@ -564,6 +775,13 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the new instance.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @return the new instance
+	 */
 	private <T> T getNewInstance(Class<T> clazz) {
 
 		try {
@@ -575,6 +793,12 @@ public class BaseDBContext
 	}
 
 
+	/**
+	 * Sets the primary key.
+	 *
+	 * @param bean the bean
+	 * @param primaryKey the primary key
+	 */
 	protected void setPrimaryKey(Object bean, PrimaryKey primaryKey) {
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			Attribute attribute = field.getAnnotation(Attribute.class);
@@ -598,6 +822,18 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Handle.
+	 *
+	 * @param <T> the generic type
+	 * @param beanClass the bean class
+	 * @param rs the rs
+	 * @param postInitMethod the post init method
+	 * @return the list
+	 * @throws SQLException the SQL exception
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	private <T> List<T> handle(Class<T> beanClass, ResultSet rs, String postInitMethod) throws SQLException, InstantiationException, IllegalAccessException {
 
 		Method postMethod = null;
@@ -624,6 +860,17 @@ public class BaseDBContext
 
 	}
 
+	/**
+	 * Gets the.
+	 *
+	 * @param <T> the generic type
+	 * @param beanClass the bean class
+	 * @param rs the rs
+	 * @return the t
+	 * @throws SQLException the SQL exception
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	public <T> T get(Class<T> beanClass, ResultSet rs) throws SQLException, InstantiationException, IllegalAccessException {
 		T entry = Classes.newInstance(beanClass);
 		for (Field field : beanClass.getDeclaredFields()) {
@@ -686,10 +933,27 @@ public class BaseDBContext
 		return entry;
 	}
 	
+	/**
+	 * Gets the load objects search statement.
+	 *
+	 * @param bean the bean
+	 * @param filter the filter
+	 * @param orderBy the order by
+	 * @return the load objects search statement
+	 */
 	protected String getLoadObjectsSearchStatement(Object bean, String filter, String orderBy) {
 		return getLoadObjectsSearchStatement(bean, "*", filter, orderBy);
 	}
 	
+	/**
+	 * Gets the load objects search statement.
+	 *
+	 * @param bean the bean
+	 * @param columns the columns
+	 * @param filter the filter
+	 * @param orderBy the order by
+	 * @return the load objects search statement
+	 */
 	protected String getLoadObjectsSearchStatement(Object bean, String columns, String filter, String orderBy) {
 		try {
 			StringBuilder sb = new StringBuilder();
@@ -741,6 +1005,14 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the string value.
+	 *
+	 * @param type the type
+	 * @param value the value
+	 * @param attribute the attribute
+	 * @return the string value
+	 */
 	protected String getStringValue(Class<?> type, Object value, Attribute attribute) {
 		try {
 			if (type == String.class) {
@@ -763,10 +1035,25 @@ public class BaseDBContext
 	}
 	
 
+	/**
+	 * Gets the date value.
+	 *
+	 * @param date the date
+	 * @param attribute the attribute
+	 * @return the date value
+	 */
 	@Override
 	public String getDateValue(Date date, Attribute attribute) {
 		return getDateValue(date, attribute.type());
 	}
+	
+	/**
+	 * Gets the date value.
+	 *
+	 * @param date the date
+	 * @param dataType the data type
+	 * @return the date value
+	 */
 	public String getDateValue(Date date, DataType dataType) {
 		if (dataType == DataType.TIMESTAMP) {
 			return this.toTimestamp(date);
@@ -777,6 +1064,13 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the subs.
+	 *
+	 * @param bean the bean
+	 * @param primaryKey the primary key
+	 * @return the subs
+	 */
 	private Collection<Object> getSubs(Object bean, PrimaryKey primaryKey) {
 		Collection<Object> list = new ArrayList<>();
 		for (Field field : bean.getClass().getDeclaredFields()) {
@@ -811,6 +1105,12 @@ public class BaseDBContext
 		return list;
 	}
 
+	/**
+	 * Gets the all subs.
+	 *
+	 * @param bean the bean
+	 * @return the all subs
+	 */
 	protected Collection<Object> getAllSubs(Object bean) {
 		Collection<Object> list = new ArrayList<>();
 		for (Field field : bean.getClass().getDeclaredFields()) {
@@ -842,6 +1142,13 @@ public class BaseDBContext
 		return list;
 	}
 
+	/**
+	 * Gets the subs.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @return the subs
+	 */
 	private Collection<Object> getSubs(Object bean, Field field) {
 		Collection<Object> list = new ArrayList<>();
 		try {
@@ -871,6 +1178,17 @@ public class BaseDBContext
 		return list;
 	}
 
+	/**
+	 * Sets the foreign key.
+	 *
+	 * @param bean the bean
+	 * @param primaryKey the primary key
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws InvocationTargetException the invocation target exception
+	 */
 	private void setForeignKey(Object bean, PrimaryKey primaryKey) throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		for (Field field : bean.getClass().getDeclaredFields()) {
@@ -892,6 +1210,12 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Checks for subs.
+	 *
+	 * @param clazz the clazz
+	 * @return true, if successful
+	 */
 	private boolean hasSubs(Class<?> clazz) {
 		for (Field field : clazz.getDeclaredFields()) {
 			if (field.getAnnotation(SubTable.class) != null) {
@@ -901,6 +1225,15 @@ public class BaseDBContext
 		return false;
 	}
 
+	/**
+	 * Creates the in DB.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @return the primary key
+	 * @throws SQLException the SQL exception
+	 * @throws NotSupportedException the not supported exception
+	 */
 	protected <T> PrimaryKey createInDB(T bean) throws SQLException, NotSupportedException {
 		PrimaryKey primaryKey = null;
 		Attribute sequenceAttribute = getSequence(bean.getClass());
@@ -943,18 +1276,41 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Fill prepared statement.
+	 *
+	 * @param pstmt the pstmt
+	 * @param typedValues the typed values
+	 * @throws SQLException the SQL exception
+	 */
 	private void fillPreparedStatement(PreparedStatement pstmt, List<TypedValue> typedValues) throws SQLException {
 		for (TypedValue typedValue : typedValues) {
 			typedValue.fillPreparedStatement(pstmt);
 		}
 	}
 
+	/**
+	 * Fill prepared statement.
+	 *
+	 * @param pstmt the pstmt
+	 * @param typedValues the typed values
+	 * @throws SQLException the SQL exception
+	 */
 	private void fillPreparedStatement(PreparedStatement pstmt, TypedValue[] typedValues) throws SQLException {
 		for (TypedValue typedValue : typedValues) {
 			typedValue.fillPreparedStatement(pstmt);
 		}
 	}
 
+	/**
+	 * Fill prepared statement.
+	 *
+	 * @param pstmt the pstmt
+	 * @param beanClass the bean class
+	 * @param cv the cv
+	 * @param columns the columns
+	 * @throws SQLException the SQL exception
+	 */
 	private void fillPreparedStatement(PreparedStatement pstmt, Class<?> beanClass, ColumnsAndValues cv, String... columns) throws SQLException {
 
 		List<String> cols = null;
@@ -974,6 +1330,15 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the prepared insert statement.
+	 *
+	 * @param bean the bean
+	 * @param generatedColumns the generated columns
+	 * @return the prepared insert statement
+	 * @throws NotSupportedException the not supported exception
+	 * @throws SQLException the SQL exception
+	 */
 	protected PreparedStatement getPreparedInsertStatement(Object bean, String... generatedColumns) throws NotSupportedException, SQLException  {
 		String tableName = this.getQualifiedTableName(bean.getClass());
 		ColumnsAndValues cv = getInsertColumnValues(bean);
@@ -988,6 +1353,17 @@ public class BaseDBContext
 		return pstmt;
 	}
 
+	/**
+	 * Gets the prepared update statement.
+	 *
+	 * @param bean the bean
+	 * @param where the where
+	 * @param columns the columns
+	 * @return the prepared update statement
+	 * @throws NotSupportedException the not supported exception
+	 * @throws NothingToDoException the nothing to do exception
+	 * @throws SQLException the SQL exception
+	 */
 	protected PreparedStatement getPreparedUpdateStatement(Object bean, String where, String... columns) throws NotSupportedException, NothingToDoException, SQLException {
 		String tableName = this.getQualifiedTableName(bean.getClass());
 		List<TypedValue> typedValues = new ArrayList<TypedValue>();
@@ -1002,6 +1378,14 @@ public class BaseDBContext
 		return pstmt;
 	}
 
+	/**
+	 * Gets the prepared delete statement.
+	 *
+	 * @param bean the bean
+	 * @return the prepared delete statement
+	 * @throws NotSupportedException the not supported exception
+	 * @throws SQLException the SQL exception
+	 */
 	protected PreparedStatement getPreparedDeleteStatement(Object bean) throws NotSupportedException, SQLException {
 		String tableName = this.getQualifiedTableName(bean.getClass());
 		List<TypedValue> typedValues = new ArrayList<TypedValue>();
@@ -1015,6 +1399,15 @@ public class BaseDBContext
 		return pstmt;
 	}
 
+	/**
+	 * Gets the primary key where clause.
+	 *
+	 * @param bean the bean
+	 * @param typedValues the typed values
+	 * @param where the where
+	 * @return the primary key where clause
+	 * @throws NotSupportedException the not supported exception
+	 */
 	private String getPrimaryKeyWhereClause(Object bean, List<TypedValue> typedValues, String where) throws NotSupportedException {
 
 		int pos = typedValues.size();
@@ -1090,6 +1483,14 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the update column values.
+	 *
+	 * @param bean the bean
+	 * @param typedValues the typed values
+	 * @param columns the columns
+	 * @return the update column values
+	 */
 	private ColumnsAndValues getUpdateColumnValues(Object bean, List<TypedValue> typedValues, String... columns) {
 		int pos = 0;
 		List<String> cols= null;
@@ -1123,26 +1524,69 @@ public class BaseDBContext
 		return cv;
 	}
 
+	/**
+	 * Gets the prepared insert statement.
+	 *
+	 * @param prepared the prepared
+	 * @param tableName the table name
+	 * @param cv the cv
+	 * @return the prepared insert statement
+	 */
 	protected String getPreparedInsertStatement(PREPARED prepared, String tableName, ColumnsAndValues cv) {
 		String result = "insert into " + tableName + " (" + cv.getColumns() + ") values (" + cv.getPreparedValues() + ")";
 		log.debug(result);
 		return result;
 	}
 
+	/**
+	 * Use prepared statement.
+	 *
+	 * @param bean the bean
+	 * @return true, if successful
+	 */
 	private boolean usePreparedStatement(Object bean) {
 		Class<? extends Object> clazz = bean.getClass();
 		return clazz.isAnnotationPresent(Table.class) && clazz.getAnnotation(Table.class).usePreparedStatement();
 	}
 
+	/**
+	 * Use prepared where statement.
+	 *
+	 * @param bean the bean
+	 * @return true, if successful
+	 */
 	protected boolean usePreparedWhereStatement(Object bean) {
 		return usePreparedStatement(bean) && allowPreparedWhere;
 	}
 
+	/**
+	 * Update.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param columns the columns
+	 * @return the t
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 * @throws NotSupportedException the not supported exception
+	 */
 	@Override
 	public <T> T update(T bean, String... columns) throws SQLException, InitProfileException, NotSupportedException {
 		return updateWhere(bean, null, columns);
 	}
 
+	/**
+	 * Update where.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param where the where
+	 * @param columns the columns
+	 * @return the t
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 * @throws NotSupportedException the not supported exception
+	 */
 	@Override
 	public <T> T updateWhere(T bean, String where, String... columns) throws SQLException, InitProfileException, NotSupportedException {
 		boolean inTransaction = false;
@@ -1203,6 +1647,15 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Execute update.
+	 *
+	 * @param statement the statement
+	 * @param typedFilterValues the typed filter values
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 * @throws NotSupportedException the not supported exception
+	 */
 	@Override
 	public void executeUpdate(String statement, TypedValue... typedFilterValues) throws SQLException, InitProfileException, NotSupportedException {
 		boolean inTransaction = false;
@@ -1247,6 +1700,15 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Delete.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 * @throws NotSupportedException the not supported exception
+	 */
 	@Override
 	public <T> void delete(T bean) throws SQLException, InitProfileException, NotSupportedException {
 
@@ -1309,6 +1771,14 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Delete subs.
+	 *
+	 * @param bean the bean
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 * @throws NotSupportedException the not supported exception
+	 */
 	protected void deleteSubs(Object bean) throws SQLException, InitProfileException, NotSupportedException {
 		for (Field field : bean.getClass().getDeclaredFields()) {
 			if (field.getAnnotation(SubTable.class) != null) {
@@ -1322,12 +1792,31 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Delete subs.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 * @throws NotSupportedException the not supported exception
+	 */
 	private void deleteSubs(Object bean, Field field) throws SQLException, InitProfileException, NotSupportedException {
 		for (Object sub : this.getSubs(bean, field)) {
 			this.delete(sub);
 		}
 	}
 
+	/**
+	 * Select.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param handler the handler
+	 * @return the list
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 */
 	@Override
 	public <T> List<T> select(Class<T> clazz, ListSelectHandler<T> handler) throws SQLException, InitProfileException {
 		boolean inTransaction = false;
@@ -1354,6 +1843,13 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Select.
+	 *
+	 * @param handler the handler
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 */
 	@Override
 	public void select(SelectHandler handler) throws SQLException, InitProfileException {
 		boolean inTransaction = false;
@@ -1392,6 +1888,13 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Begin transaction.
+	 *
+	 * @return the connection
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 */
 	@Override
 	public synchronized Connection beginTransaction() throws SQLException, InitProfileException {
 		if (this.connection == null) {
@@ -1401,6 +1904,12 @@ public class BaseDBContext
 		return this.connection;
 	}
 
+	/**
+	 * Commit.
+	 *
+	 * @throws NotInTransactionException the not in transaction exception
+	 * @throws SQLException the SQL exception
+	 */
 	@Override
 	public void commit() throws NotInTransactionException, SQLException {
 		if (this.connection == null) {
@@ -1422,6 +1931,11 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Rollback.
+	 *
+	 * @throws SQLException the SQL exception
+	 */
 	@Override
 	public void rollback() throws SQLException {
 		if (this.connection == null) {
@@ -1437,6 +1951,9 @@ public class BaseDBContext
 		}
 	}
 	
+	/**
+	 * Close connection.
+	 */
 	private void closeConnection() {
 		if (this.connection != null) {
 			try {
@@ -1449,6 +1966,13 @@ public class BaseDBContext
 		
 	}
 
+	/**
+	 * Reload.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @return the t
+	 */
 	private <T> T reload(T bean) {
 		try {
 			@SuppressWarnings("unchecked")
@@ -1462,6 +1986,14 @@ public class BaseDBContext
 		return null;
 	}
 
+	/**
+	 * Creates the insert statement.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @return the string
+	 * @throws NotSupportedException the not supported exception
+	 */
 	@Override
 	public <T> String createInsertStatement(T bean) throws NotSupportedException {
 		/**
@@ -1471,11 +2003,11 @@ public class BaseDBContext
 	}
 
 	/**
-	 * 
-	 * 
-	 * @param bean
+	 * Gets the insert column values.
+	 *
+	 * @param bean the bean
 	 * @return ColumnsAndValues
-	 * @throws NotSupportedException
+	 * @throws NotSupportedException the not supported exception
 	 */
 	protected ColumnsAndValues getInsertColumnValues(Object bean) throws NotSupportedException {
 
@@ -1544,6 +2076,12 @@ public class BaseDBContext
 		return cv;
 	}
 
+	/**
+	 * Gets the generated keys.
+	 *
+	 * @param bean the bean
+	 * @return the generated keys
+	 */
 	protected String[] getGeneratedKeys(Object bean) {
 		List<String> keys = new ArrayList<>();
 
@@ -1562,6 +2100,19 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the long value.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @param attribute the attribute
+	 * @return the long value
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws InvocationTargetException the invocation target exception
+	 */
 	protected String getLongValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (null != this.getValue(bean, field)) {
@@ -1571,12 +2122,40 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param clazz the clazz
+	 * @param field the field
+	 * @param attribute the attribute
+	 * @return the value
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws InvocationTargetException the invocation target exception
+	 */
 	@SuppressWarnings("unchecked")
 	protected <T> T getValue(Object bean, Class<T> clazz, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException, IllegalAccessException,
 				IllegalArgumentException, InvocationTargetException  {
 		return (T) this.getValue(bean, field);
 	}
 
+	/**
+	 * Gets the int value.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @param attribute the attribute
+	 * @return the int value
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws InvocationTargetException the invocation target exception
+	 */
 	protected String getIntValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (null != this.getValue(bean, field)) {
@@ -1586,6 +2165,19 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the float value.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @param attribute the attribute
+	 * @return the float value
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws InvocationTargetException the invocation target exception
+	 */
 	protected String getFloatValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (null != this.getValue(bean, field)) {
@@ -1595,6 +2187,19 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the boolean value.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @param attribute the attribute
+	 * @return the boolean value
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws InvocationTargetException the invocation target exception
+	 */
 	protected String getBooleanValue(Object bean, Field field, Attribute attribute) throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (null != this.getValue(bean, field)) {
@@ -1604,6 +2209,12 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the qualified table name.
+	 *
+	 * @param clazz the clazz
+	 * @return the qualified table name
+	 */
 	@Override
 	public String getQualifiedTableName(Class<? extends Object> clazz) {
 		Table table = clazz.getAnnotation(Table.class);
@@ -1614,6 +2225,14 @@ public class BaseDBContext
 		return getQualifiedName(table.name());
 	}
 
+	/**
+	 * Gets the column.
+	 *
+	 * @param clazz the clazz
+	 * @param fieldName the field name
+	 * @return the column
+	 * @throws NoSuchFieldException the no such field exception
+	 */
 	@Override
 	public String getColumn(Class<? extends Object> clazz, String fieldName) throws NoSuchFieldException {
 
@@ -1631,10 +2250,28 @@ public class BaseDBContext
 
 	}
 
+	/**
+	 * Gets the insert statement.
+	 *
+	 * @param prepared the prepared
+	 * @param tableName the table name
+	 * @param cv the cv
+	 * @return the insert statement
+	 */
 	protected String getInsertStatement(PREPARED prepared, String tableName, ColumnsAndValues cv) {
 		return "insert into " + tableName + " (" + cv.getColumns() + ") values (" + cv.getValues(this, prepared) + ")";
 	}
 
+	/**
+	 * Gets the update statement.
+	 *
+	 * @param prepared the prepared
+	 * @param tableName the table name
+	 * @param cv the cv
+	 * @param whereClause the where clause
+	 * @return the update statement
+	 * @throws NothingToDoException the nothing to do exception
+	 */
 	protected String getUpdateStatement(PREPARED prepared, String tableName, ColumnsAndValues cv, String whereClause) throws NothingToDoException {
 		if (cv.size() == 0) {
 			throw new NothingToDoException();
@@ -1664,6 +2301,13 @@ public class BaseDBContext
 		return sb.toString();
 	}
 
+	/**
+	 * Gets the delete statement.
+	 *
+	 * @param tableName the table name
+	 * @param whereClause the where clause
+	 * @return the delete statement
+	 */
 	protected String getDeleteStatement(String tableName, String whereClause) {
 		StringBuilder sb = new StringBuilder();
 		if (StringUtils.isNotBlank(whereClause)) {
@@ -1674,6 +2318,14 @@ public class BaseDBContext
 		return sb.toString();
 	}
 
+	/**
+	 * Gets the date value.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @param attribute the attribute
+	 * @return the date value
+	 */
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
 		try {
 			Date date;
@@ -1691,6 +2343,14 @@ public class BaseDBContext
 		return null;
 	}
 
+	/**
+	 * Gets the date value XXX.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @param attribute the attribute
+	 * @return the date value XXX
+	 */
 	protected Date getDateValueXXX(Object bean, Field field, Attribute attribute) {
 		try {
 			Date date;
@@ -1708,6 +2368,14 @@ public class BaseDBContext
 		return null;
 	}
 
+	/**
+	 * Gets the calendar value.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @param attribute the attribute
+	 * @return the calendar value
+	 */
 	protected Calendar getCalendarValue(Object bean, Field field, Attribute attribute) {
 		try {
 			Date date;
@@ -1727,21 +2395,51 @@ public class BaseDBContext
 		return null;
 	}
 
+	/**
+	 * To timestamp.
+	 *
+	 * @param date the date
+	 * @return the string
+	 */
 	@Override
 	public String toTimestamp(Date date) {
 		return "to_date('" + new SimpleDateFormat(TIMESTAMP_FOR_ORACLE).format(date) + "','" + TIMESTAMP_ORACLE + "')";
 	}
 
+	/**
+	 * To date.
+	 *
+	 * @param date the date
+	 * @return the string
+	 */
 	@Override
 	public String toDate(Date date) {
 		return "to_date('" + new SimpleDateFormat(TIMESTAMP_FOR_ORACLE).format(date) + "','" + TIMESTAMP_ORACLE + "')";
 	}
 
+	/**
+	 * To time.
+	 *
+	 * @param date the date
+	 * @return the string
+	 */
 	@Override
 	public String toTime(Date date) {
 		return "to_date('" + new SimpleDateFormat(TIME_FOR_ORACLE).format(date) + "','" + TIME_ORACLE + "')";
 	}
 
+	/**
+	 * Gets the string value.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @return the string value
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws InvocationTargetException the invocation target exception
+	 */
 	protected String getStringValue(Object bean, Field field) throws NoSuchMethodException, SecurityException,
 			IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		if (null != this.getValue(bean, field)) {
@@ -1751,6 +2449,18 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @return the value
+	 * @throws NoSuchMethodException the no such method exception
+	 * @throws SecurityException the security exception
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws IllegalArgumentException the illegal argument exception
+	 * @throws InvocationTargetException the invocation target exception
+	 */
 	protected Object getValue(Object bean, Field field) throws NoSuchMethodException, SecurityException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException {
 		String getter = "get" + StringUtils.capitalize(field.getName());
@@ -1758,11 +2468,32 @@ public class BaseDBContext
 		return method.invoke(bean);
 	}
 
+	/**
+	 * Creates the update statement.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param columns the columns
+	 * @return the string
+	 * @throws NotSupportedException the not supported exception
+	 * @throws NothingToDoException the nothing to do exception
+	 */
 	@Override
 	public <T> String createUpdateStatement(T bean, String... columns) throws NotSupportedException, NothingToDoException {
 		return createUpdateWhereStatement(bean, null, columns);
 	}
 
+	/**
+	 * Creates the update where statement.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param where the where
+	 * @param columns the columns
+	 * @return the string
+	 * @throws NotSupportedException the not supported exception
+	 * @throws NothingToDoException the nothing to do exception
+	 */
 	protected <T> String createUpdateWhereStatement(T bean, String where, String... columns) throws NotSupportedException, NothingToDoException {
 		Table table = bean.getClass().getAnnotation(Table.class);
 		if (table == null) {
@@ -1778,6 +2509,14 @@ public class BaseDBContext
 				this.getQualifiedTableName(bean.getClass()), cv, whereClause);
 	}
 	
+	/**
+	 * Adds the primary key where clause.
+	 *
+	 * @param bean the bean
+	 * @param where the where
+	 * @return the string
+	 * @throws NotSupportedException the not supported exception
+	 */
 	private String addPrimaryKeyWhereClause(Object bean, String where) throws NotSupportedException {
 		Table table = bean.getClass().getAnnotation(Table.class);
 		if (table == null) {
@@ -1832,6 +2571,14 @@ public class BaseDBContext
 		return whereClause.toString();
 	}
 
+	/**
+	 * Creates the delete statement.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @return the string
+	 * @throws NotSupportedException the not supported exception
+	 */
 	@Override
 	public <T> String createDeleteStatement(T bean) throws NotSupportedException {
 		/**
@@ -1886,33 +2633,69 @@ public class BaseDBContext
 		return getDeleteStatement(this.getQualifiedTableName(bean.getClass()), whereClause.toString());
 	}
 
+	/**
+	 * Gets the schema.
+	 *
+	 * @return the schema
+	 */
 	public String getSchema() {
 		return this.schema;
 	}
 
+	/**
+	 * Sets the schema.
+	 *
+	 * @param schema the new schema
+	 */
 	@Override
 	public void setSchema(String schema) {
 		this.schema = schema;
 	}
 
+	/**
+	 * Gets the connection.
+	 *
+	 * @return the connection
+	 */
 	public Connection getConnection() {
 		return this.connection;
 	}
 
+	/**
+	 * Gets the time stamp.
+	 *
+	 * @return the time stamp
+	 */
 	@Override
 	public String getTimeStamp() {
 		return "SYSDATE";
 	}
 
+	/**
+	 * Gets the sys date.
+	 *
+	 * @return the sys date
+	 */
 	@Override
 	public String getSysDate() {
 		return "SYSDATE";
 	}
 	
+	/**
+	 * Gets the now plus hours.
+	 *
+	 * @param hours the hours
+	 * @return the now plus hours
+	 */
 	public String getNowPlusHours(int hours) {
 		return "SYSDATE " + ((hours >= 0) ? "+":"") + hours + " / 24";
 	}
 
+	/**
+	 * Close.
+	 *
+	 * @throws SQLException the SQL exception
+	 */
 	@Override
 	public void close() throws SQLException {
 		synchronized (this) {
@@ -1923,6 +2706,14 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the sequence number.
+	 *
+	 * @param beanClazz the bean clazz
+	 * @param sequenceAttribute the sequence attribute
+	 * @return the sequence number
+	 * @throws Exception the exception
+	 */
 	public PrimaryKey getSequenceNumber(Class<?> beanClazz, Attribute sequenceAttribute) throws Exception {
 
 		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(getQualifiedQuotedName(sequenceAttribute.sequence()));
@@ -1930,6 +2721,13 @@ public class BaseDBContext
 		return new PrimaryKey(beanClazz, sequenceAttribute.name(), handler.getResult());
 	}
 
+	/**
+	 * Gets the sequence number.
+	 *
+	 * @param sequenceName the sequence name
+	 * @return the sequence number
+	 * @throws Exception the exception
+	 */
 	public Long getSequenceNumber(String sequenceName) throws Exception {
 
 		SequenceValueSelectHandler handler = new SequenceValueSelectHandler(getQualifiedQuotedName(sequenceName));
@@ -1937,7 +2735,15 @@ public class BaseDBContext
 		return handler.getResult();
 	}
 	
+	/** The Constant HOCHKOMMA. */
 	static final String HOCHKOMMA = "\"";
+	
+	/**
+	 * Gets the qualified quoted name.
+	 *
+	 * @param name the name
+	 * @return the qualified quoted name
+	 */
 	public String getQualifiedQuotedName(String name) {
 		if (!StringUtils.contains(name, '.') && this.schema != null) {
 			return HOCHKOMMA + this.schema + HOCHKOMMA + "." + HOCHKOMMA + name + HOCHKOMMA;
@@ -1946,6 +2752,12 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the qualified name.
+	 *
+	 * @param name the name
+	 * @return the qualified name
+	 */
 	public String getQualifiedName(String name) {
 		if (!StringUtils.contains(name, '.') && this.schema != null) {
 			return this.schema + "." + name;
@@ -1954,56 +2766,123 @@ public class BaseDBContext
 		}
 	}
 
+	/**
+	 * Gets the generated key.
+	 *
+	 * @param stmt the stmt
+	 * @param generatedColumns the generated columns
+	 * @param beanClazz the bean clazz
+	 * @return the generated key
+	 * @throws SQLException the SQL exception
+	 */
 	public PrimaryKey getGeneratedKey(Statement stmt, String[] generatedColumns, Class<?> beanClazz) throws SQLException {
 		ResultSet generatedKeys = stmt.getGeneratedKeys();
 		return new PrimaryKey(beanClazz, generatedColumns, generatedKeys);
 	}
 
+	/**
+	 * Gets the data source.
+	 *
+	 * @return the data source
+	 */
 	@Override
 	public DataSource getDataSource() {
 		return new JDBCDataSource(this.name);
 	}
 
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
 	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	/**
+	 * Gets the string as db string.
+	 *
+	 * @param value the value
+	 * @return the string as db string
+	 */
 	@Override
 	public String getStringAsDbString(String value) {
 		return "'" + value + "'";
 	}
 
+	/**
+	 * Gets the date as db string.
+	 *
+	 * @param value the value
+	 * @return the date as db string
+	 */
 	@Override
 	public String getDateAsDbString(Date value) {
 		return toDate(value);
 	}
 
+	/**
+	 * Gets the time as db string.
+	 *
+	 * @param value the value
+	 * @return the time as db string
+	 */
 	@Override
 	public String getTimeAsDbString(Date value) {
 		return toTime(value);
 	}
 
+	/**
+	 * Gets the timestamp as db string.
+	 *
+	 * @param value the value
+	 * @return the timestamp as db string
+	 */
 	@Override
 	public String getTimestampAsDbString(Date value) {
 		return toTimestamp(value);
 	}
 
+	/**
+	 * Gets the long as db string.
+	 *
+	 * @param value the value
+	 * @return the long as db string
+	 */
 	@Override
 	public String getLongAsDbString(Long value) {
 		return Long.toString(value);
 	}
 
+	/**
+	 * Gets the int as db string.
+	 *
+	 * @param value the value
+	 * @return the int as db string
+	 */
 	@Override
 	public String getIntAsDbString(Integer value) {
 		return Integer.toString(value);
 	}
 
+	/**
+	 * Gets the float as db string.
+	 *
+	 * @param value the value
+	 * @return the float as db string
+	 */
 	@Override
 	public String getFloatAsDbString(Float value) {
 		return Float.toString(value);
 	}
 
+	/**
+	 * Gets the boolean as db string.
+	 *
+	 * @param value the value
+	 * @return the boolean as db string
+	 */
 	@Override
 	public String getBooleanAsDbString(Boolean value) {
 		return Boolean.toString(value);

@@ -24,14 +24,42 @@ package org.mgnl.nicki.core.objects;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface ContextSearchResult.
+ */
 public interface ContextSearchResult {
 
+	/**
+	 * Gets the name in namespace.
+	 *
+	 * @return the name in namespace
+	 */
 	String getNameInNamespace();
 	
+	/**
+	 * Gets the values.
+	 *
+	 * @param name the name
+	 * @return the values
+	 */
 	List<Object> getValues(String name);
 
+	/**
+	 * Checks for attribute.
+	 *
+	 * @param name the name
+	 * @return true, if successful
+	 */
 	boolean hasAttribute(String name);
 
+	/**
+	 * Gets the value.
+	 *
+	 * @param clazz the clazz
+	 * @param name the name
+	 * @return the value
+	 */
 	Object getValue(Class<?> clazz, String name);
 
 }

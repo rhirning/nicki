@@ -29,10 +29,25 @@ import org.mgnl.nicki.db.connection.ConnectionManager;
 import org.mgnl.nicki.db.connection.InvalidConfigurationException;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DBCPProfile.
+ */
 public class DBCPProfile implements DBProfile {
+	
+	/** The auto commit. */
 	private boolean autoCommit = false;
+	
+	/** The connection manager. */
 	private ConnectionManager connectionManager;
 
+	/**
+	 * Instantiates a new DBCP profile.
+	 *
+	 * @param profileConfigBase the profile config base
+	 * @param autoCommit the auto commit
+	 * @throws InvalidConfigurationException the invalid configuration exception
+	 */
 	public DBCPProfile(String profileConfigBase, boolean autoCommit) throws InvalidConfigurationException {
 		super();
 		this.autoCommit = autoCommit;
@@ -40,6 +55,12 @@ public class DBCPProfile implements DBProfile {
 		this.connectionManager.init(profileConfigBase);
 	}
 
+	/**
+	 * Gets the connection.
+	 *
+	 * @return the connection
+	 * @throws SQLException the SQL exception
+	 */
 	public Connection getConnection() throws SQLException  {
 		Connection connection = this.connectionManager.getConnection();
 		connection.setAutoCommit(this.autoCommit);

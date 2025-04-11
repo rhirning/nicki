@@ -35,6 +35,7 @@ import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for box complex type.
  * 
@@ -64,14 +65,23 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Box {
 
+    /** The text. */
     protected Text text;
+    
+    /** The link. */
     @XmlElement(required = true)
     protected Link link;
+    
+    /** The style. */
     @XmlAttribute(name = "style")
     @XmlSchemaType(name = "anySimpleType")
     protected String style;
+    
+    /** The x. */
     @XmlAttribute(name = "x")
     protected Integer x;
+    
+    /** The y. */
     @XmlAttribute(name = "y")
     protected Integer y;
 

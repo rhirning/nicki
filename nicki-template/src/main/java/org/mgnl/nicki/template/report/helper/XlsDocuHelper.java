@@ -48,9 +48,34 @@ import org.xml.sax.SAXException;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XlsDocuHelper.
+ */
 public class XlsDocuHelper {
-	enum DOC_TYPE {XLS, XLSX}
+	
+	/**
+	 * The Enum DOC_TYPE.
+	 */
+	enum DOC_TYPE {
+/** The xls. */
+XLS, 
+ /** The xlsx. */
+ XLSX}
 
+	/**
+	 * Generate.
+	 *
+	 * @param type the type
+	 * @param templatePath the template path
+	 * @param dataModel the data model
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TemplateException the template exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 */
 	@Deprecated
 	public static InputStream generate(TYPE type, String templatePath, Map<String, Object> dataModel) throws IOException, TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 		if (type == TYPE.JNDI) {
@@ -62,6 +87,19 @@ public class XlsDocuHelper {
 		}
 	}
 
+	/**
+	 * Generate xlsx.
+	 *
+	 * @param type the type
+	 * @param templatePath the template path
+	 * @param dataModel the data model
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TemplateException the template exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 */
 	public static InputStream generateXlsx(TYPE type, String templatePath, Map<String, Object> dataModel) throws IOException, TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 		if (type == TYPE.JNDI) {
 			return generateJNDI(DOC_TYPE.XLSX, templatePath, dataModel);
@@ -72,6 +110,19 @@ public class XlsDocuHelper {
 		}
 	}
 
+	/**
+	 * Generate JNDI.
+	 *
+	 * @param docType the doc type
+	 * @param templatePath the template path
+	 * @param dataModel the data model
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TemplateException the template exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 */
 	@SuppressWarnings("deprecation")
 	private static InputStream generateJNDI(DOC_TYPE docType, String templatePath, Map<String, Object> dataModel) throws IOException, TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 		StringBuilder sb = new StringBuilder();
@@ -94,6 +145,20 @@ public class XlsDocuHelper {
 			return engine.executeTemplateAsXlsx(template, templatePath + ".ftl", dataModel);
 		}
 	}
+	
+	/**
+	 * Generate classpath.
+	 *
+	 * @param docType the doc type
+	 * @param templatePath the template path
+	 * @param dataModel the data model
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TemplateException the template exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 */
 	@SuppressWarnings("deprecation")
 	private static InputStream generateClasspath(DOC_TYPE docType, String templatePath, Map<String, Object> dataModel) throws IOException, TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
 
@@ -111,6 +176,13 @@ public class XlsDocuHelper {
 	}
 	
 
+	/**
+	 * Gets the template.
+	 *
+	 * @param base the base
+	 * @param path the path
+	 * @return the template
+	 */
 	public static EngineTemplate getTemplate(String base, String path) {
 		StringBuilder sb = new StringBuilder();
 		sb.append(base).append("/").append(path);

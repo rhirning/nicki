@@ -31,13 +31,33 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPCellEvent;
 import com.lowagie.text.pdf.PdfWriter;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CheckboxCellEvent.
+ */
 class CheckboxCellEvent implements PdfPCellEvent {
+    
+    /** The checkbox. */
     // The name of the check box field
     protected Checkbox checkbox;
+    
+    /**
+     * Instantiates a new checkbox cell event.
+     *
+     * @param checkbox the checkbox
+     */
     // We create a cell event
     public CheckboxCellEvent(Checkbox checkbox) {
         this.checkbox = checkbox;
     }
+    
+    /**
+     * Cell layout.
+     *
+     * @param cell the cell
+     * @param position the position
+     * @param canvases the canvases
+     */
     // We create and add the check box field
     @Override
     public void cellLayout(PdfPCell cell, Rectangle position,

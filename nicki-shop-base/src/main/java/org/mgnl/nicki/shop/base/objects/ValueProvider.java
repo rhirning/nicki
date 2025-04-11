@@ -24,15 +24,52 @@ package org.mgnl.nicki.shop.base.objects;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface ValueProvider.
+ */
 public interface ValueProvider {
-	public enum TYPE {SELF,ALL};
+	
+	/**
+	 * The Enum TYPE.
+	 */
+	public enum TYPE {
+/** The self. */
+SELF,
+/** The all. */
+ALL};
 
+	/**
+	 * Inits the.
+	 *
+	 * @param selector the selector
+	 * @param i18nBase the i 18 n base
+	 */
 	void init(Selector selector, String i18nBase);
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	String getValue();
 
+	/**
+	 * Gets the person query.
+	 *
+	 * @param article the article
+	 * @param value the value
+	 * @return the person query
+	 */
 	String getPersonQuery(CatalogArticle article, String value);
 
+	/**
+	 * Gets the article query.
+	 *
+	 * @param person the person
+	 * @param value the value
+	 * @return the article query
+	 */
 	String getArticleQuery(Person person, Object value);
 
 }

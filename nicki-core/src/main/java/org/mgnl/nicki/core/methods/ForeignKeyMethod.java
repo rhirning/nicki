@@ -32,14 +32,35 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 import freemarker.template.TemplateMethodModelEx;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ForeignKeyMethod.
+ */
 public class ForeignKeyMethod implements Serializable,TemplateMethodModelEx {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -5726598490077862331L;
+	
+	/** The object. */
 	private DynamicObject object;
+	
+	/** The foreign key. */
 	private String foreignKey;
+	
+	/** The context. */
 	private NickiContext context;
+	
+	/** The class definition. */
 	private Class<? extends DynamicObject> classDefinition;
 	
+	/**
+	 * Instantiates a new foreign key method.
+	 *
+	 * @param context the context
+	 * @param rs the rs
+	 * @param ldapName the ldap name
+	 * @param classDefinition the class definition
+	 */
 	public ForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName,
 			Class<? extends DynamicObject> classDefinition) {
 		this.context = context;
@@ -47,6 +68,12 @@ public class ForeignKeyMethod implements Serializable,TemplateMethodModelEx {
 		this.classDefinition = classDefinition;
 	}
 
+	/**
+	 * Exec.
+	 *
+	 * @param arguments the arguments
+	 * @return the dynamic object
+	 */
 	public DynamicObject exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (object == null) {
 			object = context.loadObject(this.classDefinition, this.foreignKey);
@@ -54,22 +81,47 @@ public class ForeignKeyMethod implements Serializable,TemplateMethodModelEx {
 		return object;
 	}
 
+	/**
+	 * Gets the object.
+	 *
+	 * @return the object
+	 */
 	protected DynamicObject getObject() {
 		return object;
 	}
 
+	/**
+	 * Sets the object.
+	 *
+	 * @param object the new object
+	 */
 	protected void setObject(DynamicObject object) {
 		this.object = object;
 	}
 
+	/**
+	 * Gets the foreign key.
+	 *
+	 * @return the foreign key
+	 */
 	protected String getForeignKey() {
 		return foreignKey;
 	}
 
+	/**
+	 * Gets the context.
+	 *
+	 * @return the context
+	 */
 	protected NickiContext getContext() {
 		return context;
 	}
 
+	/**
+	 * Gets the class definition.
+	 *
+	 * @return the class definition
+	 */
 	public Class<? extends DynamicObject> getClassDefinition() {
 		return classDefinition;
 	}

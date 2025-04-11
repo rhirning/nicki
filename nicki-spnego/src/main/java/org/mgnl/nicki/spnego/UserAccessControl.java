@@ -24,6 +24,7 @@ package org.mgnl.nicki.spnego;
 
 import java.util.Properties;
 
+// TODO: Auto-generated Javadoc
 /**
  * An interface for specifying how a program/library interacts with an  
  * implementing object when performing user authorization (authZ). This 
@@ -487,7 +488,8 @@ public interface UserAccessControl {
     
     /**
      * Returns the user's info object for the given user.
-     * 
+     *
+     * @param username the username
      * @return the user's info object for the given user
      */
     UserInfo getUserInfo(final String username);
@@ -505,6 +507,8 @@ public interface UserAccessControl {
      * maintained, this method should not be called again unless the destroy 
      * method is called first.
      * </p>
+     *
+     * @param props the props
      */
     void init(final Properties props); 
 }

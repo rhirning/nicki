@@ -23,6 +23,9 @@ package org.mgnl.nicki.pdf.test;
 
 
 
+/**
+ * The Class PdfRenderTest.
+ */
 public class PdfRenderTest {
 
 

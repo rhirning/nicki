@@ -32,10 +32,22 @@ import org.mgnl.nicki.core.methods.StructuredData;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DynamicStructObject.
+ */
 @SuppressWarnings("serial")
 public abstract class DynamicStructObject extends BaseDynamicObject {
 
+	/** The Constant SEPARATOR. */
 	public static final String SEPARATOR = "/";
+	
+	/**
+	 * Gets the info.
+	 *
+	 * @param infoPath the info path
+	 * @return the info
+	 */
 	/*
 	 * Beispiel /ref/src
 	 */
@@ -58,6 +70,12 @@ public abstract class DynamicStructObject extends BaseDynamicObject {
 		}
 	}
 	
+	/**
+	 * Gets the date info.
+	 *
+	 * @param infoPath the info path
+	 * @return the date info
+	 */
 	public Date getDateInfo(String infoPath) {
 		try {
 			String info = StringUtils.removeEnd(getInfo(infoPath), "Z");
@@ -67,14 +85,29 @@ public abstract class DynamicStructObject extends BaseDynamicObject {
 		}
 	}
 
+	/**
+	 * Gets the flag.
+	 *
+	 * @return the flag
+	 */
 	public String getFlag() {
 		return getAttribute("struct:flag");
 	}
 
+	/**
+	 * Gets the xml.
+	 *
+	 * @return the xml
+	 */
 	public String getXml() {
 		return getAttribute("struct:xml");
 	}
 	
+	/**
+	 * Gets the document.
+	 *
+	 * @return the document
+	 */
 	public Document getDocument() {
 		return (Document) ((StructuredData) get("struct")).getDocument();
 	}

@@ -34,6 +34,9 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 import org.mgnl.nicki.db.test.db.ErrorEntry;
 
 
+/**
+ * The Class TestBase.
+ */
 public abstract class TestBase {
 	/*
 	private static DataBaseManager dataBaseManager;	

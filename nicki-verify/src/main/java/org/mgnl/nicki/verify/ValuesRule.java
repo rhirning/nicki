@@ -28,18 +28,38 @@ import java.util.Map;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
 // val					= values:value1,value2,value3
 
+/**
+ * The Class ValuesRule.
+ */
 @SuppressWarnings("serial")
 public class ValuesRule extends Rule {
+	
+	/** The Constant SEPARATOR. */
 	static final public String SEPARATOR = ",";
+	
+	/** The allowed values. */
 	private List<String> allowedValues;
 
+	/**
+	 * Instantiates a new values rule.
+	 *
+	 * @param parameter the parameter
+	 */
 	public ValuesRule(String parameter) {
 		setParameter(parameter);
 		allowedValues = DataHelper.getList(parameter, SEPARATOR);
 	}
 	
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		if (allowedValues.contains(value)) {
@@ -49,10 +69,21 @@ public class ValuesRule extends Rule {
 		}
 	}
 	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".values", getParameter());
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "values:" + getParameter();
 	}

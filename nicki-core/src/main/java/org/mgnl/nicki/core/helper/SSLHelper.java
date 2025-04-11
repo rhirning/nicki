@@ -42,9 +42,19 @@ import javax.net.ssl.X509TrustManager;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SSLHelper.
+ */
 @Slf4j
 public class SSLHelper {
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws Exception the exception
+	 */
 	public static void main(String[] args) throws Exception {
 		if (args.length < 4) {
 			throw new Exception("Wrong number of arguments");
@@ -58,6 +68,15 @@ public class SSLHelper {
 		installCerts(host, port, passphrase.toCharArray(), filename);
 	}
 
+	/**
+	 * Install certs.
+	 *
+	 * @param host the host
+	 * @param port the port
+	 * @param passphrase the passphrase
+	 * @param filename the filename
+	 * @throws Exception the exception
+	 */
 	public static void installCerts(String host, int port, char[] passphrase, String filename) throws Exception {
 		File file = new File(filename);
 		log.debug(file.getAbsolutePath());
@@ -132,8 +151,15 @@ public class SSLHelper {
 
 	}
 
+	/** The Constant HEXDIGITS. */
 	private static final char[] HEXDIGITS = "0123456789abcdef".toCharArray();
 
+	/**
+	 * To hex string.
+	 *
+	 * @param bytes the bytes
+	 * @return the string
+	 */
 	private static String toHexString(byte[] bytes) {
 		StringBuilder sb = new StringBuilder(bytes.length * 3);
 		for (int b : bytes) {
@@ -145,24 +171,54 @@ public class SSLHelper {
 		return sb.toString();
 	}
 
+	/**
+	 * The Class SavingTrustManager.
+	 */
 	private static class SavingTrustManager implements X509TrustManager {
 
+		/** The tm. */
 		private final X509TrustManager tm;
+		
+		/** The chain. */
 		private X509Certificate[] chain;
 
+		/**
+		 * Instantiates a new saving trust manager.
+		 *
+		 * @param tm the tm
+		 */
 		SavingTrustManager(X509TrustManager tm) {
 			this.tm = tm;
 		}
 
+		/**
+		 * Gets the accepted issuers.
+		 *
+		 * @return the accepted issuers
+		 */
 		public X509Certificate[] getAcceptedIssuers() {
 			throw new UnsupportedOperationException();
 		}
 
+		/**
+		 * Check client trusted.
+		 *
+		 * @param chain the chain
+		 * @param authType the auth type
+		 * @throws CertificateException the certificate exception
+		 */
 		public void checkClientTrusted(X509Certificate[] chain, String authType)
 				throws CertificateException {
 			throw new UnsupportedOperationException();
 		}
 
+		/**
+		 * Check server trusted.
+		 *
+		 * @param chain the chain
+		 * @param authType the auth type
+		 * @throws CertificateException the certificate exception
+		 */
 		public void checkServerTrusted(X509Certificate[] chain, String authType)
 				throws CertificateException {
 			this.chain = chain;

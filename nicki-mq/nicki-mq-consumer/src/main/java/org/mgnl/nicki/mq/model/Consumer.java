@@ -3,6 +3,7 @@ package org.mgnl.nicki.mq.model;
 
 import lombok.Data;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-mq
@@ -23,13 +24,30 @@ import lombok.Data;
  * #L%
  */
 
+/**
+ * The Class Consumer.
+ */
 @Data
 public class Consumer {
+	
+	/** The name. */
 	private String name;
+	
+	/** The base. */
 	private String base;
+	
+	/** The destination. */
 	private String destination;
+	
+	/** The listener. */
 	private String listener;
+	
+	/** The selector. */
 	private String selector;
+	
+	/** The start. */
 	private String start;
+	
+	/** The rule. */
 	private String rule;
 }

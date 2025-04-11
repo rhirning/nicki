@@ -34,20 +34,46 @@ import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
 import freemarker.template.TemplateMethodModelEx;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StructuredReferenceMethod.
+ */
 public class StructuredReferenceMethod implements TemplateMethodModelEx, Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -81535049844368520L;
+	
+	/** The objects. */
 	List<DynamicObject> objects = null;
+	
+	/** The reference. */
 	StructuredDynamicReference reference;
+	
+	/** The path. */
 	String path;
+	
+	/** The context. */
 	NickiContext context;
 	
+	/**
+	 * Instantiates a new structured reference method.
+	 *
+	 * @param context the context
+	 * @param rs the rs
+	 * @param structuredDynamicReference the structured dynamic reference
+	 */
 	public StructuredReferenceMethod(NickiContext context, ContextSearchResult rs, StructuredDynamicReference structuredDynamicReference) {
 		this.context = context;
 		this.path = rs.getNameInNamespace();
 		this.reference = structuredDynamicReference;
 	}
 
+	/**
+	 * Exec.
+	 *
+	 * @param arguments the arguments
+	 * @return the list
+	 */
 	@SuppressWarnings("unchecked")
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (objects == null) {

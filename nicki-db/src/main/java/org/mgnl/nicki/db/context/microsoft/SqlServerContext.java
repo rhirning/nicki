@@ -34,29 +34,62 @@ import org.mgnl.nicki.db.context.DBContext;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SqlServerContext.
+ */
 @Slf4j
 public class SqlServerContext
 		extends BaseDBContext
 		implements DBContext {
 
+	/** The Constant TIMESTAMP_PATTERN. */
 	public final static String TIMESTAMP_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	
+	/** The Constant PARTS_PATTERN. */
 	public final static String PARTS_PATTERN = "yyyy, MM, dd, HH, mm, ss, SSS";
+	
+	/** The Constant DATE_PATTERN. */
 	public final static String DATE_PATTERN = "yyyy-MM-dd";
 
+	/**
+	 * Gets the time stamp.
+	 *
+	 * @return the time stamp
+	 */
 	@Override
 	public String getTimeStamp() {
 		return "CURRENT_TIMESTAMP";
 	}
 
+	/**
+	 * Gets the sys date.
+	 *
+	 * @return the sys date
+	 */
 	@Override
 	public String getSysDate() {
 		return "GETDATE";
 	}
 	
+	/**
+	 * Gets the now plus hours.
+	 *
+	 * @param hours the hours
+	 * @return the now plus hours
+	 */
 	public String getNowPlusHours(int hours) {
 		return "DATEADD(hour, " + hours + ", CURRENT_TIMESTAMP)}";
 	}
 	
+	/**
+	 * Gets the date value.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @param attribute the attribute
+	 * @return the date value
+	 */
 	@Override
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
 		if (attribute.now()) {
@@ -72,6 +105,12 @@ public class SqlServerContext
 		return null;
 	}
 
+	/**
+	 * To timestamp.
+	 *
+	 * @param date the date
+	 * @return the string
+	 */
 	@Override
 	public String toTimestamp(Date date) {
 		if (date != null) {
@@ -82,11 +121,23 @@ public class SqlServerContext
 	}
 
 
+	/**
+	 * To date.
+	 *
+	 * @param date the date
+	 * @return the string
+	 */
 	@Override
 	public String toDate(Date date) {
 		return toTimestamp(date);
 	}
 
+	/**
+	 * Gets the qualified name.
+	 *
+	 * @param name the name
+	 * @return the qualified name
+	 */
 	@Override
 	public String getQualifiedName(String name) {
 		if (!StringUtils.contains(name, '.') && this.getSchema() != null) {
@@ -96,6 +147,12 @@ public class SqlServerContext
 		}
 	}
 
+	/**
+	 * Gets the date as db string.
+	 *
+	 * @param date the date
+	 * @return the date as db string
+	 */
 	@Override
 	public String getDateAsDbString(Date date) {
 		if (date != null) {

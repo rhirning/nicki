@@ -27,14 +27,28 @@ import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DerbySequenceValueSelectHandler.
+ */
 @Slf4j
 public class DerbySequenceValueSelectHandler extends SequenceValueSelectHandler implements SelectHandler {
 
 
+	/**
+	 * Instantiates a new derby sequence value select handler.
+	 *
+	 * @param sequenceName the sequence name
+	 */
 	public DerbySequenceValueSelectHandler(String sequenceName) {
 		super(sequenceName);
 	}
 
+	/**
+	 * Gets the search statement.
+	 *
+	 * @return the search statement
+	 */
 	public String getSearchStatement() {
 		String statement = "VALUES NEXT VALUE FOR " + getSequenceName();
 		log.debug(statement);

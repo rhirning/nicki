@@ -28,23 +28,60 @@ import org.mgnl.nicki.core.methods.ForeignKeyMethod;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.context.NickiContext;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DynamicReference.
+ */
 @SuppressWarnings("serial")
 public class DynamicReference extends DynamicAttribute implements Serializable {
 
+	/** The base dn. */
 	private String baseDn;
+	
+	/** The class definition. */
 	private Class<? extends DynamicObject> classDefinition;
+	
+	/**
+	 * Instantiates a new dynamic reference.
+	 *
+	 * @param classDefinition the class definition
+	 * @param name the name
+	 * @param baseDn the base dn
+	 * @param externalName the external name
+	 * @param attributeClass the attribute class
+	 */
 	public DynamicReference(Class<? extends DynamicObject> classDefinition, String name, String baseDn, String externalName, Class<?> attributeClass) {
 		super(name, externalName, attributeClass);
 		this.classDefinition = classDefinition;
 		setVirtual();
 		this.baseDn = baseDn;
 	}
+	
+	/**
+	 * Sets the base dn.
+	 *
+	 * @param baseDn the new base dn
+	 */
 	public void setBaseDn(String baseDn) {
 		this.baseDn = baseDn;
 	}
+	
+	/**
+	 * Gets the base dn.
+	 *
+	 * @return the base dn
+	 */
 	public String getBaseDn() {
 		return baseDn;
 	}
+	
+	/**
+	 * Inits the.
+	 *
+	 * @param context the context
+	 * @param dynamicObject the dynamic object
+	 * @param rs the rs
+	 */
 	@Override
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
 		if (isMultiple()) {
@@ -61,6 +98,11 @@ public class DynamicReference extends DynamicAttribute implements Serializable {
 		}
 	}
 
+	/**
+	 * Gets the class definition.
+	 *
+	 * @return the class definition
+	 */
 	public Class<? extends DynamicObject> getClassDefinition() {
 		return classDefinition;
 	}

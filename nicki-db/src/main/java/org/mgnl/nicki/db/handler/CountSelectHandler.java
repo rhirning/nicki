@@ -27,18 +27,38 @@ import java.sql.SQLException;
 
 import org.apache.commons.lang3.StringUtils;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CountSelectHandler.
+ */
 public class CountSelectHandler extends NonLoggingSelectHandler implements SelectHandler {
 
+	/** The table name. */
 	private String tableName;
+	
+	/** The where clause. */
 	private String whereClause;
+	
+	/** The result. */
 	private int result;
 
+	/**
+	 * Instantiates a new count select handler.
+	 *
+	 * @param tableName the table name
+	 * @param whereClause the where clause
+	 */
 	public CountSelectHandler(String tableName, String whereClause) {
 		this.tableName = tableName;
 		this.whereClause = whereClause;
 	}
 
 
+	/**
+	 * Gets the search statement.
+	 *
+	 * @return the search statement
+	 */
 	public String getSearchStatement() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("select count(*) from ").append(tableName);
@@ -49,6 +69,12 @@ public class CountSelectHandler extends NonLoggingSelectHandler implements Selec
 	}
 
 
+	/**
+	 * Handle.
+	 *
+	 * @param rs the rs
+	 * @throws SQLException the SQL exception
+	 */
 	public void handle(ResultSet rs) throws SQLException {
 		if (rs.next()) {
 			result = rs.getInt(1);
@@ -56,6 +82,11 @@ public class CountSelectHandler extends NonLoggingSelectHandler implements Selec
 	}
 
 
+	/**
+	 * Gets the result.
+	 *
+	 * @return the result
+	 */
 	public int getResult() {
 		return result;
 	}

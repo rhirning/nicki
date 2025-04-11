@@ -27,18 +27,42 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DigitsRule.
+ */
 public class DigitsRule extends Rule {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		return StringUtils.isNumeric(value);
 	}
 
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".digits");
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "digits";
 	}

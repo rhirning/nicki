@@ -38,20 +38,44 @@ import org.mgnl.nicki.mq.model.Consumer;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ConsumerThread.
+ */
 @Slf4j
 public class ConsumerThread extends Thread implements Runnable {
+	
+	/** The Constant DEFAULT_CHARSET. */
 	public final static String DEFAULT_CHARSET = "UTF-8";
+	
+	/** The connection. */
 	private Connection connection = null;
+	
+	/** The session. */
 	private Session session = null;
+	
+	/** The message consumer. */
 	private MessageConsumer messageConsumer;
+	
+	/** The stop. */
 	private boolean stop;
+	
+	/** The consumer. */
 	private Consumer consumer;
 	
+	/**
+	 * Instantiates a new consumer thread.
+	 *
+	 * @param consumer the consumer
+	 */
 	public ConsumerThread(Consumer consumer) {
 		super();
 		this.consumer = consumer;
 	}
 
+	/**
+	 * Run.
+	 */
 	public void run() {
 		try {
 			ConnectionFactory factory = new ActiveMQConnectionFactory(Config.getString(consumer.getBase() + ".connector"));
@@ -127,6 +151,11 @@ public class ConsumerThread extends Thread implements Runnable {
 		}
 	}
 
+	/**
+	 * Sets the stop.
+	 *
+	 * @param stop the new stop
+	 */
 	public void setStop(boolean stop) {
 		this.stop = stop;
 	}

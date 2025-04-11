@@ -24,20 +24,50 @@ package org.mgnl.nicki.core.auth;
 
 import javax.security.auth.callback.Callback;
 
+// TODO: Auto-generated Javadoc
+/**
+ * Generic name / password callback.
+ */
 public class CredentialsCallback implements Callback {
 
+	/** The name. */
 	private String name;
+	
+	/** The password. */
 	private String password;
 	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Sets the name.
+	 *
+	 * @param name the new name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	/**
+	 * Gets the password.
+	 *
+	 * @return the password
+	 */
 	public String getPassword() {
 		return password;
 	}
+	
+	/**
+	 * Sets the password.
+	 *
+	 * @param password the new password
+	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}

@@ -52,23 +52,60 @@ import org.mgnl.nicki.core.util.Classes;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+// TODO: Auto-generated Javadoc
+
+/**
+ * The Class BeanSearchHandler.
+ *
+ * @param <T> the generic type
+ */
 @Slf4j
 public class BeanSearchHandler<T> extends BasicLdapHandler implements BeanQueryHandler {
+	
+	/**
+	 * The Enum FORMATTER.
+	 */
 	public enum FORMATTER {
+		
+		/** The no. */
 		NO;
 		
+		/**
+		 * Format.
+		 *
+		 * @param value the value
+		 * @return the string
+		 */
 		public String format(String value) {
 			return value;
 		}
 	}
 	
+	/** The base DN. */
 	private @Getter @Setter String baseDN;
+	
+	/** The entries. */
 	private @Getter List<T> entries;
+	
+	/** The fields. */
 	private String[] fields;
+	
+	/** The bean class. */
 	private Class<T> beanClass;
+	
+	/** The filter. */
 	private @Getter String filter;
+	
+	/** The bean filter. */
 	private Predicate<T> beanFilter;
 
+	/**
+	 * Instantiates a new bean search handler.
+	 *
+	 * @param beanClass the bean class
+	 * @param ldapFilter the ldap filter
+	 * @param beanFilter the bean filter
+	 */
 	public BeanSearchHandler(Class<T> beanClass, String ldapFilter, Predicate<T> beanFilter) {
 		super();
 		this.beanClass = beanClass;
@@ -77,6 +114,11 @@ public class BeanSearchHandler<T> extends BasicLdapHandler implements BeanQueryH
 		this.baseDN = Config.getString("nicki.users.basedn");
 	}
 	
+	/**
+	 * Gets the effective entries.
+	 *
+	 * @return the effective entries
+	 */
 	public List<T> getEffectiveEntries() {
 		if (beanFilter != null) {
 			return getEntries().stream().filter(beanFilter).collect(Collectors.toList());
@@ -86,6 +128,13 @@ public class BeanSearchHandler<T> extends BasicLdapHandler implements BeanQueryH
 
 	}
 
+	/**
+	 * Handle.
+	 *
+	 * @param ctx the ctx
+	 * @param results the results
+	 * @throws NamingException the naming exception
+	 */
 	public void handle(NickiContext ctx, NamingEnumeration<SearchResult> results)
 			throws NamingException {
 		entries = new ArrayList<T>();
@@ -120,6 +169,12 @@ public class BeanSearchHandler<T> extends BasicLdapHandler implements BeanQueryH
 		}
 	}
 	
+	/**
+	 * Adds the context.
+	 *
+	 * @param entry the entry
+	 * @param ctx the ctx
+	 */
 	private void addContext(T entry, NickiContext ctx) {
 		for (Field field : beanClass.getDeclaredFields()) {
 			if (field.getType().isAssignableFrom(NickiContext.class)) {
@@ -128,6 +183,13 @@ public class BeanSearchHandler<T> extends BasicLdapHandler implements BeanQueryH
 		}
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @param r the r
+	 * @param field the field
+	 * @return the value
+	 */
 	private Object getValue(SearchResult r, Field field) {
 		LdapAttribute ldapAttribute = field.getAnnotation(LdapAttribute.class);
 		String attributeName = ldapAttribute == null || StringUtils.isBlank(ldapAttribute.ldapName()) ? field.getName() : ldapAttribute.ldapName();
@@ -154,10 +216,22 @@ public class BeanSearchHandler<T> extends BasicLdapHandler implements BeanQueryH
 		return null;
 	}
 
+	/**
+	 * Format.
+	 *
+	 * @param ldapAttribute the ldap attribute
+	 * @param value the value
+	 * @return the string
+	 */
 	private String format(LdapAttribute ldapAttribute, String value) {
 		return ldapAttribute.formatter().format(value);
 	}
 	
+	/**
+	 * Gets the returning attributes.
+	 *
+	 * @return the returning attributes
+	 */
 	protected String[] getReturningAttributes() {
 		if (this.fields == null) {
 			List<String> fields = new ArrayList<String>();
@@ -175,19 +249,45 @@ public class BeanSearchHandler<T> extends BasicLdapHandler implements BeanQueryH
 		} return this.fields;
 	}
 
+	/**
+	 * Gets the scope.
+	 *
+	 * @return the scope
+	 */
 	@Override
 	public SCOPE getScope() {
 		return SCOPE.SUBTREE;
 	}
 
+	/**
+	 * Gets the getter.
+	 *
+	 * @param name the name
+	 * @return the getter
+	 */
 	public static String getGetter(String name) {
 		return "get" + StringUtils.capitalize(name);
 	}
 	
+	/**
+	 * To json object.
+	 *
+	 * @param bean the bean
+	 * @param mapping the mapping
+	 * @return the json object
+	 */
 	public JsonObject toJsonObject(T bean, AttributeMapper mapping) {
 		return toJsonObjectBuilder(bean, mapping).build();
 	}
 	
+	/**
+	 * To json object builder.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param mapping the mapping
+	 * @return the json object builder
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> JsonObjectBuilder toJsonObjectBuilder(T bean, AttributeMapper mapping) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();

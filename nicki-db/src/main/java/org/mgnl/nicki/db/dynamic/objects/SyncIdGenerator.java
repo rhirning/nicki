@@ -22,6 +22,17 @@ package org.mgnl.nicki.db.dynamic.objects;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface SyncIdGenerator.
+ */
 public interface SyncIdGenerator {
+	
+	/**
+	 * Gets the id.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @return the id
+	 */
 	String getId(DynamicObject dynamicObject);
 }

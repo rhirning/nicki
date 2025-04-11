@@ -32,13 +32,32 @@ import org.mgnl.nicki.xls.template.XlsTemplate;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XlsxTemplateRenderer.
+ */
 @Slf4j
 public class XlsxTemplateRenderer extends Thread implements Runnable {
+	
+	/** The in. */
 	InputStream in;
+	
+	/** The out. */
 	OutputStream out;
+	
+	/** The template. */
 	EngineTemplate template;
+	
+	/** The master. */
 	byte[] master;
 
+	/**
+	 * Instantiates a new xlsx template renderer.
+	 *
+	 * @param template the template
+	 * @param in the in
+	 * @param out the out
+	 */
 	public XlsxTemplateRenderer(EngineTemplate template, InputStream in, OutputStream out) {
 		super();
 		this.template = template;
@@ -46,12 +65,23 @@ public class XlsxTemplateRenderer extends Thread implements Runnable {
 		this.out = out;
 	}
 
+	/**
+	 * Instantiates a new xlsx template renderer.
+	 *
+	 * @param master the master
+	 * @param in the in
+	 * @param out the out
+	 */
 	public XlsxTemplateRenderer(byte[] master, InputStream in, OutputStream out) {
 		super();
 		this.master = master;
 		this.in = in;
 		this.out = out;
 	}
+	
+	/**
+	 * Run.
+	 */
 	public void run() {
 		try {
 			XlsEngine engine = new XlsEngine();

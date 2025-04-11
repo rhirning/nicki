@@ -47,6 +47,7 @@ import org.mgnl.nicki.core.util.Classes;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
 /**
  * Http Servlet Filter that provides <a
  * href="http://en.wikipedia.org/wiki/SPNEGO" target="_blank">SPNEGO</a> authentication.
@@ -193,12 +194,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SpnegoHttpFilter implements Filter {
 
+    /** The Constant SESSION_NO_USER. */
     private static final String SESSION_NO_USER = "NICKI_SESSION_NO_USER";
+    
+    /** The Constant SESSION_USER. */
     private static final String SESSION_USER = "NICKI_SESSION_USER";
+    
+    /** The Constant SESSION_AUTH_HEADER. */
     public static final String SESSION_AUTH_HEADER = "NICKI_SESSION_AUTH_HEADER";
+	
+	/** The Constant SESSION_AUTH_REQUEST. */
 	public static final String SESSION_AUTH_REQUEST = "NICKI_SESSION_AUTH_REQUEST";
 	
+	/** The Constant NICKI_PARAMETERS. */
 	public static final String NICKI_PARAMETERS = "NICKI_PARAMETERS";
+	
+	/** The Constant PARAMETERS. */
 	private static final String[] PARAMETERS = {
 		"nickiToken", "nickiName", "nickiPassword"
 	};
@@ -218,8 +229,15 @@ public class SpnegoHttpFilter implements Filter {
     /** directories which should not be authenticated irrespective of filter-mapping. */
     private final transient List<String> excludeDirs = new ArrayList<String>();
     
+    /** The active. */
     private boolean active;
     
+    /**
+     * Inits the.
+     *
+     * @param filterConfig the filter config
+     * @throws ServletException the servlet exception
+     */
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
     	this.active = Config.getBoolean("spnego.kerberos.active", false);
@@ -261,6 +279,9 @@ public class SpnegoHttpFilter implements Filter {
     	}
     }
 
+    /**
+     * Destroy.
+     */
     @Override
     public void destroy() {
     	if (active) {
@@ -280,6 +301,15 @@ public class SpnegoHttpFilter implements Filter {
     	}
     }
 
+    /**
+     * Do filter.
+     *
+     * @param request the request
+     * @param response the response
+     * @param chain the chain
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws ServletException the servlet exception
+     */
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response
         , final FilterChain chain) throws IOException, ServletException {
@@ -405,6 +435,12 @@ public class SpnegoHttpFilter implements Filter {
     
 
     
+    /**
+     * Checks if is authorized.
+     *
+     * @param request the request
+     * @return true, if is authorized
+     */
     private boolean isAuthorized(final HttpServletRequest request) {
         if (null != this.sitewide && null != this.accessControl
                 && !this.accessControl.hasAccess(request.getRemoteUser(), this.sitewide)) {
@@ -414,6 +450,13 @@ public class SpnegoHttpFilter implements Filter {
         return true;
     }
     
+    /**
+     * Exclude.
+     *
+     * @param contextPath the context path
+     * @param servletPath the servlet path
+     * @return true, if successful
+     */
     private boolean exclude(final String contextPath, final String servletPath) {
         // each item in excludeDirs ends with a slash
         final String path = contextPath + servletPath + (servletPath.endsWith("/") ? "" : "/");
@@ -427,6 +470,12 @@ public class SpnegoHttpFilter implements Filter {
         return false;
     }
     
+    /**
+     * To properties.
+     *
+     * @param filterConfig the filter config
+     * @return the properties
+     */
     private static Properties toProperties(final FilterConfig filterConfig) {
         final Properties props = new Properties();
         final Enumeration<String> it = filterConfig.getInitParameterNames();
@@ -451,6 +500,9 @@ public class SpnegoHttpFilter implements Filter {
      */
     public static final class Constants {
 
+        /**
+         * Instantiates a new constants.
+         */
         private Constants() {
             // default private
         }

@@ -28,48 +28,109 @@ import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class CartEntry.
  *
  * @author cna
  */
 public class CartEntry {
+    
+    /** The Constant ATTR_ID. */
     public static final String ATTR_ID = "id";
+    
+    /** The Constant ATTR_ACTION. */
     public static final String ATTR_ACTION = "action";
+    
+    /** The Constant ATTR_SPECIFIER. */
     public static final String ATTR_SPECIFIER = "specifier";
+	
+	/** The Constant ATTR_NAME. */
 	public static final String ATTR_NAME = "name";
 
+    /** The comment. */
     private String comment;
     
+    /**
+     * The Enum ACTION.
+     */
     public enum ACTION {
 
+        /** The add. */
         ADD,
+        
+        /** The modify. */
         MODIFY,
+        
+        /** The delete. */
         DELETE
     }
 
+	/**
+	 * The Enum CART_ENTRY_STATUS.
+	 */
 	public enum CART_ENTRY_STATUS {
 
+		/** The new. */
 		NEW,
+        
+        /** The requested. */
         REQUESTED,
+        
+        /** The denied. */
         DENIED,
+        
+        /** The finished. */
         FINISHED;
 
+        /**
+         * Gets the value.
+         *
+         * @return the value
+         */
         public String getValue() {
             return this.toString().toLowerCase();
         }
 
+        /**
+         * From string.
+         *
+         * @param str the str
+         * @return the cart entry status
+         */
         public static CART_ENTRY_STATUS fromString(String str) {
             return CART_ENTRY_STATUS.valueOf(str.toUpperCase());
         }
     }
+    
+    /** The inventory article. */
     private InventoryArticle inventoryArticle;
+    
+    /** The id. */
     private String id;
+    
+    /** The action. */
     private ACTION action;
+    
+    /** The start. */
     private Date start;
+    
+    /** The end. */
     private Date end;
+    
+    /** The specifier. */
     private String specifier;
+    
+    /** The status. */
     private CART_ENTRY_STATUS status = CART_ENTRY_STATUS.NEW;
 
+    /**
+     * Gets the node.
+     *
+     * @param doc the doc
+     * @param name the name
+     * @return the node
+     */
     public Element getNode(Document doc, String name) {
         
 		Element cartentry = doc.createElement(name);
@@ -86,18 +147,39 @@ public class CartEntry {
         return cartentry;
     }
 
+    /**
+     * Gets the start.
+     *
+     * @return the start
+     */
     public Date getStart() {
 		return start;
 	}
 
+	/**
+	 * Gets the end.
+	 *
+	 * @return the end
+	 */
 	public Date getEnd() {
 		return end;
 	}
 
+	/**
+	 * Gets the specifier.
+	 *
+	 * @return the specifier
+	 */
 	public String getSpecifier() {
 		return specifier;
 	}
 
+	/**
+	 * From node.
+	 *
+	 * @param node the node
+	 * @return the cart entry
+	 */
 	public static CartEntry fromNode(Element node) {
         if (null == node) {
             return null;
@@ -121,20 +203,45 @@ public class CartEntry {
 
 
     
+    /**
+     * Gets the action.
+     *
+     * @return the action
+     */
     public ACTION getAction() {
         return action;
     }
 
+    /**
+     * Gets the id.
+     *
+     * @return the id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Instantiates a new cart entry.
+     *
+     * @param iArticle the i article
+     * @param id the id
+     * @param action the action
+     */
     public CartEntry(InventoryArticle iArticle, String id, ACTION action) {
     	this.inventoryArticle = iArticle;
         this.id = id;
         this.action = action;
     }
 
+    /**
+     * Instantiates a new cart entry.
+     *
+     * @param iArticle the i article
+     * @param id the id
+     * @param specifier the specifier
+     * @param action the action
+     */
     public CartEntry(InventoryArticle iArticle, String id, String specifier, ACTION action) {
     	this.inventoryArticle = iArticle;
         this.id = id;
@@ -142,18 +249,38 @@ public class CartEntry {
         this.action = action;
     }
 
+    /**
+     * Sets the start.
+     *
+     * @param start the new start
+     */
     public void setStart(Date start) {
 		this.start = start;
 	}
 
+	/**
+	 * Sets the end.
+	 *
+	 * @param end the new end
+	 */
 	public void setEnd(Date end) {
 		this.end = end;
 	}
 
+    /**
+     * Sets the specifier.
+     *
+     * @param specifier the new specifier
+     */
     public void setSpecifier(String specifier) {
 		this.specifier = specifier;
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -166,10 +293,24 @@ public class CartEntry {
         return sb.toString();
     }
 
+	/**
+	 * Gets the inventory article.
+	 *
+	 * @return the inventory article
+	 */
 	public InventoryArticle getInventoryArticle() {
 		return inventoryArticle;
 	}
 
+	/**
+	 * Match.
+	 *
+	 * @param permissionDn the permission dn
+	 * @param specifier the specifier
+	 * @param cartEntryAction the cart entry action
+	 * @param cartEntryStatus the cart entry status
+	 * @return true, if successful
+	 */
 	public boolean match(String permissionDn, String specifier,
 			ACTION cartEntryAction, CART_ENTRY_STATUS cartEntryStatus) {
 		if (!StringUtils.equals(specifier, this.specifier)) {
@@ -186,6 +327,12 @@ public class CartEntry {
 		return true;
 	}
 
+	/**
+	 * Update status.
+	 *
+	 * @param newCartEntryStatus the new cart entry status
+	 * @param comment the comment
+	 */
 	public void updateStatus(CART_ENTRY_STATUS newCartEntryStatus, String comment) {
 		setStatus(newCartEntryStatus);
 		if (StringUtils.isNotBlank(comment)) {
@@ -193,16 +340,31 @@ public class CartEntry {
 		}
 	}
 
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
 	public CART_ENTRY_STATUS getStatus() {
 		return status;
 	}
 
+	/**
+	 * Sets the status.
+	 *
+	 * @param status the new status
+	 */
 	public void setStatus(CART_ENTRY_STATUS status) {
 		this.status = status;
 	}
 //	String cartEntryQualifier = catalogArticle.getId() + "#" + cartEntryAction + "#" + cartEntryStatus + "#";
 
-	public String asString() {
+	/**
+ * As string.
+ *
+ * @return the string
+ */
+public String asString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(id).append("#");
 		sb.append(action).append("#");
@@ -214,6 +376,12 @@ public class CartEntry {
 		return sb.toString();
 	}
 	
+	/**
+	 * From string.
+	 *
+	 * @param cartEntryString the cart entry string
+	 * @return the cart entry
+	 */
 	public static CartEntry fromString(String cartEntryString) {
 		String elements[] = StringUtils.split(cartEntryString, "#", 4);
 		String id = elements[0];
@@ -230,6 +398,11 @@ public class CartEntry {
 		return entry;
 	}
 
+	/**
+	 * Gets the display name.
+	 *
+	 * @return the display name
+	 */
 	public String getDisplayName() {
 		String name = getCatalogArticle().getDisplayName();
 		if (StringUtils.isNotBlank(specifier)) {
@@ -238,18 +411,39 @@ public class CartEntry {
 		return name;
 	}
 
+	/**
+	 * Gets the catalog article.
+	 *
+	 * @return the catalog article
+	 */
 	public CatalogArticle getCatalogArticle() {
 		return Catalog.getCatalog().getArticle(id);
 	}
 
+	/**
+	 * Gets the comment.
+	 *
+	 * @return the comment
+	 */
 	public String getComment() {
 		return comment;
 	}
 
+	/**
+	 * Sets the comment.
+	 *
+	 * @param comment the new comment
+	 */
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
 	
+	/**
+	 * Equals.
+	 *
+	 * @param obj the obj
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof CartEntry) {
@@ -269,6 +463,11 @@ public class CartEntry {
 		return super.equals(obj);
 	}
 
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	@Override
 	public int hashCode() {
 		// TODO Auto-generated method stub

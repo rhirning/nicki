@@ -35,19 +35,38 @@ import org.mgnl.nicki.core.util.Classes;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating Target objects.
+ */
 @Slf4j
 public final class TargetFactory {
 
+	/** The Constant PROPERTY_BASE. */
 	public static final String PROPERTY_BASE = "nicki.targets";
+	
+	/** The Constant PROPERTY_OBJECTS. */
 	public static final String PROPERTY_OBJECTS = "objects";
+	
+	/** The Constant PROPERTY_FACTORY. */
 	public static final String PROPERTY_FACTORY = "factory";
+	
+	/** The Constant SEPARATOR. */
 	public static final String SEPARATOR = ",";
 	
 	
+	/** The instance. */
 	private static TargetFactory instance = new TargetFactory();
+	
+	/** The targets. */
 	private Map<String, Target> targets= new HashMap<String, Target>();
+	
+	/** The default target. */
 	private String defaultTarget;
 		
+	/**
+	 * Instantiates a new target factory.
+	 */
 	private TargetFactory() {
 		super();
 		String targetNamesString = Config.getString(PROPERTY_BASE);
@@ -69,6 +88,14 @@ public final class TargetFactory {
 	}
 
 
+	/**
+	 * Inits the context factory.
+	 *
+	 * @param target the target
+	 * @throws ClassNotFoundException the class not found exception
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	private void initContextFactory(Target target) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		String base = PROPERTY_BASE + "." + target.getName() + "." + PROPERTY_FACTORY;
 		String factoryClassName = Config.getString(base);
@@ -77,6 +104,11 @@ public final class TargetFactory {
 	}
 
 
+	/**
+	 * Inits the dynamic objects.
+	 *
+	 * @param target the target
+	 */
 	private void initDynamicObjects(Target target) {
 		List<String> dynamicObjects = new ArrayList<String>();
 		Map<String, DynamicObject> map = new HashMap<String, DynamicObject>();
@@ -100,6 +132,11 @@ public final class TargetFactory {
 		target.setDynamicObjectsMap(map);
 	}
 	
+	/**
+	 * Inits the data model.
+	 *
+	 * @param dynamicObject the dynamic object
+	 */
 	public static void initDataModel(DynamicObject dynamicObject) {
 
 		if (dynamicObject.isAnnotated()) {
@@ -109,14 +146,34 @@ public final class TargetFactory {
 		}
 	}
 	
+	/**
+	 * Gets the dynamic object.
+	 *
+	 * @param className the class name
+	 * @return the dynamic object
+	 * @throws ClassNotFoundException the class not found exception
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	private DynamicObject getDynamicObject(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		return Classes.newInstance(className);
 	}
 
+	/**
+	 * Gets the target.
+	 *
+	 * @param targetName the target name
+	 * @return the target
+	 */
 	public static Target getTarget(String targetName) {
 		return instance.targets.get(targetName);
 	}
 
+	/**
+	 * Gets the default target.
+	 *
+	 * @return the default target
+	 */
 	public static Target getDefaultTarget() {
 		return getTarget(instance.defaultTarget);
 	}

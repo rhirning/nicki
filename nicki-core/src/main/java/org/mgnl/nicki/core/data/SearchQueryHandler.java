@@ -26,8 +26,17 @@ import java.util.List;
 
 import org.mgnl.nicki.core.objects.SearchResultEntry;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface SearchQueryHandler.
+ */
 public interface SearchQueryHandler extends QueryHandler{
 	
+	/**
+	 * Gets the result.
+	 *
+	 * @return the result
+	 */
 	List<SearchResultEntry> getResult();
 
 }

@@ -44,10 +44,20 @@ import org.mgnl.nicki.core.objects.DynamicReference;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AnnotationHelper.
+ */
 @Slf4j
 public class AnnotationHelper {
 	
 
+	/**
+	 * Gets the object classes.
+	 *
+	 * @param clazz the clazz
+	 * @return the object classes
+	 */
 	public static String[] getObjectClasses(Class<?> clazz) {
 		ObjectClass oClass = clazz.getAnnotation(ObjectClass.class);
 		if (oClass != null) {
@@ -56,6 +66,12 @@ public class AnnotationHelper {
 		return new String[]{};
 	}
 
+	/**
+	 * Gets the additional object classes.
+	 *
+	 * @param clazz the clazz
+	 * @return the additional object classes
+	 */
 	public static String[] getAdditionalObjectClasses(Class<?> clazz) {
 		AdditionalObjectClass oClass = clazz.getAnnotation(AdditionalObjectClass.class);
 		if (oClass != null) {
@@ -64,6 +80,12 @@ public class AnnotationHelper {
 		return new String[]{};
 	}
 
+	/**
+	 * Inits the object class.
+	 *
+	 * @param clazz the clazz
+	 * @return true, if successful
+	 */
 	private static boolean initObjectClass(Class<?> clazz) {
 		ObjectClass oClass = clazz.getAnnotation(ObjectClass.class);
 		if (oClass != null) {
@@ -72,10 +94,21 @@ public class AnnotationHelper {
 		return false;
 	}
 
+	/**
+	 * Inits the annotation data model.
+	 *
+	 * @param dynamicObject the dynamic object
+	 */
 	public static void initAnnotationDataModel(DynamicObject dynamicObject) {
 		initAnnotationDataModel(dynamicObject, dynamicObject.getClass());
 	}
 
+	/**
+	 * Inits the annotation data model.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param modelClass the model class
+	 */
 	public static void initAnnotationDataModel(DynamicObject dynamicObject, Class<?> modelClass) {
 		if (modelClass.getSuperclass() != null) {
 			initAnnotationDataModel(dynamicObject, modelClass.getSuperclass());
@@ -436,14 +469,32 @@ public class AnnotationHelper {
 		}
 	}
 
+	/**
+	 * Checks if is multiple.
+	 *
+	 * @param method the method
+	 * @return true, if is multiple
+	 */
 	public static boolean isMultiple(Method method) {
 		return isMultiple(method.getReturnType());
 	}
 
+	/**
+	 * Checks if is multiple.
+	 *
+	 * @param field the field
+	 * @return true, if is multiple
+	 */
 	public static boolean isMultiple(Field field) {
 		return isMultiple(field.getType());
 	}
 
+	/**
+	 * Checks if is multiple.
+	 *
+	 * @param clazz the clazz
+	 * @return true, if is multiple
+	 */
 	public static boolean isMultiple(Class<?> clazz) {
 		if (clazz.isArray() && clazz != byte[].class) {
 			return true;
@@ -452,6 +503,12 @@ public class AnnotationHelper {
 		return	Collection.class.isAssignableFrom(clazz);
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @param method the method
+	 * @return the name
+	 */
 	public static String getName(Method method) {
 		if (method.getReturnType() == Boolean.class) {
 			return method.getName();

@@ -24,17 +24,57 @@ package org.mgnl.nicki.shop.base.objects;
 
 import java.util.Map;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface CatalogValueProvider.
+ */
 public interface CatalogValueProvider {
-	enum TYPE {TEXT_AREA, LIST, INPUT_FIELD}
 	
+	/**
+	 * The Enum TYPE.
+	 */
+	enum TYPE {
+/** The text area. */
+TEXT_AREA, 
+ /** The list. */
+ LIST, 
+ /** The input field. */
+ INPUT_FIELD}
+	
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	TYPE getType();
 	
+	/**
+	 * Gets the entries.
+	 *
+	 * @return the entries
+	 */
 	Map<String, String> getEntries();
 	
+	/**
+	 * Check entry.
+	 *
+	 * @param entry the entry
+	 * @return true, if successful
+	 */
 	boolean checkEntry(String entry);
 
+	/**
+	 * Checks if is only defined entries.
+	 *
+	 * @return true, if is only defined entries
+	 */
 	boolean isOnlyDefinedEntries();
 	
+	/**
+	 * Inits the.
+	 *
+	 * @param article the article
+	 */
 	void init(CatalogArticle article);
 
 }

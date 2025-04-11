@@ -37,16 +37,44 @@ import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.handler.SelectHandler;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+// TODO: Auto-generated Javadoc
+
+/**
+ * The Class StatisticsSelectHandler.
+ */
 @Slf4j
 public class StatisticsSelectHandler implements SelectHandler, StatisticsResult {
+	
+	/** The db context. */
 	private DBContext dbContext;
+	
+	/** The definition. */
 	private StatisticsDefinition definition;
+	
+	/** The result. */
 	private @Getter Map<String, String> result = new HashMap<>();
+	
+	/** The result list. */
 	private @Getter List<Map<String, String>> resultList = new ArrayList<>();
+	
+	/** The input variables. */
 	private Map<String, Variable> inputVariables = new HashMap<>();
+	
+	/** The output variables. */
 	private Map<String, Variable> outputVariables = new HashMap<>();
+	
+	/** The search statement. */
 	private String searchStatement;
 	
+	/**
+	 * Instantiates a new statistics select handler.
+	 *
+	 * @param dbContext the db context
+	 * @param definition the definition
+	 * @param values the values
+	 * @throws ParseException the parse exception
+	 * @throws MissingDataException the missing data exception
+	 */
 	public StatisticsSelectHandler(DBContext dbContext, StatisticsDefinition definition, Map<String, String> values) throws ParseException, MissingDataException {
 		this.dbContext = dbContext;
 		this.definition = definition;
@@ -64,18 +92,25 @@ public class StatisticsSelectHandler implements SelectHandler, StatisticsResult 
 		log.debug(searchStatement);
 	}
 
+	/**
+	 * Gets the search statement.
+	 *
+	 * @return the search statement
+	 */
 	@Override
 	public String getSearchStatement() {
 		return this.searchStatement;
 	}
 
 	/**
-	 * Replace all variables with the values: ${variableName}
+	 * Replace all variables with the values: ${variableName}.
+	 *
 	 * @param query String
-	 * @param variables 
-	 * @return
-	 * @throws ParseException 
-	 * @throws MissingDataException 
+	 * @param variables the variables
+	 * @param values the values
+	 * @return the string
+	 * @throws ParseException the parse exception
+	 * @throws MissingDataException the missing data exception
 	 */
 	private String parseQuery(String query, List<Variable> variables, Map<String, String> values) throws ParseException, MissingDataException {
 		List<String> missing = new ArrayList<>();
@@ -111,6 +146,12 @@ public class StatisticsSelectHandler implements SelectHandler, StatisticsResult 
 		return result;
 	}
 
+	/**
+	 * Handle.
+	 *
+	 * @param resultSet the result set
+	 * @throws SQLException the SQL exception
+	 */
 	@Override
 	public void handle(ResultSet resultSet) throws SQLException {
 		boolean first = true;
@@ -134,6 +175,11 @@ public class StatisticsSelectHandler implements SelectHandler, StatisticsResult 
 		}
 	}
 
+	/**
+	 * Checks if is logging enabled.
+	 *
+	 * @return true, if is logging enabled
+	 */
 	@Override
 	public boolean isLoggingEnabled() {
 		return true;

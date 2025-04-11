@@ -44,39 +44,81 @@ import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import lombok.extern.slf4j.Slf4j;
+// TODO: Auto-generated Javadoc
 
+/**
+ * LoginModule which handles most of the necessary tasks.
+ */
 @Slf4j
 public abstract class NickiLoginModule implements LoginModule {
 	
+    /** The Constant AUTHZ_HEADER. */
     public static final String AUTHZ_HEADER = "Authorization";
+    
+    /** The Constant SESSION_USER. */
     public static final String SESSION_USER = "NICKI_SESSION_USER";
+    
+    /** The Constant SESSION_AUTH_HEADER. */
     public static final String SESSION_AUTH_HEADER = "NICKI_SESSION_AUTH_HEADER";
 	
+	/** The subject. */
 	// initial state
 	private Subject subject;
+	
+	/** The callback handler. */
 	private CallbackHandler callbackHandler;
+	
+	/** The shared state. */
 	private Map<String, ?> sharedState;
+	
+	/** The options. */
 	private Map<String, ?> options;
 
+	/** The debug. */
 	// configurable option
 	private boolean debug;
+	
+	/** The use system context. */
 	private boolean useSystemContext;
 
+	/** The succeeded. */
 	// the authentication status
 	private boolean succeeded = false;
+	
+	/** The commit succeeded. */
 	private boolean commitSucceeded = false;
 	
+	/** The login context. */
 	// Principal	
 	private NickiContext loginContext;
+	
+	/** The principal. */
 	private DynamicObjectPrincipal principal;
 	
+	/**
+	 * Instantiates a new nicki login module.
+	 */
 	protected NickiLoginModule() {
 		
 	}
 
+	/**
+	 * Login.
+	 *
+	 * @return true, if successful
+	 * @throws LoginException the login exception
+	 */
 	@Override
 	public abstract boolean login() throws LoginException;
 
+	/**
+	 * Initialize.
+	 *
+	 * @param subject the subject
+	 * @param callbackHandler the callback handler
+	 * @param sharedState the shared state
+	 * @param options the options
+	 */
 	@Override
 	public void initialize(Subject subject, CallbackHandler callbackHandler,
 			Map<String, ?> sharedState, Map<String, ?> options) {
@@ -91,6 +133,13 @@ public abstract class NickiLoginModule implements LoginModule {
 		useSystemContext = DataHelper.booleanOf(StringUtils.stripToNull((String) options.get("useSystemContext")));
 	}
 	
+	/**
+	 * Login.
+	 *
+	 * @param principal the principal
+	 * @return the nicki context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	protected NickiContext login(NickiPrincipal principal) throws InvalidPrincipalException {
 
 		DynamicObject user = getLoginTarget().login(principal);
@@ -106,6 +155,13 @@ public abstract class NickiLoginModule implements LoginModule {
 		throw new InvalidPrincipalException();
 	}
 	
+	/**
+	 * Login.
+	 *
+	 * @param name the name
+	 * @param credential the credential
+	 * @return the nicki context
+	 */
 	public NickiContext login(String name, byte[] credential) {
 		try {
 			NickiPrincipal principal = new NickiPrincipal(name, new String(credential));
@@ -122,6 +178,11 @@ public abstract class NickiLoginModule implements LoginModule {
 		return null;
 	}
 
+	/**
+	 * Gets the login target.
+	 *
+	 * @return the login target
+	 */
 	public Target getLoginTarget() {
 		if (getCallbackHandler() != null) {
 			LoginTargetCallback[] callbacks = new LoginTargetCallback[1];
@@ -136,6 +197,11 @@ public abstract class NickiLoginModule implements LoginModule {
 		return TargetFactory.getDefaultTarget();
 	}
 
+	/**
+	 * Gets the target.
+	 *
+	 * @return the target
+	 */
 	public Target getTarget() {
 		if (getCallbackHandler() != null) {
 			TargetCallback[] callbacks = new TargetCallback[1];
@@ -150,6 +216,12 @@ public abstract class NickiLoginModule implements LoginModule {
 		return TargetFactory.getDefaultTarget();
 	}
 
+	/**
+	 * Load user.
+	 *
+	 * @param userId the user id
+	 * @return the dynamic object
+	 */
 	protected DynamicObject loadUser(String userId) {
 		if (StringUtils.contains(userId, "@")) {
 			userId = StringUtils.substringBefore(userId, "@");
@@ -173,6 +245,12 @@ public abstract class NickiLoginModule implements LoginModule {
 		}
 	}
 
+	/**
+	 * Commit.
+	 *
+	 * @return true, if successful
+	 * @throws LoginException the login exception
+	 */
 	@Override
 	public boolean commit() throws LoginException {
 		if (succeeded == false) {
@@ -190,6 +268,12 @@ public abstract class NickiLoginModule implements LoginModule {
 		}
 	}
 
+	/**
+	 * Abort.
+	 *
+	 * @return true, if successful
+	 * @throws LoginException the login exception
+	 */
 	@Override
 	public boolean abort() throws LoginException {
 		if (succeeded == false) {
@@ -207,6 +291,12 @@ public abstract class NickiLoginModule implements LoginModule {
 		return true;
 	}
 
+	/**
+	 * Logout.
+	 *
+	 * @return true, if successful
+	 * @throws LoginException the login exception
+	 */
 	@Override
 	public boolean logout() throws LoginException {
 		subject.getPrincipals().remove(principal);
@@ -216,42 +306,92 @@ public abstract class NickiLoginModule implements LoginModule {
 		return true;
 	}
 
+	/**
+	 * Gets the callback handler.
+	 *
+	 * @return the callback handler
+	 */
 	protected CallbackHandler getCallbackHandler() {
 		return callbackHandler;
 	}
 
+	/**
+	 * Sets the succeeded.
+	 *
+	 * @param succeeded the new succeeded
+	 */
 	protected void setSucceeded(boolean succeeded) {
 		this.succeeded = succeeded;
 	}
 
+	/**
+	 * Gets the shared state.
+	 *
+	 * @return the shared state
+	 */
 	protected Map<String, ?> getSharedState() {
 		return sharedState;
 	}
 
+	/**
+	 * Gets the options.
+	 *
+	 * @return the options
+	 */
 	protected Map<String, ?> getOptions() {
 		return options;
 	}
 
+	/**
+	 * Checks if is debug.
+	 *
+	 * @return true, if is debug
+	 */
 	protected boolean isDebug() {
 		return debug;
 	}
 
+	/**
+	 * Gets the login context.
+	 *
+	 * @return the login context
+	 */
 	protected NickiContext getLoginContext() {
 		return loginContext;
 	}
 
+	/**
+	 * Sets the login context.
+	 *
+	 * @param loginContext the new login context
+	 */
 	protected void setLoginContext(NickiContext loginContext) {
 		this.loginContext = loginContext;
 	}
 
+	/**
+	 * Checks if is use system context.
+	 *
+	 * @return true, if is use system context
+	 */
 	protected boolean isUseSystemContext() {
 		return useSystemContext;
 	}
 
+	/**
+	 * Gets the dynamic object principal.
+	 *
+	 * @return the dynamic object principal
+	 */
 	public DynamicObjectPrincipal getDynamicObjectPrincipal() {
 		return principal;
 	}
 
+	/**
+	 * Sets the principal.
+	 *
+	 * @param dynamicObjectPrincipal the new principal
+	 */
 	public void setPrincipal(DynamicObjectPrincipal dynamicObjectPrincipal) {
 		if (this.subject == null) {
 			this.subject = new Subject();
@@ -263,6 +403,11 @@ public abstract class NickiLoginModule implements LoginModule {
 		this.principal = dynamicObjectPrincipal;
 	}
 
+	/**
+	 * Gets the subject.
+	 *
+	 * @return the subject
+	 */
 	public Subject getSubject() {
 		log.debug("getSubject: " + subject);
 		return subject;

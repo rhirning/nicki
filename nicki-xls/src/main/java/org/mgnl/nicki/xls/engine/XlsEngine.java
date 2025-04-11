@@ -59,16 +59,36 @@ import org.mgnl.nicki.xls.model.template.Text;
 import org.mgnl.nicki.xls.template.XlsTemplate;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XlsEngine.
+ */
 @Slf4j
 public class XlsEngine {
+	
+	/** The Constant HYPER_LINK. */
 	public static final String HYPER_LINK = "HYPER_LINK";
 
+	/** The wb. */
 	private Workbook wb;
+	
+	/** The cell styles. */
 	private Map<String, CellStyle> cellStyles = new HashMap<String, CellStyle>();
 
+	/**
+	 * Instantiates a new xls engine.
+	 */
 	public XlsEngine()  {
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param master the master
+	 * @param xlsTemplate the xls template
+	 * @param os the os
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Deprecated
 	public void render(InputStream master, XlsTemplate xlsTemplate, OutputStream os) throws IOException {
 		log.debug("rendering xls");
@@ -100,6 +120,14 @@ public class XlsEngine {
 		wb.write(os);
 	}
 
+	/**
+	 * Render xlsx.
+	 *
+	 * @param master the master
+	 * @param xlsTemplate the xls template
+	 * @param os the os
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void renderXlsx(InputStream master, XlsTemplate xlsTemplate, OutputStream os) throws IOException {
 		log.debug("rendering xls");
 		//if (template.)
@@ -130,6 +158,9 @@ public class XlsEngine {
 		wb.write(os);
 	}
 
+	/**
+	 * Creates the default styles.
+	 */
 	private void createDefaultStyles() {
 		CellStyle hlinkStyle = wb.createCellStyle();
 		Font hlink_font = wb.createFont();
@@ -141,6 +172,12 @@ public class XlsEngine {
 
 	}
 
+	/**
+	 * Creates the cell style.
+	 *
+	 * @param style the style
+	 * @return the cell style
+	 */
 	private CellStyle createCellStyle(Style style) {
 		CellStyle cellStyle =  wb.createCellStyle();
 
@@ -154,6 +191,13 @@ public class XlsEngine {
 		return cellStyle;
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param wb the wb
+	 * @param page the page
+	 * @param pageNum the page num
+	 */
 	private void render(Workbook wb, Page page, int pageNum) {
 		String pageName = page.getName();
 		if (StringUtils.isBlank(pageName)) {
@@ -168,6 +212,12 @@ public class XlsEngine {
 
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param sheet the sheet
+	 * @param page the page
+	 */
 	private void render(Sheet sheet, Page page) {
 		if (page.getBox() != null) {
 			for (Box box : page.getBox()) {
@@ -180,28 +230,75 @@ public class XlsEngine {
 
 	}
 
+	/**
+	 * The Enum ALIGN.
+	 */
 	public enum ALIGN {
+		
+		/** The align general. */
 		ALIGN_GENERAL			(HorizontalAlignment.GENERAL),
+		
+		/** The align left. */
 		ALIGN_LEFT				(HorizontalAlignment.LEFT),
+		
+		/** The align center. */
 		ALIGN_CENTER			(HorizontalAlignment.CENTER),
+		
+		/** The align right. */
 		ALIGN_RIGHT				(HorizontalAlignment.RIGHT),
+		
+		/** The align fill. */
 		ALIGN_FILL				(HorizontalAlignment.FILL),
+		
+		/** The align justify. */
 		ALIGN_JUSTIFY			(HorizontalAlignment.JUSTIFY),
+		
+		/** The align center selection. */
 		ALIGN_CENTER_SELECTION	(HorizontalAlignment.CENTER_SELECTION),
+		
+		/** The vertical top. */
 		VERTICAL_TOP			(VerticalAlignment.TOP),
+		
+		/** The vertical bottom. */
 		VERTICAL_BOTTOM			(VerticalAlignment.BOTTOM),
+		
+		/** The vertical middle. */
 		VERTICAL_MIDDLE			(VerticalAlignment.CENTER),
+		
+		/** The vertical justify. */
 		VERTICAL_JUSTIFY		(VerticalAlignment.JUSTIFY);
 
+		/** The h value. */
 		HorizontalAlignment hValue;
+		
+		/** The v value. */
 		VerticalAlignment vValue;
+		
+		/**
+		 * Instantiates a new align.
+		 *
+		 * @param hValue the h value
+		 */
 		ALIGN(HorizontalAlignment hValue) {
 			this.hValue = hValue;
 		}
+		
+		/**
+		 * Instantiates a new align.
+		 *
+		 * @param vValue the v value
+		 */
 		ALIGN(VerticalAlignment vValue) {
 			this.vValue = vValue;
 		}
 
+		/**
+		 * Sets the align.
+		 *
+		 * @param cellStyle the cell style
+		 * @param alignString the align string
+		 * @param pattern the pattern
+		 */
 		private static void setAlign(CellStyle cellStyle, String alignString, String pattern) {
 			for (ALIGN align : values()) {
 				String name = StringUtils.substringAfter(align.name(), pattern);
@@ -214,16 +311,34 @@ public class XlsEngine {
 			}
 		}
 
+		/**
+		 * Sets the align.
+		 *
+		 * @param cellStyle the cell style
+		 * @param alignString the align string
+		 */
 		public static void setAlign(CellStyle cellStyle, String alignString) {
 			setAlign(cellStyle, alignString, "ALIGN_");
 		}
 
+		/**
+		 * Sets the vertical align.
+		 *
+		 * @param cellStyle the cell style
+		 * @param alignString the align string
+		 */
 		public static void setVerticalAlign(CellStyle cellStyle, String alignString) {
 			setAlign(cellStyle, alignString, "VERTICAL_");
 		}
 	}
 
 
+	/**
+	 * Render.
+	 *
+	 * @param sheet the sheet
+	 * @param table the table
+	 */
 	private void render(Sheet sheet, Table table) {
 		int startX = table.getX()!= null ? table.getX() -1 : 0;
 		int starty = table.getY()!= null ? table.getY() -1 : 0;
@@ -273,6 +388,12 @@ public class XlsEngine {
 		}
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param cell the cell
+	 * @param entry the entry
+	 */
 	private void render(Cell cell, Link entry) {
 		Hyperlink link = wb.getCreationHelper().createHyperlink(HyperlinkType.URL);
 		link.setAddress(entry.getReference());
@@ -280,18 +401,27 @@ public class XlsEngine {
 		cell.setCellStyle(cellStyles.get(HYPER_LINK));
 	}
 	
+	/**
+	 * The Enum TEXT_TYPE.
+	 */
 	enum TEXT_TYPE {
+		
+		/** The text. */
 		TEXT {
 			@Override
 			void renderType(Cell cell, Text text) {
 				cell.setCellValue(text.getValue());
 			}
-		}, BOOLEAN {
+		}, 
+ /** The boolean. */
+ BOOLEAN {
 			@Override
 			void renderType(Cell cell, Text text) {
 				cell.setCellValue(DataHelper.booleanOf(text.getValue()));
 			}
-		}, DOUBLE {
+		}, 
+ /** The double. */
+ DOUBLE {
 			@Override
 			void renderType(Cell cell, Text text) {
 				String value = text.getValue();
@@ -304,7 +434,9 @@ public class XlsEngine {
 					}
 				}
 			}
-		}, DATE {
+		}, 
+ /** The date. */
+ DATE {
 			@Override
 			void renderType(Cell cell, Text text) {
 				try {
@@ -315,12 +447,30 @@ public class XlsEngine {
 			}
 		};
 		
+		/**
+		 * Render.
+		 *
+		 * @param cell the cell
+		 * @param text the text
+		 */
 		static void render(Cell cell, Text text) {
 			getType(text).renderType(cell, text);
 		}
 
+		/**
+		 * Render type.
+		 *
+		 * @param cell the cell
+		 * @param text the text
+		 */
 		abstract void renderType(Cell cell, Text text);
 
+		/**
+		 * Gets the type.
+		 *
+		 * @param text the text
+		 * @return the type
+		 */
 		static TEXT_TYPE getType(Text text) {
 			for (TEXT_TYPE type : values()) {
 				if (StringUtils.equalsIgnoreCase(type.name(), text.getType())) {
@@ -331,10 +481,22 @@ public class XlsEngine {
 		}
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param cell the cell
+	 * @param text the text
+	 */
 	private void render(Cell cell, Text text) {
 		TEXT_TYPE.render(cell, text);
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param sheet the sheet
+	 * @param box the box
+	 */
 	private void render(Sheet sheet, Box box) {
 		if (box.getText() != null) {
 			int rowNumber = box.getY() - 1;
@@ -354,6 +516,12 @@ public class XlsEngine {
 		}
 	}
 
+	/**
+	 * Sets the cell style.
+	 *
+	 * @param cell the cell
+	 * @param style the style
+	 */
 	private void setCellStyle(Cell cell, String style) {
 		if (cellStyles.containsKey(style)) {
 			cell.setCellStyle(cellStyles.get(style));

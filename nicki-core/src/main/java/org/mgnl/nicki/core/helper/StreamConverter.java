@@ -32,13 +32,33 @@ import org.apache.commons.io.IOUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StreamConverter.
+ */
 @Slf4j
 public class StreamConverter extends Thread implements Runnable {
+	
+	/** The in. */
 	InputStream in;
+	
+	/** The out. */
 	OutputStream out;
+	
+	/** The charset in. */
 	Charset charsetIn;
+	
+	/** The charset out. */
 	Charset charsetOut;
 
+	/**
+	 * Instantiates a new stream converter.
+	 *
+	 * @param in the in
+	 * @param out the out
+	 * @param charsetIn the charset in
+	 * @param charsetOut the charset out
+	 */
 	public StreamConverter(InputStream in, OutputStream out,
 			Charset charsetIn, Charset charsetOut) {
 		super();
@@ -48,6 +68,9 @@ public class StreamConverter extends Thread implements Runnable {
 		this.charsetOut = charsetOut;
 	}
 
+	/**
+	 * Run.
+	 */
 	public void run() {
 		try {
 			byte[] byteArray = IOUtils.toByteArray(in);

@@ -26,22 +26,42 @@ import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Entitlement.
+ */
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("DirXML-Entitlement")
 public class Entitlement extends DynamicStructObject {
 	
+	/** The name. */
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;
 	
+	/**
+	 * Gets the source.
+	 *
+	 * @return the source
+	 */
 	public String getSource() {
 		return getInfo("/ref/src");
 	}
 	
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	public String getId() {
 		return getInfo("/ref/id");
 	}
 	
+	/**
+	 * Gets the parameter.
+	 *
+	 * @return the parameter
+	 */
 	public String getParameter() {
 		return getInfo("/ref/param");
 	}

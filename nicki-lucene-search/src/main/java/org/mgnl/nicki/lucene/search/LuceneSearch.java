@@ -56,20 +56,47 @@ import org.mgnl.nicki.search.NickiSearchResult;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LuceneSearch.
+ *
+ * @param <T> the generic type
+ */
 @Slf4j
 public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 
 
+	/**
+	 * The Enum MODE.
+	 */
 	public static enum MODE {
-		CREATE, UPDATE
+		
+		/** The create. */
+		CREATE, 
+ /** The update. */
+ UPDATE
 	}
 
+	/** The index path. */
 	private String indexPath = "index";
+	
+	/** The mode. */
 	private MODE mode = MODE.CREATE;
 
+	/**
+	 * Instantiates a new lucene search.
+	 */
 	public LuceneSearch() {
 	}
 
+	/**
+	 * Search.
+	 *
+	 * @param searchString the search string
+	 * @param maxResults the max results
+	 * @return the list
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public List<NickiSearchResult> search(String searchString, int maxResults) throws IOException {
 		List<NickiSearchResult> list = new ArrayList<>();
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
@@ -94,6 +121,13 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 		return list;
 	}
 
+	/**
+	 * Index objects.
+	 *
+	 * @param writer the writer
+	 * @param list the list
+	 * @param extractor the extractor
+	 */
 	private void indexObjects(IndexWriter writer, Collection<T> list, Extractor<T> extractor) {
 		if (list != null) {
 			for (T t : list) {
@@ -107,6 +141,14 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 
 	}
 
+	/**
+	 * Index object.
+	 *
+	 * @param writer the writer
+	 * @param object the object
+	 * @param extractor the extractor
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void indexObject(IndexWriter writer, T object, Extractor<T> extractor) throws IOException {
 		if (!extractor.accept(object)) {
 			return;
@@ -153,6 +195,12 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 
 	}
 
+	/**
+	 * Index.
+	 *
+	 * @param list the list
+	 * @param extractor the extractor
+	 */
 	public void index(Collection<T> list, Extractor<T> extractor) {
 		Date start = new Date();
 		try {
@@ -198,18 +246,39 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 		}
 	}
 
+	/**
+	 * Gets the analyzer.
+	 *
+	 * @return the analyzer
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private Analyzer getAnalyzer() throws IOException {
 		return new StandardAnalyzer();
 	}
 
+	/**
+	 * Gets the mode.
+	 *
+	 * @return the mode
+	 */
 	public MODE getMode() {
 		return mode;
 	}
 
+	/**
+	 * Sets the mode.
+	 *
+	 * @param mode the new mode
+	 */
 	public void setMode(MODE mode) {
 		this.mode = mode;
 	}
 
+	/**
+	 * Sets the index path.
+	 *
+	 * @param indexPath the new index path
+	 */
 	public void setIndexPath(String indexPath) {
 		this.indexPath = indexPath;
 	}

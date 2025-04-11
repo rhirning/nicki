@@ -30,16 +30,34 @@ import org.mgnl.nicki.pdf.template.PdfTemplate;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PdfTemplateRenderer2.
+ */
 @Slf4j
 public class PdfTemplateRenderer2 extends Thread implements Runnable {
+	
+	/** The in. */
 	InputStream in;
+	
+	/** The out. */
 	OutputStream out;
 
+	/**
+	 * Instantiates a new pdf template renderer 2.
+	 *
+	 * @param in the in
+	 * @param out the out
+	 */
 	public PdfTemplateRenderer2(InputStream in, OutputStream out) {
 		super();
 		this.in = in;
 		this.out = out;
 	}
+	
+	/**
+	 * Run.
+	 */
 	public void run() {
 		try {
 			PdfEngine engine = PdfEngine.fromResource("pdf-configuration.xml", "nicki.pdf.contextBasePath");

@@ -25,12 +25,27 @@ package org.mgnl.nicki.db.handler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class IsExistSelectHandler.
+ */
 public class IsExistSelectHandler extends NonLoggingSelectHandler implements SelectHandler {
 	
+	/** The table name. */
 	private String tableName;
+	
+	/** The where clause. */
 	private String whereClause;
+	
+	/** The exist. */
 	private boolean exist = false;
 
+	/**
+	 * Instantiates a new checks if is exist select handler.
+	 *
+	 * @param tableName the table name
+	 * @param whereClause the where clause
+	 */
 	public IsExistSelectHandler(String tableName, String whereClause) {
 		super();
 		this.tableName = tableName;
@@ -38,18 +53,34 @@ public class IsExistSelectHandler extends NonLoggingSelectHandler implements Sel
 	}
 
 
+	/**
+	 * Gets the search statement.
+	 *
+	 * @return the search statement
+	 */
 	public String getSearchStatement() {
 		return "select count(*) as anzahl from " + tableName
 		+ " where " + whereClause;
 	}
 
 
+	/**
+	 * Handle.
+	 *
+	 * @param rs the rs
+	 * @throws SQLException the SQL exception
+	 */
 	public void handle(ResultSet rs) throws SQLException {
 		if (rs.next() &&  rs.getInt("anzahl") > 0) {
 			exist = true;
 		}
 	}
 
+	/**
+	 * Checks if is exist.
+	 *
+	 * @return true, if is exist
+	 */
 	public boolean isExist() {
 		return exist;
 	}

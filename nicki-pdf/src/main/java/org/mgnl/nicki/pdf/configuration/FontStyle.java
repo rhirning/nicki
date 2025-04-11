@@ -26,26 +26,62 @@ import com.lowagie.text.Font;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Enum FontStyle.
+ */
 public enum FontStyle{
+		
+		/** The bold. */
 		BOLD("bold", Font.BOLD),
+		
+		/** The normal. */
 		NORMAL("normal", Font.NORMAL),
+		
+		/** The default. */
 		DEFAULT("default", Font.NORMAL),
+		
+		/** The underlined. */
 		UNDERLINED("underlined", Font.UNDERLINE);
 		
+		/** The style. */
 		private int style;
+		
+		/**
+		 * The Class font.
+		 */
 		static class font {
+			
+			/** The Constant MAP. */
 			static final Map<String, FontStyle> MAP = new HashMap<String, FontStyle>();
 		}
 		
+		/**
+		 * Instantiates a new font style.
+		 *
+		 * @param name the name
+		 * @param style the style
+		 */
 		FontStyle(String name, int style) {
 			this.style = style;
 			font.MAP.put(name, this);
 		}
 		
+		/**
+		 * Gets the font style.
+		 *
+		 * @return the font style
+		 */
 		public int getFontStyle() {
 			return style;
 		}
 		
+		/**
+		 * By name.
+		 *
+		 * @param name the name
+		 * @return the font style
+		 */
 		public static FontStyle byName(String name) {
 			if(name instanceof String)
 				return font.MAP.get(name.toLowerCase());

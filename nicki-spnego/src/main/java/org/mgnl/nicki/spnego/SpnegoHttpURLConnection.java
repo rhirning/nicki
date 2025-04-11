@@ -50,6 +50,7 @@ import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
 
+// TODO: Auto-generated Javadoc
 /**
  * This Class may be used by custom clients as a convenience when connecting 
  * to a protected HTTP server.
@@ -135,6 +136,7 @@ public final class SpnegoHttpURLConnection {
     /** GSSContext is not thread-safe. */
     private static final Lock LOCK = new ReentrantLock();
     
+    /** The Constant EMPTY_BYTE. */
     private static final byte[] EMPTY_BYTE = new byte[0];
 
     /**
@@ -158,6 +160,8 @@ public final class SpnegoHttpURLConnection {
     private transient String requestMethod = "GET";
     
     /**
+     * The request properties.
+     *
      * @see java.net.URLConnection#getRequestProperties()
      */
     private final transient Map<String, List<String>> requestProperties = 
@@ -246,9 +250,9 @@ public final class SpnegoHttpURLConnection {
      * Creates an instance where the LoginContext relies on a keytab 
      * file being specified by "java.security.auth.login.config" or 
      * where LoginContext relies on tgtsessionkey.
-     * 
-     * @param loginModuleName 
-     * @throws LoginException 
+     *
+     * @param loginModuleName the login module name
+     * @throws LoginException the login exception
      */
     public SpnegoHttpURLConnection(final String loginModuleName)
         throws LoginException {
@@ -285,11 +289,11 @@ public final class SpnegoHttpURLConnection {
      * Creates an instance where the LoginContext does not require a keytab
      * file. However, the "java.security.auth.login.config" property must still
      * be set prior to instantiating this object.
-     * 
-     * @param loginModuleName 
-     * @param username 
-     * @param password 
-     * @throws LoginException 
+     *
+     * @param loginModuleName the login module name
+     * @param username the username
+     * @param password the password
+     * @throws LoginException the login exception
      */
     public SpnegoHttpURLConnection(final String loginModuleName,
         final String username, final String password) throws LoginException {
@@ -331,14 +335,12 @@ public final class SpnegoHttpURLConnection {
      * connect(URL, ByteArrayOutputStream) method but passing in a null 
      * for the second argument.
      * </p>
-     * 
-     * @param url 
+     *
+     * @param url the url
      * @return an HttpURLConnection object
-     * @throws GSSException 
-     * @throws PrivilegedActionException 
-     * @throws IOException 
-     * @throws LoginException 
-     * 
+     * @throws GSSException the GSS exception
+     * @throws PrivilegedActionException the privileged action exception
+     * @throws IOException Signals that an I/O exception has occurred.
      * @see java.net.URLConnection#connect()
      */
     public HttpURLConnection connect(final URL url)
@@ -350,15 +352,13 @@ public final class SpnegoHttpURLConnection {
     /**
      * Opens a communications link to the resource referenced by 
      * this URL, if such a connection has not already been established.
-     * 
-     * @param url 
+     *
+     * @param url the url
      * @param dooutput optional message/payload to send to server
      * @return an HttpURLConnection object
-     * @throws GSSException 
-     * @throws PrivilegedActionException 
-     * @throws IOException 
-     * @throws LoginException 
-     * 
+     * @throws GSSException the GSS exception
+     * @throws PrivilegedActionException the privileged action exception
+     * @throws IOException Signals that an I/O exception has occurred.
      * @see java.net.URLConnection#connect()
      */
     public HttpURLConnection connect(final URL url, final ByteArrayOutputStream dooutput)
@@ -471,6 +471,8 @@ public final class SpnegoHttpURLConnection {
      * Logout the LoginContext instance, and call dispose() on GSSCredential 
      * if autoDisposeCreds is set to true, and call dispose on the passed-in 
      * GSSContext instance.
+     *
+     * @param context the context
      */
     private void dispose(final GSSContext context) {
         if (null != context) {
@@ -528,6 +530,9 @@ public final class SpnegoHttpURLConnection {
 
     /**
      * Internal sanity check to validate not null key/value pairs.
+     *
+     * @param key the key
+     * @param value the value
      */
     private void assertKeyValue(final String key, final String value) {
         if (null == key || key.isEmpty()) {
@@ -576,10 +581,11 @@ public final class SpnegoHttpURLConnection {
     /**
      * Returns a GSSContextt for the given url with a default lifetime.
      *  
+     *
      * @param url http address
      * @return GSSContext for the given url
-     * @throws GSSException
-     * @throws PrivilegedActionException
+     * @throws GSSException the GSS exception
+     * @throws PrivilegedActionException the privileged action exception
      */
     private GSSContext getGSSContext(final URL url) throws GSSException
         , PrivilegedActionException {
@@ -600,10 +606,9 @@ public final class SpnegoHttpURLConnection {
     
     /**
      * Returns an error stream that reads from this open connection.
-     * 
+     *
      * @return error stream that reads from this open connection
-     * @throws IOException 
-     * 
+     * @throws IOException Signals that an I/O exception has occurred.
      * @see java.net.HttpURLConnection#getErrorStream()
      */
     public InputStream getErrorStream() throws IOException {
@@ -614,8 +619,8 @@ public final class SpnegoHttpURLConnection {
 
     /**
      * Get header value at specified index.
-     * 
-     * @param index
+     *
+     * @param index the index
      * @return header value at specified index
      */
     public String getHeaderField(final int index) {
@@ -639,8 +644,8 @@ public final class SpnegoHttpURLConnection {
     
     /**
      * Get header field key at specified index.
-     * 
-     * @param index
+     *
+     * @param index the index
      * @return header field key at specified index
      */
     public String getHeaderFieldKey(final int index) {
@@ -650,6 +655,8 @@ public final class SpnegoHttpURLConnection {
     }
 
     /**
+     * Gets the instance follow redirects.
+     *
      * @return true if it should follow redirects
      * @see java.net.HttpURLConnection#getInstanceFollowRedirects()
      */
@@ -658,7 +665,9 @@ public final class SpnegoHttpURLConnection {
     }
 
     /**
-     * @param followRedirects 
+     * Sets the instance follow redirects.
+     *
+     * @param followRedirects the new instance follow redirects
      * @see java.net.HttpURLConnection#setInstanceFollowRedirects(boolean)
      */
     public void setInstanceFollowRedirects(final boolean followRedirects) {
@@ -669,10 +678,9 @@ public final class SpnegoHttpURLConnection {
 
     /**
      * Returns an input stream that reads from this open connection.
-     * 
+     *
      * @return input stream that reads from this open connection
-     * @throws IOException 
-     * 
+     * @throws IOException Signals that an I/O exception has occurred.
      * @see java.net.HttpURLConnection#getInputStream()
      */
     public InputStream getInputStream() throws IOException {
@@ -683,10 +691,9 @@ public final class SpnegoHttpURLConnection {
     
     /**
      * Returns an output stream that writes to this open connection.
-     * 
+     *
      * @return output stream that writes to this connections
-     * @throws IOException
-     * 
+     * @throws IOException Signals that an I/O exception has occurred.
      * @see java.net.HttpURLConnection#getOutputStream()
      */
     public OutputStream getOutputStream() throws IOException {
@@ -697,10 +704,9 @@ public final class SpnegoHttpURLConnection {
 
     /**
      * Returns HTTP Status code.
-     * 
+     *
      * @return HTTP Status Code
-     * @throws IOException 
-     * 
+     * @throws IOException Signals that an I/O exception has occurred.
      * @see java.net.HttpURLConnection#getResponseCode()
      */
     public int getResponseCode() throws IOException {
@@ -711,10 +717,9 @@ public final class SpnegoHttpURLConnection {
 
     /**
      * Returns HTTP Status message.
-     * 
+     *
      * @return HTTP Status Message
-     * @throws IOException 
-     * 
+     * @throws IOException Signals that an I/O exception has occurred.
      * @see java.net.HttpURLConnection#getResponseMessage()
      */
     public String getResponseMessage() throws IOException {
@@ -723,6 +728,16 @@ public final class SpnegoHttpURLConnection {
         return this.conn.getResponseMessage();
     }
     
+    /**
+     * Redirect.
+     *
+     * @param url the url
+     * @param dooutput the dooutput
+     * @return the http URL connection
+     * @throws GSSException the GSS exception
+     * @throws PrivilegedActionException the privileged action exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     */
     private HttpURLConnection redirect(final URL url, final ByteArrayOutputStream dooutput)
         throws GSSException, PrivilegedActionException, IOException {
 
@@ -815,9 +830,8 @@ public final class SpnegoHttpURLConnection {
     
     /**
      * May override the default GET method.
-     * 
-     * @param method 
-     * 
+     *
+     * @param method the new request method
      * @see java.net.HttpURLConnection#setRequestMethod(String)
      */
     public void setRequestMethod(final String method) {

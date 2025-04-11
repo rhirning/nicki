@@ -41,16 +41,32 @@ import org.mgnl.nicki.db.context.DBContextManager;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BrokerThread.
+ */
 @Slf4j
 public class BrokerThread extends Thread implements Runnable {
+	
+	/** The Constant DEFAULT_CHARSET. */
 	public final static String DEFAULT_CHARSET = "UTF-8";
+	
+	/** The stop. */
 	private boolean stop;
+	
+	/** The broker. */
 	private BrokerService broker;
 
+	/**
+	 * Instantiates a new broker thread.
+	 */
 	public BrokerThread() {
 		setDaemon(true);
 	}
 
+	/**
+	 * Run.
+	 */
 	public void run() {
 		// wait
 		int wait = Config.getInteger("nicki.mq.broker.wait", 10);
@@ -114,6 +130,11 @@ public class BrokerThread extends Thread implements Runnable {
 		}
 	}
 
+	/**
+	 * Gets the plugins.
+	 *
+	 * @return the plugins
+	 */
 	public BrokerPlugin[] getPlugins() {
 		List<BrokerPlugin> plugins = new ArrayList<>();
 		plugins.add(getAuthenticationPlugin());
@@ -121,6 +142,11 @@ public class BrokerThread extends Thread implements Runnable {
 		return plugins.toArray(new BrokerPlugin[0]);
 	}
 
+	/**
+	 * Gets the authentication plugin.
+	 *
+	 * @return the authentication plugin
+	 */
 	public SimpleAuthenticationPlugin getAuthenticationPlugin() {
 		SimpleAuthenticationPlugin plugin = new SimpleAuthenticationPlugin();
 		List<AuthenticationUser> users = new ArrayList<>();
@@ -135,12 +161,22 @@ public class BrokerThread extends Thread implements Runnable {
 		return plugin;
 	}
 
+	/**
+	 * Gets the kaha DB persistence adapter.
+	 *
+	 * @return the kaha DB persistence adapter
+	 */
 	private PersistenceAdapter getKahaDBPersistenceAdapter() {
 		KahaDBPersistenceAdapter persistenceAdapter = new KahaDBPersistenceAdapter();
 		persistenceAdapter.setDirectory(new File(Config.getString("nicki.mq.store")));
 		return persistenceAdapter;
 	}
 
+	/**
+	 * Gets the JDBC persistence adapter.
+	 *
+	 * @return the JDBC persistence adapter
+	 */
 	private PersistenceAdapter getJDBCPersistenceAdapter() {
 		JDBCPersistenceAdapter persistenceAdapter = new JDBCPersistenceAdapter();
 		persistenceAdapter
@@ -151,6 +187,11 @@ public class BrokerThread extends Thread implements Runnable {
 		return persistenceAdapter;
 	}
 
+	/**
+	 * Gets the persistence adapter.
+	 *
+	 * @return the persistence adapter
+	 */
 	private PersistenceAdapter getPersistenceAdapter() {
 		String persistenceType = Config.getString("nicki.mq.persistenceType", "kaha");
 		if (StringUtils.equalsIgnoreCase("JDBC", persistenceType)) {
@@ -160,6 +201,11 @@ public class BrokerThread extends Thread implements Runnable {
 		}
 	}
 
+	/**
+	 * Sets the stop.
+	 *
+	 * @param stop the new stop
+	 */
 	public void setStop(boolean stop) {
 		this.stop = stop;
 	}

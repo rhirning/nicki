@@ -55,20 +55,40 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DataHelper.
+ */
 @Slf4j
 public class DataHelper {
 
+	/** The Constant FORMAT_DAY. */
 	public final static String FORMAT_DAY = "yyyyMMdd";
+	
+	/** The Constant FORMAT_DISPLAY_DAY. */
 	public final static String FORMAT_DISPLAY_DAY = "dd.MM.yyyy";
+	
+	/** The Constant FORMAT_TIME. */
 	// 20091030115321
 	public final static String FORMAT_TIME = "yyyyMMddHHmmss";
+	
+	/** The Constant FORMAT_MILLI. */
 	public final static String FORMAT_MILLI = "dd.MM.yyyy HH:mm:ss:SSS";
 
 //	public final static String FORMAT_MILLI = "yyyyMMddHHmmssSSS";
 	
-	public final static String FORMAT_TIMESTAMP = "yyyy-MM-dd HH:mm:ss Z";
+	/** The Constant FORMAT_TIMESTAMP. */
+public final static String FORMAT_TIMESTAMP = "yyyy-MM-dd HH:mm:ss Z";
+	
+	/** The Constant FORMAT_GERMAN_TIMESTAMP. */
 	public final static String FORMAT_GERMAN_TIMESTAMP = "dd.MM.yyyy HH:mm:ss";
 
+	/**
+	 * Gets the local date.
+	 *
+	 * @param date the date
+	 * @return the local date
+	 */
 	public static LocalDate getLocalDate(Date date) {
 		if (date != null) {
 			return date.toInstant()
@@ -79,6 +99,12 @@ public class DataHelper {
 		}
 	}
 
+	/**
+	 * Gets the date.
+	 *
+	 * @param localDate the local date
+	 * @return the date
+	 */
 	public static Date getDate(LocalDate localDate) {
 		if (localDate != null) {
 			return Date.from(localDate.atStartOfDay()
@@ -89,6 +115,12 @@ public class DataHelper {
 		}
 	}
 
+	/**
+	 * Gets the date.
+	 *
+	 * @param localDateTime the local date time
+	 * @return the date
+	 */
 	public static Date getDate(LocalDateTime localDateTime) {
 		if (localDateTime != null) {
 			return Date.from(localDateTime
@@ -99,6 +131,13 @@ public class DataHelper {
 		}
 	}
 	
+	/**
+	 * Gets the list.
+	 *
+	 * @param <T> the generic type
+	 * @param entries the entries
+	 * @return the list
+	 */
 	public static <T> List<T> getList (@SuppressWarnings("unchecked") T ... entries) {
 		List<T> list = new ArrayList<T>();
 		if (entries != null) {
@@ -109,6 +148,13 @@ public class DataHelper {
 		return list;
 	}
 	
+	/**
+	 * Compare to.
+	 *
+	 * @param date1 the date 1
+	 * @param date2 the date 2
+	 * @return the int
+	 */
 	public static int compareTo(Date date1, Date date2) {
 		if (date1 == null && date2 == null) {
 			return 0;
@@ -123,7 +169,8 @@ public class DataHelper {
         
 
 	/**
-	 * Extracts an Integer from a String
+	 * Extracts an Integer from a String.
+	 *
 	 * @param stringValue String containing the Integer
 	 * @param defaultValue default value if parsing does not work
 	 * @return the Integer
@@ -139,8 +186,10 @@ public class DataHelper {
 		}
 		return defaultValue;
 	}
+	
 	/**
-	 * Extracts an Long from a String
+	 * Extracts an Long from a String.
+	 *
 	 * @param stringValue String containing the Long
 	 * @param defaultValue default value if parsing does not work
 	 * @return the Long
@@ -221,7 +270,8 @@ public class DataHelper {
 	}
 
 	/**
-	 * Simplifies a Map<String, String[]> by using only the first value of the String Arrays
+	 * Simplifies a Map<String, String[]> by using only the first value of the String Arrays.
+	 *
 	 * @param pMap Map<String, String[]>
 	 * @return Map<String, String>
 	 */
@@ -236,7 +286,8 @@ public class DataHelper {
 	}
 
 	/**
-	 * Removes all "'" and removes control characters (char <= 32) from both ends of this String
+	 * Removes all "'" and removes control characters (char <= 32) from both ends of this String.
+	 *
 	 * @param text  the String to be trimmed, may be null
 	 * @return the trimmed string, null if null String input
 	 */
@@ -260,7 +311,8 @@ public class DataHelper {
 	 * Splits a String into a List<String>. Other than String.split each delimiter is recognized, so that empty values are possible / allowed.
 	 * <br/><br/>
 	 * Input: "1|2||3|4|5" with delimiter "|" results in {"1", "2", "", "3", "4", "5"}
-	 * @param data input String
+	 *
+	 * @param dataAsString the data as string
 	 * @param separator delimiter
 	 * @return List<String> (not null)
 	 */
@@ -278,6 +330,14 @@ public class DataHelper {
 		return values;
 	}
 
+	/**
+	 * Gets the map.
+	 *
+	 * @param data the data
+	 * @param entrySeparator the entry separator
+	 * @param valueSeparator the value separator
+	 * @return the map
+	 */
 	public static Map<String, String> getMap(String data, String entrySeparator, String valueSeparator) {
 		if (StringUtils.isEmpty(data)) {
 			return new HashMap<String, String>();
@@ -298,6 +358,13 @@ public class DataHelper {
 		return map;
 	}
 	
+	/**
+	 * Gets the as string.
+	 *
+	 * @param list the list
+	 * @param separator the separator
+	 * @return the as string
+	 */
 	public static String getAsString(Collection<String> list, String separator) {
 		StringBuilder sb = new StringBuilder();
 		if (list != null) {
@@ -311,6 +378,12 @@ public class DataHelper {
 		return sb.toString();
 	}
 
+	/**
+	 * Gets the password.
+	 *
+	 * @param string the string
+	 * @return the password
+	 */
 	public static String getPassword(String string) {
 		try {
 			if (StringUtils.startsWith(string, "!")) {
@@ -322,12 +395,30 @@ public class DataHelper {
 		return string;
 	}
 
+	/** The Constant CONFIG_PATTERN_STRING. */
 	public static final String CONFIG_PATTERN_STRING = "\\%\\{(.*?)\\}";
+	
+	/** The Constant CONFIG_PATTERN. */
 	public static final Pattern CONFIG_PATTERN = Pattern.compile(CONFIG_PATTERN_STRING);
+	
+	/** The Constant PATTERN_STRING. */
 	public static final String PATTERN_STRING = "\\$\\{(.*?)\\}";
+	
+	/** The Constant PATTERN. */
 	public static final Pattern PATTERN = Pattern.compile(PATTERN_STRING);
+	
+	/** The Constant EXEC_PATTERN_STRING. */
 	public static final String EXEC_PATTERN_STRING = "\\#\\{(.*?)\\}";
+	
+	/** The Constant EXEC_PATTERN. */
 	public static final Pattern EXEC_PATTERN = Pattern.compile(EXEC_PATTERN_STRING);
+	
+	/**
+	 * Translate.
+	 *
+	 * @param text the text
+	 * @return the string
+	 */
 	public static String translate(String text) {
 		String result = text;
 		
@@ -382,6 +473,12 @@ public class DataHelper {
 		return result;
 	}
 	
+	/**
+	 * Execute command.
+	 *
+	 * @param command the command
+	 * @return the string
+	 */
 	public static String executeCommand(String command) {
 
 		StringBuilder output = new StringBuilder();
@@ -408,6 +505,13 @@ public class DataHelper {
 
 	}
 	
+	/**
+	 * Translate.
+	 *
+	 * @param text the text
+	 * @param parameterMap the parameter map
+	 * @return the string
+	 */
 	public static String translate(String text, Map<String, String> parameterMap) {
 		String result = text;
 		
@@ -445,6 +549,13 @@ public class DataHelper {
 		return result;
 	}
 	
+	/**
+	 * Translate.
+	 *
+	 * @param text the text
+	 * @param defaultValue the default value
+	 * @return the string
+	 */
 	@Deprecated
 	public static String translate(String text, String defaultValue) {
 		String result = text;
@@ -489,61 +600,147 @@ public class DataHelper {
 		return false;
 	}
 
+	/**
+	 * Gets the day.
+	 *
+	 * @param value the value
+	 * @return the day
+	 */
 	// FORMAT_DAY = "yyyyMMdd"
 	public static String getDay(Date value) {
 		return new SimpleDateFormat(FORMAT_DAY).format(value);
 	}
 
+	/**
+	 * Date from string.
+	 *
+	 * @param stored the stored
+	 * @return the date
+	 * @throws ParseException the parse exception
+	 */
 	public static Date dateFromString(String stored) throws ParseException {
 		return new SimpleDateFormat(FORMAT_DAY).parse(stored);
 	}
 
+	/**
+	 * Gets the milli.
+	 *
+	 * @param value the value
+	 * @return the milli
+	 */
 	// FORMAT_MILLI = "dd.MM.yyyy HH:mm:ss:SSS"
 	public static String getMilli(Date value) {
 		return new SimpleDateFormat(FORMAT_MILLI).format(value);
 	}
 
+	/**
+	 * Milli from string.
+	 *
+	 * @param stored the stored
+	 * @return the date
+	 * @throws ParseException the parse exception
+	 */
 	public static Date milliFromString(String stored) throws ParseException {
 		return new SimpleDateFormat(FORMAT_MILLI).parse(stored);
 	}
 
+	/**
+	 * Gets the display day.
+	 *
+	 * @param value the value
+	 * @return the display day
+	 */
 	// FORMAT_DISPLAY_DAY = "dd.MM.yyyy"
 	public static String getDisplayDay(Date value) {
 		return new SimpleDateFormat(FORMAT_DISPLAY_DAY).format(value);
 	}
 
+	/**
+	 * Date from display day.
+	 *
+	 * @param stored the stored
+	 * @return the date
+	 * @throws ParseException the parse exception
+	 */
 	public static Date dateFromDisplayDay(String stored) throws ParseException {
 		return new SimpleDateFormat(FORMAT_DISPLAY_DAY).parse(stored);
 	}
 	
+	/**
+	 * Gets the time.
+	 *
+	 * @param value the value
+	 * @return the time
+	 */
 	// FORMAT_TIME = "yyyyMMddHHmmss"
 	public static String getTime(Date value) {
 		return new SimpleDateFormat(FORMAT_TIME).format(value);
 	}
 
+	/**
+	 * Time from string.
+	 *
+	 * @param stored the stored
+	 * @return the date
+	 * @throws ParseException the parse exception
+	 */
 	public static Date timeFromString(String stored) throws ParseException {
 		return new SimpleDateFormat(FORMAT_TIME).parse(stored);
 	}
 	
+	/**
+	 * Gets the timestamp.
+	 *
+	 * @param value the value
+	 * @return the timestamp
+	 */
 	// FORMAT_TIMESTAMP = "yyyy-MM-dd HH:mm:ss Z"
 	public static String getTimestamp(Date value) {
 		return new SimpleDateFormat(FORMAT_TIMESTAMP).format(value);
 	}
 
+	/**
+	 * Timestamp from string.
+	 *
+	 * @param stored the stored
+	 * @return the date
+	 * @throws ParseException the parse exception
+	 */
 	public static Date timestampFromString(String stored) throws ParseException {
 		return new SimpleDateFormat(FORMAT_TIMESTAMP).parse(stored);
 	}
 	
+	/**
+	 * Gets the german timestamp.
+	 *
+	 * @param value the value
+	 * @return the german timestamp
+	 */
 	// FORMAT_GERMAN_TIMESTAMP = "dd.MM.yyyy HH:mm:ss"
 	public static String getGermanTimestamp(Date value) {
 		return new SimpleDateFormat(FORMAT_GERMAN_TIMESTAMP).format(value);
 	}
 
+	/**
+	 * German timestamp from string.
+	 *
+	 * @param stored the stored
+	 * @return the date
+	 * @throws ParseException the parse exception
+	 */
 	public static Date germanTimestampFromString(String stored) throws ParseException {
 		return new SimpleDateFormat(FORMAT_GERMAN_TIMESTAMP).parse(stored);
 	}
 
 	
+	/**
+	 * Contains.
+	 *
+	 * @param <T> the generic type
+	 * @param array the array
+	 * @param entry the entry
+	 * @return true, if successful
+	 */
 	public static <T> boolean contains(T[] array, T entry) {
 		if (array != null) {
 			for (T t : array) {
@@ -556,6 +753,13 @@ public class DataHelper {
 		
 	}
 
+	/**
+	 * Contains.
+	 *
+	 * @param list the list
+	 * @param entry the entry
+	 * @return true, if successful
+	 */
 	public static boolean contains(String[] list, String entry) {
 		for (String listEntry : list) {
 			if (StringUtils.equalsIgnoreCase(entry, listEntry)) {
@@ -565,6 +769,13 @@ public class DataHelper {
 		return false;
 	}
 
+	/**
+	 * Contains ignore case.
+	 *
+	 * @param list the list
+	 * @param entry the entry
+	 * @return true, if successful
+	 */
 	public static boolean containsIgnoreCase(String[] list, String entry) {
 		if (list != null) {
 			for (String listEntry : list) {
@@ -576,6 +787,13 @@ public class DataHelper {
 		return false;
 	}
 
+	/**
+	 * Contains ignore case.
+	 *
+	 * @param list the list
+	 * @param entry the entry
+	 * @return true, if successful
+	 */
 	public static boolean containsIgnoreCase(Collection<String> list, String entry) {
 		if (list != null) {
 			for (String listEntry : list) {
@@ -587,6 +805,13 @@ public class DataHelper {
 		return false;
 	}
 
+	/**
+	 * Contains.
+	 *
+	 * @param list the list
+	 * @param entry the entry
+	 * @return true, if successful
+	 */
 	public static boolean contains(String list, String entry) {
 		if (list != null) {
 			for (String listEntry : StringUtils.split(list)) {
@@ -598,6 +823,13 @@ public class DataHelper {
 		return false;
 	}
 
+	/**
+	 * Adds the to string array.
+	 *
+	 * @param array the array
+	 * @param value the value
+	 * @return the string[]
+	 */
 	public static String[] addToStringArray(String[] array, String value) {
 		if (array == null) {
 			return new String[]{value};
@@ -609,10 +841,25 @@ public class DataHelper {
 		} else return array;
 	}
 
+	/**
+	 * Contains.
+	 *
+	 * @param list the list
+	 * @param value the value
+	 * @return true, if successful
+	 */
 	public static boolean contains(Collection<String> list, String value) {
 		return list != null && list.contains(value);
 	}
 
+	/**
+	 * Adds the to list.
+	 *
+	 * @param <T> the generic type
+	 * @param list the list
+	 * @param value the value
+	 * @return the collection
+	 */
 	public static <T> Collection<T> addToList(Collection<T> list, T value) {
 		if (list == null) {
 			list = new ArrayList<T>();
@@ -623,6 +870,14 @@ public class DataHelper {
 		return list;
 	}
 	
+	/**
+	 * In range.
+	 *
+	 * @param value the value
+	 * @param from the from
+	 * @param to the to
+	 * @return true, if successful
+	 */
 	public static boolean inRange(int value, int from, int to) {
 		if (value < from || value > to) {
 			return false;
@@ -631,6 +886,13 @@ public class DataHelper {
 		}
 	}
 
+	/**
+	 * Gets the map.
+	 *
+	 * @param registerInfo the register info
+	 * @param valueSeparator the value separator
+	 * @return the map
+	 */
 	public static Map<String, String> getMap(JsonArray registerInfo, String valueSeparator) {
 		Map<String, String> map = new HashMap<>();
 		if (registerInfo != null) {
@@ -645,6 +907,13 @@ public class DataHelper {
 		return map;
 	}
 	
+	/**
+	 * Normalize.
+	 *
+	 * @param text the text
+	 * @param transliterate the transliterate
+	 * @return the string
+	 */
 	public static String normalize(String text, boolean transliterate) {
 		if (text == null) {
 			return null;
@@ -667,6 +936,14 @@ public class DataHelper {
 		}
 	}
 
+	/**
+	 * Filter.
+	 *
+	 * @param <T> the generic type
+	 * @param list the list
+	 * @param clazz the clazz
+	 * @return the list
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends DynamicObject> List<DynamicObject> filter(List<DynamicObject> list, Class<T> clazz) {
 		List<DynamicObject> result = new ArrayList<>();
@@ -680,6 +957,12 @@ public class DataHelper {
 		return result;
 	}
 	
+    /**
+     * To byte array.
+     *
+     * @param obj the obj
+     * @return the byte[]
+     */
     public static byte[] toByteArray(Object obj) {
         byte[] bytes = null;
         ByteArrayOutputStream bos = null;
@@ -711,6 +994,12 @@ public class DataHelper {
         return bytes;
     }
 
+    /**
+     * To object.
+     *
+     * @param bytes the bytes
+     * @return the object
+     */
     public static Object toObject(byte[] bytes) {
         Object obj = null;
         ByteArrayInputStream bis = null;

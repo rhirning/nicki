@@ -31,12 +31,28 @@ import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class InitialObjectLdapQueryHandler.
+ */
 public class InitialObjectLdapQueryHandler extends ObjectLoaderLdapQueryHandler implements QueryHandler {
 	
+	/**
+	 * Instantiates a new initial object ldap query handler.
+	 *
+	 * @param context the context
+	 * @param path the path
+	 */
 	public InitialObjectLdapQueryHandler(NickiContext context, String path) {
 		super(context, path);
 	}
 
+	/**
+	 * Handle.
+	 *
+	 * @param results the results
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
 		if (results != null && results.size() > 0) {
@@ -49,6 +65,11 @@ public class InitialObjectLdapQueryHandler extends ObjectLoaderLdapQueryHandler 
 		}
 	}
 
+	/**
+	 * Gets the constraints.
+	 *
+	 * @return the constraints
+	 */
 	public SearchControls getConstraints() {
 		SearchControls constraints = super.getConstraints();
 		String[] attrIDs = { "objectClass" };

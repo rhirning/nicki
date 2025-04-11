@@ -33,9 +33,28 @@ import javax.jms.TextMessage;
 import org.mgnl.nicki.mq.base.NickiMessageListener;
 import org.mgnl.nicki.mq.model.Consumer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The listener interface for receiving dump events.
+ * The class that is interested in processing a dump
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addDumpListener</code> method. When
+ * the dump event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see DumpEvent
+ */
 public class DumpListener implements NickiMessageListener {
+	
+	/** The consumer. */
 	private Consumer consumer;
 
+	/**
+	 * On message.
+	 *
+	 * @param message the message
+	 */
 	@Override
 	public void onMessage(Message message) {
 
@@ -54,6 +73,11 @@ public class DumpListener implements NickiMessageListener {
 		}
 	}
 
+	/**
+	 * Sets the consumer.
+	 *
+	 * @param consumer the new consumer
+	 */
 	@Override
 	public void setConsumer(Consumer consumer) {
 		this.consumer = consumer;

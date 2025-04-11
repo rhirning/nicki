@@ -27,23 +27,43 @@ import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NickiScript.
+ */
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass({ "nickiScript" })
 public class NickiScript extends BaseDynamicObject implements Script {
 
+	/** The Constant ATTRIBUTE_DATA. */
 	public static final String ATTRIBUTE_DATA = "data";
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	@DynamicAttribute(externalName = "cn", naming = true)
 	public String getName() {
 		return super.getName();
 	}
 
+	/**
+	 * Gets the data.
+	 *
+	 * @return the data
+	 */
 	@DynamicAttribute(externalName = "nickiScriptData")
 	public String getData() {
 		return getAttribute(ATTRIBUTE_DATA);
 	}
 
+	/**
+	 * Sets the data.
+	 *
+	 * @param data the new data
+	 */
 	public void setData(String data) {
 		this.put(ATTRIBUTE_DATA, data);
 	}

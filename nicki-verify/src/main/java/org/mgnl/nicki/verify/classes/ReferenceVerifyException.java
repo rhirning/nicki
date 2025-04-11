@@ -25,23 +25,49 @@ package org.mgnl.nicki.verify.classes;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ReferenceVerifyException.
+ */
 @SuppressWarnings("serial")
 public class ReferenceVerifyException extends Exception {
+	
+	/** The errors. */
 	private List<ReferencedError> errors;
 
+	/**
+	 * Instantiates a new reference verify exception.
+	 *
+	 * @param errors the errors
+	 */
 	public ReferenceVerifyException(List<ReferencedError> errors) {
 		this.errors = errors;
 	}
 
+	/**
+	 * Instantiates a new reference verify exception.
+	 *
+	 * @param error the error
+	 */
 	public ReferenceVerifyException(ReferencedError error) {
 		errors = new ArrayList<>();
 		errors.add(error);
 	}
 
+	/**
+	 * Gets the errors.
+	 *
+	 * @return the errors
+	 */
 	public List<ReferencedError> getErrors() {
 		return errors;
 	}
 
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return errors == null ? null : errors.toString();

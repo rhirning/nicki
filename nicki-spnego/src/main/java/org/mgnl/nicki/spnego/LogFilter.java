@@ -36,6 +36,10 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LogFilter.
+ */
 public final class LogFilter implements Filter {
     
     /** 
@@ -63,16 +67,34 @@ public final class LogFilter implements Filter {
      */
     public static final String NEGOTIATE_HEADER = "Negotiate";
 
+    /**
+     * Inits the.
+     *
+     * @param filterConfig the filter config
+     * @throws ServletException the servlet exception
+     */
     @Override
     public void init(final FilterConfig filterConfig) throws ServletException {
     	System.out.println("init " + getClass().getName());
 
     }
 
+    /**
+     * Destroy.
+     */
     @Override
     public void destroy() {
     }
 
+    /**
+     * Do filter.
+     *
+     * @param request the request
+     * @param response the response
+     * @param chain the chain
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws ServletException the servlet exception
+     */
     @Override
     public void doFilter(final ServletRequest request, final ServletResponse response
         , final FilterChain chain) throws IOException, ServletException {

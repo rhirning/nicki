@@ -27,9 +27,25 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+// TODO: Auto-generated Javadoc
+/**
+ * defines the context which is used to access data.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface AccessTargetContext {
+	
+	/**
+	 * Name.
+	 *
+	 * @return the string
+	 */
 	String name() default "";
+	
+	/**
+	 * Config name.
+	 *
+	 * @return the string
+	 */
 	String configName() default "";
 }

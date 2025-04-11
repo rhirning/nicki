@@ -37,6 +37,7 @@ import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for page complex type.
  * 
@@ -65,9 +66,14 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Page {
 
+    /** The box. */
     protected List<Box> box;
+    
+    /** The table. */
     @XmlElement(required = true)
     protected Table table;
+    
+    /** The name. */
     @XmlAttribute(name = "name")
     @XmlSchemaType(name = "anySimpleType")
     protected String name;
@@ -91,8 +97,8 @@ public class Page {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link Box }
-     * 
-     * 
+     *
+     * @return the box
      */
     public List<Box> getBox() {
         if (box == null) {

@@ -28,17 +28,34 @@ import java.sql.SQLException;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SequenceValueSelectHandler.
+ */
 @Slf4j
 public class SequenceValueSelectHandler extends NonLoggingSelectHandler implements SelectHandler {
 	
+	/** The sequence name. */
 	private String sequenceName;
+	
+	/** The result. */
 	private long result = -1;
 
+	/**
+	 * Instantiates a new sequence value select handler.
+	 *
+	 * @param sequenceName the sequence name
+	 */
 	public SequenceValueSelectHandler(String sequenceName) {
 		this.sequenceName = sequenceName;
 	}
 
 
+	/**
+	 * Gets the search statement.
+	 *
+	 * @return the search statement
+	 */
 	public String getSearchStatement() {
 		String statement = "select " + getSequenceName() + ".nextval from dual";
 		log.debug(statement);
@@ -46,6 +63,12 @@ public class SequenceValueSelectHandler extends NonLoggingSelectHandler implemen
 	}
 
 
+	/**
+	 * Handle.
+	 *
+	 * @param rs the rs
+	 * @throws SQLException the SQL exception
+	 */
 	public void handle(ResultSet rs) throws SQLException {
 		if (rs.next()) {
 			result = rs.getLong(1);
@@ -53,11 +76,21 @@ public class SequenceValueSelectHandler extends NonLoggingSelectHandler implemen
 	}
 
 
+	/**
+	 * Gets the result.
+	 *
+	 * @return the result
+	 */
 	public long getResult() {
 		return result;
 	}
 
 
+	/**
+	 * Gets the sequence name.
+	 *
+	 * @return the sequence name
+	 */
 	public String getSequenceName() {
 		return sequenceName;
 	}

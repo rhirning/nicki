@@ -34,19 +34,41 @@ import jakarta.json.JsonReader;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
 // var					= allowedKeys:value1,value2,value3
 
+/**
+ * The Class AllowedMapKeysRule.
+ */
 @SuppressWarnings("serial")
 public class AllowedMapKeysRule extends Rule {
+	
+	/** The Constant SEPARATOR. */
 	static final public String SEPARATOR = ",";
+	
+	/** The allowed keys. */
 	private List<String> allowedKeys;
+	
+	/** The messages. */
 	private List<String> messages;
 
+	/**
+	 * Instantiates a new allowed map keys rule.
+	 *
+	 * @param parameter the parameter
+	 */
 	public AllowedMapKeysRule(String parameter) {
 		setParameter(parameter);
 		allowedKeys = DataHelper.getList(parameter, SEPARATOR);
 	}
 	
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		boolean ok = true;
@@ -61,6 +83,11 @@ public class AllowedMapKeysRule extends Rule {
 		return ok;
 	}
 	
+	/**
+	 * Adds the message.
+	 *
+	 * @param text the text
+	 */
 	private void addMessage(String text) {
 		if (messages == null) {
 			messages = new ArrayList<String>();
@@ -68,10 +95,21 @@ public class AllowedMapKeysRule extends Rule {
 		messages.add(text);
 	}
 	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".allowedMapKeys", messages.toString());
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "allowedMapKeys:" + getParameter();
 	}

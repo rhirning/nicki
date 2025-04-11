@@ -29,16 +29,37 @@ import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AssignedArticle.
+ */
 @SuppressWarnings("serial")
 public class AssignedArticle implements Serializable{
+	
+	/** The source. */
 	private String source;
+	
+	/** The article id. */
 	private String articleId;
+	
+	/** The specifier. */
 	private String specifier;
+	
+	/** The target dn. */
 	private String targetDn;
+	
+	/** The start. */
 	private Date start;
+	
+	/** The end. */
 	private Date end;
 	
 	
+	/**
+	 * Instantiates a new assigned article.
+	 *
+	 * @param text the text
+	 */
 	public AssignedArticle(String text) {
 		super();
 		String entry[] = StringUtils.split(text, "#");
@@ -58,28 +79,58 @@ public class AssignedArticle implements Serializable{
 		}
 	}
 	
+	/**
+	 * Gets the source.
+	 *
+	 * @return the source
+	 */
 	public String getSource() {
 		return source;
 	}
 
 
+	/**
+	 * Gets the article id.
+	 *
+	 * @return the article id
+	 */
 	public String getArticleId() {
 		return articleId;
 	}
 
 
+	/**
+	 * Gets the target dn.
+	 *
+	 * @return the target dn
+	 */
 	public String getTargetDn() {
 		return targetDn;
 	}
 
+	/**
+	 * Gets the specifier.
+	 *
+	 * @return the specifier
+	 */
 	public String getSpecifier() {
 		return specifier;
 	}
 
+	/**
+	 * Gets the start.
+	 *
+	 * @return the start
+	 */
 	public Date getStart() {
 		return start;
 	}
 
+	/**
+	 * Gets the end.
+	 *
+	 * @return the end
+	 */
 	public Date getEnd() {
 		return end;
 	}

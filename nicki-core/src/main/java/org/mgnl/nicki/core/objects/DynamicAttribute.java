@@ -35,40 +35,102 @@ import org.mgnl.nicki.core.methods.ListForeignKeyMethod;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DynamicAttribute.
+ */
 @Slf4j
 @SuppressWarnings("serial")
 public class DynamicAttribute implements Serializable {
 	
-	public enum CREATEONLY {TRUE, FALSE}
+	/**
+	 * The Enum CREATEONLY.
+	 */
+	public enum CREATEONLY {/** The true. */
+TRUE, /** The false. */
+ FALSE}
 
+	/** The name. */
 	private String name;
+	
+	/** The ldap name. */
 	private String ldapName;
+	
+	/** The attribute class. */
 	private Class<?> attributeClass;
+	
+	/** The naming. */
 	private boolean naming;
+	
+	/** The searchable. */
 	private boolean searchable;
+	
+	/** The mandatory. */
 	private boolean mandatory;
+	
+	/** The multiple. */
 	private boolean multiple;
+	
+	/** The foreign key. */
 	private boolean foreignKey;
+	
+	/** The foreign key class. */
 	private Class<? extends DynamicObject> foreignKeyClass;
+	
+	/** The virtual. */
 	private boolean virtual;
+	
+	/** The readonly. */
 	private boolean readonly;
+	
+	/** The editor class. */
 	private String editorClass;
+	
+	/** The search field class. */
 	private String searchFieldClass;
+	
+	/** The caption. */
 	private String caption;
+	
+	/** The format. */
 	private String format;
+	
+	/** The type. */
 	private Class<?> type;
+	
+	/** The create only. */
 	private CREATEONLY createOnly = CREATEONLY.FALSE;
 
+	/**
+	 * Gets the external name.
+	 *
+	 * @return the external name
+	 */
 	public String getExternalName() {
 		return ldapName;
 	}
 
+	/**
+	 * Instantiates a new dynamic attribute.
+	 *
+	 * @param name the name
+	 * @param ldapName the ldap name
+	 * @param attributeClass the attribute class
+	 */
 	public DynamicAttribute(String name, String ldapName, Class<?> attributeClass) {
 		this.name = name;
 		this.ldapName = ldapName;
 		this.attributeClass = attributeClass;
 	}
 	
+	/**
+	 * Inits the.
+	 *
+	 * @param <T> the generic type
+	 * @param context the context
+	 * @param dynamicObject the dynamic object
+	 * @param rs the rs
+	 */
 	public <T extends NickiContext> void init(T context, DynamicObject dynamicObject, ContextSearchResult rs) {
 		if (isVirtual()) {
 			return;
@@ -116,6 +178,12 @@ public class DynamicAttribute implements Serializable {
 	
 	
 
+	/**
+	 * Sets the property value.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param value the value
+	 */
 	@SuppressWarnings("unused")
 	private void setPropertyValue(DynamicObject dynamicObject, Object value) {
 		Class<?> clazz = dynamicObject.getClass();
@@ -132,59 +200,128 @@ public class DynamicAttribute implements Serializable {
 
 	}
 
+	/**
+	 * Gets the getter.
+	 *
+	 * @param name the name
+	 * @return the getter
+	 */
 	public static String getGetter(String name) {
 		return "get" + StringUtils.capitalize(name);
 	}
 
+	/**
+	 * Gets the multiple getter.
+	 *
+	 * @param name the name
+	 * @return the multiple getter
+	 */
 	public static String getMultipleGetter(String name) {
 		return "get" + StringUtils.capitalize(name) + "s";
 	}
 
+	/**
+	 * Gets the setter.
+	 *
+	 * @param name the name
+	 * @return the setter
+	 */
 	public static String getSetter(String name) {
 		return "set" + StringUtils.capitalize(name);
 	}
 
+	/**
+	 * Gets the sultiple getter.
+	 *
+	 * @param name the name
+	 * @return the sultiple getter
+	 */
 	public static String getsultipleGetter(String name) {
 		return "set" + StringUtils.capitalize(name) + "s";
 	}
 
+	/**
+	 * Gets the attribute class.
+	 *
+	 * @return the attribute class
+	 */
 	public Class<?> getAttributeClass() {
 		return attributeClass;
 	}
 
+	/**
+	 * Checks if is naming.
+	 *
+	 * @return true, if is naming
+	 */
 	public boolean isNaming() {
 		return naming;
 	}
 
+	/**
+	 * Sets the naming.
+	 */
 	public void setNaming() {
 		this.naming = true;
 		this.mandatory = true;
 	}
 
+	/**
+	 * Checks if is mandatory.
+	 *
+	 * @return true, if is mandatory
+	 */
 	public boolean isMandatory() {
 		return mandatory;
 	}
 
+	/**
+	 * Sets the mandatory.
+	 */
 	public void setMandatory() {
 		this.mandatory = true;
 	}
 
+	/**
+	 * Checks if is multiple.
+	 *
+	 * @return true, if is multiple
+	 */
 	public boolean isMultiple() {
 		return multiple;
 	}
 
+	/**
+	 * Sets the multiple.
+	 */
 	public void setMultiple() {
 		this.multiple = true;
 	}
 
+	/**
+	 * Checks if is foreign key.
+	 *
+	 * @return true, if is foreign key
+	 */
 	public boolean isForeignKey() {
 		return foreignKey;
 	}
 
+	/**
+	 * Sets the foreign key.
+	 *
+	 * @param classDefinition the new foreign key
+	 */
 	public void setForeignKey(Class<? extends DynamicObject> classDefinition) {
 		this.foreignKey = true;
 		this.foreignKeyClass = classDefinition;
 	}
+	
+	/**
+	 * Sets the foreign key.
+	 *
+	 * @param className the new foreign key
+	 */
 	@SuppressWarnings("unchecked")
 	public void setForeignKey(String className) {
 		this.foreignKey = true;
@@ -194,90 +331,199 @@ public class DynamicAttribute implements Serializable {
 			this.foreignKey = false;
 		}
 	}
+	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Sets the virtual.
+	 */
 	public void setVirtual() {
 		virtual = true;
 	}
 
+	/**
+	 * Checks if is virtual.
+	 *
+	 * @return true, if is virtual
+	 */
 	public boolean isVirtual() {
 		return virtual;
 	}
 	
+	/**
+	 * Gets the options.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @return the options
+	 */
 	public List<? extends DynamicObject> getOptions(DynamicObject dynamicObject) {
 		return new ArrayList<DynamicObject>();
 	}
 
+	/**
+	 * Sets the readonly.
+	 */
 	public void setReadonly() {
 		this.readonly = true;
 	}
 
+	/**
+	 * Checks if is readonly.
+	 *
+	 * @return true, if is readonly
+	 */
 	public boolean isReadonly() {
 		return readonly;
 	}
 
+	/**
+	 * Gets the foreign key class.
+	 *
+	 * @return the foreign key class
+	 */
 	public Class<? extends DynamicObject> getForeignKeyClass() {
 		return foreignKeyClass;
 	}
 
+	/**
+	 * Sets the editor class.
+	 *
+	 * @param editorClass the new editor class
+	 */
 	public void setEditorClass(String editorClass) {
 		this.editorClass = editorClass;
 	}
 	
+	/**
+	 * Gets the editor class.
+	 *
+	 * @return the editor class
+	 */
 	public String getEditorClass() {
 		return editorClass;
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
 		return name + "(" + ldapName + ")";
 	}
 
+	/**
+	 * Gets the search field class.
+	 *
+	 * @return the search field class
+	 */
 	public String getSearchFieldClass() {
 		return searchFieldClass;
 	}
 
+	/**
+	 * Sets the search field class.
+	 *
+	 * @param searchFieldClass the new search field class
+	 */
 	public void setSearchFieldClass(String searchFieldClass) {
 		this.searchFieldClass = searchFieldClass;
 	}
 
+	/**
+	 * Checks if is searchable.
+	 *
+	 * @return true, if is searchable
+	 */
 	public boolean isSearchable() {
 		return searchable;
 	}
 
+	/**
+	 * Sets the searchable.
+	 *
+	 * @param searchable the new searchable
+	 */
 	public void setSearchable(boolean searchable) {
 		this.searchable = searchable;
 	}
 
+	/**
+	 * Gets the caption.
+	 *
+	 * @return the caption
+	 */
 	public String getCaption() {
 		return caption;
 	}
 
+	/**
+	 * Sets the caption.
+	 *
+	 * @param caption the new caption
+	 */
 	public void setCaption(String caption) {
 		this.caption = caption;
 	}
 
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	public Class<?> getType() {
 		return type;
 	}
 
+	/**
+	 * Sets the type.
+	 *
+	 * @param type the new type
+	 */
 	public void setType(Class<?> type) {
 		this.type = type;
 	}
 
+	/**
+	 * Gets the creates the only.
+	 *
+	 * @return the creates the only
+	 */
 	public CREATEONLY getCreateOnly() {
 		return createOnly;
 	}
 
+	/**
+	 * Sets the creates the only.
+	 *
+	 * @param createOnly the new creates the only
+	 */
 	public void setCreateOnly(CREATEONLY createOnly) {
 		this.createOnly = createOnly;
 	}
 
+	/**
+	 * Gets the format.
+	 *
+	 * @return the format
+	 */
 	public String getFormat() {
 		return this.format;
 	}
 
+	/**
+	 * Sets the format.
+	 *
+	 * @param format the new format
+	 */
 	public void setFormat(String format) {
 		this.format = format;
 	}

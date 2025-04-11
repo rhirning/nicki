@@ -20,6 +20,9 @@ package org.mgnl.nicki.ws.base;
  * #L%
  */
 
+/**
+ * The Class AuthenticationFailedException.
+ */
 @SuppressWarnings("serial")
 public class AuthenticationFailedException extends Exception {
 

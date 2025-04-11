@@ -25,12 +25,32 @@ package org.mgnl.nicki.db.handler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface SelectHandler.
+ */
 public interface SelectHandler {
 
+	/**
+	 * Gets the search statement.
+	 *
+	 * @return the search statement
+	 */
 	String getSearchStatement();
 
+	/**
+	 * Handle.
+	 *
+	 * @param rs the rs
+	 * @throws SQLException the SQL exception
+	 */
 	void handle(ResultSet rs) throws SQLException;
 	
+	/**
+	 * Checks if is logging enabled.
+	 *
+	 * @return true, if is logging enabled
+	 */
 	boolean isLoggingEnabled();
 	
 }

@@ -35,13 +35,33 @@ import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.Configuration;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating Configuration objects.
+ */
 @Slf4j
 public class ConfigurationFactory {
 	
-	public enum TYPE {JNDI, CLASSPATH};
+	/**
+	 * The Enum TYPE.
+	 */
+	public enum TYPE {/** The jndi. */
+JNDI, /** The classpath. */
+ CLASSPATH};
 
+	/** The instance. */
 	private static ConfigurationFactory instance = new ConfigurationFactory();
+	
+	/** The configurations. */
 	private Map<String, Configuration> configurations = new HashMap<String, Configuration>();
+	
+	/**
+	 * Gets the configuration.
+	 *
+	 * @param type the type
+	 * @param base the base
+	 * @return the configuration
+	 */
 	public Configuration getConfiguration(TYPE type, String base) {
 		String key = type.name() + "-" + base;
 		if (!configurations.containsKey(key)) {
@@ -65,10 +85,22 @@ public class ConfigurationFactory {
 		return configurations.get(key);
 	}
 
+	/**
+	 * Gets the configuration.
+	 *
+	 * @param baseDn the base dn
+	 * @return the configuration
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	public Configuration getConfiguration(String baseDn) throws InvalidPrincipalException {
 		return getConfiguration(TYPE.JNDI, baseDn);
 	}
 
+	/**
+	 * Gets the single instance of ConfigurationFactory.
+	 *
+	 * @return single instance of ConfigurationFactory
+	 */
 	public static ConfigurationFactory getInstance() {
 		return instance;
 	}

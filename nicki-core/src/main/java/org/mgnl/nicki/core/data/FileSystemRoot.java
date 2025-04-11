@@ -32,17 +32,37 @@ import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.context.NickiContext;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FileSystemRoot.
+ */
 @SuppressWarnings("serial")
 public class FileSystemRoot implements DataProvider<TreeData>, Serializable {
+	
+	/** The root. */
 	private String root;
+	
+	/** The entry filter. */
 	private EntryFilter entryFilter;
 
+	/**
+	 * Instantiates a new file system root.
+	 *
+	 * @param root the root
+	 * @param entryFilter the entry filter
+	 */
 	public FileSystemRoot(String root, EntryFilter entryFilter) {
 		super();
 		this.root = root;
 		this.entryFilter = entryFilter;
 	}
 
+	/**
+	 * Gets the children.
+	 *
+	 * @param context the context
+	 * @return the children
+	 */
 	public List<? extends TreeData> getChildren(NickiContext context) {
 		
 		List<? extends TreeData> list = getRoot(context).getAllChildren();
@@ -57,18 +77,40 @@ public class FileSystemRoot implements DataProvider<TreeData>, Serializable {
 		return list;
 	}
 
+	/**
+	 * Gets the root.
+	 *
+	 * @param context the context
+	 * @return the root
+	 */
 	public TreeData getRoot(NickiContext context) {
 		return new DirectoryEntry(this.root);
 	}
 
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	public String getMessage() {
 		return "";
 	}
 
+	/**
+	 * Gets the entry filter.
+	 *
+	 * @return the entry filter
+	 */
 	public EntryFilter getEntryFilter() {
 		return this.entryFilter;
 	}
 
+	/**
+	 * Gets the children.
+	 *
+	 * @param parent the parent
+	 * @return the children
+	 */
 	@Override
 	public Collection<? extends TreeData> getChildren(TreeData parent) {
 		return parent.getAllChildren();

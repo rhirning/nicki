@@ -25,14 +25,40 @@ package org.mgnl.nicki.shop.base.objects;
 import java.util.List;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface Provider.
+ */
 public interface Provider {
 
+	/**
+	 * Gets the articles.
+	 *
+	 * @param catalogPage the catalog page
+	 * @return the articles
+	 */
 	List<CatalogArticle> getArticles(CatalogPage catalogPage);
 
+	/**
+	 * Gets the article.
+	 *
+	 * @param key the key
+	 * @return the article
+	 */
 	CatalogArticle getArticle(String key);
 
+	/**
+	 * Inits the.
+	 *
+	 * @param catalogPage the catalog page
+	 */
 	void init(CatalogPage catalogPage);
 	
+	/**
+	 * Checks if is read only.
+	 *
+	 * @return true, if is read only
+	 */
 	boolean isReadOnly();
 
 }

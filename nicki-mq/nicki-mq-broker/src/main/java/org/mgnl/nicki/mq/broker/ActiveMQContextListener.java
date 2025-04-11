@@ -32,9 +32,12 @@ import org.mgnl.nicki.verify.Verify;
 import org.mgnl.nicki.verify.VerifyException;
 
 import lombok.extern.slf4j.Slf4j;
+// TODO: Auto-generated Javadoc
+
 /**
  * ActiveMQContextListener
- * startet einen ActiveMQ Broker
+ * startet einen ActiveMQ Broker.
+ *
  * @author rhirning
  * 
  * Konfiguration:
@@ -48,12 +51,18 @@ import lombok.extern.slf4j.Slf4j;
  * nicki.mq.user.password.producer		= Producer Passwort
  * nicki.mq.user.password.consumer		= Consumer Passwort
  * nicki.mq.user.password.admin			= Admin Passwort
- * 
  */
 @Slf4j
 public class ActiveMQContextListener implements ServletContextListener {
+	
+	/** The broker thread. */
 	private BrokerThread brokerThread;
 
+	/**
+	 * Context initialized.
+	 *
+	 * @param sce the sce
+	 */
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		if (isStartBroker()) {
@@ -66,6 +75,11 @@ public class ActiveMQContextListener implements ServletContextListener {
 	}
 
 	
+	/**
+	 * Checks if is start broker.
+	 *
+	 * @return true, if is start broker
+	 */
 	private boolean isStartBroker() {
 		if (Config.exists("nicki.mq.broker.start")) {
 			return Config.getBoolean("nicki.mq.broker.start", false);
@@ -86,6 +100,11 @@ public class ActiveMQContextListener implements ServletContextListener {
 	}
 
 
+	/**
+	 * Context destroyed.
+	 *
+	 * @param sce the sce
+	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		if (brokerThread != null) {

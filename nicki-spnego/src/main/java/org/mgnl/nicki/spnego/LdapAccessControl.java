@@ -48,6 +48,7 @@ import javax.naming.ldap.LdapContext;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
 /**
  * The <code>LdapAccessControl</code> class is a reference implementation 
  * of the {@link UserAccessControl} interface. This class only performs 
@@ -216,42 +217,61 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LdapAccessControl implements UserAccessControl {
     
+    /** The Constant POLICY_FILE. */
     private static final String POLICY_FILE = "spnego.authz.policy.file";
     
+    /** The Constant SERVER_REALM. */
     private static final String SERVER_REALM = "spnego.server.realm";
     
+    /** The Constant LDAP_FACTORY. */
     private static final String LDAP_FACTORY = "spnego.authz.ldap.factory";
     
+    /** The Constant LDAP_AUTHN. */
     private static final String LDAP_AUTHN = "spnego.authz.ldap.authn";
     
+    /** The Constant LDAP_POOL. */
     private static final String LDAP_POOL = "spnego.authz.ldap.pool";
     
+    /** The Constant LDAP_DEECE. */
     private static final String LDAP_DEECE = "spnego.authz.ldap.deecee";
 
+    /** The Constant LDAP_URL. */
     private static final String LDAP_URL = "spnego.authz.ldap.url";
 
+    /** The Constant LDAP_USERNAME. */
     private static final String LDAP_USERNAME = "spnego.authz.ldap.username";
     
+    /** The Constant KRB5_USERNAME. */
     private static final String KRB5_USERNAME = "spnego.preauth.username";
     
+    /** The Constant LDAP_PASSWORD. */
     private static final String LDAP_PASSWORD = "spnego.authz.ldap.password";
     
+    /** The Constant KRB5_PASSWORD. */
     private static final String KRB5_PASSWORD = "spnego.preauth.password";
     
+    /** The Constant TTL. */
     private static final String TTL = "spnego.authz.ttl";
     
+    /** The Constant UNIQUE. */
     private static final String UNIQUE = "spnego.authz.unique";
     
+    /** The Constant PREFIX_FILTER. */
     private static final String PREFIX_FILTER = "spnego.authz.ldap.filter.";
     
+    /** The Constant PREFIX_NAME. */
     private static final String PREFIX_NAME = "spnego.authz.resource.name.";
     
+    /** The Constant PREFIX_TYPE. */
     private static final String PREFIX_TYPE = "spnego.authz.resource.type.";
     
+    /** The Constant PREFIX_ACCESS. */
     private static final String PREFIX_ACCESS = "spnego.authz.resource.access.";
     
+    /** The Constant HAS. */
     private static final String HAS = "has";
     
+    /** The Constant ANY. */
     private static final String ANY = "any";
     
     /** case-sensitive. e.g. values mail,department,name,memberOf, etc. */
@@ -263,20 +283,31 @@ public class LdapAccessControl implements UserAccessControl {
     /** default is 20 minutes. */
     private static final long DEFAULT_TTL = 20 * 60 * 1000;
     
-    /** maximum number of ldap filters is 200 */
+    /** maximum number of ldap filters is 200. */
     private static final int MAX_NUM_FILTERS = 200;
     
     /** read lock for reading instance variables and write lock for ldap search. */
     private final transient ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock();
+    
+    /** The read lock. */
     private final transient Lock readLock = readWriteLock.readLock();
+    
+    /** The write lock. */
     private final transient Lock writeLock = readWriteLock.writeLock();
     
     /** cache LDAP results to minimize trips to ldap server. */
     private final transient Map<String, Long> matchedList = new HashMap<String, Long>();
+    
+    /** The un matched list. */
     private final transient Map<String, Long> unMatchedList = new HashMap<String, Long>();
+    
+    /** The user info list. */
     private final transient Map<String, UserInfo> userInfoList = new HashMap<String, UserInfo>();
     
+    /** The environment. */
     private transient Hashtable<String, String> environment;
+    
+    /** The srch cntrls. */
     private transient SearchControls srchCntrls;
     
     /** DC= base portionS of the ldap search filter. */
@@ -295,8 +326,10 @@ public class LdapAccessControl implements UserAccessControl {
     private transient Map<String, Map<String, String[]>> resources = 
             new HashMap<String, Map<String, String[]>>();
     
+    /** The user info labels. */
     private transient List<String> userInfoLabels = new ArrayList<String>();
     
+    /** The user info filter. */
     private transient String userInfoFilter;
     
     /**
@@ -306,6 +339,9 @@ public class LdapAccessControl implements UserAccessControl {
         // default constructor
     }
     
+    /**
+     * Destroy.
+     */
     @Override
     public void destroy() {
         log.info("destroy()...");
@@ -327,6 +363,13 @@ public class LdapAccessControl implements UserAccessControl {
         }
     }
     
+    /**
+     * Any role.
+     *
+     * @param username the username
+     * @param attributes the attributes
+     * @return true, if successful
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.UserAccessControl#anyRole(java.lang.String, java.lang.String[])
@@ -341,6 +384,13 @@ public class LdapAccessControl implements UserAccessControl {
         return false;
     }
     
+    /**
+     * Checks for role.
+     *
+     * @param username the username
+     * @param attribute the attribute
+     * @return true, if successful
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.UserAccessControl#hasRole(java.lang.String, java.lang.String)
@@ -420,6 +470,14 @@ public class LdapAccessControl implements UserAccessControl {
         return hasRole(username, attribute);
     }
     
+    /**
+     * Checks for role.
+     *
+     * @param username the username
+     * @param attributeX the attribute X
+     * @param attributeYs the attribute ys
+     * @return true, if successful
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.UserAccessControl#hasRole(java.lang.String, java.lang.String, java.lang.String[])
@@ -447,6 +505,13 @@ public class LdapAccessControl implements UserAccessControl {
         return found;
     }
     
+    /**
+     * Any access.
+     *
+     * @param username the username
+     * @param resources the resources
+     * @return true, if successful
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.UserAccessControl#anyAccess(java.lang.String, java.lang.String[])
@@ -461,6 +526,13 @@ public class LdapAccessControl implements UserAccessControl {
         return false;
     }
     
+    /**
+     * Checks for access.
+     *
+     * @param username the username
+     * @param resource the resource
+     * @return true, if successful
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.UserAccessControl#hasAccess(java.lang.String, java.lang.String)
@@ -536,6 +608,14 @@ public class LdapAccessControl implements UserAccessControl {
         return matched;
     }
     
+    /**
+     * Checks for access.
+     *
+     * @param username the username
+     * @param resourceX the resource X
+     * @param resourceYs the resource ys
+     * @return true, if successful
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.UserAccessControl#hasAccess(java.lang.String, java.lang.String, java.lang.String[])
@@ -625,6 +705,11 @@ public class LdapAccessControl implements UserAccessControl {
         }
     }
     
+    /**
+     * Inits the.
+     *
+     * @param props the props
+     */
     @Override
     public void init(final Properties props) {
         log.info("init()...");
@@ -771,6 +856,13 @@ public class LdapAccessControl implements UserAccessControl {
         }
     }
     
+    /**
+     * Matched expired.
+     *
+     * @param key the key
+     * @param now the now
+     * @return true, if successful
+     */
     private boolean matchedExpired(final String key, final long now) {
         final boolean matched = this.matchedList.containsKey(key);
         boolean matchExpired = true;
@@ -787,6 +879,13 @@ public class LdapAccessControl implements UserAccessControl {
         }
     }
     
+    /**
+     * Un matched expired.
+     *
+     * @param key the key
+     * @param now the now
+     * @return true, if successful
+     */
     private boolean unMatchedExpired(final String key, final long now) {
         final boolean unMatched = this.unMatchedList.containsKey(key);
         boolean unMatchedExpired = true;
@@ -803,6 +902,12 @@ public class LdapAccessControl implements UserAccessControl {
         }
     }
     
+    /**
+     * Load policies.
+     *
+     * @param props the props
+     * @param policies the policies
+     */
     // pre-condition is that caller has write lock
     private void loadPolicies(final Properties props, final Properties policies) {
         for (int i=0; i<=MAX_NUM_FILTERS; i++) {
@@ -827,6 +932,12 @@ public class LdapAccessControl implements UserAccessControl {
         } 
     }
     
+    /**
+     * Load resource names.
+     *
+     * @param props the props
+     * @param policies the policies
+     */
     // pre-condition is that caller has write lock
     private void loadResourceNames(final Properties props, final Properties policies) {
         this.resources = new HashMap<String, Map<String, String[]>>();
@@ -861,6 +972,13 @@ public class LdapAccessControl implements UserAccessControl {
         }        
     }
     
+    /**
+     * Cache user info.
+     *
+     * @param username the username
+     * @return the user info
+     * @throws NamingException the naming exception
+     */
     // pre-condition is that caller has write lock
     private UserInfo cacheUserInfo(final String username) throws NamingException {
         

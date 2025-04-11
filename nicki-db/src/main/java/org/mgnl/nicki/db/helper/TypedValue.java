@@ -31,17 +31,40 @@ import org.mgnl.nicki.db.annotation.Attribute;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TypedValue.
+ */
 @Data
 @AllArgsConstructor
 public class TypedValue {
+	
+	/** The type. */
 	private Type type;
+	
+	/** The pos. */
 	private int pos;
+	
+	/** The raw value. */
 	private Object rawValue;
 	
+	/**
+	 * Fill prepared statement.
+	 *
+	 * @param pstmt the pstmt
+	 * @throws SQLException the SQL exception
+	 */
 	public void fillPreparedStatement(PreparedStatement pstmt) throws SQLException {
 		type.fillPreparedStatement(pstmt, pos, rawValue);
 	}
 	
+	/**
+	 * Correct value.
+	 *
+	 * @param bean the bean
+	 * @param attributeName the attribute name
+	 * @return the typed value
+	 */
 	public TypedValue correctValue(Object bean, String attributeName) {
 		if (type == Type.STRING) {
 			Attribute attribute = BeanHelper.getBeanAttribute(bean.getClass(), attributeName);
@@ -52,6 +75,13 @@ public class TypedValue {
 		return this;
 	}
 	
+	/**
+	 * Correct value.
+	 *
+	 * @param beanClass the bean class
+	 * @param attributeName the attribute name
+	 * @return the typed value
+	 */
 	public TypedValue correctValue(Class<?> beanClass, String attributeName) {
 		if (type == Type.STRING) {
 			Attribute attribute = BeanHelper.getBeanAttribute(beanClass, attributeName);
@@ -62,6 +92,12 @@ public class TypedValue {
 		return this;
 	}
 	
+	/**
+	 * Correct value.
+	 *
+	 * @param field the field
+	 * @return the typed value
+	 */
 	public TypedValue correctValue(Field field) {
 		if (type == Type.STRING) {
 			Attribute attribute = field.getAnnotation(Attribute.class);

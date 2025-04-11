@@ -33,6 +33,7 @@ package org.mgnl.nicki.pdf.model.config;
 import jakarta.xml.bind.annotation.XmlRegistry;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 
@@ -59,8 +60,9 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link Configuration }
-     * 
+     * Create an instance of {@link Configuration }.
+     *
+     * @return the configuration
      */
     public Configuration createConfiguration() {
         return new Configuration();
@@ -68,23 +70,26 @@ public class ObjectFactory {
 
     /**
      * Create an instance of {@link Configuration.Fonts }
-     * 
+     *
+     * @return the fonts
      */
     public Configuration.Fonts createConfigurationFonts() {
         return new Configuration.Fonts();
     }
 
     /**
-     * Create an instance of {@link Font }
-     * 
+     * Create an instance of {@link Font }.
+     *
+     * @return the font
      */
     public Font createFont() {
         return new Font();
     }
 
     /**
-     * Create an instance of {@link DefaultFont }
-     * 
+     * Create an instance of {@link DefaultFont }.
+     *
+     * @return the default font
      */
     public DefaultFont createDefaultFont() {
         return new DefaultFont();

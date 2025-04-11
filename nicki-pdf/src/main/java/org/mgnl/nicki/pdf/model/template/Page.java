@@ -37,6 +37,7 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java-Klasse f�r page complex type.
  * 
@@ -65,11 +66,18 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Page {
 
+    /** The box. */
     protected List<Box> box;
+    
+    /** The content. */
     @XmlElement(required = true)
     protected Content content;
+    
+    /** The width. */
     @XmlAttribute(name = "width")
     protected Integer width;
+    
+    /** The height. */
     @XmlAttribute(name = "height")
     protected Integer height;
 
@@ -92,8 +100,8 @@ public class Page {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link Box }
-     * 
-     * 
+     *
+     * @return the box
      */
     public List<Box> getBox() {
         if (box == null) {

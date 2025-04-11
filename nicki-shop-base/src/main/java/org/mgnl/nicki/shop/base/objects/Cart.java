@@ -45,7 +45,9 @@ import org.mgnl.nicki.core.util.XmlHelper;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class Cart.
  *
  * @author cna
  */
@@ -54,84 +56,179 @@ import org.xml.sax.SAXException;
 @ObjectClass("nickiCart")
 public class Cart extends BaseDynamicObject {
 
+	/** The Constant ATTRIBUTE_DATA. */
 	public static final String ATTRIBUTE_DATA			= "data";
+	
+	/** The Constant ATTRIBUTE_INITIATOR. */
 	public static final String ATTRIBUTE_INITIATOR		= "initiator";
+	
+	/** The Constant ATTRIBUTE_MANAGER. */
 	public static final String ATTRIBUTE_MANAGER		= "manager";
+	
+	/** The Constant ATTRIBUTE_PROCESS_RESULT. */
 	public static final String ATTRIBUTE_PROCESS_RESULT	= "processResult";
+	
+	/** The Constant ATTRIBUTE_RECIPIENT. */
 	public static final String ATTRIBUTE_RECIPIENT		= "recipient";
+	
+	/** The Constant ATTRIBUTE_SOURCE. */
 	public static final String ATTRIBUTE_SOURCE			= "source";
 
+	/**
+	 * The Enum CART_STATUS.
+	 */
 	public enum CART_STATUS {
 
+		/** The temp. */
 		TEMP,
+        
+        /** The new. */
         NEW,
+        
+        /** The approved. */
         APPROVED,
+        
+        /** The running. */
         RUNNING,
+        
+        /** The denied. */
         DENIED,
+        
+        /** The finished. */
         FINISHED;
 
+        /**
+         * Gets the value.
+         *
+         * @return the value
+         */
         public String getValue() {
             return this.toString().toLowerCase();
         }
 
+        /**
+         * From string.
+         *
+         * @param str the str
+         * @return the cart status
+         */
         public static CART_STATUS fromString(String str) {
             return CART_STATUS.valueOf(str.toUpperCase());
         }
     }
 	
+    /** The catalog. */
     private Catalog catalog;
+    
+    /** The cartentries. */
     private List<CartEntry> cartentries = new ArrayList<CartEntry>();
+    
+    /** The Constant ELEM_CARTENTRY. */
     private final static String ELEM_CARTENTRY = "entry";
+    
+    /** The Constant ELEM_CART. */
     private final static String ELEM_CART = "cart";
+    
+    /** The Constant ATTR_CATALOG. */
     private final static String ATTR_CATALOG = "catalog";
     
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	@DynamicAttribute(externalName = "cn", naming = true)
 	public String getName() {
 		return super.getName();
 	}
+    
+    /** The cart entry. */
     @DynamicAttribute(externalName="nickiCartEntry")
     private String[] cartEntry;
     
+	/**
+	 * Gets the data.
+	 *
+	 * @return the data
+	 */
 	@DynamicAttribute(externalName = "nickiData")
 	public String getData() {
 		return getAttribute(ATTRIBUTE_DATA);
 	}
 
+	/**
+	 * Gets the initiator.
+	 *
+	 * @return the initiator
+	 */
 	@DynamicAttribute(externalName="nickiInitiator", foreignKey=Person.class)
 	public Person getInitiator() {
 		return getContext().loadObject(Person.class, getAttribute(ATTRIBUTE_INITIATOR));
 	}
 	
+	/**
+	 * Gets the manager.
+	 *
+	 * @return the manager
+	 */
 	@DynamicAttribute(externalName="nickiManager", foreignKey=Person.class)
 	public Person getManager() {
 		return getContext().loadObject(Person.class, getAttribute(ATTRIBUTE_MANAGER));
 	}
 
+    /** The processdate. */
     @DynamicAttribute(externalName="nickiProcessDate")
     private String processdate;
     
+	/**
+	 * Gets the process result.
+	 *
+	 * @return the process result
+	 */
 	@DynamicAttribute(externalName = "nickiProcessResult")
 	public String getProcessResult() {
 		return getAttribute(ATTRIBUTE_PROCESS_RESULT);
 	}
 
+    /**
+     * Gets the recipient.
+     *
+     * @return the recipient
+     */
     @DynamicAttribute(externalName="nickiRecipient", foreignKey=Person.class)
 	public Person getRecipient() {
 		return getContext().loadObject(Person.class, getAttribute(ATTRIBUTE_RECIPIENT));
 	}
+    
+    /** The requestdate. */
     @DynamicAttribute(externalName="nickiRequestDate")
     private String requestdate;
+    
+    /** The cart status. */
     @DynamicAttribute(externalName="nickiStatus")
     private String cartStatus;
+    
+    /** The status flag. */
     @DynamicAttribute(externalName="nickiStatusFlag")
     private String[] statusFlag;
     
+	/**
+	 * Gets the source.
+	 *
+	 * @return the source
+	 */
 	@DynamicAttribute(externalName = "nickiSource")
 	public String getSource() {
 		return getAttribute(ATTRIBUTE_SOURCE);
 	}
 	
 
+    /**
+     * Inits the.
+     *
+     * @param rs the rs
+     * @throws DynamicObjectException the dynamic object exception
+     */
     @SuppressWarnings("unchecked")
 	@Override
     public void init(ContextSearchResult rs) throws DynamicObjectException {
@@ -150,6 +247,11 @@ public class Cart extends BaseDynamicObject {
         }
     }
 
+	/**
+	 * From strings.
+	 *
+	 * @param list the list
+	 */
 	private void fromStrings(List<String> list) {
 		if (list != null) {
 			for (String string : list) {
@@ -158,6 +260,12 @@ public class Cart extends BaseDynamicObject {
 		}
 	}
 
+	/**
+	 * From xml.
+	 *
+	 * @param xml the xml
+	 * @throws SAXException the SAX exception
+	 */
 	public void fromXml(String xml) throws SAXException  {
 
         Document doc = XmlHelper.getDocumentFromXml(xml);
@@ -180,6 +288,12 @@ public class Cart extends BaseDynamicObject {
         }
     }
 
+	/**
+	 * Find entry.
+	 *
+	 * @param tempEntry the temp entry
+	 * @return the cart entry
+	 */
 	private CartEntry findEntry(CartEntry tempEntry) {
         if (cartentries.contains(tempEntry)) {
 			for (CartEntry entry : cartentries) {
@@ -191,6 +305,12 @@ public class Cart extends BaseDynamicObject {
 		return null;
 	}
 
+	/**
+	 * To xml.
+	 *
+	 * @return the string
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	public String toXml() throws DynamicObjectException {
         if (catalog == null) {
             throw new DynamicObjectException("catalog undefined");
@@ -214,6 +334,12 @@ public class Cart extends BaseDynamicObject {
 	
 	
 
+    /**
+     * Creates the.
+     *
+     * @return the org.mgnl.nicki.core.objects. dynamic object
+     * @throws DynamicObjectException the dynamic object exception
+     */
     @Override
     public org.mgnl.nicki.core.objects.DynamicObject create() throws DynamicObjectException {
         put("data", toXml());
@@ -221,6 +347,11 @@ public class Cart extends BaseDynamicObject {
         return super.create();
     }
 
+    /**
+     * Gets the cart entries as list.
+     *
+     * @return the cart entries as list
+     */
     private Object getCartEntriesAsList() {
     	List<String> list = new ArrayList<String>();
     	for (CartEntry cartEntry : getCartEntries()) {
@@ -229,6 +360,11 @@ public class Cart extends BaseDynamicObject {
 		return list;
 	}
 
+	/**
+	 * Update.
+	 *
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
     public void update() throws DynamicObjectException {
         put("data", toXml());
@@ -236,18 +372,40 @@ public class Cart extends BaseDynamicObject {
         super.update();
     }
 
+    /**
+     * Sets the request date.
+     *
+     * @param date the new request date
+     */
     public void setRequestDate(Date date) {
         put("requestdate", DataHelper.getMilli(date));
     }
 
+    /**
+     * Gets the request date.
+     *
+     * @return the request date
+     * @throws ParseException the parse exception
+     */
     public Date getRequestDate() throws ParseException {
         return DataHelper.milliFromString((String) get("requestdate"));
     }
 
+    /**
+     * Sets the process date.
+     *
+     * @param date the new process date
+     */
     public void setProcessDate(Date date) {
         put("processdate", DataHelper.getMilli(date));
     }
 
+    /**
+     * Gets the process date.
+     *
+     * @return the process date
+     * @throws ParseException the parse exception
+     */
     public Date getProcessDate() throws ParseException {
     	if (get("processdate")!= null) {
     		return DataHelper.milliFromString((String) get("processdate"));
@@ -256,26 +414,56 @@ public class Cart extends BaseDynamicObject {
     	}
     }
 
+    /**
+     * Sets the catalog.
+     *
+     * @param catalog the new catalog
+     */
     public void setCatalog(Catalog catalog) {
         this.catalog = catalog;
     }
 
+    /**
+     * Gets the catalog.
+     *
+     * @return the catalog
+     */
     public Catalog getCatalog() {
         return catalog;
     }
 
+    /**
+     * Sets the cart status.
+     *
+     * @param status the new cart status
+     */
     public void setCartStatus(String status) {
         put("cartStatus", status);
     }
 
+    /**
+     * Sets the cart status.
+     *
+     * @param status the new cart status
+     */
     public void setCartStatus(CART_STATUS status) {
         put("cartStatus", status.getValue());
     }
 	
+	/**
+	 * Sets the status flag.
+	 *
+	 * @param statusFlags the new status flag
+	 */
 	public void setStatusFlag(List<String> statusFlags) {
 		put("statusFlag", statusFlags);
     }
 	
+	/**
+	 * Adds the status flag.
+	 *
+	 * @param statusFlag the status flag
+	 */
 	@SuppressWarnings("unchecked")
 	public void addStatusFlag(String statusFlag) {
 		List<String> list;
@@ -289,40 +477,86 @@ public class Cart extends BaseDynamicObject {
 		put("statusFlag", list);
     }
 
+    /**
+     * Gets the cart status.
+     *
+     * @return the cart status
+     */
     public CART_STATUS getCartStatus() {
         return CART_STATUS.fromString((String) get("cartStatus"));
     }
     
+	/**
+	 * Gets the status flag.
+	 *
+	 * @return the status flag
+	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getStatusFlag() {
         return (List<String>) get("statusFlag");
     }
 	
+	/**
+	 * Sets the source.
+	 *
+	 * @param source the new source
+	 */
 	public void setSource(String source) {
         put("source", source);
     }
 
+    /**
+     * Adds the cart entry.
+     *
+     * @param entry the entry
+     */
     public void addCartEntry(CartEntry entry) {
         cartentries.add(entry);
 
     }
 
+	/**
+	 * Gets the cart entries.
+	 *
+	 * @return the cart entries
+	 */
 	public List<CartEntry> getCartEntries() {
        	return cartentries;
     }
 
+    /**
+     * Sets the recipient.
+     *
+     * @param person the new recipient
+     */
     public void setRecipient(Person person) {
         put("recipient", person!=null?person.getPath():null);
     }
 
+    /**
+     * Sets the initiator.
+     *
+     * @param person the new initiator
+     */
     public void setInitiator(Person person) {
         put("initiator", person!=null?person.getPath():null);
     }
 
+    /**
+     * Gets the all carts.
+     *
+     * @param ctx the ctx
+     * @return the all carts
+     */
     public static List<Cart> getAllCarts(NickiContext ctx) {
         return ctx.loadChildObjects(Cart.class, Config.getString("nicki.carts.basedn"), null);
     }
 
+    /**
+     * To string.
+     *
+     * @return the string
+     */
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -338,16 +572,36 @@ public class Cart extends BaseDynamicObject {
         return sb.toString();
     }
 
+	/**
+	 * Sets the manager.
+	 *
+	 * @param person the new manager
+	 */
 	public void setManager(Person person) {
 		put("manager", person!=null?person.getPath():null);
 	}
 
+	/**
+	 * Removes the entry.
+	 *
+	 * @param cartEntry the cart entry
+	 */
 	public void removeEntry(CartEntry cartEntry) {
 		if (cartentries.contains(cartEntry)) {
 			cartentries.remove(cartEntry);
 		}
 	}
 
+	/**
+	 * Update status.
+	 *
+	 * @param permissionDn the permission dn
+	 * @param specifier the specifier
+	 * @param cartEntryAction the cart entry action
+	 * @param oldCartEntryStatus the old cart entry status
+	 * @param newCartEntryStatus the new cart entry status
+	 * @param comment the comment
+	 */
 	/*
 	 * Status: FINISHED, wenn alle entries finished oder denied sind
 	 * Status: 

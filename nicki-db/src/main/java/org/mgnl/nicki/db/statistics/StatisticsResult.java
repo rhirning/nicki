@@ -23,8 +23,23 @@ package org.mgnl.nicki.db.statistics;
 import java.util.List;
 import java.util.Map;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface StatisticsResult.
+ */
 public interface StatisticsResult {
 	
+	/**
+	 * Gets the result.
+	 *
+	 * @return the result
+	 */
 	Map<String, String> getResult();
+	
+	/**
+	 * Gets the result list.
+	 *
+	 * @return the result list
+	 */
 	List<Map<String, String>> getResultList();
 }

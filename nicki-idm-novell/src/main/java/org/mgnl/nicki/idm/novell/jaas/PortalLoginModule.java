@@ -33,8 +33,18 @@ import org.mgnl.nicki.core.auth.NickiLoginCallbackHandler;
 import org.mgnl.nicki.core.auth.NickiLoginModule;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PortalLoginModule.
+ */
 public class PortalLoginModule extends NickiLoginModule implements LoginModule {
 
+	/**
+	 * Login.
+	 *
+	 * @return true, if successful
+	 * @throws LoginException the login exception
+	 */
 	@Override
 	public boolean login() throws LoginException {
 		// prompt for a user name and password

@@ -22,6 +22,9 @@ package org.mgnl.nicki.db.context;
  */
 
 
+/**
+ * The Class NotInTransactionException.
+ */
 @SuppressWarnings("serial")
 public class NotInTransactionException extends Exception {
 

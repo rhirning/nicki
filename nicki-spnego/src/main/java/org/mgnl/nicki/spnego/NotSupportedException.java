@@ -1,5 +1,6 @@
 package org.mgnl.nicki.spnego;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-spnego
@@ -20,7 +21,12 @@ package org.mgnl.nicki.spnego;
  * #L%
  */
 
+/**
+ * The Class NotSupportedException.
+ */
 public class NotSupportedException extends Exception {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -2003220167284343875L;
 
 }

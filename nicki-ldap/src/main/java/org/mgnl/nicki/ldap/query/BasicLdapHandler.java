@@ -34,22 +34,48 @@ import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BasicLdapHandler.
+ */
 @Slf4j
 public abstract class BasicLdapHandler implements QueryHandler {
+	
+	/** The context. */
 	private NickiContext context;
+	
+	/** The class definition. */
 	private Class<? extends DynamicObject> classDefinition;
+	
+	/** The filter. */
 	private String filter;
 
 
+	/**
+	 * Instantiates a new basic ldap handler.
+	 *
+	 * @param context the context
+	 */
 	public BasicLdapHandler(NickiContext context) {
 		super();
 		this.context = context;
 	}
 
+	/**
+	 * Gets the context.
+	 *
+	 * @return the context
+	 */
 	public NickiContext getContext() {
 		return context;
 	}
 
+	/**
+	 * Sets the class definition.
+	 *
+	 * @param <T> the generic type
+	 * @param classDefinition the new class definition
+	 */
 	public <T extends DynamicObject> void setClassDefinition(Class<T> classDefinition) {
 		try {
 			this.classDefinition = findDynamicObject(classDefinition).getClass();
@@ -58,6 +84,14 @@ public abstract class BasicLdapHandler implements QueryHandler {
 		}
 	}
 
+	/**
+	 * Find dynamic object.
+	 *
+	 * @param <T> the generic type
+	 * @param classDefinition the class definition
+	 * @return the t
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	@SuppressWarnings("unchecked")
 	private <T extends DynamicObject> T findDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		for (String dynamicObjectName : getContext().getTarget().getDynamicObjects()) {
@@ -69,10 +103,20 @@ public abstract class BasicLdapHandler implements QueryHandler {
 		throw new InstantiateDynamicObjectException("Could not getObject " + classDefinition);
 	}
 
+	/**
+	 * Gets the class definition.
+	 *
+	 * @return the class definition
+	 */
 	public Class<? extends DynamicObject> getClassDefinition() {
 		return classDefinition;
 	}
 	
+	/**
+	 * Gets the filter.
+	 *
+	 * @return the filter
+	 */
 	public String getFilter() {
 		StringBuilder sb = new StringBuilder();
 		if (StringUtils.isNotBlank(filter)) {
@@ -93,10 +137,20 @@ public abstract class BasicLdapHandler implements QueryHandler {
 		return sb.toString();
 	}
 
+	/**
+	 * Sets the filter.
+	 *
+	 * @param filter the new filter
+	 */
 	public void setFilter(String filter) {
 		this.filter = filter;
 	}
 
+	/**
+	 * Gets the constraints.
+	 *
+	 * @return the constraints
+	 */
 	public SearchControls getConstraints() {
 		SearchControls constraints = new SearchControls();
 		if (getScope() == SCOPE.OBJECT) {
@@ -109,11 +163,21 @@ public abstract class BasicLdapHandler implements QueryHandler {
 		return constraints;
 	}
 
+	/**
+	 * Gets the page size.
+	 *
+	 * @return the page size
+	 */
 	@Override
 	public int getPageSize() {
 		return 0;
 	}
 
+	/**
+	 * One page.
+	 *
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean onePage() {
 		return false;

@@ -26,12 +26,28 @@ import java.security.Principal;
 
 import org.mgnl.nicki.core.context.NickiContext;
 
+// TODO: Auto-generated Javadoc
+/**
+ * Principal with aloginContext and accessContext.
+ */
 public class DynamicObjectPrincipal implements Principal {
 	
+	/** The nicki principal. */
 	private NickiPrincipal nickiPrincipal;
+	
+	/** The login context. */
 	private NickiContext loginContext;
+	
+	/** The context. */
 	private NickiContext context;
 
+	/**
+	 * Instantiates a new dynamic object principal.
+	 *
+	 * @param nickiPrincipal the nicki principal
+	 * @param loginContext the login context
+	 * @param context the context
+	 */
 	public DynamicObjectPrincipal(NickiPrincipal nickiPrincipal, NickiContext loginContext, NickiContext context) {
 		super();
 		this.nickiPrincipal = nickiPrincipal;
@@ -39,6 +55,13 @@ public class DynamicObjectPrincipal implements Principal {
 		this.context = context;
 	}
 
+	/**
+	 * Instantiates a new dynamic object principal.
+	 *
+	 * @param name the name
+	 * @param loginContext the login context
+	 * @param context the context
+	 */
 	public DynamicObjectPrincipal(String name, NickiContext loginContext, NickiContext context) {
 		super();
 		try {
@@ -51,19 +74,39 @@ public class DynamicObjectPrincipal implements Principal {
 		this.context = context;
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	@Override
 	public String getName() {
 		return this.nickiPrincipal.getName();
 	}
 
+	/**
+	 * Gets the login context.
+	 *
+	 * @return the login context
+	 */
 	public NickiContext getLoginContext() {
 		return loginContext;
 	}
 
+	/**
+	 * Gets the context.
+	 *
+	 * @return the context
+	 */
 	public NickiContext getContext() {
 		return context;
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

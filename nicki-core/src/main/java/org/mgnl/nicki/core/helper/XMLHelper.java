@@ -33,8 +33,21 @@ import org.jdom2.Document;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XMLHelper.
+ */
 public class XMLHelper {
 	
+	/**
+	 * Document from classpath.
+	 *
+	 * @param refClass the ref class
+	 * @param classLoaderPath the class loader path
+	 * @return the document
+	 * @throws JDOMException the JDOM exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	static public Document documentFromClasspath(Class<?> refClass, String classLoaderPath) throws JDOMException, IOException {
 		InputStream inStream = refClass.getClassLoader().getResourceAsStream(classLoaderPath);
 		Reader in = new InputStreamReader(inStream);
@@ -42,6 +55,14 @@ public class XMLHelper {
 		return builder.build(in);
 	}
 
+	/**
+	 * Document from string.
+	 *
+	 * @param xmlString the xml string
+	 * @return the document
+	 * @throws JDOMException the JDOM exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	static public Document documentFromString(String xmlString) throws JDOMException, IOException  {
 		Reader in = new StringReader(StringUtils.trimToEmpty(xmlString));
 		SAXBuilder builder = new SAXBuilder();

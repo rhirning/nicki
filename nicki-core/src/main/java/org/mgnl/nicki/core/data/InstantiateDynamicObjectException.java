@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.data;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -22,13 +23,26 @@ package org.mgnl.nicki.core.data;
  */
 
 
+/**
+ * The Class InstantiateDynamicObjectException.
+ */
 @SuppressWarnings("serial")
 public class InstantiateDynamicObjectException extends Exception {
 
+	/**
+	 * Instantiates a new instantiate dynamic object exception.
+	 *
+	 * @param e the e
+	 */
 	public InstantiateDynamicObjectException(Exception e) {
 		super(e);
 	}
 
+	/**
+	 * Instantiates a new instantiate dynamic object exception.
+	 *
+	 * @param text the text
+	 */
 	public InstantiateDynamicObjectException(String text) {
 		super(text);
 	}

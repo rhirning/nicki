@@ -38,8 +38,21 @@ import org.mgnl.nicki.template.handler.TemplateHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TemplateHelper.
+ */
 @Slf4j
 public class TemplateHelper {
+	
+	/**
+	 * Gets the data model.
+	 *
+	 * @param context the context
+	 * @param data the data
+	 * @param objects the objects
+	 * @return the data model
+	 */
 	public static Map<String, Object> getDataModel(NickiContext context, Map<String, Object> data, Map<String, String> objects) {
 		Map<String, Object> dataModel = new HashMap<String, Object>();
 		dataModel.putAll(data);
@@ -52,20 +65,20 @@ public class TemplateHelper {
 		return dataModel;
 	}
 
+	/**
+	 * Gets the data model.
+	 *
+	 * @param xmlDataModel the xml data model
+	 * @return the data model
+	 */
 	public static Map<String, Object> getDataModel(String xmlDataModel) {
 		return getDataModel(DataModelDescription.fromXml(xmlDataModel));
 	}
 	
 	/**
+	 * Gets the data model.
 	 *
-	 * @param xmlDataModel 
-	 *	<datamodel> 
-	 *		<entry name="" value="" /> 
-	 *		<function name="" class=""> 
-	 *			<param name="" value="" />
-	 *		</function>
-	 *		<object name="" dn="" target="" <= optional />
-	 *	</datamodel>
+	 * @param dataModelDescr the data model descr
 	 * @return dataModel
 	 */
 	public static Map<String, Object> getDataModel(DataModelDescription dataModelDescr) {
@@ -123,6 +136,12 @@ public class TemplateHelper {
 		return dataModel;
 	}
 
+	/**
+	 * Gets the template handler.
+	 *
+	 * @param template the template
+	 * @return the template handler
+	 */
 	public static TemplateHandler getTemplateHandler(Template template) {
 		TemplateHandler handler = null;
 		if (template.hasHandler()) {

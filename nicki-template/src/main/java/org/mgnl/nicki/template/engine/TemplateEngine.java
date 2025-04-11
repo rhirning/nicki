@@ -52,21 +52,65 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TemplateEngine.
+ */
 @SuppressWarnings("deprecation")
 public class TemplateEngine {
-	public enum OUTPUT_TYPE {TXT, PDF, CSV, PDF2, XLS };
+	
+	/**
+	 * The Enum OUTPUT_TYPE.
+	 */
+	public enum OUTPUT_TYPE {
+/** The txt. */
+TXT, 
+ /** The pdf. */
+ PDF, 
+ /** The csv. */
+ CSV, 
+ /** The pdf2. */
+ PDF2, 
+ /** The xls. */
+ XLS };
+	
+	/** The Constant DEFAULT_CHARSET. */
 	public final static String DEFAULT_CHARSET = "UTF-8";
+	
+	/** The Constant CSV_CHARSET. */
 	public final static String CSV_CHARSET = "ISO-8859-1";
+	
+	/** The Constant PROPERTY_BASE_DN. */
 	public static final String PROPERTY_BASE_DN = "nicki.templates.basedn";
+	
+	/** The Constant PROPERTY_BASE. */
 	public static final String PROPERTY_BASE = "nicki.templates.base";
 
+	/** The cfg. */
 	private Configuration cfg;
+	
+	/** The instances. */
 	private static Map<ConfigurationFactory.TYPE, TemplateEngine> instances = new HashMap<>();
 
+	/**
+	 * Instantiates a new template engine.
+	 *
+	 * @param cfg the cfg
+	 */
 	public TemplateEngine(Configuration cfg) {
 		this.cfg = cfg;
 	}
 
+	/**
+	 * Execute.
+	 *
+	 * @param userName the user name
+	 * @param password the password
+	 * @param templateName the template name
+	 * @param outputTypeName the output type name
+	 * @param out the out
+	 * @throws Exception the exception
+	 */
 	/*
 	 * 4 Supported arguments user password template type
 	 */
@@ -108,6 +152,17 @@ public class TemplateEngine {
 		}
 	}
 
+	/**
+	 * Execute template.
+	 *
+	 * @param templateName the template name
+	 * @param dataModel the data model
+	 * @param charset the charset
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TemplateException the template exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	public InputStream executeTemplate(String templateName,
 			Map<String, Object> dataModel, String charset) throws IOException,
 			TemplateException, InvalidPrincipalException {
@@ -119,6 +174,18 @@ public class TemplateEngine {
 		return pis;
 	}
 
+	/**
+	 * Execute template as pdf 2.
+	 *
+	 * @param templateName the template name
+	 * @param dataModel the data model
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TemplateException the template exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 */
 	public InputStream executeTemplateAsPdf2(String templateName,
 			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
@@ -129,6 +196,19 @@ public class TemplateEngine {
 		return pis;
 	}
 
+	/**
+	 * Execute template as xls.
+	 *
+	 * @param template the template
+	 * @param templateName the template name
+	 * @param dataModel the data model
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TemplateException the template exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 */
 	@Deprecated
 	public InputStream executeTemplateAsXls(EngineTemplate template, String templateName,
 			Map<String, Object> dataModel) throws IOException,
@@ -141,6 +221,19 @@ public class TemplateEngine {
 		return pis;
 	}
 
+	/**
+	 * Execute template as xlsx.
+	 *
+	 * @param template the template
+	 * @param templateName the template name
+	 * @param dataModel the data model
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TemplateException the template exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 */
 	public InputStream executeTemplateAsXlsx(EngineTemplate template, String templateName,
 			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
@@ -152,6 +245,19 @@ public class TemplateEngine {
 		return pis;
 	}
 
+	/**
+	 * Execute template as xls.
+	 *
+	 * @param master the master
+	 * @param templateName the template name
+	 * @param dataModel the data model
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TemplateException the template exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 */
 	@Deprecated
 	public InputStream executeTemplateAsXls(byte[] master, String templateName,
 			Map<String, Object> dataModel) throws IOException,
@@ -164,6 +270,19 @@ public class TemplateEngine {
 		return pis;
 	}
 
+	/**
+	 * Execute template as xlsx.
+	 *
+	 * @param master the master
+	 * @param templateName the template name
+	 * @param dataModel the data model
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TemplateException the template exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 */
 	public InputStream executeTemplateAsXlsx(byte[] master, String templateName,
 			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
@@ -175,6 +294,18 @@ public class TemplateEngine {
 		return pis;
 	}
 
+	/**
+	 * Execute template as csv.
+	 *
+	 * @param templateName the template name
+	 * @param dataModel the data model
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TemplateException the template exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 */
 	public InputStream executeTemplateAsCsv(String templateName,
 			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
@@ -186,6 +317,18 @@ public class TemplateEngine {
 		return pis;
 	}
 
+	/**
+	 * Execute template as csv 2.
+	 *
+	 * @param templateName the template name
+	 * @param dataModel the data model
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws TemplateException the template exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 * @throws SAXException the SAX exception
+	 */
 	public InputStream executeTemplateAsCsv2(String templateName,
 			Map<String, Object> dataModel) throws IOException,
 			TemplateException, InvalidPrincipalException, ParserConfigurationException, SAXException {
@@ -197,9 +340,21 @@ public class TemplateEngine {
 		return pis;
 	}
 
+	/**
+	 * Gets the single instance of TemplateEngine.
+	 *
+	 * @return single instance of TemplateEngine
+	 */
 	public static TemplateEngine getInstance() {
 		return getInstance(ConfigurationFactory.TYPE.JNDI);
 	}
+	
+	/**
+	 * Gets the single instance of TemplateEngine.
+	 *
+	 * @param type the type
+	 * @return single instance of TemplateEngine
+	 */
 	public static TemplateEngine getInstance(ConfigurationFactory.TYPE type) {
 		if (!instances.containsKey(type)) {
 			load(type);
@@ -207,6 +362,11 @@ public class TemplateEngine {
 		return instances.get(type);
 	}
 
+	/**
+	 * Load.
+	 *
+	 * @param type the type
+	 */
 	private static void load(TYPE type) {
 		if (type == TYPE.JNDI) { 
 			Configuration cfg = ConfigurationFactory.getInstance().getConfiguration(ConfigurationFactory.TYPE.JNDI,

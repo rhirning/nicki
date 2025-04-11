@@ -24,8 +24,19 @@ package org.mgnl.nicki.core.helper;
 
 import org.apache.commons.lang3.StringUtils;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PathHelper.
+ */
 public class PathHelper {
 
+	/**
+	 * Checks if is path equal.
+	 *
+	 * @param refPath the ref path
+	 * @param comparePath the compare path
+	 * @return true, if is path equal
+	 */
 	public static boolean isPathEqual(String refPath, String comparePath) {
 		if (StringUtils.equalsIgnoreCase(refPath, comparePath)) {
 			return true;
@@ -34,6 +45,13 @@ public class PathHelper {
 		return false;
 	}
 
+	/**
+	 * Gets the slash path.
+	 *
+	 * @param parentPath the parent path
+	 * @param childPath the child path
+	 * @return the slash path
+	 */
 	public static String getSlashPath(String parentPath, String childPath) {
 		StringBuilder sb = new StringBuilder();
 		if (StringUtils.isNotEmpty(parentPath)) {

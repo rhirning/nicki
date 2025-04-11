@@ -29,9 +29,22 @@ import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LdapNamedUserContext.
+ */
 @SuppressWarnings("serial")
 public class LdapNamedUserContext extends LdapContext implements NickiContext {
 
+	/**
+	 * Instantiates a new ldap named user context.
+	 *
+	 * @param adapter the adapter
+	 * @param target the target
+	 * @param user the user
+	 * @param password the password
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	public LdapNamedUserContext(DynamicObjectAdapter adapter, Target target, DynamicObject user, String password) throws InvalidPrincipalException {
 		super(adapter, target, READONLY.FALSE);
 		setPrincipal(new NickiPrincipal(user.getPath(), password));

@@ -33,12 +33,26 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DynamicObjectLdapAdapter.
+ */
 @SuppressWarnings("serial")
 public class DynamicObjectLdapAdapter implements DynamicObjectAdapter {
 		
+	/**
+	 * Instantiates a new dynamic object ldap adapter.
+	 */
 	public DynamicObjectLdapAdapter() {
 	}
 	
+	/**
+	 * Inits the new.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param parentPath the parent path
+	 * @param namingValue the naming value
+	 */
 	@Override
 	public void initNew(DynamicObject dynamicObject, String parentPath, String namingValue) {
 		dynamicObject.setStatus(DynamicObject.STATUS.NEW);
@@ -47,11 +61,24 @@ public class DynamicObjectLdapAdapter implements DynamicObjectAdapter {
 		dynamicObject.put(dynamicObject.getModel().getNamingAttribute(), namingValue);
 	}
 
+	/**
+	 * Gets the parent path.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @return the parent path
+	 */
 	@Override
 	public String getParentPath(DynamicObject dynamicObject) {
 		return LdapHelper.getParentPath(dynamicObject.getPath());
 	}
 
+	/**
+	 * Inits the existing.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param context the context
+	 * @param path the path
+	 */
 	@Override
 	public void initExisting(DynamicObject dynamicObject, NickiContext context, String path) {
 		dynamicObject.setStatus(DynamicObject.STATUS.EXISTS);
@@ -62,6 +89,13 @@ public class DynamicObjectLdapAdapter implements DynamicObjectAdapter {
 		dynamicObject.getMap().put(dynamicObject.getModel().getNamingAttribute(), LdapHelper.getNamingValue(path));
 	}
 
+	/**
+	 * Accept.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param rs the rs
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean accept(DynamicObject dynamicObject, ContextSearchResult rs) {
 		boolean accepted = true;
@@ -71,6 +105,14 @@ public class DynamicObjectLdapAdapter implements DynamicObjectAdapter {
 		return accepted;
 	}
 
+	/**
+	 * Check attribute.
+	 *
+	 * @param rs the rs
+	 * @param attribute the attribute
+	 * @param value the value
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean checkAttribute(ContextSearchResult rs, String attribute,
 			String value) {
@@ -86,6 +128,12 @@ public class DynamicObjectLdapAdapter implements DynamicObjectAdapter {
 		}
 	}
 
+	/**
+	 * Merge.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param changeAttributes the change attributes
+	 */
 	@Override
 	public void merge(DynamicObject dynamicObject, Map<DynamicAttribute, Object> changeAttributes) {
 		for (DynamicAttribute dynamicAttribute : changeAttributes.keySet()) {
@@ -93,6 +141,14 @@ public class DynamicObjectLdapAdapter implements DynamicObjectAdapter {
 		}
 	};
 
+	/**
+	 * Gets the localized value.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param attributeName the attribute name
+	 * @param locale the locale
+	 * @return the localized value
+	 */
 	@Override
 	public String getLocalizedValue(DynamicObject dynamicObject, String attributeName, String locale) {
 		Map<String, String> valueMap = DataHelper.getMap(dynamicObject.getAttribute(attributeName), "|", "~");
@@ -105,11 +161,25 @@ public class DynamicObjectLdapAdapter implements DynamicObjectAdapter {
 		}
 	}
 
+	/**
+	 * Gets the path.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param parentPath the parent path
+	 * @param name the name
+	 * @return the path
+	 */
 	@Override
 	public String getPath(DynamicObject dynamicObject, String parentPath, String name) {
 		return LdapHelper.getPath(parentPath, dynamicObject.getModel().getNamingLdapAttribute(), name);
 	}
 
+	/**
+	 * Gets the object class filter.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @return the object class filter
+	 */
 	@Override
 	public String getObjectClassFilter(DynamicObject dynamicObject) {
 		return LdapHelper.getObjectClassFilter(dynamicObject.getModel());

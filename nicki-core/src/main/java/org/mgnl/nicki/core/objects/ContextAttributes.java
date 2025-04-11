@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.objects;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -22,8 +23,17 @@ package org.mgnl.nicki.core.objects;
  */
 
 
+/**
+ * The Interface ContextAttributes.
+ */
 public interface ContextAttributes {
 
+	/**
+	 * Gets the.
+	 *
+	 * @param attributeName the attribute name
+	 * @return the context attribute
+	 */
 	ContextAttribute get(String attributeName);
 
 }

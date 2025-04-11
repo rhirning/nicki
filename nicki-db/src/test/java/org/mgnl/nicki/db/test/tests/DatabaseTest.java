@@ -40,6 +40,9 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 import org.mgnl.nicki.db.test.base.TestBase;
 import org.mgnl.nicki.db.test.db.ErrorEntry;
 
+/**
+ * The Class DatabaseTest.
+ */
 public class DatabaseTest extends TestBase {
 	/*
 	@Test

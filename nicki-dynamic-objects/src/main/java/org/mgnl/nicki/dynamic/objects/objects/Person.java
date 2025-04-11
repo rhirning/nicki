@@ -37,36 +37,83 @@ import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
+// TODO: Auto-generated Javadoc
+
+/**
+ * The Class Person.
+ */
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("Person")
 @AdditionalObjectClass("nickiUserAux")
 public class Person extends BaseDynamicObject {
+	
+	/** The Constant ATTRIBUTE_DISPLAYNAME. */
 	public static final String ATTRIBUTE_DISPLAYNAME = "displayName";
+	
+	/** The Constant ATTRIBUTE_SURNAME. */
 	public static final String ATTRIBUTE_SURNAME = "surname";
+	
+	/** The Constant ATTRIBUTE_GIVENNAME. */
 	public static final String ATTRIBUTE_GIVENNAME = "givenName";
+	
+	/** The Constant ATTRIBUTE_FULLNAME. */
 	public static final String ATTRIBUTE_FULLNAME = "fullname";
+	
+	/** The Constant ATTRIBUTE_LANGUAGE. */
 	public static final String ATTRIBUTE_LANGUAGE = "language";
+	
+	/** The Constant ATTRIBUTE_MEMBER. */
 	public static final String ATTRIBUTE_MEMBER = "member";
+	
+	/** The Constant ATTRIBUTE_LOCATION. */
 	public static final String ATTRIBUTE_LOCATION = "location";
+	
+	/** The Constant ATTRIBUTE_ASSIGNEDARTICLE. */
 	public static final String ATTRIBUTE_ASSIGNEDARTICLE = "assignedArticle";
+	
+	/** The Constant ATTRIBUTE_ATTRIBUTEVALUE. */
 	public static final String ATTRIBUTE_ATTRIBUTEVALUE = "attributeValue";
+	
+	/** The Constant ATTRIBUTE_IS_MANAGER. */
 	public static final String ATTRIBUTE_IS_MANAGER = "isManager";
 
+	/** The Constant SEPARATOR_SPECIFIER. */
 	public static final String SEPARATOR_SPECIFIER = "|";
+	
+	/** The Constant SEPARATOR_KEY. */
 	public static final String SEPARATOR_KEY = "|";
+	
+	/** The Constant SEPARATOR_VALUE. */
 	public static final String SEPARATOR_VALUE = "=";
 
+	/** The assigned articles. */
 	private Collection<AssignedArticle> assignedArticles;
+	
+	/** The assigned groups. */
 	private Collection<Group> assignedGroups;
+	
+	/** The attribute values. */
 	private Collection<String> attributeValues;
+	
+	/** The catalog attributes. */
 	private Map<String, String> catalogAttributes = new HashMap<String, String>();
 	
+	/**
+	 * Gets the location.
+	 *
+	 * @return the location
+	 */
 	@DynamicAttribute(externalName="nickiLocation")
 	public String getLocation() {
 		return (String) this.get(ATTRIBUTE_LOCATION);
 	}
 	
+	/**
+	 * Gets the assigned article.
+	 *
+	 * @return the assigned article
+	 */
 	@SuppressWarnings("unchecked")
 	@DynamicAttribute(externalName="nickiCatalogArticle")
 	private List<String> getAssignedArticle() {
@@ -74,6 +121,11 @@ public class Person extends BaseDynamicObject {
 	}
 	
 	
+	/**
+	 * Gets the attribute value.
+	 *
+	 * @return the attribute value
+	 */
 	@SuppressWarnings("unchecked")
 	@DynamicAttribute(externalName="nickiCatalogAttribute")
 	private List<String> getAttributeValue() {
@@ -81,6 +133,11 @@ public class Person extends BaseDynamicObject {
 	}
 
 
+	/**
+	 * Gets the member.
+	 *
+	 * @return the member
+	 */
 	@SuppressWarnings("unchecked")
 	@DynamicReferenceAttribute(externalName="member", reference=Group.class,
 			baseProperty="nicki.data.basedn")
@@ -88,6 +145,11 @@ public class Person extends BaseDynamicObject {
 		return (List<String>) this.get(ATTRIBUTE_MEMBER);
 	}
 
+	/**
+	 * Checks if is manager.
+	 *
+	 * @return the boolean
+	 */
 	public Boolean isManager() {
 		if (StringUtils.isNotBlank(getAttribute(ATTRIBUTE_IS_MANAGER))) {
 			return DataHelper.booleanOf(getAttribute(ATTRIBUTE_IS_MANAGER));
@@ -96,11 +158,21 @@ public class Person extends BaseDynamicObject {
 		}
 	}
 
+	/**
+	 * Gets the checks if is manager.
+	 *
+	 * @return the checks if is manager
+	 */
 	@DynamicAttribute(externalName="isManager")
 	public String getIsManager() {
 		return (String) this.get(ATTRIBUTE_IS_MANAGER);
 	}
 
+	/**
+	 * Sets the checks if is manager.
+	 *
+	 * @param value the new checks if is manager
+	 */
 	public void setIsManager(String value) {
 		if (StringUtils.isNotBlank(value)) {
 			this.put(ATTRIBUTE_IS_MANAGER, value);
@@ -109,12 +181,22 @@ public class Person extends BaseDynamicObject {
 		}
 	}
 	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	@Override
 	@DynamicAttribute(externalName="cn", naming=true)
 	public String getName() {
 		return super.getName();
 	}
 
+	/**
+	 * Gets the display name.
+	 *
+	 * @return the display name
+	 */
 	@Override
 	public String getDisplayName() {
 		StringBuilder sb = new StringBuilder();
@@ -130,6 +212,11 @@ public class Person extends BaseDynamicObject {
 	}
 
 
+	/**
+	 * Gets the groups.
+	 *
+	 * @return the groups
+	 */
 	public Collection<Group> getGroups() {
 		if (assignedGroups == null) {
 			assignedGroups = getForeignKeyObjects(Group.class, "memberOf");
@@ -137,44 +224,96 @@ public class Person extends BaseDynamicObject {
 		return assignedGroups;
 	}
 
+	/**
+	 * Gets the full name.
+	 *
+	 * @return the full name
+	 */
 	@DynamicAttribute(externalName="fullName")
 	public String getFullName() {
 		return getAttribute(ATTRIBUTE_FULLNAME);
 	}
+	
+	/**
+	 * Gets the fullname.
+	 *
+	 * @return the fullname
+	 */
 	public String getFullname() {
 		return getFullName();
 	}
 
+	/**
+	 * Sets the surname.
+	 *
+	 * @param value the new surname
+	 */
 	public void setSurname(String value) {
 		put(ATTRIBUTE_SURNAME, value);
 	}
 
+	/**
+	 * Gets the surname.
+	 *
+	 * @return the surname
+	 */
 	@DynamicAttribute(externalName="sn", mandatory=true)
 	public String getSurname() {
 		return getAttribute(ATTRIBUTE_SURNAME);
 	}
 
+	/**
+	 * Gets the given name.
+	 *
+	 * @return the given name
+	 */
 	@DynamicAttribute(externalName="givenName")
 	public String getGivenName() {
 		return getAttribute(ATTRIBUTE_GIVENNAME);
 	}
+	
+	/**
+	 * Gets the givenname.
+	 *
+	 * @return the givenname
+	 */
 	public String getGivenname() {
 		return getGivenName();
 	}
 
+	/**
+	 * Sets the given name.
+	 *
+	 * @param value the new given name
+	 */
 	public void setGivenName(String value) {
 		put(ATTRIBUTE_GIVENNAME, value);
 	}
 
+	/**
+	 * Sets the language.
+	 *
+	 * @param value the new language
+	 */
 	public void setLanguage(String value) {
 		put(ATTRIBUTE_LANGUAGE, value);
 	}
 
+	/**
+	 * Gets the language.
+	 *
+	 * @return the language
+	 */
 	@DynamicAttribute(externalName="Language")
 	public String getLanguage() {
 		return (String) get(ATTRIBUTE_LANGUAGE);
 	}
 
+	/**
+	 * Gets the catalog attribute values.
+	 *
+	 * @return the catalog attribute values
+	 */
 	@SuppressWarnings("unchecked")
 	public Collection<String> getCatalogAttributeValues() {
 		if (this.attributeValues == null) {
@@ -192,14 +331,32 @@ public class Person extends BaseDynamicObject {
 		return this.attributeValues;
 	}
 
+	/**
+	 * Gets the catalog attributes.
+	 *
+	 * @return the catalog attributes
+	 */
 	public Map<String, String> getCatalogAttributes() {
 		return catalogAttributes;
 	}
 
+	/**
+	 * Gets the catalog attributes.
+	 *
+	 * @param assignedArticle the assigned article
+	 * @return the catalog attributes
+	 */
 	public Map<String, String> getCatalogAttributes(AssignedArticle assignedArticle) {
 		return getCatalogAttributes(assignedArticle.getArticleId(), assignedArticle.getSpecifier());
 	}
 
+	/**
+	 * Gets the catalog attributes.
+	 *
+	 * @param articleId the article id
+	 * @param specifier the specifier
+	 * @return the catalog attributes
+	 */
 	public Map<String, String> getCatalogAttributes(String articleId, String specifier) {
 		Map<String,String> result = new HashMap<String, String>();
 		StringBuilder prefix = new StringBuilder(articleId);
@@ -219,6 +376,11 @@ public class Person extends BaseDynamicObject {
 		return result;
 	}
 
+	/**
+	 * Gets the assigned articles.
+	 *
+	 * @return the assigned articles
+	 */
 	public Collection<AssignedArticle> getAssignedArticles() {
 		if (this.assignedArticles == null) {
 			this.assignedArticles = new ArrayList<AssignedArticle>();
@@ -233,29 +395,62 @@ public class Person extends BaseDynamicObject {
 		return this.assignedArticles;
 	}
 
+	/**
+	 * Gets the active filter.
+	 *
+	 * @return the active filter
+	 */
 	public String getActiveFilter() {
 		return "!(nickiStatus=inactive)";
 	}
 
 
+	/**
+	 * Checks for group.
+	 *
+	 * @param groupName the group name
+	 * @return true, if successful
+	 */
 	public boolean hasGroup(String groupName) {
 		return false;
 	}
 
 
+	/**
+	 * Checks if is member of.
+	 *
+	 * @param group the group
+	 * @return true, if is member of
+	 */
 	public boolean isMemberOf(String group) {
 		return false;
 	}
 
 
+	/**
+	 * Checks for role.
+	 *
+	 * @param role the role
+	 * @return true, if successful
+	 */
 	public boolean hasRole(String role) {
 		return false;
 	}
 
+	/**
+	 * Checks for manager flag.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasManagerFlag() {
 		return DataHelper.booleanOf(getAttribute(ATTRIBUTE_IS_MANAGER));
 	}
 
+	/**
+	 * Sets the manager flag.
+	 *
+	 * @param value the new manager flag
+	 */
 	public void setManagerFlag(boolean value) {
 		put(ATTRIBUTE_IS_MANAGER, value?"TRUE":"FALSE");
 	}

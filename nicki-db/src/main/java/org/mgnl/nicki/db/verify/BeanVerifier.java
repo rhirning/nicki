@@ -1,5 +1,6 @@
 package org.mgnl.nicki.db.verify;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-db
@@ -20,6 +21,16 @@ package org.mgnl.nicki.db.verify;
  * #L%
  */
 
+/**
+ * The Interface BeanVerifier.
+ */
 public interface BeanVerifier {
+	
+	/**
+	 * Verify.
+	 *
+	 * @param bean the bean
+	 * @throws BeanVerifyError the bean verify error
+	 */
 	void verify(Object bean) throws BeanVerifyError;
 }

@@ -43,16 +43,41 @@ import org.mgnl.nicki.shop.base.inventory.InventoryArticle.STATUS;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Inventory.
+ */
 @Slf4j
 @SuppressWarnings("serial")
 public class Inventory implements Serializable {
+	
+	/**
+	 * The Enum SOURCE.
+	 */
 	public enum SOURCE {
-		SHOP, RULE, NONE;
+		
+		/** The shop. */
+		SHOP, 
+ /** The rule. */
+ RULE, 
+ /** The none. */
+ NONE;
 
+		/**
+		 * Gets the value.
+		 *
+		 * @return the value
+		 */
 		public String getValue() {
 			return this.toString().toLowerCase();
 		}
 
+		/**
+		 * From string.
+		 *
+		 * @param str the str
+		 * @return the source
+		 */
 		public static SOURCE fromString(String str) {
 			try {
 				return SOURCE.valueOf(str.toUpperCase());
@@ -62,19 +87,38 @@ public class Inventory implements Serializable {
 		}
 	};
 
+	/** The user. */
 	private Person user;
+	
+	/** The person. */
 	private Person person;
 	
+	/** The cart path. */
 	private String cartPath;
 
+	/** The articles. */
 	private Map<String, InventoryArticle> articles = new HashMap<String, InventoryArticle>();
 	
+	/** The multi articles. */
 	private Map<String, Map<String, InventoryArticle>> multiArticles = new HashMap<String, Map<String, InventoryArticle>>();
 	
+	/**
+	 * Gets the articles.
+	 *
+	 * @return the articles
+	 */
 	public Map<String, InventoryArticle> getArticles() {
 		return articles;
 	}
 
+	/**
+	 * Instantiates a new inventory.
+	 *
+	 * @param user the user
+	 * @param person the person
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	public Inventory(Person user, Person person)
 			throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		super();
@@ -83,6 +127,12 @@ public class Inventory implements Serializable {
 		init();
 	}
 
+	/**
+	 * Inits the.
+	 *
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	private void init() throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		for (CatalogArticle catalogArticle : Catalog.getCatalog().getAllArticles()) {
 			for (InventoryArticle inventoryArticle : catalogArticle.getInventoryArticles(this.person)) {
@@ -92,6 +142,12 @@ public class Inventory implements Serializable {
 	}
 	
 
+	/**
+	 * Adds the article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @return the inventory article
+	 */
 	public InventoryArticle addArticle(CatalogArticle catalogArticle) {
 		if (!this.articles.containsKey(catalogArticle.getPath())) {
 			InventoryArticle inventoryArticle = new InventoryArticle(catalogArticle);
@@ -104,10 +160,20 @@ public class Inventory implements Serializable {
 		}
 	}
 	
+	/**
+	 * Adds the article.
+	 *
+	 * @param inventoryArticle the inventory article
+	 */
 	public void addArticle(InventoryArticle inventoryArticle) {
 		addInventoryArticle(inventoryArticle);
 	}
 	
+	/**
+	 * Adds the inventory article.
+	 *
+	 * @param inventoryArticle the inventory article
+	 */
 	private void addInventoryArticle(InventoryArticle inventoryArticle) {
 		if (inventoryArticle.getArticle().isMultiple()) {
 			addArticle(inventoryArticle.getArticle(), inventoryArticle.getSpecifier(), inventoryArticle);
@@ -117,6 +183,13 @@ public class Inventory implements Serializable {
 	}
 
 	
+	/**
+	 * Adds the article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @param specifier the specifier
+	 * @param inventoryArticle the inventory article
+	 */
 	private void addArticle(CatalogArticle catalogArticle, String specifier, InventoryArticle inventoryArticle) {
 		Map<String, InventoryArticle> map = this.multiArticles.get(catalogArticle.getPath());
 		if (map == null) {
@@ -132,6 +205,12 @@ public class Inventory implements Serializable {
 		}
 	}
 
+	/**
+	 * Adds the article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @param inventoryArticle the inventory article
+	 */
 	private void addArticle(CatalogArticle catalogArticle, InventoryArticle inventoryArticle) {
 		if (!this.articles.containsKey(catalogArticle.getPath())) {
 			this.articles.put(catalogArticle.getPath(), inventoryArticle);
@@ -141,18 +220,42 @@ public class Inventory implements Serializable {
 		}
 	}
 
+	/**
+	 * Checks for article.
+	 *
+	 * @param article the article
+	 * @return true, if successful
+	 */
 	public boolean hasArticle(CatalogArticle article) {
 		return articles.containsKey(article.getPath()) || multiArticles.containsKey(article.getPath());
 	}
 
+	/**
+	 * Gets the article.
+	 *
+	 * @param article the article
+	 * @return the article
+	 */
 	public InventoryArticle getArticle(CatalogArticle article) {
 		return articles.get(article.getPath());
 	}
 
+	/**
+	 * Gets the articles.
+	 *
+	 * @param article the article
+	 * @return the articles
+	 */
 	public Map<String, InventoryArticle> getArticles(CatalogArticle article) {
 		return multiArticles.get(article.getPath());
 	}
 
+	/**
+	 * Adds the article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @param specifier the specifier
+	 */
 	public void addArticle(CatalogArticle catalogArticle, String specifier) {
 		InventoryArticle iArticle = getInventoryArticle(catalogArticle, specifier);
 		if (iArticle == null) {
@@ -167,10 +270,23 @@ public class Inventory implements Serializable {
 		}
 	}
 	
+	/**
+	 * Gets the inventory article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @return the inventory article
+	 */
 	public InventoryArticle getInventoryArticle(CatalogArticle catalogArticle) {
 		return this.articles.get(catalogArticle.getPath());
 	}
 	
+	/**
+	 * Gets the inventory article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @param specifier the specifier
+	 * @return the inventory article
+	 */
 	public InventoryArticle getInventoryArticle(CatalogArticle catalogArticle, String specifier) {
 		Map<String, InventoryArticle> map = this.multiArticles.get(catalogArticle.getPath());
 		if (map != null) {
@@ -179,6 +295,12 @@ public class Inventory implements Serializable {
 		return null;
 	}
 
+	/**
+	 * Removes the article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @param specifier the specifier
+	 */
 	public void removeArticle(CatalogArticle catalogArticle, String specifier) {
 		InventoryArticle iArticle = getInventoryArticle(catalogArticle, specifier);
 		if (iArticle != null) {
@@ -190,6 +312,11 @@ public class Inventory implements Serializable {
 		}
 	}
 
+	/**
+	 * Removes the article.
+	 *
+	 * @param catalogArticle the catalog article
+	 */
 	public void removeArticle(CatalogArticle catalogArticle) {
 		if (this.articles.containsKey(catalogArticle.getPath())) {
 			InventoryArticle iArticle = this.articles.get(catalogArticle.getPath());
@@ -201,6 +328,12 @@ public class Inventory implements Serializable {
 		}
 	}
 
+	/**
+	 * Removes the article.
+	 *
+	 * @param path the path
+	 * @param specifier the specifier
+	 */
 	private void removeArticle(String path, String specifier) {
 		Map<String, InventoryArticle> map = this.multiArticles.get(path);
 		if (map != null && map.containsKey(specifier)) {
@@ -208,6 +341,11 @@ public class Inventory implements Serializable {
 		}
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("Inventory for ").append(person.getDisplayName())
@@ -218,6 +356,13 @@ public class Inventory implements Serializable {
 		return sb.toString();
 	}
 
+	/**
+	 * Gets the cart.
+	 *
+	 * @param source the source
+	 * @param cartStatus the cart status
+	 * @return the cart
+	 */
 	public Cart getCart(String source, Cart.CART_STATUS cartStatus) {
 		if (hasChanged()) {
 			Cart cart;
@@ -267,6 +412,15 @@ public class Inventory implements Serializable {
 		return null;
 	}
 
+	/**
+	 * Save.
+	 *
+	 * @param source the source
+	 * @param oldCart the old cart
+	 * @return the cart
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	public Cart save(String source, Cart oldCart) throws InstantiateDynamicObjectException,
 			DynamicObjectException {
 		if (oldCart != null) {
@@ -280,6 +434,15 @@ public class Inventory implements Serializable {
 		return null;
 	}
 
+	/**
+	 * Remember.
+	 *
+	 * @param source the source
+	 * @param oldCart the old cart
+	 * @return the cart
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	public Cart remember(String source, Cart oldCart) throws InstantiateDynamicObjectException,
 			DynamicObjectException {
 		if (oldCart != null) {
@@ -294,6 +457,11 @@ public class Inventory implements Serializable {
 		return null;
 	}
 
+	/**
+	 * Checks for changed.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasChanged() {
 		for (String key : multiArticles.keySet()) {
 			Map<String, InventoryArticle> map = multiArticles.get(key);
@@ -313,18 +481,40 @@ public class Inventory implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Sets the user.
+	 *
+	 * @param user the new user
+	 */
 	private void setUser(Person user) {
 		this.user = user;
 	}
 
+	/**
+	 * Gets the user.
+	 *
+	 * @return the user
+	 */
 	public Person getUser() {
 		return user;
 	}
 
+	/**
+	 * Gets the person.
+	 *
+	 * @return the person
+	 */
 	public Person getPerson() {
 		return person;
 	}
 
+	/**
+	 * Checks for article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @param value the value
+	 * @return true, if successful
+	 */
 	public boolean hasArticle(CatalogArticle catalogArticle, String value) {
 		if (!hasArticle(catalogArticle)) {
 			return false;
@@ -338,6 +528,11 @@ public class Inventory implements Serializable {
 		return false;
 	}
 
+	/**
+	 * Removes the article.
+	 *
+	 * @param iArticle the i article
+	 */
 	public void removeArticle(InventoryArticle iArticle) {
 		if (StringUtils.isNotEmpty(iArticle.getSpecifier())) {
 			removeArticle(iArticle.getArticle(), iArticle.getSpecifier());
@@ -346,10 +541,25 @@ public class Inventory implements Serializable {
 		}
 	}
 
+	/**
+	 * Gets the multi articles.
+	 *
+	 * @return the multi articles
+	 */
 	public Map<String, Map<String, InventoryArticle>> getMultiArticles() {
 		return multiArticles;
 	}
 
+	/**
+	 * From cart.
+	 *
+	 * @param user the user
+	 * @param recipient the recipient
+	 * @param cart the cart
+	 * @return the inventory
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	public static Inventory fromCart(Person user, Person recipient, Cart cart) throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		Inventory inventory = new Inventory(user, recipient);
 		inventory.setCartPath(cart.getPath());
@@ -359,6 +569,13 @@ public class Inventory implements Serializable {
 		return inventory;
 	}
 
+	/**
+	 * Adds the cart entry.
+	 *
+	 * @param entry the entry
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	private void addCartEntry(CartEntry entry) throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		CatalogArticle catalogArticle = entry.getCatalogArticle();
 		if (catalogArticle != null) {
@@ -382,6 +599,14 @@ public class Inventory implements Serializable {
 		}
 	}
 		
+	/**
+	 * Creates the inventory article from.
+	 *
+	 * @param entry the entry
+	 * @return the inventory article
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	private InventoryArticle createInventoryArticleFrom(CartEntry entry) throws InvalidPrincipalException, InstantiateDynamicObjectException {
 		
 		List<CatalogArticle> availableArticles = Catalog.getCatalog().getAllArticles();
@@ -399,14 +624,31 @@ public class Inventory implements Serializable {
 		return null;
 	}
 
+	/**
+	 * Gets the cart path.
+	 *
+	 * @return the cart path
+	 */
 	public String getCartPath() {
 		return cartPath;
 	}
 
+	/**
+	 * Sets the cart path.
+	 *
+	 * @param cartPath the new cart path
+	 */
 	public void setCartPath(String cartPath) {
 		this.cartPath = cartPath;
 	}
 
+	/**
+	 * Modify article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @param oldSpecifier the old specifier
+	 * @param newSpecifier the new specifier
+	 */
 	public void modifyArticle(CatalogArticle catalogArticle, 
 			String oldSpecifier, String newSpecifier) {
 		InventoryArticle iArticle = getInventoryArticle(catalogArticle, oldSpecifier);

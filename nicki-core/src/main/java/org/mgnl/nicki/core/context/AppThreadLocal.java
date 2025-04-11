@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.context;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -22,8 +23,16 @@ package org.mgnl.nicki.core.context;
  */
 
 
+/**
+ * The Class AppThreadLocal.
+ */
 public class AppThreadLocal extends ThreadLocal<Context> {
 
+	/**
+	 * Initial value.
+	 *
+	 * @return the context
+	 */
 	@Override
 	protected Context initialValue() {
 		return new Context();

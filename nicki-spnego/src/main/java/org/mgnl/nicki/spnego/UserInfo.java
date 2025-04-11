@@ -24,6 +24,7 @@ package org.mgnl.nicki.spnego;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
 /**
  * User information from the user-store.
  * 

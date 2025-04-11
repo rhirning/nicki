@@ -29,9 +29,22 @@ import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DateRule.
+ */
 public class DateRule extends Rule {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		try {
@@ -56,11 +69,21 @@ public class DateRule extends Rule {
 		return true;
 	}
 
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".date");
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "date";
 	}

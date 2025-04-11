@@ -35,19 +35,33 @@ import org.mgnl.nicki.dynamic.objects.types.TextArea;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Selector.
+ */
 @Slf4j
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("nickiSelector")
 public class Selector extends BaseDynamicObject {
 
+	/** The name. */
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;
+	
+	/** The value. */
 	@DynamicAttribute(externalName="nickiSelectorValue")
 	private String[] value;
+	
+	/** The value provider. */
 	@DynamicAttribute(externalName="nickiSelectorValueProvider")
 	private TextArea valueProvider;
 
+	/**
+	 * Gets the values.
+	 *
+	 * @return the values
+	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getValues() {
 		List<String> values = (List<String>) get("value");
@@ -58,14 +72,29 @@ public class Selector extends BaseDynamicObject {
 		}
 	}
 
+	/**
+	 * Checks for value provider.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasValueProvider() {
 		return StringUtils.isNotEmpty(getValueProviderClass());
 	}
 
+	/**
+	 * Gets the value provider class.
+	 *
+	 * @return the value provider class
+	 */
 	public String getValueProviderClass() {
 		return (String) get("valueProvider");
 	}
 
+	/**
+	 * Gets the value provider.
+	 *
+	 * @return the value provider
+	 */
 	public ValueProvider getValueProvider() {
 		try {
 			ValueProvider provider = (ValueProvider)Classes.newInstance(getValueProviderClass());

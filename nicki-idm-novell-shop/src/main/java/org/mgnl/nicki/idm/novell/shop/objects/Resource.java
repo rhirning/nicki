@@ -31,24 +31,47 @@ import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Resource.
+ */
 @DynamicObject
 @ObjectClass("nrfResource")
 public class Resource extends DynamicStructObject {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 3550648745922369437L;
 	
+	/** The name. */
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;
+	
+	/** The entitlement. */
 	@StructuredDynamicAttribute(externalName="nrfEntitlementRef", foreignKey=Entitlement.class)
 	private String entitlement;
+	
+	/** The approver. */
 	@StructuredDynamicAttribute(externalName="nrfApprovers", foreignKey=Person.class)
 	private String[] approver;
+	
+	/** The revoke approver. */
 	@StructuredDynamicAttribute(externalName="nrfRevokeApprovers", foreignKey=Person.class)
 	private String[] revokeApprover;
+	
+	/** The localized name. */
 	@DynamicAttribute(externalName="nrfLocalizedNames")
 	private String localizedName;
+	
+	/** The localized description. */
 	@DynamicAttribute(externalName="nrfLocalizedDescrs")
 	private String localizedDescription;
 	
+	/**
+	 * Gets the entitlement.
+	 *
+	 * @return the entitlement
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	public Entitlement getEntitlement() throws DynamicObjectException {
 		try {
 			return (Entitlement) execute("getEntitlement", null);
@@ -57,42 +80,92 @@ public class Resource extends DynamicStructObject {
 		}
 	}
 	
+	/**
+	 * Gets the start time.
+	 *
+	 * @return the start time
+	 */
 	public Date getStartTime() {
 		return getDateInfo("/assignment/start_tm");
 	}
 	
+	/**
+	 * Gets the end time.
+	 *
+	 * @return the end time
+	 */
 	public Date getEndTime() {
 		return getDateInfo("/assignment/end_tm");
 	}
 
+	/**
+	 * Gets the request time.
+	 *
+	 * @return the request time
+	 */
 	public Date getRequestTime() {
 		return getDateInfo("/assignment/req_tm");
 	}
 
+	/**
+	 * Gets the inst GUID.
+	 *
+	 * @return the inst GUID
+	 */
 	public String getInstGUID() {
 		return getInfo("/assignment/inst-guid");
 	}
 
+	/**
+	 * Gets the requester.
+	 *
+	 * @return the requester
+	 */
 	public String getRequester() {
 		return getInfo("/assignment/req");
 	}
 	
+	/**
+	 * Gets the request description.
+	 *
+	 * @return the request description
+	 */
 	public String getRequestDescription() {
 		return getInfo("/assignment/req_desc");
 	}
 
+	/**
+	 * Gets the entitlement ref.
+	 *
+	 * @return the entitlement ref
+	 */
 	public String getEntitlementRef() {
 		return getInfo("/assignment/ent-ref");
 	}
 
+	/**
+	 * Gets the entitlement dn.
+	 *
+	 * @return the entitlement dn
+	 */
 	public String getEntitlementDn() {
 		return getInfo("/assignment/ent-dn");
 	}
 
+	/**
+	 * Gets the cause type.
+	 *
+	 * @return the cause type
+	 */
 	public String getCauseType() {
 		return getInfo("/assignment/cause/type");
 	}
 
+	/**
+	 * Gets the parameter.
+	 *
+	 * @return the parameter
+	 */
 	public String getParameter() {
 		return getInfo(getInfo("/assignment/ent-ref"), "/ref/param");
 	}

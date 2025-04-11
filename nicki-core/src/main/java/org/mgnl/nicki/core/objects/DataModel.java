@@ -40,34 +40,83 @@ import org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DataModel.
+ */
 @Slf4j
 @SuppressWarnings("serial")
 public class DataModel implements Serializable {
 
+	/** The attributes. */
 	private Map<String, DynamicAttribute> attributes = new HashMap<String, DynamicAttribute>();
+	
+	/** The object classes. */
 	private List<String> objectClasses = new ArrayList<String>();
+	
+	/** The additional object classes. */
 	private List<String> additionalObjectClasses = new ArrayList<String>();
+	
+	/** The naming attribute. */
 	private String namingAttribute;
 
+	/** The mandatory attributes. */
 	private List<DynamicAttribute> mandatoryAttributes;
+	
+	/** The optional attributes. */
 	private List<DynamicAttribute> optionalAttributes;
+	
+	/** The list optional attributes. */
 	private List<DynamicAttribute> listOptionalAttributes;
+	
+	/** The foreign keys. */
 	private List<DynamicAttribute> foreignKeys;
+	
+	/** The list foreign keys. */
 	private List<DynamicAttribute> listForeignKeys;
 
+	/** The children. */
 	private Map<String, ChildFilter> children = new HashMap<String, ChildFilter>();
+	
+	/** The references. */
 	private Map<String, DynamicReference> references = new HashMap<String, DynamicReference>();
 	
 
-	public enum ATTRIBUTE_TYPE {MANDATORY, OPTIONAL, OPTIONAL_LIST, FOREIGN_KEY, FOREIGN_KEY_LIST, STRUCTURED, UNDEFINED};
+	/**
+	 * The Enum ATTRIBUTE_TYPE.
+	 */
+	public enum ATTRIBUTE_TYPE {/** The mandatory. */
+MANDATORY, /** The optional. */
+ OPTIONAL, /** The optional list. */
+ OPTIONAL_LIST, /** The foreign key. */
+ FOREIGN_KEY, /** The foreign key list. */
+ FOREIGN_KEY_LIST, /** The structured. */
+ STRUCTURED, /** The undefined. */
+ UNDEFINED};
 	
+	/**
+	 * Gets the object classes.
+	 *
+	 * @return the object classes
+	 */
 	public List<String> getObjectClasses() {
 		return objectClasses;
 	}
+	
+	/**
+	 * Gets the naming attribute.
+	 *
+	 * @return the naming attribute
+	 */
 	public String getNamingAttribute() {
 		return namingAttribute;
 	}
 	
+	/**
+	 * Gets the mandatory attributes.
+	 *
+	 * @return the mandatory attributes
+	 */
 	public  List<DynamicAttribute> getMandatoryAttributes() {
 		if (this.mandatoryAttributes == null) {
 			this.mandatoryAttributes = new ArrayList<DynamicAttribute>();
@@ -79,6 +128,12 @@ public class DataModel implements Serializable {
 		}
 		return mandatoryAttributes;
 	}
+	
+	/**
+	 * Gets the optional attributes.
+	 *
+	 * @return the optional attributes
+	 */
 	public List<DynamicAttribute> getOptionalAttributes() {
 		if (this.optionalAttributes == null) {
 			this.optionalAttributes = new ArrayList<DynamicAttribute>();
@@ -90,6 +145,12 @@ public class DataModel implements Serializable {
 		}
 		return optionalAttributes;
 	}
+	
+	/**
+	 * Gets the list optional attributes.
+	 *
+	 * @return the list optional attributes
+	 */
 	public List<DynamicAttribute> getListOptionalAttributes() {
 		if (this.listOptionalAttributes == null) {
 			this.listOptionalAttributes = new ArrayList<DynamicAttribute>();
@@ -101,6 +162,12 @@ public class DataModel implements Serializable {
 		}
 		return listOptionalAttributes;
 	}
+	
+	/**
+	 * Gets the foreign keys.
+	 *
+	 * @return the foreign keys
+	 */
 	public List<DynamicAttribute> getForeignKeys() {
 		if (this.foreignKeys == null) {
 			this.foreignKeys = new ArrayList<DynamicAttribute>();
@@ -112,6 +179,12 @@ public class DataModel implements Serializable {
 		}
 		return foreignKeys;
 	}
+	
+	/**
+	 * Gets the list foreign keys.
+	 *
+	 * @return the list foreign keys
+	 */
 	public List<DynamicAttribute> getListForeignKeys() {
 		if (this.listForeignKeys == null) {
 			this.listForeignKeys = new ArrayList<DynamicAttribute>();
@@ -123,39 +196,101 @@ public class DataModel implements Serializable {
 		}
 		return listForeignKeys;
 	}
+	
+	/**
+	 * Gets the children.
+	 *
+	 * @return the children
+	 */
 	public Map<String, ChildFilter> getChildren() {
 		return children;
 	}
+	
+	/**
+	 * Gets the references.
+	 *
+	 * @return the references
+	 */
 	public Map<String, DynamicReference> getReferences() {
 		return references;
 	}
 
+	/**
+	 * Adds the child.
+	 *
+	 * @param attribute the attribute
+	 * @param filter the filter
+	 */
 	public void addChild(String attribute, ChildFilter filter) {
 		children.put(attribute, filter);		
 	}
+	
+	/**
+	 * Adds the object classes.
+	 *
+	 * @param objectClass the object class
+	 */
 	public void addObjectClasses(String objectClass) {
 		objectClasses.add(objectClass);
 	}
+	
+	/**
+	 * Adds the additional object classes.
+	 *
+	 * @param objectClass the object class
+	 */
 	public void addAdditionalObjectClasses(String objectClass) {
 		additionalObjectClasses.add(objectClass);
 	}
 
+	/**
+	 * Gets the ldap attributes.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param createOnly the create only
+	 * @return the ldap attributes
+	 */
 	public Attributes getLdapAttributes(DynamicObject dynamicObject, CREATEONLY createOnly) {
 		Attributes myAttrs = new BasicAttributes(true);
 		addLdapAttributes(myAttrs, dynamicObject, true, createOnly);
 		return myAttrs;
 	}
 
+	/**
+	 * Gets the ldap attributes.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param attributeNames the attribute names
+	 * @param createOnly the create only
+	 * @return the ldap attributes
+	 */
 	public Attributes getLdapAttributes(DynamicObject dynamicObject, String[] attributeNames, CREATEONLY createOnly) {
 		Attributes myAttrs = new BasicAttributes(true);
 		addLdapAttributes(myAttrs, dynamicObject, true, attributeNames, createOnly);
 		return myAttrs;
 	}
 	
+	/**
+	 * Adds the ldap attributes.
+	 *
+	 * @param myAttrs the my attrs
+	 * @param dynamicObject the dynamic object
+	 * @param nullable the nullable
+	 * @param createOnly the create only
+	 */
 	public void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject, boolean nullable, CREATEONLY createOnly) {
 		addLdapAttributes(myAttrs, dynamicObject, nullable, null, createOnly);
 	}
 	
+	/**
+	 * Adds the ldap attributes.
+	 *
+	 * @param myAttrs the my attrs
+	 * @param dynamicObject the dynamic object
+	 * @param nullable the nullable
+	 * @param attributeNames the attribute names
+	 * @param createOnly the create only
+	 */
 	public void addLdapAttributes(Attributes myAttrs, DynamicObject dynamicObject,
 			boolean nullable, String[] attributeNames, CREATEONLY createOnly) {
 
@@ -230,6 +365,12 @@ public class DataModel implements Serializable {
 		
 	}
 
+	/**
+	 * Gets the non mandatory attributes.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @return the non mandatory attributes
+	 */
 	public Map<DynamicAttribute, Object> getNonMandatoryAttributes(DynamicObject dynamicObject) {
 		Map<DynamicAttribute, Object> map = new HashMap<DynamicAttribute, Object>();
 		// single attributes (except namingAttribute)
@@ -267,14 +408,30 @@ public class DataModel implements Serializable {
 	}
 
 	
+	/**
+	 * Gets the naming ldap attribute.
+	 *
+	 * @return the naming ldap attribute
+	 */
 	public String getNamingLdapAttribute() {
 		return getAttributes().get(getNamingAttribute()).getExternalName();
 	}
 	
+	/**
+	 * Gets the dynamic attribute.
+	 *
+	 * @param name the name
+	 * @return the dynamic attribute
+	 */
 	public DynamicAttribute getDynamicAttribute(String name) {
 		return getAttributes().get(name);
 	}
 	
+	/**
+	 * Children allowed.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean childrenAllowed() {
 		try {
 			return getChildren().keySet().size() > 0;
@@ -283,6 +440,11 @@ public class DataModel implements Serializable {
 		}
 	}
 	
+	/**
+	 * Adds the attribute.
+	 *
+	 * @param dynAttribute the dyn attribute
+	 */
 	public void addAttribute(DynamicAttribute dynAttribute) {
 		String attributeName =  dynAttribute.getName();
 		this.attributes.put(attributeName, dynAttribute);
@@ -291,28 +453,58 @@ public class DataModel implements Serializable {
 		}
 	}
 	
+	/**
+	 * Removes the attribute.
+	 *
+	 * @param attrbuteName the attrbute name
+	 */
 	public void removeAttribute(String attrbuteName) {
 		if (this.attributes.containsKey(attrbuteName)) {
 			this.attributes.remove(attrbuteName);
 		}
 	}
 	
+	/**
+	 * Removes the additional object class.
+	 *
+	 * @param objectClass the object class
+	 */
 	public void removeAdditionalObjectClass(String objectClass) {
 		if (this.additionalObjectClasses.contains(objectClass)) {
 			this.additionalObjectClasses.remove(objectClass);
 		}
 	}
 	
+	/**
+	 * Removes the object class.
+	 *
+	 * @param objectClass the object class
+	 */
 	public void removeObjectClass(String objectClass) {
 		if (this.objectClasses.contains(objectClass)) {
 			this.objectClasses.remove(objectClass);
 		}
 	}
+	
+	/**
+	 * Inits the.
+	 *
+	 * @param context the context
+	 * @param dynamicObject the dynamic object
+	 * @param rs the rs
+	 */
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
 		for (DynamicAttribute dynamicAttribute : this.attributes.values()) {
 			dynamicAttribute.init(context, dynamicObject, rs);
 		}
 	}
+	
+	/**
+	 * Checks if is complete.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @return true, if is complete
+	 */
 	public boolean isComplete(DynamicObject dynamicObject) {
 		boolean complete = true;
 		// check naming attribute
@@ -341,9 +533,20 @@ public class DataModel implements Serializable {
 		return complete;
 	}
 	
+	/**
+	 * Gets the attributes.
+	 *
+	 * @return the attributes
+	 */
 	public Map<String, DynamicAttribute> getAttributes() {
 		return attributes;
 	}
+	
+	/**
+	 * Gets the additional object classes.
+	 *
+	 * @return the additional object classes
+	 */
 	public List<String> getAdditionalObjectClasses() {
 		return additionalObjectClasses;
 	}

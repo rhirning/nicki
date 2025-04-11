@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.util;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -22,22 +23,57 @@ package org.mgnl.nicki.core.util;
  */
 
 
+/**
+ * The Class ToDo.
+ */
 public class ToDo {
+	
+	/** The path. */
 	public String path;
+	
+	/** The attribute name. */
 	public String attributeName;
+	
+	/** The internal link. */
 	public String internalLink;
+	
+	/**
+	 * Instantiates a new to do.
+	 *
+	 * @param path the path
+	 * @param attributeName the attribute name
+	 * @param internalLink the internal link
+	 */
 	public ToDo(String path, String attributeName, String internalLink) {
 		super();
 		this.path = path;
 		this.attributeName = attributeName;
 		this.internalLink = internalLink;
 	}
+	
+	/**
+	 * Gets the path.
+	 *
+	 * @return the path
+	 */
 	public String getPath() {
 		return path;
 	}
+	
+	/**
+	 * Gets the attribute name.
+	 *
+	 * @return the attribute name
+	 */
 	public String getAttributeName() {
 		return attributeName;
 	}
+	
+	/**
+	 * Gets the internal link.
+	 *
+	 * @return the internal link
+	 */
 	public String getInternalLink() {
 		return internalLink;
 	}

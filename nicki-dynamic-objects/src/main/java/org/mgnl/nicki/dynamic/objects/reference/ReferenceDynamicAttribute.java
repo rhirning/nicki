@@ -28,10 +28,28 @@ import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ReferenceDynamicAttribute.
+ */
 @SuppressWarnings("serial")
 public class ReferenceDynamicAttribute extends DynamicAttribute {
+	
+	/** The base dn. */
 	String baseDn;
+	
+	/** The class ref. */
 	Class<? extends DynamicObject> classRef;
+	
+	/**
+	 * Instantiates a new reference dynamic attribute.
+	 *
+	 * @param classRef the class ref
+	 * @param name the name
+	 * @param ldapName the ldap name
+	 * @param attributeClass the attribute class
+	 * @param baseDn the base dn
+	 */
 	public ReferenceDynamicAttribute(Class<? extends DynamicObject> classRef, String name, String ldapName, Class<?> attributeClass,
 			String baseDn) {
 		super(name, ldapName, attributeClass);
@@ -39,6 +57,12 @@ public class ReferenceDynamicAttribute extends DynamicAttribute {
 		this.baseDn = baseDn;
 	}
 
+	/**
+	 * Gets the options.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @return the options
+	 */
 	@Override
 	public List<? extends DynamicObject> getOptions(DynamicObject dynamicObject) {
 		return dynamicObject.getContext().loadObjects(classRef, baseDn, "");

@@ -32,24 +32,51 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class DataModelDescription.
  *
  * @author cna
  */
 public class DataModelDescription {
 
+	/** The Constant ELEM_DATAMODEL. */
 	private static final String ELEM_DATAMODEL = "datamodel";
+	
+	/** The Constant ELEM_FUNCTION. */
 	private static final String ELEM_FUNCTION = "function";
+	
+	/** The Constant ELEM_ENTRY. */
 	private static final String ELEM_ENTRY = "entry";
+	
+	/** The Constant ELEM_OBJECT. */
 	private static final String ELEM_OBJECT = "object";
+	
+	/** The Constant ELEM_PARAM. */
 	private static final String ELEM_PARAM = "param";
+	
+	/** The functions. */
 	private List<DMFunction> functions = new ArrayList<DMFunction>();
+	
+	/** The objects. */
 	private List<DMObject> objects = new ArrayList<DMObject>();
+	
+	/** The entries. */
 	private List<DMEntry> entries = new ArrayList<DMEntry>();
 
+	/**
+	 * Instantiates a new data model description.
+	 */
 	public DataModelDescription() {
 	}
 
+	/**
+	 * Adds the function.
+	 *
+	 * @param name the name
+	 * @param clazz the clazz
+	 * @param param the param
+	 */
 	public void addFunction(String name, String clazz, List<NameValue> param) {
 		DMFunction f = new DMFunction();
 		f.name = name;
@@ -63,6 +90,12 @@ public class DataModelDescription {
 		functions.add(f);
 	}
 
+	/**
+	 * Adds the entry.
+	 *
+	 * @param name the name
+	 * @param value the value
+	 */
 	public void addEntry(String name, String value) {
 		DMEntry entry = new DMEntry();
 		entry.name = name;
@@ -71,6 +104,13 @@ public class DataModelDescription {
 		entries.add(entry);
 	}
 
+	/**
+	 * Adds the object.
+	 *
+	 * @param name the name
+	 * @param dn the dn
+	 * @param target the target
+	 */
 	public void addObject(String name, String dn, String target) {
 		DMObject obj = new DMObject();
 		obj.dn = dn;
@@ -80,18 +120,39 @@ public class DataModelDescription {
 		objects.add(obj);
 	}
 
+	/**
+	 * Gets the functions.
+	 *
+	 * @return the functions
+	 */
 	public List<DMFunction> getFunctions() {
 		return Collections.unmodifiableList(functions);
 	}
 
+	/**
+	 * Gets the entries.
+	 *
+	 * @return the entries
+	 */
 	public List<DMEntry> getEntries() {
 		return Collections.unmodifiableList(entries);
 	}
 
+	/**
+	 * Gets the objects.
+	 *
+	 * @return the objects
+	 */
 	public List<DMObject> getObjects() {
 		return Collections.unmodifiableList(objects);
 	}
 
+	/**
+	 * From xml.
+	 *
+	 * @param xml the xml
+	 * @return the data model description
+	 */
 	public static DataModelDescription fromXml(String xml) {
 
 		DataModelDescription description = new DataModelDescription();
@@ -138,6 +199,11 @@ public class DataModelDescription {
 		return description;
 	}
 
+	/**
+	 * To xml.
+	 *
+	 * @return the string
+	 */
 	public String toXml() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("<datamodel>");

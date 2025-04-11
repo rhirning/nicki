@@ -27,8 +27,19 @@ import java.sql.PreparedStatement;
 
 import java.sql.SQLException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface PreparedStatementSelectHandler.
+ */
 public interface PreparedStatementSelectHandler extends SelectHandler {
 	
+	/**
+	 * Gets the prepared statement.
+	 *
+	 * @param connection the connection
+	 * @return the prepared statement
+	 * @throws SQLException the SQL exception
+	 */
 	PreparedStatement getPreparedStatement(Connection connection) throws SQLException;
 
 }

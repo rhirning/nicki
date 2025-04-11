@@ -37,9 +37,22 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FileStoreManager.
+ */
 @Slf4j
 public class FileStoreManager {
+	
+	/** The context. */
 	private static String context = Config.getString("pnw.db.context.fileStore");
+	
+	/**
+	 * Persist to DB.
+	 *
+	 * @param fileNames the file names
+	 * @throws FileStoreException the file store exception
+	 */
 	public static void persistToDB(List<String> fileNames) throws FileStoreException {
 
 		log.info("persist files to DB");
@@ -62,6 +75,19 @@ public class FileStoreManager {
 		}
 	}
 
+	/**
+	 * Persist.
+	 *
+	 * @param dbContext the db context
+	 * @param pathInfo the path info
+	 * @param data the data
+	 * @param now the now
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 * @throws NotSupportedException the not supported exception
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	private static void persist(DBContext dbContext, String pathInfo, String data, Date now) throws SQLException, InitProfileException, NotSupportedException, InstantiationException, IllegalAccessException {
 		FileStore fileStore = new FileStore();
 		fileStore.setName(pathInfo);
@@ -80,6 +106,13 @@ public class FileStoreManager {
 		}
 	}
 
+	/**
+	 * Gets the as stream.
+	 *
+	 * @param path the path
+	 * @return the as stream
+	 * @throws FileStoreException the file store exception
+	 */
 	public static InputStream getAsStream(String path) throws FileStoreException {
 		FileStore fileStore = new FileStore();
 		fileStore.setName(path);

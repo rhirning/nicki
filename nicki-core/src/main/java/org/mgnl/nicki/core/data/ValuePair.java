@@ -3,6 +3,7 @@ package org.mgnl.nicki.core.data;
 
 import java.io.Serializable;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -24,23 +25,56 @@ import java.io.Serializable;
  */
 
 
+/**
+ * The Class ValuePair.
+ */
 public class ValuePair implements Serializable {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -4811398011208084823L;
+	
+	/** The name. */
 	private String name;
+	
+	/** The value. */
 	private String value;
 	
 	
+	/**
+	 * Instantiates a new value pair.
+	 *
+	 * @param name the name
+	 * @param value the value
+	 */
 	public ValuePair(String name, String value) {
 		super();
 		this.name = name;
 		this.value = value;
 	}
+	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return name;
 	}
+	
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public String getValue() {
 		return value;
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();

@@ -29,9 +29,21 @@ import org.mgnl.nicki.core.visitor.Visitor;
 import org.mgnl.nicki.shop.base.visitor.CatalogVisitor;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CatalogObject.
+ */
 public abstract class CatalogObject extends BaseDynamicObject {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1244940179441748075L;
 
+	/**
+	 * Accept.
+	 *
+	 * @param visitor the visitor
+	 * @return the visitor. ACTION
+	 */
 	public Visitor.ACTION accept(CatalogVisitor visitor) {
 		if (visitor.visit(this) == Visitor.ACTION.FINISH) {
 			return Visitor.ACTION.FINISH;
@@ -48,6 +60,11 @@ public abstract class CatalogObject extends BaseDynamicObject {
 		
 	}
 
+	/**
+	 * Gets the child list.
+	 *
+	 * @return the child list
+	 */
 	public abstract List<? extends CatalogObject> getChildList();
 
 }

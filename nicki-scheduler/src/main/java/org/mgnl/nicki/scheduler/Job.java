@@ -1,5 +1,6 @@
 package org.mgnl.nicki.scheduler;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-scheduler
@@ -20,7 +21,22 @@ package org.mgnl.nicki.scheduler;
  * #L%
  */
 
+/**
+ * The Interface Job.
+ */
 public interface Job extends Runnable {
+	
+	/**
+	 * Sets the job config.
+	 *
+	 * @param jobConfig the new job config
+	 */
 	void setJobConfig(JobConfig jobConfig);
+	
+	/**
+	 * Gets the job config.
+	 *
+	 * @return the job config
+	 */
 	JobConfig getJobConfig();
 }

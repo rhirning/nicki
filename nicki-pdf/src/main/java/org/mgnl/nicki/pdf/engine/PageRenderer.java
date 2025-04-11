@@ -42,18 +42,39 @@ import org.mgnl.nicki.pdf.model.template.Image;
 import org.mgnl.nicki.pdf.model.template.Page;
 import org.mgnl.nicki.pdf.model.template.Text;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PageRenderer.
+ */
 @Slf4j
 public class PageRenderer {
+	
+	/** The content. */
 	private PdfContentByte content;
+	
+	/** The writer. */
 	private PdfWriter writer;
 	
+	/** The config. */
 	private PdfConfiguration config;
 	
+	/**
+	 * Instantiates a new page renderer.
+	 *
+	 * @param writer the writer
+	 * @param config the config
+	 */
 	public PageRenderer(PdfWriter writer, PdfConfiguration config) {
 		this.writer = writer;
 		this.config = config;
 	}
 	
+	/**
+	 * Render.
+	 *
+	 * @param page the page
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public  void render(Page page) throws IOException {
 		this.content = writer.getDirectContent();
 
@@ -62,6 +83,12 @@ public class PageRenderer {
 		}
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param box the box
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(Box box) throws IOException {
 		Point point = new Point(box.getX(), box.getY());
 		if (box.getText() != null) {
@@ -73,6 +100,13 @@ public class PageRenderer {
 		}
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param text the text
+	 * @param p the p
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(Text text, Point p) throws IOException {
 		log.debug("rendering text: {}", text.getValue());
 		Font f = config.getFont(text.getFont(), text.getSize(), FontStyle.byName(text.getStyle()));
@@ -105,6 +139,13 @@ public class PageRenderer {
 		log.debug("setting text position to {} (INCH: {})", p, posUU);
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param barcode the barcode
+	 * @param point the point
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(Barcode barcode, Point point) throws IOException {
 		/*
 		log.debug("rendering barcode: {}", barcode.getValue());
@@ -124,6 +165,15 @@ public class PageRenderer {
 		*/
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param image the image
+	 * @param point the point
+	 * @param vAlign the v align
+	 * @param align the align
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(Image image, Point point, String vAlign, String align) throws IOException {
 		log.debug("rendering with vAlign={}, align={}", vAlign, align);
 		if(image == null) {

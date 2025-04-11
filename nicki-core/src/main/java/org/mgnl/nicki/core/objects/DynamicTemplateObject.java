@@ -29,9 +29,19 @@ import org.mgnl.nicki.core.methods.ChildrenMethod;
 
 import freemarker.template.TemplateMethodModelEx;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DynamicTemplateObject.
+ */
 @SuppressWarnings("serial")
 public abstract class DynamicTemplateObject extends BaseDynamicObject {
 
+	/**
+	 * Inits the.
+	 *
+	 * @param rs the rs
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public void init(ContextSearchResult rs) throws DynamicObjectException {
 		super.init(rs);
@@ -42,10 +52,24 @@ public abstract class DynamicTemplateObject extends BaseDynamicObject {
 		}
 	}
 	
+	/**
+	 * Adds the method.
+	 *
+	 * @param name the name
+	 * @param method the method
+	 */
 	public void addMethod(String name, TemplateMethodModelEx method) {
 		put(DynamicAttribute.getGetter(name), method);
 	};
 	
+	/**
+	 * Execute.
+	 *
+	 * @param methodName the method name
+	 * @param arguments the arguments
+	 * @return the object
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	public Object execute(String methodName, @SuppressWarnings("rawtypes") List arguments) throws DynamicObjectException {
 		try {
 			TemplateMethodModelEx method = (TemplateMethodModelEx) get(methodName);

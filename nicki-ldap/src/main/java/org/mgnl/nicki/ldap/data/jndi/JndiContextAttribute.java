@@ -31,13 +31,30 @@ import org.mgnl.nicki.core.objects.ContextAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JndiContextAttribute.
+ */
 public class JndiContextAttribute implements ContextAttribute {
 
+	/** The attribute. */
 	Attribute attribute;
+	
+	/**
+	 * Instantiates a new jndi context attribute.
+	 *
+	 * @param attribute the attribute
+	 */
 	public JndiContextAttribute(Attribute attribute) {
 		this.attribute = attribute;
 	}
 
+	/**
+	 * Gets the all.
+	 *
+	 * @return the all
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@SuppressWarnings("unchecked")
 	public Enumeration<Object> getAll() throws DynamicObjectException {
 		try {
@@ -59,6 +76,12 @@ public class JndiContextAttribute implements ContextAttribute {
 		};
 	}
 
+	/**
+	 * Gets the.
+	 *
+	 * @return the object
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	public Object get() throws DynamicObjectException {
 		try {
 			return this.attribute.get();

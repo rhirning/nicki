@@ -27,15 +27,35 @@ import java.util.Map;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BooleanRule.
+ */
 public class BooleanRule extends Rule {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The boolean value. */
 	Boolean booleanValue;
 
+	/**
+	 * Instantiates a new boolean rule.
+	 *
+	 * @param parameter the parameter
+	 */
 	public BooleanRule(String parameter) {
 		setParameter(parameter);
 		booleanValue = DataHelper.booleanOf(parameter);
 	}
 
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		if (booleanValue != null) {
@@ -48,10 +68,21 @@ public class BooleanRule extends Rule {
 		return false;
 	}
 	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".boolean", getParameter());
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "boolean:" + booleanValue;
 	}

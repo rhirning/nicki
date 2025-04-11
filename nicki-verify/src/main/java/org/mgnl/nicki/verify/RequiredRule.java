@@ -24,18 +24,37 @@ package org.mgnl.nicki.verify;
 
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RequiredRule.
+ */
 public class RequiredRule extends MinLengthRule {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Instantiates a new required rule.
+	 */
 	public RequiredRule() {
 		super("1");
 	}
 
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".required");
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "required";
 	}

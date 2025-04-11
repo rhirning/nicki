@@ -26,7 +26,24 @@ import javax.jms.MessageListener;
 
 import org.mgnl.nicki.mq.model.Consumer;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The listener interface for receiving nickiMessage events.
+ * The class that is interested in processing a nickiMessage
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addNickiMessageListener</code> method. When
+ * the nickiMessage event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see NickiMessageEvent
+ */
 public interface NickiMessageListener extends MessageListener {
 
+	/**
+	 * Sets the consumer.
+	 *
+	 * @param consumer the new consumer
+	 */
 	void setConsumer(Consumer consumer);
 }

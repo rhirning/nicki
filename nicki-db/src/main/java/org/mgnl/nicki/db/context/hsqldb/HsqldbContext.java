@@ -24,7 +24,19 @@ import org.mgnl.nicki.db.context.BaseDBContext;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class HsqldbContext.
+ */
 public class HsqldbContext extends BaseDBContext implements DBContext {
+	
+	/**
+	 * Gets the sequence number.
+	 *
+	 * @param sequenceName the sequence name
+	 * @return the sequence number
+	 * @throws Exception the exception
+	 */
 	@Override
 	public Long getSequenceNumber(String sequenceName) throws Exception {
 

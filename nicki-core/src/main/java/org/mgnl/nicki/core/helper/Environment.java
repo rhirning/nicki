@@ -29,10 +29,20 @@ import org.apache.commons.lang3.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Environment.
+ */
 @Slf4j
 @SuppressWarnings("serial")
 public class Environment implements Serializable{
 	
+	/**
+	 * Gets the property.
+	 *
+	 * @param name the name
+	 * @return the property
+	 */
 	public static String getProperty(String name) {
 		if (getFromJndiContext(name) != null) {
 			return getFromJndiContext(name);
@@ -47,6 +57,12 @@ public class Environment implements Serializable{
 		return null;
 	}
 
+	/**
+	 * Gets the from jndi context.
+	 *
+	 * @param name the name
+	 * @return the from jndi context
+	 */
 	public static String getFromJndiContext(String name) {
 		// Check JNDI environment
 		try {
@@ -62,6 +78,12 @@ public class Environment implements Serializable{
 		return null;
 	}
 
+	/**
+	 * Gets the from system property.
+	 *
+	 * @param name the name
+	 * @return the from system property
+	 */
 	public static String getFromSystemProperty(String name) {
 		try {
 			return System.getProperty(name);
@@ -71,6 +93,12 @@ public class Environment implements Serializable{
 		return null;
 	}
 
+	/**
+	 * Gets the from system environment.
+	 *
+	 * @param name the name
+	 * @return the from system environment
+	 */
 	public static String getFromSystemEnvironment(String name) {
 		try {
 			return System.getenv(name);

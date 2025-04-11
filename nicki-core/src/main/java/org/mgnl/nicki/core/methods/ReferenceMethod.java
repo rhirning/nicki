@@ -33,20 +33,46 @@ import org.mgnl.nicki.core.objects.DynamicReference;
 
 import freemarker.template.TemplateMethodModelEx;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ReferenceMethod.
+ */
 public class ReferenceMethod implements TemplateMethodModelEx, Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -81535049844368520L;
+	
+	/** The objects. */
 	private List<DynamicObject> objects;
+	
+	/** The reference. */
 	private DynamicReference reference;
+	
+	/** The path. */
 	private String path;
+	
+	/** The context. */
 	private NickiContext context;
 	
+	/**
+	 * Instantiates a new reference method.
+	 *
+	 * @param context the context
+	 * @param rs the rs
+	 * @param reference the reference
+	 */
 	public ReferenceMethod(NickiContext context, ContextSearchResult rs, DynamicReference reference) {
 		this.context = context;
 		this.path = rs.getNameInNamespace();
 		this.reference = reference;
 	}
 
+	/**
+	 * Exec.
+	 *
+	 * @param arguments the arguments
+	 * @return the list
+	 */
 	@SuppressWarnings("unchecked")
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (objects == null) {
@@ -55,10 +81,20 @@ public class ReferenceMethod implements TemplateMethodModelEx, Serializable {
 		return objects;
 	}
 
+	/**
+	 * Gets the reference.
+	 *
+	 * @return the reference
+	 */
 	public DynamicReference getReference() {
 		return reference;
 	}
 
+	/**
+	 * Gets the path.
+	 *
+	 * @return the path
+	 */
 	public String getPath() {
 		return path;
 	}

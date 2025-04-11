@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.verify.classes;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-verify
@@ -22,9 +23,19 @@ package org.mgnl.nicki.verify.classes;
  */
 
 
+/**
+ * The Class MissingAttributeException.
+ */
 public class MissingAttributeException extends Exception {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 7024676626467083763L;
 
+	/**
+	 * Instantiates a new missing attribute exception.
+	 *
+	 * @param name the name
+	 */
 	public MissingAttributeException(String name) {
 		super(name);
 	}

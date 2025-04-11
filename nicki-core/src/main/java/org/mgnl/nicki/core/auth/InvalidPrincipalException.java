@@ -22,7 +22,13 @@ package org.mgnl.nicki.core.auth;
  */
 
 
+/**
+ * The Class InvalidPrincipalException.
+ */
 @SuppressWarnings("serial")
+/** 
+ * InvalidPrincipalException
+ */
 public class InvalidPrincipalException extends Exception {
 
 }

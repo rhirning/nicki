@@ -1,5 +1,6 @@
 package org.mgnl.nicki.core.data;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -20,7 +21,22 @@ package org.mgnl.nicki.core.data;
  * #L%
  */
 
+/**
+ * The Interface TreeObject.
+ */
 public interface TreeObject {
+	
+	/**
+	 * Gets the display name.
+	 *
+	 * @return the display name
+	 */
 	String getDisplayName();
+	
+	/**
+	 * Gets the object.
+	 *
+	 * @return the object
+	 */
 	default TreeObject getObject(){return this;};
 }

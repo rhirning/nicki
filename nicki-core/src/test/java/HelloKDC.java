@@ -29,12 +29,25 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
  
+// TODO: Auto-generated Javadoc
+/**
+ * The Class HelloKDC.
+ */
 public final class HelloKDC {
  
+    /**
+     * Instantiates a new hello KDC.
+     */
     private HelloKDC() {
         // default private
     }
  
+    /**
+     * The main method.
+     *
+     * @param args the arguments
+     * @throws Exception the exception
+     */
     public static void main(final String[] args) throws Exception {
  
     	// Domain (pre-authentication) account
@@ -77,6 +90,17 @@ public final class HelloKDC {
         System.out.println("Connection test successful.");
     }
  
+    /**
+     * Validate.
+     *
+     * @param username the username
+     * @param password the password
+     * @param krbfile the krbfile
+     * @param loginfile the loginfile
+     * @param moduleName the module name
+     * @throws FileNotFoundException the file not found exception
+     * @throws NoSuchAlgorithmException the no such algorithm exception
+     */
     private static void validate(final String username, final String password
         , final String krbfile, final String loginfile, final String moduleName) 
         throws FileNotFoundException, NoSuchAlgorithmException {
@@ -121,6 +145,13 @@ public final class HelloKDC {
         }        
     }
  
+    /**
+     * Gets the username password handler.
+     *
+     * @param username the username
+     * @param password the password
+     * @return the username password handler
+     */
     private static CallbackHandler getUsernamePasswordHandler(
         final String username, final String password) {
  

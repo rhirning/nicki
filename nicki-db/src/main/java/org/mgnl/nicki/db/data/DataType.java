@@ -9,6 +9,7 @@ import org.mgnl.nicki.db.annotation.Attribute;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-db
@@ -29,9 +30,16 @@ import lombok.extern.slf4j.Slf4j;
  * #L%
  */
 
+/**
+ * The Enum DataType.
+ */
 @Slf4j
 public enum DataType {
+	
+	/** The default. */
 	DEFAULT,
+	
+	/** The long. */
 	LONG {
 		public Object getValue(String data) {
 			try {
@@ -41,6 +49,8 @@ public enum DataType {
 			}
 		}
 	},
+	
+	/** The int. */
 	INT {
 		public Object getValue(String data) {
 			try {
@@ -50,6 +60,8 @@ public enum DataType {
 			}
 		}
 	},
+	
+	/** The float. */
 	FLOAT {
 		public Object getValue(String data) {
 			try {
@@ -59,11 +71,15 @@ public enum DataType {
 			}
 		}
 	},
+	
+	/** The boolean. */
 	BOOLEAN {
 		public Object getValue(String data) {
 			return DataHelper.booleanOf(data);
 		}
 	},
+	
+	/** The date. */
 	DATE {
 		public Object getValue(String data) {
 			try {
@@ -73,6 +89,8 @@ public enum DataType {
 			}
 		}
 	},
+	
+	/** The timestamp. */
 	TIMESTAMP {
 		public Object getValue(String data) {
 			try {
@@ -82,6 +100,8 @@ public enum DataType {
 			}
 		}
 	},
+	
+	/** The time. */
 	TIME {
 		public Object getValue(String data) {
 			try {
@@ -91,32 +111,89 @@ public enum DataType {
 			}
 		}
 	},
+	
+	/** The clob. */
 	CLOB,
+	
+	/** The blob. */
 	BLOB;
 
+	/**
+	 * Gets the string.
+	 *
+	 * @param value the value
+	 * @return the string
+	 */
 	public String getString(String value) {
 		return value;
 	}
+	
+	/**
+	 * Gets the string.
+	 *
+	 * @param value the value
+	 * @return the string
+	 */
 	public String getString(Date value) {
 		return DataHelper.getDisplayDay(value);
 	}
+	
+	/**
+	 * Gets the string.
+	 *
+	 * @param value the value
+	 * @return the string
+	 */
 	public String getString(long value) {
 		return Long.toString(value);
 	}
+	
+	/**
+	 * Gets the string.
+	 *
+	 * @param value the value
+	 * @return the string
+	 */
 	public String getString(int value) {
 		return Integer.toString(value);
 	}
+	
+	/**
+	 * Gets the string.
+	 *
+	 * @param value the value
+	 * @return the string
+	 */
 	public String getString(float value) {
 		return Float.toString(value);
 	}
+	
+	/**
+	 * Gets the string.
+	 *
+	 * @param value the value
+	 * @return the string
+	 */
 	public String getString(boolean value) {
 		return Boolean.toString(value);
 	}
 	
+	/**
+	 * Gets the value.
+	 *
+	 * @param data the data
+	 * @return the value
+	 */
 	public Object getValue(String data) {
 		return data;
 	}
 	
+	/**
+	 * Gets the type of field.
+	 *
+	 * @param field the field
+	 * @return the type of field
+	 */
 	public static DataType getTypeOfField(Field field) {
 
 		DataType type = DataType.DEFAULT;

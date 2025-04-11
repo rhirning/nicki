@@ -26,16 +26,36 @@ import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DbcpConfiguration.
+ */
 public class DbcpConfiguration {
 
+    /** The db driver name. */
     private String dbDriverName;
+    
+    /** The db user. */
     private String dbUser;
+    
+    /** The db password. */
     private String dbPassword;
+    
+    /** The db URI. */
     private String dbURI;
 
+    /** The db pool min size. */
     private int dbPoolMinSize;
+    
+    /** The db pool max size. */
     private int dbPoolMaxSize;
 
+    /**
+     * Instantiates a new dbcp configuration.
+     *
+     * @param base the base
+     * @throws InvalidConfigurationException the invalid configuration exception
+     */
     public DbcpConfiguration(String base) throws InvalidConfigurationException {
         dbDriverName = Config.getString(base + "driverClassName");
         dbUser = Config.getString(base + "username");
@@ -51,6 +71,11 @@ public class DbcpConfiguration {
     }
 
 
+    /**
+     * Checks if is valid.
+     *
+     * @return true, if is valid
+     */
     private boolean isValid() {
     	if (StringUtils.isEmpty(dbDriverName)) {
     		return false;
@@ -59,26 +84,56 @@ public class DbcpConfiguration {
 	}
 
 
+	/**
+	 * Gets the db driver name.
+	 *
+	 * @return the db driver name
+	 */
 	public String getDbDriverName() {
         return dbDriverName;
     }
 
+    /**
+     * Gets the db user.
+     *
+     * @return the db user
+     */
     public String getDbUser() {
         return dbUser;
     }
 
+    /**
+     * Gets the db password.
+     *
+     * @return the db password
+     */
     public String getDbPassword() {
         return dbPassword;
     }
 
+    /**
+     * Gets the db URI.
+     *
+     * @return the db URI
+     */
     public String getDbURI() {
         return dbURI;
     }
 
+    /**
+     * Gets the db pool min size.
+     *
+     * @return the db pool min size
+     */
     public int getDbPoolMinSize() {
         return dbPoolMinSize;
     }
 
+    /**
+     * Gets the db pool max size.
+     *
+     * @return the db pool max size
+     */
     public int getDbPoolMaxSize() {
         return dbPoolMaxSize;
     }

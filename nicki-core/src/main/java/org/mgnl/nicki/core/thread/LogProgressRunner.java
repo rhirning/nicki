@@ -4,6 +4,10 @@ package org.mgnl.nicki.core.thread;
 import org.apache.commons.lang3.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LogProgressRunner.
+ */
 /*-
  * #%L
  * nicki-vaadin-base
@@ -26,11 +30,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public abstract class LogProgressRunner extends ProgressRunner implements Runnable {
 
+	/**
+	 * Instantiates a new log progress runner.
+	 *
+	 * @param progress the progress
+	 * @param title the title
+	 * @param count the count
+	 */
 	public LogProgressRunner(NickiProgress progress, String title, int count) {
 		super(progress, title, count);
 	}
 
 
+    /**
+     * Run.
+     */
     @Override
     public void run() {
     	doWork();
@@ -44,6 +58,12 @@ public abstract class LogProgressRunner extends ProgressRunner implements Runnab
     }
 
 
+	/**
+	 * Progressed.
+	 *
+	 * @param newCurrent the new current
+	 * @param newDetails the new details
+	 */
 	public void progressed(int newCurrent, String newDetails) {
 		this.setCurrent(newCurrent);
 		this.setDetails(newDetails);

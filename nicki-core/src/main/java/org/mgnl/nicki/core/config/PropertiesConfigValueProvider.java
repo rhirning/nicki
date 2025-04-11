@@ -28,18 +28,34 @@ import org.apache.commons.lang3.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PropertiesConfigValueProvider.
+ */
 @Slf4j
 public class PropertiesConfigValueProvider implements ConfigValueProvider {
 
+	/** The Constant CONFIG_SOURCE_KEY. */
 	private static final String CONFIG_SOURCE_KEY = "nicki.config.valueprovider.source";
 	
+	/** The path. */
 	private String path;
+	
+	/** The properties. */
 	private Properties properties = new Properties();
+	
+	/** The is init. */
 	private boolean isInit;
 	
+	/**
+	 * Instantiates a new properties config value provider.
+	 */
 	public PropertiesConfigValueProvider() {
 	}
 
+	/**
+	 * Inits the.
+	 */
 	protected void init() {
 		path = Config.getValue(CONFIG_SOURCE_KEY);
 		if (StringUtils.isNotBlank(path)) {
@@ -52,11 +68,24 @@ public class PropertiesConfigValueProvider implements ConfigValueProvider {
 		}
 		isInit = true;
 	}
+	
+	/**
+	 * Exists.
+	 *
+	 * @param key the key
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean exists(String key) {
 		return StringUtils.isNotBlank(get(key));
 	}
 
+	/**
+	 * Gets the.
+	 *
+	 * @param key the key
+	 * @return the string
+	 */
 	@Override
 	public String get(String key) {
 		if (!isInit) {

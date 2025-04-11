@@ -26,27 +26,64 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SearchResultEntry.
+ */
 public class SearchResultEntry implements Serializable {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -6784848780254677616L;
+	
+	/** The values. */
 	private Map<String, Object> values = new HashMap<String, Object>();
+	
+	/** The dn. */
 	private String dn;
 	
+	/**
+	 * Gets the dn.
+	 *
+	 * @return the dn
+	 */
 	public String getDn() {
 		return dn;
 	}
 
+	/**
+	 * Sets the dn.
+	 *
+	 * @param dn the new dn
+	 */
 	public void setDn(String dn) {
 		this.dn = dn;
 	}
 
+	/**
+	 * Adds the value.
+	 *
+	 * @param key the key
+	 * @param value the value
+	 */
 	public void addValue(String key, Object value) {
 		this.values.put(key, value);
 	}
 	
+	/**
+	 * Gets the value.
+	 *
+	 * @param key the key
+	 * @return the value
+	 */
 	public Object getValue(String key) {
 		return this.values.get(key);
 	}
 
+	/**
+	 * Gets the values.
+	 *
+	 * @return the values
+	 */
 	public Map<String, Object> getValues() {
 		return values;
 	}

@@ -26,10 +26,26 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+// TODO: Auto-generated Javadoc
 
+/**
+ * Annotation to define the loginTarget.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface LoginTargetContext {
+	
+	/**
+	 * Name.
+	 *
+	 * @return the string
+	 */
 	String name() default "";
+	
+	/**
+	 * Config name.
+	 *
+	 * @return the string
+	 */
 	String configName() default "";
 }

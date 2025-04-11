@@ -26,24 +26,76 @@ import java.util.List;
 import java.util.Map;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface Query.
+ */
 public interface Query {
 
+	/**
+	 * Adds the filter.
+	 *
+	 * @param filter the filter
+	 */
 	void addFilter(String filter);
 	
+	/**
+	 * Adds the search value.
+	 *
+	 * @param key the key
+	 * @param value the value
+	 */
 	void addSearchValue(String key, String value);
 	
+	/**
+	 * Gets the search value.
+	 *
+	 * @param key the key
+	 * @return the search value
+	 */
 	List<String> getSearchValue(String key);
 
+	/**
+	 * Gets the search values.
+	 *
+	 * @return the search values
+	 */
 	Map<String, List<String>> getSearchValues();
 	
+	/**
+	 * Gets the filter.
+	 *
+	 * @return the filter
+	 */
 	String getFilter();
 	
+	/**
+	 * Gets the base DN.
+	 *
+	 * @return the base DN
+	 */
 	String getBaseDN();
 
+	/**
+	 * Gets the result attributes.
+	 *
+	 * @return the result attributes
+	 */
 	Map<String, String> getResultAttributes();
 
+	/**
+	 * Sets the result attributes.
+	 *
+	 * @param resultAttributes the result attributes
+	 */
 	void setResultAttributes(Map<String, String> resultAttributes);
 	
+	/**
+	 * Adds the result attribute.
+	 *
+	 * @param targetName the target name
+	 * @param displayName the display name
+	 */
 	void addResultAttribute(String targetName, String displayName);
 
 

@@ -32,27 +32,62 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.ldap.objects.DynamicObjectLdapAdapter;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating LdapContext objects.
+ */
 public class LdapContextFactory implements ContextFactory, Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -5770837695968996467L;
+	
+	/** The Constant ADAPTER. */
 	private static final DynamicObjectAdapter ADAPTER = new DynamicObjectLdapAdapter(); 
 	
+	/**
+	 * Gets the guest context.
+	 *
+	 * @param target the target
+	 * @return the guest context
+	 */
 	@Override
 	public NickiContext getGuestContext(Target target) {
 		return new LdapGuestContext(getAdapter(), target);
 	}
 
+	/**
+	 * Gets the named user context.
+	 *
+	 * @param target the target
+	 * @param user the user
+	 * @param password the password
+	 * @return the named user context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	@Override
 	public NickiContext getNamedUserContext(Target target, DynamicObject user, String password)
 			throws InvalidPrincipalException {
 		return new LdapNamedUserContext(getAdapter(), target, user, password);
 	}
 
+	/**
+	 * Gets the system context.
+	 *
+	 * @param target the target
+	 * @param user the user
+	 * @return the system context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	@Override
 	public NickiContext getSystemContext(Target target, DynamicObject user) throws InvalidPrincipalException {
 		return new LdapSystemContext( getAdapter(), target, user);
 	}
 
+	/**
+	 * Gets the adapter.
+	 *
+	 * @return the adapter
+	 */
 	@Override
 	public DynamicObjectAdapter getAdapter() {
 		return ADAPTER;

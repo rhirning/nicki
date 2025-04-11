@@ -39,15 +39,46 @@ import org.mgnl.nicki.template.handler.TemplateHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BasicTemplateStreamSource.
+ */
 @Slf4j
 public class BasicTemplateStreamSource {
-	protected static enum TYPE {PDF, XLS, XHTML, STRING};
+	
+	/**
+	 * The Enum TYPE.
+	 */
+	protected static enum TYPE {
+/** The pdf. */
+PDF, 
+ /** The xls. */
+ XLS, 
+ /** The xhtml. */
+ XHTML, 
+ /** The string. */
+ STRING};
 
+	/** The template. */
 	Template template;
+	
+	/** The params. */
 	Map<String, Object> params;
+	
+	/** The template path. */
 	private String templatePath;
+	
+	/** The handler. */
 	private TemplateHandler handler;
 	
+	/**
+	 * Instantiates a new basic template stream source.
+	 *
+	 * @param template the template
+	 * @param context the context
+	 * @param params the params
+	 * @param type the type
+	 */
 	public BasicTemplateStreamSource(Template template, NickiContext context, Map<String, Object> params, TYPE type) {
 		this.template = template;
 		this.params = params;
@@ -71,18 +102,38 @@ public class BasicTemplateStreamSource {
 		handler.setParams(params);
 	}
 
+	/**
+	 * Gets the data model.
+	 *
+	 * @return the data model
+	 */
 	public Map<String, Object> getDataModel() {
 		return handler.getDataModel();
 	}
 
+	/**
+	 * Gets the handler.
+	 *
+	 * @return the handler
+	 */
 	public TemplateHandler getHandler() {
 		return handler;
 	}
 
+	/**
+	 * Gets the template path.
+	 *
+	 * @return the template path
+	 */
 	public String getTemplatePath() {
 		return templatePath;
 	}
 	
+	/**
+	 * Gets the string stream.
+	 *
+	 * @return the string stream
+	 */
 	public InputStream getStringStream() {
 		try {
 			return TemplateEngine.getInstance().executeTemplate(getTemplatePath(), getDataModel(),
@@ -94,6 +145,11 @@ public class BasicTemplateStreamSource {
 		return null;
 	}
 
+	/**
+	 * Gets the pdf stream 2.
+	 *
+	 * @return the pdf stream 2
+	 */
 	public InputStream getPdfStream2() {
 		try {
 			return TemplateEngine.getInstance().executeTemplateAsPdf2(getTemplatePath(), getDataModel());
@@ -104,6 +160,11 @@ public class BasicTemplateStreamSource {
 		return null;
 	}
 
+	/**
+	 * Gets the xlsx stream.
+	 *
+	 * @return the xlsx stream
+	 */
 	public InputStream getXlsxStream() {
 		try {
 			return TemplateEngine.getInstance().executeTemplateAsXlsx(template, getTemplatePath(), getDataModel());
@@ -114,6 +175,11 @@ public class BasicTemplateStreamSource {
 		return null;
 	}
 
+	/**
+	 * Gets the xls stream.
+	 *
+	 * @return the xls stream
+	 */
 	@Deprecated
 	public InputStream getXlsStream() {
 		try {
@@ -125,6 +191,11 @@ public class BasicTemplateStreamSource {
 		return null;
 	}
 	
+	/**
+	 * Gets the cs V stream.
+	 *
+	 * @return the cs V stream
+	 */
 	public InputStream getCsVStream() {
 		try {
 			return convertStream(TemplateEngine.getInstance().executeTemplateAsCsv(getTemplatePath(), getDataModel()),
@@ -136,6 +207,11 @@ public class BasicTemplateStreamSource {
 		return null;
 	}
 	
+	/**
+	 * Gets the cs V stream 2.
+	 *
+	 * @return the cs V stream 2
+	 */
 	public InputStream getCsVStream2() {
 		try {
 			return convertStream(TemplateEngine.getInstance().executeTemplateAsCsv2(getTemplatePath(), getDataModel()),
@@ -147,15 +223,34 @@ public class BasicTemplateStreamSource {
 		return null;
 	}
 
+	/**
+	 * Gets the template.
+	 *
+	 * @return the template
+	 */
 	public Template getTemplate() {
 		return template;
 	}
 
+	/**
+	 * Gets the params.
+	 *
+	 * @return the params
+	 */
 	public Map<String, Object> getParams() {
 		return params;
 	}
 	
 
+	/**
+	 * Convert stream.
+	 *
+	 * @param inputStream the input stream
+	 * @param charsetIn the charset in
+	 * @param charsetOut the charset out
+	 * @return the input stream
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public InputStream convertStream(InputStream inputStream, Charset charsetIn, Charset charsetOut) throws IOException {
 	    PipedOutputStream pos = new PipedOutputStream();
 	    PipedInputStream pis = new PipedInputStream(pos);

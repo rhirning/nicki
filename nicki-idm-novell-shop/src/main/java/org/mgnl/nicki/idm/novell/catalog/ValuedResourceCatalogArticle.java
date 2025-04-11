@@ -37,28 +37,57 @@ import org.mgnl.nicki.shop.base.objects.CatalogValueProvider;
 import org.mgnl.nicki.shop.base.objects.MultipleInstancesCatalogArticle;
 import org.mgnl.nicki.shop.base.objects.XmlValueProvider;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ValuedResourceCatalogArticle.
+ */
 @DynamicObject
 @ObjectClass("nickiValuedResourceArticle")
 public class ValuedResourceCatalogArticle extends ResourceCatalogArticle implements MultipleInstancesCatalogArticle {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -7208705030668378943L;
+	
+	/** The Constant ATTRIBUTE_REQUEST_RESOURCE. */
 	public static final String ATTRIBUTE_REQUEST_RESOURCE = "requestResource";
+	
+	/** The provider. */
 	private CatalogValueProvider provider;
 
+	/**
+	 * Gets the provider data.
+	 *
+	 * @return the provider data
+	 */
 	@DynamicAttribute(externalName="nickiProviderData")
 	public String getProviderData() {
 		return getAttribute("providerData");
 	}
 
+	/**
+	 * Checks if is multiple.
+	 *
+	 * @return true, if is multiple
+	 */
 	public boolean isMultiple() {
 		return true;
 	}
 
+	/**
+	 * Gets the provider.
+	 *
+	 * @return the provider
+	 */
 	@DynamicAttribute(externalName="nickiProvider")
 	public String getProvider() {
 		return getAttribute("provider");
 	}
 
+	/**
+	 * Gets the catalog value provider.
+	 *
+	 * @return the catalog value provider
+	 */
 	public CatalogValueProvider getCatalogValueProvider() {
 		if (provider == null) {
 			try {
@@ -73,6 +102,12 @@ public class ValuedResourceCatalogArticle extends ResourceCatalogArticle impleme
 		return provider;
 	}
 	
+	/**
+	 * Gets the inventory articles.
+	 *
+	 * @param person the person
+	 * @return the inventory articles
+	 */
 	@Override
 	public List<InventoryArticle> getInventoryArticles(Person person) {
 		List<InventoryArticle> inventoryArticles = new ArrayList<InventoryArticle>();
@@ -87,6 +122,12 @@ public class ValuedResourceCatalogArticle extends ResourceCatalogArticle impleme
 		return inventoryArticles;
 	}
 
+	/**
+	 * Checks for article.
+	 *
+	 * @param person the person
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean hasArticle(Person person) {
 		for (Resource resource : ((IdmPerson)person).getResources()) {
@@ -98,6 +139,11 @@ public class ValuedResourceCatalogArticle extends ResourceCatalogArticle impleme
 	}
 
 	
+	/**
+	 * Gets the request resource.
+	 *
+	 * @return the request resource
+	 */
 	@DynamicReferenceAttribute(externalName="nickiRequestResourceRef", foreignKey=Resource.class, reference=Resource.class,
 			baseProperty="nicki.resources.basedn")
 	public Resource getRequestResource() {

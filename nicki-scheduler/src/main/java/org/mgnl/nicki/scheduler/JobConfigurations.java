@@ -26,7 +26,13 @@ import java.util.List;
 
 import lombok.Data;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JobConfigurations.
+ */
 @Data
 public class JobConfigurations {
+	
+	/** The job config. */
 	private List<JobConfig> jobConfig;
 }

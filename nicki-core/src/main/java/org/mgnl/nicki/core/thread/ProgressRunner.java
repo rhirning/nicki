@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.thread;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-vaadin-base
@@ -21,13 +22,33 @@ package org.mgnl.nicki.core.thread;
  * #L%
  */
 
+/**
+ * The Class ProgressRunner.
+ */
 public abstract class ProgressRunner extends Thread implements Runnable {
+	
+	/** The title. */
 	private String title;
+	
+	/** The count. */
 	private int count;
+	
+	/** The current. */
 	private int current;
+	
+	/** The details. */
 	private String details;
+	
+	/** The progress. */
 	private NickiProgress progress;
 
+	/**
+	 * Instantiates a new progress runner.
+	 *
+	 * @param progress the progress
+	 * @param title the title
+	 * @param count the count
+	 */
 	public ProgressRunner(NickiProgress progress, String title, int count) {
 		super();
 		this.title = title;
@@ -35,11 +56,19 @@ public abstract class ProgressRunner extends Thread implements Runnable {
 		this.progress = progress;
 	}
 
+	/**
+	 * Gets the title.
+	 *
+	 * @return the title
+	 */
 	public String getTitle() {
 		return this.title;
 	}
 
 
+    /**
+     * Run.
+     */
     @Override
     public void run() {
     	doWork();
@@ -52,30 +81,69 @@ public abstract class ProgressRunner extends Thread implements Runnable {
         progress.finish();
     }
 
+	/**
+	 * Do work.
+	 */
 	public abstract void doWork();
 
+	/**
+	 * Progressed.
+	 *
+	 * @param newCurrent the new current
+	 * @param newDetails the new details
+	 */
 	public abstract void progressed(int newCurrent, String newDetails);
 
+	/**
+	 * Gets the count.
+	 *
+	 * @return the count
+	 */
 	public int getCount() {
 		return count;
 	}
 
+	/**
+	 * Gets the current.
+	 *
+	 * @return the current
+	 */
 	public int getCurrent() {
 		return current;
 	}
 
+	/**
+	 * Sets the current.
+	 *
+	 * @param current the new current
+	 */
 	public void setCurrent(int current) {
 		this.current = current;
 	}
 
+	/**
+	 * Gets the details.
+	 *
+	 * @return the details
+	 */
 	public String getDetails() {
 		return details;
 	}
 
+	/**
+	 * Sets the details.
+	 *
+	 * @param details the new details
+	 */
 	public void setDetails(String details) {
 		this.details = details;
 	}
 
+	/**
+	 * Gets the progress.
+	 *
+	 * @return the progress
+	 */
 	public NickiProgress getProgress() {
 		return progress;
 	}

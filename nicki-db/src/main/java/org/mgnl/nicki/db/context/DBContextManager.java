@@ -35,24 +35,55 @@ import org.mgnl.nicki.db.profile.JndiDBProfile;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DBContextManager.
+ */
 @Slf4j
 public class DBContextManager {
 
+	/** The Constant PROPERTY_CONTEXTS. */
 	private static final String PROPERTY_CONTEXTS = "nicki.db.contexts";
+	
+	/** The Constant PROPERTY_CONTEXT_BASE. */
 	private static final String PROPERTY_CONTEXT_BASE = "nicki.db.context";
+	
+	/** The Constant PROPERTY_CONTEXT_CLASS_NAME. */
 	private static final String PROPERTY_CONTEXT_CLASS_NAME = "contextClassName";
+	
+	/** The Constant PROPERTY_CONTEXT_DATA_SOURCE. */
 	private static final String PROPERTY_CONTEXT_DATA_SOURCE = "datasource";
+	
+	/** The Constant PROPERTY_CONTEXT_CONNECTION_TYPE. */
 	private static final String PROPERTY_CONTEXT_CONNECTION_TYPE = "type";
+	
+	/** The Constant PROPERTY_CONTEXT_SCHEMA. */
 	private static final String PROPERTY_CONTEXT_SCHEMA = "schema";
+	
+	/** The Constant PROPERTY_CONTEXT_AUTO_COMMIT. */
 	private static final String PROPERTY_CONTEXT_AUTO_COMMIT = "autocommit";
+	
+	/** The Constant SEPARATOR. */
 	private static final String SEPARATOR = ",";
 	
 	
+	/** The instance. */
 	private static DBContextManager instance;
+	
+	/** The context class names. */
 	private Map<String, String> contextClassNames = new HashMap<>();
+	
+	/** The schemas. */
 	private Map<String, String> schemas = new HashMap<>();
+	
+	/** The profiles. */
 	private Map<String, DBProfile> profiles = new HashMap<>();
 
+	/**
+	 * Gets the single instance of DBContextManager.
+	 *
+	 * @return single instance of DBContextManager
+	 */
 	public synchronized static DBContextManager getInstance() {
 		if (instance == null) {
 			instance = new DBContextManager();
@@ -61,6 +92,9 @@ public class DBContextManager {
 		return instance;
 	}
 	
+	/**
+	 * Inits the.
+	 */
 	public void init() {
 		contextClassNames.clear();
 		schemas.clear();
@@ -82,6 +116,13 @@ public class DBContextManager {
 		}
 	}
 
+	/**
+	 * Creates the profile.
+	 *
+	 * @param contextName the context name
+	 * @return the DB profile
+	 * @throws InvalidConfigurationException the invalid configuration exception
+	 */
 	private DBProfile createProfile(String contextName) throws InvalidConfigurationException {
 		String contextBase = PROPERTY_CONTEXT_BASE + "." + contextName + ".";
 		String type  = Config.getString(contextBase + PROPERTY_CONTEXT_CONNECTION_TYPE);
@@ -96,10 +137,22 @@ public class DBContextManager {
 		}
 	}
 	
+	/**
+	 * Gets the context.
+	 *
+	 * @param name the name
+	 * @return the context
+	 */
 	public static DBContext getContext(String name) {
 		return getInstance().loadContext(name);
 	}
 	
+	/**
+	 * Load context.
+	 *
+	 * @param name the name
+	 * @return the DB context
+	 */
 	private DBContext loadContext(String name) {
 		try {
 			DBContext context = Classes.newInstance(contextClassNames.get(name));
@@ -117,6 +170,13 @@ public class DBContextManager {
 		return null;
 	}
 	
+	/**
+	 * Gets the profile.
+	 *
+	 * @param contextName the context name
+	 * @return the profile
+	 * @throws InvalidConfigurationException the invalid configuration exception
+	 */
 	private DBProfile getProfile(String contextName) throws InvalidConfigurationException {
 		if (!this.profiles.containsKey(contextName)) {
 			DBProfile profile = createProfile(contextName);

@@ -28,6 +28,7 @@ import javax.security.auth.kerberos.KerberosPrincipal;
 
 import org.ietf.jgss.GSSCredential;
 
+// TODO: Auto-generated Javadoc
 /**
  * This class encapsulates a KerberosPrincipal.
  * 
@@ -44,10 +45,13 @@ import org.ietf.jgss.GSSCredential;
  */
 public final class SpnegoPrincipal implements Principal {
 
+    /** The kerberos principal. */
     private final transient KerberosPrincipal kerberosPrincipal;
     
+    /** The credentials. */
     private final transient byte[] credentials;
     
+    /** The delegated cred. */
     private final transient GSSCredential delegatedCred;
     
     /**
@@ -78,9 +82,10 @@ public final class SpnegoPrincipal implements Principal {
     /**
      * Constructs a SpnegoPrincipal from the provided String input 
      * and name type input.
-     * 
+     *
      * @param name the principal name
      * @param nameType the name type of the principal
+     * @param credentials the credentials
      * @param delegCred this principal's delegated credential (if any)
      */
     public SpnegoPrincipal(final String name, final int nameType, final byte[] credentials
@@ -109,6 +114,11 @@ public final class SpnegoPrincipal implements Principal {
         return this.delegatedCred;
     }
     
+    /**
+     * Gets the name.
+     *
+     * @return the name
+     */
     @Override
     public String getName() {
         return this.kerberosPrincipal.getName();
@@ -132,6 +142,11 @@ public final class SpnegoPrincipal implements Principal {
         return this.kerberosPrincipal.getRealm();
     }
     
+    /**
+     * Hash code.
+     *
+     * @return the int
+     */
     @Override
     public int hashCode() {
         int result = 31;
@@ -141,6 +156,12 @@ public final class SpnegoPrincipal implements Principal {
         return result;
     }
     
+    /**
+     * Equals.
+     *
+     * @param object the object
+     * @return true, if successful
+     */
     @Override
     public boolean equals(final Object object) {
         if (object == this) {
@@ -161,6 +182,11 @@ public final class SpnegoPrincipal implements Principal {
         return this.hashCode() == obj.hashCode();
     }
     
+    /**
+     * To string.
+     *
+     * @return the string
+     */
     @Override
     public String toString() {
         return this.kerberosPrincipal.toString();

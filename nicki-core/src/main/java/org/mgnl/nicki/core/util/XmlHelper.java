@@ -48,23 +48,43 @@ import org.w3c.dom.ls.DOMImplementationLS;
 import org.w3c.dom.ls.LSSerializer;
 import org.xml.sax.SAXException;
 
+// TODO: Auto-generated Javadoc
 /**
+ * The Class XmlHelper.
  *
  * @author cna
  */
 public class XmlHelper implements java.io.Serializable {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -766315560688135875L;
 
+	/**
+	 * Gets the doc builder.
+	 *
+	 * @return the doc builder
+	 * @throws ParserConfigurationException the parser configuration exception
+	 */
 	private static DocumentBuilder getDocBuilder() throws ParserConfigurationException {
 		
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		return dbf.newDocumentBuilder();
 	}
 
+	/**
+	 * Gets the xpath.
+	 *
+	 * @return the xpath
+	 */
 	private static XPath getXpath() {
 		return XPathFactory.newInstance().newXPath();
 	}
 
+	/**
+	 * Gets the new document.
+	 *
+	 * @return the new document
+	 */
 	public static Document getNewDocument() {
 		try {
 			return getDocBuilder().newDocument();
@@ -73,6 +93,15 @@ public class XmlHelper implements java.io.Serializable {
 		}
 	}
 
+	/**
+	 * Select nodes.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param ctx the ctx
+	 * @param xpath the xpath
+	 * @return the list
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends Node> List<T> selectNodes(Class<T> clazz, Node ctx, String xpath) {
 		//TODO XPATH parsen und $ELEM_* && $ATTR_* ersetzen durch Konstanten
@@ -96,6 +125,15 @@ public class XmlHelper implements java.io.Serializable {
 		return list;
 	}
 
+	/**
+	 * Select node.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param ctx the ctx
+	 * @param xpath the xpath
+	 * @return the t
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T extends Node> T selectNode(Class<T> clazz, Node ctx, String xpath) {
 		Object node = null;
@@ -114,6 +152,15 @@ public class XmlHelper implements java.io.Serializable {
 		}
 	}
 	
+	/**
+	 * Gets the document from classpath.
+	 *
+	 * @param refClass the ref class
+	 * @param classLoaderPath the class loader path
+	 * @return the document from classpath
+	 * @throws JDOMException the JDOM exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	static public Document getDocumentFromClasspath(Class<?> refClass, String classLoaderPath) throws JDOMException, IOException {
 		Document document = null;
 		try {
@@ -127,6 +174,13 @@ public class XmlHelper implements java.io.Serializable {
 		return document;
 	}
 
+	/**
+	 * Gets the document from xml.
+	 *
+	 * @param xml the xml
+	 * @return the document from xml
+	 * @throws SAXException the SAX exception
+	 */
 	public static Document getDocumentFromXml(String xml) throws SAXException {
 		if (null == xml) {
 			xml = "";
@@ -146,6 +200,16 @@ public class XmlHelper implements java.io.Serializable {
 
 	}
 
+	/**
+	 * Gets the document from url.
+	 *
+	 * @param url the url
+	 * @return the document from url
+	 * @throws SAXException the SAX exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws UnsupportedOperationException the unsupported operation exception
+	 * @throws ParserConfigurationException the parser configuration exception
+	 */
 	public static Document getDocumentFromUrl(String url) throws SAXException, IOException, UnsupportedOperationException, ParserConfigurationException {
 		if (StringUtils.isBlank(url)) {
 			return null;
@@ -166,6 +230,13 @@ public class XmlHelper implements java.io.Serializable {
 		}
 	}
 
+	/**
+	 * Gets the xml.
+	 *
+	 * @param doc the doc
+	 * @param node the node
+	 * @return the xml
+	 */
 	private static String getXml(Document doc, Node node) {
 		DOMImplementationLS impl = (DOMImplementationLS) doc.getImplementation();
 		LSSerializer serializer = impl.createLSSerializer();
@@ -173,10 +244,22 @@ public class XmlHelper implements java.io.Serializable {
 		return StringUtils.substringAfter(xml, ">");
 	}
 
+	/**
+	 * Gets the xml.
+	 *
+	 * @param node the node
+	 * @return the xml
+	 */
 	public String getXml(Node node) {
 		return getXml(node.getOwnerDocument(), node);
 	}
 
+	/**
+	 * Gets the xml.
+	 *
+	 * @param doc the doc
+	 * @return the xml
+	 */
 	public static String getXml(Document doc) {
 		return getXml(doc, doc.getDocumentElement());
 	}

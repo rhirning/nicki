@@ -32,9 +32,22 @@ import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 import org.mgnl.nicki.shop.base.objects.Provider;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RolesProvider.
+ */
 @SuppressWarnings("serial")
 public class RolesProvider implements Provider, Serializable {
+	
+	/** The page. */
 	CatalogPage page = null;
+	
+	/**
+	 * Gets the articles.
+	 *
+	 * @param catalogPage the catalog page
+	 * @return the articles
+	 */
 	public List<CatalogArticle> getArticles(CatalogPage catalogPage) {
 		List<CatalogArticle> articles = new ArrayList<CatalogArticle>();
 		String filter = page.getAttribute("providerData");
@@ -48,6 +61,12 @@ public class RolesProvider implements Provider, Serializable {
 		return articles;
 	}
 
+	/**
+	 * Gets the article.
+	 *
+	 * @param key the key
+	 * @return the article
+	 */
 	public CatalogArticle getArticle(String key) {
 		Role role = this.page.getContext().loadObject(Role.class, key);
 		if (role != null) {
@@ -56,14 +75,31 @@ public class RolesProvider implements Provider, Serializable {
 		return null;
 	}
 	
+	/**
+	 * Gets the catalog article.
+	 *
+	 * @param role the role
+	 * @param catalogPage the catalog page
+	 * @return the catalog article
+	 */
 	public CatalogArticle getCatalogArticle(Role role, CatalogPage catalogPage) {
 		return new VirtualRoleCatalogArticle(role, catalogPage);
 	}
 
+	/**
+	 * Inits the.
+	 *
+	 * @param catalogPage the catalog page
+	 */
 	public void init(CatalogPage catalogPage) {
 		this.page = catalogPage;
 	}
 
+	/**
+	 * Checks if is read only.
+	 *
+	 * @return true, if is read only
+	 */
 	@Override
 	public boolean isReadOnly() {
 		return false;

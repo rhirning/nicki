@@ -41,6 +41,7 @@ import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
 /**
  * Class that applies/enforces Nicki Config init params.
  * 
@@ -70,12 +71,16 @@ import lombok.extern.slf4j.Slf4j;
  *
  */
 @Slf4j
-public final class SpnegoFilterConfig { // NOPMD
+public final class SpnegoFilterConfig { 
+ /** The Constant PATH_PREFIX. */
+ // NOPMD
 	public static final String PATH_PREFIX = "/C:";
         
+    /** The Constant MISSING_PROPERTY. */
     private static final String MISSING_PROPERTY = 
         "Servlet Filter init param(s) Nicki Config missing: ";
     
+    /** The instance. */
     private static transient SpnegoFilterConfig instance = null;
 
     /** true if Basic auth should be offered. */
@@ -113,6 +118,9 @@ public final class SpnegoFilterConfig { // NOPMD
     
     /**
      * Class is a Singleton. Use the static getInstance() method.
+     *
+     * @throws FileNotFoundException the file not found exception
+     * @throws URISyntaxException the URI syntax exception
      */
     private SpnegoFilterConfig() throws FileNotFoundException
         , URISyntaxException {
@@ -199,14 +207,32 @@ public final class SpnegoFilterConfig { // NOPMD
         log.debug(Constants.EXCLUDE_DIRS + "=" + getInitParameter(Constants.EXCLUDE_DIRS));
     }
 
+	/**
+	 * Gets the inits the parameter.
+	 *
+	 * @param key the key
+	 * @return the inits the parameter
+	 */
 	private String getInitParameter(String key) {
 		return Config.getString(key);
 	}
 
+	/**
+	 * Gets the inits the parameter.
+	 *
+	 * @param key the key
+	 * @param defaultValue the default value
+	 * @return the inits the parameter
+	 */
 	private String getInitParameter(String key, String defaultValue) {
 		return Config.getString(key, defaultValue);
 	}
 
+	/**
+	 * Do client module.
+	 *
+	 * @param moduleName the module name
+	 */
 	private void doClientModule(final String moduleName) {
         
         assert moduleExists("client", moduleName);
@@ -250,12 +276,12 @@ public final class SpnegoFilterConfig { // NOPMD
      *      required
      *      storeKey=true
      *      useKeyTab=true
-     *      keyTab="file:///C:/my_path/my_file.keytab"
+     *      keyTab="file:C:/my_path/my_file.keytab"
      *      principal="my_preauth_account";
      * };
      * </pre>
-     * 
-     * @param moduleName
+     *
+     * @param moduleName the module name
      */
     private void doServerModule(final String moduleName) {
         
@@ -358,8 +384,7 @@ public final class SpnegoFilterConfig { // NOPMD
     
     /**
      * Returns the instance of the servlet's config parameters.
-     * 
-     * @param config FilterConfi from servlet's init method
+     *
      * @return the instance of that represent the init params
      * @throws FileNotFoundException if login conf file not found
      * @throws URISyntaxException if path to login conf is bad
@@ -412,6 +437,14 @@ public final class SpnegoFilterConfig { // NOPMD
         return this.allowUnsecure;
     }
     
+    /**
+     * Login conf exists.
+     *
+     * @param loginconf the loginconf
+     * @return true, if successful
+     * @throws FileNotFoundException the file not found exception
+     * @throws URISyntaxException the URI syntax exception
+     */
     private boolean loginConfExists(final String loginconf) 
         throws FileNotFoundException, URISyntaxException {
 
@@ -428,6 +461,13 @@ public final class SpnegoFilterConfig { // NOPMD
         return true;
     }
     
+    /**
+     * Module exists.
+     *
+     * @param side the side
+     * @param moduleName the module name
+     * @return true, if successful
+     */
     private boolean moduleExists(final String side, final String moduleName) {
         
         // confirm that runtime loaded the login file
@@ -557,6 +597,12 @@ public final class SpnegoFilterConfig { // NOPMD
         return this.canUseKeyTab && this.username.isEmpty() && this.password.isEmpty();
     }
 
+    /**
+     * Clean.
+     *
+     * @param path the path
+     * @return the string
+     */
     private static String clean(final String path) {
         
         // assert - more than one char (we do not support ROOT) and no wild card
@@ -577,6 +623,12 @@ public final class SpnegoFilterConfig { // NOPMD
         return tmp.substring(0, tmp.lastIndexOf('/') + 1);
     }
     
+    /**
+     * Split.
+     *
+     * @param dirs the dirs
+     * @return the list
+     */
     private static List<String> split(final String dirs) {
         final List<String> list = new ArrayList<String>();
         
@@ -587,6 +639,11 @@ public final class SpnegoFilterConfig { // NOPMD
         return list;
     }
     
+    /**
+     * To string.
+     *
+     * @return the string
+     */
     @Override
     public String toString() {
         final StringBuilder buff = new StringBuilder();

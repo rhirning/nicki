@@ -36,19 +36,27 @@ import org.mgnl.nicki.core.helper.JsonHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
 /**
- * Cache with topic and EntryFactory
- * 
- * 
- * @author rhirning
+ * Cache with topic and EntryFactory.
  *
+ * @author rhirning
  */
 @Slf4j
 public class I18nCache {
+	
+	/** The instance. */
 	private static I18nCache instance = new I18nCache();
+	
+	/** The caches. */
 	private Map<String, TopicCacheConfiguration> caches = new HashMap<>();
+	
+	/** The cache manager. */
 	private CacheManager cacheManager;
 
+	/**
+	 * Instantiates a new i 18 n cache.
+	 */
 	public I18nCache() {
 		cacheManager = CacheManagerBuilder.newCacheManagerBuilder().build();
 		String configFile = Config.getString("nicki.i18n.cache.config");
@@ -67,6 +75,13 @@ public class I18nCache {
 		}
 	}
 
+	/**
+	 * Gets the translated text.
+	 *
+	 * @param topic the topic
+	 * @param key the key
+	 * @return the translated text
+	 */
 	private String getTranslatedText(String topic, String key) {
 		if (StringUtils.isNotBlank(topic) && caches.containsKey(topic)) {
 			if (!cacheManager.getCache(topic, String.class, String.class).containsKey(key)) {
@@ -80,6 +95,14 @@ public class I18nCache {
 		return key;
 	}
 
+	/**
+	 * Gets the translated text.
+	 *
+	 * @param topic the topic
+	 * @param key the key
+	 * @param data the data
+	 * @return the translated text
+	 */
 	private String getTranslatedText(String topic, String key, String ... data) {
 		if (StringUtils.isNotBlank(topic) && caches.containsKey(topic)) {
 			if (!cacheManager.getCache(topic, String.class, String.class).containsKey(key)) {
@@ -93,11 +116,26 @@ public class I18nCache {
 		return key;
 	}
 	
+	/**
+	 * Gets the text.
+	 *
+	 * @param topic the topic
+	 * @param key the key
+	 * @return the text
+	 */
 	public static String getText(String topic, String key) {
 		return instance.getTranslatedText(topic, key);
 	}
 
 
+	/**
+	 * Gets the text.
+	 *
+	 * @param topic the topic
+	 * @param key the key
+	 * @param data the data
+	 * @return the text
+	 */
 	public static String getText(String topic, String key, String ... data) {
 		return instance.getTranslatedText(topic, key, data);
 	}

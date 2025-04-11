@@ -27,15 +27,35 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MinRule.
+ */
 public class MinRule extends Rule {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The min value. */
 	private Long minValue;
 
+	/**
+	 * Instantiates a new min rule.
+	 *
+	 * @param parameter the parameter
+	 */
 	public MinRule(String parameter) {
 		setParameter(parameter);
 		minValue = getLong(parameter);
 	}
 
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		if (minValue != null &&  StringUtils.isNotBlank(value)) {
@@ -43,10 +63,22 @@ public class MinRule extends Rule {
 		}
 		return true;
 	}
+	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".min", getParameter());
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "min:" + minValue;
 	}

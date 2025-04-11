@@ -33,12 +33,24 @@ import org.mgnl.nicki.db.context.DBContext;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OracleContext.
+ */
 @Slf4j
 public class OracleContext
 		extends BaseDBContext
 		implements DBContext {
 
 
+	/**
+	 * Gets the date value.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @param attribute the attribute
+	 * @return the date value
+	 */
 	@Override
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
 		if (attribute.now()) {
@@ -55,6 +67,12 @@ public class OracleContext
 		return null;
 	}
 
+	/**
+	 * To timestamp.
+	 *
+	 * @param date the date
+	 * @return the string
+	 */
 	@Override
 	public String toTimestamp(Date date) {
 		if (date != null) {

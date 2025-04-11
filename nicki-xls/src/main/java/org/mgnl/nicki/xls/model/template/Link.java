@@ -35,6 +35,7 @@ import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.XmlValue;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for link complex type.
  * 
@@ -58,8 +59,11 @@ import jakarta.xml.bind.annotation.XmlValue;
 })
 public class Link {
 
+    /** The value. */
     @XmlValue
     protected String value;
+    
+    /** The reference. */
     @XmlAttribute(name = "reference")
     @XmlSchemaType(name = "anySimpleType")
     protected String reference;

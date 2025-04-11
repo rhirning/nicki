@@ -74,21 +74,46 @@ import org.mgnl.nicki.ldap.query.SubObjectsLoaderQueryHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LdapContext.
+ */
 @Slf4j
 public class LdapContext extends BasicContext implements NickiContext {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -3079627211615613041L;
 
+	/** The object factory. */
 	private TargetObjectFactory objectFactory;
+	
+	/** The tls. */
 	private boolean tls;
+	
+	/** The ignore referral. */
 	private boolean ignoreReferral;
 
+	/**
+	 * Instantiates a new ldap context.
+	 *
+	 * @param adapter the adapter
+	 * @param target the target
+	 * @param readonly the readonly
+	 */
 	public LdapContext(DynamicObjectAdapter adapter, Target target, READONLY readonly) {
 		super(adapter, target, readonly);
 		tls = getTarget().getBoolean("securityTLS");
 	}
 	
 	
+	/**
+	 * Gets the ldap context.
+	 *
+	 * @param name the name
+	 * @param password the password
+	 * @return the ldap context
+	 * @throws NamingException the naming exception
+	 */
 	protected NickiLdapContext getLdapContext(String name, String password) throws NamingException {
 		Hashtable<String, String> env = new Hashtable<String, String>();
 		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
@@ -117,6 +142,12 @@ public class LdapContext extends BasicContext implements NickiContext {
 		return new NickiLdapContext(env, null);
 	}
 
+	/**
+	 * Gets the ldap context.
+	 *
+	 * @return the ldap context
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	public NickiLdapContext getLdapContext() throws DynamicObjectException {
 		try {
 			return getLdapContext(getPrincipal().getName(), getPrincipal().getPassword());
@@ -125,6 +156,13 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	/**
+	 * Login.
+	 *
+	 * @param username the username
+	 * @param password the password
+	 * @return the dynamic object
+	 */
 	@Override
 	public DynamicObject login(String username, String password) {
 		log.debug("login: start for user " + username);
@@ -158,6 +196,13 @@ public class LdapContext extends BasicContext implements NickiContext {
 		return null;
 	}
 
+	/**
+	 * Creates the object.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @return the dynamic object
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public DynamicObject createObject(DynamicObject dynamicObject)
 			throws DynamicObjectException {
@@ -190,11 +235,22 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	/**
+	 * Checks if is tls.
+	 *
+	 * @return true, if is tls
+	 */
 	private boolean isTls() {
 		return tls;
 	}
 
 
+	/**
+	 * Search.
+	 *
+	 * @param queryHandler the query handler
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public void search(QueryHandler queryHandler) throws DynamicObjectException {
 		StartTlsResponse tls = null;
@@ -262,6 +318,12 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	/**
+	 * Search.
+	 *
+	 * @param queryHandler the query handler
+	 * @throws NamingException the naming exception
+	 */
 	public void search(BeanQueryHandler queryHandler) throws NamingException {
 		StartTlsResponse tls = null;
 		NamingEnumeration<SearchResult> results = null;
@@ -295,6 +357,12 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	/**
+	 * Update object.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public void updateObject(DynamicObject dynamicObject) throws DynamicObjectException {
 		if (this.isReadonly()) {
@@ -316,6 +384,13 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	/**
+	 * Update object.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param attributeNames the attribute names
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public void updateObject(DynamicObject dynamicObject, String[] attributeNames) throws DynamicObjectException {
 		if (this.isReadonly()) {
@@ -338,12 +413,25 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	/**
+	 * Gets the details.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param createOnly the create only
+	 * @return the details
+	 */
 	private String getDetails(DynamicObject dynamicObject, CREATEONLY createOnly) {
 		Attributes attributes = dynamicObject.getModel().getLdapAttributes(dynamicObject, createOnly);
 		return attributes.toString();
 	}
 
 
+	/**
+	 * Delete object.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public void deleteObject(DynamicObject dynamicObject)
 			throws DynamicObjectException {
@@ -366,6 +454,14 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	/**
+	 * Move object.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param newPath the new path
+	 * @return the dynamic object
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public DynamicObject moveObject(DynamicObject dynamicObject, String newPath)
 			throws DynamicObjectException {
@@ -391,6 +487,14 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	/**
+	 * Rename object.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param newName the new name
+	 * @return the dynamic object
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public DynamicObject renameObject(DynamicObject dynamicObject,
 			String newName) throws DynamicObjectException {
@@ -402,6 +506,12 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 
+	/**
+	 * Load object.
+	 *
+	 * @param path the path
+	 * @return the dynamic object
+	 */
 	@Override
 	public DynamicObject loadObject(String path) {
 		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler(this, path);
@@ -414,6 +524,13 @@ public class LdapContext extends BasicContext implements NickiContext {
 		return null;
 	}
 	
+	/**
+	 * Load objects.
+	 *
+	 * @param baseDn the base dn
+	 * @param filter the filter
+	 * @return the list
+	 */
 	@Override
 	public List<DynamicObject> loadObjects(String baseDn, String filter) {
 		try {
@@ -426,6 +543,13 @@ public class LdapContext extends BasicContext implements NickiContext {
 		return null;
 	}
 
+	/**
+	 * Load child objects.
+	 *
+	 * @param parent the parent
+	 * @param filter the filter
+	 * @return the list
+	 */
 	@Override
 	public List<DynamicObject> loadChildObjects(String parent,
 			ChildFilter filter) {
@@ -453,6 +577,12 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	/**
+	 * Load reference objects.
+	 *
+	 * @param query the query
+	 * @return the list
+	 */
 	@Override
 	public List<DynamicObject> loadReferenceObjects(Query query) {
 		try {
@@ -464,6 +594,14 @@ public class LdapContext extends BasicContext implements NickiContext {
 		} 
 	}
 	
+	/**
+	 * Load object.
+	 *
+	 * @param <T> the generic type
+	 * @param classDefinition the class definition
+	 * @param path the path
+	 * @return the t
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public 	<T extends DynamicObject> T loadObject(Class<T> classDefinition, String path) {
@@ -477,12 +615,27 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	/**
+	 * Load object.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public void loadObject(DynamicObject dynamicObject) throws DynamicObjectException {
 		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler(dynamicObject);
 		search(handler);
 	}
 
+	/**
+	 * Load objects.
+	 *
+	 * @param <T> the generic type
+	 * @param classDefinition the class definition
+	 * @param baseDn the base dn
+	 * @param filter the filter
+	 * @return the list
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadObjects(Class<T> classDefinition, String baseDn, String filter) {
@@ -497,6 +650,15 @@ public class LdapContext extends BasicContext implements NickiContext {
 		} 
 	}
 
+	/**
+	 * Load child objects.
+	 *
+	 * @param <T> the generic type
+	 * @param classDefinition the class definition
+	 * @param parent the parent
+	 * @param filter the filter
+	 * @return the list
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadChildObjects(Class<T> classDefinition, String parent,	String filter) {
@@ -512,6 +674,15 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 	
 
+	/**
+	 * Load child object.
+	 *
+	 * @param <T> the generic type
+	 * @param class1 the class 1
+	 * @param parent the parent
+	 * @param namingValue the naming value
+	 * @return the t
+	 */
 	@Override
 	public <T extends DynamicObject> T loadChildObject(Class<T> class1, DynamicObject parent, String namingValue) {
 		try {
@@ -526,11 +697,21 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 
+	/**
+	 * Gets the object factory.
+	 *
+	 * @return the object factory
+	 */
 	@Override
 	public DynamicObjectFactory getObjectFactory() {
 		return getLdapObjectFactory();
 	}
 
+	/**
+	 * Gets the ldap object factory.
+	 *
+	 * @return the ldap object factory
+	 */
 	public TargetObjectFactory getLdapObjectFactory() {
 		if (objectFactory == null) {
 			objectFactory = new TargetObjectFactory(this, getTarget());
@@ -539,11 +720,28 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 
+	/**
+	 * Load child objects.
+	 *
+	 * @param <T> the generic type
+	 * @param class1 the class 1
+	 * @param parent the parent
+	 * @param filter the filter
+	 * @return the list
+	 */
 	@Override
 	public <T extends DynamicObject> List<T> loadChildObjects(Class<T> class1, DynamicObject parent, String filter) {
 		return loadChildObjects(class1, parent.getPath(), filter);
 	}
 
+	/**
+	 * Load attributes.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param requester the requester
+	 * @param attributes the attributes
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public void loadAttributes(DynamicObject dynamicObject, Class<?> requester, String[] attributes) throws DynamicObjectException {
 		try {
@@ -558,6 +756,14 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 
+	/**
+	 * Load reference objects.
+	 *
+	 * @param <T> the generic type
+	 * @param classDefinition the class definition
+	 * @param query the query
+	 * @return the list
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public <T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, Query query) {
@@ -571,6 +777,12 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 	}
 
+	/**
+	 * Checks if is exist.
+	 *
+	 * @param dn the dn
+	 * @return true, if is exist
+	 */
 	@Override
 	public boolean isExist(String dn) {
 		if (StringUtils.isEmpty(dn)) {
@@ -586,6 +798,14 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 
+	/**
+	 * Load reference objects.
+	 *
+	 * @param <T> the generic type
+	 * @param classDefinition the class definition
+	 * @param ref the ref
+	 * @return the list
+	 */
 	@Override
 	public <T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, ReferenceMethod ref) {
 		LdapQuery query = new LdapQuery(ref.getPath(), ref.getReference());
@@ -594,12 +814,24 @@ public class LdapContext extends BasicContext implements NickiContext {
 	}
 
 
+	/**
+	 * Gets the search handler.
+	 *
+	 * @param query the query
+	 * @return the search handler
+	 */
 	@Override
 	public SearchQueryHandler getSearchHandler(Query query) {
 		return new LdapSearchHandler(this, query);
 	}
 
 
+	/**
+	 * Gets the query.
+	 *
+	 * @param base the base
+	 * @return the query
+	 */
 	@Override
 	public Query getQuery(String base) {
 		return new LdapQuery(base);

@@ -54,6 +54,7 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.util.CellRangeAddress;
 
+// TODO: Auto-generated Javadoc
 /**
  * File for HSSF testing/examples
  *
@@ -65,6 +66,10 @@ public final class HSSFReadWrite {
 
 	/**
 	 * creates an {@link HSSFWorkbook} with the specified OS filename.
+	 *
+	 * @param filename the filename
+	 * @return the HSSF workbook
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private static HSSFWorkbook readFile(String filename) throws IOException {
 	    FileInputStream fis = new FileInputStream(filename);
@@ -78,6 +83,9 @@ public final class HSSFReadWrite {
 	/**
 	 * given a filename this outputs a sample sheet with just a set of
 	 * rows/cells.
+	 *
+	 * @param outputFilename the output filename
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	private static void testCreateSampleSheet(String outputFilename) throws IOException {
 		HSSFWorkbook wb = new HSSFWorkbook();
@@ -157,25 +165,27 @@ public final class HSSFReadWrite {
 	}
 
 	/**
-     * Method main
-     *
-     * Given 1 argument takes that as the filename, inputs it and dumps the
-     * cell values/types out to sys.out.<br/>
-     *
-     * given 2 arguments where the second argument is the word "write" and the
-     * first is the filename - writes out a sample (test) spreadsheet
-     * see {@link HSSFReadWrite#testCreateSampleSheet(String)}.<br/>
-     *
-     * given 2 arguments where the first is an input filename and the second
-     * an output filename (not write), attempts to fully read in the
-     * spreadsheet and fully write it out.<br/>
-     *
-     * given 3 arguments where the first is an input filename and the second an
-     * output filename (not write) and the third is "modify1", attempts to read in the
-     * spreadsheet, deletes rows 0-24, 74-99.  Changes cell at row 39, col 3 to
-     * "MODIFIED CELL" then writes it out.  Hence this is "modify test 1".  If you
-     * take the output from the write test, you'll have a valid scenario.
-     */
+	 * Method main
+	 * 
+	 * Given 1 argument takes that as the filename, inputs it and dumps the
+	 * cell values/types out to sys.out.<br/>
+	 * 
+	 * given 2 arguments where the second argument is the word "write" and the
+	 * first is the filename - writes out a sample (test) spreadsheet
+	 * see {@link HSSFReadWrite#testCreateSampleSheet(String)}.<br/>
+	 * 
+	 * given 2 arguments where the first is an input filename and the second
+	 * an output filename (not write), attempts to fully read in the
+	 * spreadsheet and fully write it out.<br/>
+	 * 
+	 * given 3 arguments where the first is an input filename and the second an
+	 * output filename (not write) and the third is "modify1", attempts to read in the
+	 * spreadsheet, deletes rows 0-24, 74-99.  Changes cell at row 39, col 3 to
+	 * "MODIFIED CELL" then writes it out.  Hence this is "modify test 1".  If you
+	 * take the output from the write test, you'll have a valid scenario.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		if (args.length < 1) {
 			System.err.println("At least one argument expected");

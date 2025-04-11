@@ -36,6 +36,7 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java-Klasse f�r list complex type.
  * 
@@ -63,10 +64,15 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class List {
 
+    /** The item. */
     @XmlElement(required = true)
     protected java.util.List<Item> item;
+    
+    /** The ordered. */
     @XmlAttribute(name = "ordered")
     protected Boolean ordered;
+    
+    /** The symbol. */
     @XmlAttribute(name = "symbol")
     protected String symbol;
 
@@ -89,8 +95,8 @@ public class List {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link Item }
-     * 
-     * 
+     *
+     * @return the item
      */
     public java.util.List<Item> getItem() {
         if (item == null) {

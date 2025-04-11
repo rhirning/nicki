@@ -35,6 +35,7 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for table-row complex type.
  * 
@@ -60,6 +61,7 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class TableRow {
 
+    /** The column. */
     @XmlElement(required = true)
     protected List<TableData> column;
 
@@ -82,8 +84,8 @@ public class TableRow {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link TableData }
-     * 
-     * 
+     *
+     * @return the column
      */
     public List<TableData> getColumn() {
         if (column == null) {

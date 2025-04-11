@@ -42,42 +42,96 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JNDIWrapper.
+ */
 public class JNDIWrapper implements DirContext {
 	
+	/** The attributes. */
 	private Attributes attributes = new BasicAttributes(true);
 
+	/**
+	 * Instantiates a new JNDI wrapper.
+	 */
 	public JNDIWrapper() {
 		super();
 	}
 
 	
+	/**
+	 * Bind.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @throws NamingException the naming exception
+	 */
 	public void bind(Name arg0, Object arg1, Attributes arg2)
 			throws NamingException {
 	}
 
 	
+	/**
+	 * Bind.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @throws NamingException the naming exception
+	 */
 	public void bind(String arg0, Object arg1, Attributes arg2)
 			throws NamingException {
 	}
 
 	
+	/**
+	 * Creates the subcontext.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @return the dir context
+	 * @throws NamingException the naming exception
+	 */
 	public DirContext createSubcontext(Name arg0, Attributes arg1)
 			throws NamingException {
 		return null;
 	}
 
 	
+	/**
+	 * Creates the subcontext.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @return the dir context
+	 * @throws NamingException the naming exception
+	 */
 	public DirContext createSubcontext(String arg0, Attributes arg1)
 			throws NamingException {
 		return null;
 	}
 
 	
+	/**
+	 * Gets the attributes.
+	 *
+	 * @param name the name
+	 * @return the attributes
+	 * @throws NamingException the naming exception
+	 */
 	public Attributes getAttributes(Name name) throws NamingException {
 		return getAttributes(name.toString());
 	}
 
 	
+	/**
+	 * Gets the attributes.
+	 *
+	 * @param name the name
+	 * @return the attributes
+	 * @throws NamingException the naming exception
+	 */
 	public Attributes getAttributes(String name) throws NamingException {
 		if (!name.equals("")) {
 			throw new NameNotFoundException();
@@ -86,6 +140,14 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Gets the attributes.
+	 *
+	 * @param name the name
+	 * @param ids the ids
+	 * @return the attributes
+	 * @throws NamingException the naming exception
+	 */
 	public Attributes getAttributes(String name, String[] ids)
 			throws NamingException {
 		if (!name.equals("")) {
@@ -103,24 +165,53 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Gets the attributes.
+	 *
+	 * @param name the name
+	 * @param ids the ids
+	 * @return the attributes
+	 * @throws NamingException the naming exception
+	 */
 	public Attributes getAttributes(Name name, String[] ids)
 			throws NamingException {
 		return getAttributes(name.toString(), ids);
 	}
 
 	
+	/**
+	 * Gets the schema.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the schema
+	 * @throws NamingException the naming exception
+	 */
 	public DirContext getSchema(Name arg0) throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * Gets the schema.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the schema
+	 * @throws NamingException the naming exception
+	 */
 	public DirContext getSchema(String arg0) throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * Gets the schema class definition.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the schema class definition
+	 * @throws NamingException the naming exception
+	 */
 	public DirContext getSchemaClassDefinition(Name arg0)
 			throws NamingException {
 
@@ -128,6 +219,13 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Gets the schema class definition.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the schema class definition
+	 * @throws NamingException the naming exception
+	 */
 	public DirContext getSchemaClassDefinition(String arg0)
 			throws NamingException {
 
@@ -135,6 +233,13 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Modify attributes.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @throws NamingException the naming exception
+	 */
 	public void modifyAttributes(Name arg0, ModificationItem[] arg1)
 			throws NamingException {
 
@@ -142,6 +247,13 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Modify attributes.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @throws NamingException the naming exception
+	 */
 	public void modifyAttributes(String arg0, ModificationItem[] arg1)
 			throws NamingException {
 
@@ -149,6 +261,14 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Modify attributes.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @throws NamingException the naming exception
+	 */
 	public void modifyAttributes(Name arg0, int arg1, Attributes arg2)
 			throws NamingException {
 
@@ -156,6 +276,14 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Modify attributes.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @throws NamingException the naming exception
+	 */
 	public void modifyAttributes(String arg0, int arg1, Attributes arg2)
 			throws NamingException {
 
@@ -163,6 +291,14 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Rebind.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @throws NamingException the naming exception
+	 */
 	public void rebind(Name arg0, Object arg1, Attributes arg2)
 			throws NamingException {
 
@@ -170,6 +306,14 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Rebind.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @throws NamingException the naming exception
+	 */
 	public void rebind(String arg0, Object arg1, Attributes arg2)
 			throws NamingException {
 
@@ -177,6 +321,14 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Search.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @return the naming enumeration
+	 * @throws NamingException the naming exception
+	 */
 	public NamingEnumeration<SearchResult> search(Name arg0, Attributes arg1)
 			throws NamingException {
 
@@ -184,6 +336,14 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Search.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @return the naming enumeration
+	 * @throws NamingException the naming exception
+	 */
 	public NamingEnumeration<SearchResult> search(String arg0, Attributes arg1)
 			throws NamingException {
 
@@ -191,6 +351,15 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Search.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @return the naming enumeration
+	 * @throws NamingException the naming exception
+	 */
 	public NamingEnumeration<SearchResult> search(Name arg0, Attributes arg1,
 			String[] arg2) throws NamingException {
 
@@ -198,6 +367,15 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Search.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @return the naming enumeration
+	 * @throws NamingException the naming exception
+	 */
 	public NamingEnumeration<SearchResult> search(String arg0, Attributes arg1,
 			String[] arg2) throws NamingException {
 
@@ -205,6 +383,15 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Search.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @return the naming enumeration
+	 * @throws NamingException the naming exception
+	 */
 	public NamingEnumeration<SearchResult> search(Name arg0, String arg1,
 			SearchControls arg2) throws NamingException {
 
@@ -212,6 +399,15 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Search.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @return the naming enumeration
+	 * @throws NamingException the naming exception
+	 */
 	public NamingEnumeration<SearchResult> search(String arg0, String arg1,
 			SearchControls arg2) throws NamingException {
 
@@ -219,6 +415,16 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Search.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @param arg3 the arg 3
+	 * @return the naming enumeration
+	 * @throws NamingException the naming exception
+	 */
 	public NamingEnumeration<SearchResult> search(Name arg0, String arg1,
 			Object[] arg2, SearchControls arg3) throws NamingException {
 
@@ -226,6 +432,16 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Search.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @param arg3 the arg 3
+	 * @return the naming enumeration
+	 * @throws NamingException the naming exception
+	 */
 	public NamingEnumeration<SearchResult> search(String arg0, String arg1,
 			Object[] arg2, SearchControls arg3) throws NamingException {
 
@@ -233,6 +449,14 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Adds the to environment.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @return the object
+	 * @throws NamingException the naming exception
+	 */
 	public Object addToEnvironment(String arg0, Object arg1)
 			throws NamingException {
 
@@ -240,83 +464,177 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Bind.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @throws NamingException the naming exception
+	 */
 	public void bind(Name arg0, Object arg1) throws NamingException {
 		throw new OperationNotSupportedException();
 	}
 
 	
+	/**
+	 * Bind.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @throws NamingException the naming exception
+	 */
 	public void bind(String arg0, Object arg1) throws NamingException {
 
 
 	}
 
 	
+	/**
+	 * Close.
+	 *
+	 * @throws NamingException the naming exception
+	 */
 	public void close() throws NamingException {
 
 
 	}
 
 	
+	/**
+	 * Compose name.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @return the name
+	 * @throws NamingException the naming exception
+	 */
 	public Name composeName(Name arg0, Name arg1) throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * Compose name.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @return the string
+	 * @throws NamingException the naming exception
+	 */
 	public String composeName(String arg0, String arg1) throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * Creates the subcontext.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the context
+	 * @throws NamingException the naming exception
+	 */
 	public Context createSubcontext(Name arg0) throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * Creates the subcontext.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the context
+	 * @throws NamingException the naming exception
+	 */
 	public Context createSubcontext(String arg0) throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * Destroy subcontext.
+	 *
+	 * @param arg0 the arg 0
+	 * @throws NamingException the naming exception
+	 */
 	public void destroySubcontext(Name arg0) throws NamingException {
 
 
 	}
 
 	
+	/**
+	 * Destroy subcontext.
+	 *
+	 * @param arg0 the arg 0
+	 * @throws NamingException the naming exception
+	 */
 	public void destroySubcontext(String arg0) throws NamingException {
 
 
 	}
 
 	
+	/**
+	 * Gets the environment.
+	 *
+	 * @return the environment
+	 * @throws NamingException the naming exception
+	 */
 	public Hashtable<?, ?> getEnvironment() throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * Gets the name in namespace.
+	 *
+	 * @return the name in namespace
+	 * @throws NamingException the naming exception
+	 */
 	public String getNameInNamespace() throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * Gets the name parser.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the name parser
+	 * @throws NamingException the naming exception
+	 */
 	public NameParser getNameParser(Name arg0) throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * Gets the name parser.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the name parser
+	 * @throws NamingException the naming exception
+	 */
 	public NameParser getNameParser(String arg0) throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * List.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the naming enumeration
+	 * @throws NamingException the naming exception
+	 */
 	public NamingEnumeration<NameClassPair> list(Name arg0)
 			throws NamingException {
 
@@ -324,6 +642,13 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * List.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the naming enumeration
+	 * @throws NamingException the naming exception
+	 */
 	public NamingEnumeration<NameClassPair> list(String arg0)
 			throws NamingException {
 
@@ -331,6 +656,13 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * List bindings.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the naming enumeration
+	 * @throws NamingException the naming exception
+	 */
 	public NamingEnumeration<Binding> listBindings(Name arg0)
 			throws NamingException {
 
@@ -338,6 +670,13 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * List bindings.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the naming enumeration
+	 * @throws NamingException the naming exception
+	 */
 	public NamingEnumeration<Binding> listBindings(String arg0)
 			throws NamingException {
 
@@ -345,81 +684,177 @@ public class JNDIWrapper implements DirContext {
 	}
 
 	
+	/**
+	 * Lookup.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the object
+	 * @throws NamingException the naming exception
+	 */
 	public Object lookup(Name arg0) throws NamingException {
 		throw new OperationNotSupportedException();
 	}
 
 	
+	/**
+	 * Lookup.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the object
+	 * @throws NamingException the naming exception
+	 */
 	public Object lookup(String arg0) throws NamingException {
 		throw new OperationNotSupportedException();
 	}
 
 	
+	/**
+	 * Lookup link.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the object
+	 * @throws NamingException the naming exception
+	 */
 	public Object lookupLink(Name arg0) throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * Lookup link.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the object
+	 * @throws NamingException the naming exception
+	 */
 	public Object lookupLink(String arg0) throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * Rebind.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @throws NamingException the naming exception
+	 */
 	public void rebind(Name arg0, Object arg1) throws NamingException {
 
 
 	}
 
 	
+	/**
+	 * Rebind.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @throws NamingException the naming exception
+	 */
 	public void rebind(String arg0, Object arg1) throws NamingException {
 
 
 	}
 
 	
+	/**
+	 * Removes the from environment.
+	 *
+	 * @param arg0 the arg 0
+	 * @return the object
+	 * @throws NamingException the naming exception
+	 */
 	public Object removeFromEnvironment(String arg0) throws NamingException {
 
 		return null;
 	}
 
 	
+	/**
+	 * Rename.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @throws NamingException the naming exception
+	 */
 	public void rename(Name arg0, Name arg1) throws NamingException {
 
 
 	}
 
 	
+	/**
+	 * Rename.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @throws NamingException the naming exception
+	 */
 	public void rename(String arg0, String arg1) throws NamingException {
 
 
 	}
 
 	
+	/**
+	 * Unbind.
+	 *
+	 * @param arg0 the arg 0
+	 * @throws NamingException the naming exception
+	 */
 	public void unbind(Name arg0) throws NamingException {
 
 
 	}
 
 	
+	/**
+	 * Unbind.
+	 *
+	 * @param arg0 the arg 0
+	 * @throws NamingException the naming exception
+	 */
 	public void unbind(String arg0) throws NamingException {
 
 
 	}
 
+	/**
+	 * Gets the attributes.
+	 *
+	 * @return the attributes
+	 */
 	public Attributes getAttributes() {
 		return attributes;
 	}
 
+	/**
+	 * Sets the attributes.
+	 *
+	 * @param attributes the new attributes
+	 */
 	public void setAttributes(Attributes attributes) {
 		this.attributes = attributes;
 	}
 
+	/**
+	 * Adds the attribute.
+	 *
+	 * @param attribute the attribute
+	 */
 	public void addAttribute(Attribute attribute) {
 		this.attributes.put(attribute);
 	}
 	
+	/**
+	 * Adds the attribute.
+	 *
+	 * @param name the name
+	 * @param value the value
+	 */
 	public void addAttribute(String name, String value) {
 		this.attributes.put(name, value);
 	}

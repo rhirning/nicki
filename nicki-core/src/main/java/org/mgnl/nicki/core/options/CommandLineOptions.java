@@ -23,9 +23,18 @@ package org.mgnl.nicki.core.options;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface CommandLineOptions.
+ */
 @Retention(RetentionPolicy.RUNTIME)  
 public @interface CommandLineOptions {
 
+	/**
+	 * Value.
+	 *
+	 * @return the command line option[]
+	 */
 	CommandLineOption[] value();
 
 }

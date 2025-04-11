@@ -43,32 +43,103 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SyncManager.
+ */
 @Slf4j
 public class SyncManager implements Serializable{
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 3719182743769453368L;
+	
+	/** The instance. */
 	private static SyncManager instance = new SyncManager();
 	
+	/**
+	 * Gets the single instance of SyncManager.
+	 *
+	 * @return single instance of SyncManager
+	 */
 	public static SyncManager getInstance() {
 		return instance;
 	}
 	
+	/**
+	 * Sync object.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param syncConfig the sync config
+	 * @return the list
+	 * @throws NotSupportedException the not supported exception
+	 * @throws SyncException the sync exception
+	 */
 	public static List<SyncChange> syncObject(DynamicObject dynamicObject, SyncConfig syncConfig) throws NotSupportedException, SyncException {
 		return getInstance().sync(dynamicObject, syncConfig);
 	}
 	
+	/**
+	 * Sync object.
+	 *
+	 * @param context the context
+	 * @param path the path
+	 * @param syncConfig the sync config
+	 * @return the list
+	 * @throws NotSupportedException the not supported exception
+	 * @throws SyncException the sync exception
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	public static List<SyncChange> syncObject(String context, String path, SyncConfig syncConfig) throws NotSupportedException, SyncException, InvalidPrincipalException {
 		DynamicObject dynamicObject = AppContext.getSystemContext(context).loadObject(path);
 		return getInstance().sync(dynamicObject, syncConfig);
 	}
 	
+	/**
+	 * Load object.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param syncConfig the sync config
+	 * @param id the id
+	 * @param date the date
+	 * @return the list
+	 * @throws NotSupportedException the not supported exception
+	 * @throws SyncException the sync exception
+	 */
 	public static <T extends DynamicObject> List<SyncEntry> loadObject(Class<T> clazz, SyncConfig syncConfig, String id, Date date) throws NotSupportedException, SyncException {
 		return getInstance().load(clazz, syncConfig, id, date);
 	}
 	
+	/**
+	 * Diff object.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param syncConfig the sync config
+	 * @param id the id
+	 * @param date1 the date 1
+	 * @param date2 the date 2
+	 * @return the list
+	 * @throws NotSupportedException the not supported exception
+	 * @throws SyncException the sync exception
+	 */
 	public static <T extends DynamicObject> List<SyncChange> diffObject(Class<T> clazz, SyncConfig syncConfig, String id, Date date1, Date date2) throws NotSupportedException, SyncException {
 		return getInstance().diff(clazz, syncConfig, id, date1, date2);
 	}
 
+	/**
+	 * Diff.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param syncConfig the sync config
+	 * @param id the id
+	 * @param date1 the date 1
+	 * @param date2 the date 2
+	 * @return the list
+	 * @throws NotSupportedException the not supported exception
+	 * @throws SyncException the sync exception
+	 */
 	private <T extends DynamicObject> List<SyncChange> diff(Class<T> clazz, SyncConfig syncConfig, String id, Date date1, Date date2) throws NotSupportedException, SyncException {
 		List<SyncChange> changes = new ArrayList<>();
 		
@@ -108,6 +179,18 @@ public class SyncManager implements Serializable{
 		return changes;
 	}
 
+	/**
+	 * Load.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param syncConfig the sync config
+	 * @param id the id
+	 * @param date the date
+	 * @return the list
+	 * @throws NotSupportedException the not supported exception
+	 * @throws SyncException the sync exception
+	 */
 	private <T extends DynamicObject> List<SyncEntry> load(Class<T> clazz, SyncConfig syncConfig, String id, Date date) throws NotSupportedException, SyncException {
 
 		try (DBContext dbContext = DBContextManager.getContext(Config.getString(syncConfig.getContext()))) {
@@ -127,6 +210,15 @@ public class SyncManager implements Serializable{
 		}		
 	}
 	
+	/**
+	 * Sync.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param syncConfig the sync config
+	 * @return the list
+	 * @throws NotSupportedException the not supported exception
+	 * @throws SyncException the sync exception
+	 */
 	private List<SyncChange> sync(DynamicObject dynamicObject, SyncConfig syncConfig) throws NotSupportedException, SyncException {
 		List<SyncChange> changes = new ArrayList<>();
 		if (dynamicObject == null) {
@@ -220,6 +312,13 @@ public class SyncManager implements Serializable{
 		return changes;
 	}
 
+	/**
+	 * Contains.
+	 *
+	 * @param values the values
+	 * @param value the value
+	 * @return true, if successful
+	 */
 	private boolean contains(List<String> values, String value) {
 		value = StringUtils.stripToNull(value);
 		if (values != null && value != null) {
@@ -232,6 +331,13 @@ public class SyncManager implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Gets the stored attribute entries.
+	 *
+	 * @param entries the entries
+	 * @param attributeName the attribute name
+	 * @return the stored attribute entries
+	 */
 	private List<SyncEntry> getStoredAttributeEntries(List<SyncEntry> entries,
 			String attributeName) {
 		List<SyncEntry> list = new ArrayList<>();
@@ -245,6 +351,13 @@ public class SyncManager implements Serializable{
 		return list;
 	}
 
+	/**
+	 * Contains value.
+	 *
+	 * @param entries the entries
+	 * @param value the value
+	 * @return true, if successful
+	 */
 	private boolean containsValue(List<SyncEntry> entries, String value) {
 		value = StringUtils.stripToNull(value);
 		if (entries != null && value != null) {
@@ -256,8 +369,27 @@ public class SyncManager implements Serializable{
 		}
 		return false;
 	}
-	enum DELETE {YES, NO}
+	
+	/**
+	 * The Enum DELETE.
+	 */
+	enum DELETE {
+/** The yes. */
+YES, 
+ /** The no. */
+ NO}
 
+	/**
+	 * Delete entry.
+	 *
+	 * @param dbContext the db context
+	 * @param storedEntry the stored entry
+	 * @param toTime the to time
+	 * @param delete the delete
+	 * @throws InitProfileException the init profile exception
+	 * @throws NotSupportedException the not supported exception
+	 * @throws SQLException the SQL exception
+	 */
 	private void deleteEntry(DBContext dbContext, SyncEntry storedEntry, Date toTime, DELETE delete) throws InitProfileException, NotSupportedException, SQLException {
 		if (delete == DELETE.YES) {
 			dbContext.delete(storedEntry);
@@ -267,11 +399,31 @@ public class SyncManager implements Serializable{
 		}
 	}
 
+	/**
+	 * Gets the empty entry.
+	 *
+	 * @param entryClass the entry class
+	 * @return the empty entry
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 */
 	private SyncEntry getEmptyEntry(Class<? extends SyncEntry> entryClass) throws InstantiationException, IllegalAccessException {
 		return Classes.newInstance(entryClass);
 	}
 
 
+	/**
+	 * Gets the stored entries.
+	 *
+	 * @param dbContext the db context
+	 * @param syncConfig the sync config
+	 * @param id the id
+	 * @return the stored entries
+	 * @throws InstantiationException the instantiation exception
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 */
 	private List<SyncEntry> getStoredEntries(DBContext dbContext, SyncConfig syncConfig, String id) throws InstantiationException, IllegalAccessException, SQLException, InitProfileException {
 		SyncEntry searchEntry = Classes.newInstance(syncConfig.getEntryClass());
 		searchEntry.setId(id);

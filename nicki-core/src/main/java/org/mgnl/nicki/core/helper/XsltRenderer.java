@@ -36,13 +36,30 @@ import javax.xml.transform.stream.StreamSource;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XsltRenderer.
+ */
 @Slf4j
 public class XsltRenderer extends Thread implements Runnable {
+	
+	/** The in. */
 	InputStream in;
+	
+	/** The out. */
 	OutputStream out;
+	
+	/** The xsl template. */
 	InputStream xslTemplate;
 	
 
+	/**
+	 * Instantiates a new xslt renderer.
+	 *
+	 * @param in the in
+	 * @param out the out
+	 * @param xslTemplate the xsl template
+	 */
 	public XsltRenderer(InputStream in, OutputStream out,
 			InputStream xslTemplate) {
 		super();
@@ -51,6 +68,9 @@ public class XsltRenderer extends Thread implements Runnable {
 		this.xslTemplate = xslTemplate;
 	}
 
+	/**
+	 * Run.
+	 */
 	public void run() {
 		try {
             // Create transformer factory

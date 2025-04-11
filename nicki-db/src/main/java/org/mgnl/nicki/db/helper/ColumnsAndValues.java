@@ -24,15 +24,35 @@ package org.mgnl.nicki.db.helper;
 
 import org.apache.commons.lang3.StringUtils;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ColumnsAndValues.
+ */
 public class ColumnsAndValues {
+	
+	/** The columns. */
 	private String columns;
+	
+	/** The values. */
 	private String values;
 	
+	/**
+	 * Instantiates a new columns and values.
+	 *
+	 * @param columns the columns
+	 * @param values the values
+	 */
 	public ColumnsAndValues(String columns, String values) {
 		this.columns = columns;
 		this.values = values;
 	}
 
+	/**
+	 * Adds the.
+	 *
+	 * @param name the name
+	 * @param value the value
+	 */
 	public void add(String  name, String value) {
 		if (StringUtils.isNotEmpty(columns)) {
 			columns += BasicDBHelper.COLUMN_SEPARATOR;
@@ -43,10 +63,20 @@ public class ColumnsAndValues {
 
 	}
 
+	/**
+	 * Gets the columns.
+	 *
+	 * @return the columns
+	 */
 	public String getColumns() {
 		return columns;
 	}
 
+	/**
+	 * Gets the values.
+	 *
+	 * @return the values
+	 */
 	public String getValues() {
 		return values;
 	}

@@ -29,11 +29,21 @@ import jakarta.xml.ws.handler.MessageContext;
 
 import org.apache.commons.lang3.StringUtils;
 import lombok.extern.slf4j.Slf4j;
+// TODO: Auto-generated Javadoc
 
+/**
+ * SSOAdapter to retrieve credentials from WebService MessageContext.
+ */
 @Slf4j
 public class WebServiceSecurityAdapter extends BasicAuthAdapter implements SSOAdapter {
 
 	
+	/**
+	 * Gets the auth part.
+	 *
+	 * @param num the num
+	 * @return the auth part
+	 */
 	@Override
 	protected String getAuthPart(int num) {
 		try {

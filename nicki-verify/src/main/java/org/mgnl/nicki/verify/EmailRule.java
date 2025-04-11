@@ -27,9 +27,22 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class EmailRule.
+ */
 public class EmailRule extends Rule {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		try {
@@ -42,6 +55,12 @@ public class EmailRule extends Rule {
 		return true;
 	}
 
+	/**
+	 * Checks for name and domain.
+	 *
+	 * @param aEmailAddress the a email address
+	 * @return true, if successful
+	 */
 	private static boolean hasNameAndDomain(String aEmailAddress) {
 		String[] tokens = aEmailAddress.split("@");
 		if (tokens.length != 2) return false;
@@ -50,10 +69,21 @@ public class EmailRule extends Rule {
 			&& StringUtils.split(tokens[1], ".").length > 1;
 	}
 
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".email");
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "email";
 	}

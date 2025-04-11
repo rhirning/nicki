@@ -27,16 +27,53 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface Table.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface Table {
 
+	/**
+	 * Name.
+	 *
+	 * @return the string
+	 */
 	String name();
 
+	/**
+	 * Post init.
+	 *
+	 * @return the string
+	 */
 	String postInit() default "";
+	
+	/**
+	 * Verify class.
+	 *
+	 * @return the class
+	 */
 	Class<?> verifyClass() default void.class;
+	
+	/**
+	 * Update class.
+	 *
+	 * @return the class
+	 */
 	Class<?> updateClass() default void.class;
 	
+	/**
+	 * Use prepared statement.
+	 *
+	 * @return true, if successful
+	 */
 	boolean usePreparedStatement() default true;
+	
+	/**
+	 * Trim strings.
+	 *
+	 * @return the string
+	 */
 	String trimStrings() default "";
 }

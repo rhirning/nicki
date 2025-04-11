@@ -31,8 +31,22 @@ import java.util.stream.Collectors;
 
 import org.mgnl.nicki.core.config.Config;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Classes.
+ */
 public class Classes {
 
+    /**
+     * New instance.
+     *
+     * @param <T> the generic type
+     * @param className the class name
+     * @return the t
+     * @throws ClassNotFoundException the class not found exception
+     * @throws InstantiationException the instantiation exception
+     * @throws IllegalAccessException the illegal access exception
+     */
     public static <T> T newInstance(String className) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
         final Class<T> clazz = forName(className);
         try {
@@ -43,6 +57,15 @@ public class Classes {
 		}
     }
 
+    /**
+     * New instance.
+     *
+     * @param <T> the generic type
+     * @param clazz the clazz
+     * @return the t
+     * @throws InstantiationException the instantiation exception
+     * @throws IllegalAccessException the illegal access exception
+     */
     public static <T> T newInstance(Class<T> clazz) throws InstantiationException, IllegalAccessException {
         try {
 			return clazz.getDeclaredConstructor().newInstance();
@@ -52,6 +75,14 @@ public class Classes {
 		}
     }
 
+    /**
+     * For name.
+     *
+     * @param <C> the generic type
+     * @param className the class name
+     * @return the class
+     * @throws ClassNotFoundException the class not found exception
+     */
     @SuppressWarnings("unchecked")
     private static <C> Class<C> forName(String className) throws ClassNotFoundException {
     	String effectiveClassName = Config.getString(className, className);
@@ -67,6 +98,12 @@ public class Classes {
         return loadedClass;
     }
     
+    /**
+     * Find all classes in package.
+     *
+     * @param packageName the package name
+     * @return the sets the
+     */
     public static Set<Class<?>> findAllClassesInPackage(String packageName) {
         InputStream stream = ClassLoader.getSystemClassLoader()
           .getResourceAsStream(packageName.replaceAll("[.]", "/"));
@@ -77,6 +114,13 @@ public class Classes {
           .collect(Collectors.toSet());
     }
  
+    /**
+     * Gets the class.
+     *
+     * @param className the class name
+     * @param packageName the package name
+     * @return the class
+     */
     private static Class<?> getClass(String className, String packageName) {
         try {
             return forName(packageName + "."

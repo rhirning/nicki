@@ -24,8 +24,18 @@ package org.mgnl.nicki.core.i18n;
 
 import org.ehcache.Cache;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating CacheEntry objects.
+ */
 public interface CacheEntryFactory {
 
+	/**
+	 * Load.
+	 *
+	 * @param key the key
+	 * @param cache the cache
+	 */
 	void load(String key, Cache<String, String> cache);
 
 }

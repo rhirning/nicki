@@ -1,5 +1,6 @@
 package org.mgnl.nicki.db.statistics;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-db
@@ -21,9 +22,19 @@ package org.mgnl.nicki.db.statistics;
  */
 
 
+/**
+ * The Class MissingDataException.
+ */
 public class MissingDataException extends Exception {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 5308155045734655035L;
 
+	/**
+	 * Instantiates a new missing data exception.
+	 *
+	 * @param key the key
+	 */
 	public MissingDataException(String key) {
 		super(key);
 	}

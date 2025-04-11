@@ -34,17 +34,39 @@ import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class GenericAttributeMapper.
+ */
 public class GenericAttributeMapper  implements AttributeMapper{
 	
+	/** The internal to external. */
 	private Map<String, String> internalToExternal = new HashMap<String, String>();
+	
+	/** The external to internal. */
 	private Map<String, String> externalToInternal = new HashMap<String, String>();
+	
+	/** The hidden internal attributes. */
 	private Collection<String> hiddenInternalAttributes = new ArrayList<String>(); 
+	
+	/** The hidden external attributes. */
 	private Collection<String> hiddenExternalAttributes = new ArrayList<String>();
+	
+	/** The external attributes. */
 	private Collection<String> externalAttributes = new ArrayList<String>();
 	
+	/**
+	 * Instantiates a new generic attribute mapper.
+	 */
 	protected GenericAttributeMapper() {
 	}
 	
+	/**
+	 * Instantiates a new generic attribute mapper.
+	 *
+	 * @param pathToMap the path to map
+	 * @param configBase the config base
+	 */
 	public GenericAttributeMapper(String pathToMap, String configBase) {
 		Properties properties = new Properties() ;
 		try {
@@ -55,6 +77,12 @@ public class GenericAttributeMapper  implements AttributeMapper{
 		init(properties, configBase);
 	}
 	
+	/**
+	 * Inits the.
+	 *
+	 * @param properties the properties
+	 * @param configBase the config base
+	 */
 	protected void init(Properties properties, String configBase) {
 
 		for (Entry<Object, Object> entry : properties.entrySet()) {
@@ -83,44 +111,98 @@ public class GenericAttributeMapper  implements AttributeMapper{
 		
 	}
 
+	/**
+	 * Correct value.
+	 *
+	 * @param key the key
+	 * @param value the value
+	 * @return the string
+	 */
 	@Override
 	public String correctValue(String key, String value) {
 		return value;
 	}
 
+	/**
+	 * Correct external.
+	 *
+	 * @param name the name
+	 * @return the string
+	 */
 	public String correctExternal(String name) {
 		return toExternal(toInternal(name));
 	}
 	
+	/**
+	 * Gets the external attributes.
+	 *
+	 * @return the external attributes
+	 */
 	public String[] getExternalAttributes() {
 		return externalAttributes.toArray(new String[0]);
 	}
 	
+	/**
+	 * Adds the.
+	 *
+	 * @param object the object
+	 * @param object2 the object 2
+	 */
 	private void add(String object, String object2) {
 		internalToExternal.put(object.toLowerCase(), object2);
 		externalToInternal.put(object2.toLowerCase(), object);
 	}
 	
+	/**
+	 * Checks if is hidden internal.
+	 *
+	 * @param internal the internal
+	 * @return true, if is hidden internal
+	 */
 	@Override
 	public boolean isHiddenInternal(String internal) {
 		return hiddenExternalAttributes.contains(toExternal(internal));
 	}
 
+	/**
+	 * Checks if is hidden external.
+	 *
+	 * @param external the external
+	 * @return true, if is hidden external
+	 */
 	@Override
 	public boolean isHiddenExternal(String external) {
 		return hiddenInternalAttributes.contains(toInternal(external));
 	}
 
+	/**
+	 * To external.
+	 *
+	 * @param internal the internal
+	 * @return the string
+	 */
 	@Override
 	public String toExternal(String internal) {
 		return toExternalName(internal);
 	}
 
+	/**
+	 * To internal.
+	 *
+	 * @param external the external
+	 * @return the string
+	 */
 	@Override
 	public String toInternal(String external) {
 		return toInternalName(external);
 	}
 
+	/**
+	 * To external name.
+	 *
+	 * @param internal the internal
+	 * @return the string
+	 */
 	private String toExternalName(String internal) {
 		String key = StringUtils.trimToEmpty(internal).toLowerCase();
 		if (internalToExternal.containsKey(key)) {
@@ -130,6 +212,12 @@ public class GenericAttributeMapper  implements AttributeMapper{
 		}
 	}
 
+	/**
+	 * To internal name.
+	 *
+	 * @param external the external
+	 * @return the string
+	 */
 	private String toInternalName(String external) {
 		String key = StringUtils.trimToEmpty(external).toLowerCase();
 		if (externalToInternal.containsKey(key)) {
@@ -139,18 +227,35 @@ public class GenericAttributeMapper  implements AttributeMapper{
 		}
 	}
 
+	/**
+	 * Checks for external.
+	 *
+	 * @param external the external
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean hasExternal(String external) {
 		String key = StringUtils.trimToEmpty(external).toLowerCase();
 		return externalToInternal.containsKey(key);
 	}
 
+	/**
+	 * Checks for internal.
+	 *
+	 * @param internal the internal
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean hasInternal(String internal) {
 		String key = StringUtils.trimToEmpty(internal).toLowerCase();
 		return internalToExternal.containsKey(key);
 	}
 
+	/**
+	 * Checks if is strict.
+	 *
+	 * @return true, if is strict
+	 */
 	@Override
 	public boolean isStrict() {
 		return true;

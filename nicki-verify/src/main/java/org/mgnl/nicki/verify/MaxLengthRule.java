@@ -27,24 +27,55 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MaxLengthRule.
+ */
 public class MaxLengthRule extends Rule {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The length. */
 	private int length = 0;
 
+	/**
+	 * Instantiates a new max length rule.
+	 *
+	 * @param value the value
+	 */
 	public MaxLengthRule(String value) {
 		setParameter(value);
 		this.length = Integer.parseInt(value);
 	}
 
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		return StringUtils.length(value) <= this.length;
 	}
 	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".maxlength", getParameter());
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "maxLength:" + length;
 	}

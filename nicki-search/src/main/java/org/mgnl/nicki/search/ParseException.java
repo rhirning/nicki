@@ -22,6 +22,9 @@ package org.mgnl.nicki.search;
  */
 
 
+/**
+ * The Class ParseException.
+ */
 @SuppressWarnings("serial")
 public class ParseException extends Exception {
 

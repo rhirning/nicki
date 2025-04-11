@@ -60,19 +60,41 @@ import com.lowagie.text.pdf.PdfPTable;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ContentRenderer.
+ */
 @Slf4j
 public class ContentRenderer {
 
+	/** The config. */
 	private PdfConfiguration config;
+	
+	/** The document. */
 	private Document document;
 	
+	/** The Constant PADDING_TOP. */
 	private static final float PADDING_TOP = 2f;
+	
+	/** The Constant PADDING_BOTTOM. */
 	private static final float PADDING_BOTTOM = 4f;
 	
+	/**
+	 * Instantiates a new content renderer.
+	 *
+	 * @param config the config
+	 */
 	public ContentRenderer(PdfConfiguration config) {
 		this.config = config;
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param parent the parent
+	 * @param data the data
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void render(ElementListener parent, Data data) throws IOException {
 		for (Object contentElement : data.getContent()) {
 			if (contentElement instanceof JAXBElement)
@@ -113,10 +135,22 @@ public class ContentRenderer {
 		}
 	}
 
+	/**
+	 * Adds the break.
+	 */
 	private void addBreak() {
 		this.document.newPage();
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param parent the parent
+	 * @param list the list
+	 * @throws BadElementException the bad element exception
+	 * @throws MalformedURLException the malformed URL exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void render(ElementListener parent, List list) throws BadElementException, MalformedURLException, IOException {
 
 		com.lowagie.text.List pdfList = new com.lowagie.text.List(list.isOrdered() != null && list.isOrdered()? 
@@ -132,6 +166,13 @@ public class ContentRenderer {
 		parent.add(pdfList);
 	}
 	
+	/**
+	 * Render.
+	 *
+	 * @param pdfList the pdf list
+	 * @param item the item
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(com.lowagie.text.List pdfList, Item item) throws IOException {
 		Text title = null;
 		ArrayList<Object> entries = new ArrayList<Object>();
@@ -164,6 +205,13 @@ public class ContentRenderer {
 		
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param list the list
+	 * @param entries the entries
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(com.lowagie.text.List list, ArrayList<Object> entries) throws IOException {
 		for (Object object : entries) {
 			if (object instanceof Text) {
@@ -178,6 +226,13 @@ public class ContentRenderer {
 		}
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param listItem the list item
+	 * @param list the list
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(ListItem listItem, List list) throws IOException {
 		com.lowagie.text.List pdfList = new com.lowagie.text.List(list.isOrdered() != null && list.isOrdered()? 
 				com.lowagie.text.List.ORDERED:com.lowagie.text.List.UNORDERED);
@@ -192,6 +247,13 @@ public class ContentRenderer {
 		listItem.add(pdfList);	
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param list the list
+	 * @param text the text
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(com.lowagie.text.List list, Text text) throws IOException {
 		Font f = config.getFont(text.getFont(), text.getSize(), FontStyle.byName(text.getStyle()));
 		if (StringUtils.isNotBlank(text.getColor())) {
@@ -201,6 +263,12 @@ public class ContentRenderer {
 		list.add(listItem);
 	}
 
+	/**
+	 * Correct text.
+	 *
+	 * @param text the text
+	 * @return the string
+	 */
 	public String correctText(Text text) {
 		if (StringUtils.equals(text.getFormat(), "block")) {
 			StringBuilder sb = new StringBuilder();
@@ -233,6 +301,15 @@ public class ContentRenderer {
 		}
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param parent the parent
+	 * @param image the image
+	 * @throws BadElementException the bad element exception
+	 * @throws MalformedURLException the malformed URL exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void render(ElementListener parent, Image image) throws BadElementException, MalformedURLException, IOException {
 		if (image == null) {
 			return;
@@ -249,6 +326,15 @@ public class ContentRenderer {
 		parent.add(pdfImage);
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param parent the parent
+	 * @param text the text
+	 * @throws BadElementException the bad element exception
+	 * @throws MalformedURLException the malformed URL exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void render(ElementListener parent, Text text) throws BadElementException, MalformedURLException, IOException {
 		Font f = config.getFont(text.getFont(), text.getSize(), FontStyle.byName(text.getStyle()));
 		if (StringUtils.isNotBlank(text.getColor())) {
@@ -259,6 +345,15 @@ public class ContentRenderer {
 	}
 
 
+	/**
+	 * Render.
+	 *
+	 * @param parent the parent
+	 * @param barcode the barcode
+	 * @throws BadElementException the bad element exception
+	 * @throws MalformedURLException the malformed URL exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void render(ElementListener parent, Barcode barcode) throws BadElementException, MalformedURLException, IOException {
 		/*
 		BarcodeQRCode barcodeQRCode = new BarcodeQRCode(barcode.getValue(), barcode.getWidth(), barcode.getHeight(), null);
@@ -269,12 +364,28 @@ public class ContentRenderer {
 	}
 
 
+	/**
+	 * Render.
+	 *
+	 * @param parent the parent
+	 * @param link the link
+	 * @throws BadElementException the bad element exception
+	 * @throws MalformedURLException the malformed URL exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void render(ElementListener parent, Link link) throws BadElementException, MalformedURLException, IOException {
 		Anchor a = new Anchor(link.getValue(), config.getFont(link.getFont(), link.getSize(), FontStyle.byName(link.getStyle())));
 		a.setReference(link.getReference());
 		parent.add(a);
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param parent the parent
+	 * @param table the table
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void render(ElementListener parent, Table table) throws IOException {
 		Color borderColor = getColor(table.getBorderColor());
 		int colCount;
@@ -339,6 +450,15 @@ public class ContentRenderer {
 	
 
 
+	/**
+	 * Render.
+	 *
+	 * @param pdfTable the pdf table
+	 * @param borderColor the border color
+	 * @param f the f
+	 * @param data the data
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void render(PdfPTable pdfTable, Color borderColor, Font f, TableData data) throws IOException {
 		for (Object contentElement : data.getContent()) {
 			if (contentElement instanceof JAXBElement)
@@ -371,6 +491,14 @@ public class ContentRenderer {
 		}
 	}
 	
+	/**
+	 * Render.
+	 *
+	 * @param pdfTable the pdf table
+	 * @param borderColor the border color
+	 * @param image the image
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(PdfPTable pdfTable, Color borderColor, Image image) throws IOException {
 		if (image == null) {
 			return;
@@ -394,6 +522,15 @@ public class ContentRenderer {
 		pdfTable.addCell(cell);
 	}
 	
+	/**
+	 * Render.
+	 *
+	 * @param pdfTable the pdf table
+	 * @param borderColor the border color
+	 * @param f the f
+	 * @param text the text
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(PdfPTable pdfTable, Color borderColor, Font f, Text text) throws IOException {
 		Font tdFont = config.getFont(f, text.getFont(), text.getSize(), FontStyle.byName(text.getStyle()));
 		if (StringUtils.isNotBlank(text.getColor())) {
@@ -411,6 +548,15 @@ public class ContentRenderer {
 		pdfTable.addCell(cell);
 	}
 	
+	/**
+	 * Render.
+	 *
+	 * @param pdfTable the pdf table
+	 * @param borderColor the border color
+	 * @param f the f
+	 * @param barcode the barcode
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(PdfPTable pdfTable, Color borderColor, Font f, Barcode barcode) throws IOException {
 		/*
 		BarcodeQRCode barcodeQRCode = new BarcodeQRCode(barcode.getValue(), barcode.getWidth(), barcode.getHeight(), null);
@@ -419,6 +565,12 @@ public class ContentRenderer {
 		*/
 	}
 	
+	/**
+	 * Gets the color.
+	 *
+	 * @param color the color
+	 * @return the color
+	 */
 	public static Color getColor(String color) {
 		if (StringUtils.length(color) >= 7) {
 			String hex = color;
@@ -437,6 +589,12 @@ public class ContentRenderer {
 		return new Color(255,255,255);
 	}
 
+	/**
+	 * Gets the alignment.
+	 *
+	 * @param align the align
+	 * @return the alignment
+	 */
 	private int getAlignment(String align) {
 		if (StringUtils.equalsIgnoreCase(align, "left")) {
 			return Element.ALIGN_LEFT;
@@ -455,6 +613,14 @@ public class ContentRenderer {
 		}
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param pdfTable the pdf table
+	 * @param borderColor the border color
+	 * @param checkbox the checkbox
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(PdfPTable pdfTable, Color borderColor, Checkbox checkbox) throws IOException {
 		PdfPCell cell = new PdfPCell();
 		cell.setBorderColor(borderColor);
@@ -474,6 +640,14 @@ public class ContentRenderer {
 		pdfTable.addCell(cell);
 	}
 	
+	/**
+	 * Render.
+	 *
+	 * @param pdfTable the pdf table
+	 * @param borderColor the border color
+	 * @param link the link
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void render(PdfPTable pdfTable, Color borderColor, Link link) throws IOException {
 		Anchor a = new Anchor(link.getValue(), config.getFont(link.getFont(), link.getSize(), FontStyle.byName(link.getStyle())));
 		a.setReference(link.getReference());
@@ -488,6 +662,14 @@ public class ContentRenderer {
 		pdfTable.addCell(cell);
 	}
 
+	/**
+	 * Creates the cell.
+	 *
+	 * @param p the p
+	 * @param backgroundColor the background color
+	 * @param borderColor the border color
+	 * @return the pdf P cell
+	 */
 	private PdfPCell createCell(Phrase p, Color backgroundColor, Color borderColor){
 		PdfPCell cell = new PdfPCell(p);
 		
@@ -502,6 +684,14 @@ public class ContentRenderer {
 		return cell;
 	}
 
+	/**
+	 * Creates the cell.
+	 *
+	 * @param image the image
+	 * @param backgroundColor the background color
+	 * @param borderColor the border color
+	 * @return the pdf P cell
+	 */
 	private PdfPCell createCell(com.lowagie.text.Image image, Color backgroundColor, Color borderColor){
 		PdfPCell cell = new PdfPCell(image);
 		
@@ -516,6 +706,11 @@ public class ContentRenderer {
 		return cell;
 	}
 
+	/**
+	 * Sets the document.
+	 *
+	 * @param document the new document
+	 */
 	public void setDocument(Document document) {
 		this.document =document;
 	}

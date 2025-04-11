@@ -30,10 +30,21 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating DatabaseStatistics objects.
+ */
 @Slf4j
 public class DatabaseStatisticsFactory implements StatisticsFactory {
+	
+	/** The Constant context. */
 	private static final String context = "nicki.db.statistics.db.context";
 
+	/**
+	 * Load.
+	 *
+	 * @return the collection
+	 */
 	@Override
 	public Collection<Statistics> load() {
 		String contextName = Config.getString(context);

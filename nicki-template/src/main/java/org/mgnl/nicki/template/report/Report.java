@@ -28,8 +28,18 @@ import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.template.engine.TemplateEngine;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Report.
+ */
 public class Report {
 
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws Exception the exception
+	 */
 	/*
 	 * 4 Supported arguments user password template type
 	 */
@@ -50,6 +60,16 @@ public class Report {
 		TemplateEngine.getInstance().execute(userName, password, templateName, outputType, System.out);
 	}
 	
+	/**
+	 * To file.
+	 *
+	 * @param userName the user name
+	 * @param password the password
+	 * @param templateName the template name
+	 * @param outputType the output type
+	 * @param fileName the file name
+	 * @throws Exception the exception
+	 */
 	public static void toFile(String userName, String password, String templateName,
 			String outputType, String fileName) throws Exception {
 		FileOutputStream out = new FileOutputStream(fileName);

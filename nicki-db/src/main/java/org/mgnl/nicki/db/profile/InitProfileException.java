@@ -24,9 +24,18 @@ package org.mgnl.nicki.db.profile;
 
 import javax.naming.NamingException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class InitProfileException.
+ */
 @SuppressWarnings("serial")
 public class InitProfileException extends Exception {
 
+	/**
+	 * Instantiates a new inits the profile exception.
+	 *
+	 * @param e the e
+	 */
 	public InitProfileException(NamingException e) {
 		super(e);
 	}

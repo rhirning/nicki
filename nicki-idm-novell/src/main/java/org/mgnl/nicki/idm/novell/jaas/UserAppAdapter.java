@@ -45,23 +45,47 @@ import com.sssw.portal.api.EbiPortalContext;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class UserAppAdapter.
+ */
 @Slf4j
 public class UserAppAdapter implements SSOAdapter {
 
+	/** The Constant BASE_KEY. */
 	static final String BASE_KEY = "com.sssw.fw.directory.realm.impl.jndildap.EboJndiLdapUserConnectionInfoHelper:";
+	
+	/** The Constant USER_CREDENTIALS. */
 	static final String USER_CREDENTIALS = BASE_KEY + "USER_CREDENTIALS";
+	
+	/** The Constant USER_CONNECTION. */
 	static final String USER_CONNECTION = BASE_KEY + "USER_DIRECTORY_CONNECTION";
 	
+	/** The Constant ATTRIBUTE_NAME_PORTAL_CONTEXT. */
 	public static final String ATTRIBUTE_NAME_PORTAL_CONTEXT = "com.sssw.portal.api.EbiPortalContext";
+	
+	/** The type. */
 	private TYPE type = TYPE.UNKNOWN;
 
+	/** The request. */
 	private Object request;
+	
+	/**
+	 * Sets the request.
+	 *
+	 * @param request the new request
+	 */
 	@Override
 	public void setRequest(Object request) {
 		this.request = request;
 		
 	}
 	
+	/**
+	 * Gets the request.
+	 *
+	 * @return the request
+	 */
 	public Object getRequest() {
 		if (this.request != null) {
 			return this.request;
@@ -70,6 +94,9 @@ public class UserAppAdapter implements SSOAdapter {
 		}
 	}
 
+	/**
+	 * Inits the.
+	 */
 	public void init() {
 		String credentials = new String(getPassword());
 		if (StringUtils.length(credentials) > 100 &&
@@ -82,6 +109,11 @@ public class UserAppAdapter implements SSOAdapter {
 		}
 	}
 	
+	/**
+	 * Gets the groups.
+	 *
+	 * @return the groups
+	 */
 	public  List<String> getGroups() {
 		List<String> list = new ArrayList<String>();
 		try {
@@ -97,15 +129,31 @@ public class UserAppAdapter implements SSOAdapter {
 	}
 	
 
+	/**
+	 * Gets the user credentials.
+	 *
+	 * @return the user credentials
+	 */
 	private EboUserCredentials getUserCredentials() {
 		return ((EboUserCredentials)getContext().getValue(USER_CREDENTIALS));
 	}
 	
+	/**
+	 * Gets the password.
+	 *
+	 * @return the password
+	 */
 	public char[] getPassword() {
 		EboUserCredentials credentials = getUserCredentials();
 		return decrypt(credentials).toCharArray();
 	}
 	
+	/**
+	 * Decrypt.
+	 *
+	 * @param credentials the credentials
+	 * @return the string
+	 */
 	private String decrypt(EboUserCredentials credentials) {
 		Class<?> c = credentials.getClass();
 		try {
@@ -118,8 +166,11 @@ public class UserAppAdapter implements SSOAdapter {
 		return null;
 	}
 
-	/** user DN like 
-	 * cn=padmin,ou=users,o=utopia
+	/**
+	 * user DN like 
+	 * cn=padmin,ou=users,o=utopia.
+	 *
+	 * @return the name
 	 */
 	public String getName() {
 		String userName = null;
@@ -131,6 +182,11 @@ public class UserAppAdapter implements SSOAdapter {
 		return userName;
 	}
 
+	/**
+	 * Gets the user id.
+	 *
+	 * @return the user id
+	 */
 	public String getUserId() {
 		String userDn = getName();
 		if (StringUtils.isNotEmpty(userDn)) {
@@ -143,52 +199,115 @@ public class UserAppAdapter implements SSOAdapter {
 		return userDn;
 	}
 	
+	/**
+	 * Checks if is in group.
+	 *
+	 * @param request the request
+	 * @param group the group
+	 * @return true, if is in group
+	 */
 	public boolean isInGroup(Object request, String group) {
 		return getGroups().contains(group);
 	}
 	
+	/**
+	 * Gets the context.
+	 *
+	 * @return the context
+	 */
 	private EbiPortalContext getContext() {
 		PortletRequest pRequest = (PortletRequest) getRequest();
 		return (EbiPortalContext) pRequest.getAttribute(ATTRIBUTE_NAME_PORTAL_CONTEXT);
 	}
 
+	/**
+	 * Gets the request.
+	 *
+	 * @param request the request
+	 * @return the request
+	 */
 	private PortletRequest getRequest(Object request) {
 		return (PortletRequest) request;
 	}
+	
+	/**
+	 * Gets the session.
+	 *
+	 * @return the session
+	 */
 	private PortletSession getSession() {
 		return getRequest(getRequest()).getPortletSession(true);
 	}
 
+	/**
+	 * Gets the attribute from request.
+	 *
+	 * @param key the key
+	 * @return the attribute from request
+	 */
 	public Object getAttributeFromRequest(String key) {
 		return getRequest(getRequest()).getAttribute(key);
 	}
 
 
+	/**
+	 * Gets the attribute from session.
+	 *
+	 * @param key the key
+	 * @return the attribute from session
+	 */
 	public Object getAttributeFromSession(String key) {
 		return getSession().getAttribute(key);
 	}
 
 
+	/**
+	 * Sets the attribute in request.
+	 *
+	 * @param key the key
+	 * @param object the object
+	 */
 	public void setAttributeInRequest(String key, Object object) {
 		getRequest(getRequest()).setAttribute(key, object);
 	}
 
 
+	/**
+	 * Sets the attribute in session.
+	 *
+	 * @param key the key
+	 * @param object the object
+	 */
 	public void setAttributeInSession(String key, Object object) {
 		getSession().setAttribute(key, object);
 	}
 
 
+	/**
+	 * Gets the session id.
+	 *
+	 * @return the session id
+	 */
 	public String getSessionId() {
 		return getSession().getId();
 	}
 
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public TYPE getType() {
 		init();
 		return type;
 	}
 
+	/**
+	 * Inits the.
+	 *
+	 * @param loginModule the login module
+	 */
 	@Override
 	public void init(NickiAdapterLoginModule loginModule) {
 		// TODO Auto-generated method stub

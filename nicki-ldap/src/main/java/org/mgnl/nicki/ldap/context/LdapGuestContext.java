@@ -32,13 +32,29 @@ import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LdapGuestContext.
+ */
 @SuppressWarnings("serial")
 public class LdapGuestContext extends LdapContext implements NickiContext {
 
+	/**
+	 * Instantiates a new ldap guest context.
+	 *
+	 * @param adapter the adapter
+	 * @param target the target
+	 */
 	public LdapGuestContext(DynamicObjectAdapter adapter, Target target) {
 		super(adapter, target, READONLY.TRUE);
 	}
 
+	/**
+	 * Gets the ldap context.
+	 *
+	 * @return the ldap context
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public NickiLdapContext getLdapContext() throws DynamicObjectException {
 		Hashtable<String, String> env = new Hashtable<String, String>();

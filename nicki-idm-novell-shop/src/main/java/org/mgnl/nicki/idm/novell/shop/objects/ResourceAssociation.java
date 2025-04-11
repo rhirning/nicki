@@ -32,18 +32,33 @@ import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ResourceAssociation.
+ */
 @SuppressWarnings("serial")
 @DynamicObject
 @ObjectClass("nrfResourceAssociation")
 public class ResourceAssociation extends BaseDynamicObject {
+	
+	/** The name. */
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;
+	
+	/** The resource. */
 	@DynamicReferenceAttribute(externalName="nrfResource", foreignKey=Resource.class, reference=Resource.class,
 			baseProperty="nicki.system.basedn")
 	private String resource;
+	
+	/** The param val. */
 	@StructuredDynamicAttribute(externalName="nrfDynamicParmVals")
 	private String paramVal;
 		
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return getAttribute("name");
 	}
@@ -54,10 +69,20 @@ public class ResourceAssociation extends BaseDynamicObject {
 	</parameter>
 	 */
 
+	/**
+	 * Gets the param vals xml.
+	 *
+	 * @return the param vals xml
+	 */
 	public String getParamValsXml() {
 		return getAttribute("paramVal");
 	}
 	
+	/**
+	 * Gets the param value.
+	 *
+	 * @return the param value
+	 */
 	public String getParamValue() {
 		if (StringUtils.isNotEmpty(getParamValsXml())) {
 			return getInfo(getParamValsXml(), "/parameter/value");
@@ -65,6 +90,11 @@ public class ResourceAssociation extends BaseDynamicObject {
 		return "";
 	}
 	
+	/**
+	 * Gets the resource.
+	 *
+	 * @return the resource
+	 */
 	public Resource getResource() {
 		if (get("resource") != null) {
 			return getForeignKeyObject(Resource.class, "resource");

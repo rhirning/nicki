@@ -40,6 +40,7 @@ import org.mgnl.nicki.template.engine.SimpleTemplateDescriptor;
 import freemarker.cache.TemplateLoader;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
 /**
  * A TemplateLoader that reads templates using classloader under a given basePath
  * as the source of templates. 
@@ -49,22 +50,49 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ClassPathTemplateLoader implements TemplateLoader {
 	
+	/** The Constant APPENDIX_SEP. */
 	public static final String APPENDIX_SEP = ".";
+	
+	/** The Constant LOCALE_SEP. */
 	public static final String LOCALE_SEP = "_";
+	
+	/** The Constant PART_SEP. */
 	public static final String PART_SEP = ".";
+	
+	/** The Constant PATH_SEP. */
 	public static final String PATH_SEP = "/";
+	
+	/** The Constant DN_SEP. */
 	public static final String DN_SEP = ", ";
+	
+	/** The Constant NAME_ATTRIBUTE. */
 	public static final String NAME_ATTRIBUTE = "ou";
+	
+	/** The Constant PATH_ATTRIBUTE. */
 	public static final String PATH_ATTRIBUTE = "ou";
 	
+	/** The base path. */
 	private String basePath;
+	
+	/** The templates. */
 	private Map<String, SimpleTemplate> templates = new HashMap<String, SimpleTemplate>();
 	
+	/**
+	 * Instantiates a new class path template loader.
+	 *
+	 * @param basePath the base path
+	 */
 	public ClassPathTemplateLoader(String basePath) {
 		super();
 		this.basePath = basePath;
 	}
 
+	/**
+	 * Close template source.
+	 *
+	 * @param object the object
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void closeTemplateSource(Object object) throws IOException {
 		SimpleTemplateDescriptor simpleTemplateDescriptor = (SimpleTemplateDescriptor) object;
 		if (this.templates.containsKey(simpleTemplateDescriptor.getName())) {
@@ -73,7 +101,11 @@ public class ClassPathTemplateLoader implements TemplateLoader {
 	}
 
 	/**
-	 * path does not start with a /
+	 * path does not start with a /.
+	 *
+	 * @param path the path
+	 * @return the simple template descriptor
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public SimpleTemplateDescriptor findTemplateSource(String path) throws IOException {
 		// analyze path
@@ -110,15 +142,16 @@ public class ClassPathTemplateLoader implements TemplateLoader {
 	}
 
 	/**
-	 * 
 	 * The path defines the location of the template
 	 * example: /path0/path1/name-part.ftl
 	 * will be expanded to
 	 *   cn=name,ou=path1,ou=path0
 	 * attribute part ???
-	 * @throws IOException 
-	 * @throws NamingException 
-	 * 
+	 *
+	 * @param name the name
+	 * @param classPath the class path
+	 * @param part the part
+	 * @return the template
 	 */
 	public SimpleTemplateDescriptor getTemplate(String name, String classPath, String part) {
 		if (this.templates.containsKey(name)) {
@@ -142,14 +175,36 @@ public class ClassPathTemplateLoader implements TemplateLoader {
 		return null;
 	}
 
+	/**
+	 * Gets the class path.
+	 *
+	 * @param directoryPath the directory path
+	 * @param templateName the template name
+	 * @param appendix the appendix
+	 * @return the class path
+	 */
 	private String getClassPath(String directoryPath, String templateName, String appendix) {
 		return this.basePath + directoryPath + PATH_SEP + templateName + APPENDIX_SEP + appendix;
 	}
 
+	/**
+	 * Gets the last modified.
+	 *
+	 * @param td the td
+	 * @return the last modified
+	 */
 	public long getLastModified(Object td) {
 		return new Date().getTime();
 	}
 
+	/**
+	 * Gets the reader.
+	 *
+	 * @param templateDescriptor the template descriptor
+	 * @param encoding the encoding
+	 * @return the reader
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public Reader getReader(Object templateDescriptor, String encoding) throws IOException {
 		if (templateDescriptor instanceof SimpleTemplateDescriptor) {
 			SimpleTemplateDescriptor std = (SimpleTemplateDescriptor) templateDescriptor;

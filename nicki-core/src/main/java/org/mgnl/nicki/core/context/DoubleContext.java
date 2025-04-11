@@ -24,23 +24,53 @@ package org.mgnl.nicki.core.context;
 
 import java.io.Serializable;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DoubleContext.
+ */
 public class DoubleContext implements Serializable {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -6658652678574459666L;
+		
+		/** The context. */
 		private NickiContext context;
+		
+		/** The login context. */
 		private NickiContext loginContext;
 
+		/**
+		 * Gets the context.
+		 *
+		 * @return the context
+		 */
 		public NickiContext getContext() {
 			return this.context;
 		}
 
+		/**
+		 * Sets the context.
+		 *
+		 * @param context the new context
+		 */
 		public void setContext(NickiContext context) {
 			this.context = context;
 		}
 
+		/**
+		 * Gets the login context.
+		 *
+		 * @return the login context
+		 */
 		public NickiContext getLoginContext() {
 			return this.loginContext;
 		}
 
+		/**
+		 * Sets the login context.
+		 *
+		 * @param loginContext the new login context
+		 */
 		public void setLoginContext(NickiContext loginContext) {
 			this.loginContext = loginContext;
 		}

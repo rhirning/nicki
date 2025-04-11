@@ -31,26 +31,56 @@ import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogObject;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FindPermissionDnVisitor.
+ */
 public class FindPermissionDnVisitor implements CatalogVisitor {
 
+	/** The permission dn. */
 	private String permissionDn;
+	
+	/** The catalog articles. */
 	private List<CatalogArticle> catalogArticles = new ArrayList<CatalogArticle>();
 	
+	/**
+	 * Instantiates a new find permission dn visitor.
+	 *
+	 * @param permissionDn the permission dn
+	 */
 	public FindPermissionDnVisitor(String permissionDn) {
 		super();
 		this.permissionDn = permissionDn;
 	}
 
+	/**
+	 * Visit.
+	 *
+	 * @param catalogObject the catalog object
+	 * @return the action
+	 */
 	@Override
 	public ACTION visit(CatalogObject catalogObject) {
 		return ACTION.CONTINUE;
 	}
 
+	/**
+	 * Visit.
+	 *
+	 * @param catalog the catalog
+	 * @return the action
+	 */
 	@Override
 	public ACTION visit(Catalog catalog) {
 		return ACTION.CONTINUE;
 	}
 
+	/**
+	 * Visit.
+	 *
+	 * @param catalogPage the catalog page
+	 * @return the action
+	 */
 	@Override
 	public ACTION visit(CatalogPage catalogPage) {
 		for (CatalogArticle catalogArticle : catalogPage.getArticles()) {
@@ -61,11 +91,22 @@ public class FindPermissionDnVisitor implements CatalogVisitor {
 		return ACTION.CONTINUE;
 	}
 
+	/**
+	 * Visit.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @return the action
+	 */
 	@Override
 	public ACTION visit(CatalogArticle catalogArticle) {
 		return ACTION.CONTINUE;
 	}
 
+	/**
+	 * Gets the catalog articles.
+	 *
+	 * @return the catalog articles
+	 */
 	public List<CatalogArticle> getCatalogArticles() {
 		return catalogArticles;
 	}

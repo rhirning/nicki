@@ -25,33 +25,71 @@ package org.mgnl.nicki.verify.classes;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MessageVerifyException.
+ */
 @SuppressWarnings("serial")
 public class MessageVerifyException extends Exception {
+	
+	/** The messages. */
 	private List<String> messages;
+	
+	/** The revalidate. */
 	private boolean revalidate;
 
+	/**
+	 * Instantiates a new message verify exception.
+	 *
+	 * @param messages the messages
+	 */
 	public MessageVerifyException(List<String> messages) {
 		this.messages = messages;
 	}
 
+	/**
+	 * Instantiates a new message verify exception.
+	 *
+	 * @param message the message
+	 */
 	public MessageVerifyException(String message) {
 		messages = new ArrayList<>();
 		messages.add(message);
 	}
 
+	/**
+	 * Gets the messages.
+	 *
+	 * @return the messages
+	 */
 	public List<String> getMessages() {
 		return messages;
 	}
 
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return messages == null ? null : messages.toString();
 	}
 
+	/**
+	 * Checks if is revalidate.
+	 *
+	 * @return true, if is revalidate
+	 */
 	public boolean isRevalidate() {
 		return revalidate;
 	}
 
+	/**
+	 * Sets the revalidate.
+	 *
+	 * @param revalidate the new revalidate
+	 */
 	public void setRevalidate(boolean revalidate) {
 		this.revalidate = revalidate;
 	}

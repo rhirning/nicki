@@ -40,6 +40,7 @@ import org.mgnl.nicki.template.engine.TemplateDescriptor;
 import freemarker.cache.TemplateLoader;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
 /**
  * A TemplateLoader that uses JNDI objects in a directory located in a given baseDN
  * as the source of templates. 
@@ -49,24 +50,54 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class JndiTemplateLoader implements TemplateLoader {
 	
+	/** The Constant APPENDIX_SEP. */
 	public static final String APPENDIX_SEP = ".";
+	
+	/** The Constant LOCALE_SEP. */
 	public static final String LOCALE_SEP = "_";
+	
+	/** The Constant PART_SEP. */
 	public static final String PART_SEP = ".";
+	
+	/** The Constant PATH_SEP. */
 	public static final String PATH_SEP = "/";
+	
+	/** The Constant DN_SEP. */
 	public static final String DN_SEP = ", ";
+	
+	/** The Constant NAME_ATTRIBUTE. */
 	public static final String NAME_ATTRIBUTE = "ou";
+	
+	/** The Constant PATH_ATTRIBUTE. */
 	public static final String PATH_ATTRIBUTE = "ou";
 	
+	/** The base DN. */
 	private String baseDN;
+	
+	/** The templates. */
 	private Map<String, Template> templates = new HashMap<String, Template>();
+	
+	/** The context. */
 	private NickiContext context;
 	
+	/**
+	 * Instantiates a new jndi template loader.
+	 *
+	 * @param context the context
+	 * @param baseDN the base DN
+	 */
 	public JndiTemplateLoader(NickiContext context, String baseDN) {
 		super();
 		this.context = context;
 		this.baseDN = baseDN;
 	}
 
+	/**
+	 * Close template source.
+	 *
+	 * @param object the object
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void closeTemplateSource(Object object) throws IOException {
 		TemplateDescriptor td = (TemplateDescriptor) object;
 		if (this.templates.containsKey(td.getName())) {
@@ -75,7 +106,11 @@ public class JndiTemplateLoader implements TemplateLoader {
 	}
 
 	/**
-	 * path does not start with a /
+	 * path does not start with a /.
+	 *
+	 * @param path the path
+	 * @return the template descriptor
+	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
 	public TemplateDescriptor findTemplateSource(String path) throws IOException {
 		// analyze path
@@ -110,15 +145,17 @@ public class JndiTemplateLoader implements TemplateLoader {
 	}
 
 	/**
-	 * 
 	 * The path defines the location of the template
 	 * example: /path0/path1/name-part.ftl
 	 * will be expanded to
 	 *   cn=name,ou=path1,ou=path0
 	 * attribute part ???
-	 * @throws IOException 
-	 * @throws NamingException 
-	 * 
+	 *
+	 * @param context the context
+	 * @param name the name
+	 * @param dnPath the dn path
+	 * @param part the part
+	 * @return the template
 	 */
 	public TemplateDescriptor getTemplate(NickiContext context, String name, String dnPath, String part) {
 		if (this.templates.containsKey(name)) {
@@ -141,6 +178,13 @@ public class JndiTemplateLoader implements TemplateLoader {
 		return null;
 	}
 
+	/**
+	 * Gets the dn path.
+	 *
+	 * @param directoryPath the directory path
+	 * @param templateName the template name
+	 * @return the dn path
+	 */
 	private String getDnPath(String directoryPath, String templateName) {
 		String dirParts[] = StringUtils.split(directoryPath, PATH_SEP);
 		StringBuilder sb = new StringBuilder();
@@ -153,10 +197,24 @@ public class JndiTemplateLoader implements TemplateLoader {
 		return NAME_ATTRIBUTE + "=" + templateName + sb.toString() + "," + baseDN;
 	}
 
+	/**
+	 * Gets the last modified.
+	 *
+	 * @param td the td
+	 * @return the last modified
+	 */
 	public long getLastModified(Object td) {
 		return new Date().getTime();
 	}
 
+	/**
+	 * Gets the reader.
+	 *
+	 * @param templateDescriptor the template descriptor
+	 * @param encoding the encoding
+	 * @return the reader
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public Reader getReader(Object templateDescriptor, String encoding) throws IOException {
 		if (templateDescriptor instanceof TemplateDescriptor) {
 			TemplateDescriptor td = (TemplateDescriptor) templateDescriptor;

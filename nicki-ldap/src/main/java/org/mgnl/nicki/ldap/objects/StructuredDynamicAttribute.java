@@ -33,12 +33,31 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StructuredDynamicAttribute.
+ */
 @SuppressWarnings("serial")
 public class StructuredDynamicAttribute extends DynamicAttribute implements Serializable {
 
+	/**
+	 * Instantiates a new structured dynamic attribute.
+	 *
+	 * @param name the name
+	 * @param ldapName the ldap name
+	 * @param attributeClass the attribute class
+	 */
 	public StructuredDynamicAttribute(String name, String ldapName,	Class<String> attributeClass) {
 		super(name, ldapName, attributeClass);
 	}
+	
+	/**
+	 * Inits the.
+	 *
+	 * @param context the context
+	 * @param dynamicObject the dynamic object
+	 * @param rs the rs
+	 */
 	@Override
 	public void init(NickiContext context, DynamicObject dynamicObject, ContextSearchResult rs) {
 		if (isMultiple()) {

@@ -22,11 +22,29 @@ package org.mgnl.nicki.core.util;
 
 import lombok.Data;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ProtocolEntry.
+ */
 @Data
 public class ProtocolEntry {
+	
+	/** The action. */
 	private String action;
+	
+	/** The modifier. */
 	private String modifier;
+	
+	/** The data. */
 	private String[] data;
+	
+	/**
+	 * Instantiates a new protocol entry.
+	 *
+	 * @param action the action
+	 * @param modifier the modifier
+	 * @param data the data
+	 */
 	public ProtocolEntry(String action, String modifier, String... data) {
 		super();
 		this.action = action;

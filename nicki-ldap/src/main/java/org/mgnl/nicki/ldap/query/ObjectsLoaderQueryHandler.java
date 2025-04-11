@@ -36,25 +36,54 @@ import org.mgnl.nicki.core.data.Query;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ObjectsLoaderQueryHandler.
+ */
 @Slf4j
 public class ObjectsLoaderQueryHandler extends ObjectLoaderLdapQueryHandler {
 
+	/** The list. */
 	private List<DynamicObject> list = new ArrayList<DynamicObject>();
 	
+	/**
+	 * Gets the list.
+	 *
+	 * @return the list
+	 */
 	public List<DynamicObject> getList() {
 		return list;
 	}
 
+	/**
+	 * Instantiates a new objects loader query handler.
+	 *
+	 * @param context the context
+	 * @param dn the dn
+	 * @param filter the filter
+	 */
 	public ObjectsLoaderQueryHandler(NickiContext context, String dn, String filter) {
 		super(context, dn);
 		setFilter(filter);
 	}
 
+	/**
+	 * Instantiates a new objects loader query handler.
+	 *
+	 * @param context the context
+	 * @param query the query
+	 */
 	public ObjectsLoaderQueryHandler(NickiContext context, Query query) {
 		super(context, query.getBaseDN());
 		setFilter(query.getFilter());
 	}
 
+	/**
+	 * Handle.
+	 *
+	 * @param results the results
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
 		for (ContextSearchResult rs : results) {
@@ -82,11 +111,21 @@ public class ObjectsLoaderQueryHandler extends ObjectLoaderLdapQueryHandler {
 	
 
 
+	/**
+	 * Gets the scope.
+	 *
+	 * @return the scope
+	 */
 	@Override
 	public SCOPE getScope() {
 		return SCOPE.SUBTREE;
 	}
 
+	/**
+	 * Gets the constraints.
+	 *
+	 * @return the constraints
+	 */
 	@Override
 	public SearchControls getConstraints() {
 		SearchControls constraints =super.getConstraints();

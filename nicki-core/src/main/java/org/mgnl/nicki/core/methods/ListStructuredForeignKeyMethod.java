@@ -32,15 +32,34 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ListStructuredForeignKeyMethod.
+ */
 @Slf4j
 @SuppressWarnings("serial")
 public class ListStructuredForeignKeyMethod extends ListForeignKeyMethod {
+	
+	/**
+	 * Instantiates a new list structured foreign key method.
+	 *
+	 * @param context the context
+	 * @param rs the rs
+	 * @param ldapName the ldap name
+	 * @param classDefinition the class definition
+	 */
 	public ListStructuredForeignKeyMethod(NickiContext context,
 			ContextSearchResult rs, String ldapName,
 			Class<? extends DynamicObject> classDefinition) {
 		super(context, rs, ldapName, classDefinition);
 	}
 
+	/**
+	 * Exec.
+	 *
+	 * @param arguments the arguments
+	 * @return the list
+	 */
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (getObjects() == null) {
 			setObjects(new ArrayList<DynamicObject>());

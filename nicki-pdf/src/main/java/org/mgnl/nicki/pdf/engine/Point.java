@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.pdf.engine;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-pdf
@@ -22,28 +23,58 @@ package org.mgnl.nicki.pdf.engine;
  */
 
 
+/**
+ * The Class Point.
+ */
 public class Point {
 	
+		/** The y. */
 		float x, y;
 
+		/**
+		 * Instantiates a new point.
+		 *
+		 * @param x the x
+		 * @param y the y
+		 */
 		public Point(float x, float y) {
 			this.x = x;
 			this.y = y;
 		}
 
+		/**
+		 * Instantiates a new point.
+		 *
+		 * @param point the point
+		 */
 		public Point(Point point) {
 			this.x = point.x;
 			this.y = point.y;
 		}
 
+		/**
+		 * Gets the x.
+		 *
+		 * @return the x
+		 */
 		public float getX() {
 			return x;
 		}
 
+		/**
+		 * Gets the y.
+		 *
+		 * @return the y
+		 */
 		public float getY() {
 			return y;
 		}
 
+		/**
+		 * To string.
+		 *
+		 * @return the string
+		 */
 		public String toString() {
 			return "POINT[x:" + x + ";y:" + y + "]";
 		}

@@ -24,7 +24,19 @@ package org.mgnl.nicki.db.handler;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface ListSelectHandler.
+ *
+ * @param <T> the generic type
+ */
 public interface ListSelectHandler<T> extends SelectHandler {
+	
+	/**
+	 * Gets the results.
+	 *
+	 * @return the results
+	 */
 	List<T> getResults();
 
 }

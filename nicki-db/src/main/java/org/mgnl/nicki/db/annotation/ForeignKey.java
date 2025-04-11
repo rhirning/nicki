@@ -27,13 +27,32 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface ForeignKey.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface ForeignKey {
 
+	/**
+	 * Column name.
+	 *
+	 * @return the string
+	 */
 	String columnName();
 	
+	/**
+	 * Foreign key class.
+	 *
+	 * @return the class
+	 */
 	Class<?> foreignKeyClass();
 
+	/**
+	 * Display.
+	 *
+	 * @return the string
+	 */
 	String display() default "";
 }

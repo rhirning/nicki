@@ -27,15 +27,52 @@ import java.util.Collection;
 import java.util.List;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface NickiSearch.
+ *
+ * @param <T> the generic type
+ */
 public interface NickiSearch<T> {
 
+	/** The attribute category. */
 	//String ATTRIBUTE_HASH = "hash";
 	String ATTRIBUTE_CATEGORY = "category";
+	
+	/** The attribute key. */
 	String ATTRIBUTE_KEY = "key";
+	
+	/** The attribute title. */
 	String ATTRIBUTE_TITLE = "title";
+	
+	/** The attribute description. */
 	String ATTRIBUTE_DESCRIPTION = "description";
+	
+	/** The attribute content. */
 	String ATTRIBUTE_CONTENT = "content";
+	
+	/**
+	 * Sets the index path.
+	 *
+	 * @param property the new index path
+	 */
 	void setIndexPath(String property);
+	
+	/**
+	 * Index.
+	 *
+	 * @param values the values
+	 * @param xtractor the xtractor
+	 */
 	void index(Collection<T> values, Extractor<T> xtractor);
+	
+	/**
+	 * Search.
+	 *
+	 * @param searchString the search string
+	 * @param maxCount the max count
+	 * @return the list
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	List<NickiSearchResult> search(String searchString, int maxCount) throws IOException;
 }

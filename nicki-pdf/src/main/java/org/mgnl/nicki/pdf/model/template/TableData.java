@@ -41,6 +41,7 @@ import jakarta.xml.bind.annotation.XmlMixed;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java-Klasse f�r table-data complex type.
  * 
@@ -72,6 +73,7 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class TableData {
 
+    /** The content. */
     @XmlElementRefs({
         @XmlElementRef(name = "text", type = JAXBElement.class),
         @XmlElementRef(name = "image", type = JAXBElement.class),
@@ -81,14 +83,24 @@ public class TableData {
     })
     @XmlMixed
     protected List<Serializable> content;
+    
+    /** The font. */
     @XmlAttribute(name = "font")
     protected String font;
+    
+    /** The size. */
     @XmlAttribute(name = "size")
     protected Integer size;
+    
+    /** The style. */
     @XmlAttribute(name = "style")
     protected String style;
+    
+    /** The width. */
     @XmlAttribute(name = "width")
     protected Integer width;
+    
+    /** The height. */
     @XmlAttribute(name = "height")
     protected Integer height;
 
@@ -116,8 +128,8 @@ public class TableData {
      * {@link JAXBElement }{@code <}{@link Image }{@code >}
      * {@link JAXBElement }{@code <}{@link Barcode }{@code >}
      * {@link JAXBElement }{@code <}{@link Link }{@code >}
-     * 
-     * 
+     *
+     * @return the content
      */
     public List<Serializable> getContent() {
         if (content == null) {

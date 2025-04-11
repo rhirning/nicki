@@ -31,18 +31,41 @@ import org.mgnl.nicki.core.i18n.I18n;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PasswordRule.
+ */
 @Slf4j
 @SuppressWarnings("serial")
 public class PasswordRule extends Rule {
+	
+	/** The complexity. */
 	int complexity = 0;
+	
+	/** The min. */
 	int min = 6;
+	
+	/** The messages. */
 	List<String> messages;
 
+	/**
+	 * Instantiates a new password rule.
+	 *
+	 * @param parameter the parameter
+	 */
 	public PasswordRule(String parameter) {
 		setParameter(parameter);
 		complexity = parseInt("complexity", 0);
 		min = parseInt("minlength", 6);
 	}
+	
+	/**
+	 * Parses the int.
+	 *
+	 * @param key the key
+	 * @param defaultValue the default value
+	 * @return the int
+	 */
 	private int parseInt(String key, int defaultValue) {
 		if (getMap().containsKey(key)) {
 			try {
@@ -53,6 +76,14 @@ public class PasswordRule extends Rule {
 		}
 		return defaultValue;
 	}
+	
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		boolean ok = true;
@@ -70,6 +101,11 @@ public class PasswordRule extends Rule {
 		return ok;
 	}
 	
+	/**
+	 * Adds the message.
+	 *
+	 * @param text the text
+	 */
 	private void addMessage(String text) {
 		if (messages == null) {
 			messages = new ArrayList<String>();
@@ -77,9 +113,22 @@ public class PasswordRule extends Rule {
 		messages.add(text);
 	}
 	
+	/**
+	 * Gets the min.
+	 *
+	 * @param value the value
+	 * @return the min
+	 */
 	private int getMin(String value) {
 		return StringUtils.length(StringUtils.trim(value));
 	}
+	
+	/**
+	 * Gets the complexity.
+	 *
+	 * @param value the value
+	 * @return the complexity
+	 */
 	private int getComplexity(String value) {
 		int complexity = 0;
 		for (SET set : SET.values()) {
@@ -90,19 +139,44 @@ public class PasswordRule extends Rule {
 		return complexity;
 	}
 
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".password", messages.toString());
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "passwordRule";
 	}
+	
+	/**
+	 * The Enum SET.
+	 */
 	enum SET {
+		
+		/** The lower case. */
 		LOWER_CASE("abcdefghijklmnopqrstuvwxyz\u00c4\u00d6\u00dc"),
+		
+		/** The upper case. */
 		UPPER_CASE("ABCDEFGHIJKLMNOPQRSTUVWXYZ\u00e4\u00f6\u00fc"),
+		
+		/** The digits. */
 		DIGITS("0123456789"),
+		
+		/** The special. */
 		SPECIAL(
-			    // ASCII symbols
+			    
+    			/** The characters. */
+    			// ASCII symbols
 			    "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}`" +
 			    // Latin-1 symbols
 			    "\u00a1\u00a2\u00a3\u00a4\u00a5\u00a6\u00a7\u00a8\u00a9\u00aa\u00ab\u00ac\u00ad\u00ae\u00af" +
@@ -119,10 +193,20 @@ public class PasswordRule extends Rule {
 
 		private String characters;
 		
+		/**
+		 * Instantiates a new sets the.
+		 *
+		 * @param characters the characters
+		 */
 		SET(String characters) {
 			this.characters = characters;
 		}
 
+		/**
+		 * Gets the characters.
+		 *
+		 * @return the characters
+		 */
 		public String getCharacters() {
 			return characters;
 		}

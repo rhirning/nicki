@@ -25,6 +25,7 @@ package org.mgnl.nicki.spnego;
 import org.apache.commons.codec.binary.Base64;
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 
+// TODO: Auto-generated Javadoc
 /**
  * Example schemes are "Negotiate" and "Basic". 
  * 
@@ -55,12 +56,14 @@ final class SpnegoAuthScheme {
     /** true if NTLM token. */
     private final transient boolean ntlm;
     
+    /** The not supported. */
     private boolean notSupported;
 
     /**
-     * 
-     * @param authScheme 
-     * @param authToken 
+     * Instantiates a new spnego auth scheme.
+     *
+     * @param authScheme the auth scheme
+     * @param authToken the auth token
      */
     SpnegoAuthScheme(final String authScheme, final String authToken) {
         this.scheme = authScheme;
@@ -120,12 +123,22 @@ final class SpnegoAuthScheme {
         return (null == this.token) ? EMPTY_BYTE_ARRAY : Base64.decodeBase64(this.token);
     }
     
+    /**
+     * Gets the not supported scheme.
+     *
+     * @return the not supported scheme
+     */
     public static SpnegoAuthScheme getNotSupportedScheme() {
     	SpnegoAuthScheme scheme = new SpnegoAuthScheme("NotSupported", null);
     	scheme.notSupported = true;
     	return scheme;
     }
     
+    /**
+     * Checks if is not supported.
+     *
+     * @return true, if is not supported
+     */
     boolean isNotSupported() {
     	return notSupported;
     }

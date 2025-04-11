@@ -38,33 +38,72 @@ import org.mgnl.nicki.template.handler.TemplateHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BasicTemplateHandler.
+ */
 @Slf4j
 public class BasicTemplateHandler implements TemplateHandler{
 	
+	/** The person. */
 	private Person person;
+	
+	/** The context. */
 	private NickiContext context;
 
+	/** The params. */
 	private Object params;
+	
+	/** The template. */
 	private Template template;
+	
+	/**
+	 * Gets the context.
+	 *
+	 * @return the context
+	 */
 	public NickiContext getContext() {
 		return context;
 	}
 	
+	/**
+	 * Instantiates a new basic template handler.
+	 */
 	public BasicTemplateHandler() {
 	}
 
+	/**
+	 * Sets the template.
+	 *
+	 * @param template the new template
+	 */
 	public void setTemplate(Template template) {
 		this.template = template;
 	}
 
+	/**
+	 * Sets the user.
+	 *
+	 * @param person the new user
+	 */
 	public void setUser(Person person) {
 		this.person = person;
 	}
 
+	/**
+	 * Sets the context.
+	 *
+	 * @param context the new context
+	 */
 	public void setContext(NickiContext context) {
 		this.context = context;
 	}
 
+	/**
+	 * Gets the data model.
+	 *
+	 * @return the data model
+	 */
 	public Map<String, Object> getDataModel() {
 		Map<String, Object> dataModel = new HashMap<String, Object>();
 		/*
@@ -85,10 +124,20 @@ public class BasicTemplateHandler implements TemplateHandler{
 		return dataModel;
 	}
 
+	/**
+	 * Sets the params.
+	 *
+	 * @param params the new params
+	 */
 	public void setParams(Object params) {
 		this.params = params;
 	}
 
+	/**
+	 * Gets the template parameters.
+	 *
+	 * @return the template parameters
+	 */
 	public List<TemplateParameter> getTemplateParameters() {
 		List<TemplateParameter> list = new ArrayList<TemplateParameter>();
 		if (template != null) {
@@ -110,10 +159,20 @@ public class BasicTemplateHandler implements TemplateHandler{
 		return list;
 	}
 
+	/**
+	 * Gets the person.
+	 *
+	 * @return the person
+	 */
 	public Person getPerson() {
 		return person;
 	}
 
+	/**
+	 * Gets the template.
+	 *
+	 * @return the template
+	 */
 	public Template getTemplate() {
 		return template;
 	}

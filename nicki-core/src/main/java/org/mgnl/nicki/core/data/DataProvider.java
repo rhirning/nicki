@@ -26,12 +26,50 @@ import java.util.Collection;
 import org.mgnl.nicki.core.context.NickiContext;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface DataProvider.
+ *
+ * @param <T> the generic type
+ */
 public interface DataProvider<T> {
 
+	/**
+	 * Gets the children.
+	 *
+	 * @param context the context
+	 * @return the children
+	 */
 	Collection<? extends T> getChildren(NickiContext context);
+	
+	/**
+	 * Gets the children.
+	 *
+	 * @param parent the parent
+	 * @return the children
+	 */
 	Collection<? extends T> getChildren(T parent);
+	
+	/**
+	 * Gets the root.
+	 *
+	 * @param context the context
+	 * @return the root
+	 */
 	T getRoot(NickiContext context);
+	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	String getMessage();
+	
+	/**
+	 * Gets the entry filter.
+	 *
+	 * @return the entry filter
+	 */
 	EntryFilter getEntryFilter();
 
 }

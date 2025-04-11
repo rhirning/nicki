@@ -24,15 +24,21 @@ import javax.naming.directory.SearchControls;
 
 import org.mgnl.nicki.core.context.BeanQueryHandler.SCOPE;
 
+// TODO: Auto-generated Javadoc
 /**
- * LDAP Handler connecting to IDVault 
- * @author rhi
+ * LDAP Handler connecting to IDVault .
  *
+ * @author rhi
  */
 public abstract class BasicLdapHandler {
 
 
 
+	/**
+	 * Gets the constraints.
+	 *
+	 * @return the constraints
+	 */
 	public SearchControls getConstraints() {
 		SearchControls constraints = new SearchControls();
 		if (getScope() == SCOPE.OBJECT) {
@@ -46,6 +52,11 @@ public abstract class BasicLdapHandler {
 	}
 
 
+	/**
+	 * Gets the scope.
+	 *
+	 * @return the scope
+	 */
 	protected abstract SCOPE getScope();
 
 

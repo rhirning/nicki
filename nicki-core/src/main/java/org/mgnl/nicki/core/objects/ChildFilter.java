@@ -28,31 +28,83 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ChildFilter.
+ */
 public class ChildFilter implements Serializable {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -3256064092279768874L;
+	
+	/** The filter. */
 	private String filter;
+	
+	/** The object filters. */
 	private List<Class<? extends DynamicObject>> objectFilters;
+	
+	/**
+	 * Gets the filter.
+	 *
+	 * @return the filter
+	 */
 	public String getFilter() {
 		return filter;
 	}
+	
+	/**
+	 * Sets the filter.
+	 *
+	 * @param filter the new filter
+	 */
 	public void setFilter(String filter) {
 		this.filter = filter;
 	}
+	
+	/**
+	 * Gets the object filters.
+	 *
+	 * @return the object filters
+	 */
 	public List<Class<? extends DynamicObject>> getObjectFilters() {
 		return objectFilters;
 	}
+	
+	/**
+	 * Sets the object filters.
+	 *
+	 * @param objectFilters the new object filters
+	 */
 	public void setObjectFilters(List<Class<? extends DynamicObject>> objectFilters) {
 		this.objectFilters = objectFilters;
 	}
+	
+	/**
+	 * Adds the object filter.
+	 *
+	 * @param objectFilter the object filter
+	 */
 	public void addObjectFilter(Class<? extends DynamicObject> objectFilter) {
 		if (objectFilters == null) {
 			objectFilters = new ArrayList<Class<? extends DynamicObject>>();
 		}
 		objectFilters.add(objectFilter);
 	}
+	
+	/**
+	 * Checks for filter.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasFilter() {
 		return StringUtils.isNotBlank(filter);
 	}
+	
+	/**
+	 * Checks for object filters.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasObjectFilters() {
 		return objectFilters != null && objectFilters.size() > 0;
 	}

@@ -25,10 +25,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface Right.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface Right {
 
+	/**
+	 * Value.
+	 *
+	 * @return the string
+	 */
 	String value();
 
 }

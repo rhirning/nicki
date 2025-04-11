@@ -24,10 +24,26 @@ package org.mgnl.nicki.core.objects;
 
 import java.util.Enumeration;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface ContextAttribute.
+ */
 public interface ContextAttribute {
 
+	/**
+	 * Gets the all.
+	 *
+	 * @return the all
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	Enumeration<Object> getAll() throws DynamicObjectException;
 
+	/**
+	 * Gets the.
+	 *
+	 * @return the object
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	Object get() throws DynamicObjectException;
 
 }

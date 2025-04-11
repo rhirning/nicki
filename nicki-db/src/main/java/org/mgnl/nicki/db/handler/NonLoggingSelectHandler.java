@@ -25,12 +25,32 @@ package org.mgnl.nicki.db.handler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NonLoggingSelectHandler.
+ */
 public abstract class NonLoggingSelectHandler implements SelectHandler {
 
+	/**
+	 * Gets the search statement.
+	 *
+	 * @return the search statement
+	 */
 	public abstract String getSearchStatement();
 
+	/**
+	 * Handle.
+	 *
+	 * @param rs the rs
+	 * @throws SQLException the SQL exception
+	 */
 	public abstract void handle(ResultSet rs) throws SQLException;
 	
+	/**
+	 * Checks if is logging enabled.
+	 *
+	 * @return true, if is logging enabled
+	 */
 	public boolean isLoggingEnabled() {
 		return false;
 	}

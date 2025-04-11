@@ -31,11 +31,22 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.util.Classes;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * LoginModule which uses a configured adapter to extract user and password.
+ */
 @Slf4j
 public class NickiAdapterLoginModule extends NickiLoginModule implements LoginModule {
 	
+	/** The adapter. */
 	private SSOAdapter adapter;
 	
+	/**
+	 * Login.
+	 *
+	 * @return true, if successful
+	 * @throws LoginException the login exception
+	 */
 	@Override
 	public boolean login() throws LoginException {
 		if (getAdapter() == null) {
@@ -66,6 +77,11 @@ public class NickiAdapterLoginModule extends NickiLoginModule implements LoginMo
 		return true;
 	}
 
+	/**
+	 * Gets the adapter.
+	 *
+	 * @return the adapter
+	 */
 	private SSOAdapter getAdapter() {
 		if (this.adapter == null) {
 			String adapterClass =(String) getOptions().get("adapter");

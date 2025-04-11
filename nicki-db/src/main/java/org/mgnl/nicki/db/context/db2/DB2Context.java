@@ -25,6 +25,9 @@ package org.mgnl.nicki.db.context.db2;
 import org.mgnl.nicki.db.context.BaseDBContext;
 import org.mgnl.nicki.db.context.DBContext;
 
+/**
+ * The Class DB2Context.
+ */
 public class DB2Context
 		extends BaseDBContext
 		implements DBContext {

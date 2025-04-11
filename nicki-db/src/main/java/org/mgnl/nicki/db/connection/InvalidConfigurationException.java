@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.db.connection;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-db
@@ -22,8 +23,12 @@ package org.mgnl.nicki.db.connection;
  */
 
 
+/**
+ * The Class InvalidConfigurationException.
+ */
 public class InvalidConfigurationException extends Exception {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 2400889906981917776L;
 
 }

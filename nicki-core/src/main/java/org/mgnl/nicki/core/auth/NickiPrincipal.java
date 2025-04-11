@@ -25,13 +25,27 @@ package org.mgnl.nicki.core.auth;
 import java.security.Principal;
 
 import org.apache.commons.lang3.StringUtils;
+// TODO: Auto-generated Javadoc
 
+/**
+ * Principal (user / password).
+ */
 @SuppressWarnings("serial")
 public class NickiPrincipal implements Principal, java.io.Serializable {
 
+	/** The name. */
 	private String name;
+	
+	/** The password. */
 	private String password;
 
+	/**
+	 * Instantiates a new nicki principal.
+	 *
+	 * @param name the name
+	 * @param password the password
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	public NickiPrincipal(String name, String password) throws InvalidPrincipalException {
 		if (StringUtils.isEmpty(name) || StringUtils.isEmpty(password)) {
 			throw new InvalidPrincipalException();
@@ -40,14 +54,30 @@ public class NickiPrincipal implements Principal, java.io.Serializable {
 		this.password = password;
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return ("NickiPrincipal:  " + getName());
 	}
 
+	/**
+	 * Equals.
+	 *
+	 * @param o the o
+	 * @return true, if successful
+	 */
 	public boolean equals(Object o) {
 		if (o == null)
 			return false;
@@ -63,10 +93,21 @@ public class NickiPrincipal implements Principal, java.io.Serializable {
 			return true;
 		return false;
 	}
+	
+	/**
+	 * Hash code.
+	 *
+	 * @return the int
+	 */
 	public int hashCode() {
 		return getName().hashCode();
 	}
 
+	/**
+	 * Gets the password.
+	 *
+	 * @return the password
+	 */
 	public String getPassword() {
 		return password;
 	}

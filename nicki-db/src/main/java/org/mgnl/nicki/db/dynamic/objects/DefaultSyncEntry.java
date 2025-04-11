@@ -32,33 +32,51 @@ import org.mgnl.nicki.db.data.DataType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DefaultSyncEntry.
+ */
 @Data @NoArgsConstructor
 @Table(name = "DYNAMIC_OBJECTS")
 public class DefaultSyncEntry implements SyncEntry, SyncIdGenerator, Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 4837806177766451088L;
 
+	/** The unique id. */
 	@Attribute(name = "UNIQUE_ID", autogen=true, primaryKey=true)
 	private Long uniqueId;
 	
+	/** The type. */
 	@Attribute(name = "ENTRY_TYPE")
 	private String type;
 	
+	/** The id. */
 	@Attribute(name = "ID")
 	private String id;
 
+	/** The from. */
 	@Attribute(name = "FROM_TIME", type=DataType.TIMESTAMP)
 	private Date from;
 
+	/** The to. */
 	@Attribute(name = "TO_TIME", type=DataType.TIMESTAMP)
 	private Date to;
 	
+	/** The attribute. */
 	@Attribute(name = "ATTRIBUTE")
 	private String attribute;
 	
+	/** The content. */
 	@Attribute(name = "CONTENT")
 	private String content;
 
+	/**
+	 * Gets the id.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @return the id
+	 */
 	@Override
 	public String getId(DynamicObject dynamicObject) {
 		return dynamicObject.getNamingValue();

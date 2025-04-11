@@ -30,11 +30,26 @@ import java.util.Map;
 import org.mgnl.nicki.db.helper.BeanHelper;
 import org.mgnl.nicki.db.helper.Type;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PrimaryKey.
+ */
 public class PrimaryKey {
 
+	/** The values. */
 	private Map<String, Object> values = new HashMap<>();
+	
+	/** The types. */
 	private Map<String, Type> types = new HashMap<>();
 	
+	/**
+	 * Instantiates a new primary key.
+	 *
+	 * @param beanClass the bean class
+	 * @param generatedColumns the generated columns
+	 * @param generatedKeys the generated keys
+	 * @throws SQLException the SQL exception
+	 */
 	public PrimaryKey(Class<?> beanClass, String generatedColumns[], ResultSet generatedKeys) throws SQLException {
 		if (beanClass != null && generatedColumns != null && generatedKeys != null) {
 			String columnName = generatedColumns[0];
@@ -47,6 +62,15 @@ public class PrimaryKey {
 		}
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @param generatedKeys the generated keys
+	 * @param pos the pos
+	 * @param type the type
+	 * @return the value
+	 * @throws SQLException the SQL exception
+	 */
 	private Object getValue(ResultSet generatedKeys, int pos, Type type) throws SQLException {
 		if (type == Type.STRING || type == Type.UNKONWN) {
 			return generatedKeys.getString(pos);
@@ -66,25 +90,56 @@ public class PrimaryKey {
 		return null;
 	}
 
+	/**
+	 * Instantiates a new primary key.
+	 *
+	 * @param beanClass the bean class
+	 * @param columnName the column name
+	 * @param value the value
+	 */
 	public PrimaryKey(Class<?> beanClass, String columnName, Object value) {
 		Type type = BeanHelper.getTypeOfColumn(beanClass, columnName);
 		values.put(columnName, value);
 		types.put(columnName, type);
 	}
 
+	/**
+	 * Instantiates a new primary key.
+	 */
 	public PrimaryKey() {
 	}
 
+	/**
+	 * Adds the.
+	 *
+	 * @param beanClass the bean class
+	 * @param columnName the column name
+	 * @param value the value
+	 */
 	public void add(Class<?> beanClass, String columnName, Object value) {
 		Type type = BeanHelper.getTypeOfColumn(beanClass, columnName);
 		values.put(columnName, value);
 		types.put(columnName, type);
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @param columnName the column name
+	 * @return the value
+	 */
 	public Object getValue(String columnName) {
 		return values.get(columnName);
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param columnName the column name
+	 * @return the value
+	 */
 	@SuppressWarnings("unchecked")
 	private <T> T getValue(Class<T> clazz, String columnName) {
 		if (types.containsKey(columnName) && types.get(columnName).match(clazz)) {
@@ -94,18 +149,41 @@ public class PrimaryKey {
 		}
 	}
 
+	/**
+	 * Gets the long.
+	 *
+	 * @param columnName the column name
+	 * @return the long
+	 */
 	public long getLong(String columnName) {
 		return getValue(long.class, columnName);
 	}
 
+	/**
+	 * Gets the int.
+	 *
+	 * @param columnName the column name
+	 * @return the int
+	 */
 	public int getInt(String columnName) {
 		return getValue(int.class, columnName);
 	}
 
+	/**
+	 * Gets the string.
+	 *
+	 * @param columnName the column name
+	 * @return the string
+	 */
 	public String getString(String columnName) {
 		return getValue(String.class, columnName);
 	}
 
+	/**
+	 * Size.
+	 *
+	 * @return the int
+	 */
 	public int size() {
 		return values.size();
 	}

@@ -29,21 +29,103 @@ import java.lang.annotation.Target;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * Annotation to define attributes of DynamicObjects.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.METHOD})
 public @interface DynamicAttribute {
+	
+	/**
+	 * Naming.
+	 *
+	 * @return true, if successful
+	 */
 	boolean naming() default false;
+	
+	/**
+	 * Mandatory.
+	 *
+	 * @return true, if successful
+	 */
 	boolean mandatory() default false;
+	
+	/**
+	 * Virtual.
+	 *
+	 * @return true, if successful
+	 */
 	boolean virtual() default false;
+	
+	/**
+	 * Readonly.
+	 *
+	 * @return true, if successful
+	 */
 	boolean readonly() default false;
+	
+	/**
+	 * External name.
+	 *
+	 * @return the string
+	 */
 	String externalName();
+	
+	/**
+	 * Foreign key.
+	 *
+	 * @return the class<? extends dynamic object>[]
+	 */
 	Class<? extends DynamicObject>[] foreignKey() default {};
+	
+	/**
+	 * Editor class.
+	 *
+	 * @return the string
+	 */
 	String editorClass() default "";
+	
+	/**
+	 * Search field class.
+	 *
+	 * @return the string
+	 */
 	String searchFieldClass() default "";
+	
+	/**
+	 * Search.
+	 *
+	 * @return true, if successful
+	 */
 	boolean search() default false;
+	
+	/**
+	 * Caption.
+	 *
+	 * @return the string
+	 */
 	String caption() default "";
+	
+	/**
+	 * Format.
+	 *
+	 * @return the string
+	 */
 	String format() default "";
+	
+	/**
+	 * Type.
+	 *
+	 * @return the class
+	 */
 	Class<?> type() default String.class;
+	
+	/**
+	 * Creates the only.
+	 *
+	 * @return the org.mgnl.nicki.core.objects. dynamic attribute. CREATEONLY
+	 */
 	org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY createOnly()
 		default org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY.FALSE;
 }

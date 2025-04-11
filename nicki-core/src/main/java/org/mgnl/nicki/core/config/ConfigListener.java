@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.config;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -22,8 +23,22 @@ package org.mgnl.nicki.core.config;
  */
 
 
+/**
+ * The listener interface for receiving config events.
+ * The class that is interested in processing a config
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addConfigListener</code> method. When
+ * the config event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see ConfigEvent
+ */
 public interface ConfigListener {
 	
+	/**
+	 * Config changed.
+	 */
 	void configChanged();
 	
 }

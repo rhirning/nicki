@@ -25,12 +25,19 @@ import java.util.List;
 
 import lombok.Data;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StatisticsDefinition.
+ */
 @Data
 public class StatisticsDefinition {
 	
+	/** The query. */
 	private String query;
 
+	/** The input. */
 	private List<Variable> input;
 
+	/** The output. */
 	private List<Variable> output;	
 }

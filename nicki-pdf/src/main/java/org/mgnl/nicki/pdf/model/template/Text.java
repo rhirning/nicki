@@ -36,6 +36,7 @@ import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.XmlValue;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java-Klasse f�r text complex type.
  * 
@@ -65,29 +66,52 @@ import jakarta.xml.bind.annotation.XmlValue;
 })
 public class Text {
 
+    /** The value. */
     @XmlValue
     protected String value;
+    
+    /** The annotation. */
     @XmlAttribute(name = "annotation")
     @XmlSchemaType(name = "anySimpleType")
     protected String annotation;
+    
+    /** The color. */
     @XmlAttribute(name = "color")
     protected String color;
+    
+    /** The background color. */
     @XmlAttribute(name = "background-color")
     protected String backgroundColor;
+    
+    /** The format. */
     @XmlAttribute(name = "format")
     protected String format;
+    
+    /** The width. */
     @XmlAttribute(name = "width")
     protected Integer width;
+    
+    /** The height. */
     @XmlAttribute(name = "height")
     protected Integer height;
+    
+    /** The font. */
     @XmlAttribute(name = "font")
     protected String font;
+    
+    /** The size. */
     @XmlAttribute(name = "size")
     protected Integer size;
+    
+    /** The style. */
     @XmlAttribute(name = "style")
     protected String style;
+    
+    /** The align. */
     @XmlAttribute(name = "align")
     protected String align;
+    
+    /** The vertical align. */
     @XmlAttribute(name = "vertical-align")
     protected String verticalAlign;
 

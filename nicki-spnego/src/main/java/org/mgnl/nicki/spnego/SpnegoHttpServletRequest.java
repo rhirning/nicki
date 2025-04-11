@@ -31,6 +31,7 @@ import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 
 import org.ietf.jgss.GSSCredential;
 
+// TODO: Auto-generated Javadoc
 /**
  * Wrap ServletRequest so we can do our own handling of the 
  * principal and auth types.
@@ -47,6 +48,7 @@ import org.ietf.jgss.GSSCredential;
 final class SpnegoHttpServletRequest extends HttpServletRequestWrapper 
     implements DelegateServletRequest, SpnegoAccessControl {
     
+    /** The Constant MESSAGE_UNSUPPORTED. */
     private static final String MESSAGE_UNSUPPORTED = 
             "User Access Control has NOT been defined or is NOT supported.";
     
@@ -58,9 +60,9 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
     
     /**
      * Creates Servlet Request specifying KerberosPrincipal of user.
-     * 
-     * @param request
-     * @param spnegoPrincipal 
+     *
+     * @param request the request
+     * @param spnegoPrincipal the spnego principal
      */
     SpnegoHttpServletRequest(final HttpServletRequest request
         , final SpnegoPrincipal spnegoPrincipal) {
@@ -71,9 +73,10 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
     /**
      * Creates Servlet Request specifying KerberosPrincipal of user 
      * and a specified User Access Control (authZ).
-     * @param request
-     * @param spnegoPrincipal
-     * @param userAccessControl
+     *
+     * @param request the request
+     * @param spnegoPrincipal the spnego principal
+     * @param userAccessControl the user access control
      */
     SpnegoHttpServletRequest(final HttpServletRequest request
         , final SpnegoPrincipal spnegoPrincipal
@@ -87,7 +90,8 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
     
     /**
      * Returns "Negotiate" or "Basic" else default auth type.
-     * 
+     *
+     * @return the auth type
      * @see jakarta.servlet.http.HttpServletRequest#getAuthType()
      */
     @Override
@@ -112,6 +116,11 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
         return authType;
     }
     
+    /**
+     * Gets the delegated credential.
+     *
+     * @return the delegated credential
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.DelegateServletRequest#getDelegatedCredential()
@@ -123,7 +132,8 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
     
     /**
      * Returns authenticated username (sans domain/realm) else default username.
-     * 
+     *
+     * @return the remote user
      * @see jakarta.servlet.http.HttpServletRequest#getRemoteUser()
      */
     @Override
@@ -140,7 +150,8 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
     
     /**
      * Returns KerberosPrincipal of user.
-     * 
+     *
+     * @return the user principal
      * @see jakarta.servlet.http.HttpServletRequest#getUserPrincipal()
      */
     @Override
@@ -148,6 +159,12 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
         return this.principal;
     }
     
+    /**
+     * Any role.
+     *
+     * @param roles the roles
+     * @return true, if successful
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.SpnegoAccessControl#anyRole(java.lang.String[])
@@ -161,6 +178,12 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
         return this.accessControl.anyRole(this.getRemoteUser(), roles);
     }
     
+    /**
+     * Checks for role.
+     *
+     * @param role the role
+     * @return true, if successful
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.SpnegoAccessControl#hasRole(java.lang.String)
@@ -174,6 +197,13 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
         return this.accessControl.hasRole(this.getRemoteUser(), role);        
     }
     
+    /**
+     * Checks for role.
+     *
+     * @param featureX the feature X
+     * @param featureYs the feature ys
+     * @return true, if successful
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.SpnegoAccessControl#hasRole(java.lang.String, java.lang.String[])
@@ -188,6 +218,12 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
         return this.accessControl.hasRole(this.getRemoteUser(), featureX, featureYs);
     }
     
+    /**
+     * Any access.
+     *
+     * @param resources the resources
+     * @return true, if successful
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.SpnegoAccessControl#anyAccess(java.lang.String[])
@@ -201,6 +237,12 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
         return this.accessControl.anyAccess(this.getRemoteUser(), resources);        
     }
     
+    /**
+     * Checks for access.
+     *
+     * @param resource the resource
+     * @return true, if successful
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.SpnegoAccessControl#hasAccess(java.lang.String)
@@ -215,6 +257,13 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
         return this.accessControl.hasAccess(this.getRemoteUser(), resource);
     }
     
+    /**
+     * Checks for access.
+     *
+     * @param resourceX the resource X
+     * @param resourceYs the resource ys
+     * @return true, if successful
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.SpnegoAccessControl#hasAccess(java.lang.String, java.lang.String[])
@@ -229,6 +278,11 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
         return this.accessControl.hasAccess(this.getRemoteUser(), resourceX, resourceYs);        
     }
 
+    /**
+     * Gets the user info.
+     *
+     * @return the user info
+     */
     /*
      * (non-Javadoc)
      * @see net.sourceforge.spnego.SpnegoAccessControl#getUserInfo()
@@ -249,6 +303,12 @@ final class SpnegoHttpServletRequest extends HttpServletRequestWrapper
         }
     }
     
+    /**
+     * Checks if is user in role.
+     *
+     * @param role the role
+     * @return true, if is user in role
+     */
     /*
      * (non-Javadoc)
      * @see jakarta.servlet.http.HttpServletRequestWrapper#isUserInRole(java.lang.String)

@@ -24,31 +24,56 @@ package org.mgnl.nicki.core.context;
 
 import java.util.Locale;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ThreadContext.
+ */
 public class ThreadContext {
-    /**
-     * The thread local variable holding the current context
-     */
+    
+    /** The thread local variable holding the current context. */
     private static AppThreadLocal localContext = new AppThreadLocal();
 
     /**
      * Get the current context of this thread.
+     *
+     * @return single instance of ThreadContext
      */
     public static Context getInstance() {
         return localContext.get();
     }
     
+	/**
+	 * Gets the request.
+	 *
+	 * @return the request
+	 */
 	public static Object getRequest() {
 		return getInstance().getRequest();
 	}
 
+	/**
+	 * Sets the request.
+	 *
+	 * @param request the new request
+	 */
 	public static void setRequest(Object request) {
 		getInstance().setRequest(request);
 	}
 
+	/**
+	 * Gets the locale.
+	 *
+	 * @return the locale
+	 */
 	public static Locale getLocale() {
 		return getInstance().getLocale();
 	}
 
+	/**
+	 * Sets the locale.
+	 *
+	 * @param locale the new locale
+	 */
 	public static void setLocale(Locale locale) {
 		getInstance().setLocale(locale);
 	}

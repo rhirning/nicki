@@ -34,6 +34,7 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java-Klasse f�r box complex type.
  * 
@@ -65,15 +66,28 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Box {
 
+    /** The text. */
     protected Text text;
+    
+    /** The barcode. */
     protected Barcode barcode;
+    
+    /** The image. */
     protected Image image;
+    
+    /** The x. */
     @XmlAttribute(name = "x")
     protected Integer x;
+    
+    /** The y. */
     @XmlAttribute(name = "y")
     protected Integer y;
+    
+    /** The align. */
     @XmlAttribute(name = "align")
     protected String align;
+    
+    /** The vertical align. */
     @XmlAttribute(name = "vertical-align")
     protected String verticalAlign;
 

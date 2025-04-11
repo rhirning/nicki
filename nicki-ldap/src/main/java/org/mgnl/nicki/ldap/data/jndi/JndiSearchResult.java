@@ -33,23 +33,51 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JndiSearchResult.
+ */
 @Slf4j
 public class JndiSearchResult implements ContextSearchResult {
+	
+	/** The rs. */
 	private SearchResult rs;
 
+	/**
+	 * Instantiates a new jndi search result.
+	 *
+	 * @param rs the rs
+	 */
 	public JndiSearchResult(SearchResult rs) {
 		this.rs = rs;
 	}
 
+	/**
+	 * Gets the name in namespace.
+	 *
+	 * @return the name in namespace
+	 */
 	@Override
 	public String getNameInNamespace() {
 		return rs.getNameInNamespace();
 	}
 
+	/**
+	 * Gets the attributes.
+	 *
+	 * @return the attributes
+	 */
 	public ContextAttributes getAttributes() {
 		return new JndiAttributes(rs.getAttributes());
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @param clazz the clazz
+	 * @param name the name
+	 * @return the value
+	 */
 	@Override
 	public Object getValue(Class<?> clazz, String name) {
 		try {
@@ -72,6 +100,12 @@ public class JndiSearchResult implements ContextSearchResult {
 		return null;
 	}
 
+	/**
+	 * Gets the values.
+	 *
+	 * @param name the name
+	 * @return the values
+	 */
 	@Override
 	public List<Object> getValues(String name) {
 		List<Object> list = new ArrayList<>();
@@ -85,6 +119,12 @@ public class JndiSearchResult implements ContextSearchResult {
 		return list;
 	}
 
+	/**
+	 * Checks for attribute.
+	 *
+	 * @param name the name
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean hasAttribute(String name) {
 		return rs.getAttributes().get(name) != null;

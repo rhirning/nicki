@@ -28,19 +28,47 @@ import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Rule.
+ */
 @SuppressWarnings("serial")
 public abstract class Rule implements Serializable {
+	
+	/** The Constant MAP_SEPARATOR. */
 	public static final String MAP_SEPARATOR = "!";
+	
+	/** The Constant MAP_EQUAL. */
 	public static final String MAP_EQUAL = "=";
+	
+	/** The parameter. */
 	private String parameter;
+	
+	/** The map. */
 	private Map<String, String> map = new HashMap<String, String>();
 	
+	/**
+	 * Instantiates a new rule.
+	 */
 	public Rule() {
 		super();
 	}
 
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	public abstract boolean evaluate(String value, Map<String, String> values);
 	
+	/**
+	 * Gets the long.
+	 *
+	 * @param value the value
+	 * @return the long
+	 */
 	public static long getLong(String value) {
 		value = StringUtils.stripToNull(value);
 		if (value == null) {
@@ -55,6 +83,13 @@ public abstract class Rule implements Serializable {
 		return Long.valueOf(value);
 	}
 	
+	/**
+	 * Gets the number.
+	 *
+	 * @param value the value
+	 * @return the number
+	 * @throws NumberFormatException the number format exception
+	 */
 	public static double getNumber(String value) throws NumberFormatException {
 		value = StringUtils.stripToNull(value);
 		if (value == null) {
@@ -69,15 +104,28 @@ public abstract class Rule implements Serializable {
 		return Double.valueOf(value);
 	}
 
+	/**
+	 * Gets the parameter.
+	 *
+	 * @return the parameter
+	 */
 	public String getParameter() {
 		return parameter;
 	}
 
+	/**
+	 * Sets the parameter.
+	 *
+	 * @param parameter the new parameter
+	 */
 	public void setParameter(String parameter) {
 		this.parameter = parameter;
 		initMap();
 	}
 
+	/**
+	 * Inits the map.
+	 */
 	private void initMap() {
 		map.clear();
 		if (this.parameter != null) {
@@ -91,13 +139,28 @@ public abstract class Rule implements Serializable {
 		}
 	}
 
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	public abstract String getMessage();
 	
 
+	/**
+	 * Gets the i 18 n base.
+	 *
+	 * @return the i 18 n base
+	 */
 	public String getI18nBase() {
 		return "nicki.verify.message";
 	}
 
+	/**
+	 * Gets the map.
+	 *
+	 * @return the map
+	 */
 	public Map<String, String> getMap() {
 		return map;
 	}

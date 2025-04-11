@@ -27,9 +27,25 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+// TODO: Auto-generated Javadoc
+/**
+ * Defines the object classes of an DynamicObject.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface ObjectClass {
+	
+	/**
+	 * Value.
+	 *
+	 * @return the string[]
+	 */
 	String[] value();
+	
+	/**
+	 * Inits the.
+	 *
+	 * @return true, if successful
+	 */
 	boolean init() default false;
 }

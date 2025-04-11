@@ -33,20 +33,46 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 import freemarker.template.TemplateMethodModelEx;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ChildrenMethod.
+ */
 public class ChildrenMethod implements Serializable, TemplateMethodModelEx {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -81535049844368520L;
+	
+	/** The objects. */
 	private List<? extends DynamicObject> objects;
+	
+	/** The parent. */
 	private String parent;
+	
+	/** The filter. */
 	private ChildFilter filter;
+	
+	/** The context. */
 	private NickiContext context;
 	
+	/**
+	 * Instantiates a new children method.
+	 *
+	 * @param context the context
+	 * @param rs the rs
+	 * @param filter the filter
+	 */
 	public ChildrenMethod(NickiContext context, ContextSearchResult rs, ChildFilter filter) {
 		this.context = context;
 		this.parent = rs.getNameInNamespace();
 		this.filter = filter;
 	}
 
+	/**
+	 * Exec.
+	 *
+	 * @param arguments the arguments
+	 * @return the list<? extends dynamic object>
+	 */
 	public List<? extends DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (objects == null) {
 			objects = context.loadChildObjects(parent, filter);

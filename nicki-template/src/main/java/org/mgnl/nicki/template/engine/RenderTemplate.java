@@ -30,14 +30,36 @@ import java.util.Map;
 import freemarker.template.Template;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RenderTemplate.
+ */
 @Slf4j
 public class RenderTemplate extends Thread implements Runnable {
+	
+	/** The Constant DEFAULT_CHARSET. */
 	public final static String DEFAULT_CHARSET = "UTF-8";
+	
+	/** The template. */
 	Template template;
+	
+	/** The data model. */
 	Map<String, Object> dataModel;
+	
+	/** The out. */
 	OutputStream out;
+	
+	/** The charset. */
 	String charset;
 	
+	/**
+	 * Instantiates a new render template.
+	 *
+	 * @param template the template
+	 * @param dataModel the data model
+	 * @param out the out
+	 * @param charset the charset
+	 */
 	public RenderTemplate(Template template, Map<String, Object> dataModel,
 			OutputStream out, String charset) {
 		super();
@@ -51,6 +73,9 @@ public class RenderTemplate extends Thread implements Runnable {
 		}
 	}
 
+	/**
+	 * Run.
+	 */
 	public void run() {
 		try {
 			template.process(dataModel, new OutputStreamWriter(out, charset));

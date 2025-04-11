@@ -44,6 +44,7 @@ import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
 import org.ietf.jgss.GSSManager;
 
+// TODO: Auto-generated Javadoc
 /**
  * Handles <a href="http://en.wikipedia.org/wiki/SPNEGO">SPNEGO</a> or <a
  * href="http://en.wikipedia.org/wiki/Basic_access_authentication">Basic</a>
@@ -126,11 +127,11 @@ public final class SpnegoAuthenticator {
 
     /**
      * Create an authenticator for SPNEGO and/or BASIC authentication.
-     * 
+     *
      * @param config servlet filter initialization parameters
-     * @throws LoginException 
-     * @throws GSSException 
-     * @throws PrivilegedActionException 
+     * @throws LoginException the login exception
+     * @throws GSSException the GSS exception
+     * @throws PrivilegedActionException the privileged action exception
      */
     public SpnegoAuthenticator(final SpnegoFilterConfig config) 
         throws LoginException, GSSException, PrivilegedActionException {
@@ -165,12 +166,12 @@ public final class SpnegoAuthenticator {
     
     /**
      * Create an authenticator for SPNEGO and/or BASIC authentication.
-     * 
+     *
      * @param loginModuleName module named defined in login.conf
      * @param config servlet filter initialization parameters
-     * @throws LoginException 
-     * @throws GSSException 
-     * @throws PrivilegedActionException 
+     * @throws LoginException the login exception
+     * @throws GSSException the GSS exception
+     * @throws PrivilegedActionException the privileged action exception
      */
     public SpnegoAuthenticator(final String loginModuleName
         , final SpnegoFilterConfig config) throws LoginException
@@ -219,13 +220,13 @@ public final class SpnegoAuthenticator {
      * Method will throw UnsupportedOperationException if client authz 
      * request is NOT "Negotiate" or "Basic". 
      * </p>
+     *
      * @param req servlet request
      * @param resp servlet response
-     * 
      * @return null if auth not complete else SpnegoPrincipal of client
-     * @throws GSSException 
-     * @throws IOException 
-     * @throws NotSupportedException 
+     * @throws GSSException the GSS exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws NotSupportedException the not supported exception
      */
     public SpnegoPrincipal authenticate(final HttpServletRequest req
         , final SpnegoHttpServletResponse resp) throws GSSException
@@ -319,13 +320,16 @@ public final class SpnegoAuthenticator {
     
     /**
      * Performs authentication using the BASIC Auth mechanism.
-     *
+     * 
      * <p>
      * Returns null if authentication failed or if the provided 
      * the auth scheme did not contain BASIC Auth data/token.
      * </p>
-     * 
+     *
+     * @param scheme the scheme
+     * @param resp the resp
      * @return SpnegoPrincipal for the given auth scheme.
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     private SpnegoPrincipal doBasicAuth(final SpnegoAuthScheme scheme
         , final SpnegoHttpServletResponse resp) throws IOException {
@@ -387,6 +391,11 @@ public final class SpnegoAuthenticator {
         return principal;
     }
 
+    /**
+     * Do localhost.
+     *
+     * @return the spnego principal
+     */
     private SpnegoPrincipal doLocalhost() {
         final String username = System.getProperty("user.name");
         
@@ -403,13 +412,17 @@ public final class SpnegoAuthenticator {
 
     /**
      * Performs authentication using the SPNEGO mechanism.
-     *
+     * 
      * <p>
      * Returns null if authentication failed or if the provided 
      * the auth scheme did not contain the SPNEGO/GSS token.
      * </p>
-     * 
+     *
+     * @param scheme the scheme
+     * @param resp the resp
      * @return SpnegoPrincipal for the given auth scheme.
+     * @throws GSSException the GSS exception
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     private SpnegoPrincipal doSpnegoAuth(
         final SpnegoAuthScheme scheme, final SpnegoHttpServletResponse resp) 
@@ -471,6 +484,11 @@ public final class SpnegoAuthenticator {
         return new SpnegoPrincipal(principal, KerberosPrincipal.KRB_NT_PRINCIPAL, gss, delegCred);
     }
     
+    /**
+     * Gets the server realm.
+     *
+     * @return the server realm
+     */
     public String getServerRealm() {
         return this.serverPrincipal.getRealm();
     }

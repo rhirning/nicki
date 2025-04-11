@@ -21,6 +21,9 @@ package org.mgnl.nicki.core.auth;
  */
 
 import java.net.URL;
+/**
+ * ContextListener to initialize JAAS
+ */
 
 import javax.security.auth.login.AppConfigurationEntry;
 import javax.security.auth.login.Configuration;
@@ -30,16 +33,46 @@ import jakarta.servlet.ServletContextListener;
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import lombok.extern.slf4j.Slf4j;
+// TODO: Auto-generated Javadoc
+
+/**
+ * The listener interface for receiving initJaasContext events.
+ * The class that is interested in processing a initJaasContext
+ * event implements this interface, and the object created
+ * with that class is registered with a component using the
+ * component's <code>addInitJaasContextListener</code> method. When
+ * the initJaasContext event occurs, that object's appropriate
+ * method is invoked.
+ *
+ * @see InitJaasContextEvent
+ */
 @Slf4j
 public class InitJaasContextListener implements ServletContextListener {
+	
+	/** The Constant PATH_PREFIX. */
 	public static final String PATH_PREFIX 			= "/C:";
+    
+    /** The Constant KRB5_CONF. */
     public static final String KRB5_CONF			= "spnego.krb5.conf";
+    
+    /** The Constant LOGIN_CONF. */
     public static final String LOGIN_CONF			= "spnego.login.conf";
+    
+    /** The Constant CONTEXT_CONF. */
     public static final String CONTEXT_CONF			= "nicki.login.context.name";
+    
+    /** The Constant PROPERTY_KRB5_CONF. */
     public static final String PROPERTY_KRB5_CONF	= "java.security.krb5.conf";
+    
+    /** The Constant PROPERTY_LOGIN_CONF. */
     public static final String PROPERTY_LOGIN_CONF	= "java.security.auth.login.config";
     
 
+	/**
+	 * Context initialized.
+	 *
+	 * @param sce the sce
+	 */
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
         
@@ -84,6 +117,11 @@ public class InitJaasContextListener implements ServletContextListener {
         checkModule(Config.getString(CONTEXT_CONF));
 	}
 
+	/**
+	 * Check module.
+	 *
+	 * @param moduleName the module name
+	 */
 	private void checkModule(final String moduleName) {
         
         // confirm that runtime loaded the login file
@@ -98,10 +136,21 @@ public class InitJaasContextListener implements ServletContextListener {
         }
     }
 
+	/**
+	 * Gets the inits the parameter.
+	 *
+	 * @param key the key
+	 * @return the inits the parameter
+	 */
 	private String getInitParameter(String key) {
 		return Config.getString(key);
 	}
 
+	/**
+	 * Context destroyed.
+	 *
+	 * @param sce the sce
+	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		// TODO Auto-generated method stub

@@ -40,8 +40,10 @@ import org.mgnl.nicki.verify.VerifyException;
 import it.sauronsoftware.cron4j.Scheduler;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
 /**
- * NickiSchedulerContextListener
+ * NickiSchedulerContextListener.
+ *
  * @author rhirning
  * 
  * Konfigurationsdatei wird festgelegt in
@@ -53,13 +55,22 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class NickiSchedulerContextListener implements ServletContextListener {
 
+	/** The scheduler. */
 	private Scheduler scheduler;
 	
+	/**
+	 * Instantiates a new nicki scheduler context listener.
+	 */
 	public NickiSchedulerContextListener() {
 		super();
 	    log.info("------- Initializing -------------------");
 	}
 
+	/**
+	 * Context initialized.
+	 *
+	 * @param servletContextEvent the servlet context event
+	 */
 	@Override
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 
@@ -97,6 +108,12 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 
 	}
 
+	/**
+	 * Checks if is active.
+	 *
+	 * @param syncConfig the sync config
+	 * @return true, if is active
+	 */
 	private boolean isActive(JobConfig syncConfig) {
 		if (StringUtils.isNotBlank(syncConfig.getActive())) {
 			return DataHelper.booleanOf(syncConfig.getActive());
@@ -115,6 +132,11 @@ public class NickiSchedulerContextListener implements ServletContextListener {
 		return false;
 	}
 
+	/**
+	 * Context destroyed.
+	 *
+	 * @param sce the sce
+	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		log.info("------- Shutting Down ---------------------");

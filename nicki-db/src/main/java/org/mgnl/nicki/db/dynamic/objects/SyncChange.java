@@ -25,14 +25,35 @@ import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SyncChange.
+ */
 @Data
 @AllArgsConstructor
 public class SyncChange {
-	public enum ACTION {ADD, REMOVE, MODIFY}
 	
+	/**
+	 * The Enum ACTION.
+	 */
+	public enum ACTION {
+/** The add. */
+ADD, 
+ /** The remove. */
+ REMOVE, 
+ /** The modify. */
+ MODIFY}
+	
+	/** The date. */
 	private Date date;
+	
+	/** The action. */
 	private ACTION action;
+	
+	/** The attribute. */
 	private String attribute;
+	
+	/** The value. */
 	private String value;
 
 }

@@ -30,13 +30,30 @@ import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.context.ThreadContext;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class I18n.
+ */
 public final class I18n {
+	
+	/** The instance. */
 	private static I18n instance = new I18n();
 	
+	/** The message bases. */
 	private List<String> messageBases = new ArrayList<String>();
+	
+	/**
+	 * Instantiates a new i 18 n.
+	 */
 	private I18n() {
 	}
 	
+	/**
+	 * Gets the translated text.
+	 *
+	 * @param key the key
+	 * @return the translated text
+	 */
 	private String getTranslatedText(String key) {
 		Config.getInstance();
 		for (String base : messageBases) {
@@ -52,6 +69,13 @@ public final class I18n {
 		return key;
 	}
 	
+	/**
+	 * Gets the translated text.
+	 *
+	 * @param key the key
+	 * @param data the data
+	 * @return the translated text
+	 */
 	private String getTranslatedText(String key, String ... data) {
 		Config.getInstance();
 		String text = getText(key);
@@ -64,18 +88,43 @@ public final class I18n {
 		return text;
 	}
 	
+	/**
+	 * Gets the text.
+	 *
+	 * @param key the key
+	 * @return the text
+	 */
 	public static String getText(String key) {
 		return instance.getTranslatedText(key);
 	}
 	
+	/**
+	 * Gets the text.
+	 *
+	 * @param key the key
+	 * @param data the data
+	 * @return the text
+	 */
 	public static String getText(String key, String ... data) {
 		return instance.getTranslatedText(key, data);
 	}
 	
+	/**
+	 * Adds the message base.
+	 *
+	 * @param base the base
+	 */
 	public static void addMessageBase(String base) {
 		instance.messageBases.add(base);
 	}
 
+	/**
+	 * Gets the texts.
+	 *
+	 * @param base the base
+	 * @param keys the keys
+	 * @return the texts
+	 */
 	public static String[] getTexts(String base, String... keys) {
 		List<String> texts = new ArrayList<String>();
 		for (String key: keys) {

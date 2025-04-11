@@ -24,9 +24,19 @@ import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
 import org.mgnl.nicki.core.context.AppContext;
+// TODO: Auto-generated Javadoc
 
+/**
+ * LoginModule to grant anonymous access.
+ */
 public class OpenLoginModule extends NickiLoginModule implements LoginModule {
 
+	/**
+	 * Login.
+	 *
+	 * @return true, if successful
+	 * @throws LoginException the login exception
+	 */
 	@Override
 	public boolean login() throws LoginException {
 		try {

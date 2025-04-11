@@ -1,5 +1,6 @@
 package org.mgnl.nicki.db.fs;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-db
@@ -20,9 +21,17 @@ package org.mgnl.nicki.db.fs;
  * #L%
  */
 
+/**
+ * The Class FileStoreException.
+ */
 @SuppressWarnings("serial")
 public class FileStoreException extends Exception {
 
+	/**
+	 * Instantiates a new file store exception.
+	 *
+	 * @param e the e
+	 */
 	public FileStoreException(Exception e) {
 		super(e);
 	}

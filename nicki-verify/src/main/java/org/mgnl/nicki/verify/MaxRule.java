@@ -27,15 +27,35 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MaxRule.
+ */
 public class MaxRule extends Rule {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The max value. */
 	private Long maxValue;
 
+	/**
+	 * Instantiates a new max rule.
+	 *
+	 * @param parameter the parameter
+	 */
 	public MaxRule(String parameter) {
 		setParameter(parameter);
 		maxValue = getLong(parameter);
 	}
 
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		if (maxValue != null &&  StringUtils.isNotBlank(value)) {
@@ -48,10 +68,21 @@ public class MaxRule extends Rule {
 		return true;
 	}
 	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".max", getParameter());
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "max:" + maxValue;
 	}

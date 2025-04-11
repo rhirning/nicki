@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.thread;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-vaadin-base
@@ -22,12 +23,29 @@ package org.mgnl.nicki.core.thread;
  */
 
 
+/**
+ * The Interface NickiProgress.
+ */
 public interface NickiProgress {
 
+	/**
+	 * Progressed.
+	 *
+	 * @param newCurrent the new current
+	 * @param newDetails the new details
+	 */
 	void progressed(int newCurrent, String newDetails);
 
+	/**
+	 * Finish.
+	 */
 	void finish();
 
+	/**
+	 * Inits the.
+	 *
+	 * @param progressRunner the progress runner
+	 */
 	void init(ProgressRunner progressRunner);
 
 }

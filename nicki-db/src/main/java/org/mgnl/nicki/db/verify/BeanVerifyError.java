@@ -25,13 +25,25 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BeanVerifyError.
+ */
 @Data
 @EqualsAndHashCode(callSuper = false)
 public class BeanVerifyError extends Exception {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 4965092676208331051L;
 
+	/** The errors. */
 	private List<String> errors;
 	
+	/**
+	 * Instantiates a new bean verify error.
+	 *
+	 * @param errors the errors
+	 */
 	public BeanVerifyError(List<String> errors) {
 		this.errors = errors;
 	}

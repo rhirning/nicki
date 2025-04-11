@@ -36,16 +36,21 @@ import com.lowagie.text.pdf.ColumnText;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
  
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PdfTest.
+ */
 public class PdfTest {
  
+    /** The Constant RESULT. */
     public static final String RESULT
         = "d:/temp/pdfTest.pdf";
  
     /**
      * Main method.
      *
-     * @param    args    no arguments needed
-     * @throws IOException
+     * @param args the arguments
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     public static void main(String[] args)
         throws IOException {

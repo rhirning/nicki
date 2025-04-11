@@ -34,32 +34,52 @@ import org.mgnl.nicki.core.helper.XMLHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
 /**
  * XML Format:
  * 
  * <data onlyDefinedEntries="true">
  *   <entry value="A" display="Aha"/>
- * </data>
- * @author rhirning
+ * </data>.
  *
+ * @author rhirning
  */
 
 @Slf4j
 public class XmlValueProvider implements CatalogValueProvider {
 
+	/** The entries. */
 	private Map<String, String> entries = new TreeMap<String, String>();
+	
+	/** The only defined entries. */
 	private boolean onlyDefinedEntries = false;
 	
+	/**
+	 * Checks if is only defined entries.
+	 *
+	 * @return true, if is only defined entries
+	 */
 	@Override
 	public boolean isOnlyDefinedEntries() {
 		return onlyDefinedEntries;
 	}
 
+	/**
+	 * Gets the entries.
+	 *
+	 * @return the entries
+	 */
 	@Override
 	public Map<String, String> getEntries() {
 		return entries;
 	}
 
+	/**
+	 * Check entry.
+	 *
+	 * @param entry the entry
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean checkEntry(String entry) {
 		if (onlyDefinedEntries) {
@@ -70,6 +90,11 @@ public class XmlValueProvider implements CatalogValueProvider {
 	}
 
 	
+	/**
+	 * Inits the.
+	 *
+	 * @param article the article
+	 */
 	public void init(CatalogArticle article) {
 		String providerData = article.getAttribute("providerData");
 		if (StringUtils.isNotEmpty(providerData)) {
@@ -93,6 +118,11 @@ public class XmlValueProvider implements CatalogValueProvider {
 		}
 	}
 
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public TYPE getType() {
 		return TYPE.LIST;

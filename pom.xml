@@ -21,8 +21,6 @@
 	</properties>
 	<inceptionYear>2017</inceptionYear>
 	<modules>
-		
-		<module>nicki-cache</module>
 		<module>nicki-core</module>
 		<module>nicki-db</module>
 		<module>nicki-dynamic-objects</module>

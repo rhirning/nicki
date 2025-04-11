@@ -36,6 +36,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for anonymous complex type.
  * 
@@ -84,8 +85,11 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "document")
 public class Document {
 
+    /** The styles. */
     @XmlElement(required = true)
     protected Document.Styles styles;
+    
+    /** The pages. */
     @XmlElement(required = true)
     protected Document.Pages pages;
 
@@ -163,6 +167,7 @@ public class Document {
     })
     public static class Pages {
 
+        /** The page. */
         @XmlElement(required = true)
         protected List<Page> page;
 
@@ -185,8 +190,8 @@ public class Document {
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link Page }
-         * 
-         * 
+         *
+         * @return the page
          */
         public List<Page> getPage() {
             if (page == null) {
@@ -223,6 +228,7 @@ public class Document {
     })
     public static class Styles {
 
+        /** The style. */
         @XmlElement(required = true)
         protected List<Style> style;
 
@@ -245,8 +251,8 @@ public class Document {
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link Style }
-         * 
-         * 
+         *
+         * @return the style
          */
         public List<Style> getStyle() {
             if (style == null) {

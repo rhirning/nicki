@@ -1,5 +1,6 @@
 package org.mgnl.nicki.core.config;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -20,6 +21,9 @@ package org.mgnl.nicki.core.config;
  * #L%
  */
 
+/**
+ * The Interface ConfigValueProvider.
+ */
 public interface ConfigValueProvider {
 
 	/**
@@ -30,7 +34,8 @@ public interface ConfigValueProvider {
 	boolean exists(String key);
 
 	/**
-	 * returns the config value to the key
+	 * returns the config value to the key.
+	 *
 	 * @param key key to the config value
 	 * @return the config value
 	 */

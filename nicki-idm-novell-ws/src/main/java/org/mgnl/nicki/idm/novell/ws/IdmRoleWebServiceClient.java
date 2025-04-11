@@ -55,6 +55,7 @@ import com.novell.idm.nrf.soap.ws.role.IRemoteRole;
 import com.novell.idm.nrf.soap.ws.role.RoleService;
 import com.novell.soa.ws.portable.Stub;
 
+// TODO: Auto-generated Javadoc
 /**
  * see: https://www.netiq.com/documentation/idm45/agpro/data/bdux8cm.html
  * 
@@ -70,13 +71,22 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * nicki.idm.novell.ws.resource.password = netiq000
 	 */
 
+	/** The wsdl. */
 	private static String wsdl = Config.getString("nicki.idm.novell.ws.role.wsdl");
+	
+	/** The user. */
 	private static String user = Config.getString("nicki.idm.novell.ws.role.user");
+	
+	/** The password. */
 	private static String password = Config.getString("nicki.idm.novell.ws.role.password");
 
+	/** The instance. */
 	private static IdmRoleWebServiceClient instance;
 
+	/** The service. */
 	private RoleService service;
+	
+	/** The role proxy. */
 	private IRemoteRole roleProxy;
 
 	static {
@@ -89,6 +99,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 		});
 	}
 
+	/**
+	 * Gets the single instance of IdmRoleWebServiceClient.
+	 *
+	 * @return single instance of IdmRoleWebServiceClient
+	 */
 	public static synchronized IdmRoleWebServiceClient getInstance() {
 		if (instance == null) {
 			instance = new IdmRoleWebServiceClient();
@@ -97,9 +112,15 @@ public class IdmRoleWebServiceClient implements Serializable {
 		return instance;
 	}
 
+	/**
+	 * Instantiates a new idm role web service client.
+	 */
 	private IdmRoleWebServiceClient() {
 	}
 
+	/**
+	 * Inits the.
+	 */
 	private void init() {
 
 		try {
@@ -122,11 +143,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 	/**
 	 * Create a resource association and return the resource association object with
 	 * the newly created resource association DN.
-	 * 
-	 * @param resourceAssociation
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param resourceAssociation the resource association
+	 * @return the resource association
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ResourceAssociation createResourceAssociation(ResourceAssociation resourceAssociation)
 			throws NrfServiceException, RemoteException {
@@ -143,11 +164,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * UserApp#RemoteRoleRequest#xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	 * <br/><br/>
 	 * The correlation ID is used for auditing.
-	 * 
-	 * @param role
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param role the role
+	 * @return the DN string
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public DNString createRole(RoleRequest role) throws NrfServiceException, RemoteException {
 		return roleProxy.createRole(role);
@@ -157,12 +178,12 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * Creates a new role with a correlation ID that you provide. The correlation ID
 	 * is used for auditing to link a set of related roles. This method returns the
 	 * DN of the created role.
-	 * 
-	 * @param role
-	 * @param correlationId
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param role the role
+	 * @param correlationId the correlation id
+	 * @return the DN string
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public DNString createRoleAid(RoleRequest role, String correlationId) throws NrfServiceException, RemoteException {
 		return roleProxy.createRoleAid(role, correlationId);
@@ -170,10 +191,10 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Deletes a resource association object.
-	 * 
-	 * @param resourceAssociationDn
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param resourceAssociationDn the resource association dn
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public void deleteResourceAssociation(DNString resourceAssociationDn) throws NrfServiceException, RemoteException {
 		roleProxy.deleteResourceAssociation(resourceAssociationDn);
@@ -663,11 +684,12 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * </td>
 	 * </tr>
 	 * </table>
-	 * @param searchCriteria
-	 * @param useAndForMultiValueSearch
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param searchCriteria the search criteria
+	 * @param useAndForMultiValueSearch the use and for multi value search
+	 * @return the role[]
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Role[] findRoleByExampleWithOperator(Role searchCriteria, boolean useAndForMultiValueSearch)
 			throws NrfServiceException, RemoteException {
@@ -676,11 +698,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Finds all SoD objects based on the search criteria in the given SOD object.
-	 * 
-	 * @param sod
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param sod the sod
+	 * @return the sod[]
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Sod[] findSodByExample(Sod sod) throws NrfServiceException, RemoteException {
 		return roleProxy.findSodByExample(sod);
@@ -690,12 +712,12 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * Finds all SoD objects based on the search criteria found in the given SOD
 	 * object. This method also lets you specify whether to use And as the operator
 	 * for multi-value searches.
-	 * 
-	 * @param sod
-	 * @param useAndForMultiValueSearch
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param sod the sod
+	 * @param useAndForMultiValueSearch the use and for multi value search
+	 * @return the sod[]
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Sod[] findSodByExampleWithOperator(Sod sod, boolean useAndForMultiValueSearch)
 			throws NrfServiceException, RemoteException {
@@ -704,11 +726,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Find by key.
-	 * 
-	 * @param entityKey
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param entityKey the entity key
+	 * @return the sod
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Sod findSodById(String entityKey) throws NrfServiceException, RemoteException {
 		return roleProxy.findSodById(entityKey);
@@ -716,13 +738,13 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Returns returns the list of identities having a particular role DN.
-	 * 
-	 * @param roleDN
-	 * @param identityType
-	 * @param directAssignOnly
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roleDN the role DN
+	 * @param identityType the identity type
+	 * @param directAssignOnly the direct assign only
+	 * @return the assigned identities
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public RoleAssignment[] getAssignedIdentities(String roleDN, IdentityType identityType, boolean directAssignOnly)
 			throws NrfServiceException, RemoteException {
@@ -781,10 +803,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * 
 	 * DirectoryService/realms/jndi/params/PROVISIONING_ROOT
 	 * </td></tr></table>
-	 * @param configPropertyKey
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param configPropertyKey the config property key
+	 * @return the config property
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ConfigProperty getConfigProperty(String configPropertyKey) throws NrfServiceException, RemoteException {
 		return roleProxy.getConfigProperty(configPropertyKey);
@@ -793,10 +816,10 @@ public class IdmRoleWebServiceClient implements Serializable {
 	/**
 	 * Returns the role system configuration defined in the Role Catalog root
 	 * (nrfConfiguration).
-	 * 
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @return the configuration
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Configuration getConfiguration() throws NrfServiceException, RemoteException {
 		return roleProxy.getConfiguration();
@@ -804,11 +827,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Gets container and role information for a given container DN.
-	 * 
-	 * @param containerDn
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param containerDn the container dn
+	 * @return the container
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Container getContainer(String containerDn) throws NrfServiceException, RemoteException {
 		return roleProxy.getContainer(containerDn);
@@ -817,12 +840,12 @@ public class IdmRoleWebServiceClient implements Serializable {
 	/**
 	 * Returns a list of Sod instances for all SOD violations found for a specific
 	 * identity and type.
-	 * 
-	 * @param identity
-	 * @param identityType
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param identity the identity
+	 * @param identityType the identity type
+	 * @return the exceptions list
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Sod[] getExceptionsList(String identity, IdentityType identityType)
 			throws NrfServiceException, RemoteException {
@@ -831,11 +854,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Gets group and role information for a given group DN.
-	 * 
-	 * @param groupDn
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param groupDn the group dn
+	 * @return the group
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Group getGroup(String groupDn) throws NrfServiceException, RemoteException {
 		return roleProxy.getGroup(groupDn);
@@ -843,11 +866,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Returns a map of identities which are in violation of a given SoD.
-	 * 
-	 * @param sodDn
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param sodDn the sod dn
+	 * @return the identities in violation
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public IdentityTypeDnMap[] getIdentitiesInViolation(String sodDn) throws NrfServiceException, RemoteException {
 		return roleProxy.getIdentitiesInViolation(sodDn);
@@ -856,13 +879,13 @@ public class IdmRoleWebServiceClient implements Serializable {
 	/**
 	 * Returns a list of Sod instances for all SOD conflicts found for a given list
 	 * of roles for a given identity.
-	 * 
-	 * @param identity
-	 * @param identityType
-	 * @param requestedRoles
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param identity the identity
+	 * @param identityType the identity type
+	 * @param requestedRoles the requested roles
+	 * @return the identity role conflicts
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Sod[] getIdentityRoleConflicts(String identity, IdentityType identityType, DNString[] requestedRoles)
 			throws NrfServiceException, RemoteException {
@@ -872,11 +895,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 	/**
 	 * Retrieves resource association objects for a given role DN or resource DN. If
 	 * the roleDn and resourceDn parameters are null, the entire list is returned.
-	 * 
-	 * @param resourceAssociationDn
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param resourceAssociationDn the resource association dn
+	 * @return the resource association
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ResourceAssociation getResourceAssociation(DNString resourceAssociationDn)
 			throws NrfServiceException, RemoteException {
@@ -886,12 +909,12 @@ public class IdmRoleWebServiceClient implements Serializable {
 	/**
 	 * Retrieves resource association objects for a given role DN or resource DN. If
 	 * the roleDn and resourceDn parameters are null, the entire list is returned.
-	 * 
-	 * @param roleDn
-	 * @param resourceDn
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roleDn the role dn
+	 * @param resourceDn the resource dn
+	 * @return the resource associations
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ResourceAssociation[] getResourceAssociations(DNString roleDn, DNString resourceDn)
 			throws NrfServiceException, RemoteException {
@@ -904,11 +927,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * assigned containers, and assigned groups. However, this API does not return
 	 * assigned users. If you want assigned users, use the getAssignedIdentities API
 	 * with USER for identityType and true for directAssignOnly.
-	 * 
-	 * @param roleDn
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roleDn the role dn
+	 * @return the role
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Role getRole(String roleDn) throws NrfServiceException, RemoteException {
 		return roleProxy.getRole(roleDn);
@@ -917,11 +940,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 	/**
 	 * Returns a list of role assignment request status instances given a
 	 * correlation ID.
-	 * 
-	 * @param correlationId
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param correlationId the correlation id
+	 * @return the role assignment request status
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public RoleAssignmentRequestStatus[] getRoleAssignmentRequestStatus(String correlationId)
 			throws NrfServiceException, RemoteException {
@@ -929,11 +952,12 @@ public class IdmRoleWebServiceClient implements Serializable {
 	}
 
 	/**
-	 * 
-	 * @param requestDns
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * Gets the role assignment request status by DN.
+	 *
+	 * @param requestDns the request dns
+	 * @return the role assignment request status by DN
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public RoleAssignmentRequestStatus[] getRoleAssignmentRequestStatusByDN(DNString[] requestDns)
 			throws NrfServiceException, RemoteException {
@@ -943,12 +967,12 @@ public class IdmRoleWebServiceClient implements Serializable {
 	/**
 	 * Returns a list of role assignment request status instances given an identity
 	 * and an identity type.
-	 * 
-	 * @param identityDn
-	 * @param identityType
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param identityDn the identity dn
+	 * @param identityType the identity type
+	 * @return the role assignment request status by identity type
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public RoleAssignmentRequestStatus[] getRoleAssignmentRequestStatusByIdentityType(String identityDn,
 			IdentityType identityType) throws NrfServiceException, RemoteException {
@@ -957,11 +981,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Retrieves details about a RoleAssignmentType.
-	 * 
-	 * @param type
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param type the type
+	 * @return the role assignment type info
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public RoleAssignmentTypeInfo getRoleAssignmentTypeInfo(RoleAssignmentType type)
 			throws NrfServiceException, RemoteException {
@@ -970,10 +994,10 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Gets role categories.
-	 * 
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @return the role categories
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Category[] getRoleCategories() throws NrfServiceException, RemoteException {
 		return roleProxy.getRoleCategories();
@@ -982,11 +1006,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 	/**
 	 * Returns a list of Sod instances found for all given roles. This method always
 	 * returns a list.
-	 * 
-	 * @param roles
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roles the roles
+	 * @return the role conflicts
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Sod[] getRoleConflicts(DNString[] roles) throws NrfServiceException, RemoteException {
 		return roleProxy.getRoleConflicts(roles);
@@ -994,10 +1018,10 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Gets the role levels.
-	 * 
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @return the role levels
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public RoleLevel[] getRoleLevels() throws NrfServiceException, RemoteException {
 		return roleProxy.getRoleLevels();
@@ -1007,12 +1031,12 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * Gets role localized strings, such as names and descriptions. The method takes
 	 * an integer parameter that allows you to specify the type of the string. The
 	 * number 1 indicates names; the number 2 indicates descriptions.
-	 * 
-	 * @param roleDn
-	 * @param type
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roleDn the role dn
+	 * @param type the type
+	 * @return the role localized strings
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public LocalizedValue[] getRoleLocalizedStrings(DNString roleDn, int type)
 			throws NrfServiceException, RemoteException {
@@ -1021,11 +1045,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Returns a list of RoleInfo instances given a list of role DNs.
-	 * 
-	 * @param roleDns
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roleDns the role dns
+	 * @return the roles info
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public RoleInfo[] getRolesInfo(DNString[] roleDns) throws NrfServiceException, RemoteException {
 		return roleProxy.getRolesInfo(roleDns);
@@ -1033,11 +1057,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Returns a list of RoleInfo instances given a list of role category keys.
-	 * 
-	 * @param roleCategoryKeys
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roleCategoryKeys the role category keys
+	 * @return the roles info by category
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public RoleInfo[] getRolesInfoByCategory(CategoryKey[] roleCategoryKeys)
 			throws NrfServiceException, RemoteException {
@@ -1046,11 +1070,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Returns a list of RoleInfo instances given a list of role levels.
-	 * 
-	 * @param roleLevels
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roleLevels the role levels
+	 * @return the roles info by level
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public RoleInfo[] getRolesInfoByLevel(long[] roleLevels) throws NrfServiceException, RemoteException {
 		return roleProxy.getRolesInfoByLevel(roleLevels);
@@ -1059,12 +1083,12 @@ public class IdmRoleWebServiceClient implements Serializable {
 	/**
 	 * Returns a list of Sod instances for all SOD conflicts defined between the
 	 * target role DN and the source role DN.
-	 * 
-	 * @param targetName
-	 * @param sourceName
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param targetName the target name
+	 * @param sourceName the source name
+	 * @return the target source conflicts
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Sod[] getTargetSourceConflicts(String targetName, String sourceName)
 			throws NrfServiceException, RemoteException {
@@ -1074,11 +1098,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 	/**
 	 * Gets user info including all role assignments for a given user DN stored in a
 	 * UserIdentity object.
-	 * 
-	 * @param userDn
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param userDn the user dn
+	 * @return the user
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public User getUser(String userDn) throws NrfServiceException, RemoteException {
 		return roleProxy.getUser(userDn);
@@ -1086,9 +1110,9 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Returns the version of this Web Service.
-	 * 
-	 * @return
-	 * @throws RemoteException
+	 *
+	 * @return the version
+	 * @throws RemoteException the remote exception
 	 */
 	public VersionVO getVersion() throws RemoteException {
 		return roleProxy.getVersion();
@@ -1096,12 +1120,12 @@ public class IdmRoleWebServiceClient implements Serializable {
 
 	/**
 	 * Returns boolean flag; true if role has been assigned to a User identity.
-	 * 
-	 * @param userDn
-	 * @param roleDn
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param userDn the user dn
+	 * @param roleDn the role dn
+	 * @return true, if is user in role
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public boolean isUserInRole(String userDn, String roleDn) throws NrfServiceException, RemoteException {
 		return roleProxy.isUserInRole(userDn, roleDn);
@@ -1120,11 +1144,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * UserApp#RemoteRoleRequest#xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	 * </code><br>
 	 * The correlation ID is used for auditing.
-	 * 
-	 * @param role
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param role the role
+	 * @return the role
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Role modifyRole(Role role) throws NrfServiceException, RemoteException {
 		return roleProxy.modifyRole(role);
@@ -1137,12 +1161,12 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * <code>
 	 * getRoleLocalizedStrings(DNString roleDn, LocalizedString[] locStrings, int  strType)
 	 * </code> method to update localized names or descriptions for a role.
-	 * 
-	 * @param role
-	 * @param correlationId
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param role the role
+	 * @param correlationId the correlation id
+	 * @return the role
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Role modifyRoleAid(Role role, String correlationId) throws NrfServiceException, RemoteException {
 		return roleProxy.modifyRoleAid(role, correlationId);
@@ -1161,11 +1185,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * </code><br>
 	 * 
 	 * The correlation ID is used for auditing.
-	 * 
-	 * @param roleDns
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roleDns the role dns
+	 * @return the DN string[]
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public DNString[] removeRoles(DNString[] roleDns) throws NrfServiceException, RemoteException {
 		return roleProxy.removeRoles(roleDns);
@@ -1176,12 +1200,12 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * provide. The correlation ID is used for auditing to link a set of related
 	 * roles. This method returns an array of DNs for the deleted roles as a
 	 * confirmation.
-	 * 
-	 * @param roleDns
-	 * @param correlationId
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roleDns the role dns
+	 * @param correlationId the correlation id
+	 * @return the DN string[]
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public DNString[] removeRolesAid(DNString[] roleDns, String correlationId)
 			throws NrfServiceException, RemoteException {
@@ -1227,11 +1251,11 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * }</pre>
 	 * With that said, without the these two elements in the soap request, the
 	 * request will not validate. It will work, but will not validate.
-	 * 
-	 * @param roleAssignmentRequest
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roleAssignmentRequest the role assignment request
+	 * @return the DN string[]
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public DNString[] requestRolesAssignment(RoleAssignmentRequest roleAssignmentRequest)
 			throws NrfServiceException, RemoteException {
@@ -1247,13 +1271,13 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * UserApp#RemoteRoleRequest#xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	 * 
 	 * The correlation ID is used for auditing.
-	 * 
-	 * @param roleDn
-	 * @param locStrings
-	 * @param type
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roleDn the role dn
+	 * @param locStrings the loc strings
+	 * @param type the type
+	 * @return the localized value[]
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public LocalizedValue[] setRoleLocalizedStrings(DNString roleDn, LocalizedValue[] locStrings, int type)
 			throws NrfServiceException, RemoteException {
@@ -1264,14 +1288,14 @@ public class IdmRoleWebServiceClient implements Serializable {
 	 * Sets role localized strings, such as name and description, with a correlation
 	 * ID that you provide. The correlation ID is used for auditing to link a set of
 	 * related roles.
-	 * 
-	 * @param roleDn
-	 * @param correlationId
-	 * @param locStrings
-	 * @param type
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param roleDn the role dn
+	 * @param correlationId the correlation id
+	 * @param locStrings the loc strings
+	 * @param type the type
+	 * @return the localized value[]
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public LocalizedValue[] setRoleLocalizedStringsAid(DNString roleDn, String correlationId,
 			LocalizedValue[] locStrings, int type) throws NrfServiceException, RemoteException {

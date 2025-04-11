@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.search;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-search
@@ -22,14 +23,33 @@ package org.mgnl.nicki.search;
  */
 
 
+/**
+ * The Class NickiSearchResult.
+ */
 public class NickiSearchResult {
+	
+	/** The category. */
 	private String category;
+	
+	/** The key. */
 	private String key;
+	
+	/** The title. */
 	private String title;
+	
+	/** The description. */
 	private String description;
+	
+	/** The score. */
 	private float score;
 
 
+	/**
+	 * Instantiates a new nicki search result.
+	 *
+	 * @param doc the doc
+	 * @param score the score
+	 */
 	public NickiSearchResult(SearchDocument doc, float score) {
 		this.category = doc.get(NickiSearch.ATTRIBUTE_CATEGORY);
 		this.key = doc.get(NickiSearch.ATTRIBUTE_KEY);
@@ -39,6 +59,13 @@ public class NickiSearchResult {
 	}
 
 
+	/**
+	 * Instantiates a new nicki search result.
+	 *
+	 * @param category the category
+	 * @param key the key
+	 * @param score the score
+	 */
 	public NickiSearchResult(String category, String key, float score) {
 		this.category = category;
 		this.key = key;
@@ -46,26 +73,51 @@ public class NickiSearchResult {
 	}
 
 
+	/**
+	 * Gets the key.
+	 *
+	 * @return the key
+	 */
 	public String getKey() {
 		return key;
 	}
 
 
+	/**
+	 * Gets the description.
+	 *
+	 * @return the description
+	 */
 	public String getDescription() {
 		return description;
 	}
 
 
+	/**
+	 * Gets the score.
+	 *
+	 * @return the score
+	 */
 	public float getScore() {
 		return score;
 	}
 
 
+	/**
+	 * Gets the title.
+	 *
+	 * @return the title
+	 */
 	public String getTitle() {
 		return title;
 	}
 
 
+	/**
+	 * Gets the category.
+	 *
+	 * @return the category
+	 */
 	public String getCategory() {
 		return category;
 	}

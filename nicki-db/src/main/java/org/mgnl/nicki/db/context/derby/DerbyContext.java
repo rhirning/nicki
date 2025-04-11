@@ -35,28 +35,60 @@ import org.mgnl.nicki.db.context.PrimaryKey;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
 
 import lombok.extern.slf4j.Slf4j;
+// TODO: Auto-generated Javadoc
+
+/**
+ * The Class DerbyContext.
+ */
 @Slf4j
 public class DerbyContext
 		extends BaseDBContext
 		implements DBContext {
 
+	/** The Constant TIMESTAMP_PATTERN. */
 	public final static String TIMESTAMP_PATTERN = "yyyy-MM-dd HH:mm:ss";
+	
+	/** The Constant DATE_PATTERN. */
 	public final static String DATE_PATTERN = "yyyy-MM-dd";
 
+	/**
+	 * Gets the time stamp.
+	 *
+	 * @return the time stamp
+	 */
 	@Override
 	public String getTimeStamp() {
 		return "CURRENT_TIMESTAMP";
 	}
 
+	/**
+	 * Gets the sys date.
+	 *
+	 * @return the sys date
+	 */
 	@Override
 	public String getSysDate() {
 		return "CURRENT_DATE";
 	}
 	
+	/**
+	 * Gets the now plus hours.
+	 *
+	 * @param hours the hours
+	 * @return the now plus hours
+	 */
 	public String getNowPlusHours(int hours) {
 		return "{fn TIMESTAMPADD(SQL_TSI_HOUR, " + hours + ", CURRENT_TIMESTAMP)}";
 	}
 	
+	/**
+	 * Gets the date value.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @param attribute the attribute
+	 * @return the date value
+	 */
 	@Override
 	protected String getDateValue(Object bean, Field field, Attribute attribute) {
 		if (attribute.now()) {
@@ -72,6 +104,12 @@ public class DerbyContext
 		return null;
 	}
 
+	/**
+	 * To timestamp.
+	 *
+	 * @param date the date
+	 * @return the string
+	 */
 	@Override
 	public String toTimestamp(Date date) {
 		if (date != null) {
@@ -82,6 +120,12 @@ public class DerbyContext
 	}
 
 
+	/**
+	 * To date.
+	 *
+	 * @param date the date
+	 * @return the string
+	 */
 	@Override
 	public String toDate(Date date) {
 		if (date != null) {
@@ -91,6 +135,14 @@ public class DerbyContext
 		}
 	}
 
+	/**
+	 * Gets the sequence number.
+	 *
+	 * @param beanClazz the bean clazz
+	 * @param sequenceAttribute the sequence attribute
+	 * @return the sequence number
+	 * @throws Exception the exception
+	 */
 	@Override
 	public PrimaryKey getSequenceNumber(Class<?> beanClazz, Attribute sequenceAttribute) throws Exception {
 
@@ -99,6 +151,13 @@ public class DerbyContext
 		return new PrimaryKey(beanClazz, sequenceAttribute.name(), handler.getResult());
 	}
 
+	/**
+	 * Gets the sequence number.
+	 *
+	 * @param sequenceName the sequence name
+	 * @return the sequence number
+	 * @throws Exception the exception
+	 */
 	@Override
 	public Long getSequenceNumber(String sequenceName) throws Exception {
 
@@ -107,6 +166,12 @@ public class DerbyContext
 		return handler.getResult();
 	}
 
+	/**
+	 * Gets the qualified name.
+	 *
+	 * @param name the name
+	 * @return the qualified name
+	 */
 	@Override
 	public String getQualifiedName(String name) {
 		if (!StringUtils.contains(name, '.') && this.getSchema() != null) {
@@ -116,6 +181,12 @@ public class DerbyContext
 		}
 	}
 
+	/**
+	 * Gets the date as db string.
+	 *
+	 * @param value the value
+	 * @return the date as db string
+	 */
 	@Override
 	public String getDateAsDbString(Date value) {
 		return toTimestamp(value);

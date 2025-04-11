@@ -27,9 +27,18 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+// TODO: Auto-generated Javadoc
+/**
+ * Defines a format of an attribute.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface Format {
 
+	/**
+	 * Value.
+	 *
+	 * @return the string
+	 */
 	String value();
 }

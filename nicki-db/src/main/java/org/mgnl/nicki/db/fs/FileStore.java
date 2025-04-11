@@ -28,18 +28,27 @@ import org.mgnl.nicki.db.data.DataType;
 
 import lombok.Data;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class FileStore.
+ */
 @Table(name = "FILE_STORE")
 @Data
 public class FileStore {
+	
+	/** The id. */
 	@Attribute(name = "ID", primaryKey = true, autogen = true)
 	private Long id;
 
+	/** The name. */
 	@Attribute(name = "NAME")
 	private String name;
 
+	/** The data. */
 	@Attribute(name = "DATA")
 	private String data;
 
+	/** The modify time. */
 	@Attribute(name = "MODIFY_TIME", now = true, type = DataType.TIMESTAMP)
 	private Date modifyTime;
 }

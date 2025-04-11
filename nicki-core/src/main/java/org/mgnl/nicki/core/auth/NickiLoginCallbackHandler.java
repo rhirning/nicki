@@ -23,23 +23,51 @@ package org.mgnl.nicki.core.auth;
 
 
 import javax.security.auth.callback.CallbackHandler;
+// TODO: Auto-generated Javadoc
 
+/**
+ * CallbackHandler with request object and ssoAdapter.
+ */
 public abstract class NickiLoginCallbackHandler implements CallbackHandler {
+	
+	/** The request. */
 	private Object request;
+	
+	/** The adapter. */
 	private SSOAdapter adapter;
 
+	/**
+	 * Instantiates a new nicki login callback handler.
+	 *
+	 * @param request the request
+	 */
 	public NickiLoginCallbackHandler(Object request) {
 		this.request = request;
 	}
 
+	/**
+	 * Gets the request.
+	 *
+	 * @return the request
+	 */
 	protected Object getRequest() {
 		return request;
 	}
 
+	/**
+	 * Sets the adapter.
+	 *
+	 * @param ssoAdapter the new adapter
+	 */
 	public void setAdapter(SSOAdapter ssoAdapter) {
 		this.adapter = ssoAdapter;
 	}
 
+	/**
+	 * Gets the adapter.
+	 *
+	 * @return the adapter
+	 */
 	protected SSOAdapter getAdapter() {
 		return adapter;
 	}

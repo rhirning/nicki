@@ -30,12 +30,51 @@ import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.template.engine.TemplateParameter;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface TemplateHandler.
+ */
 public interface TemplateHandler {
+	
+	/**
+	 * Sets the user.
+	 *
+	 * @param person the new user
+	 */
 	void setUser(Person person);
+	
+	/**
+	 * Sets the context.
+	 *
+	 * @param context the new context
+	 */
 	void setContext(NickiContext context);
+	
+	/**
+	 * Sets the params.
+	 *
+	 * @param params the new params
+	 */
 	void setParams(Object params);
 
+	/**
+	 * Gets the data model.
+	 *
+	 * @return the data model
+	 */
 	Map<String, Object> getDataModel();
+	
+	/**
+	 * Gets the template parameters.
+	 *
+	 * @return the template parameters
+	 */
 	List<TemplateParameter> getTemplateParameters();
+	
+	/**
+	 * Sets the template.
+	 *
+	 * @param template the new template
+	 */
 	void setTemplate(Template template);
 }

@@ -36,18 +36,36 @@ import org.mgnl.nicki.core.helper.NameValue;
 import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Mapping.
+ */
 @DynamicObject
 @ObjectClass("DirXML-Resource")
 public class Mapping extends BaseDynamicObject {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -6344126171035952327L;
+	
+	/** The name. */
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;
+	
+	/** The data. */
 	@StructuredDynamicAttribute(externalName="DirXML-Data")
 	private String data;
+	
+	/** The content type. */
 	@DynamicAttribute(externalName="DirXML-ContentType")
 	private String contentType;
 	
+	/**
+	 * Gets the mapping.
+	 *
+	 * @return the mapping
+	 * @throws JDOMException the JDOM exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public List<NameValue> getMapping() throws JDOMException, IOException   {
 		List<NameValue> list = new ArrayList<NameValue>();
 

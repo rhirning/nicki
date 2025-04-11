@@ -33,15 +33,29 @@ import org.mgnl.nicki.core.i18n.I18n;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class DependendRule.
+ */
 // val					= dependend:confirmationType!!MAIL=min:1!max=14!!MOBILE=min:2!max:16!!
 @Slf4j
 @SuppressWarnings("serial")
 public class DependendRule extends Rule {
+	
+	/** The attribut name. */
 	private String attributName;
+	
+	/** The rules map. */
 	private Map<String, List<String>> rulesMap = new HashMap<>();
 	
+	/** The messages. */
 	List<String> messages;
 
+	/**
+	 * Instantiates a new dependend rule.
+	 *
+	 * @param parameter the parameter
+	 */
 	public DependendRule(String parameter) {
 		setParameter(parameter);
 		String[] parts = StringUtils.splitByWholeSeparator(parameter, "!!");
@@ -58,6 +72,13 @@ public class DependendRule extends Rule {
 		}
 	}
 	
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		boolean ok = true;
@@ -85,6 +106,14 @@ public class DependendRule extends Rule {
 		return ok;
 	}
 	
+	/**
+	 * Read attribute value.
+	 *
+	 * @param <T> the generic type
+	 * @param values the values
+	 * @param name the name
+	 * @return the t
+	 */
 	private <T> T readAttributeValue(Map<String, T> values, String name) {
 		if (name == null || values == null || values.size() == 0) {
 			return null;
@@ -98,6 +127,11 @@ public class DependendRule extends Rule {
 		return null;
 	}
 
+	/**
+	 * Adds the message.
+	 *
+	 * @param text the text
+	 */
 	private void addMessage(String text) {
 		if (messages == null) {
 			messages = new ArrayList<String>();
@@ -105,10 +139,21 @@ public class DependendRule extends Rule {
 		messages.add(text);
 	}
 
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".dependend", messages.toString());
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "email";
 	}

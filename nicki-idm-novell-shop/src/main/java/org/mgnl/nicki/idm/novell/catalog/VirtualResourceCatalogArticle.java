@@ -27,36 +27,75 @@ import org.mgnl.nicki.idm.novell.shop.objects.Resource;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class VirtualResourceCatalogArticle.
+ */
 @SuppressWarnings("serial")
 @DynamicObject
 public class VirtualResourceCatalogArticle extends ResourceCatalogArticle {
+	
+	/** The resource. */
 	private Resource resource;
+	
+	/** The page. */
 	private CatalogPage page;
 
+	/**
+	 * Instantiates a new virtual resource catalog article.
+	 *
+	 * @param resource the resource
+	 * @param page the page
+	 */
 	public VirtualResourceCatalogArticle(Resource resource, CatalogPage page) {
 		this.resource = resource;
 		this.page = page;
 	}
 
+	/**
+	 * Gets the resource.
+	 *
+	 * @return the resource
+	 */
 	public Resource getResource() {
 		return resource;
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	@Override
 	public String getName() {
 		return resource.getPath();
 	}
 
+	/**
+	 * Gets the path.
+	 *
+	 * @return the path
+	 */
 	@Override
 	public String getPath() {
 		return resource.getPath();
 	}
 
+	/**
+	 * Gets the display name.
+	 *
+	 * @return the display name
+	 */
 	@Override
 	public String getDisplayName() {
 		return resource.getDisplayName();
 	}
 	
+	/**
+	 * Gets the catalog path.
+	 *
+	 * @return the catalog path
+	 */
 	@Override
 	public String getCatalogPath() {
 		return page.getCatalogPath() + Catalog.PATH_SEPARATOR + getName();

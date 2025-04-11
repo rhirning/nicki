@@ -31,9 +31,21 @@ import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LdapSystemContext.
+ */
 @SuppressWarnings("serial")
 public final class LdapSystemContext extends LdapContext implements NickiContext, Serializable {
 
+	/**
+	 * Instantiates a new ldap system context.
+	 *
+	 * @param adapter the adapter
+	 * @param target the target
+	 * @param user the user
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	protected LdapSystemContext(DynamicObjectAdapter adapter, Target target, DynamicObject user) throws InvalidPrincipalException {
 		super(adapter, target, READONLY.FALSE);
 		setPrincipal(new NickiPrincipal(getTarget().getProperty("securityPrincipal"),

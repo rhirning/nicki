@@ -56,6 +56,7 @@ import org.xml.sax.SAXException;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
 /**
  * This class can be used to make SOAP calls to a protected SOAP Web Service.
  * 
@@ -129,29 +130,30 @@ import lombok.extern.slf4j.Slf4j;
  * target="_blank">how to connect to a protected SOAP Web Service</a> 
  *  example.
  * </p>
- * 
- * @see SpnegoHttpURLConnection
- * 
- * @author Darwin V. Felix
  *
+ * @author Darwin V. Felix
+ * @see SpnegoHttpURLConnection
  */
 @Slf4j
 public class SpnegoSOAPConnection extends SOAPConnection {
 
+    /** The conn. */
     private final transient SpnegoHttpURLConnection conn;
     
+    /** The document factory. */
     private final transient DocumentBuilderFactory documentFactory = 
         DocumentBuilderFactory.newInstance();
     
+    /** The message factory. */
     private final transient MessageFactory messageFactory;
     
     /**
      * Creates an instance where the LoginContext relies on a keytab 
      * file being specified by "java.security.auth.login.config" or 
      * where LoginContext relies on tgtsessionkey.
-     * 
-     * @param loginModuleName 
-     * @throws LoginException 
+     *
+     * @param loginModuleName the login module name
+     * @throws LoginException the login exception
      */
     public SpnegoSOAPConnection(final String loginModuleName) throws LoginException {
         super();
@@ -197,11 +199,11 @@ public class SpnegoSOAPConnection extends SOAPConnection {
      * and whether the GSSCredential should be disposed after use.
      * 
      * Set confidentiality and mutual integrity to both be false or both be true. 
-     * 
+     *
      * @param creds credentials to use
      * @param dispose true if GSSCredential should be diposed after use
-     * @param confidential
-     * @param integrity
+     * @param confidential the confidential
+     * @param integrity the integrity
      */
     public SpnegoSOAPConnection(final GSSCredential creds, final boolean dispose
         , final boolean confidential, final boolean integrity) {
@@ -221,11 +223,11 @@ public class SpnegoSOAPConnection extends SOAPConnection {
      * Creates an instance where the LoginContext does not require a keytab
      * file. However, the "java.security.auth.login.config" property must still
      * be set prior to instantiating this object.
-     * 
-     * @param loginModuleName 
-     * @param username 
-     * @param password 
-     * @throws LoginException 
+     *
+     * @param loginModuleName the login module name
+     * @param username the username
+     * @param password the password
+     * @throws LoginException the login exception
      */
     public SpnegoSOAPConnection(final String loginModuleName,
         final String username, final String password) throws LoginException {
@@ -240,6 +242,14 @@ public class SpnegoSOAPConnection extends SOAPConnection {
         }
     }
 
+    /**
+     * Call.
+     *
+     * @param request the request
+     * @param endpoint the endpoint
+     * @return the SOAP message
+     * @throws SOAPException the SOAP exception
+     */
     @Override
     public final SOAPMessage call(final SOAPMessage request, final Object endpoint)
         throws SOAPException {
@@ -313,6 +323,9 @@ public class SpnegoSOAPConnection extends SOAPConnection {
         return message;
     }
 
+    /**
+     * Close.
+     */
     @Override
     public final void close() {
         if (null != this.conn) {
@@ -320,6 +333,13 @@ public class SpnegoSOAPConnection extends SOAPConnection {
         }
     }
     
+    /**
+     * Creates the message.
+     *
+     * @param stream the stream
+     * @return the SOAP message
+     * @throws SOAPException the SOAP exception
+     */
     private SOAPMessage createMessage(final InputStream stream) throws SOAPException {
         final Document document;
         
@@ -375,6 +395,15 @@ public class SpnegoSOAPConnection extends SOAPConnection {
         }
     }
 
+    /**
+     * Parses the.
+     *
+     * @param stream the stream
+     * @return the document
+     * @throws SAXException the SAX exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws ParserConfigurationException the parser configuration exception
+     */
     private Document parse(final InputStream stream) 
         throws SAXException, IOException, ParserConfigurationException {
         
@@ -386,6 +415,17 @@ public class SpnegoSOAPConnection extends SOAPConnection {
         return document;
     }
     
+    /**
+     * Transform.
+     *
+     * @param soapBody the soap body
+     * @return the SOAP message
+     * @throws SOAPException the SOAP exception
+     * @throws IOException Signals that an I/O exception has occurred.
+     * @throws TransformerException the transformer exception
+     * @throws SAXException the SAX exception
+     * @throws ParserConfigurationException the parser configuration exception
+     */
     private SOAPMessage transform(final Node soapBody) throws SOAPException, IOException
         , TransformerException, SAXException, ParserConfigurationException {
 

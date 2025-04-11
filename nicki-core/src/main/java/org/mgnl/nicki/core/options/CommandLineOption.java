@@ -24,22 +24,61 @@ import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface CommandLineOption.
+ */
 @Retention(RetentionPolicy.RUNTIME)  
 @Repeatable(CommandLineOptions.class)
 public @interface CommandLineOption {
 
+	/**
+	 * Option.
+	 *
+	 * @return the string
+	 */
 	String option();
 	
+	/**
+	 * Attribute.
+	 *
+	 * @return the string
+	 */
 	String attribute();
 
+	/**
+	 * Long opt.
+	 *
+	 * @return the string
+	 */
 	String longOpt();
 
+	/**
+	 * Arg name.
+	 *
+	 * @return the string
+	 */
 	String argName() default "";
 
+	/**
+	 * Checks for arg.
+	 *
+	 * @return true, if successful
+	 */
 	boolean hasArg() default false;
 
+	/**
+	 * Desc.
+	 *
+	 * @return the string
+	 */
 	String desc();
 
+	/**
+	 * Bool.
+	 *
+	 * @return true, if successful
+	 */
 	boolean bool() default false;
 
 }

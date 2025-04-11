@@ -30,25 +30,58 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JndiDBProfile.
+ */
 public class JndiDBProfile implements DBProfile {
+	
+	/** The jndi environment. */
 	String jndiEnvironment = "java:comp/env";
+	
+	/** The data source. */
 	String dataSource;
+	
+	/** The auto commit. */
 	private boolean autoCommit;
 	
+	/**
+	 * Instantiates a new jndi DB profile.
+	 *
+	 * @param dataSource the data source
+	 * @param autoCommit the auto commit
+	 */
 	public JndiDBProfile(String dataSource, boolean autoCommit) {
 		super();
 		this.dataSource = dataSource;
 		this.autoCommit = autoCommit;
 	}
 
+	/**
+	 * Gets the jndi environment.
+	 *
+	 * @return the jndi environment
+	 */
 	public String getJndiEnvironment() {
 		return jndiEnvironment;
 	}
 
+	/**
+	 * Gets the data source.
+	 *
+	 * @return the data source
+	 */
 	public String getDataSource() {
 		return dataSource;
 	}
 	
+	/**
+	 * Gets the connection.
+	 *
+	 * @return the connection
+	 * @throws SQLException the SQL exception
+	 * @throws InitProfileException the init profile exception
+	 */
 	public Connection getConnection() throws SQLException, InitProfileException {
 		DataSource ds;
 		try {

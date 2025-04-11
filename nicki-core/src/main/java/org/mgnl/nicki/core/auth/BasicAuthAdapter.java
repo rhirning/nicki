@@ -29,13 +29,30 @@ import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.context.AppContext;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * Adapter for basic authentication.
+ */
 @Slf4j
 public class BasicAuthAdapter implements SSOAdapter {
+	
+	/** The request. */
 	private Object request;
+	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return getAuthPart(0);
 	}
 
+	/**
+	 * Gets the password.
+	 *
+	 * @return the password
+	 */
 	public char[] getPassword() {
 		String password = getAuthPart(1);
 		if (password != null) {
@@ -44,16 +61,31 @@ public class BasicAuthAdapter implements SSOAdapter {
 		return new char[]{};
 	}
 
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public TYPE getType() {
 		return TYPE.BASIC;
 	}
 
+	/**
+	 * Sets the request.
+	 *
+	 * @param request the new request
+	 */
 	@Override
 	public void setRequest(Object request) {
 		this.request = request;
 	}
 	
+	/**
+	 * Gets the request.
+	 *
+	 * @return the request
+	 */
 	public Object getRequest() {
 		if (this.request != null) {
 			return this.request;
@@ -62,6 +94,12 @@ public class BasicAuthAdapter implements SSOAdapter {
 		}
 	}
 
+	/**
+	 * Decode.
+	 *
+	 * @param encodedString the encoded string
+	 * @return the string[]
+	 */
 	protected String[] decode(final String encodedString) {
 		if (StringUtils.isNotBlank(encodedString)) {
 			final byte[] decodedBytes = Base64.decodeBase64(encodedString
@@ -73,6 +111,12 @@ public class BasicAuthAdapter implements SSOAdapter {
 		return new String[]{};
 	}
 	
+	/**
+	 * Gets the auth part.
+	 *
+	 * @param num the num
+	 * @return the auth part
+	 */
 	protected String getAuthPart(int num) {
 		try {
 			if (getRequest() instanceof HttpServletRequest) {
@@ -90,6 +134,11 @@ public class BasicAuthAdapter implements SSOAdapter {
 		return null;
 	}
 
+	/**
+	 * Inits the.
+	 *
+	 * @param loginModule the login module
+	 */
 	@Override
 	public void init(NickiAdapterLoginModule loginModule) {
 	}

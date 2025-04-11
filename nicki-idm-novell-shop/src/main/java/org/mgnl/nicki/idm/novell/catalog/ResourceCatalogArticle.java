@@ -34,14 +34,26 @@ import org.mgnl.nicki.idm.novell.shop.objects.Resource;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ResourceCatalogArticle.
+ */
 @DynamicObject
 @ObjectClass("nickiResourceArticle")
 public class ResourceCatalogArticle extends CatalogArticle {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 3397169876567940029L;
 
+	/** The Constant ATTRIBUTE_RESOURCE. */
 	public static final String ATTRIBUTE_RESOURCE = "resource";
 
+	/**
+	 * Gets the inventory articles.
+	 *
+	 * @param person the person
+	 * @return the inventory articles
+	 */
 	@Override
 	public List<InventoryArticle> getInventoryArticles(Person person) {
 		List<InventoryArticle> inventoryArticles = new ArrayList<InventoryArticle>();
@@ -55,6 +67,12 @@ public class ResourceCatalogArticle extends CatalogArticle {
 		return inventoryArticles;
 	}
 
+	/**
+	 * Contains.
+	 *
+	 * @param resource the resource
+	 * @return true, if successful
+	 */
 	public boolean contains(Resource resource) {
 		if (getResource() != null && StringUtils.equalsIgnoreCase(resource.getPath(), getResource().getPath())) {
 			return true;
@@ -63,24 +81,49 @@ public class ResourceCatalogArticle extends CatalogArticle {
 	}
 
 	
+	/**
+	 * Gets the resource.
+	 *
+	 * @return the resource
+	 */
 	@DynamicReferenceAttribute(externalName="nickiResourceRef", foreignKey=Resource.class, reference=Resource.class,
 			baseProperty="nicki.resources.basedn")
 	public Resource getResource() {
 		return getForeignKeyObject(Resource.class, ATTRIBUTE_RESOURCE);
 	}
 
+	/**
+	 * Gets the request resource.
+	 *
+	 * @return the request resource
+	 */
 	public Resource getRequestResource() {
 		return null;
 	}
 	
+	/**
+	 * Checks for request resource.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasRequestResource() {
 		return null != getRequestResource();
 	}
 	
+	/**
+	 * Gets the permission dn.
+	 *
+	 * @return the permission dn
+	 */
 	public String getPermissionDn() {
 		return getAttribute(ATTRIBUTE_RESOURCE);
 	}
 
+	/**
+	 * Gets the article type.
+	 *
+	 * @return the article type
+	 */
 	@Override
 	public TYPE getArticleType() {
 		return TYPE.RESOURCE;
@@ -88,6 +131,12 @@ public class ResourceCatalogArticle extends CatalogArticle {
 	
 
 
+	/**
+	 * Checks for article.
+	 *
+	 * @param person the person
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean hasArticle(Person person) {
 		for (Resource resource : ((IdmPerson)person).getResources()) {

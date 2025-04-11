@@ -38,6 +38,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java-Klasse f�r anonymous complex type.
  * 
@@ -78,10 +79,15 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "document")
 public class Document {
 
+    /** The pages. */
     @XmlElement(required = true)
     protected Document.Pages pages;
+    
+    /** The data. */
     @XmlElement(required = true)
     protected Data data;
+    
+    /** The size. */
     @XmlAttribute(name = "size")
     protected String size;
 
@@ -185,8 +191,11 @@ public class Document {
     })
     public static class Pages {
 
+        /** The start page. */
         @XmlElement(name = "start-page", required = true)
         protected Page startPage;
+        
+        /** The page. */
         @XmlElement(required = true)
         protected List<Page> page;
 
@@ -233,8 +242,8 @@ public class Document {
          * <p>
          * Objects of the following type(s) are allowed in the list
          * {@link Page }
-         * 
-         * 
+         *
+         * @return the page
          */
         public List<Page> getPage() {
             if (page == null) {

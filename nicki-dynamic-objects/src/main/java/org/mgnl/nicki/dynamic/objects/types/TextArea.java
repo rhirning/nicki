@@ -22,6 +22,9 @@ package org.mgnl.nicki.dynamic.objects.types;
  */
 
 
+/**
+ * The Class TextArea.
+ */
 public class TextArea {
 
 }

@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.data;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -22,8 +23,18 @@ package org.mgnl.nicki.core.data;
  */
 
 
+/**
+ * The Interface EntryFilter.
+ */
 public interface EntryFilter {
 
+	/**
+	 * Accepts.
+	 *
+	 * @param <T> the generic type
+	 * @param object the object
+	 * @return true, if successful
+	 */
 	<T extends TreeData> boolean accepts(T object);
 
 }

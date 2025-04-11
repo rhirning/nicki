@@ -24,13 +24,29 @@ package org.mgnl.nicki.mq.model;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ConsumerConfig.
+ */
 public class ConsumerConfig {
+	
+	/** The consumers. */
 	private List<Consumer> consumers;
 
+	/**
+	 * Gets the consumers.
+	 *
+	 * @return the consumers
+	 */
 	public List<Consumer> getConsumers() {
 		return consumers;
 	}
 
+	/**
+	 * Sets the consumers.
+	 *
+	 * @param consumers the new consumers
+	 */
 	public void setConsumers(List<Consumer> consumers) {
 		this.consumers = consumers;
 	}

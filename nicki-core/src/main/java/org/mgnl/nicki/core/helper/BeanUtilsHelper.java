@@ -33,8 +33,14 @@ import org.apache.commons.lang3.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class BeanUtilsHelper.
+ */
 @Slf4j
 public class BeanUtilsHelper {
+	
+	/** The primitive map. */
 	public static Map<Class<?>, Class<?>> primitiveMap = new HashMap<>();
 	static {
 		primitiveMap.put(Boolean.class, boolean.class);
@@ -47,7 +53,16 @@ public class BeanUtilsHelper {
 		primitiveMap.put(Double.class, double.class);
 	}
 
+	/** The prefixes. */
 	static String[] prefixes = new String[]{"get", "is"};
+	
+	/**
+	 * Gets the getter.
+	 *
+	 * @param clazz the clazz
+	 * @param field the field
+	 * @return the getter
+	 */
 	public static Method getGetter(Class<?> clazz, Field field) {
 		
 		for (String prefix : prefixes) {
@@ -66,6 +81,14 @@ public class BeanUtilsHelper {
 			return null;
 		}
 	}
+	
+	/**
+	 * Gets the getter.
+	 *
+	 * @param clazz the clazz
+	 * @param fieldName the field name
+	 * @return the getter
+	 */
 	public static Method getGetter(Class<?> clazz, String fieldName) {
 		
 		for (String prefix : prefixes) {
@@ -85,6 +108,13 @@ public class BeanUtilsHelper {
 		}
 	}
 
+	/**
+	 * Gets the setter.
+	 *
+	 * @param clazz the clazz
+	 * @param field the field
+	 * @return the setter
+	 */
 	public static Method getSetter(Class<?> clazz, Field field) {
 		String methodName = "set" + StringUtils.capitalize(field.getName());
 		try {
@@ -109,6 +139,14 @@ public class BeanUtilsHelper {
 		}
 	}
 
+	/**
+	 * Gets the setter.
+	 *
+	 * @param clazz the clazz
+	 * @param field the field
+	 * @param paramClazz the param clazz
+	 * @return the setter
+	 */
 	public static Method getSetter(Class<?> clazz, Field field, Class<? extends Object> paramClazz) {
 		String methodName = "set" + StringUtils.capitalize(field.getName());
 		try {
@@ -133,16 +171,38 @@ public class BeanUtilsHelper {
 		}
 	}
 	
+	/**
+	 * Gets the date string.
+	 *
+	 * @param value the value
+	 * @param formatString the format string
+	 * @return the date string
+	 */
 	public static String getDateString(Date value, String formatString) {
 		SimpleDateFormat format = new SimpleDateFormat(formatString);
 		return format.format(value);
 	}
 	
+	/**
+	 * Date from date string.
+	 *
+	 * @param stored the stored
+	 * @param formatString the format string
+	 * @return the date
+	 * @throws ParseException the parse exception
+	 */
 	public static Date dateFromDateString(String stored, String formatString) throws ParseException {
 		SimpleDateFormat format = new SimpleDateFormat(formatString);
 		return format.parse(stored);
 	}
 
+	/**
+	 * Gets the field.
+	 *
+	 * @param clazz the clazz
+	 * @param name the name
+	 * @return the field
+	 */
 	public static Field getField(Class<?> clazz, String name) {
 		try {
 			return clazz.getDeclaredField(name);
@@ -157,6 +217,13 @@ public class BeanUtilsHelper {
 		}
 	}
 	
+	/**
+	 * Sets the value.
+	 *
+	 * @param bean the bean
+	 * @param fieldName the field name
+	 * @param newValue the new value
+	 */
 	public static void setValue(Object bean, String fieldName, Object newValue) {
 		Field field;
 		try {
@@ -169,6 +236,14 @@ public class BeanUtilsHelper {
 		}
 	}
 	
+	/**
+	 * Sets the property.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param field the field
+	 * @param value the value
+	 */
 	public static <T> void setProperty(Object bean, Field field, T value) {
 		Method setter = null;
 		if (value != null && primitiveMap.containsKey(value.getClass())) {
@@ -187,6 +262,15 @@ public class BeanUtilsHelper {
 		}
 	}
 	
+	/**
+	 * Gets the property.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param field the field
+	 * @param clazz the clazz
+	 * @return the property
+	 */
 	@SuppressWarnings("unchecked")
 	public static <T> T getProperty(Object bean, Field field, Class<T> clazz) {
 		if (bean != null) {
@@ -203,6 +287,13 @@ public class BeanUtilsHelper {
 		return null;
 	}
 	
+	/**
+	 * Gets the property.
+	 *
+	 * @param bean the bean
+	 * @param field the field
+	 * @return the property
+	 */
 	public static Object getProperty(Object bean, Field field) {
 		if (bean != null) {
 			Method getter = null;
@@ -218,6 +309,13 @@ public class BeanUtilsHelper {
 		return null;
 	}
 	
+	/**
+	 * Gets the property.
+	 *
+	 * @param bean the bean
+	 * @param fieldName the field name
+	 * @return the property
+	 */
 	public static Object getProperty(Object bean, String fieldName) {
 		if (bean != null) {
 			Method getter = null;

@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.shop.base.attributes;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-shop-base
@@ -22,13 +23,61 @@ package org.mgnl.nicki.shop.base.attributes;
  */
 
 
+/**
+ * The Interface BaseAttributeComponent.
+ *
+ * @param <F> the generic type
+ */
 public interface BaseAttributeComponent<F> {
 
+	/**
+	 * Sets the value.
+	 *
+	 * @param value the new value
+	 */
 	void setValue(F value);
+	
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	F getValue();
+	
+	/**
+	 * Sets the caption.
+	 *
+	 * @param caption the new caption
+	 */
 	void setCaption(String caption);
+	
+	/**
+	 * Sets the enabled.
+	 *
+	 * @param enabled the new enabled
+	 */
 	void setEnabled(boolean enabled);
+	
+	/**
+	 * Checks if is enabled.
+	 *
+	 * @return true, if is enabled
+	 */
 	boolean isEnabled();
+	
+	/**
+	 * Gets the string value.
+	 *
+	 * @param value the value
+	 * @return the string value
+	 */
 	String getStringValue(F value);
+	
+	/**
+	 * Gets the string value.
+	 *
+	 * @param value the value
+	 * @return the string value
+	 */
 	String getStringValue(String value);
 }

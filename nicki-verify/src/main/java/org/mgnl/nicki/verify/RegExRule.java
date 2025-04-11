@@ -28,15 +28,35 @@ import java.util.regex.Pattern;
 
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RegExRule.
+ */
 public class RegExRule extends Rule {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The pattern. */
 	Pattern pattern;
 
+	/**
+	 * Instantiates a new reg ex rule.
+	 *
+	 * @param parameter the parameter
+	 */
 	public RegExRule(String parameter) {
 		setParameter(parameter);
 		pattern = Pattern.compile(parameter);
 	}
 
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 
@@ -44,10 +64,22 @@ public class RegExRule extends Rule {
 		//return (StringUtils.equals(value, matcher.group()));
 		return matcher.matches();
 	}
+	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".regex", getParameter());
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "regex:" + getParameter();
 	}

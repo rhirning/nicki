@@ -42,6 +42,10 @@ import org.mgnl.nicki.dynamic.objects.types.TextArea;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CatalogPage.
+ */
 @SuppressWarnings("serial")
 @Slf4j
 @DynamicObject
@@ -49,22 +53,38 @@ import lombok.extern.slf4j.Slf4j;
 @Child(name="child", objectFilter={CatalogPage.class, CatalogArticle.class})
 public class CatalogPage extends CatalogObject {
 	
+	/** The provider. */
 	private Provider provider;
 
+	/** The name. */
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;
+	
+	/** The category. */
 	@DynamicAttribute(externalName="nickiCategory")
 	private String[] category;
+	
+	/** The provider class. */
 	@DynamicAttribute(externalName="nickiProvider")
 	private String providerClass;
+	
+	/** The provider data. */
 	@DynamicAttribute(externalName="nickiProviderData")
 	private String providerData;
+	
+	/** The attributes. */
 	@DynamicAttribute(externalName="nickiAttributes")
 	private TextArea attributes;
 	
 
+	/** The pages. */
 	private List<CatalogPage> pages;
 	
+	/**
+	 * Gets the attributes.
+	 *
+	 * @return the attributes
+	 */
 	public List<CatalogArticleAttribute> getAttributes() {
 		List<CatalogArticleAttribute> list = new ArrayList<CatalogArticleAttribute>();
 		String attributes = getAttribute("attributes");
@@ -86,6 +106,11 @@ public class CatalogPage extends CatalogObject {
 		return list;
 	}
 	
+	/**
+	 * Gets the inherited attributes.
+	 *
+	 * @return the inherited attributes
+	 */
 	public List<CatalogArticleAttribute> getInheritedAttributes() {
 		try {
 			return getParent(CatalogPage.class).getAllAttributes();
@@ -94,29 +119,59 @@ public class CatalogPage extends CatalogObject {
 		}
 	}
 
+	/**
+	 * Gets the all attributes.
+	 *
+	 * @return the all attributes
+	 */
 	public List<CatalogArticleAttribute> getAllAttributes() {
 		List<CatalogArticleAttribute> list = getAttributes();
 		list.addAll(getInheritedAttributes());
 		return list;
 	}
 
+	/**
+	 * Sets the attributes.
+	 *
+	 * @param attributes the new attributes
+	 */
 	public void setAttributes(List<String> attributes) {
 		put("attribute", attributes);
 	}
 
+	/**
+	 * Checks for attributes.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasAttributes() {
 		return getAttributes() != null && getAttributes().size() != 0;
 	}
 
+	/**
+	 * Checks for categories.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasCategories() {
 		return getCategories() != null && getCategories().size() != 0;
 	}
 
+	/**
+	 * Gets the categories.
+	 *
+	 * @return the categories
+	 */
 	@SuppressWarnings("unchecked")
 	public List<String> getCategories() {
 		return (List<String>) get("category");
 	}
 	
+	/**
+	 * Gets the all categories.
+	 *
+	 * @return the all categories
+	 */
 	public List<String> getAllCategories() {
 		List<String> categories = new ArrayList<String>();
 		if (hasCategories()) {
@@ -126,6 +181,11 @@ public class CatalogPage extends CatalogObject {
 		return categories;
 	}
 	
+	/**
+	 * Gets the inherited categories.
+	 *
+	 * @return the inherited categories
+	 */
 	public List<String> getInheritedCategories() {
 		try {
 			return getParent(CatalogPage.class).getAllCategories();
@@ -135,10 +195,20 @@ public class CatalogPage extends CatalogObject {
 		return new ArrayList<String>();
 	}
 	
+	/**
+	 * Sets the categories.
+	 *
+	 * @param categories the new categories
+	 */
 	public void setCategories(List<String> categories) {
 		put("category", categories);
 	}
 	
+	/**
+	 * Gets the articles.
+	 *
+	 * @return the articles
+	 */
 	public List<CatalogArticle> getArticles() {
 		if (this.provider != null) {
 			return provider.getArticles(this);
@@ -148,6 +218,11 @@ public class CatalogPage extends CatalogObject {
 		}
 	}	
 	
+	/**
+	 * Gets the pages.
+	 *
+	 * @return the pages
+	 */
 	public List<CatalogPage> getPages() {
 		if (pages == null) {
 			pages = getContext().loadChildObjects(CatalogPage.class, this.getPath(), null);
@@ -163,6 +238,11 @@ public class CatalogPage extends CatalogObject {
 	}
 
 
+	/**
+	 * Gets the all articles.
+	 *
+	 * @return the all articles
+	 */
 	public List<CatalogArticle> getAllArticles() {
 		List<CatalogArticle> articles = getArticles();
 
@@ -173,6 +253,12 @@ public class CatalogPage extends CatalogObject {
 		return articles;
 	}
 
+	/**
+	 * Inits the.
+	 *
+	 * @param rs the rs
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public void init(ContextSearchResult rs) throws DynamicObjectException {
 		super.init(rs);
@@ -187,6 +273,12 @@ public class CatalogPage extends CatalogObject {
 		}
 	}
 
+	/**
+	 * Gets the article.
+	 *
+	 * @param key the key
+	 * @return the article
+	 */
 	public CatalogArticle getArticle(String key) {
 		if (StringUtils.contains(key, Catalog.PATH_SEPARATOR)) {
 			String pageKey = StringUtils.substringBefore(key, Catalog.PATH_SEPARATOR);
@@ -206,22 +298,50 @@ public class CatalogPage extends CatalogObject {
 		}
 	}
 	
+	/**
+	 * Gets the page.
+	 *
+	 * @param key the key
+	 * @return the page
+	 */
 	public CatalogPage getPage(String key) {
 		return getContext().loadChildObject(CatalogPage.class, this, key);
 	}
 
+	/**
+	 * Gets the page article.
+	 *
+	 * @param key the key
+	 * @return the page article
+	 */
 	public CatalogArticle getPageArticle(String key) {
 		return getContext().loadChildObject(CatalogArticle.class, this, key);
 	}
 
+	/**
+	 * Gets the page articles.
+	 *
+	 * @return the page articles
+	 */
 	public List<CatalogArticle> getPageArticles() {
 		return getContext().loadChildObjects(CatalogArticle.class, this, "");
 	}
 
+	/**
+	 * Gets the catalog path.
+	 *
+	 * @return the catalog path
+	 */
 	public String getCatalogPath() {
 		return getSlashPath(Catalog.getCatalog());
 	}
 
+	/**
+	 * Gets the articles.
+	 *
+	 * @param key the key
+	 * @return the articles
+	 */
 	public List<CatalogArticle> getArticles(String key) {
 		if (StringUtils.contains(key, Catalog.PATH_SEPARATOR)) {
 			String pageKey = StringUtils.substringBefore(key, Catalog.PATH_SEPARATOR);
@@ -241,6 +361,11 @@ public class CatalogPage extends CatalogObject {
 
 	}
 
+	/**
+	 * Gets the child list.
+	 *
+	 * @return the child list
+	 */
 	@Override
 	public List<? extends CatalogObject> getChildList() {
 		return getPages();

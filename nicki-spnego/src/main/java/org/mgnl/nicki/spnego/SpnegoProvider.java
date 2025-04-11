@@ -46,6 +46,7 @@ import org.ietf.jgss.GSSManager;
 import org.ietf.jgss.GSSName;
 import org.ietf.jgss.Oid;
 
+// TODO: Auto-generated Javadoc
 /**
  * This is a Utility Class that can be used for finer grained control 
  * over message integrity, confidentiality and mutual authentication.
@@ -77,6 +78,9 @@ public final class SpnegoProvider {
     /** GSS-API mechanism "1.3.6.1.5.5.2". */
     private static final Oid SPNEGO_OID = SpnegoProvider.getOid();
 
+    /**
+     * Instantiates a new spnego provider.
+     */
     /*
      * This is a utility class (not a Singleton).
      */
@@ -96,14 +100,14 @@ public final class SpnegoProvider {
      * the HTTP Status Code SC_UNAUTHORIZED will be set and the client must 
      * send authentication information on the next request.
      * </p>
-     * 
+     *
      * @param req servlet request
      * @param resp servlet response
      * @param basicSupported pass true to offer/allow BASIC Authentication
      * @param promptIfNtlm pass true ntlm request should be downgraded
      * @param realm should be the realm the server used to pre-authenticate
      * @return null if negotiation needs to continue or failed
-     * @throws IOException 
+     * @throws IOException Signals that an I/O exception has occurred.
      */
     static SpnegoAuthScheme negotiate(
         final HttpServletRequest req, final SpnegoHttpServletResponse resp
@@ -164,10 +168,10 @@ public final class SpnegoProvider {
     
     /**
      * Returns the GSS-API interface for creating a security context.
-     * 
+     *
      * @param subject the person to be authenticated
      * @return GSSCredential to be used for creating a security context.
-     * @throws PrivilegedActionException
+     * @throws PrivilegedActionException the privileged action exception
      */
     public static GSSCredential getClientCredential(final Subject subject)
         throws PrivilegedActionException {
@@ -190,12 +194,11 @@ public final class SpnegoProvider {
      * Returns a GSSContext to be used by custom clients to set 
      * data integrity requirements, confidentiality and if mutual 
      * authentication is required.
-     * 
+     *
      * @param creds credentials of the person to be authenticated
      * @param url HTTP address of server (used for constructing a {@link GSSName}).
-     * @return GSSContext 
-     * @throws GSSException
-     * @throws PrivilegedActionException
+     * @return GSSContext
+     * @throws GSSException the GSS exception
      */
     public static GSSContext getGSSContext(final GSSCredential creds, final URL url) 
         throws GSSException {
@@ -256,10 +259,10 @@ public final class SpnegoProvider {
 
     /**
      * Returns the {@link GSSCredential} the server uses for pre-authentication.
-     * 
+     *
      * @param subject account server uses for pre-authentication
      * @return credential that allows server to authenticate clients
-     * @throws PrivilegedActionException
+     * @throws PrivilegedActionException the privileged action exception
      */
     static GSSCredential getServerCredential(final Subject subject)
         throws PrivilegedActionException {
@@ -280,10 +283,10 @@ public final class SpnegoProvider {
     /**
      * Returns the {@link GSSName} constructed out of the passed-in 
      * URL object.
-     * 
+     *
      * @param url HTTP address of server
      * @return GSSName of URL.
-     * @throws GSSException 
+     * @throws GSSException the GSS exception
      */
     private static GSSName getServerName(final URL url) throws GSSException {
         return MANAGER.createName("HTTP@" + url.getHost(),

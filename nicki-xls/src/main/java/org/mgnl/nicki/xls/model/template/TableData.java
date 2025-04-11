@@ -41,6 +41,7 @@ import jakarta.xml.bind.annotation.XmlSchemaType;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for table-data complex type.
  * 
@@ -68,12 +69,15 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class TableData {
 
+    /** The content. */
     @XmlElementRefs({
         @XmlElementRef(name = "text", type = JAXBElement.class),
         @XmlElementRef(name = "link", type = JAXBElement.class)
     })
     @XmlMixed
     protected List<Serializable> content;
+    
+    /** The style. */
     @XmlAttribute(name = "style")
     @XmlSchemaType(name = "anySimpleType")
     protected String style;
@@ -99,8 +103,8 @@ public class TableData {
      * {@link JAXBElement }{@code <}{@link Text }{@code >}
      * {@link JAXBElement }{@code <}{@link Link }{@code >}
      * {@link String }
-     * 
-     * 
+     *
+     * @return the content
      */
     public List<Serializable> getContent() {
         if (content == null) {

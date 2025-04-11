@@ -30,8 +30,19 @@ import org.apache.commons.cli.ParseException;
 import org.mgnl.nicki.core.helper.BeanUtilsHelper;
 import org.mgnl.nicki.core.helper.DataHelper;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class OptionHelper.
+ */
 public class OptionHelper {
 
+	/**
+	 * Handle options.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param args the args
+	 */
 	public static <T> void handleOptions(T bean, String[] args) {
 		Options options = getOptions(bean);
 		// define parser
@@ -59,6 +70,13 @@ public class OptionHelper {
 		}		
 	}
 
+	/**
+	 * Gets the options.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @return the options
+	 */
 	private static <T> Options getOptions(T bean) {
 		Options options = new Options();
 

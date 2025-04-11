@@ -29,11 +29,25 @@ import org.mgnl.nicki.core.config.Config;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating Object objects.
+ *
+ * @param <T> the generic type
+ */
 @Slf4j
 public class ObjectFactory<T> {
+	
+	/** The Constant PROPERTY_OBJECTS. */
 	public static final String PROPERTY_OBJECTS = "objects";
+	
+	/** The Constant SEPARATOR. */
 	public static final String SEPARATOR = ",";
+	
+	/** The objects map. */
 	private Map<String, T> objectsMap;
+	
+	/** The property base. */
 	private String propertyBase;
 
 
@@ -50,10 +64,19 @@ public class ObjectFactory<T> {
 		initObjects();
 	}
 	
+	/**
+	 * Gets the object.
+	 *
+	 * @param objectName the object name
+	 * @return the object
+	 */
 	public T getObject(String objectName) {
 		return objectsMap.get(objectName);
 	}
 
+	/**
+	 * Inits the objects.
+	 */
 	private void initObjects() {
 		objectsMap = new HashMap<>();
 		String base = this.propertyBase + "." + PROPERTY_OBJECTS;
@@ -69,6 +92,12 @@ public class ObjectFactory<T> {
 		}
 	}
 
+	/**
+	 * Checks for object.
+	 *
+	 * @param objectName the object name
+	 * @return true, if successful
+	 */
 	public boolean hasObject(String objectName) {
 		return objectsMap.containsKey(objectName);
 	}

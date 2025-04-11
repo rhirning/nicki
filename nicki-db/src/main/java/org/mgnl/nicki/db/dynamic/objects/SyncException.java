@@ -1,5 +1,6 @@
 package org.mgnl.nicki.db.dynamic.objects;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-db
@@ -20,9 +21,19 @@ package org.mgnl.nicki.db.dynamic.objects;
  * #L%
  */
 
+/**
+ * The Class SyncException.
+ */
 public class SyncException extends Exception {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -6320536593750638922L;
 	
+	/**
+	 * Instantiates a new sync exception.
+	 *
+	 * @param e the e
+	 */
 	public SyncException(Exception e) {
 		super(e);
 	}

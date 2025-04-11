@@ -26,14 +26,46 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating Context objects.
+ */
 public interface ContextFactory {
 	
+	/**
+	 * Gets the guest context.
+	 *
+	 * @param target the target
+	 * @return the guest context
+	 */
 	NickiContext getGuestContext(Target target);
 	
+	/**
+	 * Gets the named user context.
+	 *
+	 * @param target the target
+	 * @param user the user
+	 * @param password the password
+	 * @return the named user context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	NickiContext getNamedUserContext(Target target, DynamicObject user, String password) throws InvalidPrincipalException;
 
+	/**
+	 * Gets the system context.
+	 *
+	 * @param target the target
+	 * @param user the user
+	 * @return the system context
+	 * @throws InvalidPrincipalException the invalid principal exception
+	 */
 	NickiContext getSystemContext(Target target, DynamicObject user) throws InvalidPrincipalException;
 	
+	/**
+	 * Gets the adapter.
+	 *
+	 * @return the adapter
+	 */
 	DynamicObjectAdapter getAdapter();
 
 }

@@ -24,13 +24,29 @@ package org.mgnl.nicki.core.i18n;
 
 import java.util.List;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class CacheConfiguration.
+ */
 public class CacheConfiguration {
+	
+	/** The cache. */
 	private List<TopicCacheConfiguration> cache;
 
+	/**
+	 * Gets the cache.
+	 *
+	 * @return the cache
+	 */
 	public List<TopicCacheConfiguration> getCache() {
 		return cache;
 	}
 
+	/**
+	 * Sets the cache.
+	 *
+	 * @param cache the new cache
+	 */
 	public void setCache(List<TopicCacheConfiguration> cache) {
 		this.cache = cache;
 	}

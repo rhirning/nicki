@@ -25,14 +25,28 @@ import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class HsqldbSequenceValueSelectHandler.
+ */
 @Slf4j
 public class HsqldbSequenceValueSelectHandler extends SequenceValueSelectHandler implements SelectHandler {
 
 
+	/**
+	 * Instantiates a new hsqldb sequence value select handler.
+	 *
+	 * @param sequenceName the sequence name
+	 */
 	public HsqldbSequenceValueSelectHandler(String sequenceName) {
 		super(sequenceName);
 	}
 
+	/**
+	 * Gets the search statement.
+	 *
+	 * @return the search statement
+	 */
 	public String getSearchStatement() {
 		String statement = "VALUES NEXT VALUE FOR " + getSequenceName();
 		log.debug(statement);

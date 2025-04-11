@@ -36,28 +36,46 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Statistics.
+ */
 @Slf4j
 @Data
 @Table(name = "STATISTICS")
 public class Statistics {
 	
+	/** The id. */
 	@Attribute(name = "ID", autogen=true, primaryKey=true)
 	private Long id;
 
+	/** The category. */
 	@Attribute(name = "CATEGORY")
 	private String category;
 
+	/** The name. */
 	@Attribute(name = "NAME")
 	private String name;
 
+	/** The context. */
 	@Attribute(name = "CONTEXT")
 	private String context;
 
+	/** The data. */
 	@Attribute(name = "DATA")
 	private String data;
 	
+	/** The definition. */
 	private StatisticsDefinition definition;
 	
+	/**
+	 * Execute.
+	 *
+	 * @param input the input
+	 * @return the statistics result
+	 * @throws StatisticsException the statistics exception
+	 * @throws MissingDataException the missing data exception
+	 */
 	public StatisticsResult execute(Map<String, String> input) throws StatisticsException, MissingDataException {
 		DBContext dbContext = DBContextManager.getContext(context);
 		try {
@@ -68,6 +86,12 @@ public class Statistics {
 			throw new StatisticsException(e);
 		}
 	}
+	
+	/**
+	 * Sets the data.
+	 *
+	 * @param data the new data
+	 */
 	public void setData(String data) {
 		this.data = data;
 		try {

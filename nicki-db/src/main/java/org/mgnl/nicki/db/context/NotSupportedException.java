@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.db.context;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-db
@@ -22,13 +23,24 @@ package org.mgnl.nicki.db.context;
  */
 
 
+/**
+ * The Class NotSupportedException.
+ */
 @SuppressWarnings("serial")
 public class NotSupportedException extends Exception {
 
+	/**
+	 * Instantiates a new not supported exception.
+	 *
+	 * @param message the message
+	 */
 	public NotSupportedException(String message) {
 		super(message);
 	}
 
+	/**
+	 * Instantiates a new not supported exception.
+	 */
 	public NotSupportedException() {
 	}
 

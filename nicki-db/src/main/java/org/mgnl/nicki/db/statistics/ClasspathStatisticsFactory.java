@@ -38,10 +38,21 @@ import org.mgnl.nicki.core.helper.JsonHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating ClasspathStatistics objects.
+ */
 @Slf4j
 public class ClasspathStatisticsFactory implements StatisticsFactory {
+	
+	/** The Constant propertyKey. */
 	private static final String propertyKey = "nicki.db.statistics.classpath";
 
+	/**
+	 * Load.
+	 *
+	 * @return the collection
+	 */
 	@Override
 	public Collection<Statistics> load() {
 		Collection<Statistics> collection = new ArrayList<>();
@@ -66,6 +77,13 @@ public class ClasspathStatisticsFactory implements StatisticsFactory {
 	}
 
 	
+	/**
+	 * Builds the from resource.
+	 *
+	 * @param path the path
+	 * @return the json array
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private JsonArray buildFromResource(String path) throws IOException {
 		InputStream inputStream = getClass().getResourceAsStream(path);
 		JsonReader reader = Json.createReader(new InputStreamReader(inputStream));

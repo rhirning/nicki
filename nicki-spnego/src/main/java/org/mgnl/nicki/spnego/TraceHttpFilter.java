@@ -34,14 +34,33 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TraceHttpFilter.
+ */
 @Slf4j
 public class TraceHttpFilter implements Filter {
 
+	/**
+	 * Inits the.
+	 *
+	 * @param filterConfig the filter config
+	 * @throws ServletException the servlet exception
+	 */
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		log.info("starting filter");
 	}
 
+	/**
+	 * Do filter.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @param chain the chain
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws ServletException the servlet exception
+	 */
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
@@ -53,6 +72,9 @@ public class TraceHttpFilter implements Filter {
 		chain.doFilter(request, response);
 	}
 
+	/**
+	 * Destroy.
+	 */
 	@Override
 	public void destroy() {
 	}

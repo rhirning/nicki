@@ -39,18 +39,41 @@ import org.mgnl.nicki.core.util.Classes;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating TargetObject objects.
+ */
 @Slf4j
 public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 4047428469649718133L;
+	
+	/** The context. */
 	private NickiContext context;
+	
+	/** The target. */
 	private Target target;
 	
+	/**
+	 * Instantiates a new target object factory.
+	 *
+	 * @param context the context
+	 * @param target the target
+	 */
 	public TargetObjectFactory(NickiContext context, Target target) {
 		super();
 		this.context = context;
 		this.target = target;
 	}
 
+	/**
+	 * Gets the object.
+	 *
+	 * @param rs the rs
+	 * @return the object
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	public DynamicObject getObject(ContextSearchResult rs) throws InstantiateDynamicObjectException {
 		DynamicObject object =  findObject(rs);
 		object.setContext(context);
@@ -59,6 +82,13 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 
 	
 	
+	/**
+	 * Find object.
+	 *
+	 * @param rs the rs
+	 * @return the dynamic object
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	private synchronized  DynamicObject findObject(ContextSearchResult rs) throws InstantiateDynamicObjectException {
 		String dn = rs.getNameInNamespace();
 		for (String dynamicObjectName : target.getDynamicObjects()) {
@@ -73,6 +103,16 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 		throw new InstantiateDynamicObjectException("Could not getObject " + dn);
 	}
 
+	/**
+	 * Gets the object.
+	 *
+	 * @param <T> the generic type
+	 * @param rs the rs
+	 * @param classDefinition the class definition
+	 * @return the object
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	@Override
 	public <T extends DynamicObject> T getObject(ContextSearchResult rs, Class<T> classDefinition) throws InstantiateDynamicObjectException, DynamicObjectException {
 		T object =  findObject(rs, classDefinition);
@@ -82,6 +122,15 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 
 	
 	
+	/**
+	 * Find object.
+	 *
+	 * @param <T> the generic type
+	 * @param rs the rs
+	 * @param classDefinition the class definition
+	 * @return the t
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	private synchronized <T extends DynamicObject> T findObject(ContextSearchResult rs, Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		String dn = rs.getNameInNamespace();
 		for (String dynamicObjectName : target.getDynamicObjects()) {
@@ -98,16 +147,39 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 		throw new InstantiateDynamicObjectException("Could not getObject " + dn);
 	}
 
+	/**
+	 * Gets the object class filter.
+	 *
+	 * @param nickiContext the nicki context
+	 * @param classDefinition the class definition
+	 * @return the object class filter
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	public String getObjectClassFilter(NickiContext nickiContext, Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
 		DynamicObject dynamicObject = target.getDynamicObject(classDefinition);
 		return dynamicObject.getObjectClassFilter(nickiContext);
 	}
 
+	/**
+	 * Gets the naming ldap attribute.
+	 *
+	 * @param classDefinition the class definition
+	 * @return the naming ldap attribute
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	public String getNamingLdapAttribute(Class<? extends DynamicObject> classDefinition) throws InstantiateDynamicObjectException {
 		DynamicObject dynamicObject = findDynamicObject(classDefinition);
 		return dynamicObject.getModel().getNamingLdapAttribute();
 	}
 
+	/**
+	 * Find dynamic object.
+	 *
+	 * @param <T> the generic type
+	 * @param classDefinition the class definition
+	 * @return the t
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	@SuppressWarnings("unchecked")
 	private <T extends DynamicObject> T findDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		for (String dynamicObjectName : target.getDynamicObjects()) {
@@ -119,6 +191,13 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 		throw new InstantiateDynamicObjectException("Could not getObject " + classDefinition);
 	}
 	
+	/**
+	 * Find dynamic objects.
+	 *
+	 * @param <T> the generic type
+	 * @param classDefinition the class definition
+	 * @return the list
+	 */
 	@SuppressWarnings("unchecked")
 	public <T extends TreeData> List<T> findDynamicObjects(Class<T> classDefinition) {
 		List<T> list = new ArrayList<T>();
@@ -131,6 +210,13 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 		return list;
 	}
 	
+	/**
+	 * Find dynamic object.
+	 *
+	 * @param className the class name
+	 * @return the dynamic object
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	private DynamicObject findDynamicObject(String className) throws InstantiateDynamicObjectException {
 		for (String dynamicObjectName : target.getDynamicObjects()) {
 			DynamicObject dynamicObject = target.getDynamicObject(dynamicObjectName);
@@ -142,6 +228,14 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 	}
 	
 
+	/**
+	 * Gets the dynamic object.
+	 *
+	 * @param <T> the generic type
+	 * @param classDefinition the class definition
+	 * @return the dynamic object
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	public <T extends DynamicObject> T getDynamicObject(Class<T> classDefinition) throws InstantiateDynamicObjectException {
 		T storedDynamicObject = findDynamicObject(classDefinition);
 		T dynamicObject = null;
@@ -154,6 +248,13 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 		return dynamicObject;
 	}
 	
+	/**
+	 * Gets the dynamic object.
+	 *
+	 * @param className the class name
+	 * @return the dynamic object
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	public DynamicObject getDynamicObject(String className) throws InstantiateDynamicObjectException {
 		DynamicObject storedDynamicObject = findDynamicObject(className);
 		DynamicObject dynamicObject = null;
@@ -166,6 +267,15 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 		return dynamicObject;
 	}
 	
+	/**
+	 * Gets the existing dynamic object.
+	 *
+	 * @param <T> the generic type
+	 * @param pattern the pattern
+	 * @param path the path
+	 * @return the existing dynamic object
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	private <T extends DynamicObject> T getExistingDynamicObject(T pattern, String path) throws InstantiateDynamicObjectException {
 		try {
 			T object = getDynamicObject(pattern);
@@ -176,6 +286,14 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 		}
 	}
 
+	/**
+	 * Gets the dynamic object.
+	 *
+	 * @param <T> the generic type
+	 * @param pattern the pattern
+	 * @return the dynamic object
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	private <T extends DynamicObject> T getDynamicObject(T pattern) throws InstantiateDynamicObjectException {
 		try {
 			@SuppressWarnings("unchecked")
@@ -187,11 +305,27 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 		}
 	}
 	
+	/**
+	 * Inits the data model.
+	 *
+	 * @param pattern the pattern
+	 * @param dynamicObject the dynamic object
+	 */
 	private void initDataModel(DynamicObject pattern, DynamicObject dynamicObject) {
 		dynamicObject.setModel(pattern.getModel());
 	}
 
 
+	/**
+	 * Gets the new dynamic object.
+	 *
+	 * @param <T> the generic type
+	 * @param classDefinition the class definition
+	 * @param parentPath the parent path
+	 * @param namingValue the naming value
+	 * @return the new dynamic object
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	public <T extends DynamicObject> T getNewDynamicObject(Class<T> classDefinition, 
 			String parentPath, String namingValue) throws InstantiateDynamicObjectException {
 		try {
@@ -204,6 +338,16 @@ public class TargetObjectFactory implements DynamicObjectFactory, Serializable {
 		}
 	}
 	
+	/**
+	 * Creates a new TargetObject object.
+	 *
+	 * @param <T> the generic type
+	 * @param classDefinition the class definition
+	 * @param parentPath the parent path
+	 * @param namingValue the naming value
+	 * @return the t
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 */
 	public  <T extends DynamicObject> T createNewDynamicObject(Class<T> classDefinition, 
 			String parentPath, String namingValue) throws InstantiateDynamicObjectException {
 		try {

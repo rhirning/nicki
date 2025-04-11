@@ -24,15 +24,34 @@ package org.mgnl.nicki.ldap.objects;
 
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StaticAttribute.
+ */
 @SuppressWarnings("serial")
 public class StaticAttribute extends DynamicAttribute {
+	
+	/** The value. */
 	private String value;
 
+	/**
+	 * Instantiates a new static attribute.
+	 *
+	 * @param name the name
+	 * @param ldapName the ldap name
+	 * @param attributeClass the attribute class
+	 * @param value the value
+	 */
 	public StaticAttribute(String name, String ldapName, Class<?> attributeClass, String value) {
 		super(name, ldapName, attributeClass);
 		this.value = value;
 	}
 
+	/**
+	 * Gets the value.
+	 *
+	 * @return the value
+	 */
 	public String getValue() {
 		return value;
 	}

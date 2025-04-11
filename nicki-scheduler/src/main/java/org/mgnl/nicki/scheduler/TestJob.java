@@ -26,10 +26,20 @@ import java.util.Date;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TestJob.
+ */
 @Slf4j
 @Data
 public class TestJob implements Job {
+	
+	/** The job config. */
 	private JobConfig jobConfig;
+    
+    /**
+     * Run.
+     */
     public void run() {
 
         // This job simply prints out its jobConfig and the

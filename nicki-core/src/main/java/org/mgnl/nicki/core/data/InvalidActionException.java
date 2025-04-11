@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.data;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -22,9 +23,17 @@ package org.mgnl.nicki.core.data;
  */
 
 
+/**
+ * The Class InvalidActionException.
+ */
 @SuppressWarnings("serial")
 public class InvalidActionException extends Exception {
 
+	/**
+	 * Instantiates a new invalid action exception.
+	 *
+	 * @param message the message
+	 */
 	public InvalidActionException(String message) {
 		super(message);
 	}

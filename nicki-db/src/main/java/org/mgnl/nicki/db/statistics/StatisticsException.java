@@ -1,5 +1,6 @@
 package org.mgnl.nicki.db.statistics;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-db
@@ -21,11 +22,21 @@ package org.mgnl.nicki.db.statistics;
  */
 
 
+/**
+ * The Class StatisticsException.
+ */
 public class StatisticsException extends Exception {
+	
+	/**
+	 * Instantiates a new statistics exception.
+	 *
+	 * @param e the e
+	 */
 	public StatisticsException(Exception e) {
 		super(e);
 	}
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -7083997728938399977L;
 
 }

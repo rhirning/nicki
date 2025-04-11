@@ -22,6 +22,9 @@ package org.mgnl.nicki.core.objects;
  */
 
 
+/**
+ * The Interface NickiAttribute.
+ */
 public interface NickiAttribute {
 
 }

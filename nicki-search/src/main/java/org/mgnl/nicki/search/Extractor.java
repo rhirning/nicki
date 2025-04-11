@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.search;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-search
@@ -22,13 +23,51 @@ package org.mgnl.nicki.search;
  */
 
 
+/**
+ * The Interface Extractor.
+ *
+ * @param <T> the generic type
+ */
 public interface Extractor<T extends Object> {
+	
+	/**
+	 * Gets the category.
+	 *
+	 * @param object the object
+	 * @return the category
+	 */
 	String getCategory(T object);
+	
+	/**
+	 * Gets the key.
+	 *
+	 * @param object the object
+	 * @return the key
+	 */
 	String getKey(T object);
+	
+	/**
+	 * Gets the title.
+	 *
+	 * @param object the object
+	 * @return the title
+	 */
 	String getTitle(T object);
 	
+	/**
+	 * Gets the description.
+	 *
+	 * @param object the object
+	 * @return the description
+	 */
 	String getDescription(T object);
 	
+	/**
+	 * Accept.
+	 *
+	 * @param object the object
+	 * @return true, if successful
+	 */
 	boolean accept(T object);
 	
 	

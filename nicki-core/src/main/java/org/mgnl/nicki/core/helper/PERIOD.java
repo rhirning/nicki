@@ -26,27 +26,41 @@ import java.util.Date;
 import org.mgnl.nicki.core.data.Period;
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Enum PERIOD.
+ */
 public enum PERIOD {
+	
+	/** The last 30. */
 	LAST_30 {
 		@Override
 		public Period getPeriod() {
 			return lastDays(30);		}
 	},
+	
+	/** The last 90. */
 	LAST_90 {
 		@Override
 		public Period getPeriod() {
 			return lastDays(90);		}
 	},
+	
+	/** The last 180. */
 	LAST_180 {
 		@Override
 		public Period getPeriod() {
 			return lastDays(180);		}
 	},
+	
+	/** The last 360. */
 	LAST_360 {
 		@Override
 		public Period getPeriod() {
 			return lastDays(360);		}
 	},
+	
+	/** The last month. */
 	LAST_MONTH {
 		@Override
 		public Period getPeriod() {
@@ -56,12 +70,16 @@ public enum PERIOD {
 			return new Period(start, Period.getFirstDayOfMonth());
 		}
 	},
+	
+	/** The this month. */
 	THIS_MONTH {
 		@Override
 		public Period getPeriod() {
 			return new Period(Period.getFirstDayOfMonth(), Period.getLastDayOfMonth());
 		}
 	},
+	
+	/** The last year. */
 	LAST_YEAR {
 		@Override
 		public Period getPeriod() {
@@ -72,12 +90,16 @@ public enum PERIOD {
 			return new Period(start, Period.getFirstDayOfYear());
 		}
 	},
+	
+	/** The this year. */
 	THIS_YEAR {
 		@Override
 		public Period getPeriod() {
 			return new Period(Period.getFirstDayOfYear(), Period.getLastDayOfYear());
 		}
 	},
+	
+	/** The user defined. */
 	USER_DEFINED {
 		@Override
 		public Period getPeriod() {
@@ -85,22 +107,49 @@ public enum PERIOD {
 		}
 	};
 	
+	/**
+	 * Gets the start.
+	 *
+	 * @return the start
+	 */
 	public Calendar getStart() {
 		return this.getPeriod().getStart();
 	}
 
+	/**
+	 * Gets the end.
+	 *
+	 * @return the end
+	 */
 	public Calendar getEnd() {
 		return this.getPeriod().getEnd();
 	}
 
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return I18n.getText("nicki.period." + name());
 	}
 
+	/**
+	 * Matches.
+	 *
+	 * @param start the start
+	 * @return true, if successful
+	 */
 	public boolean matches(Date start) {
 		return this.getPeriod().matches(start);
 	}
 	
+	/**
+	 * Last days.
+	 *
+	 * @param days the days
+	 * @return the period
+	 */
 	public Period lastDays(int days) {
 		Calendar now = Calendar.getInstance();
 		Calendar start = Calendar.getInstance();;
@@ -109,6 +158,11 @@ public enum PERIOD {
 		return new Period(start, now);
 	}
 
+	/**
+	 * Gets the period.
+	 *
+	 * @return the period
+	 */
 	public abstract Period getPeriod();
 
 }

@@ -34,16 +34,37 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import freemarker.template.TemplateMethodModelEx;
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ListForeignKeyMethod.
+ */
 @Slf4j
 public class ListForeignKeyMethod implements TemplateMethodModelEx, Serializable {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -81535049844368520L;
+	
+	/** The objects. */
 	private List<DynamicObject> objects;
+	
+	/** The foreign keys. */
 	private List<Object> foreignKeys = new ArrayList<Object>();
+	
+	/** The context. */
 	private NickiContext context;
+	
+	/** The class definition. */
 	private Class<? extends DynamicObject> classDefinition;
 
 	
+	/**
+	 * Instantiates a new list foreign key method.
+	 *
+	 * @param context the context
+	 * @param rs the rs
+	 * @param ldapName the ldap name
+	 * @param classDefinition the class definition
+	 */
 	public ListForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName,
 			Class<? extends DynamicObject> classDefinition) {
 		this.context = context;
@@ -51,6 +72,12 @@ public class ListForeignKeyMethod implements TemplateMethodModelEx, Serializable
 		this.classDefinition = classDefinition;
 	}
 
+	/**
+	 * Exec.
+	 *
+	 * @param arguments the arguments
+	 * @return the list
+	 */
 	public List<DynamicObject> exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (objects == null) {
 			objects = new ArrayList<DynamicObject>();
@@ -67,18 +94,38 @@ public class ListForeignKeyMethod implements TemplateMethodModelEx, Serializable
 		return objects;
 	}
 
+	/**
+	 * Gets the objects.
+	 *
+	 * @return the objects
+	 */
 	protected List<DynamicObject> getObjects() {
 		return objects;
 	}
 
+	/**
+	 * Sets the objects.
+	 *
+	 * @param objects the new objects
+	 */
 	protected void setObjects(List<DynamicObject> objects) {
 		this.objects = objects;
 	}
 
+	/**
+	 * Gets the foreign keys.
+	 *
+	 * @return the foreign keys
+	 */
 	protected List<Object> getForeignKeys() {
 		return foreignKeys;
 	}
 
+	/**
+	 * Gets the context.
+	 *
+	 * @return the context
+	 */
 	protected NickiContext getContext() {
 		return context;
 	}

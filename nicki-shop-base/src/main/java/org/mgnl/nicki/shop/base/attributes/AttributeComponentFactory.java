@@ -23,9 +23,20 @@ package org.mgnl.nicki.shop.base.attributes;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * A factory for creating AttributeComponent objects.
+ */
 @Slf4j
 public class AttributeComponentFactory {
 
+	/**
+	 * Gets the attribute component.
+	 *
+	 * @param <T> the generic type
+	 * @param type the type
+	 * @return the attribute component
+	 */
 	@SuppressWarnings("unchecked")
 	static public <T extends Object> BaseAttributeComponent<T> getAttributeComponent(String type) {
 		try {

@@ -27,6 +27,7 @@ import java.io.IOException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
 
+// TODO: Auto-generated Javadoc
 /**
  * Class adds capability to track/determine if the HTTP Status 
  * code has been set.
@@ -42,11 +43,13 @@ import jakarta.servlet.http.HttpServletResponseWrapper;
  */
 public final class SpnegoHttpServletResponse extends HttpServletResponseWrapper {
 
+    /** The status set. */
     private transient boolean statusSet = false;
 
     /**
-     * 
-     * @param response
+     * Instantiates a new spnego http servlet response.
+     *
+     * @param response the response
      */
     public SpnegoHttpServletResponse(final HttpServletResponse response) {
         super(response);
@@ -61,6 +64,11 @@ public final class SpnegoHttpServletResponse extends HttpServletResponseWrapper 
         return this.statusSet;
     }
 
+    /**
+     * Sets the status.
+     *
+     * @param status the new status
+     */
     @Override
     public void setStatus(final int status) {
         super.setStatus(status);
@@ -70,11 +78,10 @@ public final class SpnegoHttpServletResponse extends HttpServletResponseWrapper 
     /**
      * Sets the HTTP Status Code and optionally set the the content 
      * length to zero and flush the buffer.
-     * 
+     *
      * @param status http status code
      * @param immediate set to true to set content len to zero and flush
-     * @throws IOException 
-     * 
+     * @throws IOException Signals that an I/O exception has occurred.
      * @see #setStatus(int)
      */
     public void setStatus(final int status, final boolean immediate) throws IOException {

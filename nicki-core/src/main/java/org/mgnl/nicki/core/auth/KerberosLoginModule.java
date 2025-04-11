@@ -50,16 +50,27 @@ import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import lombok.extern.slf4j.Slf4j;
+// TODO: Auto-generated Javadoc
 
+/**
+ * LoginModule to support Kerberos.
+ */
 @Slf4j
 public class KerberosLoginModule extends NickiLoginModule {
+	
+	/** The Constant PREAUTH_USER_CONF. */
 	public static final String PREAUTH_USER_CONF = "spnego.preauth.username";
+    
+    /** The Constant PREAUTH_PASSWORD_CONF. */
     public static final String PREAUTH_PASSWORD_CONF = "spnego.preauth.password";
+    
+    /** The Constant SERVER_LOGIN_MODULE_CONF. */
     public static final String SERVER_LOGIN_MODULE_CONF = "spnego.server.loginmodule";
     
 	/** GSSContext is not thread-safe. */
 	private static final Lock LOCK = new ReentrantLock();
 	
+	/** The kerberos config. */
 	private KerberosConfig kerberosConfig = new KerberosConfig();
 
 	/** GSS-API mechanism "1.3.6.1.5.5.2". */
@@ -89,8 +100,16 @@ public class KerberosLoginModule extends NickiLoginModule {
 	 * </p>
 	 */
 	public static final String NEGOTIATE_HEADER = "Negotiate";
+    
+    /** The Constant SESSION_AUTH_HEADER. */
     public static final String SESSION_AUTH_HEADER = "NICKI_SESSION_AUTH_HEADER";
 
+	/**
+	 * Login.
+	 *
+	 * @return true, if successful
+	 * @throws LoginException the login exception
+	 */
 	@Override
 	public boolean login() throws LoginException {
 		log.debug("Using " + getClass().getCanonicalName());
@@ -210,7 +229,8 @@ public class KerberosLoginModule extends NickiLoginModule {
 	
 	/**
 	 * Returns a copy of byte[].
-	 * 
+	 *
+	 * @param token the token
 	 * @return copy of token
 	 */
 	private byte[] decodeToken(String token) {
@@ -219,11 +239,10 @@ public class KerberosLoginModule extends NickiLoginModule {
 
 	/**
 	 * Returns the {@link GSSCredential} the server uses for pre-authentication.
-	 * 
-	 * @param subject
-	 *            account server uses for pre-authentication
+	 *
+	 * @param subject            account server uses for pre-authentication
 	 * @return credential that allows server to authenticate clients
-	 * @throws PrivilegedActionException
+	 * @throws PrivilegedActionException the privileged action exception
 	 */
 	static GSSCredential getServerCredential(final Subject subject) throws PrivilegedActionException {
 
@@ -285,12 +304,20 @@ public class KerberosLoginModule extends NickiLoginModule {
 		return oid;
 	}
 	
+	/**
+	 * The Class KerberosConfig.
+	 */
 	public class KerberosConfig {
+		
+		/** The init. */
 		private boolean init;
 		
 		/** Credentials server uses for authenticating requests. */
 		private transient GSSCredential serverCredentials;
 
+		/**
+		 * Instantiates a new kerberos config.
+		 */
 		public KerberosConfig() {
 			synchronized (AUTHZ_HEADER) {
 				if (!init) {
@@ -300,6 +327,9 @@ public class KerberosLoginModule extends NickiLoginModule {
 			}
 		}
 
+		/**
+		 * Inits the.
+		 */
 		private synchronized void init() {
 			String preauthUsername = Config.getString(PREAUTH_USER_CONF);
 			String preauthPassword = Config.getString(PREAUTH_PASSWORD_CONF);
@@ -318,6 +348,11 @@ public class KerberosLoginModule extends NickiLoginModule {
 			}
 		}
 
+		/**
+		 * Gets the server credentials.
+		 *
+		 * @return the server credentials
+		 */
 		public GSSCredential getServerCredentials() {
 			return serverCredentials;
 		}		

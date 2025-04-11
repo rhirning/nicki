@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.verify.classes;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-verify
@@ -22,15 +23,42 @@ package org.mgnl.nicki.verify.classes;
  */
 
 
+/**
+ * The Class ReferencedError.
+ */
 public class ReferencedError {
-	public enum TYPE {ERROR, WARN};
 	
+	/**
+	 * The Enum TYPE.
+	 */
+	public enum TYPE {
+/** The error. */
+ERROR, 
+ /** The warn. */
+ WARN};
+	
+	/** The type. */
 	private TYPE type;
+	
+	/** The reference. */
 	private String reference;
+	
+	/** The message. */
 	private String message;
+	
+	/** The command. */
 	private Object command;
+	
+	/** The revalidate. */
 	private boolean revalidate;
 	
+	/**
+	 * Instantiates a new referenced error.
+	 *
+	 * @param type the type
+	 * @param reference the reference
+	 * @param message the message
+	 */
 	public ReferencedError(TYPE type, String reference, String message) {
 		super();
 		this.type = type;
@@ -38,20 +66,51 @@ public class ReferencedError {
 		this.message = message;
 	}
 	
+	/**
+	 * Instantiates a new referenced error.
+	 *
+	 * @param type the type
+	 * @param reference the reference
+	 * @param message the message
+	 * @param command the command
+	 */
 	public ReferencedError(TYPE type, String reference, String message, Object command) {
 		this(type, reference, message);
 		this.command = command;
 	}
+	
+	/**
+	 * Gets the reference.
+	 *
+	 * @return the reference
+	 */
 	public String getReference() {
 		return reference;
 	}
+	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	public String getMessage() {
 		return message;
 	}
+	
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	public TYPE getType() {
 		return type;
 	}
 	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -63,14 +122,30 @@ public class ReferencedError {
 		sb.append("}");
 		return sb.toString();
 	}
+	
+	/**
+	 * Gets the command.
+	 *
+	 * @return the command
+	 */
 	public Object getCommand() {
 		return command;
 	}
 
+	/**
+	 * Checks if is revalidate.
+	 *
+	 * @return true, if is revalidate
+	 */
 	public boolean isRevalidate() {
 		return revalidate;
 	}
 
+	/**
+	 * Sets the revalidate.
+	 *
+	 * @param revalidate the new revalidate
+	 */
 	public void setRevalidate(boolean revalidate) {
 		this.revalidate = revalidate;
 	}

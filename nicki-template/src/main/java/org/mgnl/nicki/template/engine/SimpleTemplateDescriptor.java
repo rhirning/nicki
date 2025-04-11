@@ -27,14 +27,35 @@ import java.io.StringReader;
 
 import org.apache.commons.lang3.StringUtils;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SimpleTemplateDescriptor.
+ */
 public class SimpleTemplateDescriptor {
+	
+	/** The template. */
 	private SimpleTemplate template;
+	
+	/** The part. */
 	private String part;
+	
+	/**
+	 * Instantiates a new simple template descriptor.
+	 *
+	 * @param template the template
+	 * @param part the part
+	 */
 	public SimpleTemplateDescriptor(SimpleTemplate template, String part) {
 		super();
 		this.template = template;
 		this.part = part;
 	}
+	
+	/**
+	 * Gets the reader.
+	 *
+	 * @return the reader
+	 */
 	public Reader getReader() {
 		if (StringUtils.isNotEmpty(part)) {
 			if (template.containsKey(part)) {
@@ -45,6 +66,12 @@ public class SimpleTemplateDescriptor {
 			return new StringReader(template.getData());
 		}
 	}
+	
+	/**
+	 * Gets the name.
+	 *
+	 * @return the name
+	 */
 	public String getName() {
 		return this.template.getName();
 	}

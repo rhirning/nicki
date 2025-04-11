@@ -46,6 +46,10 @@ import com.novell.idm.nrf.soap.ws.resource.ResourceRequestParam;
 import com.novell.idm.nrf.soap.ws.resource.ResourceService;
 import com.novell.soa.ws.portable.Stub;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class IdmResourceWebServiceClient.
+ */
 @SuppressWarnings("serial")
 public class IdmResourceWebServiceClient implements Serializable {
 	/*
@@ -54,13 +58,22 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * nicki.idm.novell.ws.resource.password = netiq000
 	 */
 
+	/** The wsdl. */
 	private static String wsdl = Config.getString("nicki.idm.novell.ws.resource.wsdl");
+	
+	/** The user. */
 	private static String user = Config.getString("nicki.idm.novell.ws.resource.user");
+	
+	/** The password. */
 	private static String password = Config.getString("nicki.idm.novell.ws.resource.password");
 
+	/** The instance. */
 	private static IdmResourceWebServiceClient instance;
 
+	/** The service. */
 	private ResourceService service;
+	
+	/** The res. */
 	private IRemoteResource res;
 
 	static {
@@ -73,6 +86,11 @@ public class IdmResourceWebServiceClient implements Serializable {
 		});
 	}
 
+	/**
+	 * Gets the single instance of IdmResourceWebServiceClient.
+	 *
+	 * @return single instance of IdmResourceWebServiceClient
+	 */
 	public static synchronized IdmResourceWebServiceClient getInstance() {
 		if (instance == null) {
 			instance = new IdmResourceWebServiceClient();
@@ -81,9 +99,15 @@ public class IdmResourceWebServiceClient implements Serializable {
 		return instance;
 	}
 
+	/**
+	 * Instantiates a new idm resource web service client.
+	 */
 	private IdmResourceWebServiceClient() {
 	}
 
+	/**
+	 * Inits the.
+	 */
 	private void init() {
 
 		try {
@@ -136,17 +160,14 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * 
 	 * For code samples that use the new methods for code map synchronization, see
 	 * Code Map Synchronization Code Samples.
-	 * 
-	 * @param entitilementDN
-	 *            entitlement DN as a string.
-	 * @param connectionName
-	 *            connection (logical system) name. This is an optional parameter.
+	 *
+	 * @param entitilementDN            entitlement DN as a string.
+	 * @param connectionName            connection (logical system) name. This is an optional parameter.
 	 *            Only fanout drivers need to specify the connection name.
-	 * @param codeMapValue
-	 *            code map value to verify.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @param codeMapValue            code map value to verify.
+	 * @return the code map value status
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public CodeMapValueStatus checkCodeMapValueStatus(String entitilementDN, String connectionName, String codeMapValue)
 			throws NrfServiceException, RemoteException {
@@ -163,12 +184,11 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * UserApp#RemoteResourceRequest#xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	 * 
 	 * The correlation ID is used for auditing.
-	 * 
-	 * @param resource
-	 *            specifies the resource object to create.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param resource            specifies the resource object to create.
+	 * @return the string
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public String createResource(Resource resource) throws NrfServiceException, RemoteException {
 		return res.createResource(resource);
@@ -179,12 +199,12 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * correlation ID is used for auditing to link a set of related resources. This
 	 * method creates the resource according to the specified parameters, and
 	 * returns a DN of the created resource.
-	 * 
-	 * @param resource
-	 * @param correlationId
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param resource the resource
+	 * @param correlationId the correlation id
+	 * @return the string
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public String createResourceAid(Resource resource, String correlationId)
 			throws NrfServiceException, RemoteException {
@@ -194,18 +214,16 @@ public class IdmResourceWebServiceClient implements Serializable {
 	/**
 	 * Finds all Resource objects based on the search criteria specified in the
 	 * given Resource object.
-	 * 
-	 * @param searchCriteria
-	 *            specifies Query by Example (QBE) search criteria within a Resource
+	 *
+	 * @param searchCriteria            specifies Query by Example (QBE) search criteria within a Resource
 	 *            object.
-	 * @param useAndForMultiValueSearch
-	 *            determines whether AND or OR will be used for multi-value search
+	 * @param useAndForMultiValueSearch            determines whether AND or OR will be used for multi-value search
 	 *            expressions. If you specify a value of true, AND will be used for
 	 *            multi-value searches; if you specify a value of false, OR will be
 	 *            used.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the resource[]
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Resource[] findResourceByExampleWithOperator(Resource searchCriteria, boolean useAndForMultiValueSearch)
 			throws NrfServiceException, RemoteException {
@@ -213,28 +231,41 @@ public class IdmResourceWebServiceClient implements Serializable {
 	}
 
 	/**
-	 * 
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * Flush driver cache.
+	 *
+	 * @return the string
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public String flushDriverCache() throws NrfServiceException, RemoteException {
 		return res.flushDriverCache();
 	}
 
 	/**
-	 * 
-	 * @param resourceDn
-	 *            DN of the target resource
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * Gets the assignments for resource.
+	 *
+	 * @param resourceDn            DN of the target resource
+	 * @return the assignments for resource
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ResourceAssignment[] getAssignmentsForResource(String resourceDn)
 			throws NrfServiceException, RemoteException {
 		return getAssignmentsForResource(resourceDn);
 	}
 
+	/**
+	 * Gets the code map values.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @param arg3 the arg 3
+	 * @param arg4 the arg 4
+	 * @return the code map values
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
+	 */
 	public CodeMapValue[] getCodeMapValues(String arg0, String arg1, String arg2, String arg3, String arg4)
 			throws NrfServiceException, RemoteException {
 		return res.getCodeMapValues(arg0, arg1, arg2, arg3, arg4);
@@ -243,19 +274,17 @@ public class IdmResourceWebServiceClient implements Serializable {
 	/**
 	 * Returns an array of ProvisioningCodeMap objects, which include code map
 	 * information from the code map and code map label tables.
-	 * 
-	 * @param codeMapKey
-	 *            specifies the code map key to retrieve values from. The codeMapKey
+	 *
+	 * @param codeMapKey            specifies the code map key to retrieve values from. The codeMapKey
 	 *            is a GUID that acts as a unique identifier for the code map. For
 	 *            example:
 	 * 
 	 *            \2d\13\d1\a4\7b\99\d6\4c\03\9a\2d\13\d1\a4\7b\99
-	 * @param type
-	 *            specifies the code map type. A value of 0 filters the list to
+	 * @param type            specifies the code map type. A value of 0 filters the list to
 	 *            include entitlement code maps only.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the entitlement code map
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ProvisioningCodeMap[] getEntitlementCodeMap(String codeMapKey, int type)
 			throws NrfServiceException, RemoteException {
@@ -296,16 +325,15 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * 
 	 * For code samples that use the new methods for code map synchronization, see
 	 * Code Map Synchronization Code Samples.
-	 * 
-	 * @param entitlementDN
-	 *            entitlement DN as a string
+	 *
+	 * @param entitlementDN            entitlement DN as a string
 	 * 
 	 *            For example:
 	 * 
 	 *            cn=groups,cn=groupentitlementloopback,cn=driverset1,o=system
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the refresh status
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public CodeMapRefreshStatus[] getRefreshStatus(String entitlementDN) throws NrfServiceException, RemoteException {
 		return res.getRefreshStatus(entitlementDN);
@@ -313,16 +341,14 @@ public class IdmResourceWebServiceClient implements Serializable {
 
 	/**
 	 * Returns a resource object.
-	 * 
-	 * @param dn
-	 *            specifies the DN of the resource you want to retrieve.
-	 * @param locale
-	 *            supplies an iso639 language code to format localized string
+	 *
+	 * @param dn            specifies the DN of the resource you want to retrieve.
+	 * @param locale            supplies an iso639 language code to format localized string
 	 *            values; if the parameter is null, the language defaults to the
 	 *            servlet request locale.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the resource
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Resource getResource(String dn, String locale) throws NrfServiceException, RemoteException {
 		return res.getResource(dn, locale);
@@ -330,22 +356,22 @@ public class IdmResourceWebServiceClient implements Serializable {
 
 	/**
 	 * Returns the resource assignments for the current user.
-	 * 
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @return the resource assignments for current user
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ResourceAssignment[] getResourceAssignmentsForCurrentUser() throws NrfServiceException, RemoteException {
 		return res.getResourceAssignmentsForCurrentUser();
 	}
 
 	/**
-	 * 
-	 * @param userDn
-	 *            of the target user
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * Gets the resource assignments for user.
+	 *
+	 * @param userDn            of the target user
+	 * @return the resource assignments for user
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ResourceAssignment[] getResourceAssignmentsForUser(String userDn)
 			throws NrfServiceException, RemoteException {
@@ -356,17 +382,15 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * Gets the localized strings for a resource, such as the names and
 	 * descriptions. The type parameter lets you specify whether the names or
 	 * descriptions should be retrieved.
-	 * 
-	 * @param resourceDn
-	 *            specifies the DN of the resource for which you want to get the
+	 *
+	 * @param resourceDn            specifies the DN of the resource for which you want to get the
 	 *            localized strings.
-	 * @param type
-	 *            specifies the type of localized strings you want to retrieve. A
+	 * @param type            specifies the type of localized strings you want to retrieve. A
 	 *            type value of 1 retrieves a list of names for the resource,
 	 *            whereas a type value of 2 retrieves a list of descriptions.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the resource localized strings
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public LocalizedValue[] getResourceLocalizedStrings(String resourceDn, int type)
 			throws NrfServiceException, RemoteException {
@@ -374,16 +398,15 @@ public class IdmResourceWebServiceClient implements Serializable {
 	}
 
 	/**
-	 * 
-	 * @param correlationId
-	 *            specifies a resource assignment request correlation ID.
-	 * @param locale
-	 *            supplies an iso639 language code to format localized string
+	 * Gets the resource request status by correlation id.
+	 *
+	 * @param correlationId            specifies a resource assignment request correlation ID.
+	 * @param locale            supplies an iso639 language code to format localized string
 	 *            values; if the parameter is null, the language defaults to the
 	 *            servlet request locale.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the resource request status by correlation id
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ResourceAssignmentRequestStatus[] getResourceRequestStatusByCorrelationId(String correlationId,
 			String locale) throws NrfServiceException, RemoteException {
@@ -393,16 +416,14 @@ public class IdmResourceWebServiceClient implements Serializable {
 	/**
 	 * Returns all resource assignment request status items for a particular user
 	 * identity.
-	 * 
-	 * @param identity
-	 *            specifies the DN for a user.
-	 * @param locale
-	 *            supplies an iso639 language code to format localized string
+	 *
+	 * @param identity            specifies the DN for a user.
+	 * @param locale            supplies an iso639 language code to format localized string
 	 *            values; if the parameter is null, the language defaults to the
 	 *            servlet request locale.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the resource request status by identity
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ResourceAssignmentRequestStatus[] getResourceRequestStatusByIdentity(String identity, String locale)
 			throws NrfServiceException, RemoteException {
@@ -411,14 +432,13 @@ public class IdmResourceWebServiceClient implements Serializable {
 
 	/**
 	 * Returns all resource request status items for the authenticated user.
-	 * 
-	 * @param locale
-	 *            supplies an iso639 language code to format localized string
+	 *
+	 * @param locale            supplies an iso639 language code to format localized string
 	 *            values; if the parameter is null, the language defaults to the
 	 *            servlet request locale.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the resource request status for current user
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ResourceAssignmentRequestStatus[] getResourceRequestStatusForCurrentUser(String locale)
 			throws NrfServiceException, RemoteException {
@@ -427,13 +447,12 @@ public class IdmResourceWebServiceClient implements Serializable {
 
 	/**
 	 * Returns a list of ResourceInfo instances given a list of resource DNs.
-	 * 
-	 * @param resDns
-	 *            provides a list of resource DNs for which you want to retrieve
+	 *
+	 * @param resDns            provides a list of resource DNs for which you want to retrieve
 	 *            resource information objects.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the resourcess info
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ResourceInfo[] getResourcessInfo(DNString[] resDns) throws NrfServiceException, RemoteException {
 		return res.getResourcessInfo(resDns);
@@ -441,13 +460,12 @@ public class IdmResourceWebServiceClient implements Serializable {
 
 	/**
 	 * Returns a list of ResourceInfo instances given a list of category keys.
-	 * 
-	 * @param resourceCategoryKeys
-	 *            specifies the list of resource category keys to retrieve resource
+	 *
+	 * @param resourceCategoryKeys            specifies the list of resource category keys to retrieve resource
 	 *            information objects for.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the resourcess info by category
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public ResourceInfo[] getResourcessInfoByCategory(CategoryKey[] resourceCategoryKeys)
 			throws NrfServiceException, RemoteException {
@@ -463,12 +481,11 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * format:
 	 * 
 	 * UserApp#RemoteResourceRequest#xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-	 * 
-	 * @param resource
-	 *            specifies the resource object to modify.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param resource            specifies the resource object to modify.
+	 * @return the resource
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Resource modifyResource(Resource resource) throws NrfServiceException, RemoteException {
 		return res.modifyResource(resource);
@@ -480,12 +497,12 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * method does not perform a localized string modification update. To update the
 	 * localized names or descriptions for a resource, you need to use the
 	 * setResourceLocalizedStrings method.
-	 * 
-	 * @param resource
-	 * @param correlationId
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param resource the resource
+	 * @param correlationId the correlation id
+	 * @return the resource
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public Resource modifyResourceAid(Resource resource, String correlationId)
 			throws NrfServiceException, RemoteException {
@@ -524,12 +541,11 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * 
 	 * For code samples that use the new methods for code map synchronization, see
 	 * Code Map Synchronization Code Samples.
-	 * 
-	 * @param entitlementDN
-	 *            entitlement DN to refresh the code map
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param entitlementDN            entitlement DN to refresh the code map
+	 * @return the entitlement refresh info
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public EntitlementRefreshInfo refreshCodeMap(String entitlementDN) throws NrfServiceException, RemoteException {
 		return res.refreshCodeMap(entitlementDN);
@@ -545,12 +561,11 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * UserApp#RemoteResourceRequest#xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
 	 * 
 	 * The correlation ID is used for auditing.
-	 * 
-	 * @param resourceDn
-	 *            specifies the DN of the resource to delete.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param resourceDn            specifies the DN of the resource to delete.
+	 * @return the DN string
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public DNString removeResource(DNString resourceDn) throws NrfServiceException, RemoteException {
 		return res.removeResource(resourceDn);
@@ -561,12 +576,12 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * that you provide. The correlation ID is used for auditing to link a set of
 	 * related resources. This method returns the DN for the deleted resource as a
 	 * confirmation.
-	 * 
-	 * @param resourceDn
-	 * @param correlationId
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param resourceDn the resource dn
+	 * @param correlationId the correlation id
+	 * @return the DN string
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public DNString removeResourceAid(DNString resourceDn, String correlationId)
 			throws NrfServiceException, RemoteException {
@@ -575,11 +590,9 @@ public class IdmResourceWebServiceClient implements Serializable {
 
 	/**
 	 * Makes a grant resource request and returns a resource request correlation ID.
-	 * 
-	 * @param resourceTarget
-	 *            specifies the target resource DN.
-	 * @param requester
-	 *            supplies an identifier for the remote client application making
+	 *
+	 * @param resourceTarget            specifies the target resource DN.
+	 * @param requester            supplies an identifier for the remote client application making
 	 *            the request to grant the resource.
 	 * 
 	 *            The requester parameter on this SOAP endpoint identifies the
@@ -589,18 +602,14 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 *            For a SOAP call: "REMOTE_CLIENT:<requester param value>"
 	 * 
 	 *            For a workflow action: "WF:<wf process id>"
-	 * @param userTarget
-	 *            specifies the DN for the being granted the resource.
-	 * @param reasonForRequest
-	 *            provides a reason for the request.
-	 * @param requestParams
-	 *            provides the parameter values for the request.
-	 * @param correlationId
-	 *            specifies a resource assignment request correlation ID; if the
+	 * @param userTarget            specifies the DN for the being granted the resource.
+	 * @param reasonForRequest            provides a reason for the request.
+	 * @param requestParams            provides the parameter values for the request.
+	 * @param correlationId            specifies a resource assignment request correlation ID; if the
 	 *            parameter is null, a correlation ID is generated.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the string
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public String requestResourceGrant(String resourceTarget, String requester, String userTarget,
 			String reasonForRequest, ResourceRequestParam[] requestParams, String correlationId)
@@ -615,11 +624,9 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * 
 	 * The revoke invocation behavior mirrors the behavior for a grant opeation,
 	 * except that a revoke request for the resource is posted on the server.
-	 * 
-	 * @param resourceTarget
-	 *            specifies the target resource DN.
-	 * @param requester
-	 *            supplies an identifier for the remote client application making
+	 *
+	 * @param resourceTarget            specifies the target resource DN.
+	 * @param requester            supplies an identifier for the remote client application making
 	 *            the request to revoke the resource.
 	 * 
 	 *            The requester parameter on this SOAP endpoint identifies the
@@ -631,14 +638,10 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 *            For a workflow action: "WF:<wf process id>"
 	 * 
 	 *            For the user application user interface: "USER_APP"
-	 * @param userTarget
-	 *            specifies the DN for the user being granted the resource.
-	 * @param reasonForRequest
-	 *            provides a reason for the request.
-	 * @param requestParams
-	 *            provides the parameter values for the request.
-	 * @param instanceGuid
-	 *            provides a GUID identifier for the resource assignment instance.
+	 * @param userTarget            specifies the DN for the user being granted the resource.
+	 * @param reasonForRequest            provides a reason for the request.
+	 * @param requestParams            provides the parameter values for the request.
+	 * @param instanceGuid            provides a GUID identifier for the resource assignment instance.
 	 *            The resource assignment instance GUID supports revoking a single
 	 *            instance of a multi-value resource assignment, if not all
 	 *            instances are to be revoked.
@@ -672,12 +675,11 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 *            <resourceDn>cn=Vodacom,cn=ResourceDefs,cn=RoleConfig,cn=AppConfig,cn=User
 	 *            Application Driver,cn=driverset1,o=system</resourceDn>
 	 *            </resourceassignment>
-	 * @param correlationId
-	 *            specifies a resource assignment request correlation ID; if the
+	 * @param correlationId            specifies a resource assignment request correlation ID; if the
 	 *            parameter is null, a correlation ID is generated.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the string
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public String requestResourceRevoke(String resourceTarget, String requester, String userTarget,
 			String reasonForRequest, ResourceRequestParam[] requestParams, String instanceGuid, String correlationId)
@@ -686,11 +688,32 @@ public class IdmResourceWebServiceClient implements Serializable {
 				instanceGuid, correlationId);
 	}
 
+	/**
+	 * Sets the all resource localized strings.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @return the crud resource request status
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
+	 */
 	public CrudResourceRequestStatus setAllResourceLocalizedStrings(String arg0, LocalizedValue[] arg1,
 			LocalizedValue[] arg2) throws NrfServiceException, RemoteException {
 		return res.setAllResourceLocalizedStrings(arg0, arg1, arg2);
 	}
 
+	/**
+	 * Sets the all resource localized strings with correlation id.
+	 *
+	 * @param arg0 the arg 0
+	 * @param arg1 the arg 1
+	 * @param arg2 the arg 2
+	 * @param arg3 the arg 3
+	 * @return the crud resource request status
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
+	 */
 	public CrudResourceRequestStatus setAllResourceLocalizedStringsWithCorrelationId(String arg0, LocalizedValue[] arg1,
 			LocalizedValue[] arg2, String arg3) throws NrfServiceException, RemoteException {
 		return res.setAllResourceLocalizedStringsWithCorrelationId(arg0, arg1, arg2, arg3);
@@ -704,19 +727,16 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * format:
 	 * 
 	 * UserApp#RemoteResourceRequest#xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
-	 * 
-	 * @param resourceDn
-	 *            specifies the DN of the resource for which you want to set the
+	 *
+	 * @param resourceDn            specifies the DN of the resource for which you want to set the
 	 *            localized strings.
-	 * @param locStrings
-	 *            provides an array of localized strings you want to define.
-	 * @param type
-	 *            specifies the type of localized strings you want to retrieve. A
+	 * @param locStrings            provides an array of localized strings you want to define.
+	 * @param type            specifies the type of localized strings you want to retrieve. A
 	 *            type value of 1 retrieves a list of names for the resource,
 	 *            whereas a type value of 2 retrieves a list of descriptions.
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 * @return the localized value[]
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public LocalizedValue[] setResourceLocalizedStrings(String resourceDn, LocalizedValue[] locStrings, int type)
 			throws NrfServiceException, RemoteException {
@@ -727,14 +747,14 @@ public class IdmResourceWebServiceClient implements Serializable {
 	 * Sets the localized strings for a resource, such as the names and
 	 * descriptions, with a correlation ID that you provide. The correlation ID is
 	 * used for auditing to link a set of related resources.
-	 * 
-	 * @param resourceDn
-	 * @param locStrings
-	 * @param type
-	 * @param correlationId
-	 * @return
-	 * @throws NrfServiceException
-	 * @throws RemoteException
+	 *
+	 * @param resourceDn the resource dn
+	 * @param locStrings the loc strings
+	 * @param type the type
+	 * @param correlationId the correlation id
+	 * @return the localized value[]
+	 * @throws NrfServiceException the nrf service exception
+	 * @throws RemoteException the remote exception
 	 */
 	public LocalizedValue[] setResourceLocalizedStringsAid(String resourceDn, LocalizedValue[] locStrings, int type,
 			String correlationId) throws NrfServiceException, RemoteException {

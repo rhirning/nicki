@@ -40,6 +40,7 @@ import jakarta.xml.bind.annotation.XmlMixed;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java-Klasse f�r data complex type.
  * 
@@ -71,6 +72,7 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Data {
 
+    /** The content. */
     @XmlElementRefs({
         @XmlElementRef(name = "table", type = JAXBElement.class),
         @XmlElementRef(name = "text", type = JAXBElement.class),
@@ -109,8 +111,8 @@ public class Data {
      * {@link JAXBElement }{@code <}{@link Barcode }{@code >}
      * {@link String }
      * {@link JAXBElement }{@code <}{@link Link }{@code >}
-     * 
-     * 
+     *
+     * @return the content
      */
     public java.util.List<Serializable> getContent() {
         if (content == null) {

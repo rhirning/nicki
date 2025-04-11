@@ -28,14 +28,34 @@ import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * CallbackHandler to set targets.
+ */
 public class TargetCallbackHandler implements CallbackHandler {
 
+	/** The login target. */
 	private String loginTarget;
+	
+	/** The target. */
 	private String target;
+	
+	/** The access target. */
 	private String accessTarget;
+	
+	/**
+	 * Instantiates a new target callback handler.
+	 */
 	public TargetCallbackHandler() {
 	}
 
+	/**
+	 * Handle.
+	 *
+	 * @param callbacks the callbacks
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws UnsupportedCallbackException the unsupported callback exception
+	 */
 	public void handle(Callback[] callbacks) throws IOException,
 			UnsupportedCallbackException {
 
@@ -53,26 +73,56 @@ public class TargetCallbackHandler implements CallbackHandler {
 		}
 	}
 
+	/**
+	 * Gets the login target.
+	 *
+	 * @return the login target
+	 */
 	public String getLoginTarget() {
 		return loginTarget;
 	}
 
+	/**
+	 * Sets the login target.
+	 *
+	 * @param loginTarget the new login target
+	 */
 	public void setLoginTarget(String loginTarget) {
 		this.loginTarget = loginTarget;
 	}
 
+	/**
+	 * Gets the target.
+	 *
+	 * @return the target
+	 */
 	public String getTarget() {
 		return target;
 	}
 
+	/**
+	 * Sets the target.
+	 *
+	 * @param target the new target
+	 */
 	public void setTarget(String target) {
 		this.target = target;
 	}
 
+	/**
+	 * Gets the access target.
+	 *
+	 * @return the access target
+	 */
 	public String getAccessTarget() {
 		return accessTarget;
 	}
 
+	/**
+	 * Sets the access target.
+	 *
+	 * @param accessTarget the new access target
+	 */
 	public void setAccessTarget(String accessTarget) {
 		this.accessTarget = accessTarget;
 	}

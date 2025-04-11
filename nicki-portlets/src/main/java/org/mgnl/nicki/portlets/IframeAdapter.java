@@ -41,22 +41,44 @@ import org.w3c.dom.Document;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class IframeAdapter.
+ */
 @Slf4j
 public class IframeAdapter implements SSOAdapter {
+	
+	/** The Constant USER_PATH. */
 	static final String USER_PATH = "/Assertion/AuthenticationStatement/Subject/NameIdentifier";
+	
+	/** The is init. */
 	private boolean isInit = false;
+	
+	/** The type. */
 	private TYPE type = TYPE.UNKNOWN;
 	
+	/** The request. */
 	private Object request;
 	
+	/** The password. */
 	private String password;
+	
+	/** The name. */
 	private String name;
 
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	@Override
 	public TYPE getType() {
 		return type;
 	}
 
+	/**
+	 * Inits the.
+	 */
 	public void init() {
 		if (!isInit) {
 			String encodedToken = null;
@@ -96,6 +118,12 @@ public class IframeAdapter implements SSOAdapter {
 		}
 	}
 
+	/**
+	 * Gets the name from token.
+	 *
+	 * @param token the token
+	 * @return the name from token
+	 */
 	private String getNameFromToken(String token) {
 		try {
 			Document doc = XmlHelper.getDocumentFromXml(token);
@@ -107,23 +135,43 @@ public class IframeAdapter implements SSOAdapter {
 		return null;
 	}
 
+	/**
+	 * Gets the groups.
+	 *
+	 * @param request the request
+	 * @return the groups
+	 */
 	public  List<String> getGroups(Object request) {
 		List<String> list = new ArrayList<String>();
 		return list;
 	}
 	
+	/**
+	 * Gets the password.
+	 *
+	 * @return the password
+	 */
 	public char[] getPassword() {
 		init();
 		return password.toCharArray();
 	}
-	/** user DN like 
-	 * cn=padmin,ou=users,o=utopia
+	
+	/**
+	 * user DN like 
+	 * cn=padmin,ou=users,o=utopia.
+	 *
+	 * @return the name
 	 */
 	public String getName() {
 		init();
 		return name;
 	}
 
+	/**
+	 * Gets the user id.
+	 *
+	 * @return the user id
+	 */
 	public String getUserId() {
 		init();
 		String userDn = getName();
@@ -138,41 +186,100 @@ public class IframeAdapter implements SSOAdapter {
 	}
 
 	
+	/**
+	 * Checks if is in group.
+	 *
+	 * @param request the request
+	 * @param group the group
+	 * @return true, if is in group
+	 */
 	public boolean isInGroup(Object request, String group) {
 		return getGroups(request).contains(group);
 	}
 	
+	/**
+	 * Gets the request.
+	 *
+	 * @param request the request
+	 * @return the request
+	 */
 	private HttpServletRequest getRequest(Object request) {
 		return (HttpServletRequest) request;
 	}
+	
+	/**
+	 * Gets the session.
+	 *
+	 * @param request the request
+	 * @return the session
+	 */
 	private HttpSession getSession(Object request) {
 		return getRequest(request).getSession(true);
 	}
 
+	/**
+	 * Gets the attribute from request.
+	 *
+	 * @param request the request
+	 * @param key the key
+	 * @return the attribute from request
+	 */
 	public Object getAttributeFromRequest(Object request, String key) {
 		return getRequest(request).getAttribute(key);
 	}
 
 
+	/**
+	 * Gets the attribute from session.
+	 *
+	 * @param request the request
+	 * @param key the key
+	 * @return the attribute from session
+	 */
 	public Object getAttributeFromSession(Object request, String key) {
 		return getSession(request).getAttribute(key);
 	}
 
 
+	/**
+	 * Sets the attribute in request.
+	 *
+	 * @param request the request
+	 * @param key the key
+	 * @param object the object
+	 */
 	public void setAttributeInRequest(Object request, String key, Object object) {
 		getRequest(request).setAttribute(key, object);
 	}
 
 
+	/**
+	 * Sets the attribute in session.
+	 *
+	 * @param request the request
+	 * @param key the key
+	 * @param object the object
+	 */
 	public void setAttributeInSession(Object request, String key, Object object) {
 		getSession(request).setAttribute(key, object);
 	}
 
 
+	/**
+	 * Gets the session id.
+	 *
+	 * @param request the request
+	 * @return the session id
+	 */
 	public String getSessionId(Object request) {
 		return getSession(request).getId();
 	}
 
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -181,11 +288,21 @@ public class IframeAdapter implements SSOAdapter {
 		return sb.toString();
 	}
 
+	/**
+	 * Sets the request.
+	 *
+	 * @param request the new request
+	 */
 	@Override
 	public void setRequest(Object request) {
 		this.request = request;
 	}
 	
+	/**
+	 * Gets the request.
+	 *
+	 * @return the request
+	 */
 	public Object getRequest() {
 		if (this.request != null) {
 			return this.request;
@@ -194,6 +311,11 @@ public class IframeAdapter implements SSOAdapter {
 		}
 	}
 
+	/**
+	 * Inits the.
+	 *
+	 * @param loginModule the login module
+	 */
 	@Override
 	public void init(NickiAdapterLoginModule loginModule) {
 		// TODO Auto-generated method stub

@@ -30,23 +30,45 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class IsExistLdapQueryHandler.
+ */
 @Slf4j
 public class IsExistLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
 	
+	/** The dn. */
 	private String dn;
 
+	/** The exist. */
 	private boolean exist = false;
 
+	/**
+	 * Instantiates a new checks if is exist ldap query handler.
+	 *
+	 * @param context the context
+	 * @param path the path
+	 */
 	public IsExistLdapQueryHandler(NickiContext context, String path) {
 		super(context);
 		this.dn = path;
 	}
 
 
+	/**
+	 * Gets the base DN.
+	 *
+	 * @return the base DN
+	 */
 	public String getBaseDN() {
 		return this.dn;
 	}
 
+	/**
+	 * Handle.
+	 *
+	 * @param results the results
+	 */
 	public void handle(List<ContextSearchResult> results) {
 		try {
 			if (results != null && results.size() > 0) {
@@ -57,11 +79,21 @@ public class IsExistLdapQueryHandler extends BasicLdapHandler implements QueryHa
 		}
 	}
 
+	/**
+	 * Checks if is exist.
+	 *
+	 * @return true, if is exist
+	 */
 	public boolean isExist() {
 		return exist;
 	}
 
 
+	/**
+	 * Gets the scope.
+	 *
+	 * @return the scope
+	 */
 	@Override
 	public SCOPE getScope() {
 		return SCOPE.OBJECT;

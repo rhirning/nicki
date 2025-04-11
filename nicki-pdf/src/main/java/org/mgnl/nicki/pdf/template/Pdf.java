@@ -32,6 +32,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java class for anonymous complex type.
  * 
@@ -73,9 +74,14 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlRootElement(name = "pdf")
 public class Pdf {
 
+    /** The box. */
     protected List<Pdf.Box> box;
+    
+    /** The x. */
     @XmlAttribute(name = "x")
     protected Integer x;
+    
+    /** The y. */
     @XmlAttribute(name = "y")
     protected Integer y;
 
@@ -98,8 +104,8 @@ public class Pdf {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link Pdf.Box }
-     * 
-     * 
+     *
+     * @return the box
      */
     public List<Pdf.Box> getBox() {
         if (box == null) {
@@ -186,11 +192,18 @@ public class Pdf {
     })
     public static class Box {
 
+        /** The position. */
         @XmlElement(required = true)
         protected String position;
+        
+        /** The text. */
         protected String text;
+        
+        /** The x. */
         @XmlAttribute(name = "x")
         protected Integer x;
+        
+        /** The y. */
         @XmlAttribute(name = "y")
         protected Integer y;
 

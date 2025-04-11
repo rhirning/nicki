@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.verify;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-verify
@@ -22,9 +23,17 @@ package org.mgnl.nicki.verify;
  */
 
 
+/**
+ * The Class VerifyException.
+ */
 @SuppressWarnings("serial")
 public class VerifyException extends Exception {
 
+	/**
+	 * Instantiates a new verify exception.
+	 *
+	 * @param message the message
+	 */
 	public VerifyException(String message) {
 		super(message);
 	}

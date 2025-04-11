@@ -31,8 +31,17 @@ import org.mgnl.nicki.verify.classes.ReferencedError;
 
 import test.TestRule;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RulesTest.
+ */
 public class RulesTest {
 
+	/**
+	 * Test.
+	 *
+	 * @throws MissingAttributeException the missing attribute exception
+	 */
 	@Test
 	public void test() throws MissingAttributeException {
 		Map<String, Object> data = new HashMap<>();
@@ -42,6 +51,12 @@ public class RulesTest {
 		System.out.println(errors);
 	}
 	
+	/**
+	 * Test 2.
+	 *
+	 * @throws MissingAttributeException the missing attribute exception
+	 * @throws ClassNotFoundException the class not found exception
+	 */
 	@Test
 	public void test2() throws MissingAttributeException, ClassNotFoundException {
 		Map<String, Object> data = new HashMap<>();

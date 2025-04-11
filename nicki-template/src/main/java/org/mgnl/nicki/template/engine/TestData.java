@@ -33,16 +33,33 @@ import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TestData.
+ */
 public class TestData {
 
+	/** The Constant SEPARATOR. */
 	public static final String SEPARATOR = "=";
+	
+	/** The dynamic object. */
 	private DynamicObject dynamicObject;
 	
+	/**
+	 * Instantiates a new test data.
+	 *
+	 * @param dynamicObject the dynamic object
+	 */
 	public TestData(DynamicObject dynamicObject) {
 		super();
 		this.dynamicObject = dynamicObject;
 	}
 
+	/**
+	 * Gets the target.
+	 *
+	 * @return the target
+	 */
 	public Target getTarget() {
 		@SuppressWarnings("unchecked")
 		List<String> testData = (List<String>) dynamicObject.get("testData");
@@ -61,18 +78,35 @@ public class TestData {
 		return TargetFactory.getDefaultTarget();
 	}
 
+	/**
+	 * Gets the data.
+	 *
+	 * @param context the context
+	 * @return the data
+	 */
 	public Map<String, Object> getData(NickiContext context) {
 		// Create the root hash
 		Map<String, Object> root = new HashMap<String, Object>();
 		return root;
 	}
 	
+	/**
+	 * Gets the objects.
+	 *
+	 * @return the objects
+	 */
 	public  Map<String, String> getObjects() {
 		Map<String, String> objects = new HashMap<String, String>();
 		objects.put("person", "cn=ablake,ou=users,o=utopia");
 		return objects;
 	}
 	
+	/**
+	 * Gets the data model.
+	 *
+	 * @param context the context
+	 * @return the data model
+	 */
 	public Map<String, Object> getDataModel(NickiContext context) {
 		Map<String, Object> dataModel = new HashMap<String, Object>();
 		@SuppressWarnings("unchecked")

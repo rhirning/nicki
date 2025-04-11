@@ -40,20 +40,27 @@ import org.mgnl.nicki.verify.VerifyException;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
 /**
- * ConsumerContextListener
+ * ConsumerContextListener.
+ *
  * @author B996043
  * 
  * Konfiguration:
  * nicki.mq.consumer.start = true  	==> die Consumer werden gestartet
  * nicki.mq.consumer.config			==> Konfigurationsdatei 
- * 
  */
 @Slf4j
 public class ConsumerContextListener implements ServletContextListener {
 	
+	/** The consumer threads. */
 	private Map<String,ConsumerThread> consumerThreads = new HashMap<>();
 
+	/**
+	 * Context initialized.
+	 *
+	 * @param sce the sce
+	 */
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		boolean startConsumer = Config.getBoolean("nicki.mq.consumer.start", false);
@@ -69,12 +76,23 @@ public class ConsumerContextListener implements ServletContextListener {
 		}
 	}
 	
+	/**
+	 * Start consumers.
+	 *
+	 * @param configPath the config path
+	 * @return the consumer context listener
+	 */
 	public static ConsumerContextListener startConsumers(String configPath) {
 		ConsumerContextListener consumerContextListener = new ConsumerContextListener();
 		consumerContextListener.start(configPath);
 		return consumerContextListener;
 	}
 	
+	/**
+	 * Start.
+	 *
+	 * @param configPath the config path
+	 */
 	private void start(String configPath) {
 		ConsumerConfig consumerConfig = null;
 		try {
@@ -95,6 +113,12 @@ public class ConsumerContextListener implements ServletContextListener {
 	}
 
 	
+	/**
+	 * Checks if is start.
+	 *
+	 * @param consumer the consumer
+	 * @return true, if is start
+	 */
 	private boolean isStart(Consumer consumer) {
 		if (StringUtils.isNotBlank(consumer.getStart())) {
 			return DataHelper.booleanOf(consumer.getStart());
@@ -114,12 +138,20 @@ public class ConsumerContextListener implements ServletContextListener {
 	}
 
 
+	/**
+	 * Start consumer.
+	 *
+	 * @param consumer the consumer
+	 */
 	private void startConsumer(Consumer consumer) {
 		consumerThreads.put(consumer.getName(), new ConsumerThread(consumer));
 		consumerThreads.get(consumer.getName()).start();
 		log.info("MQ consumer started: " + consumer);
 	}
 	
+	/**
+	 * Stop all consumers.
+	 */
 	public void stopAllConsumers() {
 		for (String key : consumerThreads.keySet()) {
 			consumerThreads.get(key).setStop(true);
@@ -128,6 +160,11 @@ public class ConsumerContextListener implements ServletContextListener {
 		}
 	}
 
+	/**
+	 * Context destroyed.
+	 *
+	 * @param sce the sce
+	 */
 	@Override
 	public void contextDestroyed(ServletContextEvent sce) {
 		stopAllConsumers();

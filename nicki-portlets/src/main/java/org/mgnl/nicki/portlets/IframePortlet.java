@@ -38,8 +38,20 @@ import org.apache.commons.codec.binary.Base64;
 import org.mgnl.nicki.core.auth.SSOAdapter.TYPE;
 import org.mgnl.nicki.idm.novell.jaas.UserAppAdapter;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class IframePortlet.
+ */
 public class IframePortlet extends GenericPortlet {
 
+	/**
+	 * Do view.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @throws PortletException the portlet exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	@Override
 	protected void doView(RenderRequest request, RenderResponse response)
 			throws PortletException, IOException {
@@ -47,6 +59,14 @@ public class IframePortlet extends GenericPortlet {
 	}
 
 
+	/**
+	 * Include.
+	 *
+	 * @param request the request
+	 * @param response the response
+	 * @param pageName the page name
+	 * @throws PortletException the portlet exception
+	 */
 	private void include(RenderRequest request, RenderResponse response,
 			String pageName) throws PortletException {
 		response.setContentType(request.getResponseContentType());
@@ -67,12 +87,24 @@ public class IframePortlet extends GenericPortlet {
 		}
 	}
 	
+	/**
+	 * Gets the app.
+	 *
+	 * @param request the request
+	 * @return the app
+	 */
 	private String getApp(RenderRequest request) {
 		  PortletPreferences pref = request.getPreferences();
 		  String url = pref.getValue("url", "");
 		  return url;
 	}
 	
+	/**
+	 * Gets the parameters.
+	 *
+	 * @param request the request
+	 * @return the parameters
+	 */
 	private String getParameters(RenderRequest request) {
 		  UserAppAdapter uaa = new UserAppAdapter();
 		  uaa.setRequest(request);
@@ -91,6 +123,13 @@ public class IframePortlet extends GenericPortlet {
 		  }
 		  return args;
 	}
+	
+	/**
+	 * Gets the parameters map.
+	 *
+	 * @param request the request
+	 * @return the parameters map
+	 */
 	@SuppressWarnings("rawtypes")
 	private Map getParametersMap(RenderRequest request) {
 		Map<String, String> map = new HashMap<String, String>();
@@ -110,6 +149,12 @@ public class IframePortlet extends GenericPortlet {
 		  return map;
 	}
 	
+	/**
+	 * Gets the url.
+	 *
+	 * @param request the request
+	 * @return the url
+	 */
 	private String getUrl(RenderRequest request) {
 		  return getApp(request) + "?" + getParameters(request);
 	}

@@ -35,17 +35,41 @@ import org.mgnl.nicki.template.engine.Template;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class TemplateLoaderLdapQueryHandler.
+ */
 @Slf4j
 public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
 	
+	/** The Constant TEMPLATE_NAME. */
 	public static final String TEMPLATE_NAME = "ou";
+	
+	/** The Constant ATTRIBUTE_DATA. */
 	public static final String ATTRIBUTE_DATA = "nickiTemplateData";
+	
+	/** The Constant ATTRIBUTE_PART. */
 	public static final String ATTRIBUTE_PART = "nickiTemplatePart";
+	
+	/** The Constant PART_SEPARATOR. */
 	public static final String PART_SEPARATOR = "=";
+	
+	/** The name. */
 	private String name;
+	
+	/** The dn. */
 	private String dn;
+	
+	/** The template. */
 	private Template template;
 
+	/**
+	 * Instantiates a new template loader ldap query handler.
+	 *
+	 * @param context the context
+	 * @param name the name
+	 * @param dn the dn
+	 */
 	public TemplateLoaderLdapQueryHandler(NickiContext context, String name, String dn) {
 		super((LdapContext) context);
 		this.name = name;
@@ -54,10 +78,20 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 	}
 
 
+	/**
+	 * Gets the base DN.
+	 *
+	 * @return the base DN
+	 */
 	public String getBaseDN() {
 		return this.dn;
 	}
 
+	/**
+	 * Handle.
+	 *
+	 * @param results the results
+	 */
 	public void handle(List<ContextSearchResult> results) {
 		try {
 			template = new Template(this.name);
@@ -70,6 +104,12 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 	}
 
 
+	/**
+	 * Handle.
+	 *
+	 * @param rs the rs
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	public void handle(ContextSearchResult rs) throws DynamicObjectException {
 		template = new Template(this.name);
 
@@ -87,11 +127,24 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 		}
 	}
 
+	/**
+	 * Gets the template.
+	 *
+	 * @return the template
+	 */
 	public Template getTemplate() {
 		return template;
 	}
 
 
+	/**
+	 * Gets the attribute.
+	 *
+	 * @param rs the rs
+	 * @param attributeName the attribute name
+	 * @return the attribute
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	private String getAttribute(ContextSearchResult rs, String attributeName) throws DynamicObjectException {
 		String result = (String) rs.getValue(String.class, attributeName);
 		if (StringUtils.isNotEmpty(result)) {
@@ -102,6 +155,11 @@ public class TemplateLoaderLdapQueryHandler extends BasicLdapHandler implements 
 	}
 
 
+	/**
+	 * Gets the scope.
+	 *
+	 * @return the scope
+	 */
 	@Override
 	public SCOPE getScope() {
 		return SCOPE.OBJECT;

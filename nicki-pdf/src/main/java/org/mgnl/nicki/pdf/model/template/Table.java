@@ -37,6 +37,7 @@ import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java-Klasse f�r table complex type.
  * 
@@ -65,9 +66,14 @@ import jakarta.xml.bind.annotation.XmlType;
 })
 public class Table {
 
+    /** The header. */
     protected TableRow header;
+    
+    /** The row. */
     @XmlElement(required = true)
     protected List<TableRow> row;
+    
+    /** The border color. */
     @XmlAttribute(name = "border-color")
     protected String borderColor;
 
@@ -114,8 +120,8 @@ public class Table {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link TableRow }
-     * 
-     * 
+     *
+     * @return the row
      */
     public List<TableRow> getRow() {
         if (row == null) {

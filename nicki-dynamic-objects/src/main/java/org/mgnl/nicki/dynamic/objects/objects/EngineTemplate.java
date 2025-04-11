@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.dynamic.objects.objects;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-dynamic-objects
@@ -22,8 +23,16 @@ package org.mgnl.nicki.dynamic.objects.objects;
  */
 
 
+/**
+ * The Interface EngineTemplate.
+ */
 public interface EngineTemplate {
 
+	/**
+	 * Gets the file.
+	 *
+	 * @return the file
+	 */
 	byte[] getFile();
 
 }

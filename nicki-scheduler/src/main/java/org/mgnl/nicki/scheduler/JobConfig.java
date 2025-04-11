@@ -3,6 +3,7 @@ package org.mgnl.nicki.scheduler;
 
 import lombok.Data;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-scheduler
@@ -23,12 +24,27 @@ import lombok.Data;
  * #L%
  */
 
+/**
+ * The Class JobConfig.
+ */
 @Data
 public class JobConfig {
+	
+	/** The active. */
 	private String active;
+	
+	/** The rule. */
 	private String rule;
+	
+	/** The name. */
 	private String name;
+	
+	/** The group. */
 	private String group;
+	
+	/** The job class name. */
 	private String jobClassName;
+	
+	/** The cron schedule. */
 	private String cronSchedule;
 }

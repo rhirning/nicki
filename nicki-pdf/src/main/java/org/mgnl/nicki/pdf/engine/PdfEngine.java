@@ -47,29 +47,76 @@ import org.mgnl.nicki.pdf.model.template.Data;
 import org.mgnl.nicki.pdf.model.template.Page;
 import org.mgnl.nicki.pdf.template.PdfTemplate;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class PdfEngine.
+ */
 @Slf4j
 public class PdfEngine extends PdfPageEventHelper {
 	
+	/** The config. */
 	private PdfConfiguration config;
+	
+	/** The page renderer. */
 	private PageRenderer pageRenderer;
+	
+	/** The content renderer. */
 	private ContentRenderer contentRenderer;
+	
+	/** The pages. */
 	private List<Page> pages;
 
+	/**
+	 * From config.
+	 *
+	 * @param configPropertyName the config property name
+	 * @param contextBasePathPropertyName the context base path property name
+	 * @return the pdf engine
+	 * @throws JAXBException the JAXB exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static PdfEngine fromConfig(String configPropertyName, String contextBasePathPropertyName) throws JAXBException, IOException {
 		String configValue = Config.getString(configPropertyName, "<configuration><fonts><default font=\"Helvetica\" size=\"8\" style=\"normal\"/></fonts></configuration>");
 		ByteArrayInputStream bais = new ByteArrayInputStream(configValue.getBytes());
 		return new PdfEngine(bais, Config.getString(contextBasePathPropertyName, "/"));
 	}
 
+	/**
+	 * From resource.
+	 *
+	 * @param configResource the config resource
+	 * @param contextBasePath the context base path
+	 * @return the pdf engine
+	 * @throws JAXBException the JAXB exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static PdfEngine fromResource(String configResource, String contextBasePath) throws JAXBException, IOException {
 		return new PdfEngine(PdfEngine.class.getClassLoader().getResourceAsStream(configResource), contextBasePath);
 	}
 
+	/**
+	 * From file.
+	 *
+	 * @param configFile the config file
+	 * @param contextBasePath the context base path
+	 * @return the pdf engine
+	 * @throws FileNotFoundException the file not found exception
+	 * @throws JAXBException the JAXB exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public static PdfEngine fromFile(String configFile, String contextBasePath) throws FileNotFoundException, JAXBException, IOException {
 		InputStream is = new FileInputStream(configFile);
 		return new PdfEngine(is, contextBasePath);
 	}
 
+	/**
+	 * Instantiates a new pdf engine.
+	 *
+	 * @param configStream the config stream
+	 * @param contextBasePath the context base path
+	 * @throws JAXBException the JAXB exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public PdfEngine(InputStream configStream, String contextBasePath) throws JAXBException, IOException {
 		Objects.requireNonNull(configStream, "config-inputstream is null");
 
@@ -79,6 +126,12 @@ public class PdfEngine extends PdfPageEventHelper {
 		Objects.requireNonNull(config, "configuration has not been loaded properly");
 	}
 
+	/**
+	 * On end page.
+	 *
+	 * @param writer the writer
+	 * @param document the document
+	 */
 	@Override
 	public void onEndPage(PdfWriter writer, Document document) {
 		log.debug("end page called");
@@ -112,6 +165,13 @@ public class PdfEngine extends PdfPageEventHelper {
 		setMargins(document, nextPage);
 	}
 
+	/**
+	 * Render.
+	 *
+	 * @param template the template
+	 * @param os the os
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	public void render(PdfTemplate template, OutputStream os) throws IOException {
 		log.debug("rendering pdf");
 		Objects.requireNonNull(template, "template may not be null");
@@ -129,6 +189,13 @@ public class PdfEngine extends PdfPageEventHelper {
 
 	}
 
+	/**
+	 * Inits the render environment.
+	 *
+	 * @param template the template
+	 * @param os the os
+	 * @return the document
+	 */
 	private Document initRenderEnvironment(PdfTemplate template, OutputStream os) {
 		Page startPage = template.getDocument().getPages().getStartPage();
 		pages = template.getDocument().getPages().getPage();
@@ -145,6 +212,12 @@ public class PdfEngine extends PdfPageEventHelper {
 		return document;
 	}
 	
+	/**
+	 * Gets the size.
+	 *
+	 * @param template the template
+	 * @return the size
+	 */
 	public Rectangle getSize(PdfTemplate template) {
 		String docSize = template.getDocument().getSize();
 		if (StringUtils.isBlank(docSize)) {
@@ -162,6 +235,12 @@ public class PdfEngine extends PdfPageEventHelper {
     	}
 	}
 	
+	/**
+	 * Sets the margins.
+	 *
+	 * @param document the document
+	 * @param page the page
+	 */
 	private void setMargins(Document document, Page page) {
 		document.setMargins(
 				config.transform(page.getContent().getX()),

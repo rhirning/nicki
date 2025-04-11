@@ -24,12 +24,28 @@ package org.mgnl.nicki.ldap.query;
 
 import org.mgnl.nicki.core.context.NickiContext;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class SubObjectsLoaderQueryHandler.
+ */
 public class SubObjectsLoaderQueryHandler extends ObjectsLoaderQueryHandler {
 
+	/**
+	 * Instantiates a new sub objects loader query handler.
+	 *
+	 * @param context the context
+	 * @param parent the parent
+	 * @param filter the filter
+	 */
 	public SubObjectsLoaderQueryHandler(NickiContext context, String parent, String filter) {
 		super(context, parent, filter);
 	}
 	
+	/**
+	 * Gets the scope.
+	 *
+	 * @return the scope
+	 */
 	@Override
 	public SCOPE getScope() {
 		return SCOPE.ONELEVEL;

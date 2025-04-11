@@ -27,19 +27,43 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lombok.extern.slf4j.Slf4j;
+// TODO: Auto-generated Javadoc
+
+/**
+ * The Class DirectoryEntry.
+ */
 @Slf4j
 public class DirectoryEntry extends FileEntry implements TreeData {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 501515157067795051L;
+	
+	/** The children. */
 	private List<TreeData> children;
 
+	/**
+	 * Instantiates a new directory entry.
+	 *
+	 * @param path the path
+	 */
 	public DirectoryEntry(String path) {
 		super(path);
 	}
 
+	/**
+	 * Instantiates a new directory entry.
+	 *
+	 * @param file the file
+	 */
 	public DirectoryEntry(File file) {
 		super(file);
 	}
 
+	/**
+	 * Gets the all children.
+	 *
+	 * @return the all children
+	 */
 	@Override
 	public List<TreeData> getAllChildren() {
 		if (children == null) {

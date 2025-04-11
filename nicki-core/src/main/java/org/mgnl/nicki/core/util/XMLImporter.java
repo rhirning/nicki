@@ -41,13 +41,37 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.xml.sax.SAXException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class XMLImporter.
+ */
 public class XMLImporter {
+	
+	/** The document. */
 	Document document;
+	
+	/** The root parent path. */
 	String rootParentPath;
+	
+	/** The root object. */
 	DynamicObject rootObject; 
+	
+	/** The unresolved. */
 	List<ToDo> unresolved = new ArrayList<ToDo>();
+	
+	/** The context. */
 	NickiContext context;
 
+	/**
+	 * Instantiates a new XML importer.
+	 *
+	 * @param context the context
+	 * @param parentPath the parent path
+	 * @param inputStream the input stream
+	 * @throws SAXException the SAX exception
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws ParserConfigurationException the parser configuration exception
+	 */
 	public XMLImporter(NickiContext context, String parentPath, InputStream inputStream) throws SAXException, IOException, ParserConfigurationException {
 		this.context = context;
 		this.rootParentPath = parentPath;
@@ -55,6 +79,13 @@ public class XMLImporter {
 		
 	}
 	
+	/**
+	 * Creates the.
+	 *
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 * @throws DynamicObjectException the dynamic object exception
+	 * @throws NamingException the naming exception
+	 */
 	public void create() throws InstantiateDynamicObjectException, DynamicObjectException, NamingException {
 		Element root = this.document.getRootElement();
 		rootObject = createDynamicObject(this.rootParentPath, root);
@@ -62,6 +93,15 @@ public class XMLImporter {
 		handleUnresolved();
 		
 	}
+	
+	/**
+	 * Creates the children.
+	 *
+	 * @param parentPath the parent path
+	 * @param parentNode the parent node
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	private void createChildren(String parentPath, Element parentNode) throws InstantiateDynamicObjectException, DynamicObjectException {
 		List<Element> children = parentNode.getChildren("dynamicObject");
 		if (children != null &&  children.size() > 0) {
@@ -72,6 +112,15 @@ public class XMLImporter {
 		}
 	}
 
+	/**
+	 * Creates the dynamic object.
+	 *
+	 * @param parentPath the parent path
+	 * @param element the element
+	 * @return the dynamic object
+	 * @throws InstantiateDynamicObjectException the instantiate dynamic object exception
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	private DynamicObject createDynamicObject(String parentPath, Element element) throws InstantiateDynamicObjectException, DynamicObjectException {
 		String className = element.getAttributeValue("class");
 		String path = element.getAttributeValue("path");
@@ -81,6 +130,14 @@ public class XMLImporter {
 		return dynamicObject;
 	}
 
+	/**
+	 * Adds the attributes.
+	 *
+	 * @param parentPath the parent path
+	 * @param path the path
+	 * @param dynamicObject the dynamic object
+	 * @param element the element
+	 */
 	private void addAttributes(String parentPath, String path, DynamicObject dynamicObject, Element element) {
 		List<Element> attributes = element.getChildren("attribute");
 		if (attributes != null && attributes.size() > 0) {
@@ -129,6 +186,12 @@ public class XMLImporter {
 	}
 
 
+	/**
+	 * Handle unresolved.
+	 *
+	 * @throws DynamicObjectException the dynamic object exception
+	 * @throws NamingException the naming exception
+	 */
 	private void handleUnresolved() throws DynamicObjectException, NamingException {
 		for (ToDo toDo : unresolved) {
 			String path = getPath(toDo.getPath());
@@ -148,6 +211,12 @@ public class XMLImporter {
 		}
 	}
 
+	/**
+	 * Gets the path.
+	 *
+	 * @param path the path
+	 * @return the path
+	 */
 	private String getPath(String path) {
 		if (StringUtils.isEmpty(path)) {
 			return rootObject.getPath();

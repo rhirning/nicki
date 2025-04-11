@@ -5,6 +5,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfAnnotation;
 import com.lowagie.text.pdf.PdfWriter;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-pdf
@@ -27,8 +28,19 @@ import com.lowagie.text.pdf.PdfWriter;
 
 
 
+/**
+ * The Class AnnotationsHelper.
+ */
 public class AnnotationsHelper {
 
+    /**
+     * Adds the annotation.
+     *
+     * @param writer the writer
+     * @param position the position
+     * @param title the title
+     * @param text the text
+     */
     public static void addAnnotation(PdfWriter writer, Rectangle position, String title, String text) {
     	Rectangle rect = new Rectangle(
     			position.getRight() + 10, position.getBottom(),

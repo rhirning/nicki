@@ -34,34 +34,87 @@ import lombok.extern.slf4j.Slf4j;
 import org.mgnl.nicki.shop.base.objects.CartEntry.ACTION;
 import org.mgnl.nicki.shop.base.inventory.Inventory.SOURCE;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class InventoryArticle.
+ */
 @Slf4j
 @SuppressWarnings("serial")
 public class InventoryArticle implements Serializable{
-	public enum STATUS {NONE, PROVISIONED, NEW, MODIFIED, DELETED};
 	
+	/**
+	 * The Enum STATUS.
+	 */
+	public enum STATUS {
+/** The none. */
+NONE, 
+ /** The provisioned. */
+ PROVISIONED, 
+ /** The new. */
+ NEW, 
+ /** The modified. */
+ MODIFIED, 
+ /** The deleted. */
+ DELETED};
+	
+	/** The original status. */
 	private STATUS originalStatus = STATUS.NONE;
+	
+	/** The status. */
 	private STATUS status;
+	
+	/** The catalog article. */
 	private CatalogArticle catalogArticle;
+	
+	/** The source. */
 	private SOURCE source = SOURCE.NONE;
+	
+	/** The start. */
 	private Date start;
+	
+	/** The end. */
 	private Date end;
+	
+	/** The org end. */
 	private Date orgEnd;
+	
+	/** The specifier. */
 	private String specifier;
+	
+	/** The comment. */
 	private String comment;
+	
+	/** The read only. */
 	private boolean readOnly = false;
 
+	/**
+	 * Instantiates a new inventory article.
+	 *
+	 * @param catalogArticle the catalog article
+	 */
 	public InventoryArticle(CatalogArticle catalogArticle) {
 		this.catalogArticle = catalogArticle;
 		this.status = STATUS.NEW;
 	}
 	
 
+	/**
+	 * Instantiates a new inventory article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @param specifier the specifier
+	 */
 	public InventoryArticle(CatalogArticle catalogArticle, String specifier) {
 		this.catalogArticle = catalogArticle;
 		this.specifier = specifier;
 		this.status = STATUS.NEW;
 	}
 	
+	/**
+	 * Gets the display name.
+	 *
+	 * @return the display name
+	 */
 	public String getDisplayName() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(catalogArticle.getDisplayName());
@@ -71,6 +124,13 @@ public class InventoryArticle implements Serializable{
 		return sb.toString();
 	}
 
+	/**
+	 * Instantiates a new inventory article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @param start the start
+	 * @param end the end
+	 */
 	public InventoryArticle(CatalogArticle catalogArticle, Date start, Date end) {
 		this.catalogArticle = catalogArticle;
 		this.start = start;
@@ -80,6 +140,14 @@ public class InventoryArticle implements Serializable{
 		originalStatus = STATUS.PROVISIONED;
 	}
 
+	/**
+	 * Instantiates a new inventory article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @param specifier the specifier
+	 * @param start the start
+	 * @param end the end
+	 */
 	public InventoryArticle(CatalogArticle catalogArticle, String specifier, Date start, Date end) {
 		this.catalogArticle = catalogArticle;
 		this.specifier = specifier;
@@ -91,6 +159,12 @@ public class InventoryArticle implements Serializable{
 	}
 	
 
+	/**
+	 * Instantiates a new inventory article.
+	 *
+	 * @param catalogArticle the catalog article
+	 * @param assignedArticle the assigned article
+	 */
 	public InventoryArticle(CatalogArticle catalogArticle, AssignedArticle assignedArticle) {
 		this.catalogArticle = catalogArticle;
 		this.specifier = assignedArticle.getSpecifier();
@@ -102,22 +176,45 @@ public class InventoryArticle implements Serializable{
 	}
 
 
+	/**
+	 * Sets the status.
+	 *
+	 * @param status the new status
+	 */
 	public void setStatus(STATUS status) {
 		this.status = status;
 	}
 
+	/**
+	 * Gets the status.
+	 *
+	 * @return the status
+	 */
 	public STATUS getStatus() {
 		return status;
 	}
 
+	/**
+	 * Gets the original status.
+	 *
+	 * @return the original status
+	 */
 	public STATUS getOriginalStatus() {
 		return originalStatus;
 	}
 
+	/**
+	 * Reset.
+	 */
 	public void reset() {
 		setStatus(STATUS.PROVISIONED);
 	}
 	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("[Article path=").append(getArticle().getPath());
@@ -128,10 +225,20 @@ public class InventoryArticle implements Serializable{
 		return sb.toString();
 	}
 
+	/**
+	 * Gets the article.
+	 *
+	 * @return the article
+	 */
 	public CatalogArticle getArticle() {
 		return catalogArticle;
 	}
 
+	/**
+	 * Checks for changed.
+	 *
+	 * @return true, if successful
+	 */
 	public boolean hasChanged() {
 		if (getStatus() == STATUS.NEW
 				|| getStatus() == STATUS.MODIFIED
@@ -141,6 +248,12 @@ public class InventoryArticle implements Serializable{
 		return false;
 	}
 
+	/**
+	 * Gets the action.
+	 *
+	 * @param status the status
+	 * @return the action
+	 */
 	public static ACTION getAction(STATUS status) {
 		if (status == STATUS.DELETED) {
 			return ACTION.DELETE;
@@ -154,6 +267,12 @@ public class InventoryArticle implements Serializable{
 		return null;
 	}
 
+	/**
+	 * Gets the status.
+	 *
+	 * @param action the action
+	 * @return the status
+	 */
 	public static STATUS getStatus(ACTION action) {
 		if (action == ACTION.DELETE) {
 			return STATUS.DELETED;
@@ -167,12 +286,22 @@ public class InventoryArticle implements Serializable{
 		return null;
 	}
 
+	/**
+	 * Sets the start.
+	 *
+	 * @param start the new start
+	 */
 	public void setStart(Date start) {
 		if (STATUS.NEW == getStatus()) {
 			this.start = start;
 		}
 	}
 
+	/**
+	 * Sets the end.
+	 *
+	 * @param end the new end
+	 */
 	public void setEnd(Date end) {
 		this.end = end;
 		try {
@@ -184,46 +313,96 @@ public class InventoryArticle implements Serializable{
 		}
 	}
 
+	/**
+	 * Gets the start.
+	 *
+	 * @return the start
+	 */
 	public Date getStart() {
 		return start;
 	}
 	
+	/**
+	 * Gets the end.
+	 *
+	 * @return the end
+	 */
 	public Date getEnd() {
 		return end;
 	}
 
+	/**
+	 * Gets the source.
+	 *
+	 * @return the source
+	 */
 	public SOURCE getSource() {
 		return source;
 	}
 
+	/**
+	 * Sets the source.
+	 *
+	 * @param source the new source
+	 */
 	public void setSource(SOURCE source) {
 		this.source = source;
 	}
 
+	/**
+	 * Gets the specifier.
+	 *
+	 * @return the specifier
+	 */
 	public String getSpecifier() {
 		return specifier;
 	}
 
+	/**
+	 * Sets the specifier.
+	 *
+	 * @param specifier the new specifier
+	 */
 	public void setSpecifier(String specifier) {
 		this.specifier = specifier;
 	}
 
 
+	/**
+	 * Gets the comment.
+	 *
+	 * @return the comment
+	 */
 	public String getComment() {
 		return comment;
 	}
 
 
+	/**
+	 * Sets the comment.
+	 *
+	 * @param comment the new comment
+	 */
 	public void setComment(String comment) {
 		this.comment = comment;
 	}
 
 
+	/**
+	 * Checks if is read only.
+	 *
+	 * @return true, if is read only
+	 */
 	public boolean isReadOnly() {
 		return readOnly;
 	}
 
 
+	/**
+	 * Sets the read only.
+	 *
+	 * @param readOnly the new read only
+	 */
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 	}

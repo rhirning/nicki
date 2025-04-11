@@ -22,6 +22,18 @@ package org.mgnl.nicki.db.verify;
 
 import org.mgnl.nicki.db.context.DBContext;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface BeanUpdater.
+ */
 public interface BeanUpdater {
+	
+	/**
+	 * Update.
+	 *
+	 * @param dbContext the db context
+	 * @param bean the bean
+	 * @throws UpdateBeanException the update bean exception
+	 */
 	void update(DBContext dbContext, Object bean) throws UpdateBeanException;
 }

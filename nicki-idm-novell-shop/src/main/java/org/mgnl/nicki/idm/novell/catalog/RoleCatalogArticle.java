@@ -34,18 +34,32 @@ import org.mgnl.nicki.idm.novell.shop.objects.Role;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class RoleCatalogArticle.
+ */
 @DynamicObject
 @ObjectClass("nickiRoleArticle")
 public class RoleCatalogArticle extends CatalogArticle {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -5530389061310235734L;
+	
+	/** The Constant ATTRIBUTE_ROLE. */
 	public static final String ATTRIBUTE_ROLE = "role";
 
 	
+	/** The role. */
 	@DynamicReferenceAttribute(externalName="nickiRoleRef", foreignKey=Role.class, reference=Role.class,
 			baseProperty="nicki.roles.basedn")
 	private String role;
 
+	/**
+	 * Gets the inventory articles.
+	 *
+	 * @param person the person
+	 * @return the inventory articles
+	 */
 	@Override
 	public List<InventoryArticle> getInventoryArticles(Person person) {
 		List<InventoryArticle> inventoryArticles = new ArrayList<InventoryArticle>();
@@ -69,6 +83,12 @@ public class RoleCatalogArticle extends CatalogArticle {
 	
 	
 
+	/**
+	 * Contains.
+	 *
+	 * @param role the role
+	 * @return true, if successful
+	 */
 	public boolean contains(Role role) {
 		if (getRole() != null && StringUtils.equalsIgnoreCase(role.getPath(), getRole().getPath())) {
 			return true;
@@ -76,20 +96,41 @@ public class RoleCatalogArticle extends CatalogArticle {
 		return false;
 	}
 
+	/**
+	 * Gets the role.
+	 *
+	 * @return the role
+	 */
 	public Role getRole() {
 		return getForeignKeyObject(Role.class, ATTRIBUTE_ROLE);
 	}
 
 	
+	/**
+	 * Gets the permission dn.
+	 *
+	 * @return the permission dn
+	 */
 	public String getPermissionDn() {
 		return getAttribute(ATTRIBUTE_ROLE);
 	}
 	
+	/**
+	 * Gets the article type.
+	 *
+	 * @return the article type
+	 */
 	@Override
 	public TYPE getArticleType() {
 		return TYPE.ROLE;
 	}
 
+	/**
+	 * Checks for article.
+	 *
+	 * @param person the person
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean hasArticle(Person person) {
 		for (Role role : ((IdmPerson)person).getRoles()) {

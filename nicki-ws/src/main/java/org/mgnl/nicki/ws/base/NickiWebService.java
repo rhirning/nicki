@@ -44,12 +44,24 @@ import org.mgnl.nicki.ws.base.annotations.Right;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NickiWebService.
+ */
 @Slf4j
 public abstract class NickiWebService {
 
+	/** The wsctx. */
 	@Resource
 	WebServiceContext wsctx;
 	
+	/**
+	 * Checks if is allowed.
+	 *
+	 * @param loginUser the login user
+	 * @param clazz the clazz
+	 * @return true, if is allowed
+	 */
 	protected boolean isAllowed(DynamicObject loginUser, Class<?> clazz) {
 		DynamicObject user = getUser(loginUser, getAccessTargetName());
 		if (clazz.getAnnotation(Right.class) != null) {
@@ -61,6 +73,13 @@ public abstract class NickiWebService {
 		return true;
 	}
 
+	/**
+	 * Gets the user.
+	 *
+	 * @param user the user
+	 * @param targetName the target name
+	 * @return the user
+	 */
 	protected Person getUser(DynamicObject user, String targetName) {
 		try {
 			if (!StringUtils.equals(targetName, user.getContext().getTarget().getName())) {
@@ -81,6 +100,11 @@ public abstract class NickiWebService {
 		return (Person) user;
 	}
 
+	/**
+	 * Gets the login target name.
+	 *
+	 * @return the login target name
+	 */
 	protected String getLoginTargetName() {
 		String loginTargetName = null;
 		LoginTargetContext annotation = this.getClass().getAnnotation(LoginTargetContext.class);
@@ -99,6 +123,11 @@ public abstract class NickiWebService {
 
 	}
 
+	/**
+	 * Gets the target name.
+	 *
+	 * @return the target name
+	 */
 	protected String getTargetName() {
 		String targetName = null;
 		TargetContext annotation = this.getClass().getAnnotation(TargetContext.class);
@@ -117,6 +146,11 @@ public abstract class NickiWebService {
 
 	}
 
+	/**
+	 * Gets the access target name.
+	 *
+	 * @return the access target name
+	 */
 	protected String getAccessTargetName() {
 		String accessTargetName = null;
 		AccessTargetContext annotation = this.getClass().getAnnotation(AccessTargetContext.class);
@@ -135,8 +169,21 @@ public abstract class NickiWebService {
 
 	}
 
+	/**
+	 * Checks for right.
+	 *
+	 * @param user the user
+	 * @param right the right
+	 * @return true, if successful
+	 */
 	protected abstract boolean hasRight(DynamicObject user, String right);
 	
+	/**
+	 * Login SSO.
+	 *
+	 * @param ssoAdapterKey the sso adapter key
+	 * @return the double context
+	 */
 	protected DoubleContext loginSSO(String ssoAdapterKey) {
 		try {
 			SSOAdapter adapter = Config.getClassInstance(ssoAdapterKey);
@@ -162,8 +209,19 @@ public abstract class NickiWebService {
 		return null;
 	}
 
+	/**
+	 * Gets the target.
+	 *
+	 * @return the target
+	 */
 	protected abstract Target getTarget();
 
+	/**
+	 * Login.
+	 *
+	 * @return the double context
+	 * @throws AuthenticationFailedException the authentication failed exception
+	 */
 	protected DoubleContext login() throws AuthenticationFailedException {
 		MessageContext mctx = this.wsctx.getMessageContext();
 		AppContext.setRequest(mctx);
@@ -178,6 +236,11 @@ public abstract class NickiWebService {
 		}
 	}
 
+	/**
+	 * Sets the wsctx.
+	 *
+	 * @param wsctx the new wsctx
+	 */
 	public void setWsctx(WebServiceContext wsctx) {
 		this.wsctx = wsctx;
 	}

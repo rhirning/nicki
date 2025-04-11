@@ -22,29 +22,109 @@ package org.mgnl.nicki.db.dynamic.objects;
 
 import java.util.Date;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Interface SyncEntry.
+ */
 public interface SyncEntry {
 
 	
+	/**
+	 * Sets the unique id.
+	 *
+	 * @param uniqueId the new unique id
+	 */
 	void setUniqueId(Long uniqueId);
+	
+	/**
+	 * Sets the type.
+	 *
+	 * @param type the new type
+	 */
 	void setType(String type);
+	
+	/**
+	 * Sets the id.
+	 *
+	 * @param id the new id
+	 */
 	void setId(String id);
+	
+	/**
+	 * Sets the from.
+	 *
+	 * @param from the new from
+	 */
 	void setFrom(Date from);
+	
+	/**
+	 * Sets the to.
+	 *
+	 * @param to the new to
+	 */
 	void setTo(Date to);
+	
+	/**
+	 * Sets the attribute.
+	 *
+	 * @param attribute the new attribute
+	 */
 	void setAttribute(String attribute);
+	
+	/**
+	 * Sets the content.
+	 *
+	 * @param content the new content
+	 */
 	void setContent(String content);
 	
 	
+	/**
+	 * Gets the unique id.
+	 *
+	 * @return the unique id
+	 */
 	Long getUniqueId();
 	
+	/**
+	 * Gets the type.
+	 *
+	 * @return the type
+	 */
 	String getType();
 	
+	/**
+	 * Gets the id.
+	 *
+	 * @return the id
+	 */
 	String getId();
 
+	/**
+	 * Gets the from.
+	 *
+	 * @return the from
+	 */
 	Date getFrom();
 
+	/**
+	 * Gets the to.
+	 *
+	 * @return the to
+	 */
 	Date getTo();
 	
+	/**
+	 * Gets the attribute.
+	 *
+	 * @return the attribute
+	 */
 	String getAttribute();
 	
+	/**
+	 * Gets the content.
+	 *
+	 * @return the content
+	 */
 	String getContent();
 }

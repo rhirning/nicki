@@ -28,16 +28,36 @@ import org.mgnl.nicki.core.objects.ChildFilter;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class ChildReferenceDynamicAttribute.
+ */
 @SuppressWarnings("serial")
 public class ChildReferenceDynamicAttribute extends DynamicAttribute {
+	
+	/** The filter. */
 	private ChildFilter filter;
 
+	/**
+	 * Instantiates a new child reference dynamic attribute.
+	 *
+	 * @param name the name
+	 * @param ldapName the ldap name
+	 * @param attributeClass the attribute class
+	 * @param filter the filter
+	 */
 	public ChildReferenceDynamicAttribute(String name, String ldapName, Class<?> attributeClass,
 			ChildFilter filter) {
 		super(name, ldapName, attributeClass);
 		this.filter = filter;
 	}
 
+	/**
+	 * Gets the options.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @return the options
+	 */
 	@Override
 	public List<? extends DynamicObject> getOptions(DynamicObject dynamicObject) {
 		return dynamicObject.getContext().loadChildObjects(dynamicObject.getPath(), filter);

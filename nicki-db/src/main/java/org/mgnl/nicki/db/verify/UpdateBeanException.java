@@ -1,5 +1,6 @@
 package org.mgnl.nicki.db.verify;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-db
@@ -20,9 +21,19 @@ package org.mgnl.nicki.db.verify;
  * #L%
  */
 
+/**
+ * The Class UpdateBeanException.
+ */
 public class UpdateBeanException extends Exception {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -3864998727341060416L;
 
+	/**
+	 * Instantiates a new update bean exception.
+	 *
+	 * @param e the e
+	 */
 	public UpdateBeanException(Exception e) {
 		super(e);
 	}

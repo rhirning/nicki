@@ -34,31 +34,60 @@ import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Role.
+ */
 @DynamicObject
 @ObjectClass("nrfRole")
 public class Role extends DynamicStructObject {
 	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 6170300879001415636L;
+	
+	/** The name. */
 	@DynamicAttribute(externalName="cn", naming=true)
 	private String name;
+	
+	/** The resource association. */
 	@DynamicReferenceAttribute(externalName="nrfRole", reference=ResourceAssociation.class, baseProperty="nicki.system.basedn")
 	private String[] resourceAssociation;
+	
+	/** The child role. */
 	@StructuredDynamicAttribute(externalName="nrfChildRoles", foreignKey=Role.class)
 	private String[] childRole;
+	
+	/** The member. */
 	@DynamicReferenceAttribute(externalName="nrfAssignedRoles", reference=Person.class, 
 			foreignKey=Person.class, baseProperty="nicki.data.basedn")
 	private String[] member;
+	
+	/** The approver. */
 	@StructuredDynamicAttribute(externalName="nrfApprovers", foreignKey=Person.class)
 	private String[] approver;
+	
+	/** The localized name. */
 	@DynamicAttribute(externalName="nrfLocalizedNames")
 	private String localizedName;
+	
+	/** The localized description. */
 	@DynamicAttribute(externalName="nrfLocalizedDescrs")
 	private String localizedDescription;
 	
+	/**
+	 * Gets the start time.
+	 *
+	 * @return the start time
+	 */
 	public Date getStartTime() {
 		return getDateInfo("/assignment/start_tm");
 	}
 	
+	/**
+	 * Gets the end time.
+	 *
+	 * @return the end time
+	 */
 	public Date getEndTime() {
 		try {
 			return getDateInfo("/assignment/end_tm");
@@ -67,18 +96,38 @@ public class Role extends DynamicStructObject {
 		}
 	}
 	
+	/**
+	 * Gets the requester.
+	 *
+	 * @return the requester
+	 */
 	public String getRequester() {
 		return getInfo("/assignment/req");
 	}
 	
+	/**
+	 * Gets the request description.
+	 *
+	 * @return the request description
+	 */
 	public String getRequestDescription() {
 		return getInfo("/assignment/req_desc");
 	}
 
+	/**
+	 * Gets the update time.
+	 *
+	 * @return the update time
+	 */
 	public Date getUpdateTime() {
 		return getDateInfo("/assignment/upd_tm");
 	}
 	
+	/**
+	 * Gets the members.
+	 *
+	 * @return the members
+	 */
 	public Collection<Person> getMembers() {
 		if (get("member") != null) {
 			return getForeignKeyObjects(Person.class, "member");
@@ -87,6 +136,11 @@ public class Role extends DynamicStructObject {
 		}
 	}
 	
+	/**
+	 * Gets the resource associations.
+	 *
+	 * @return the resource associations
+	 */
 	@SuppressWarnings("unchecked")
 	public Collection<ResourceAssociation> getResourceAssociations() {
 		try {

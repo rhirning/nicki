@@ -29,10 +29,32 @@ import java.lang.annotation.Target;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
 
+// TODO: Auto-generated Javadoc
+/**
+ * Annotation to specify child nodes.
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface Child {
+	
+	/**
+	 * Name.
+	 *
+	 * @return the string
+	 */
 	String name();
+	
+	/**
+	 * Filter.
+	 *
+	 * @return the string
+	 */
 	String filter() default "";
+	
+	/**
+	 * Object filter.
+	 *
+	 * @return the class<? extends dynamic object>[]
+	 */
 	Class<? extends DynamicObject>[] objectFilter() default {};
 }

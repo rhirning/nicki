@@ -34,6 +34,7 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlType;
 
 
+// TODO: Auto-generated Javadoc
 /**
  * <p>Java-Klasse f�r content complex type.
  * 
@@ -56,12 +57,19 @@ import jakarta.xml.bind.annotation.XmlType;
 @XmlType(name = "content")
 public class Content {
 
+    /** The x. */
     @XmlAttribute(name = "x")
     protected Integer x;
+    
+    /** The y. */
     @XmlAttribute(name = "y")
     protected Integer y;
+    
+    /** The width. */
     @XmlAttribute(name = "width")
     protected Integer width;
+    
+    /** The height. */
     @XmlAttribute(name = "height")
     protected Integer height;
 

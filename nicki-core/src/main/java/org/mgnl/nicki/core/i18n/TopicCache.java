@@ -1,6 +1,7 @@
 
 package org.mgnl.nicki.core.i18n;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -22,17 +23,38 @@ package org.mgnl.nicki.core.i18n;
  */
 
 
+/**
+ * The Class TopicCache.
+ */
 public class TopicCache {
+	
+	/** The topic cache configuration. */
 	TopicCacheConfiguration topicCacheConfiguration;
 
+	/**
+	 * Instantiates a new topic cache.
+	 *
+	 * @param topicCacheConfiguration the topic cache configuration
+	 */
 	public TopicCache(TopicCacheConfiguration topicCacheConfiguration) {
 		this.topicCacheConfiguration = topicCacheConfiguration;
 	}
 
+	/**
+	 * Gets the topic.
+	 *
+	 * @return the topic
+	 */
 	public String getTopic() {
 		return topicCacheConfiguration.getTopic();
 	}
 
+	/**
+	 * Gets the translated text.
+	 *
+	 * @param key the key
+	 * @return the translated text
+	 */
 	public String getTranslatedText(String key) {
 		// TODO Auto-generated method stub
 		return null;

@@ -35,15 +35,35 @@ import org.apache.commons.lang3.StringUtils;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class InMemorySearch.
+ *
+ * @param <T> the generic type
+ */
 @Slf4j
 public class InMemorySearch<T extends Object> implements Serializable, NickiSearch<T> {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -8131864934307700845L;
+	
+	/** The data. */
 	private Map<String, String> data = new HashMap<String, String>();
 
 
+	/**
+	 * Instantiates a new in memory search.
+	 */
 	public InMemorySearch() {
 	}
 
+	/**
+	 * Search.
+	 *
+	 * @param searchString the search string
+	 * @param maxResults the max results
+	 * @return the list
+	 */
 	public List<NickiSearchResult> search(String searchString, int maxResults) {
 		String[] tokens = StringUtils.split(searchString);
 		List<NickiSearchResult> list = new ArrayList<>();
@@ -69,6 +89,12 @@ public class InMemorySearch<T extends Object> implements Serializable, NickiSear
 		return list;
 	}
 
+	/**
+	 * Index objects.
+	 *
+	 * @param list the list
+	 * @param extractor the extractor
+	 */
 	private void indexObjects(Collection<T> list, Extractor<T> extractor) {
 		if (list != null) {
 			for (T t : list) {
@@ -82,6 +108,13 @@ public class InMemorySearch<T extends Object> implements Serializable, NickiSear
 
 	}
 
+	/**
+	 * Index object.
+	 *
+	 * @param object the object
+	 * @param extractor the extractor
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private void indexObject(T object, Extractor<T> extractor) throws IOException {
 		if (!extractor.accept(object)) {
 			return;
@@ -101,6 +134,12 @@ public class InMemorySearch<T extends Object> implements Serializable, NickiSear
 		this.data.put(category + ":" + key, sb.toString());
 	}
 
+	/**
+	 * Index.
+	 *
+	 * @param list the list
+	 * @param extractor the extractor
+	 */
 	public void index(Collection<T> list, Extractor<T> extractor) {
 		Date start = new Date();
 		indexObjects(list, extractor);
@@ -109,6 +148,11 @@ public class InMemorySearch<T extends Object> implements Serializable, NickiSear
 
 	}
 
+	/**
+	 * Sets the index path.
+	 *
+	 * @param property the new index path
+	 */
 	@Override
 	public void setIndexPath(String property) {
 		// TODO Auto-generated method stub

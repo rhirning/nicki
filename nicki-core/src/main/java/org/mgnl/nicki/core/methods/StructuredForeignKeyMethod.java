@@ -33,14 +33,33 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 
 import freemarker.template.TemplateMethodModelEx;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StructuredForeignKeyMethod.
+ */
 public class StructuredForeignKeyMethod extends ForeignKeyMethod implements Serializable,TemplateMethodModelEx {
 
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = -5726598490077862331L;
+	
+	/** The path. */
 	private String path;
+	
+	/** The flag. */
 	private String flag;
+	
+	/** The xml. */
 	private String xml;
 	
 	
+	/**
+	 * Instantiates a new structured foreign key method.
+	 *
+	 * @param context the context
+	 * @param rs the rs
+	 * @param ldapName the ldap name
+	 * @param classDefinition the class definition
+	 */
 	public StructuredForeignKeyMethod(NickiContext context, ContextSearchResult rs, String ldapName,
 			Class<? extends DynamicObject> classDefinition) {
 		super(context, rs, ldapName,classDefinition);
@@ -51,6 +70,12 @@ public class StructuredForeignKeyMethod extends ForeignKeyMethod implements Seri
 		
 	}
 
+	/**
+	 * Exec.
+	 *
+	 * @param arguments the arguments
+	 * @return the dynamic object
+	 */
 	@Override
 	public DynamicObject exec(@SuppressWarnings("rawtypes") List arguments) {
 		if (getObject() == null) {

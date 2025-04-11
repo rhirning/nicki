@@ -30,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringTokenizer;
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
 /**
  * ?berpr?ft, ob in einer geordneten Liste die ben?tigten Teile vorhanden sind.
  * Hierzu werden die g?ltigen Kombinationen festgelegt.
@@ -59,11 +60,21 @@ import org.mgnl.nicki.core.i18n.I18n;
  *
  */
 public class PartRule extends Rule {
+	
+	/** The separator. */
 	private String separator = "|";
+	
+	/** The list. */
 	private List<List<Integer>> list = new ArrayList<>();
 	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Instantiates a new part rule.
+	 *
+	 * @param parameter the parameter
+	 */
 	public PartRule(String parameter) {
 		setParameter(parameter);
 		if (StringUtils.contains(parameter, ":")) {
@@ -82,6 +93,13 @@ public class PartRule extends Rule {
 		}
 	}
 
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		StringTokenizer tokenizer = new StringTokenizer(value, separator);
@@ -107,10 +125,21 @@ public class PartRule extends Rule {
 		return false;
 	}
 	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".part");
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "part:" + list;
 	}

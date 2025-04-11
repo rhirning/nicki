@@ -22,6 +22,9 @@ package org.mgnl.nicki.db.dynamic.objects;
 
 import lombok.Data;
 
+/**
+ * The Class SyncObject.
+ */
 @Data
 public class SyncObject {
 

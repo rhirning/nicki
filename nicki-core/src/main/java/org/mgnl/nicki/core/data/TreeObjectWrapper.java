@@ -1,5 +1,6 @@
 package org.mgnl.nicki.core.data;
 
+// TODO: Auto-generated Javadoc
 /*-
  * #%L
  * nicki-core
@@ -20,20 +21,42 @@ package org.mgnl.nicki.core.data;
  * #L%
  */
 
+/**
+ * The Class TreeObjectWrapper.
+ *
+ * @param <T> the generic type
+ */
 public class TreeObjectWrapper<T extends TreeObject> implements TreeObject {
+	
+	/** The object. */
 	private T object;
 	
 	
+	/**
+	 * Instantiates a new tree object wrapper.
+	 *
+	 * @param object the object
+	 */
 	public TreeObjectWrapper(T object) {
 		this.object = object;
 	}
 
 
+	/**
+	 * Gets the display name.
+	 *
+	 * @return the display name
+	 */
 	@Override
 	public String getDisplayName() {
 		return object.getDisplayName();
 	}
 	
+	/**
+	 * Gets the object.
+	 *
+	 * @return the object
+	 */
 	public TreeObject getObject() {
 		return object;
 	}

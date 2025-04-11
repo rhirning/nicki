@@ -27,23 +27,55 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.i18n.I18n;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MinLengthRule.
+ */
 public class MinLengthRule extends Rule {
+	
+	/** The Constant serialVersionUID. */
 	private static final long serialVersionUID = 1L;
+	
+	/** The length. */
 	private int length = 0;
 
+	/**
+	 * Instantiates a new min length rule.
+	 *
+	 * @param value the value
+	 */
 	public MinLengthRule(String value) {
 		setParameter(value);
 		this.length = Integer.parseInt(value);
 	}
 
+	/**
+	 * Evaluate.
+	 *
+	 * @param value the value
+	 * @param values the values
+	 * @return true, if successful
+	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
 		return StringUtils.length(value) >= this.length;
 	}
+	
+	/**
+	 * Gets the message.
+	 *
+	 * @return the message
+	 */
 	@Override
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".minlength", getParameter());
 	}
+	
+	/**
+	 * To string.
+	 *
+	 * @return the string
+	 */
 	public String toString() {
 		return "minLength:" + length;
 	}

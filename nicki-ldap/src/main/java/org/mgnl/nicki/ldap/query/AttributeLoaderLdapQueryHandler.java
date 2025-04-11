@@ -34,17 +34,39 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.context.LdapContext;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class AttributeLoaderLdapQueryHandler.
+ */
 public class AttributeLoaderLdapQueryHandler extends BasicLdapHandler implements QueryHandler {
 
+	/** The dynamic object. */
 	private DynamicObject dynamicObject;
+	
+	/** The attributes. */
 	private String[] attributes;
+	
+	/** The lists. */
 	private Map<String, List<Object>> lists = new HashMap<String, List<Object>>();
+	
+	/**
+	 * Instantiates a new attribute loader ldap query handler.
+	 *
+	 * @param dynamicObject the dynamic object
+	 * @param attributes the attributes
+	 */
 	public AttributeLoaderLdapQueryHandler(DynamicObject dynamicObject, String[] attributes) {
 		super((LdapContext) dynamicObject.getContext());
 		this.dynamicObject = dynamicObject;
 		this.attributes = attributes;
 	}
 
+	/**
+	 * Handle.
+	 *
+	 * @param results the results
+	 * @throws DynamicObjectException the dynamic object exception
+	 */
 	public void handle(List<ContextSearchResult> results) throws DynamicObjectException {
 		for (ContextSearchResult rs : results) {
 			for(int i = 0; i < attributes.length; i++) {
@@ -53,6 +75,11 @@ public class AttributeLoaderLdapQueryHandler extends BasicLdapHandler implements
 		}
 	}
 
+	/**
+	 * Gets the constraints.
+	 *
+	 * @return the constraints
+	 */
 	public SearchControls getConstraints() {
 		SearchControls constraints = super.getConstraints();
 		// Specify the ids of the attributes to return
@@ -60,18 +87,38 @@ public class AttributeLoaderLdapQueryHandler extends BasicLdapHandler implements
 		return constraints;
 	}
 
+	/**
+	 * Gets the base DN.
+	 *
+	 * @return the base DN
+	 */
 	public String getBaseDN() {
 		return this.dynamicObject.getPath();
 	}
 
+	/**
+	 * Gets the filter.
+	 *
+	 * @return the filter
+	 */
 	public String getFilter() {
 		return null;
 	}
 
+	/**
+	 * Gets the lists.
+	 *
+	 * @return the lists
+	 */
 	public Map<String, List<Object>> getLists() {
 		return lists;
 	}
 
+	/**
+	 * Gets the scope.
+	 *
+	 * @return the scope
+	 */
 	@Override
 	public SCOPE getScope() {
 		return SCOPE.OBJECT;

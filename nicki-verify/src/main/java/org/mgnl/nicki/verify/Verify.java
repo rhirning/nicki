@@ -31,6 +31,7 @@ import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.config.Config;
+// TODO: Auto-generated Javadoc
 /**
  * Creates rules for jquery validation plugin
  * 
@@ -79,12 +80,23 @@ import org.mgnl.nicki.core.config.Config;
  */
 public class Verify {
 	
+	/** The attribute rules. */
 	private static Map<String, String> attributeRules;
+	
+	/** The instance. */
 	private static Verify instance;
 	
+	/**
+	 * Instantiates a new verify.
+	 */
 	public Verify() {
 	}
 	
+	/**
+	 * Gets the single instance of Verify.
+	 *
+	 * @return single instance of Verify
+	 */
 	public static Verify getInstance() {
 		if (instance == null) {
 			instance = new Verify();
@@ -92,6 +104,14 @@ public class Verify {
 		return instance;
 	}
 	
+	/**
+	 * Verify.
+	 *
+	 * @param attributeName the attribute name
+	 * @param value the value
+	 * @param values the values
+	 * @throws VerifyException the verify exception
+	 */
 	public void verify(String attributeName, String value, Map<String, String> values) throws VerifyException {
 		if (attributeRules == null) {
 			loadAttributeRules();
@@ -107,6 +127,12 @@ public class Verify {
 		}
 	}
 	
+	/**
+	 * Gets the rules.
+	 *
+	 * @param orgRules the org rules
+	 * @return the rules
+	 */
 	public static List<Rule> getRules(String orgRules) {
 		String separator = "|";
 		String rules = orgRules;
@@ -163,6 +189,14 @@ public class Verify {
 		return rulesList;
 	}
 
+	/**
+	 * Verify rule.
+	 *
+	 * @param rule the rule
+	 * @param value the value
+	 * @param values the values
+	 * @throws VerifyException the verify exception
+	 */
 	public static void verifyRule(String rule, String value, Map<String, String> values) throws VerifyException {
 		
 		StringBuilder sb = new StringBuilder();
@@ -183,6 +217,9 @@ public class Verify {
 		}
 	}
 
+	/**
+	 * Load attribute rules.
+	 */
 	private void loadAttributeRules() {
 		String path = Config.getString("nicki.verify.rules.path");
 		attributeRules = new HashMap<String, String>();
@@ -199,6 +236,13 @@ public class Verify {
 	}
 
 	
+	/**
+	 * Gets the properties from classpath.
+	 *
+	 * @param name the name
+	 * @return the properties from classpath
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 */
 	private Properties getPropertiesFromClasspath(String name) throws IOException {
 		Properties properties = new Properties() ;
 		properties.load(getClass().getResourceAsStream(name));

@@ -31,7 +31,18 @@ import org.apache.activemq.broker.jmx.BrokerViewMBean;
 import org.apache.activemq.broker.jmx.QueueViewMBean;
 import org.mgnl.nicki.core.config.Config;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class Stats.
+ */
 public class Stats {
+	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 * @throws Exception the exception
+	 */
 	public static void main(String[] args) throws Exception {
 		int port = Config.getInteger("nicki.mq.broker.jmx.port", 1099);
 		JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://localhost:" + port + "/jmxrmi");

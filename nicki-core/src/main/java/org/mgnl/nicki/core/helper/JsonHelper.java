@@ -62,9 +62,20 @@ import org.mgnl.nicki.core.util.Classes;
 
 import lombok.extern.slf4j.Slf4j;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class JsonHelper.
+ */
 @Slf4j
 public class JsonHelper extends BeanUtilsHelper {
 
+	/**
+	 * To json array.
+	 *
+	 * @param <T> the generic type
+	 * @param list the list
+	 * @return the json array
+	 */
 	public static <T> JsonArray toJsonArray(List<T> list) {
 		
 		JsonArrayBuilder builder = Json.createArrayBuilder();
@@ -82,6 +93,12 @@ public class JsonHelper extends BeanUtilsHelper {
 		return builder.build();
 	}
 	
+	/**
+	 * To json object.
+	 *
+	 * @param data the data
+	 * @return the json object
+	 */
 	public static JsonObject toJsonObject(Map<String, String> data) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		for (String key : data.keySet()) {
@@ -90,10 +107,23 @@ public class JsonHelper extends BeanUtilsHelper {
 		return builder.build();
 	}
 	
+	/**
+	 * Pretty print.
+	 *
+	 * @param json the json
+	 * @return the string
+	 */
 	public static String prettyPrint(JsonStructure json) {
 	    return jsonFormat(json, JsonGenerator.PRETTY_PRINTING);
 	}
 
+	/**
+	 * Json format.
+	 *
+	 * @param json the json
+	 * @param options the options
+	 * @return the string
+	 */
 	public static String jsonFormat(JsonStructure json, String... options) {
 	    StringWriter stringWriter = new StringWriter();
 	    Map<String, Boolean> config = buildConfig(options);
@@ -106,6 +136,12 @@ public class JsonHelper extends BeanUtilsHelper {
 	    return stringWriter.toString();
 	}
 
+	/**
+	 * Builds the config.
+	 *
+	 * @param options the options
+	 * @return the map
+	 */
 	private static Map<String, Boolean> buildConfig(String... options) {
 	    Map<String, Boolean> config = new HashMap<String, Boolean>();
 
@@ -118,6 +154,12 @@ public class JsonHelper extends BeanUtilsHelper {
 	    return config;
 	}
 	
+	/**
+	 * To map.
+	 *
+	 * @param data the data
+	 * @return the map
+	 */
 	public static Map<String, String> toMap(JsonObject data) {
 		Map<String, String> map = new HashMap<>();
 		if (data != null) {
@@ -127,6 +169,13 @@ public class JsonHelper extends BeanUtilsHelper {
 		}
 		return map;
 	}
+	
+	/**
+	 * To json object.
+	 *
+	 * @param data the data
+	 * @return the json object
+	 */
 	public static JsonObject toJsonObject(Properties data) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		Enumeration<?> keys = data.propertyNames();
@@ -137,22 +186,51 @@ public class JsonHelper extends BeanUtilsHelper {
 		return builder.build();
 	}
 
+	/**
+	 * To json object.
+	 *
+	 * @param <T> the generic type
+	 * @param bean the bean
+	 * @param attributes the attributes
+	 * @return the json object
+	 */
 	public static <T> JsonObject toJsonObject(T bean, String... attributes) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		fillJsonObject(builder, bean.getClass(), bean, attributes);
 		return builder.build();
 	}
 
+	/**
+	 * To json object.
+	 *
+	 * @param stringData the string data
+	 * @return the json object
+	 */
 	public static JsonObject toJsonObject(String stringData) {
 		JsonReader reader = Json.createReader(new StringReader(stringData));
 		return reader.readObject();
 	}
 
+	/**
+	 * To json array.
+	 *
+	 * @param stringData the string data
+	 * @return the json array
+	 */
 	public static JsonArray toJsonArray(String stringData) {
 		JsonReader reader = Json.createReader(new StringReader(stringData));
 		return reader.readArray();
 	}
 
+	/**
+	 * Fill json object.
+	 *
+	 * @param <T> the generic type
+	 * @param builder the builder
+	 * @param clazz the clazz
+	 * @param bean the bean
+	 * @param attributes the attributes
+	 */
 	private static <T> void fillJsonObject(JsonObjectBuilder builder, Class<?> clazz, T bean, String... attributes) {
 		Class<?> superClass = clazz.getSuperclass();
 		if (superClass != null) {
@@ -204,6 +282,14 @@ public class JsonHelper extends BeanUtilsHelper {
 		
 	}
 
+	/**
+	 * Gets the annotation data.
+	 *
+	 * @param field the field
+	 * @param className the class name
+	 * @param methodName the method name
+	 * @return the annotation data
+	 */
 	private static String getAnnotationData(Field field, String className, String methodName) {
 		for (Annotation annotation: field.getAnnotations()) {
 			if (StringUtils.equals(annotation.annotationType().getSimpleName(), className)) {
@@ -218,10 +304,23 @@ public class JsonHelper extends BeanUtilsHelper {
 		return null;
 	}
 	
+	/**
+	 * Contains.
+	 *
+	 * @param attributes the attributes
+	 * @param name the name
+	 * @return true, if successful
+	 */
 	private static boolean contains(String[] attributes, String name) {
 		return Arrays.asList(attributes).contains(name);
 	}
 	
+	/**
+	 * To json array.
+	 *
+	 * @param value the value
+	 * @return the json array
+	 */
 	private static JsonArray toJsonArray(Collection<?> value) {
 		JsonArrayBuilder builder = Json.createArrayBuilder();
 		for (Object entry : value) {
@@ -239,6 +338,12 @@ public class JsonHelper extends BeanUtilsHelper {
 		return builder.build();
 	}
 	
+	/**
+	 * To json map.
+	 *
+	 * @param map the map
+	 * @return the json object
+	 */
 	private static JsonObject toJsonMap(Map<?,?> map) {
 		JsonObjectBuilder builder = Json.createObjectBuilder();
 		for (Object key : map.keySet()) {
@@ -248,6 +353,15 @@ public class JsonHelper extends BeanUtilsHelper {
 		}
 		return builder.build();
 	}
+	
+	/**
+	 * To json object.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param bean the bean
+	 * @return the json object
+	 */
 	public static <T> JsonObject toJsonObject(Class<? super T> clazz, T bean) {
 		Class<? super T> superClass = clazz.getSuperclass();
 		if (superClass != null) {
@@ -282,24 +396,49 @@ public class JsonHelper extends BeanUtilsHelper {
 	
 	/**
 	 * Fills String type data from a Json Object into a bean. 
+	 *
+	 * @param <T> the generic type
 	 * @param beanClazz class of the bean to be filled
-	 * @param data JsonObject
-	 * @return
-	 * @throws IllegalAccessException
-	 * @throws InvocationTargetException
-	 * @throws InstantiationException 
+	 * @param stringData the string data
+	 * @return the t
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws InvocationTargetException the invocation target exception
+	 * @throws InstantiationException the instantiation exception
 	 */
 	public static <T> T toBean(Class<T> beanClazz, String stringData) throws IllegalAccessException, InvocationTargetException, InstantiationException {
 		JsonReader reader = Json.createReader(new StringReader(stringData));
 		JsonObject data = reader.readObject();
 		return toBean(beanClazz, data);
 	}
+	
+	/**
+	 * To bean.
+	 *
+	 * @param <T> the generic type
+	 * @param beanClazz the bean clazz
+	 * @param inputStream the input stream
+	 * @return the t
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws InvocationTargetException the invocation target exception
+	 * @throws InstantiationException the instantiation exception
+	 */
 	public static <T> T toBean(Class<T> beanClazz, InputStream inputStream) throws IllegalAccessException, InvocationTargetException, InstantiationException {
 		JsonReader reader = Json.createReader(new InputStreamReader(inputStream));
 		JsonObject data = reader.readObject();
 		return toBean(beanClazz, data);
 	}
 
+	/**
+	 * To bean.
+	 *
+	 * @param <T> the generic type
+	 * @param beanClazz the bean clazz
+	 * @param data the data
+	 * @return the t
+	 * @throws IllegalAccessException the illegal access exception
+	 * @throws InvocationTargetException the invocation target exception
+	 * @throws InstantiationException the instantiation exception
+	 */
 	public static <T> T toBean(Class<T> beanClazz, JsonObject data) throws IllegalAccessException, InvocationTargetException, InstantiationException {
 		T bean;
 		bean = Classes.newInstance(beanClazz);
@@ -307,6 +446,13 @@ public class JsonHelper extends BeanUtilsHelper {
 		return bean;
 	}
 	
+	/**
+	 * Fill bean with properties.
+	 *
+	 * @param clazz the clazz
+	 * @param bean the bean
+	 * @param data the data
+	 */
 	private static void fillBeanWithProperties(Class<? extends Object> clazz, Object bean, JsonObject data) {
 		Class<? extends Object> superClass = clazz.getSuperclass();
 		if (superClass != null) {
@@ -472,6 +618,12 @@ public class JsonHelper extends BeanUtilsHelper {
 		}
 	}
 
+	/**
+	 * Gets the string.
+	 *
+	 * @param value the value
+	 * @return the string
+	 */
 	public static String getString(JsonValue value) {
 		if (value.getValueType() == ValueType.ARRAY) {
 			StringBuilder sb = new StringBuilder();
@@ -496,6 +648,14 @@ public class JsonHelper extends BeanUtilsHelper {
 		return "";
 	}
 
+	/**
+	 * To list.
+	 *
+	 * @param <T> the generic type
+	 * @param clazz the clazz
+	 * @param jsonArray the json array
+	 * @return the collection<? extends t>
+	 */
 	public static <T> Collection<? extends T> toList(Class<T> clazz, JsonArray jsonArray) {
 		List<T> list = new ArrayList<>();
 		for (JsonValue jsonValue : jsonArray) {
@@ -511,6 +671,12 @@ public class JsonHelper extends BeanUtilsHelper {
 		return list;
 	}
 
+	/**
+	 * To list.
+	 *
+	 * @param jsonArray the json array
+	 * @return the collection
+	 */
 	public static Collection<String> toList(JsonArray jsonArray) {
 		List<String> list = new ArrayList<>();
 		for (int i = 0; i < jsonArray.size(); i++) {
@@ -519,10 +685,22 @@ public class JsonHelper extends BeanUtilsHelper {
 		return list;
 	}
 	
+	/**
+	 * Copy.
+	 *
+	 * @param jsonObject the json object
+	 * @return the json object
+	 */
 	public static JsonObject copy(JsonObject jsonObject) {
 		return JsonHelper.toJsonObject(jsonObject.toString());
 	}
 	
+	/**
+	 * Gets the map.
+	 *
+	 * @param o the o
+	 * @return the map
+	 */
 	public static Map<String,String> getMap(JsonObject o) {
 		Map<String,String> map = new HashMap<>();
 		if (o != null) {

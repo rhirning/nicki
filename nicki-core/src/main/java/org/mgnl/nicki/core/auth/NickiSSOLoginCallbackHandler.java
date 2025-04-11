@@ -29,13 +29,29 @@ import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.NameCallback;
 import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.callback.UnsupportedCallbackException;
+// TODO: Auto-generated Javadoc
 
+/**
+ * CallbackHandler.
+ */
 public class NickiSSOLoginCallbackHandler extends NickiLoginCallbackHandler implements CallbackHandler {
 
+	/**
+	 * Instantiates a new nicki SSO login callback handler.
+	 *
+	 * @param request the request
+	 */
 	public NickiSSOLoginCallbackHandler(Object request) {
 		super(request);
 	}
 
+	/**
+	 * Handle.
+	 *
+	 * @param callbacks the callbacks
+	 * @throws IOException Signals that an I/O exception has occurred.
+	 * @throws UnsupportedCallbackException the unsupported callback exception
+	 */
 	public void handle(Callback[] callbacks) throws IOException,
 			UnsupportedCallbackException {
 
