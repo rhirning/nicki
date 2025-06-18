@@ -25,7 +25,7 @@ package org.mgnl.nicki.verify.classes;
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ReferenceVerifyException.
  */

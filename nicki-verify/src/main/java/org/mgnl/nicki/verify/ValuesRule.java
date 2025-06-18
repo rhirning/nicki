@@ -28,7 +28,7 @@ import java.util.Map;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 
-// TODO: Auto-generated Javadoc
+
 // val					= values:value1,value2,value3
 
 /**

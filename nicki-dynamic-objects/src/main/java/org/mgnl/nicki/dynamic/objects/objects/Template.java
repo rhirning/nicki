@@ -30,7 +30,7 @@ import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Template.
  */

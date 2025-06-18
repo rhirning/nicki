@@ -25,7 +25,7 @@ package org.mgnl.nicki.db.handler;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class MaxIntValueSelectHandler.
  */

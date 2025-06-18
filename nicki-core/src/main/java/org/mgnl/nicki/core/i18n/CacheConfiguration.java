@@ -24,7 +24,7 @@ package org.mgnl.nicki.core.i18n;
 
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CacheConfiguration.
  */

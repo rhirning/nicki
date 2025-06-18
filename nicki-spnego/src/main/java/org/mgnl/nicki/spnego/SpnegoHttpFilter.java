@@ -47,7 +47,7 @@ import org.mgnl.nicki.core.util.Classes;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Http Servlet Filter that provides <a
  * href="http://en.wikipedia.org/wiki/SPNEGO" target="_blank">SPNEGO</a> authentication.

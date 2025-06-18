@@ -52,7 +52,7 @@ import org.mgnl.nicki.core.util.Classes;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
-// TODO: Auto-generated Javadoc
+
 
 /**
  * The Class BeanSearchHandler.

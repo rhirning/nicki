@@ -22,7 +22,7 @@ package org.mgnl.nicki.db.dynamic.objects;
 
 import java.util.Date;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface SyncEntry.
  */

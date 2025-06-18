@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
 
 import org.mgnl.nicki.db.data.DataType;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface Attribute.
  */

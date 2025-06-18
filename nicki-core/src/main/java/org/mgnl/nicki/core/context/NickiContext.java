@@ -39,7 +39,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface NickiContext.
  */

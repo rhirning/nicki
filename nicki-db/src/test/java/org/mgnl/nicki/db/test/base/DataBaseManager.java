@@ -117,8 +117,7 @@ public class DataBaseManager {
 						try {
 							//System.out.println("SQL: " + sb.toString());
 							dbContext.executeUpdate(sb.toString());
-						} catch (Exception e) {
-							// TODO Auto-generated catch block
+						} catch (Exception e) {							
 							e.printStackTrace();
 						}
 						sb.setLength(0);
@@ -131,7 +130,6 @@ public class DataBaseManager {
 					//System.out.println("SQL: " + sb.toString());
 					dbContext.executeUpdate(sb.toString());
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

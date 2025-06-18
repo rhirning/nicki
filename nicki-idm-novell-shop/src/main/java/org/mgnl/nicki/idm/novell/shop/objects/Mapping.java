@@ -36,7 +36,7 @@ import org.mgnl.nicki.core.helper.NameValue;
 import org.mgnl.nicki.core.helper.XMLHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Mapping.
  */

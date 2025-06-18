@@ -37,7 +37,7 @@ import org.mgnl.nicki.shop.base.objects.CatalogValueProvider;
 import org.mgnl.nicki.shop.base.objects.MultipleInstancesCatalogArticle;
 import org.mgnl.nicki.shop.base.objects.XmlValueProvider;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ValuedResourceCatalogArticle.
  */

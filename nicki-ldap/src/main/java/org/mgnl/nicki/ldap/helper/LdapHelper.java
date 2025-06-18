@@ -36,7 +36,7 @@ import org.mgnl.nicki.core.objects.DataModel;
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LdapHelper.
  */

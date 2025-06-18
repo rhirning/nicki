@@ -33,7 +33,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DynamicObjectLdapAdapter.
  */

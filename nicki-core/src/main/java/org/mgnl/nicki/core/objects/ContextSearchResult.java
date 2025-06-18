@@ -24,7 +24,7 @@ package org.mgnl.nicki.core.objects;
 
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface ContextSearchResult.
  */

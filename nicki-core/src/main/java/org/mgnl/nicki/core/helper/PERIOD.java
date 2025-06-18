@@ -26,7 +26,7 @@ import java.util.Date;
 import org.mgnl.nicki.core.data.Period;
 import org.mgnl.nicki.core.i18n.I18n;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Enum PERIOD.
  */

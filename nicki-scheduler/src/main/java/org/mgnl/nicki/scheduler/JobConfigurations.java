@@ -26,7 +26,7 @@ import java.util.List;
 
 import lombok.Data;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class JobConfigurations.
  */

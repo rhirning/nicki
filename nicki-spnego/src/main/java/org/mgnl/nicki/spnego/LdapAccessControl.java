@@ -48,7 +48,7 @@ import javax.naming.ldap.LdapContext;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The <code>LdapAccessControl</code> class is a reference implementation 
  * of the {@link UserAccessControl} interface. This class only performs 

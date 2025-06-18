@@ -22,7 +22,7 @@ package org.mgnl.nicki.db.dynamic.objects;
 
 import org.mgnl.nicki.core.helper.AttributeMapper;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class NullAttributeMapper.
  */

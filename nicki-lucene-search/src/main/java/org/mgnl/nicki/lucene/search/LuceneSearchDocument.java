@@ -25,7 +25,7 @@ package org.mgnl.nicki.lucene.search;
 import org.apache.lucene.document.Document;
 import org.mgnl.nicki.search.SearchDocument;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LuceneSearchDocument.
  */

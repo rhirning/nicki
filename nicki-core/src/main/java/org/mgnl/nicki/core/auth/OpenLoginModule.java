@@ -24,11 +24,14 @@ import javax.security.auth.login.LoginException;
 import javax.security.auth.spi.LoginModule;
 
 import org.mgnl.nicki.core.context.AppContext;
-// TODO: Auto-generated Javadoc
+
+import lombok.extern.slf4j.Slf4j;
+
 
 /**
  * LoginModule to grant anonymous access.
  */
+@Slf4j
 public class OpenLoginModule extends NickiLoginModule implements LoginModule {
 
 	/**
@@ -46,8 +49,7 @@ public class OpenLoginModule extends NickiLoginModule implements LoginModule {
 			setSucceeded(true);
 			return true;
 		} catch (InvalidPrincipalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Invalid principal", e);
 		}
 		return false;
 	}

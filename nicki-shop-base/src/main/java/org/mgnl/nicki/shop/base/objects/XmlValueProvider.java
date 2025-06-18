@@ -34,7 +34,7 @@ import org.mgnl.nicki.core.helper.XMLHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * XML Format:
  * 

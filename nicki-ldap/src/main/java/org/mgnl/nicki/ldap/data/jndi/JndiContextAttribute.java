@@ -31,7 +31,7 @@ import org.mgnl.nicki.core.objects.ContextAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class JndiContextAttribute.
  */

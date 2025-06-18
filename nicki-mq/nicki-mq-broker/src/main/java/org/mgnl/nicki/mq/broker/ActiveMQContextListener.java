@@ -30,9 +30,7 @@ import org.mgnl.nicki.core.config.Config;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.verify.Verify;
 import org.mgnl.nicki.verify.VerifyException;
-
 import lombok.extern.slf4j.Slf4j;
-// TODO: Auto-generated Javadoc
 
 /**
  * ActiveMQContextListener

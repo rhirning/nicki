@@ -32,7 +32,7 @@ import org.mgnl.nicki.core.objects.SearchResultEntry;
 import org.mgnl.nicki.core.data.Query;
 import org.mgnl.nicki.core.data.SearchQueryHandler;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LdapSearchHandler.
  */

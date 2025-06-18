@@ -24,7 +24,7 @@ package org.mgnl.nicki.template.engine;
 
 import java.util.HashMap;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Template.
  */

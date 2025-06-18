@@ -24,7 +24,7 @@ package org.mgnl.nicki.template.engine;
 
 import org.jdom2.Element;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class TemplateParameter.
  */

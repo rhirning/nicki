@@ -3,7 +3,7 @@ package org.mgnl.nicki.mq.model;
 
 import lombok.Data;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-mq

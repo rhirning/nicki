@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.mgnl.nicki.core.objects.SearchResultEntry;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface SearchQueryHandler.
  */

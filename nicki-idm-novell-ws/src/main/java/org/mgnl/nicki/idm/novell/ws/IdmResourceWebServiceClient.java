@@ -46,7 +46,7 @@ import com.novell.idm.nrf.soap.ws.resource.ResourceRequestParam;
 import com.novell.idm.nrf.soap.ws.resource.ResourceService;
 import com.novell.soa.ws.portable.Stub;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class IdmResourceWebServiceClient.
  */

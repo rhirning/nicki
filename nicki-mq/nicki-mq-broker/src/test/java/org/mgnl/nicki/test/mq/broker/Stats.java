@@ -31,7 +31,7 @@ import org.apache.activemq.broker.jmx.BrokerViewMBean;
 import org.apache.activemq.broker.jmx.QueueViewMBean;
 import org.mgnl.nicki.core.config.Config;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Stats.
  */

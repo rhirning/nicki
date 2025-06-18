@@ -37,7 +37,7 @@ import org.mgnl.nicki.db.helper.TypedValue;
 import org.mgnl.nicki.db.profile.DBProfile;
 import org.mgnl.nicki.db.profile.InitProfileException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface DBContext.
  */

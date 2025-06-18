@@ -1,7 +1,7 @@
 
 package org.mgnl.nicki.core.thread;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-vaadin-base

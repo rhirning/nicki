@@ -24,7 +24,7 @@ package org.mgnl.nicki.db.profile;
 
 import javax.naming.NamingException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class InitProfileException.
  */

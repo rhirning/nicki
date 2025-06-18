@@ -30,7 +30,7 @@ import java.util.Map;
 import org.mgnl.nicki.db.helper.BeanHelper;
 import org.mgnl.nicki.db.helper.Type;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PrimaryKey.
  */

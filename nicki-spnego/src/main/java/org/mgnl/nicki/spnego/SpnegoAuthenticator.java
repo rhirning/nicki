@@ -44,7 +44,7 @@ import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
 import org.ietf.jgss.GSSManager;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Handles <a href="http://en.wikipedia.org/wiki/SPNEGO">SPNEGO</a> or <a
  * href="http://en.wikipedia.org/wiki/Basic_access_authentication">Basic</a>

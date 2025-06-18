@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 import org.mgnl.nicki.core.config.Config;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Classes.
  */

@@ -1,7 +1,7 @@
 
 package org.mgnl.nicki.core.i18n;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-core

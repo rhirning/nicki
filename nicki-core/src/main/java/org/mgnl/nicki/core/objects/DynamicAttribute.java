@@ -35,7 +35,7 @@ import org.mgnl.nicki.core.methods.ListForeignKeyMethod;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DynamicAttribute.
  */

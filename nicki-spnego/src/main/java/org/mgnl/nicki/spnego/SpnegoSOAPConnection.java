@@ -56,7 +56,7 @@ import org.xml.sax.SAXException;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This class can be used to make SOAP calls to a protected SOAP Web Service.
  * 

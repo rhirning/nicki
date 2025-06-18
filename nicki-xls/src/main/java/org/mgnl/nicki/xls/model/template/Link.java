@@ -35,7 +35,7 @@ import jakarta.xml.bind.annotation.XmlType;
 import jakarta.xml.bind.annotation.XmlValue;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * <p>Java class for link complex type.
  * 

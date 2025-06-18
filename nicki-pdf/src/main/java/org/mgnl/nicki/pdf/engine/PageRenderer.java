@@ -42,7 +42,7 @@ import org.mgnl.nicki.pdf.model.template.Image;
 import org.mgnl.nicki.pdf.model.template.Page;
 import org.mgnl.nicki.pdf.model.template.Text;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PageRenderer.
  */

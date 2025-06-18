@@ -22,7 +22,7 @@ package org.mgnl.nicki.core.util;
 
 import lombok.Data;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ProtocolEntry.
  */

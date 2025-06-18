@@ -37,7 +37,7 @@ import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.dynamic.objects.shop.AssignedArticle;
-// TODO: Auto-generated Javadoc
+
 
 /**
  * The Class Person.

@@ -40,7 +40,7 @@ import org.mgnl.nicki.template.engine.SimpleTemplateDescriptor;
 import freemarker.cache.TemplateLoader;
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A TemplateLoader that reads templates using classloader under a given basePath
  * as the source of templates. 

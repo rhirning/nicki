@@ -56,7 +56,7 @@ import org.mgnl.nicki.search.NickiSearchResult;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LuceneSearch.
  *

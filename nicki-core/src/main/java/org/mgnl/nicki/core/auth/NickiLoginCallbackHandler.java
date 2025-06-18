@@ -23,7 +23,7 @@ package org.mgnl.nicki.core.auth;
 
 
 import javax.security.auth.callback.CallbackHandler;
-// TODO: Auto-generated Javadoc
+
 
 /**
  * CallbackHandler with request object and ssoAdapter.

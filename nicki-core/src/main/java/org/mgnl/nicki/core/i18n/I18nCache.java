@@ -36,7 +36,7 @@ import org.mgnl.nicki.core.helper.JsonHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Cache with topic and EntryFactory.
  *

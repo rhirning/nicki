@@ -29,7 +29,7 @@ import javax.security.auth.callback.PasswordCallback;
 import javax.security.auth.login.Configuration;
 import javax.security.auth.login.LoginContext;
  
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class HelloKDC.
  */

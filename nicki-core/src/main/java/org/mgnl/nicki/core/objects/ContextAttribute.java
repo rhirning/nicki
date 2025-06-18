@@ -24,7 +24,7 @@ package org.mgnl.nicki.core.objects;
 
 import java.util.Enumeration;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface ContextAttribute.
  */

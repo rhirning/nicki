@@ -24,7 +24,7 @@ package org.mgnl.nicki.dynamic.objects.objects;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface Script.
  */

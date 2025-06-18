@@ -30,7 +30,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Template;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.template.engine.TemplateParameter;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface TemplateHandler.
  */

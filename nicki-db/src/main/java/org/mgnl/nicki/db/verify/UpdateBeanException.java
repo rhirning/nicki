@@ -1,6 +1,6 @@
 package org.mgnl.nicki.db.verify;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-db

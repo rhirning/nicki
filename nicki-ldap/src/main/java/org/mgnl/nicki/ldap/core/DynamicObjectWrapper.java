@@ -25,7 +25,7 @@ package org.mgnl.nicki.ldap.core;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DynamicObjectWrapper.
  */

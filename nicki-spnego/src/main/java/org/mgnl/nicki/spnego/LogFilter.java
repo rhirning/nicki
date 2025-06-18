@@ -36,7 +36,7 @@ import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LogFilter.
  */

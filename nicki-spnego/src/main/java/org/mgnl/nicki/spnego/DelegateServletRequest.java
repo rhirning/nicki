@@ -26,7 +26,7 @@ import jakarta.servlet.ServletRequest;
 
 import org.ietf.jgss.GSSCredential;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The default installation of Internet Explorer and Active Directory 
  * allow the user's/requester's credential to be delegated.

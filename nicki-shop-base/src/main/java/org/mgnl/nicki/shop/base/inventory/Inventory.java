@@ -43,7 +43,7 @@ import org.mgnl.nicki.shop.base.inventory.InventoryArticle.STATUS;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Inventory.
  */

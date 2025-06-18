@@ -52,7 +52,7 @@ import org.mgnl.nicki.core.methods.StructuredData;
 import freemarker.template.TemplateMethodModelEx;
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class BaseDynamicObject.
  */

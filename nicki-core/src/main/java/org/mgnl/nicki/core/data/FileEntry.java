@@ -30,7 +30,7 @@ import java.util.List;
 import org.mgnl.nicki.core.helper.PathHelper;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class FileEntry.
  */

@@ -30,7 +30,7 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class IsExistLdapQueryHandler.
  */

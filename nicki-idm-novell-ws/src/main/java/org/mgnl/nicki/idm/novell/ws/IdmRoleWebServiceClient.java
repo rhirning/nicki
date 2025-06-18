@@ -55,7 +55,7 @@ import com.novell.idm.nrf.soap.ws.role.IRemoteRole;
 import com.novell.idm.nrf.soap.ws.role.RoleService;
 import com.novell.soa.ws.portable.Stub;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * see: https://www.netiq.com/documentation/idm45/agpro/data/bdux8cm.html
  * 

@@ -31,7 +31,7 @@ import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Resource.
  */

@@ -1,7 +1,7 @@
 
 package org.mgnl.nicki.core.auth;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-vaadin-base

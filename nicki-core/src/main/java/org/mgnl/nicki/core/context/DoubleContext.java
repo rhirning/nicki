@@ -24,7 +24,7 @@ package org.mgnl.nicki.core.context;
 
 import java.io.Serializable;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DoubleContext.
  */

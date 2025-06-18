@@ -38,7 +38,6 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 import jakarta.xml.bind.annotation.XmlType;
 
 
-// TODO: Auto-generated Javadoc
 /**
  * <p>Java-Klasse f�r anonymous complex type.
  * 

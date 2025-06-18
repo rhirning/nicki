@@ -1,7 +1,7 @@
 
 package org.mgnl.nicki.shop.base.objects;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-shop-base

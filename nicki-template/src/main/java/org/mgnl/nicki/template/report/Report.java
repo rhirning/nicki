@@ -28,7 +28,7 @@ import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.template.engine.TemplateEngine;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Report.
  */

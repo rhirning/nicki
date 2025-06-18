@@ -24,7 +24,7 @@ import java.lang.annotation.Repeatable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface CommandLineOption.
  */

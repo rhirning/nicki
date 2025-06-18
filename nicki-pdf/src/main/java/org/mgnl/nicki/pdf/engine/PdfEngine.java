@@ -47,7 +47,7 @@ import org.mgnl.nicki.pdf.model.template.Data;
 import org.mgnl.nicki.pdf.model.template.Page;
 import org.mgnl.nicki.pdf.template.PdfTemplate;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PdfEngine.
  */

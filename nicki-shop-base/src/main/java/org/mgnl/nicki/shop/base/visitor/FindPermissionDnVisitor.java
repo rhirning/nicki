@@ -31,7 +31,7 @@ import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogObject;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class FindPermissionDnVisitor.
  */

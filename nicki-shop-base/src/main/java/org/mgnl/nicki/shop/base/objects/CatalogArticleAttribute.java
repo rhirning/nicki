@@ -27,7 +27,7 @@ import java.io.Serializable;
 import org.jdom2.Element;
 import org.mgnl.nicki.core.i18n.I18n;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CatalogArticleAttribute.
  */

@@ -32,10 +32,13 @@ import org.mgnl.nicki.db.annotation.Attribute;
 import org.mgnl.nicki.db.context.BaseDBContext;
 import org.mgnl.nicki.db.context.DBContext;
 
-// TODO: Auto-generated Javadoc
+import lombok.extern.slf4j.Slf4j;
+
+
 /**
  * The Class MySqlContext.
  */
+@Slf4j
 public class MySqlContext extends BaseDBContext implements DBContext {
 
 
@@ -72,8 +75,7 @@ public class MySqlContext extends BaseDBContext implements DBContext {
 			return toTimestamp(date);
 		} catch (NoSuchMethodException | SecurityException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Error converting date", e);
 		}
 		
 		// TODO Auto-generated method stub

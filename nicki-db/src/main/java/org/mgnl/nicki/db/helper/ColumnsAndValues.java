@@ -24,7 +24,7 @@ package org.mgnl.nicki.db.helper;
 
 import org.apache.commons.lang3.StringUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ColumnsAndValues.
  */

@@ -24,7 +24,7 @@ import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.context.TargetFactory;
 import lombok.extern.slf4j.Slf4j;;
-// TODO: Auto-generated Javadoc
+
 
 /**
  * Adapter which uses the configured credentials (only for local development).

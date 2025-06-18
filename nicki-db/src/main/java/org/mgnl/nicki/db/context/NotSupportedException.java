@@ -1,7 +1,7 @@
 
 package org.mgnl.nicki.db.context;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-db

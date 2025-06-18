@@ -41,7 +41,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.xml.sax.SAXException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class XMLImporter.
  */

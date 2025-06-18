@@ -36,7 +36,7 @@ import org.mgnl.nicki.verify.annotations.VerifyRule;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class JavaRules.
  */

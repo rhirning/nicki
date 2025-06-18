@@ -31,7 +31,7 @@ import jakarta.xml.bind.Unmarshaller;
 
 import org.mgnl.nicki.pdf.model.template.Document;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PdfTemplate.
  */

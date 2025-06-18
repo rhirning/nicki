@@ -26,10 +26,13 @@ import java.security.Principal;
 
 import org.mgnl.nicki.core.context.NickiContext;
 
-// TODO: Auto-generated Javadoc
+import lombok.extern.slf4j.Slf4j;
+
+
 /**
  * Principal with aloginContext and accessContext.
  */
+@Slf4j
 public class DynamicObjectPrincipal implements Principal {
 	
 	/** The nicki principal. */
@@ -67,8 +70,7 @@ public class DynamicObjectPrincipal implements Principal {
 		try {
 			this.nickiPrincipal = new NickiPrincipal(name, "invalid");
 		} catch (InvalidPrincipalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Username or password missing", e);
 		}
 		this.loginContext = loginContext;
 		this.context = context;

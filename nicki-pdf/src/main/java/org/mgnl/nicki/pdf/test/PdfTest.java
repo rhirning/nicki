@@ -36,7 +36,7 @@ import com.lowagie.text.pdf.ColumnText;
 import com.lowagie.text.pdf.PdfContentByte;
 import com.lowagie.text.pdf.PdfWriter;
  
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PdfTest.
  */

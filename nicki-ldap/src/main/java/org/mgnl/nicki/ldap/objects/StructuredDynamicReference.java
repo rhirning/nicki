@@ -31,7 +31,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.ldap.context.LdapContext;
 import org.mgnl.nicki.ldap.methods.StructuredReferenceMethod;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class StructuredDynamicReference.
  */

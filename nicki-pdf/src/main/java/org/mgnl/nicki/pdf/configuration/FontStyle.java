@@ -26,7 +26,7 @@ import com.lowagie.text.Font;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Enum FontStyle.
  */

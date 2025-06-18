@@ -33,7 +33,7 @@ import org.mgnl.nicki.core.auth.NickiLoginCallbackHandler;
 import org.mgnl.nicki.core.auth.NickiLoginModule;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PortalLoginModule.
  */

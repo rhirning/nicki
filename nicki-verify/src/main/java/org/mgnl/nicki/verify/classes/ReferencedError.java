@@ -1,7 +1,7 @@
 
 package org.mgnl.nicki.verify.classes;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-verify

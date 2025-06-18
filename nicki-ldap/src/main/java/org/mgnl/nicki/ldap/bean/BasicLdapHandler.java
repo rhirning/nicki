@@ -24,7 +24,7 @@ import javax.naming.directory.SearchControls;
 
 import org.mgnl.nicki.core.context.BeanQueryHandler.SCOPE;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * LDAP Handler connecting to IDVault .
  *

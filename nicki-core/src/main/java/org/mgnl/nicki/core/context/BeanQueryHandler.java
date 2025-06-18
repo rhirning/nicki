@@ -26,7 +26,7 @@ import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.SearchResult;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface BeanQueryHandler.
  */

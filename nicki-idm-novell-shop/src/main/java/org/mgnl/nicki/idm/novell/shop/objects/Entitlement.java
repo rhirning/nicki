@@ -26,7 +26,7 @@ import org.mgnl.nicki.core.annotation.DynamicAttribute;
 import org.mgnl.nicki.core.annotation.DynamicObject;
 import org.mgnl.nicki.core.annotation.ObjectClass;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Entitlement.
  */

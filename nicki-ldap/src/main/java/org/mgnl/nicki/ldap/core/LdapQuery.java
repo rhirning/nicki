@@ -34,7 +34,7 @@ import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 import org.mgnl.nicki.core.objects.DynamicReference;
 import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LdapQuery.
  */

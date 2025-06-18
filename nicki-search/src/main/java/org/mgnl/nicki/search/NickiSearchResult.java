@@ -1,7 +1,7 @@
 
 package org.mgnl.nicki.search;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-search

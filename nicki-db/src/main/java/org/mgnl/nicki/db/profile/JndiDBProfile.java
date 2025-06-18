@@ -30,7 +30,7 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class JndiDBProfile.
  */

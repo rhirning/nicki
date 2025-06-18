@@ -33,7 +33,9 @@ import javax.jms.TextMessage;
 import org.mgnl.nicki.mq.base.NickiMessageListener;
 import org.mgnl.nicki.mq.model.Consumer;
 
-// TODO: Auto-generated Javadoc
+import lombok.extern.slf4j.Slf4j;
+
+
 /**
  * The listener interface for receiving dump events.
  * The class that is interested in processing a dump
@@ -45,6 +47,7 @@ import org.mgnl.nicki.mq.model.Consumer;
  *
  * @see DumpEvent
  */
+@Slf4j
 public class DumpListener implements NickiMessageListener {
 	
 	/** The consumer. */
@@ -68,8 +71,7 @@ public class DumpListener implements NickiMessageListener {
         	}
         	System.out.println("Consumer: " + consumer.getName() + ", message: properties=" + propertyMap + ", " + ((TextMessage) message).getText());
 		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("JMSException", e);
 		}
 	}
 

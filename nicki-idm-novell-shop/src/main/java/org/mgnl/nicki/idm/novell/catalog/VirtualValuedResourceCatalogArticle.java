@@ -29,7 +29,7 @@ import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 import org.mgnl.nicki.shop.base.objects.MultipleInstancesCatalogArticle;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class VirtualValuedResourceCatalogArticle.
  */

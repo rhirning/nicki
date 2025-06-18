@@ -36,7 +36,7 @@ import org.mgnl.nicki.xls.model.template.Document;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class XlsTemplate.
  */

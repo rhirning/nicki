@@ -30,7 +30,7 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A factory for creating DatabaseStatistics objects.
  */

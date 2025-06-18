@@ -24,7 +24,7 @@ package org.mgnl.nicki.shop.base.objects;
 
 import org.mgnl.nicki.dynamic.objects.objects.Person;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface ValueProvider.
  */

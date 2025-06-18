@@ -32,7 +32,7 @@ import org.mgnl.nicki.core.context.AppContext;
 import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import lombok.extern.slf4j.Slf4j;
-// TODO: Auto-generated Javadoc
+
 
 /**
  * LoginModule which extract an already authenticated user from the request.

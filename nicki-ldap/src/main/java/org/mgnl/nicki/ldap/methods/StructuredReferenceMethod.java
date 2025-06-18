@@ -34,7 +34,7 @@ import org.mgnl.nicki.ldap.objects.StructuredDynamicReference;
 
 import freemarker.template.TemplateMethodModelEx;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class StructuredReferenceMethod.
  */

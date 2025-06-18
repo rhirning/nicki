@@ -38,7 +38,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.mgnl.nicki.core.auth.SSOAdapter.TYPE;
 import org.mgnl.nicki.idm.novell.jaas.UserAppAdapter;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class IframePortlet.
  */

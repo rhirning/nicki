@@ -24,7 +24,7 @@ package org.mgnl.nicki.ldap.objects;
 
 import org.mgnl.nicki.core.objects.DynamicAttribute;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class StaticAttribute.
  */

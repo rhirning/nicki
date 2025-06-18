@@ -1,7 +1,7 @@
 
 package org.mgnl.nicki.spnego;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-spnego

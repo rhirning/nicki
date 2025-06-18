@@ -54,7 +54,7 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.util.CellRangeAddress;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * File for HSSF testing/examples
  *

@@ -24,7 +24,7 @@ package org.mgnl.nicki.ldap.query;
 
 import org.mgnl.nicki.core.context.NickiContext;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SubObjectsLoaderQueryHandler.
  */

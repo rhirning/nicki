@@ -23,7 +23,7 @@ package org.mgnl.nicki.core.data;
 import java.util.Calendar;
 import java.util.Date;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Period.
  */

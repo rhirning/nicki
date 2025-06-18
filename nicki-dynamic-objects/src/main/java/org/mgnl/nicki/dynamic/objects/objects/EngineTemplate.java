@@ -1,7 +1,7 @@
 
 package org.mgnl.nicki.dynamic.objects.objects;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-dynamic-objects

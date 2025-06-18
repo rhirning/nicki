@@ -28,7 +28,7 @@ import org.mgnl.nicki.core.methods.ForeignKeyMethod;
 import org.mgnl.nicki.core.methods.ReferenceMethod;
 import org.mgnl.nicki.core.context.NickiContext;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DynamicReference.
  */

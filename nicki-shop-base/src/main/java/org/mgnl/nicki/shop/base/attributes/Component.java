@@ -24,7 +24,7 @@ package org.mgnl.nicki.shop.base.attributes;
 
 import org.mgnl.nicki.core.util.Classes;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Enum Component.
  */

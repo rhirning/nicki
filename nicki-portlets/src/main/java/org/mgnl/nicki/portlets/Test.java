@@ -34,7 +34,7 @@ import org.mgnl.nicki.core.util.XmlHelper;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Test.
  */

@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface TreeData.
  */

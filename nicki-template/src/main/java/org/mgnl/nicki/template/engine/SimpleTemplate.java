@@ -28,15 +28,17 @@ import java.util.Map;
 
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlRootElement;
+import lombok.extern.slf4j.Slf4j;
 
 import org.apache.commons.io.IOUtils;
 import org.mgnl.nicki.dynamic.objects.objects.EngineTemplate;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SimpleTemplate.
  */
 @XmlRootElement
+@Slf4j
 public class SimpleTemplate implements EngineTemplate {
 	
 	/** The name. */
@@ -138,8 +140,7 @@ public class SimpleTemplate implements EngineTemplate {
 			try {
 				IOUtils.copy(getClass().getResourceAsStream(getFilePath()), out);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("Error reading file", e);
 			}
 			return out.toByteArray();
 		}

@@ -33,7 +33,7 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.data.TreeData;
 import org.mgnl.nicki.core.helper.AttributeMapper;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface DynamicObject.
  */

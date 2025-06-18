@@ -28,7 +28,7 @@ import java.sql.SQLException;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SequenceValueSelectHandler.
  */

@@ -32,7 +32,7 @@ import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 import org.mgnl.nicki.shop.base.objects.Provider;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ResourcesProvider.
  */

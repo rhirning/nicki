@@ -30,7 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.text.StringTokenizer;
 import org.mgnl.nicki.core.i18n.I18n;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * ?berpr?ft, ob in einer geordneten Liste die ben?tigten Teile vorhanden sind.
  * Hierzu werden die g?ltigen Kombinationen festgelegt.

@@ -40,7 +40,7 @@ import org.mgnl.nicki.core.objects.DynamicAttribute.CREATEONLY;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DataModel.
  */

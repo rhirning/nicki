@@ -26,7 +26,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SearchResultEntry.
  */

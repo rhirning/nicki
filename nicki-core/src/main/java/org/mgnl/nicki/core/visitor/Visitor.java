@@ -1,7 +1,7 @@
 
 package org.mgnl.nicki.core.visitor;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-core

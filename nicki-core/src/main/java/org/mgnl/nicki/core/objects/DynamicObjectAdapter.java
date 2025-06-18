@@ -27,7 +27,7 @@ import java.util.Map;
 
 import org.mgnl.nicki.core.context.NickiContext;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface DynamicObjectAdapter.
  */

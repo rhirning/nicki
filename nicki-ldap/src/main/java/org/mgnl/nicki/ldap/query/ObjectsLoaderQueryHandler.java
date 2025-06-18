@@ -36,7 +36,7 @@ import org.mgnl.nicki.core.data.Query;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ObjectsLoaderQueryHandler.
  */

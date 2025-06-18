@@ -26,7 +26,7 @@ import org.mgnl.nicki.core.helper.AttributeMapper;
 
 import lombok.Data;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SyncConfig.
  */

@@ -1,6 +1,6 @@
 package org.mgnl.nicki.db.statistics;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-db

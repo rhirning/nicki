@@ -50,7 +50,7 @@ import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This Class may be used by custom clients as a convenience when connecting 
  * to a protected HTTP server.

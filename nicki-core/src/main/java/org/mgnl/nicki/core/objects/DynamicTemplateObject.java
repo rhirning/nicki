@@ -29,7 +29,7 @@ import org.mgnl.nicki.core.methods.ChildrenMethod;
 
 import freemarker.template.TemplateMethodModelEx;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DynamicTemplateObject.
  */

@@ -30,7 +30,7 @@ import org.apache.commons.cli.ParseException;
 import org.mgnl.nicki.core.helper.BeanUtilsHelper;
 import org.mgnl.nicki.core.helper.DataHelper;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class OptionHelper.
  */

@@ -24,7 +24,7 @@ import org.mgnl.nicki.db.context.BaseDBContext;
 import org.mgnl.nicki.db.context.DBContext;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class HsqldbContext.
  */

@@ -34,7 +34,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.context.LdapContext;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class AttributeLoaderLdapQueryHandler.
  */

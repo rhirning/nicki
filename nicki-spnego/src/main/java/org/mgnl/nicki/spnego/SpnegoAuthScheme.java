@@ -25,7 +25,7 @@ package org.mgnl.nicki.spnego;
 import org.apache.commons.codec.binary.Base64;
 import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Example schemes are "Negotiate" and "Basic". 
  * 

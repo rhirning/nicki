@@ -31,7 +31,7 @@ import org.mgnl.nicki.verify.classes.ReferencedError;
 
 import test.TestRule;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class RulesTest.
  */

@@ -32,7 +32,7 @@ import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LdapGuestContext.
  */

@@ -42,7 +42,7 @@ import javax.net.ssl.X509TrustManager;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SSLHelper.
  */

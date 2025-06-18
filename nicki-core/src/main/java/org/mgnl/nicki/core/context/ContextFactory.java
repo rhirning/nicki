@@ -26,7 +26,7 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A factory for creating Context objects.
  */

@@ -44,7 +44,7 @@ import org.mgnl.nicki.ws.base.annotations.Right;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class NickiWebService.
  */

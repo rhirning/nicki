@@ -37,7 +37,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Date;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ConnectionManager.
  */

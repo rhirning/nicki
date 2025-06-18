@@ -24,7 +24,7 @@ package org.mgnl.nicki.mq.model;
 
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ConsumerConfig.
  */

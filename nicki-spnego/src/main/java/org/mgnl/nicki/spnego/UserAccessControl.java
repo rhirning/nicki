@@ -24,7 +24,7 @@ package org.mgnl.nicki.spnego;
 
 import java.util.Properties;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * An interface for specifying how a program/library interacts with an  
  * implementing object when performing user authorization (authZ). This 

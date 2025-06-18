@@ -27,7 +27,7 @@ import java.io.Serializable;
 import org.jdom2.Document;
 import org.mgnl.nicki.core.helper.XMLHelper;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class StructuredData.
  */

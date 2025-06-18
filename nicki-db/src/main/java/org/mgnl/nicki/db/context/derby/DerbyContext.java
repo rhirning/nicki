@@ -35,7 +35,7 @@ import org.mgnl.nicki.db.context.PrimaryKey;
 import org.mgnl.nicki.db.handler.SequenceValueSelectHandler;
 
 import lombok.extern.slf4j.Slf4j;
-// TODO: Auto-generated Javadoc
+
 
 /**
  * The Class DerbyContext.

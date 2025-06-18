@@ -11,7 +11,7 @@ import org.mgnl.nicki.db.context.BaseDBContext.PREPARED;
 import org.mgnl.nicki.db.helper.BeanHelper;
 import org.mgnl.nicki.db.helper.Type;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-db

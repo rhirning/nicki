@@ -29,7 +29,7 @@ import java.util.Date;
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class AssignedArticle.
  */

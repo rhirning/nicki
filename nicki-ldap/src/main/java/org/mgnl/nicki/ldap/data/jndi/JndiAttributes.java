@@ -27,7 +27,7 @@ import javax.naming.directory.Attributes;
 import org.mgnl.nicki.core.objects.ContextAttribute;
 import org.mgnl.nicki.core.objects.ContextAttributes;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class JndiAttributes.
  */

@@ -46,7 +46,7 @@ import org.mgnl.nicki.db.profile.DBProfile;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class BasicDBHelper.
  */

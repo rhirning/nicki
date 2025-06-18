@@ -26,7 +26,7 @@ import javax.naming.NamingException;
 import javax.naming.ldap.Control;
 import javax.naming.ldap.InitialLdapContext;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class NickiLdapContext.
  */

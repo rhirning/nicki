@@ -26,7 +26,6 @@ import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-// TODO: Auto-generated Javadoc
 /**
  * The Class Action.
  */

@@ -23,7 +23,7 @@ package org.mgnl.nicki.db.statistics;
 
 import java.util.Collection;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A factory for creating Statistics objects.
  */

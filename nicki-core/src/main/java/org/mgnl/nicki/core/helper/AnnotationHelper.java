@@ -44,7 +44,7 @@ import org.mgnl.nicki.core.objects.DynamicReference;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class AnnotationHelper.
  */

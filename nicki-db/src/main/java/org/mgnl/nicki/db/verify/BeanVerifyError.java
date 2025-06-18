@@ -25,7 +25,7 @@ import java.util.List;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class BeanVerifyError.
  */

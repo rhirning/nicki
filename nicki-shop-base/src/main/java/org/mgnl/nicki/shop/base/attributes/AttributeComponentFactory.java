@@ -23,7 +23,7 @@ package org.mgnl.nicki.shop.base.attributes;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A factory for creating AttributeComponent objects.
  */

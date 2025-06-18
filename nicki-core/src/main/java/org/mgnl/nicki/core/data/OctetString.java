@@ -24,7 +24,7 @@ package org.mgnl.nicki.core.data;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class OctetString.
  */

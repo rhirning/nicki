@@ -29,7 +29,7 @@ import org.mgnl.nicki.core.visitor.Visitor;
 import org.mgnl.nicki.shop.base.visitor.CatalogVisitor;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CatalogObject.
  */

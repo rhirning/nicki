@@ -25,7 +25,7 @@ package org.mgnl.nicki.shop.base.objects;
 import java.util.List;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface Provider.
  */

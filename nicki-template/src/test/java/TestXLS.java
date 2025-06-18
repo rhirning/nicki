@@ -34,11 +34,13 @@ import org.xml.sax.SAXException;
 
 import freemarker.template.Configuration;
 import freemarker.template.TemplateException;
+import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class TestXLS.
  */
+@Slf4j
 public class TestXLS {
 
 	/**
@@ -69,8 +71,7 @@ public class TestXLS {
 				IOUtils.copy(engine.executeTemplateAsXlsx((byte[])null, template, dataModel), out);
 			} catch (IOException | TemplateException | InvalidPrincipalException | ParserConfigurationException
 					| SAXException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				log.error("Error generating XLSX", e);
 			}
 	}
 

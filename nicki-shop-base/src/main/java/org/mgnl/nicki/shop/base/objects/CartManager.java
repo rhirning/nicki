@@ -31,7 +31,7 @@ import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
 import org.mgnl.nicki.shop.base.objects.CartEntry.ACTION;
 import org.mgnl.nicki.shop.base.visitor.FindPermissionDnVisitor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CartManager.
  */

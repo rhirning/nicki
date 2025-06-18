@@ -1,7 +1,7 @@
 
 package org.mgnl.nicki.pdf.engine;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-pdf

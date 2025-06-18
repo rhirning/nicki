@@ -26,7 +26,7 @@ import java.util.Collection;
 import org.mgnl.nicki.core.context.NickiContext;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface DataProvider.
  *

@@ -28,7 +28,7 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
 import org.mgnl.nicki.core.util.Classes;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A factory for creating CatalogArticle objects.
  */

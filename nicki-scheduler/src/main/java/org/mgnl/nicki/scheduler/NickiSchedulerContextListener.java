@@ -40,7 +40,7 @@ import org.mgnl.nicki.verify.VerifyException;
 import it.sauronsoftware.cron4j.Scheduler;
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * NickiSchedulerContextListener.
  *

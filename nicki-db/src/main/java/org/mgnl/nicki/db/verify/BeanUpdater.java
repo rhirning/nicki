@@ -22,7 +22,7 @@ package org.mgnl.nicki.db.verify;
 
 import org.mgnl.nicki.db.context.DBContext;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface BeanUpdater.
  */

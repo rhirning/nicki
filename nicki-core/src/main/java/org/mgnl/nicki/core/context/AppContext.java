@@ -29,7 +29,7 @@ import org.mgnl.nicki.core.auth.InvalidPrincipalException;
 import org.mgnl.nicki.core.auth.NickiPrincipal;
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class AppContext.
  */

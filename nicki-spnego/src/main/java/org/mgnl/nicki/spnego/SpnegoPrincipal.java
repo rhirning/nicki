@@ -28,7 +28,7 @@ import javax.security.auth.kerberos.KerberosPrincipal;
 
 import org.ietf.jgss.GSSCredential;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This class encapsulates a KerberosPrincipal.
  * 

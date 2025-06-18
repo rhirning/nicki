@@ -42,7 +42,7 @@ import org.mgnl.nicki.dynamic.objects.types.TextArea;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CatalogPage.
  */

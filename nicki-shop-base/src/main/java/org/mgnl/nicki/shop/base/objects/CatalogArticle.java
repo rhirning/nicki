@@ -34,7 +34,7 @@ import org.mgnl.nicki.dynamic.objects.objects.Person;
 import org.mgnl.nicki.dynamic.objects.types.TextArea;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CatalogArticle.
  */

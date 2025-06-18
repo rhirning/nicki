@@ -41,7 +41,7 @@ import org.w3c.dom.Document;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class IframeAdapter.
  */

@@ -28,7 +28,7 @@ import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CartEntry.
  *

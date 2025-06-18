@@ -3,7 +3,7 @@ package org.mgnl.nicki.scheduler;
 
 import lombok.Data;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-scheduler

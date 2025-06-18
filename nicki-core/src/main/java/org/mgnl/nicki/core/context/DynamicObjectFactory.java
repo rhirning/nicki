@@ -30,7 +30,7 @@ import org.mgnl.nicki.core.objects.ContextSearchResult;
 import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A factory for creating DynamicObject objects.
  */

@@ -34,7 +34,7 @@ import jakarta.json.JsonReader;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 
-// TODO: Auto-generated Javadoc
+
 // var					= allowedKeys:value1,value2,value3
 
 /**

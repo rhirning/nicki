@@ -25,7 +25,7 @@ package org.mgnl.nicki.core.context;
 import java.util.Locale;
 import java.util.Map;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class Context.
  */

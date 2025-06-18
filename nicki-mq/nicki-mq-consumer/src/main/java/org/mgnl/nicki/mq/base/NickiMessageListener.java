@@ -26,7 +26,7 @@ import javax.jms.MessageListener;
 
 import org.mgnl.nicki.mq.model.Consumer;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The listener interface for receiving nickiMessage events.
  * The class that is interested in processing a nickiMessage

@@ -30,7 +30,7 @@ import org.mgnl.nicki.verify.classes.ReferencedError;
 import org.mgnl.nicki.verify.classes.ReferencedError.TYPE;
 import org.mgnl.nicki.verify.annotations.VerifyRule;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class TestRule.
  */

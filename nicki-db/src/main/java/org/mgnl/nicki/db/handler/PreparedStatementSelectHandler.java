@@ -27,7 +27,7 @@ import java.sql.PreparedStatement;
 
 import java.sql.SQLException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface PreparedStatementSelectHandler.
  */

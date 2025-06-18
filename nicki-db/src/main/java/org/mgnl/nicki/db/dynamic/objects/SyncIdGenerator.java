@@ -22,7 +22,7 @@ package org.mgnl.nicki.db.dynamic.objects;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface SyncIdGenerator.
  */

@@ -34,7 +34,7 @@ import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.config.Config;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class GenericAttributeMapper.
  */

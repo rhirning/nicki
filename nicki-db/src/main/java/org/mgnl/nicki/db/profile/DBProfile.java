@@ -25,7 +25,7 @@ package org.mgnl.nicki.db.profile;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface DBProfile.
  */

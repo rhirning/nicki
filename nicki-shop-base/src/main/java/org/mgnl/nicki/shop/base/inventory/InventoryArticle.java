@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mgnl.nicki.shop.base.objects.CartEntry.ACTION;
 import org.mgnl.nicki.shop.base.inventory.Inventory.SOURCE;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class InventoryArticle.
  */

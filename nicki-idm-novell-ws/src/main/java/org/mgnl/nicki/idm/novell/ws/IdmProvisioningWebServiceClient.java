@@ -58,7 +58,7 @@ import com.novell.soa.af.impl.soap.TypedDataItemArray;
 import com.novell.soa.af.impl.soap.WorkEntryArray;
 import com.novell.soa.ws.portable.Stub;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class IdmProvisioningWebServiceClient.
  */

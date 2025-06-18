@@ -32,7 +32,7 @@ import javax.sql.DataSource;
 
 import org.mgnl.nicki.db.profile.InitProfileException;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class JDBCDataSource.
  */

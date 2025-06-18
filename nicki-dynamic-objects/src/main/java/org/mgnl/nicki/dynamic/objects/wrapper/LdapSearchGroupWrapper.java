@@ -34,7 +34,7 @@ import org.mgnl.nicki.dynamic.objects.objects.LdapSearchGroup;
 import lombok.extern.slf4j.Slf4j;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LdapSearchGroupWrapper.
  *

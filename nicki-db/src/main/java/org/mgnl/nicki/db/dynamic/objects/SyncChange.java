@@ -25,7 +25,7 @@ import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class SyncChange.
  */

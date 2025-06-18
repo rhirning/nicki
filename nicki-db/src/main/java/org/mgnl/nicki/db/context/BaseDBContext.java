@@ -67,7 +67,7 @@ import org.mgnl.nicki.db.profile.InitProfileException;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class BaseDBContext.
  */
@@ -919,8 +919,7 @@ TRUE,
 									method.invoke(entry, out.toByteArray());
 								}
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+								log.error("Error handling blob", e);
 							}
 						}
 					}

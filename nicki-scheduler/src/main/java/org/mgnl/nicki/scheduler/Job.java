@@ -1,6 +1,6 @@
 package org.mgnl.nicki.scheduler;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-scheduler

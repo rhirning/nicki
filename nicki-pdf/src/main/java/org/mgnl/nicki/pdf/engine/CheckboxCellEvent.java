@@ -31,7 +31,7 @@ import com.lowagie.text.pdf.PdfPCell;
 import com.lowagie.text.pdf.PdfPCellEvent;
 import com.lowagie.text.pdf.PdfWriter;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class CheckboxCellEvent.
  */

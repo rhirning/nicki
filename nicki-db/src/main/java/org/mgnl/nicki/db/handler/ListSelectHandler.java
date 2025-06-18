@@ -24,7 +24,7 @@ package org.mgnl.nicki.db.handler;
 
 import java.util.List;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface ListSelectHandler.
  *

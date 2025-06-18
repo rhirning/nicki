@@ -42,7 +42,7 @@ import javax.naming.directory.SearchControls;
 import javax.naming.directory.SearchResult;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class JNDIWrapper.
  */

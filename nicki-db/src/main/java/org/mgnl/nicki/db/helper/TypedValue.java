@@ -31,7 +31,7 @@ import org.mgnl.nicki.db.annotation.Attribute;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class TypedValue.
  */

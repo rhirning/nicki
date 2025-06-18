@@ -32,7 +32,7 @@ import org.mgnl.nicki.core.objects.DynamicObject;
 import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.ldap.objects.DynamicObjectLdapAdapter;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A factory for creating LdapContext objects.
  */

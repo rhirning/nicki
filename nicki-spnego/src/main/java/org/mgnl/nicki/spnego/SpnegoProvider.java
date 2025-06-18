@@ -46,7 +46,7 @@ import org.ietf.jgss.GSSManager;
 import org.ietf.jgss.GSSName;
 import org.ietf.jgss.Oid;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This is a Utility Class that can be used for finer grained control 
  * over message integrity, confidentiality and mutual authentication.

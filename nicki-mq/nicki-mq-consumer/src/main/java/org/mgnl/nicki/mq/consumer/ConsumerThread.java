@@ -38,7 +38,7 @@ import org.mgnl.nicki.mq.model.Consumer;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ConsumerThread.
  */

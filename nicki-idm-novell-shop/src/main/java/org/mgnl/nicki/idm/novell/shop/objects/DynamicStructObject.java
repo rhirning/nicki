@@ -32,7 +32,7 @@ import org.mgnl.nicki.core.methods.StructuredData;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DynamicStructObject.
  */

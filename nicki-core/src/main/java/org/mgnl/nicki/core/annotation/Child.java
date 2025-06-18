@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
 
 import org.mgnl.nicki.core.objects.DynamicObject;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Annotation to specify child nodes.
  */

@@ -33,7 +33,7 @@ import org.mgnl.nicki.core.i18n.I18n;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DependendRule.
  */

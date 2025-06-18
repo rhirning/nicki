@@ -24,7 +24,7 @@ package org.mgnl.nicki.core.context;
 
 import java.util.Locale;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ThreadContext.
  */

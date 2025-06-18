@@ -27,7 +27,7 @@ import org.mgnl.nicki.idm.novell.shop.objects.Role;
 import org.mgnl.nicki.shop.base.objects.Catalog;
 import org.mgnl.nicki.shop.base.objects.CatalogPage;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class VirtualRoleCatalogArticle.
  */

@@ -33,7 +33,7 @@ import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
 import org.mgnl.nicki.core.util.Classes;
 import lombok.extern.slf4j.Slf4j;
-// TODO: Auto-generated Javadoc
+
 /**
  * Basic configuration class. The main config ist /META-INF/nicki/config.properties
  * 

@@ -3,7 +3,7 @@ package org.mgnl.nicki.core.data;
 
 import java.io.Serializable;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-core

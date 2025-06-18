@@ -24,7 +24,7 @@ package org.mgnl.nicki.shop.base.objects;
 
 import java.util.Map;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Interface CatalogValueProvider.
  */

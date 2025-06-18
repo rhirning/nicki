@@ -29,7 +29,7 @@ import org.mgnl.nicki.db.connection.ConnectionManager;
 import org.mgnl.nicki.db.connection.InvalidConfigurationException;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DBCPProfile.
  */

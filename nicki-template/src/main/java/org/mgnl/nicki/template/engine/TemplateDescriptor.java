@@ -27,7 +27,7 @@ import java.io.StringReader;
 
 import org.apache.commons.lang3.StringUtils;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class TemplateDescriptor.
  */

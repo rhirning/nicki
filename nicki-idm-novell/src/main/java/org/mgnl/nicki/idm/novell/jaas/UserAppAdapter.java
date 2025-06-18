@@ -45,7 +45,7 @@ import com.sssw.portal.api.EbiPortalContext;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class UserAppAdapter.
  */

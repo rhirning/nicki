@@ -39,7 +39,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.pdf.engine.Point;
 import org.mgnl.nicki.pdf.model.config.Configuration;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class PdfConfiguration.
  */

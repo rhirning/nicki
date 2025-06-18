@@ -27,7 +27,7 @@ import java.io.IOException;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpServletResponseWrapper;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Class adds capability to track/determine if the HTTP Status 
  * code has been set.

@@ -34,8 +34,7 @@ import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlType;
 
 
-// TODO: Auto-generated Javadoc
-/**
+///**
  * <p>Java-Klasse f�r content complex type.
  * 
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.

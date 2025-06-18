@@ -41,7 +41,7 @@ import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Class that applies/enforces Nicki Config init params.
  * 

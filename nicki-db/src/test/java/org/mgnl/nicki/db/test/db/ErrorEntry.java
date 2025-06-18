@@ -27,7 +27,7 @@ import org.mgnl.nicki.db.data.DataType;
 
 import lombok.Data;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ErrorEntry.
  */

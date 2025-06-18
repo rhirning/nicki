@@ -30,7 +30,7 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.methods.ListStructuredForeignKeyMethod;
 import org.mgnl.nicki.core.methods.StructuredForeignKeyMethod;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class StructuredDynamicAttribute.
  */

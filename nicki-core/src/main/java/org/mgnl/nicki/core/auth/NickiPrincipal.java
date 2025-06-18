@@ -25,7 +25,7 @@ package org.mgnl.nicki.core.auth;
 import java.security.Principal;
 
 import org.apache.commons.lang3.StringUtils;
-// TODO: Auto-generated Javadoc
+
 
 /**
  * Principal (user / password).

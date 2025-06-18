@@ -74,7 +74,7 @@ import org.mgnl.nicki.ldap.query.SubObjectsLoaderQueryHandler;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class LdapContext.
  */

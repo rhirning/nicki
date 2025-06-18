@@ -31,7 +31,9 @@ import java.util.Properties;
 
 import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.config.Config;
-// TODO: Auto-generated Javadoc
+
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Creates rules for jquery validation plugin
  * 
@@ -78,6 +80,7 @@ import org.mgnl.nicki.core.config.Config;
  * @author rhi
  *
  */
+@Slf4j
 public class Verify {
 	
 	/** The attribute rules. */
@@ -230,8 +233,7 @@ public class Verify {
 				attributeRules.put(key.toLowerCase(), props.getProperty(key));
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("Error reading properties", e);
 		}
 	}
 

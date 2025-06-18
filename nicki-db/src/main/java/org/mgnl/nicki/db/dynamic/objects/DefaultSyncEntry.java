@@ -32,7 +32,7 @@ import org.mgnl.nicki.db.data.DataType;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class DefaultSyncEntry.
  */

@@ -31,7 +31,7 @@ import org.mgnl.nicki.spnego.SpnegoHttpFilter.Constants;
 
 import org.ietf.jgss.GSSCredential;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * Wrap ServletRequest so we can do our own handling of the 
  * principal and auth types.

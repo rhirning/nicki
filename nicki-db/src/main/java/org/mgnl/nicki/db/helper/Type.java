@@ -35,7 +35,7 @@ import java.util.List;
 import org.mgnl.nicki.db.context.DBContext;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Enum Type.
  */

@@ -34,7 +34,7 @@ import org.mgnl.nicki.idm.novell.shop.objects.Resource;
 import org.mgnl.nicki.shop.base.objects.CatalogArticle;
 import org.mgnl.nicki.shop.base.inventory.InventoryArticle;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ResourceCatalogArticle.
  */

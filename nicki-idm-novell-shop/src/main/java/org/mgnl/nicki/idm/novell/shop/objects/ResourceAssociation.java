@@ -32,7 +32,7 @@ import org.mgnl.nicki.core.annotation.ObjectClass;
 import org.mgnl.nicki.core.annotation.StructuredDynamicAttribute;
 import org.mgnl.nicki.core.objects.BaseDynamicObject;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class ResourceAssociation.
  */

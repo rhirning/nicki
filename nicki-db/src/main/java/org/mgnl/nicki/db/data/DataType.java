@@ -9,7 +9,7 @@ import org.mgnl.nicki.db.annotation.Attribute;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-db

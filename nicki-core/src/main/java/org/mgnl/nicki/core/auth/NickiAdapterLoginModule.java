@@ -31,7 +31,7 @@ import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.util.Classes;
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * LoginModule which uses a configured adapter to extract user and password.
  */

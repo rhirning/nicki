@@ -38,7 +38,7 @@ import org.mgnl.nicki.core.helper.JsonHelper;
 
 import lombok.extern.slf4j.Slf4j;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * A factory for creating ClasspathStatistics objects.
  */

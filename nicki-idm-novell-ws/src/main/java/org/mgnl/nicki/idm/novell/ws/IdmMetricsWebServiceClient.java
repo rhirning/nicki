@@ -40,7 +40,7 @@ import com.novell.soa.af.metrics.impl.VersionVO;
 import com.novell.soa.af.metrics.soap.MetricsServiceException;
 import com.novell.soa.ws.portable.Stub;
 
-// TODO: Auto-generated Javadoc
+
 /**
  * The Class IdmMetricsWebServiceClient.
  */

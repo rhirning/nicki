@@ -25,7 +25,7 @@ package org.mgnl.nicki.pdf.template;
 import jakarta.xml.bind.annotation.XmlRegistry;
 
 
-// TODO: Auto-generated Javadoc
+
 /**
  * This object contains factory methods for each 
  * Java content interface and Java element interface 

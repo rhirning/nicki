@@ -5,7 +5,7 @@ import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfAnnotation;
 import com.lowagie.text.pdf.PdfWriter;
 
-// TODO: Auto-generated Javadoc
+
 /*-
  * #%L
  * nicki-pdf
