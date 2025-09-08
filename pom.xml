@@ -4,7 +4,8 @@
 	<groupId>org.mgnl.nicki</groupId>
 	<artifactId>nicki</artifactId>
 	<version>11.42-SNAPSHOT</version>
-	<name>nicki</name>
+	<name>Nicki-Tools</name>
+	<description>A Toolset to build appications with easy configuration, access to directories and databases</description>
 	<packaging>pom</packaging>
 	<url>http://mgnl.org/nicki</url>
 	<organization>

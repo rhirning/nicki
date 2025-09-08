@@ -5,3 +5,5 @@
 **/bin/
 **/.classpath
 /cmd-mvn.cmd
+**/pom.xml.releaseBackup
+**/release.properties
