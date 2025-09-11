@@ -135,7 +135,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 		// Enable connection pooling
 		env.put("com.sun.jndi.ldap.connect.pool",
-				DataHelper.booleanOf(getTarget().getProperty("pool", "TRUE")) ? "true" : "false");
+				DataHelper.booleanOf(getTarget().getProperty("pool", "TRUE")) ? "TRUE" : "FALSE");
 
 		return new NickiLdapContext(env, null);
 	}
