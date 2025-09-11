@@ -1,6 +1,12 @@
 
 package org.mgnl.nicki.db.connection;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Date;
+
+import javax.sql.DataSource;
+
 /*-
  * #%L
  * nicki-db
@@ -10,9 +16,9 @@ package org.mgnl.nicki.db.connection;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,23 +37,17 @@ import org.mgnl.nicki.core.util.Classes;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.sql.DataSource;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Date;
-
 @Slf4j
 public class ConnectionManager {
 
-    
+
     public DataSource dataSource;
     public GenericObjectPool pool;
-    
+
     public ConnectionManager() {
-    	
+
     }
-    
+
 	public void init(String profileConfigBase) throws InvalidConfigurationException {
 		DbcpConfiguration configuration = new DbcpConfiguration(profileConfigBase);
     	connectToDB(configuration);
@@ -97,7 +97,7 @@ public class ConnectionManager {
      * @throws Exception
      */
     public DataSource setupDataSource(
-    		String connectURI, 
+    		String connectURI,
     		String username,
     		String password,
     		int minIdle, int maxActive
@@ -119,7 +119,7 @@ public class ConnectionManager {
         // We'll use the DriverManagerConnectionFactory,
         // using the connect string from configuration
         //
-        ConnectionFactory connectionFactory = 
+        ConnectionFactory connectionFactory =
         	new DriverManagerConnectionFactory(connectURI,username, password);
 
         //
@@ -130,7 +130,7 @@ public class ConnectionManager {
          new PoolableConnectionFactory(
         	connectionFactory,pool,null,null,false,true);
 
-        PoolingDataSource dataSource = 
+        PoolingDataSource dataSource =
         	new PoolingDataSource(pool);
 
         return dataSource;
@@ -141,7 +141,7 @@ public class ConnectionManager {
         log.info("NumIdle: " + pool.getNumIdle());
     }
 
-	public synchronized Connection getConnection() throws SQLException {
+	public Connection getConnection() throws SQLException {
 		return dataSource.getConnection();
 	}
 

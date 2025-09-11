@@ -12,9 +12,9 @@ import java.io.IOException;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,13 +40,15 @@ import javax.naming.ldap.PagedResultsControl;
 import javax.naming.ldap.PagedResultsResponseControl;
 import javax.naming.ldap.StartTlsRequest;
 import javax.naming.ldap.StartTlsResponse;
+
 import org.apache.commons.lang.StringUtils;
 import org.mgnl.nicki.core.context.BasicContext;
 import org.mgnl.nicki.core.context.BeanQueryHandler;
-import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.DynamicObjectFactory;
+import org.mgnl.nicki.core.context.NickiContext;
 import org.mgnl.nicki.core.context.Target;
 import org.mgnl.nicki.core.data.InstantiateDynamicObjectException;
+import org.mgnl.nicki.core.data.Query;
 import org.mgnl.nicki.core.data.QueryHandler;
 import org.mgnl.nicki.core.data.SearchQueryHandler;
 import org.mgnl.nicki.core.helper.AnnotationHelper;
@@ -60,7 +62,6 @@ import org.mgnl.nicki.core.objects.DynamicObjectAdapter;
 import org.mgnl.nicki.core.objects.DynamicObjectException;
 import org.mgnl.nicki.ldap.core.DynamicObjectWrapper;
 import org.mgnl.nicki.ldap.core.LdapQuery;
-import org.mgnl.nicki.core.data.Query;
 import org.mgnl.nicki.ldap.data.jndi.JndiSearchResult;
 import org.mgnl.nicki.ldap.helper.LdapHelper;
 import org.mgnl.nicki.ldap.helper.LdapHelper.LOGIC;
@@ -85,10 +86,10 @@ public class LdapContext extends BasicContext implements NickiContext {
 		super(adapter, target, readonly);
 		tls = getTarget().getBoolean("securityTLS");
 	}
-	
-	
+
+
 	protected NickiLdapContext getLdapContext(String name, String password) throws NamingException {
-		Hashtable<String, String> env = new Hashtable<String, String>();
+		Hashtable<String, String> env = new Hashtable<>();
 		env.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
 		env.put(Context.PROVIDER_URL, getTarget().getProperty("providerUrl"));
 		if (password.length() < 100) {
@@ -109,7 +110,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		}
 		// Enable connection pooling
 		env.put("com.sun.jndi.ldap.connect.pool",
-				DataHelper.booleanOf(getTarget().getProperty("pool")) ? "true" : "false");
+				DataHelper.booleanOf(getTarget().getProperty("pool", "TRUE")) ? "TRUE" : "FALSE");
 
 		return new NickiLdapContext(env, null);
 	}
@@ -129,12 +130,12 @@ public class LdapContext extends BasicContext implements NickiContext {
 		if (user == null) {
 			log.info("login: loadObject not successful for user " + username);
 			List<DynamicObject> list = loadObjects(getTarget().getBaseDn(), "cn=" + username);
-			
+
 			if (list != null && list.size() == 1) {
 				log.debug("login: loadObjects successful");
 				user = list.get(0);
 			} else {
-				log.debug("Loading Objects not successful: " 
+				log.debug("Loading Objects not successful: "
 						+ ((list == null)?"null":"size=" + list.size()));
 			}
 		} else {
@@ -158,7 +159,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	@Override
 	public DynamicObject createObject(DynamicObject dynamicObject)
 			throws DynamicObjectException {
-		if (this.isReadonly()) {
+		if (isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not create object: " + dynamicObject.getPath());
 		}
 		StartTlsResponse tls = null;
@@ -204,17 +205,17 @@ public class LdapContext extends BasicContext implements NickiContext {
 				tls.negotiate();
 			}
 			if (queryHandler.getPageSize() > 0) {
-				ctx.setRequestControls(new Control[]{ 
+				ctx.setRequestControls(new Control[]{
 				         new PagedResultsControl(queryHandler.getPageSize(), Control.CRITICAL) });
 			}
 			byte[] cookie = null;
 			int total;
-			List<ContextSearchResult> list = new ArrayList<ContextSearchResult>();
+			List<ContextSearchResult> list = new ArrayList<>();
 			int pageNum = 0;
 			do {
 				String baseDn = StringUtils.isNotBlank(queryHandler.getBaseDN()) ? queryHandler.getBaseDN() : getTarget().getBaseDn();
 				results = ctx.search(baseDn, queryHandler.getFilter(), (SearchControls) queryHandler.getConstraints());
-				
+
 				try {
 					while (results != null && results.hasMore()) {
 						list.add(new JndiSearchResult(results.next()));
@@ -252,13 +253,14 @@ public class LdapContext extends BasicContext implements NickiContext {
 				try {
 					results.close();
 				} catch (NamingException e) {
-					
+
 					log.error("Error", e);
 				}
 			}
 		}
 	}
 
+	@Override
 	public void search(BeanQueryHandler queryHandler) throws NamingException {
 		StartTlsResponse tls = null;
 		NamingEnumeration<SearchResult> results = null;
@@ -280,7 +282,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 				try {
 					results.close();
 				} catch (NamingException e) {
-					
+
 					log.error("Error", e);
 				}
 			}
@@ -289,7 +291,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 
 	@Override
 	public void updateObject(DynamicObject dynamicObject) throws DynamicObjectException {
-		if (this.isReadonly()) {
+		if (isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
 		}
 		StartTlsResponse tls = null;
@@ -310,7 +312,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 
 	@Override
 	public void updateObject(DynamicObject dynamicObject, String[] attributeNames) throws DynamicObjectException {
-		if (this.isReadonly()) {
+		if (isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not modify object: " + dynamicObject.getPath());
 		}
 		StartTlsResponse tls = null;
@@ -339,7 +341,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	@Override
 	public void deleteObject(DynamicObject dynamicObject)
 			throws DynamicObjectException {
-		if (this.isReadonly()) {
+		if (isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not delete object: " + dynamicObject.getPath());
 		}
 		StartTlsResponse tls = null;
@@ -361,7 +363,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	@Override
 	public DynamicObject moveObject(DynamicObject dynamicObject, String newPath)
 			throws DynamicObjectException {
-		if (this.isReadonly()) {
+		if (isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not move object: " + dynamicObject.getPath());
 		}
 		if (isExist(newPath)) {
@@ -386,7 +388,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	@Override
 	public DynamicObject renameObject(DynamicObject dynamicObject,
 			String newName) throws DynamicObjectException {
-		if (this.isReadonly()) {
+		if (isReadonly()) {
 			throw new DynamicObjectException("READONLY: could not rename object: " + dynamicObject.getPath());
 		}
 		String newPath = dynamicObject.getModel().getNamingLdapAttribute() + "=" + newName + "," + dynamicObject.getParentPath();
@@ -399,13 +401,13 @@ public class LdapContext extends BasicContext implements NickiContext {
 		ObjectLoaderLdapQueryHandler handler = new ObjectLoaderLdapQueryHandler(this, path);
 		try {
 			search(handler);
-			return handler.getDynamicObject(); 
+			return handler.getDynamicObject();
 		} catch (DynamicObjectException e) {
 			log.debug("Could not load object: " + path, e);
 		}
 		return null;
 	}
-	
+
 	@Override
 	public List<DynamicObject> loadObjects(String baseDn, String filter) {
 		try {
@@ -414,7 +416,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			return handler.getList();
 		} catch (DynamicObjectException e) {
 			log.debug("Could not load objects: " + filter + " under "+ baseDn, e);
-		} 
+		}
 		return null;
 	}
 
@@ -453,9 +455,9 @@ public class LdapContext extends BasicContext implements NickiContext {
 			return handler.getList();
 		} catch (DynamicObjectException e) {
 			return null;
-		} 
+		}
 	}
-	
+
 	@Override
 	@SuppressWarnings("unchecked")
 	public 	<T extends DynamicObject> T loadObject(Class<T> classDefinition, String path) {
@@ -463,7 +465,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 		handler.setClassDefinition(classDefinition);
 		try {
 			search(handler);
-			return (T) handler.getDynamicObject(); 
+			return (T) handler.getDynamicObject();
 		} catch (DynamicObjectException e) {
 			return null;
 		}
@@ -486,7 +488,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			return (List<T>) handler.getList();
 		} catch (DynamicObjectException e) {
 			return null;
-		} 
+		}
 	}
 
 	@Override
@@ -502,12 +504,12 @@ public class LdapContext extends BasicContext implements NickiContext {
 			return null;
 		}
 	}
-	
+
 
 	@Override
 	public <T extends DynamicObject> T loadChildObject(Class<T> class1, DynamicObject parent, String namingValue) {
 		try {
-			String namingAttribute = 
+			String namingAttribute =
 				getLdapObjectFactory().getNamingLdapAttribute(class1);
 			String path = namingAttribute + "=" + namingValue + "," + parent.getPath();
 			return loadObject(class1, path);
@@ -546,7 +548,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 			}
 		} catch (DynamicObjectException e) {
 			return;
-		} 
+		}
 	}
 
 
@@ -581,7 +583,7 @@ public class LdapContext extends BasicContext implements NickiContext {
 	@Override
 	public <T extends DynamicObject> List<T> loadReferenceObjects(Class<T> classDefinition, ReferenceMethod ref) {
 		LdapQuery query = new LdapQuery(ref.getPath(), ref.getReference());
-		
+
 		return loadReferenceObjects(classDefinition, query);
 	}
 
