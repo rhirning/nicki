@@ -9,10 +9,21 @@
 		<version>11.49-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
-	<dependencies>
+	<dependencies><!--
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
+		</dependency>
+		-->
+			<dependency>
+				<groupId>com.oracle.database.jdbc</groupId>
+				<artifactId>ojdbc8</artifactId>
+				<version>19.14.0.0</version>
+				<scope>test</scope>
+			</dependency>
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-dbcp2</artifactId>
 		</dependency>
 		<dependency>
 		    <groupId>org.hsqldb</groupId>

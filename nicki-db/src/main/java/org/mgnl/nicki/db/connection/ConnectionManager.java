@@ -7,6 +7,15 @@ import java.util.Date;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp2.ConnectionFactory;
+import org.apache.commons.dbcp2.DriverManagerConnectionFactory;
+import org.apache.commons.dbcp2.PoolableConnection;
+import org.apache.commons.dbcp2.PoolableConnectionFactory;
+import org.apache.commons.dbcp2.PoolingDataSource;
+import org.apache.commons.pool2.ObjectPool;
+import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.mgnl.nicki.core.util.Classes;
+
 /*-
  * #%L
  * nicki-db
@@ -27,13 +36,6 @@ import javax.sql.DataSource;
  * #L%
  */
 
-import org.apache.commons.dbcp.ConnectionFactory;
-import org.apache.commons.dbcp.DriverManagerConnectionFactory;
-import org.apache.commons.dbcp.PoolableConnectionFactory;
-import org.apache.commons.dbcp.PoolingDataSource;
-import org.apache.commons.pool.impl.GenericObjectPool;
-import org.mgnl.nicki.core.util.Classes;
-
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -46,7 +48,7 @@ public class ConnectionManager {
 	public DataSource dataSource;
 
 	/** The pool. */
-	public GenericObjectPool pool;
+	private GenericObjectPool<PoolableConnection> pool;
 
 	/**
 	 * Instantiates a new connection manager.
@@ -83,12 +85,50 @@ public class ConnectionManager {
 		log.debug("Trying to connect to database...");
 		try {
 			dataSource = setupDataSource(config.getDbURI(), config.getDbUser(), config.getDbPassword(),
-					config.getDbPoolMinSize(), config.getDbPoolMaxSize());
+					config.getDbPoolMinIdleSize(), config.getDbPoolMaxIdleSize());
 
 			log.debug("Connection attempt to database succeeded.");
 		} catch (Exception e) {
 			log.error("Error when attempting to connect to DB ", e);
 		}
+	}
+
+	private DataSource setupDataSource(String connectURI, String user, String password) {
+		//
+		// First, we'll create a ConnectionFactory that the
+		// pool will use to create Connections.
+		// We'll use the DriverManagerConnectionFactory,
+		// using the connect string passed in the command line
+		// arguments.
+		//
+		ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(connectURI, user, password);
+
+		//
+		// Next we'll create the PoolableConnectionFactory, which wraps
+		// the "real" Connections created by the ConnectionFactory with
+		// the classes that implement the pooling functionality.
+		//
+		PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, null);
+
+		//
+		// Now we'll need a ObjectPool that serves as the
+		// actual pool of connections.
+		//
+		// We'll use a GenericObjectPool instance, although
+		// any ObjectPool implementation will suffice.
+		//
+		ObjectPool<PoolableConnection> connectionPool = new GenericObjectPool<>(poolableConnectionFactory);
+
+		// Set the factory's pool property to the owning pool
+		poolableConnectionFactory.setPool(connectionPool);
+
+		//
+		// Finally, we create the PoolingDriver itself,
+		// passing in the object pool we created.
+		//
+		PoolingDataSource<PoolableConnection> dataSource = new PoolingDataSource<>(connectionPool);
+
+		return dataSource;
 	}
 
 	/**
@@ -97,42 +137,49 @@ public class ConnectionManager {
 	 * @param connectURI - JDBC Connection URI
 	 * @param username   - JDBC Connection username
 	 * @param password   - JDBC Connection password
-	 * @param minIdle    - Minimum number of idel connection in the connection pool
-	 * @param maxActive  - Connection Pool Maximum Capacity (Size)
+	 * @param minIdle    - Minimum number of idle connection in the connection pool
+	 * @param maxIdle    - Maximum number of idle connection in the connection pool
 	 * @return the data source
 	 * @throws Exception the exception
 	 */
-	public DataSource setupDataSource(String connectURI, String username, String password, int minIdle, int maxActive)
+	public DataSource setupDataSource(String connectURI, String username, String password, int minIdle, int maxIdle)
 			throws Exception {
 		//
-		// First, we'll need a ObjectPool that serves as the
+		// First, we'll create a ConnectionFactory that the
+		// pool will use to create Connections.
+		// We'll use the DriverManagerConnectionFactory,
+		// using the connect string passed in the command line
+		// arguments.
+		//
+		ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(connectURI, username, password);
+
+		//
+		// Next we'll create the PoolableConnectionFactory, which wraps
+		// the "real" Connections created by the ConnectionFactory with
+		// the classes that implement the pooling functionality.
+		//
+		PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory, null);
+
+		//
+		// Now we'll need a ObjectPool that serves as the
 		// actual pool of connections.
 		//
 		// We'll use a GenericObjectPool instance, although
 		// any ObjectPool implementation will suffice.
 		//
-		pool = new GenericObjectPool(null);
+		pool = new GenericObjectPool<>(poolableConnectionFactory);
 
 		pool.setMinIdle(minIdle);
-		pool.setMaxActive(maxActive);
-		//
-		// Next, we'll create a ConnectionFactory that the
-		// pool will use to create Connections.
-		// We'll use the DriverManagerConnectionFactory,
-		// using the connect string from configuration
-		//
-		ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(connectURI, username, password);
+		pool.setMaxIdle(maxIdle);
+
+		// Set the factory's pool property to the owning pool
+		poolableConnectionFactory.setPool(pool);
 
 		//
-		// Now we'll create the PoolableConnectionFactory, which wraps
-		// the "real" Connections created by the ConnectionFactory with
-		// the classes that implement the pooling functionality.
+		// Finally, we create the PoolingDriver itself,
+		// passing in the object pool we created.
 		//
-		new PoolableConnectionFactory(connectionFactory, pool, null, null, false, true);
-
-		PoolingDataSource dataSource = new PoolingDataSource(pool);
-
-		return dataSource;
+		return new PoolingDataSource<>(pool);
 	}
 
 	/**

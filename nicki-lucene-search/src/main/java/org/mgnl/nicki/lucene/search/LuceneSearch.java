@@ -10,9 +10,9 @@ package org.mgnl.nicki.lucene.search;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,8 +20,6 @@ package org.mgnl.nicki.lucene.search;
  * limitations under the License.
  * #L%
  */
-
-
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -40,8 +38,9 @@ import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
 import org.apache.lucene.index.IndexWriterConfig.OpenMode;
+import org.apache.lucene.index.StoredFields;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryparser.classic.ParseException;
 import org.apache.lucene.queryparser.classic.QueryParser;
 import org.apache.lucene.search.IndexSearcher;
@@ -56,7 +55,6 @@ import org.mgnl.nicki.search.NickiSearchResult;
 
 import lombok.extern.slf4j.Slf4j;
 
-
 /**
  * The Class LuceneSearch.
  *
@@ -65,21 +63,20 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 
-
 	/**
 	 * The Enum MODE.
 	 */
-	public static enum MODE {
-		
+	public enum MODE {
+
 		/** The create. */
-		CREATE, 
- /** The update. */
- UPDATE
+		CREATE,
+		/** The update. */
+		UPDATE
 	}
 
 	/** The index path. */
 	private String indexPath = "index";
-	
+
 	/** The mode. */
 	private MODE mode = MODE.CREATE;
 
@@ -93,10 +90,11 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 	 * Search.
 	 *
 	 * @param searchString the search string
-	 * @param maxResults the max results
+	 * @param maxResults   the max results
 	 * @return the list
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
+	@Override
 	public List<NickiSearchResult> search(String searchString, int maxResults) throws IOException {
 		List<NickiSearchResult> list = new ArrayList<>();
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
@@ -110,12 +108,11 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 		} catch (ParseException e) {
 			throw new IOException(e.getMessage());
 		}
-		TopDocs results = searcher.search(query, maxResults);
-
-		ScoreDoc[] hits = results.scoreDocs;
-		for (ScoreDoc scoreDoc : hits) {
-			Document doc = searcher.doc(scoreDoc.doc);
-			float score = scoreDoc.score;
+		TopDocs hits = searcher.search(query, maxResults);
+		StoredFields storedFields = searcher.storedFields();
+		for (ScoreDoc hit : hits.scoreDocs) {
+			Document doc = storedFields.document(hit.doc);
+			float score = hit.score;
 			list.add(new NickiSearchResult(new LuceneSearchDocument(doc), score));
 		}
 		return list;
@@ -124,8 +121,8 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 	/**
 	 * Index objects.
 	 *
-	 * @param writer the writer
-	 * @param list the list
+	 * @param writer    the writer
+	 * @param list      the list
 	 * @param extractor the extractor
 	 */
 	private void indexObjects(IndexWriter writer, Collection<T> list, Extractor<T> extractor) {
@@ -144,8 +141,8 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 	/**
 	 * Index object.
 	 *
-	 * @param writer the writer
-	 * @param object the object
+	 * @param writer    the writer
+	 * @param object    the object
 	 * @param extractor the extractor
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 */
@@ -157,15 +154,15 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 		String key = extractor.getKey(object);
 		String description = extractor.getDescription(object);
 		String title = extractor.getTitle(object);
-		
-		//int hash = title.hashCode();
+
+		// int hash = title.hashCode();
 
 		// make a new, empty document
 		Document doc = new Document();
 
 		Field keyField = new StringField(ATTRIBUTE_KEY, key, Field.Store.YES);
 		doc.add(keyField);
-		//doc.add(new LongField(ATTRIBUTE_HASH, hash, Field.Store.YES));
+		// doc.add(new LongField(ATTRIBUTE_HASH, hash, Field.Store.YES));
 		if (StringUtils.isNotBlank(category)) {
 			doc.add(new StringField(ATTRIBUTE_CATEGORY, category, Field.Store.YES));
 		}
@@ -184,7 +181,7 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 		}
 
 		doc.add(new StringField(ATTRIBUTE_CONTENT, sb.toString(), Field.Store.YES));
-		
+
 		if (writer.getConfig().getOpenMode() == OpenMode.CREATE) {
 			log.debug("adding " + key);
 			writer.addDocument(doc);
@@ -198,9 +195,10 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 	/**
 	 * Index.
 	 *
-	 * @param list the list
+	 * @param list      the list
 	 * @param extractor the extractor
 	 */
+	@Override
 	public void index(Collection<T> list, Extractor<T> extractor) {
 		Date start = new Date();
 		try {
@@ -279,6 +277,7 @@ public class LuceneSearch<T extends Object> implements NickiSearch<T> {
 	 *
 	 * @param indexPath the new index path
 	 */
+	@Override
 	public void setIndexPath(String indexPath) {
 		this.indexPath = indexPath;
 	}

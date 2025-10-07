@@ -25,8 +25,8 @@
 			<artifactId>lucene-core</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.lucene</groupId>
-			<artifactId>lucene-analyzers-common</artifactId>
+		    <groupId>org.apache.lucene</groupId>
+		    <artifactId>lucene-analysis-common</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.lucene</groupId>
