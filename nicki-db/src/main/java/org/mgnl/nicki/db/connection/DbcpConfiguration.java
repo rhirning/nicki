@@ -48,6 +48,9 @@ public class DbcpConfiguration {
 	/** The db pool max idle size. */
 	private int dbPoolMaxIdleSize;
 
+	/** if not blank, JMX will be activated with this name */
+	private String jmxName;
+
 	/**
 	 * Instantiates a new dbcp configuration.
 	 *
@@ -61,6 +64,7 @@ public class DbcpConfiguration {
 		dbURI = Config.getString(base + "url");
 		dbPoolMinIdleSize = Config.getInteger(base + "minIdle", 1);
 		dbPoolMaxIdleSize = Config.getInteger(base + "maxIdle", 5);
+		jmxName = StringUtils.stripToNull(Config.getString(base + "jmxName"));
 		if (!isValid()) {
 			throw new InvalidConfigurationException();
 		}
@@ -132,4 +136,12 @@ public class DbcpConfiguration {
 		return dbPoolMaxIdleSize;
 	}
 
+	/**
+	 * Antwortet das Attribut {@link #jmxName}.
+	 *
+	 * @return das Attribut {@link #jmxName}
+	 */
+	public String getJmxName() {
+		return jmxName;
+	}
 }

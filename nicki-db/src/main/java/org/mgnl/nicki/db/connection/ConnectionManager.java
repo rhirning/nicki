@@ -7,11 +7,13 @@ import java.util.Date;
 
 import javax.sql.DataSource;
 
+import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbcp2.ConnectionFactory;
 import org.apache.commons.dbcp2.DriverManagerConnectionFactory;
 import org.apache.commons.dbcp2.PoolableConnection;
 import org.apache.commons.dbcp2.PoolableConnectionFactory;
 import org.apache.commons.dbcp2.PoolingDataSource;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.pool2.ObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.mgnl.nicki.core.util.Classes;
@@ -85,7 +87,7 @@ public class ConnectionManager {
 		log.debug("Trying to connect to database...");
 		try {
 			dataSource = setupDataSource(config.getDbURI(), config.getDbUser(), config.getDbPassword(),
-					config.getDbPoolMinIdleSize(), config.getDbPoolMaxIdleSize());
+					config.getDbPoolMinIdleSize(), config.getDbPoolMaxIdleSize(), config.getJmxName());
 
 			log.debug("Connection attempt to database succeeded.");
 		} catch (Exception e) {
@@ -142,8 +144,8 @@ public class ConnectionManager {
 	 * @return the data source
 	 * @throws Exception the exception
 	 */
-	public DataSource setupDataSource(String connectURI, String username, String password, int minIdle, int maxIdle)
-			throws Exception {
+	public DataSource setupPoolingDataSource(String connectURI, String username, String password, int minIdle,
+			int maxIdle) throws Exception {
 		//
 		// First, we'll create a ConnectionFactory that the
 		// pool will use to create Connections.
@@ -180,6 +182,34 @@ public class ConnectionManager {
 		// passing in the object pool we created.
 		//
 		return new PoolingDataSource<>(pool);
+	}
+
+	/**
+	 * Setup data source.
+	 *
+	 * @param connectURI - JDBC Connection URI
+	 * @param username   - JDBC Connection username
+	 * @param password   - JDBC Connection password
+	 * @param minIdle    - Minimum number of idle connection in the connection pool
+	 * @param maxIdle    - Maximum number of idle connection in the connection pool
+	 * @return the data source
+	 * @throws Exception the exception
+	 */
+	public DataSource setupDataSource(String connectURI, String username, String password, int minIdle, int maxIdle,
+			String jmxDataSourceName) throws Exception {
+		BasicDataSource ds = new BasicDataSource();
+		ds.setDriverClassName("oracle.jdbc.OracleDriver");
+		ds.setUrl(connectURI);
+		ds.setUsername(username);
+		ds.setPassword(password);
+		ds.setMinIdle(minIdle);
+		ds.setMaxIdle(maxIdle);
+		if (StringUtils.isNotBlank(jmxDataSourceName)) {
+			String jmxName = BasicDataSource.class.getPackage().getName() + ":type=DataSource,name="
+					+ jmxDataSourceName;
+			ds.setJmxName(jmxName); // damit wird JMX aktiviert
+		}
+		return ds;
 	}
 
 	/**
