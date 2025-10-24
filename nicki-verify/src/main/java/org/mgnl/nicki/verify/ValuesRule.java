@@ -10,9 +10,9 @@ package org.mgnl.nicki.verify;
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,13 +21,13 @@ package org.mgnl.nicki.verify;
  * #L%
  */
 
-
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.StringUtils;
 import org.mgnl.nicki.core.helper.DataHelper;
 import org.mgnl.nicki.core.i18n.I18n;
-
 
 // val					= values:value1,value2,value3
 
@@ -36,10 +36,10 @@ import org.mgnl.nicki.core.i18n.I18n;
  */
 @SuppressWarnings("serial")
 public class ValuesRule extends Rule {
-	
+
 	/** The Constant SEPARATOR. */
 	static final public String SEPARATOR = ",";
-	
+
 	/** The allowed values. */
 	private List<String> allowedValues;
 
@@ -50,25 +50,26 @@ public class ValuesRule extends Rule {
 	 */
 	public ValuesRule(String parameter) {
 		setParameter(parameter);
-		allowedValues = DataHelper.getList(parameter, SEPARATOR);
+		allowedValues = DataHelper.getList(parameter, SEPARATOR).stream().map(StringUtils::upperCase)
+				.collect(Collectors.toList());
 	}
-	
+
 	/**
 	 * Evaluate.
 	 *
-	 * @param value the value
+	 * @param value  the value
 	 * @param values the values
 	 * @return true, if successful
 	 */
 	@Override
 	public boolean evaluate(String value, Map<String, String> values) {
-		if (allowedValues.contains(value)) {
+		if (allowedValues.contains(StringUtils.upperCase(value))) {
 			return true;
 		} else {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Gets the message.
 	 *
@@ -78,16 +79,15 @@ public class ValuesRule extends Rule {
 	public String getMessage() {
 		return I18n.getText(getI18nBase() + ".values", getParameter());
 	}
-	
+
 	/**
 	 * To string.
 	 *
 	 * @return the string
 	 */
+	@Override
 	public String toString() {
 		return "values:" + getParameter();
 	}
-
-
 
 }
